@@ -1,6 +1,8 @@
 extends Area3D
 
 @export var enabled: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 @export var pop_up_speed_override: float = -1.0
 @export var pass_through: bool = false
 

@@ -99,6 +99,8 @@ enum VerticalArcUpMode {
 @export_group("Homing Attack")
 ## Enables homing attack targeting along the full bar length.
 @export var homing_target_enabled: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 
 @export_group("Animations")
 ## Holding animation requested for an under swing.

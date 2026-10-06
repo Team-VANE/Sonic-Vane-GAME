@@ -37,6 +37,8 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 @export_group("Interaction")
 ## Allows homing attacks to target this monitor while it is intact.
 @export var homing_target_enabled: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 ## Breaks on player contact and disables the solid collider when enabled.
 @export var allow_player_pass_through: bool = false
 ## Applies the standard upward attack bounce when an airborne player breaks the monitor.

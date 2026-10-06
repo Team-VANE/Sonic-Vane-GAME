@@ -47,6 +47,8 @@ enum RivalColorSource {
 @export var rival_affiliation: StringName = &"rival"
 @export var rival_target_group: StringName = &"Player"
 @export var rival_is_homing_target: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 ## Maximum spatial-cell refresh frequency while the rival is moving.
 @export_range(1.0, 60.0, 1.0, "suffix:Hz") var rival_target_spatial_update_rate_hz: float = 20.0
 

@@ -1631,7 +1631,7 @@ animation_speed_falloff_time = 1.2
 
 [node name="Sonic_NeoAdv_Root" unique_id=1917975666 instance=ExtResource("1_f4e4o")]
 
-[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(406270863) index="0" unique_id=1212334758]
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1003305109) index="0" unique_id=1589855836]
 bones/0/rotation = Quaternion(-0.7071068, 0, 0, 0.7071068)
 bones/1/position = Vector3(-1.9539227e-14, 0.010608924, 2.8707356)
 bones/1/rotation = Quaternion(0.7616031, 1.5450577e-07, 1.8158048e-07, 0.6480437)
@@ -1951,16 +1951,16 @@ bones/174/position = Vector3(1.6009591e-15, 4.091938, -0.0031870622)
 bones/174/rotation = Quaternion(0.02933039, -1.1915795e-07, -3.496453e-09, 0.9995698)
 bones/174/scale = Vector3(1, 1, 1)
 
-[node name="DEF_eye_r" parent="Armature/Skeleton3D" index="0" unique_id=1662231524]
+[node name="DEF_eye_r" parent="Armature/Skeleton3D" index="0" unique_id=681898139]
 transform = Transform3D(0.9131378, -0.40482605, 0.047902852, -0.08654721, -0.3073537, -0.9476512, 0.39835712, 0.86119056, -0.31569296, -0.25789207, 4.657033, 0.8128629)
 
-[node name="DEF_eye_l" parent="Armature/Skeleton3D" index="1" unique_id=1695961042]
+[node name="DEF_eye_l" parent="Armature/Skeleton3D" index="1" unique_id=786809088]
 transform = Transform3D(0.91313833, 0.4048258, -0.047902286, 0.08654764, -0.30735385, -0.9476513, -0.39835668, 0.86119074, -0.3156932, 0.25789142, 4.657033, 0.8128628)
 
-[node name="Eyeglobe" parent="Armature/Skeleton3D" index="3" unique_id=1159925615]
+[node name="Eyeglobe" parent="Armature/Skeleton3D" index="3" unique_id=45421979]
 surface_material_override/0 = SubResource("ShaderMaterial_pgbcy")
 
-[node name="WheelRunImage" parent="Armature/Skeleton3D" index="9" unique_id=693057331]
+[node name="WheelRunImage" parent="Armature/Skeleton3D" index="9" unique_id=2021665053]
 surface_material_override/0 = ExtResource("18_neo_afterimage_material")
 
 [node name="GazeTrackingModifier3D" type="SkeletonModifier3D" parent="Armature/Skeleton3D" index="10" unique_id=104063011 node_paths=PackedStringArray("facial_animation_player")]
@@ -2006,7 +2006,7 @@ script = ExtResource("24_lip_sync_driver")
 profile = ExtResource("25_lip_sync_profile")
 voice_player_path = NodePath("../../../PlayerAudio/Dialogue_Player")
 
-[node name="AnimationPlayer" parent="." index="3" unique_id=440407465]
+[node name="AnimationPlayer" parent="." index="3" unique_id=1904660991]
 libraries/ = ExtResource("14_neo_animations")
 
 [node name="PlayerAudio" type="Node3D" parent="." index="4" unique_id=1640784168]

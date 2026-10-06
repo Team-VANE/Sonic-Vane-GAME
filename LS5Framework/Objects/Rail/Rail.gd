@@ -66,6 +66,8 @@ var entry_direction_mode: int = 0
 @export_group("Homing Attack")
 ## Enables homing attack targeting for this rail.
 @export var homing_target_enabled: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 ## Extra speed used when entering the rail from a homing attack.
 @export_range(0.0, 200.0) var homing_entry_min_speed: float = 60.0
 

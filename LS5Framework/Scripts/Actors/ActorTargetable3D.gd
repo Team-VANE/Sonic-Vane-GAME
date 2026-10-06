@@ -4,6 +4,8 @@ class_name ActorTargetable3D
 @export_group("Homing")
 ## Registers this point as a homing target while the actor is alive.
 @export var homing_target_enabled: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 ## Overrides the player's post-hit pop-up speed when zero or greater.
 @export var pop_up_speed_override: float = -1.0
 

@@ -226,6 +226,8 @@ var _body_cooldowns: Dictionary = {}  # instance_id -> remaining_time
 
 @export_group("Homing Attack")
 @export var homing_target_enabled: bool = true
+## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
+@export_range(0.0, 1000.0, 0.1, "or_greater", "suffix:m") var homing_target_max_distance: float = 0.0
 
 @export_group("Mesh Bounce")
 ## Enables the Mesh node squash and bounce when the spring is triggered.

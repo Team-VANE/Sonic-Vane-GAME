@@ -86,9 +86,24 @@ func _get_valid_cached_homing_target(origin: Vector3, max_range: float, mode: in
 	if p._object_has_property(target, "active") and not bool(target.get("active")):
 		return null
 	var target_position: Vector3 = _get_homing_candidate_position(target, origin)
+	if _get_homing_target_max_distance(target) > 0.0:
+		target_position = _refresh_homing_candidate_position(target, origin)
+		if not _is_homing_target_within_max_distance(target, target_position.distance_squared_to(origin)):
+			return null
 	if target_position.distance_squared_to(origin) > max_range * max_range:
 		return null
 	return target
+
+
+func _get_homing_target_max_distance(target: Node3D) -> float:
+	if not _owner._object_has_property(target, "homing_target_max_distance"):
+		return 0.0
+	return maxf(float(target.get("homing_target_max_distance")), 0.0)
+
+
+func _is_homing_target_within_max_distance(target: Node3D, distance_squared: float) -> bool:
+	var max_distance: float = _get_homing_target_max_distance(target)
+	return max_distance <= 0.0 or distance_squared <= max_distance * max_distance
 
 
 func _get_homing_target_position(target: Node3D, origin: Vector3) -> Vector3:
@@ -899,6 +914,8 @@ func _find_best_homing_target_camera(origin: Vector3, max_range: float) -> Node3
 		var dist2: float = to.length_squared()
 		if dist2 <= 0.000001 or dist2 > max_range2:
 			continue
+		if not _is_homing_target_within_max_distance(n as Node3D, dist2):
+			continue
 		if _is_homing_target_obstructed(origin, target_position, n as Node3D):
 			continue
 		if p.homing_target_max_height > 0.0:
@@ -983,6 +1000,8 @@ func _find_best_homing_target_hybrid(origin: Vector3, max_range: float) -> Node3
 		var distance_squared: float = to_target.length_squared()
 		if distance_squared <= 0.000001 or distance_squared > max_range_squared:
 			continue
+		if not _is_homing_target_within_max_distance(target, distance_squared):
+			continue
 		if _is_homing_target_obstructed(origin, target_position, target):
 			continue
 		if p.homing_target_max_height > 0.0:
@@ -1051,6 +1070,8 @@ func _find_best_homing_target(origin: Vector3, dash_dir: Vector3, max_range: flo
 		var to: Vector3 = target_position - origin
 		var dist2: float = to.length_squared()
 		if dist2 <= 0.000001 or dist2 > max_range2:
+			continue
+		if not _is_homing_target_within_max_distance(n as Node3D, dist2):
 			continue
 		if _is_homing_target_obstructed(origin, target_position, n as Node3D):
 			continue

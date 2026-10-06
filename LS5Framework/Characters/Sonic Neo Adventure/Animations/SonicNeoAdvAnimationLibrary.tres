@@ -76,7 +76,7 @@
 [ext_resource type="Animation" uid="uid://r7pxqanlox6t" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VaultBar_Swing_Under.res" id="73"]
 [ext_resource type="Animation" uid="uid://cn061la3ddmw3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Walk_Left_To_Idle.res" id="74"]
 [ext_resource type="Animation" uid="uid://t13g1lu3au2m" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Walk_Right_To_Idle.res" id="75"]
-[ext_resource type="Animation" uid="uid://o2yxf0susy25" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/UppercutKick.res" id="76_wk56n"]
+[ext_resource type="Animation" uid="uid://bakbyprq53tjm" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/UppercutKick.res" id="76_wk56n"]
 [ext_resource type="Animation" uid="uid://551v5t04f466" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallRun_Left.res" id="77_jdrys"]
 [ext_resource type="Animation" uid="uid://b4lk72i2rd1ip" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallRun_Right.res" id="77_qmv6w"]
 [ext_resource type="Animation" uid="uid://wq7t6l2ypuhr" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallCling_Enter.res" id="77_wm24h"]
@@ -84,6 +84,7 @@
 [ext_resource type="Animation" uid="uid://du6h3krlqvmx4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallKick_Cling.res" id="79_ldh02"]
 [ext_resource type="Animation" uid="uid://du3lkupynf63e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallKick_Left.res" id="80_hian6"]
 [ext_resource type="Animation" uid="uid://csne8lajgnwtu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallKick_Right.res" id="81_wk56n"]
+[ext_resource type="Animation" uid="uid://cjeo1r7lhgbsx" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/_POSES_VictoryPoseRender.res" id="88_a1xrn"]
 [ext_resource type="Animation" uid="uid://blgoscqwfv7n" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/PHYSICS_Ears_Additive.res" id="physics_ears"]
 [ext_resource type="Animation" uid="uid://bpolm44qqhdln" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/PHYSICS_Quill_Additive.res" id="physics_quills"]
 [ext_resource type="Animation" uid="uid://jxxycqtvbs5c" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/RESET.res" id="reset"]
@@ -176,5 +177,6 @@ _data = {
 &"WallKick_Left": ExtResource("80_hian6"),
 &"WallKick_Right": ExtResource("81_wk56n"),
 &"WallRun_Left": ExtResource("77_jdrys"),
-&"WallRun_Right": ExtResource("77_qmv6w")
+&"WallRun_Right": ExtResource("77_qmv6w"),
+&"_POSES_VictoryPoseRender": ExtResource("88_a1xrn")
 }
