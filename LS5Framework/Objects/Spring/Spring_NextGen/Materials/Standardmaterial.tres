@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://drsexs1yj5jhv"]
+
+[ext_resource type="Texture2D" uid="uid://bucdirbqejcre" path="res://LS5Framework/Objects/Spring/Spring_NextGen/cmn_spring01_dfsp_j.png" id="1_ph726"]
+[ext_resource type="Texture2D" uid="uid://b14cpuhcsej5s" path="res://LS5Framework/Objects/Spring/Spring_NextGen/cmn_spring01_dfsp_j_normal.png" id="2_gl7wf"]
+
+[resource]
+resource_name = "Standardmaterial"
+cull_mode = 2
+albedo_texture = ExtResource("1_ph726")
+metallic = 0.6909091
+roughness = 0.5863636
+normal_enabled = true
+normal_scale = 0.3
+normal_texture = ExtResource("2_gl7wf")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dbqysscehbs0e"
+path="res://.godot/imported/Go_05.ogg-49c09cd8251e87ae2b34a2a082ca0207.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Go_05.ogg"
+dest_files=["res://.godot/imported/Go_05.ogg-49c09cd8251e87ae2b34a2a082ca0207.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

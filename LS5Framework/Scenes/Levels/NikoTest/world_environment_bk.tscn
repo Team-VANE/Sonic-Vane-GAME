@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bqacekshbwpj4"]
+
+[ext_resource type="Texture2D" uid="uid://1677d21esubu" path="res://LS5Framework/Scenes/Levels/Materials/Skies/kloofendal_48d_partly_cloudy_puresky_8k.exr" id="1_vwefp"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_18sbj"]
+panorama = ExtResource("1_vwefp")
+
+[sub_resource type="Sky" id="Sky_jkjym"]
+sky_material = SubResource("PanoramaSkyMaterial_18sbj")
+
+[sub_resource type="Environment" id="Environment_65k7s"]
+background_energy_multiplier = 1.0000001
+sky = SubResource("Sky_jkjym")
+sky_rotation = Vector3(0, -1.850049, 0)
+ambient_light_source = 3
+ambient_light_color = Color(0.42999998, 0.57, 0.8333333, 1)
+ambient_light_energy = 0.9063607
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_radius = 10.65
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_min_cell_size = 0.9765625
+glow_enabled = true
+glow_normalized = true
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_light_energy = 1.05
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_height = -140.2
+fog_depth_curve = 1.4640837
+fog_depth_begin = 0.0
+fog_depth_end = 1511.7
+volumetric_fog_density = 0.0191
+volumetric_fog_albedo = Color(0.5864278, 0.71716243, 0.83381176, 1)
+volumetric_fog_emission = Color(0.32101145, 0.5073168, 0.6240778, 1)
+volumetric_fog_emission_energy = 0.7
+volumetric_fog_gi_inject = 1.66
+volumetric_fog_detail_spread = 2.1435473
+volumetric_fog_ambient_inject = 0.16
+volumetric_fog_sky_affect = 0.13
+adjustment_enabled = true
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_j8lv3"]
+auto_exposure_scale = 0.6
+
+[sub_resource type="Compositor" id="Compositor_b56cm"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=2034712464]
+environment = SubResource("Environment_65k7s")
+camera_attributes = SubResource("CameraAttributesPhysical_j8lv3")
+compositor = SubResource("Compositor_b56cm")

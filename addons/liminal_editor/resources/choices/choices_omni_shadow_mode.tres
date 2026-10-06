@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LMChoicesStatic" format=3 uid="uid://dfkyk8nej4xay"]
+
+[ext_resource type="Script" uid="uid://c3822myfeybtx" path="res://addons/liminal_editor/src/lm_choices_static.gd" id="1_omnishad"]
+
+[resource]
+script = ExtResource("1_omnishad")
+items = {
+"Cube": 1,
+"Dual Paraboloid": 0
+}
+type_key = "OmniLight3D.ShadowMode"

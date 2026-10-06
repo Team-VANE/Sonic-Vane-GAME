@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://duw7e2ht1wnlg"]
+
+[ext_resource type="AudioStream" uid="uid://dsf3pmabemn7c" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Action_09.ogg" id="1_8wkhn"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_bvdg8"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_emexw"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_pou3e"]
+
+[sub_resource type="Resource" id="Resource_4n6rf"]
+script = ExtResource("2_bvdg8")
+pose_id = &"EXP_ANGRY"
+end_time = 0.2899999999999999
+blend_in = 0.14499999999999996
+blend_out = 0.14499999999999996
+
+[sub_resource type="Resource" id="Resource_gfay4"]
+script = ExtResource("2_bvdg8")
+pose_id = &"VIS_F_V"
+end_time = 0.14
+blend_in = 0.07
+blend_out = 0.07
+
+[sub_resource type="Resource" id="Resource_ndvgh"]
+script = ExtResource("2_bvdg8")
+pose_id = &"VIS_B_M_P"
+start_time = 0.08
+end_time = 0.27
+row = 1
+blend_in = 0.06
+blend_out = 0.07999999999999999
+
+[resource]
+script = ExtResource("4_pou3e")
+profile = ExtResource("3_emexw")
+audio = ExtResource("1_8wkhn")
+audible_start = 0.0012271728337509558
+audible_end = 0.27925
+smoothing_time = 0.0
+viseme_cues = Array[ExtResource("2_bvdg8")]([SubResource("Resource_gfay4"), SubResource("Resource_ndvgh")])
+expression_cues = Array[ExtResource("2_bvdg8")]([SubResource("Resource_4n6rf")])

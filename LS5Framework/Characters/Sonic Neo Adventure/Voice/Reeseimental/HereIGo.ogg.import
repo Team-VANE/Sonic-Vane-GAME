@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://lmrq00f7bhvd"
+path="res://.godot/imported/HereIGo.ogg-c934ae17b6cd524f2f0c4d87ebfb2c85.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/HereIGo.ogg"
+dest_files=["res://.godot/imported/HereIGo.ogg-c934ae17b6cd524f2f0c4d87ebfb2c85.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

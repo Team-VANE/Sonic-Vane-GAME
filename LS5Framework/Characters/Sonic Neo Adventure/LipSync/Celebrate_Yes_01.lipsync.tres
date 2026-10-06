@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://bmxfd2a7qhrwf"]
+
+[ext_resource type="AudioStream" uid="uid://ii2qxsfdvfef" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Celebrate_Yes_01.ogg" id="1_ng5a8"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_nq6s1"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_bt7yt"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_nxxed"]
+
+[sub_resource type="Resource" id="Resource_o4snp"]
+script = ExtResource("2_nq6s1")
+pose_id = &"EXP_HAPPY"
+end_time = 0.97
+blend_in = 0.485
+blend_out = 0.485
+
+[sub_resource type="Resource" id="Resource_nym3f"]
+script = ExtResource("2_nq6s1")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.03999999999999998
+end_time = 0.69
+row = 1
+blend_in = 0.15
+blend_out = 0.15
+strength = 0.5
+
+[sub_resource type="Resource" id="Resource_xql4y"]
+script = ExtResource("2_nq6s1")
+pose_id = &"VIS_EE"
+end_time = 0.21000000000000002
+blend_in = 0.07
+blend_out = 0.08
+
+[sub_resource type="Resource" id="Resource_6h6is"]
+script = ExtResource("2_nq6s1")
+pose_id = &"VIS_Ah"
+start_time = 0.030000000000000013
+end_time = 0.43000000000000005
+row = 1
+blend_in = 0.2
+blend_out = 0.2
+
+[sub_resource type="Resource" id="Resource_bhnn3"]
+script = ExtResource("2_nq6s1")
+pose_id = &"VIS_S_Z"
+start_time = 0.21
+end_time = 0.63
+row = 2
+blend_in = 0.13
+blend_out = 0.21000000000000002
+
+[resource]
+script = ExtResource("4_nxxed")
+profile = ExtResource("3_bt7yt")
+audio = ExtResource("1_ng5a8")
+audible_end = 0.4972797227092087
+viseme_cues = Array[ExtResource("2_nq6s1")]([SubResource("Resource_xql4y"), SubResource("Resource_6h6is"), SubResource("Resource_bhnn3")])
+expression_cues = Array[ExtResource("2_nq6s1")]([SubResource("Resource_o4snp"), SubResource("Resource_nym3f")])

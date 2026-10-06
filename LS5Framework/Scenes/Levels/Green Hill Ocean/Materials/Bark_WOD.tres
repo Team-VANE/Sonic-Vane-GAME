@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dyh4bgvqimv4x"]
+
+[ext_resource type="Texture2D" uid="uid://ck0pfjwjwpvxx" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_BARK5.jpg" id="1_brg8c"]
+
+[resource]
+resource_name = "Bark_WOD"
+cull_mode = 2
+albedo_texture = ExtResource("1_brg8c")

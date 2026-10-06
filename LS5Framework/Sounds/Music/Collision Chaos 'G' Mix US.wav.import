@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://6126vlj08vqr"
+path="res://.godot/imported/Collision Chaos 'G' Mix US.wav-27988992ed246563fde0beb936271538.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Collision Chaos 'G' Mix US.wav"
+dest_files=["res://.godot/imported/Collision Chaos 'G' Mix US.wav-27988992ed246563fde0beb936271538.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

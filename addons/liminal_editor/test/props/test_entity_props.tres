@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://c0mx32w42mi8x"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_pkr7g"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_y0yed"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_qf4ow"]
+
+[sub_resource type="Resource" id="Resource_pkr7g"]
+script = ExtResource("2_y0yed")
+name = "an_integer"
+type = "int"
+default_value = 0
+
+[sub_resource type="Resource" id="Resource_y0yed"]
+script = ExtResource("2_y0yed")
+name = "multiselect_flag"
+type = "multi_choices"
+default_value = ""
+
+[sub_resource type="Resource" id="Resource_qf4ow"]
+script = ExtResource("2_y0yed")
+name = "select_enum"
+type = "multi_choices"
+default_value = 0
+
+[sub_resource type="Resource" id="Resource_x6td6"]
+script = ExtResource("2_y0yed")
+name = "render_flags"
+type = "multi_choices"
+default_value = ""
+
+[resource]
+script = ExtResource("3_qf4ow")
+entity_name = "test_entity_props"
+identifier = "uid://3u7heeg6jdav"
+properties = Array[ExtResource("2_y0yed")]([SubResource("Resource_pkr7g"), SubResource("Resource_y0yed"), SubResource("Resource_qf4ow"), SubResource("Resource_x6td6")])

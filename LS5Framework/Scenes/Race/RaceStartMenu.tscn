@@ -1,0 +1,193 @@
+[gd_scene load_steps=4 format=3 uid="uid://c70jd0w7mcw5p"]
+
+[ext_resource type="Script" uid="uid://dw1xk3tj4gdjt" path="res://LS5Framework/Scripts/Race/RaceStartMenu.gd" id="1_menu"]
+[ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_menu_theme"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="3_crt_effect"]
+
+[node name="RaceStartMenu" type="CanvasLayer" unique_id=1509323875]
+script = ExtResource("1_menu")
+
+[node name="CRTUIBackgroundEffect" type="Node" parent="."]
+script = ExtResource("3_crt_effect")
+
+[node name="Root" type="Control" parent="." unique_id=262081167]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_menu_theme")
+
+[node name="Shade" type="ColorRect" parent="Root" unique_id=127217250]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.005, 0.015, 0.04, 0.68)
+
+[node name="Panel" type="Panel" parent="Root" unique_id=1655893765]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -320.0
+offset_right = 320.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/Panel" unique_id=37389420]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Root/Panel/VBox" unique_id=1942706795]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Race Settings"
+horizontal_alignment = 1
+
+[node name="Options" type="VBoxContainer" parent="Root/Panel/VBox" unique_id=576418230]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DNF" type="HBoxContainer" parent="Root/Panel/VBox/Options" unique_id=1291078443]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Root/Panel/VBox/Options/DNF" unique_id=182695856]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "DNF Timer"
+
+[node name="Slider" type="HSlider" parent="Root/Panel/VBox/Options/DNF" unique_id=1962441111]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 30.0
+max_value = 300.0
+step = 5.0
+value = 60.0
+
+[node name="Value" type="Label" parent="Root/Panel/VBox/Options/DNF" unique_id=759566034]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "60s"
+horizontal_alignment = 2
+
+[node name="Join" type="HBoxContainer" parent="Root/Panel/VBox/Options" unique_id=858289246]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Root/Panel/VBox/Options/Join" unique_id=1357417778]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Join Timer (Online)"
+
+[node name="Slider" type="HSlider" parent="Root/Panel/VBox/Options/Join" unique_id=1362240356]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 5.0
+max_value = 120.0
+step = 5.0
+value = 30.0
+
+[node name="Value" type="Label" parent="Root/Panel/VBox/Options/Join" unique_id=1968236109]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "30s"
+horizontal_alignment = 2
+
+[node name="Ghosts" type="VBoxContainer" parent="Root/Panel/VBox/Options" unique_id=824694381]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RaceGhost" type="CheckBox" parent="Root/Panel/VBox/Options/Ghosts" unique_id=975842811]
+layout_mode = 2
+text = "Race a ghost"
+
+[node name="MultipleGhosts" type="CheckBox" parent="Root/Panel/VBox/Options/Ghosts"]
+layout_mode = 2
+text = "Race multiple ghosts"
+
+[node name="GhostCount" type="HBoxContainer" parent="Root/Panel/VBox/Options/Ghosts"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Root/Panel/VBox/Options/Ghosts/GhostCount"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Maximum ghosts"
+
+[node name="Slider" type="HSlider" parent="Root/Panel/VBox/Options/Ghosts/GhostCount"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 20.0
+step = 1.0
+value = 3.0
+
+[node name="Value" type="Label" parent="Root/Panel/VBox/Options/Ghosts/GhostCount"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "3"
+horizontal_alignment = 2
+
+[node name="RecordingStatus" type="Label" parent="Root/Panel/VBox/Options/Ghosts" unique_id=764786367]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Recording: Off | Playback: Up to 60 Hz"
+autowrap_mode = 3
+
+[node name="ComboSystem" type="CheckBox" parent="Root/Panel/VBox/Options" unique_id=2000000001]
+layout_mode = 2
+text = "Enable Combo System"
+
+[node name="Selection" type="Label" parent="Root/Panel/VBox/Options/Ghosts" unique_id=796135201]
+layout_mode = 2
+text = "Ghost selection: No ghost available"
+autowrap_mode = 3
+
+[node name="ChooseGhost" type="Button" parent="Root/Panel/VBox/Options/Ghosts" unique_id=5722421]
+layout_mode = 2
+text = "Choose Ghost"
+
+[node name="Rules" type="Label" parent="Root/Panel/VBox/Options/Ghosts" unique_id=871033843]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Ghost options are available in single player only"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Root/Panel/VBox" unique_id=1127740538]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="StartRace" type="Button" parent="Root/Panel/VBox/Buttons" unique_id=1191675777]
+layout_mode = 2
+text = "Start Race"
+
+[node name="Cancel" type="Button" parent="Root/Panel/VBox/Buttons" unique_id=1205609513]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Hint" type="Label" parent="Root/Panel/VBox" unique_id=188668239]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Esc to cancel"
+horizontal_alignment = 1

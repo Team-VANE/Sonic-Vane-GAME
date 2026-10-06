@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://yt1f44l0qcs0"]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Camera/CameraConstraint.gd" id="1_cov"]
+[ext_resource type="Script" uid="uid://d2a1vxijjeict" path="res://LS5Framework/Objects/Camera/ConstraintPointGuide.gd" id="2_guide"]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_activation"]
+size = Vector3(6, 4, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rehit"]
+size = Vector3(8, 6, 8)
+
+[sub_resource type="Resource" id="CameraTrait_0001"]
+resource_name = "Enter Volume"
+script = ExtResource("cam_trait_activation")
+event = 1
+area_path = NodePath("")
+
+[sub_resource type="Resource" id="CameraTrait_0002"]
+resource_name = "Rehit Boundary"
+script = ExtResource("cam_trait_activation")
+event = 3
+area_path = NodePath("RehitBoundary")
+
+[sub_resource type="Resource" id="CameraTrait_0003"]
+resource_name = "Temporary Effect"
+script = ExtResource("cam_trait_activation")
+event = 4
+duration = 0.35
+
+[sub_resource type="Resource" id="CameraTrait_0004"]
+resource_name = "Timed Entry"
+script = ExtResource("cam_trait_transition")
+phase = 0
+mode = 1
+duration = 0.35
+
+[sub_resource type="Resource" id="CameraTrait_0005"]
+resource_name = "Instant Exit"
+script = ExtResource("cam_trait_transition")
+phase = 1
+mode = 0
+duration = 0.35
+
+[node name="CameraOverrideVolume" type="Area3D"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_cov")
+enabled = true
+disable_camera_controls = false
+release_when_replaced = true
+retain_heading_on_release = true
+cancel_on_manual_look = false
+constraint_priority = -1
+activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0001"), SubResource("CameraTrait_0002"), SubResource("CameraTrait_0003")])
+position_traits = Array[ExtResource("cam_trait_position")]([])
+orientation_traits = Array[ExtResource("cam_trait_orientation")]([])
+lens_traits = Array[ExtResource("cam_trait_lens")]([])
+transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("CameraTrait_0004"), SubResource("CameraTrait_0005")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_activation")
+
+[node name="RehitBoundary" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RehitBoundary"]
+shape = SubResource("BoxShape3D_rehit")
+
+[node name="OverridePoint" type="Node3D" parent="."]
+script = ExtResource("2_guide")
+guide_length = 10.0
+guide_arrow_size = 3.0

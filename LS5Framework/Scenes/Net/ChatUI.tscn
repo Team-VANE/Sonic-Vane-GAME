@@ -1,0 +1,159 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Net/ChatUI.gd" id="1_chat"]
+[ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_menu_theme"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="3_crt_effect"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chat_panel"]
+bg_color = Color(0.025, 0.055, 0.12, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.08, 0.38, 0.92, 0.92)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.42)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input_normal"]
+bg_color = Color(0.015, 0.03, 0.075, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.3, 0.58, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input_focus"]
+bg_color = Color(0.02, 0.055, 0.135, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.58, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 11.0
+content_margin_top = 7.0
+content_margin_right = 11.0
+content_margin_bottom = 7.0
+shadow_color = Color(0.08, 0.38, 1, 0.28)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_separator"]
+bg_color = Color(0.12, 0.42, 0.9, 0.55)
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+
+[node name="ChatUI" type="CanvasLayer"]
+script = ExtResource("1_chat")
+
+[node name="CRTUIBackgroundEffect" type="Node" parent="."]
+script = ExtResource("3_crt_effect")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -310.0
+offset_right = 520.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme = ExtResource("2_menu_theme")
+theme_override_styles/panel = SubResource("StyleBoxFlat_chat_panel")
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.86, 0.93, 1, 1)
+theme_override_colors/font_outline_color = Color(0.015, 0.025, 0.07, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "SESSION CHAT"
+
+[node name="Status" type="Label" parent="Panel/Margin/VBox/Header"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.3, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0.015, 0.025, 0.07, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "ONLINE"
+vertical_alignment = 1
+
+[node name="HeaderSeparator" type="HSeparator" parent="Panel/Margin/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
+
+[node name="History" type="RichTextLabel" parent="Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.92, 0.96, 1, 1)
+theme_override_colors/font_outline_color = Color(0.01, 0.02, 0.055, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+bbcode_enabled = true
+scroll_active = true
+scroll_following = true
+selection_enabled = true
+
+[node name="Input" type="LineEdit" parent="Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+mouse_filter = 2
+mouse_default_cursor_shape = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_uneditable_color = Color(0.72, 0.8, 0.92, 1)
+theme_override_colors/font_placeholder_color = Color(0.58, 0.68, 0.82, 0.9)
+theme_override_colors/caret_color = Color(0.4, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_input_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_input_focus")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_input_normal")
+placeholder_text = "Press Enter to chat..."
+max_length = 240
+caret_blink = true
+caret_blink_interval = 0.55
+
+[node name="InputHint" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.52, 0.64, 0.82, 0.9)
+theme_override_font_sizes/font_size = 13
+text = "Enter  Open chat"
+horizontal_alignment = 2

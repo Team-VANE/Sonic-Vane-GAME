@@ -1,0 +1,146 @@
+[gd_scene format=3 uid="uid://b87lau3hld2f3"]
+
+[ext_resource type="Script" uid="uid://e6vuflhjfj52" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightCycle.gd" id="1_cycle"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="2_sky_shader"]
+[ext_resource type="Resource" uid="uid://bjgmf0l1srdc7" path="res://LS5Framework/Objects/Environment/DayNightCycle/Profiles/EarthLikeDayNight.tres" id="3_profile"]
+[ext_resource type="Resource" uid="uid://bvht57dywhdt6" path="res://LS5Framework/Objects/Environment/DayNightCycle/Weather/PartlyCloudy.tres" id="4_weather"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sky"]
+resource_local_to_scene = true
+shader = ExtResource("2_sky_shader")
+shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
+shader_parameter/moon_direction = Vector3(-0.76604444, -0.64278764, 0)
+shader_parameter/zenith_color = Color(0.095625, 0.29625002, 0.755, 1)
+shader_parameter/horizon_color = Color(0.5, 0.7, 1.05, 1)
+shader_parameter/ground_color = Color(0.035, 0.028, 0.025, 1)
+shader_parameter/ground_visibility = 1.0
+shader_parameter/sun_color = Color(1, 0.8066667, 0.57, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(1, 0.8466667, 0.7066667, 1)
+shader_parameter/cloud_shadow_color = Color(0.29625002, 0.3375, 0.42499998, 1)
+shader_parameter/rayleigh_strength = 2.0
+shader_parameter/mie_strength = 0.08
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/turbidity = 4.0
+shader_parameter/sun_angular_radius = 0.0046251225177849735
+shader_parameter/sun_disk_intensity = 18.0
+shader_parameter/moon_angular_radius = 0.004537856055185257
+shader_parameter/moon_disk_intensity = 1.2
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.35
+shader_parameter/cloud_density = 0.82
+shader_parameter/cloud_softness = 0.12
+shader_parameter/cloud_scale = 3.2
+shader_parameter/cloud_detail = 0.72
+shader_parameter/cloud_light_absorption = 0.42
+shader_parameter/cloud_volume_depth = 0.0
+shader_parameter/cloud_volume_steps = 1
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 0.0
+shader_parameter/cloud_edge_light_strength = 1.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.022
+shader_parameter/upper_layer_amount = 0.12
+shader_parameter/upper_layer_height = 0.07
+shader_parameter/upper_layer_scale = 0.62
+shader_parameter/upper_layer_wind_multiplier = 1.45
+shader_parameter/distance_fade_start = 0.82
+shader_parameter/distance_fade_end = 0.995
+shader_parameter/distance_haze_strength = 0.78
+shader_parameter/above_horizon_clouds_enabled = true
+shader_parameter/below_horizon_clouds_enabled = true
+shader_parameter/below_horizon_visibility = 0.0
+shader_parameter/below_horizon_fade_depth = 0.35
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.72
+
+[sub_resource type="Sky" id="Sky_day_night"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_sky")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_day_night"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 1.0000001
+sky = SubResource("Sky_day_night")
+ambient_light_source = 3
+ambient_light_color = Color(0.42999998, 0.57, 0.8333333, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 0.9063607
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_min_cell_size = 1.3685547
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_aerial_perspective = 0.7
+fog_sky_affect = 0.35
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+adjustment_enabled = true
+
+[node name="DayNightCycle" type="Node3D" unique_id=905397325]
+script = ExtResource("1_cycle")
+profile = ExtResource("3_profile")
+weather = ExtResource("4_weather")
+uneven_day_night_durations_enabled = true
+daylight_start_hour = 6.0
+daylight_end_hour = 18.0
+daylight_duration_ratio = 0.7
+fixed_scene_fog = false
+time_controls_sky_appearance = true
+time_controls_environment_lighting = true
+time_controls_celestial_motion = true
+time_controls_celestial_lighting = true
+time_controls_starfield = true
+time_controls_cloud_lighting = true
+time_controls_fog = true
+weather_controls_clouds = true
+weather_controls_lighting = true
+weather_controls_fog = true
+weather_controls_saturation = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1480341513]
+environment = SubResource("Environment_day_night")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=370270526]
+transform = Transform3D(0, -0.7071068, 0.7071068, 0, 0.7071068, 0.7071068, -1, 0, 0, 0, 0, 0)
+light_color = Color(1, 0.8066667, 0.57, 1)
+light_energy = 0.96728456
+light_angular_distance = 0.53
+shadow_enabled = true
+directional_shadow_fade_start = 0.789
+directional_shadow_max_distance = 845.8
+sky_mode = 1
+
+[node name="Moon" type="DirectionalLight3D" parent="." unique_id=1577357035]
+transform = Transform3D(0, -0.64278764, -0.76604444, 0, 0.76604444, -0.64278764, 1, 0, 0, 0, 0, 0)
+visible = false
+light_color = Color(0.55, 0.63, 0.78, 1)
+light_energy = 0.0
+light_indirect_energy = 0.5
+light_angular_distance = 0.52
+shadow_enabled = true
+directional_shadow_fade_start = 0.789
+directional_shadow_max_distance = 845.0
+sky_mode = 1

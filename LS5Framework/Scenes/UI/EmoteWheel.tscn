@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/EmoteWheel.gd" id="1"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/EmoteWheelView.gd" id="2"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/EmoteWheelPage.gd" id="3"]
+
+[sub_resource type="Resource" id="Communication"]
+script = ExtResource("3")
+title = "Communication"
+options = Array[Dictionary]([{"id": "yes", "label": "Yes"}, {"id": "no", "label": "No"}, {"id": "follow_me", "label": "Follow me"}, {"id": "never_mind", "label": "Never mind"}, {"id": "go", "label": "Go"}, {"id": "looking_for_race", "label": "Looking For Race"}])
+
+[sub_resource type="Resource" id="Social"]
+script = ExtResource("3")
+title = "Social"
+options = Array[Dictionary]([{"id": "hello", "label": "Hello"}, {"id": "goodbye", "label": "Goodbye"}, {"id": "thanks", "label": "Thanks"}, {"id": "apologise", "label": "Apologise"}, {"id": "brb", "label": "BRB"}, {"id": "back", "label": "Back"}])
+
+[sub_resource type="Resource" id="Reactions"]
+script = ExtResource("3")
+title = "Reactions"
+options = Array[Dictionary]([{"id": "good_job", "label": "Good job"}, {"id": "cheer", "label": "Cheer"}, {"id": "surprise", "label": "Surprise"}, {"id": "anger", "label": "Anger"}, {"id": "insult", "label": "Insult"}, {"id": "wild_card", "label": "Wild card"}])
+
+[node name="EmoteWheel" type="CanvasLayer"]
+layer = 90
+process_mode = 3
+script = ExtResource("1")
+pages = Array[ExtResource("3")]([SubResource("Communication"), SubResource("Social"), SubResource("Reactions")])
+
+[node name="Wheel" type="Control" parent="."]
+offset_right = 660.0
+offset_bottom = 660.0
+mouse_filter = 2
+script = ExtResource("2")

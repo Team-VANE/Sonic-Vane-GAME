@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ce0f68vidyveo"
+path="res://.godot/imported/VocalMisc_SafeLanding.ogg-eb12db7eede43e7fe904ced22155b846.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VocalMisc_SafeLanding.ogg"
+dest_files=["res://.godot/imported/VocalMisc_SafeLanding.ogg-eb12db7eede43e7fe904ced22155b846.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

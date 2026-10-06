@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://cxqq0vs7abi7b"]
+
+[ext_resource type="Texture2D" uid="uid://ceyq5b7px0cu8" path="res://LS5Framework/Scenes/Levels/Materials/Skies/HDR_hazy_nebulae.hdr" id="1_5ymrc"]
+
+[sub_resource type="Gradient" id="Gradient_6bmmk"]
+offsets = PackedFloat32Array(0, 0.09172259, 0.20357941, 0.7964206, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.018199999, 0.019429998, 0.02, 1, 0.18, 0.16782, 0.15480001, 1, 0.79, 0.781705, 0.7663, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rgv0j"]
+gradient = SubResource("Gradient_6bmmk")
+use_hdr = true
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_jdn3x"]
+panorama = ExtResource("1_5ymrc")
+
+[sub_resource type="Sky" id="Sky_aptwc"]
+sky_material = SubResource("PanoramaSkyMaterial_jdn3x")
+
+[sub_resource type="Environment" id="Environment_kh7je"]
+background_mode = 2
+sky = SubResource("Sky_aptwc")
+sky_rotation = Vector3(0, -1.850049, 0)
+ambient_light_source = 2
+ambient_light_color = Color(0.14893577, 0.24516684, 0.29370943, 1)
+ambient_light_energy = 5.86
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 0.84
+ssr_enabled = true
+ssao_enabled = true
+ssil_radius = 6.33
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_cascades = 5
+sdfgi_min_cell_size = 1.2772461
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.4
+glow_strength = 1.09
+glow_bloom = 0.03
+fog_enabled = true
+fog_light_color = Color(0.8015374, 0.8458886, 0.88698024, 1)
+fog_light_energy = 1.05
+fog_density = 0.0004
+fog_aerial_perspective = 0.951
+fog_sky_affect = 0.079
+fog_height = -9999.0
+fog_height_density = 16.0
+fog_depth_curve = 1.4640837
+fog_depth_begin = 0.0
+fog_depth_end = 1511.7
+volumetric_fog_density = 0.0191
+volumetric_fog_albedo = Color(0.5864278, 0.71716243, 0.83381176, 1)
+volumetric_fog_emission = Color(0.32101145, 0.5073168, 0.6240778, 1)
+volumetric_fog_emission_energy = 0.7
+volumetric_fog_gi_inject = 1.66
+volumetric_fog_detail_spread = 2.1435473
+volumetric_fog_ambient_inject = 0.16
+volumetric_fog_sky_affect = 0.13
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_rgv0j")
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_aef5u"]
+auto_exposure_scale = 0.6
+
+[sub_resource type="Compositor" id="Compositor_bm32u"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=730319110]
+environment = SubResource("Environment_kh7je")
+camera_attributes = SubResource("CameraAttributesPhysical_aef5u")
+compositor = SubResource("Compositor_bm32u")

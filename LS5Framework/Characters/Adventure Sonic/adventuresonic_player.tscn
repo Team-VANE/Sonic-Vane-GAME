@@ -1,0 +1,810 @@
+[gd_scene format=3 uid="uid://cehkutbk6vn7w"]
+
+[ext_resource type="Script" uid="uid://dnsfns6ucd7k3" path="res://LS5Framework/Scripts/Player/SonicPlayer.gd" id="1_iacn2"]
+[ext_resource type="Resource" uid="uid://baklj2svyhcfx" path="res://LS5Framework/Characters/Adventure Sonic/AdventureSonicCharacterSettingsProfile.tres" id="2_06ik4"]
+[ext_resource type="Resource" uid="uid://cvxe1u503isqj" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvVisualProfile.tres" id="5_u8x1j"]
+[ext_resource type="Curve" path="res://LS5Framework/Curves/DecelCurve.tres" id="decel_ground"]
+[ext_resource type="Curve" path="res://LS5Framework/Curves/DecelCurveAir.tres" id="decel_air"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/AnimSpeed.tres" id="6_ekr38"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/Accel_BB.tres" id="7_t3fjy"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/TurnAngle_BB.tres" id="8_p3acl"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/TurnFree_Ground_BB.tres" id="9_o6d3q"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/TurnAngle_Air.tres" id="10_j65g3"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/Accel_SpeedShoes.tres" id="11_m6idl"]
+[ext_resource type="AudioStream" uid="uid://b4wnkdkekei3u" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_01.wav" id="12_mfhae"]
+[ext_resource type="AudioStream" uid="uid://bf5ys0lwyl60u" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_02.wav" id="13_j538l"]
+[ext_resource type="AudioStream" uid="uid://bj73cbvbjpx7s" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_03.wav" id="14_vcsca"]
+[ext_resource type="AudioStream" uid="uid://c5jq5cnpxo1f3" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_04.wav" id="15_j5c8b"]
+[ext_resource type="AudioStream" uid="uid://bdmgoei5smond" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_05.wav" id="16_ci5g2"]
+[ext_resource type="AudioStream" uid="uid://cfdi7ww6va63g" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_06.wav" id="17_usbjd"]
+[ext_resource type="AudioStream" uid="uid://kmddwwjnaiun" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_07.wav" id="18_3l40s"]
+[ext_resource type="AudioStream" uid="uid://t7m3g1nlqdd3" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_08.wav" id="19_8u16i"]
+[ext_resource type="AudioStream" uid="uid://k3482pl7guot" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_09.wav" id="20_f3h0p"]
+[ext_resource type="AudioStream" uid="uid://bhnx8c6j57a77" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_10.wav" id="21_1sicr"]
+[ext_resource type="AudioStream" uid="uid://dl4da1gycay0y" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_11.wav" id="22_keief"]
+[ext_resource type="AudioStream" uid="uid://b3xe2fmj3f32s" path="res://LS5Framework/Sounds/Footstep/Default_Asphalt/Step_Asphalt_12.wav" id="23_yfmlk"]
+[ext_resource type="AudioStream" uid="uid://gx35cuieyjjm" path="res://LS5Framework/Sounds/Footstep/Sand/sand_01.wav" id="24_lrq2t"]
+[ext_resource type="AudioStream" uid="uid://cjypv4qs2331r" path="res://LS5Framework/Sounds/Footstep/Sand/sand_02.wav" id="25_xj6pw"]
+[ext_resource type="AudioStream" uid="uid://olcmc44ikqkm" path="res://LS5Framework/Sounds/Footstep/Sand/sand_03.wav" id="26_jvfub"]
+[ext_resource type="AudioStream" uid="uid://bkacd2y2hxaoq" path="res://LS5Framework/Sounds/Footstep/Sand/sand_04.wav" id="27_ljhvh"]
+[ext_resource type="AudioStream" uid="uid://b55ta8qfdi7vc" path="res://LS5Framework/Sounds/Footstep/Sand/sand_05.wav" id="28_vtuxb"]
+[ext_resource type="AudioStream" uid="uid://51782oup551i" path="res://LS5Framework/Sounds/Footstep/Sand/sand_06.wav" id="29_vduw6"]
+[ext_resource type="AudioStream" uid="uid://jlc63rtnx22j" path="res://LS5Framework/Sounds/Footstep/Sand/sand_07.wav" id="30_sgre3"]
+[ext_resource type="AudioStream" uid="uid://4hhgor8gvpee" path="res://LS5Framework/Sounds/Footstep/Sand/sand_08.wav" id="31_pqmgh"]
+[ext_resource type="AudioStream" uid="uid://dcy17kbe1y0sv" path="res://LS5Framework/Sounds/Footstep/Sand/sand_09.wav" id="32_u7lw4"]
+[ext_resource type="AudioStream" uid="uid://d3lh1pawhbpoe" path="res://LS5Framework/Sounds/Footstep/Sand/sand_10.wav" id="33_xhewe"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_01.wav" id="34_e8go3"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_02.wav" id="35_byei6"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_03.wav" id="36_2qa3o"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_04.wav" id="37_1lqyx"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_05.wav" id="38_mm8n4"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_06.wav" id="39_lfnnr"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_07.wav" id="40_3lqxb"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Death_01.wav" id="41_fn80h"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Death_02.wav" id="42_3v3b4"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Death_03.wav" id="43_tqk0w"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_01.wav" id="44_3kigm"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_04.wav" id="45_gr41s"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_06.wav" id="46_uy5cg"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_01.wav" id="47_tahfu"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_02.wav" id="48_by5yv"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_05.wav" id="49_fj32l"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_05.wav" id="50_qe5md"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_02.wav" id="51_h5wij"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_03.wav" id="52_mgi1t"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Teria.wav" id="53_dtxcm"]
+[ext_resource type="AudioStream" uid="uid://clhu8mgqabcna" path="res://LS5Framework/Sounds/General/Water_Enter_Soft_01.wav" id="54_uad88"]
+[ext_resource type="AudioStream" uid="uid://1gu26eqi63ro" path="res://LS5Framework/Sounds/General/Water_Enter_Soft_02.wav" id="55_plu2l"]
+[ext_resource type="AudioStream" uid="uid://bv6ketew0a3d1" path="res://LS5Framework/Sounds/General/Water_Enter_Soft_03.wav" id="56_5uk2g"]
+[ext_resource type="AudioStream" uid="uid://ylm7wvmnkmpt" path="res://LS5Framework/Sounds/General/Water_Enter_Soft_04.wav" id="57_nk38m"]
+[ext_resource type="AudioStream" uid="uid://dyd1vtm55ywvg" path="res://LS5Framework/Sounds/General/Water_Enter_Soft_05.wav" id="58_kdyj3"]
+[ext_resource type="AudioStream" uid="uid://bbgt44f6h7f6s" path="res://LS5Framework/Sounds/General/Water_Enter_Soft_06.wav" id="59_biuir"]
+[ext_resource type="AudioStream" uid="uid://d35qoallg2u1r" path="res://LS5Framework/Sounds/General/Water_Enter_Medium_01.wav" id="60_5aqon"]
+[ext_resource type="AudioStream" uid="uid://c8d00qywswrvk" path="res://LS5Framework/Sounds/General/Water_Enter_Medium_02.wav" id="61_biuxr"]
+[ext_resource type="AudioStream" uid="uid://bsth0x2n5j6mc" path="res://LS5Framework/Sounds/General/Water_Enter_Medium_03.wav" id="62_j7cqi"]
+[ext_resource type="AudioStream" uid="uid://cxemsyafj4i2m" path="res://LS5Framework/Sounds/General/Water_Enter_Medium_04.wav" id="63_5hdmx"]
+[ext_resource type="AudioStream" uid="uid://b4am6ioc0umi3" path="res://LS5Framework/Sounds/General/Water_Enter_Medium_05.wav" id="64_0si45"]
+[ext_resource type="AudioStream" uid="uid://dvyeca2qbahh7" path="res://LS5Framework/Sounds/General/Water_Enter_Medium_06.wav" id="65_6y4ws"]
+[ext_resource type="AudioStream" uid="uid://du55olcva2y64" path="res://LS5Framework/Sounds/General/Water_Enter_Hard_01.wav" id="66_vhrri"]
+[ext_resource type="AudioStream" uid="uid://bhicn67urak6n" path="res://LS5Framework/Sounds/General/Water_Enter_Hard_02.wav" id="67_jrr11"]
+[ext_resource type="AudioStream" uid="uid://uispli3fnwdo" path="res://LS5Framework/Sounds/General/Water_Enter_Hard_03.wav" id="68_v3cp2"]
+[ext_resource type="AudioStream" uid="uid://c8rfa1ubrefgt" path="res://LS5Framework/Sounds/General/Water_Enter_Hard_04.wav" id="69_pmvmb"]
+[ext_resource type="AudioStream" uid="uid://btvlr85q2vu5n" path="res://LS5Framework/Sounds/General/Water_Enter_Hard_05.wav" id="70_dtp48"]
+[ext_resource type="AudioStream" uid="uid://d4lrv1n8btidu" path="res://LS5Framework/Sounds/General/Water_Enter_Hard_06.wav" id="71_11r38"]
+[ext_resource type="AudioStream" uid="uid://lbsos5x6getx" path="res://LS5Framework/Sounds/General/Water_Exit_Soft_01.wav" id="72_s2nug"]
+[ext_resource type="AudioStream" uid="uid://cha4uub7nt82h" path="res://LS5Framework/Sounds/General/Water_Exit_Soft_02.wav" id="73_gah24"]
+[ext_resource type="AudioStream" uid="uid://2fa2ypggky4j" path="res://LS5Framework/Sounds/General/Water_Exit_Soft_03.wav" id="74_rqyji"]
+[ext_resource type="AudioStream" uid="uid://c8dalc3f2j4do" path="res://LS5Framework/Sounds/General/Water_Exit_Soft_04.wav" id="75_nc172"]
+[ext_resource type="AudioStream" uid="uid://cn38hksbqmg10" path="res://LS5Framework/Sounds/General/Water_Exit_Soft_05.wav" id="76_266g3"]
+[ext_resource type="AudioStream" uid="uid://5hnk3140jcjc" path="res://LS5Framework/Sounds/General/Water_Exit_Soft_06.wav" id="77_rnmmi"]
+[ext_resource type="AudioStream" uid="uid://d4i4vxcghr8b" path="res://LS5Framework/Sounds/General/Water_Exit_Medium_01.wav" id="78_wghvy"]
+[ext_resource type="AudioStream" uid="uid://bb8uxokbkfclk" path="res://LS5Framework/Sounds/General/Water_Exit_Medium_02.wav" id="79_jdydq"]
+[ext_resource type="Texture2D" uid="uid://dwqmepddv4tem" path="res://LS5Framework/Images/Homing_Reticle.png" id="80_666ya"]
+[ext_resource type="AudioStream" uid="uid://b1oopcdrp245k" path="res://LS5Framework/Sounds/General/reticle.wav" id="81_viuye"]
+[ext_resource type="Shader" uid="uid://0sk7430anc5t" path="res://LS5Framework/Shaders/SonicBoomFX.gdshader" id="82_hnicc"]
+[ext_resource type="Shader" uid="uid://c4ssbpk0hvqh8" path="res://LS5Framework/Shaders/CharacterEyeProjection.gdshader" id="86_j5dg1"]
+[ext_resource type="Shader" uid="uid://br1hly0kubha7" path="res://LS5Framework/Shaders/CharacterSurfaceOutline.gdshader" id="86_outline"]
+[ext_resource type="Texture2D" uid="uid://dch11al5cfok7" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_t_sonicpupil_diff.png" id="87_kgdrl"]
+[ext_resource type="PackedScene" uid="uid://dpplflu4fnkf8" path="res://LS5Framework/Characters/Sonic Neo Adventure/sonic_neo_adv_mesh.tscn" id="88_1dpl8"]
+[ext_resource type="Script" uid="uid://bpaf7f0uigicq" path="res://LS5Framework/Scripts/Player/JumpDashTrail.gd" id="89_3t11h"]
+[ext_resource type="PackedScene" uid="uid://dqmv5tb7t6p0q" path="res://LS5Framework/Effects/JumpBall/JumpBall.tscn" id="90_1r0oa"]
+[ext_resource type="Shader" uid="uid://clv1mkthe7ndf" path="res://LS5Framework/Effects/JumpBall/JumpBall.gdshader" id="91_xjrq3"]
+[ext_resource type="Script" uid="uid://dqj24j2imigug" path="res://LS5Framework/Scripts/Player/grounded_action.gd" id="92_0bvu8"]
+[ext_resource type="Curve" uid="uid://hqybtwuqi7oo" path="res://LS5Framework/Curves/Slope_Gravity_Common.tres" id="93_3iu31"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/TurnAngle_Penalty.tres" id="97_6u2aj"]
+[ext_resource type="Curve" path="res://LS5Framework/Characters/Adventure Sonic/Curves/TurnFree_Ground.tres" id="98_q35c6"]
+[ext_resource type="Curve" uid="uid://cvidhdhevidth" path="res://LS5Framework/Characters/Tails/Curves/Uphill_Control_Ratio.tres" id="101_mgtjj"]
+[ext_resource type="Script" uid="uid://djwj3k1pmt4vy" path="res://LS5Framework/Scripts/Player/fall_action.gd" id="102_v2huq"]
+[ext_resource type="Script" uid="uid://bn7h5ps2fnql0" path="res://LS5Framework/Scripts/Player/ability_route.gd" id="103_eori8"]
+[ext_resource type="Script" uid="uid://bxfuda7h0umyh" path="res://LS5Framework/Scripts/Player/roll_action.gd" id="104_s3a1k"]
+[ext_resource type="Script" uid="uid://bdmimp602vf8c" path="res://LS5Framework/Scripts/Player/spindash_action.gd" id="107_0g45c"]
+[ext_resource type="Script" uid="uid://lqsjt55rhlan" path="res://LS5Framework/Scripts/Player/spring_action.gd" id="109_pbky6"]
+[ext_resource type="Script" uid="uid://bb7gfpw7rdu5h" path="res://LS5Framework/Scripts/Player/hurt_action.gd" id="110_552pl"]
+[ext_resource type="Script" uid="uid://ct7x71vlfkxsr" path="res://LS5Framework/Scripts/Player/rail_grind_action.gd" id="111_egg70"]
+[ext_resource type="Script" uid="uid://d3nvfj0pk3wl2" path="res://LS5Framework/Scripts/Player/jump_ability.gd" id="112_02ltt"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_07.wav" id="114_gfq2d"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_03.wav" id="115_rgbr0"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Hup_04.wav" id="116_oebl7"]
+[ext_resource type="Script" uid="uid://dnxmso4vdksfw" path="res://LS5Framework/Scripts/Player/ledge_mantle_ability.gd" id="117_2xxo6"]
+[ext_resource type="Script" uid="uid://cfxlkdqkrwp1r" path="res://LS5Framework/Scripts/Player/homing_ability.gd" id="117_pwalf"]
+[ext_resource type="Script" uid="uid://dd105kjaplkvi" path="res://LS5Framework/Scripts/Player/jump_dash_ability.gd" id="118_sujkc"]
+[ext_resource type="Script" uid="uid://dy0ou1w0biy8p" path="res://LS5Framework/Scripts/Player/bounce_action.gd" id="120_wudh1"]
+[ext_resource type="Script" uid="uid://drs0b7ew248wc" path="res://LS5Framework/Scripts/Player/bounce_rebound_action.gd" id="121_lqxdj"]
+[ext_resource type="Script" uid="uid://b8o4an0fealqf" path="res://LS5Framework/Scripts/Player/TrickDetector.gd" id="122_mu5sv"]
+[ext_resource type="Script" uid="uid://bhooelek5ffsb" path="res://LS5Framework/Scripts/Player/stomp_action.gd" id="123_aos1s"]
+[ext_resource type="Script" uid="uid://bjybaif5fytli" path="res://LS5Framework/Scripts/Player/spin_kick_ability.gd" id="124_8fq8v"]
+[ext_resource type="Script" uid="uid://blgqiq35mpjcv" path="res://LS5Framework/Scripts/Player/lightspeed_dash_ability.gd" id="125_7k1em"]
+[ext_resource type="Script" uid="uid://xhm1u45m0mqr" path="res://LS5Framework/Scripts/Player/drowned_action.gd" id="126_cpucr"]
+[ext_resource type="Script" uid="uid://cxmrdg5n0x5cv" path="res://LS5Framework/Scripts/Player/TrickSystem.gd" id="127_hx56a"]
+[ext_resource type="AudioStream" uid="uid://c70n3586aif7o" path="res://LS5Framework/Sounds/General/TrickTick.ogg" id="128_b0s5g"]
+[ext_resource type="AudioStream" uid="uid://8yxisflgxcbo" path="res://LS5Framework/Sounds/General/TrickScoreFinal.ogg" id="129_cytd7"]
+[ext_resource type="PackedScene" uid="uid://cxcmnxs5ftl1j" path="res://LS5Framework/Scenes/UI/TrickUI.tscn" id="130_pq5c0"]
+[ext_resource type="PackedScene" uid="uid://durs0ydpv8kko" path="res://LS5Framework/Characters/sonic_boom_fx.tscn" id="131_7asju"]
+[ext_resource type="Script" uid="uid://dfwx6e6mvkoub" path="res://LS5Framework/Scripts/Player/insta_shield_action.gd" id="insta_shield_script"]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Player/uppercut_kick_ability.gd" id="uppercut_script"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Player/KickContactController.gd" id="kick_contacts_script"]
+
+[sub_resource type="Curve" id="Curve_trio3"]
+_limits = [0.0, 1.0, 45.0, 240.0]
+_data = [Vector2(70, 0), 0.0, 0.0018153061, 0, 0, Vector2(104.176926, 0.08762884), 0.0036316256, 0.0036316256, 0, 0, Vector2(145.88466, 0.29639173), 0.0060802232, 0.0060802232, 0, 0, Vector2(240, 1), 0.007476021, 0.0, 1, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_air_top_speed_slowdown"]
+_limits = [0.0, 1.0, 30.0, 240.0]
+_data = [Vector2(30, 0), 0.0, 0.008450573, 0, 1, Vector2(67.81845, 0.3195876), 0.006764769, 0.006764769, 0, 0, Vector2(240, 0.8), -4.2173066e-05, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_lit3l"]
+_limits = [0.0, 50.0, 0.0, 150.0]
+_data = [Vector2(0, 27.9), 0.0, -0.28695652, 0, 1, Vector2(34.5, 18), -0.28695652, -1.7142857, 1, 1, Vector2(45, 0), -1.7142857, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_64fmr"]
+custom_solver_bias = 0.05
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wwjg1"]
+radius = 0.39972764
+
+[sub_resource type="SphereMesh" id="SphereMesh_v3bn8"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jxvy"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_color = Color(0.14901961, 0, 0.9019608, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eye_outline"]
+resource_name = "Character Surface Outline"
+render_priority = 1
+shader = ExtResource("86_outline")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2xxo6"]
+resource_name = "EyeProjection"
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_eye_outline")
+shader = ExtResource("86_j5dg1")
+shader_parameter/pupil_texture = ExtResource("87_kgdrl")
+shader_parameter/sclera_color = Color(1, 1, 1, 1)
+shader_parameter/metallic = 0.186
+shader_parameter/roughness = 0.6550000311125
+shader_parameter/specular = 0.0800000038
+shader_parameter/horizontal_axis = Vector3(1, 0, 0)
+shader_parameter/vertical_axis = Vector3(0, 0, -1)
+shader_parameter/left_scale = Vector2(-3, 3)
+shader_parameter/right_scale = Vector2(3, 3)
+shader_parameter/left_offset = Vector2(0.5, 0.5)
+shader_parameter/right_offset = Vector2(0.5, 0.5)
+shader_parameter/flip_vertical = true
+shader_parameter/world_to_left = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/world_to_right = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/projector_enabled = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jlluh"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("91_xjrq3")
+shader_parameter/jump_ball_color = Color(0.2, 0.8, 1, 0.72)
+shader_parameter/jump_ball_alpha = 0.0
+shader_parameter/tail_fade_strength = 0.0
+shader_parameter/tail_fade_axis = Vector3(0, 0, -1)
+shader_parameter/tail_fade_start = 0.18
+shader_parameter/tail_fade_length = 1.35
+shader_parameter/tail_min_alpha = 0.08
+shader_parameter/rim_strength = 0.22
+
+[sub_resource type="Curve" id="Curve_kgdrl"]
+_limits = [0.0, 50.0, 0.0, 150.0]
+_data = [Vector2(0, 48.595505), 0.0, -0.015432806, 0, 0, Vector2(65, 0), -0.88842344, -2.6571429, 0, 1]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_jlluh"]
+_limits = [0.0, 22.0, 0.0, 30.0]
+_data = [Vector2(5, 22), 0.0, 0.0, 0, 0, Vector2(20.85, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_dmo1e"]
+_limits = [0.0, 1800.0, 0.0, 200.0]
+_data = [Vector2(0, 5000), 0.0, -0.2711137, 0, 0, Vector2(14.395887, 1396.1804), -45.111824, -45.111824, 0, 0, Vector2(58.611824, 335.48096), -5.5852747, -5.5852747, 0, 0, Vector2(180, 120), 0.0, -8.051167, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_j5dg1"]
+_limits = [0.0, 1200.0, 0.0, 20.0]
+_data = [Vector2(0, 500), 0.0, 0.0, 0, 0, Vector2(15, 240), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_6bbcc"]
+_limits = [0.0, 100.0, 0.0, 265.0]
+_data = [Vector2(0, 48), 0.0, -0.06792453, 0, 1, Vector2(265, 30), -0.06792453, -0.724071, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_eoe07"]
+_limits = [20.0, 100.0, 0.0, 265.0]
+_data = [Vector2(0, 45), 0.0, -0.03773585, 0, 1, Vector2(265, 35), -0.03773585, -0.10310276, 1, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_fall_homing"]
+script = ExtResource("103_eori8")
+route_id = &"homing"
+trigger_input = &"ability_slot_01"
+target_action = NodePath("../Homing")
+required_state = 2
+priority = 100
+reason = &"jump_pressed_in_air"
+allowed_source_actions = Array[StringName]([&"fall"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_fall_jumpdash"]
+script = ExtResource("103_eori8")
+route_id = &"fallback"
+trigger_input = &"ability_slot_01"
+target_action = NodePath("../Jumpdash")
+required_state = 2
+priority = 10
+reason = &"jump_pressed_in_air"
+allowed_source_actions = Array[StringName]([&"fall"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_fall_bounce"]
+script = ExtResource("103_eori8")
+route_id = &"skydive"
+trigger_input = &"ability_slot_02"
+required_state = 2
+priority = 10
+reason = &"air_action_pressed"
+allowed_source_actions = Array[StringName]([&"fall"])
+
+[sub_resource type="Curve" id="Curve_glcl3"]
+_limits = [1.0, 2.0, 0.0, 200.0]
+_data = [Vector2(0, 1.5), 0.0, -0.0005754328, 0, 0, Vector2(101.610535, 1.3195877), -0.002407254, -0.002407254, 0, 0, Vector2(200, 1), -0.0041593756, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_3iu31"]
+_limits = [1.0, 2.0, 0.0, 200.0]
+_data = [Vector2(0, 1.5), 0.0, -0.0005754328, 0, 0, Vector2(101.02489, 1.3402063), -0.00260787, -0.00260787, 0, 0, Vector2(200, 1), -0.0041593756, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_roll_jump"]
+script = ExtResource("103_eori8")
+route_id = &"jump"
+trigger_input = &"ability_slot_01"
+target_action = NodePath("../Jump")
+required_state = 1
+priority = 10
+reason = &"roll_jump"
+allowed_source_actions = Array[StringName]([&"roll"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_spindash_jump"]
+script = ExtResource("103_eori8")
+route_id = &"spindash_jump"
+trigger_mode = 4
+target_action = NodePath("../Jump")
+priority = 10
+reason = &"spindash_jump"
+allowed_source_actions = Array[StringName]([&"spindash"])
+
+[sub_resource type="Curve" id="Curve_2xxo6"]
+_limits = [0.0, 100.0, 0.0, 250.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(45, 20.275), 0.8426014, 0.8426014, 0, 0, Vector2(200, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_jump_homing"]
+script = ExtResource("103_eori8")
+route_id = &"homing"
+trigger_input = &"ability_slot_01"
+target_action = NodePath("../Homing")
+required_state = 2
+priority = 100
+reason = &"jump_pressed_in_air"
+allowed_source_actions = Array[StringName]([&"jump"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_jump_jumpdash"]
+script = ExtResource("103_eori8")
+route_id = &"fallback"
+trigger_input = &"ability_slot_01"
+target_action = NodePath("../Jumpdash")
+required_state = 2
+priority = 10
+reason = &"jump_pressed_in_air"
+allowed_source_actions = Array[StringName]([&"jump"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_jump_bounce"]
+script = ExtResource("103_eori8")
+route_id = &"skydive"
+trigger_input = &"ability_slot_02"
+required_state = 2
+priority = 10
+reason = &"air_action_pressed"
+allowed_source_actions = Array[StringName]([&"jump"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_homing_bounce"]
+script = ExtResource("103_eori8")
+route_id = &"skydive"
+trigger_input = &"ability_slot_02"
+required_state = 2
+priority = 10
+reason = &"air_action_pressed"
+allowed_source_actions = Array[StringName]([&"homing"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_jumpdash_bounce"]
+script = ExtResource("103_eori8")
+route_id = &"skydive"
+trigger_input = &"ability_slot_02"
+required_state = 2
+priority = 10
+reason = &"air_action_pressed"
+allowed_source_actions = Array[StringName]([&"jump_dash"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_bounce_stomp"]
+script = ExtResource("103_eori8")
+route_id = &"stomp"
+trigger_input = &"ability_slot_02"
+trigger_mode = 3
+target_action = NodePath("../Stomp")
+required_state = 2
+priority = 10
+reason = &"bounce_released"
+allowed_source_actions = Array[StringName]([&"bounce"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_spin_bounce"]
+script = ExtResource("103_eori8")
+route_id = &"skydive"
+trigger_input = &"ability_slot_02"
+required_state = 2
+priority = 10
+reason = &"air_action_pressed"
+allowed_source_actions = Array[StringName]([&"spin_kick"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_spin_coyote_jump"]
+script = ExtResource("103_eori8")
+route_id = &"coyote_jump"
+trigger_mode = 4
+target_action = NodePath("../Jump")
+required_state = 2
+priority = 10
+reason = &"air_jump_pressed"
+allowed_source_actions = Array[StringName]([&"spin_kick"])
+
+[sub_resource type="Resource" id="AbilityRoute_sonic_spin_no_coyote_jumpdash"]
+script = ExtResource("103_eori8")
+route_id = &"no_coyote_jump"
+trigger_mode = 4
+target_action = NodePath("../Jumpdash")
+required_state = 2
+priority = 10
+reason = &"air_jump_pressed_no_coyote"
+allowed_source_actions = Array[StringName]([&"spin_kick"])
+
+[node name="AdventureSonicPlayer" type="CharacterBody3D" unique_id=2122921217 node_paths=PackedStringArray("model_root", "ground_ray", "jump_ball", "anim_tree", "carry_skeleton", "control_anchor", "jump_dash_trail", "footstep_player", "left_foot_dust_emitter", "right_foot_dust_emitter", "sfx_skid_loop", "sfx_player", "sfx_bounce_start", "sfx_bounce_land", "sfx_stomp_start", "sfx_stomp_land", "sfx_spindash_charge_loop", "sfx_spindash_charge_full", "sfx_spindash_release", "sfx_barrier_blast_wind", "sfx_barrier_blast_boom", "sfx_speed_wind", "sfx_rail_land", "sfx_rail_grind_loop", "sfx_drift_loop", "sfx_engine_loop", "sfx_roll_transition", "sfx_roll_loop") groups=["Player", "player"]]
+collision_layer = 4
+collision_mask = 83
+floor_constant_speed = true
+floor_block_on_wall = false
+floor_max_angle = 0.16406095
+floor_snap_length = 0.65
+safe_margin = 0.1
+script = ExtResource("1_iacn2")
+movement_time_scale = 0.89
+model_root = NodePath("ModelRoot")
+ground_ray = NodePath("GroundRay")
+jump_ball = NodePath("JumpBall")
+anim_tree = NodePath("ModelRoot/Sonic_NeoAdv_Root/AnimationTree")
+carry_skeleton = NodePath("ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+carry_bone_name = &"hand.r"
+carry_orientation_bone_name = &"spine_03"
+carry_bone_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 180, 1, -1.7, 1.5, 0)
+control_anchor = NodePath("ControlAnchor")
+jump_dash_trail = NodePath("JumpDashTrail")
+character_settings_profile = ExtResource("2_06ik4")
+buddy_spawn_teleport_height = 1.5
+buddy_catchup_multiplier_max = 3.0
+buddy_catchup_exponent = 1.5
+air_top_speed = 30.0
+max_speed = 240.0
+top_speed_slowdown_strength = 1.0
+air_top_speed_slowdown_strength = 2.0
+top_speed_slowdown_strength_curve = SubResource("Curve_trio3")
+air_top_speed_slowdown_strength_curve = SubResource("Curve_air_top_speed_slowdown")
+air_accel_curve = SubResource("Curve_lit3l")
+air_decel = 25.2
+air_decel_curve = ExtResource("decel_air")
+air_top_speed_detach_delay = 0.0
+air_top_speed_detach_slerp_speed = 0.0
+fall_air_decel_delay = 0.0
+fall_air_decel_slerp_speed = 0.0
+fast_fall_horizontal_drag_start_speed = 100.0
+fast_fall_horizontal_drag_max_decel = 30.0
+launch_momentum_control_enabled = false
+launch_momentum_full_speed = 150.0
+launch_momentum_min_control = 0.8
+launch_momentum_recovery_time = 0.1
+max_fall_speed = 240.0
+character_visual_profile = ExtResource("5_u8x1j")
+anim_movespeed_min_scale = 1.0
+anim_movespeed_max_scale = 1.0
+anim_movespeed_scale_curve = ExtResource("6_ekr38")
+airborne_up_blend_delay = 0.0
+airborne_up_blend_speed = 1400.0
+airborne_up_blend_ramp_speed = 0.6
+airborne_torque_enabled = false
+airborne_torque_gain = 0.0
+airborne_torque_decay_speed = 0.95
+airborne_torque_sample_window = 0.0
+airborne_torque_yaw_from_turn_rate_enabled = false
+manual_airborne_torque_enabled = false
+barrier_blast_enabled = false
+barrier_blast_ground_accel_curve = ExtResource("7_t3fjy")
+barrier_blast_ground_turn_angle_curve = ExtResource("8_p3acl")
+barrier_blast_ground_turn_free_angle_curve = ExtResource("9_o6d3q")
+attack_magnetism_range = 40.0
+attack_magnetism_max_range = 150.0
+attack_magnetism_detection_angle_deg = 65.0
+carry_throw_input_action = &"ability_slot_03"
+carry_pickup_speed_radius_scale = 0.135
+carry_pickup_speed_radius_max = 10.0
+carry_throw_up_speed = 18.0
+carry_release_inherit_velocity_scale = 1.2
+carry_pickup_anim_command = &"Carry_Pickup"
+carry_put_down_anim_command = &""
+carry_throw_anim_command = &"Carry_Throw"
+air_turn_angle_curve = ExtResource("10_j65g3")
+air_turn_speed_preservation = 0.6
+air_brake_decel = 110.0
+air_pullback_start_angle_deg = 120.0
+floor_like_max_angle_deg = 10.0
+ceiling_like_min_angle_deg = 175.0
+wall_like_min_angle_deg = 85.0
+wall_like_max_angle_deg = 95.0
+nonfloor_to_wall_grace_time = 9999.0
+speed_shoes_acceleration_curve = ExtResource("11_m6idl")
+footstep_player = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/Footstep_Player")
+footstep_sounds_default = Array[AudioStream]([ExtResource("12_mfhae"), ExtResource("13_j538l"), ExtResource("14_vcsca"), ExtResource("15_j5c8b"), ExtResource("16_ci5g2"), ExtResource("17_usbjd"), ExtResource("18_3l40s"), ExtResource("19_8u16i"), ExtResource("20_f3h0p"), ExtResource("21_1sicr"), ExtResource("22_keief"), ExtResource("23_yfmlk")])
+footstep_sounds_sand = Array[AudioStream]([ExtResource("24_lrq2t"), ExtResource("25_xj6pw"), ExtResource("26_jvfub"), ExtResource("27_ljhvh"), ExtResource("28_vtuxb"), ExtResource("29_vduw6"), ExtResource("30_sgre3"), ExtResource("31_pqmgh"), ExtResource("32_u7lw4"), ExtResource("33_xhewe")])
+left_foot_dust_emitter = NodePath("ModelRoot/FootstepDustEmitters/LeftFootDustEmitter")
+right_foot_dust_emitter = NodePath("ModelRoot/FootstepDustEmitters/RightFootDustEmitter")
+sfx_skid_loop = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/Skidding_Player")
+sfx_player = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/Jump_Jumpdash_SFX_Player")
+sfx_bounce_start = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_BounceStart")
+sfx_bounce_land = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_BounceLand")
+sfx_stomp_start = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_StompStart")
+sfx_stomp_land = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_StompLand")
+sfx_spindash_charge_loop = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_SpindashLoop")
+sfx_spindash_charge_full = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_SpindashFull")
+sfx_spindash_release = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_SpindashRelease")
+sfx_barrier_blast_wind = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_BBWind")
+sfx_barrier_blast_boom = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_BBBoom")
+sfx_speed_wind = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_SpeedWind")
+sfx_rail_land = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_RailLand")
+sfx_rail_grind_loop = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_RailGrindLoop")
+sfx_drift_loop = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_DriftLoop")
+sfx_engine_loop = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_EngineLoop")
+sfx_roll_transition = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_RollTransition")
+sfx_roll_loop = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_RollLoop")
+voice_hurt_clips = Array[AudioStream]([ExtResource("34_e8go3"), ExtResource("35_byei6"), ExtResource("36_2qa3o"), ExtResource("37_1lqyx"), ExtResource("38_mm8n4"), ExtResource("39_lfnnr"), ExtResource("40_3lqxb")])
+voice_death_clips = Array[AudioStream]([ExtResource("41_fn80h"), ExtResource("42_3v3b4")])
+voice_pit_clips = Array[AudioStream]([ExtResource("43_tqk0w")])
+voice_drift_end_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("45_gr41s"), ExtResource("46_uy5cg")])
+voice_drift_end_chance = 0.5
+voice_carry_throw_clips = Array[AudioStream]([ExtResource("47_tahfu"), ExtResource("48_by5yv"), ExtResource("49_fj32l"), ExtResource("46_uy5cg")])
+voice_trick_backflip_clips = Array[AudioStream]([ExtResource("50_qe5md"), ExtResource("44_3kigm")])
+voice_trick_backflip_chance = 0.08
+voice_trick_frontflip_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_frontflip_chance = 0.08
+voice_trick_left_spin_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_left_spin_chance = 0.08
+voice_trick_right_spin_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_right_spin_chance = 0.08
+voice_trick_frontflip_left_spin_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_frontflip_left_spin_chance = 0.08
+voice_trick_backflip_left_spin_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_backflip_left_spin_chance = 0.08
+voice_trick_backflip_right_spin_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_backflip_right_spin_chance = 0.08
+voice_trick_frontflip_right_spin_clips = Array[AudioStream]([ExtResource("44_3kigm"), ExtResource("50_qe5md"), ExtResource("51_h5wij"), ExtResource("52_mgi1t"), ExtResource("45_gr41s")])
+voice_trick_frontflip_right_spin_chance = 0.08
+voice_trick_rail_forward_chance = 0.08
+voice_trick_rail_backward_chance = 0.08
+voice_trick_stomp_darehog_clips = Array[AudioStream]([ExtResource("53_dtxcm"), ExtResource("52_mgi1t")])
+water_top_speed_multiplier = 0.65
+water_surface_slowdown_strength = 0.5
+footstep_player_water = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/Footstep_Player_Water")
+water_sounds_player = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/Water_Sounds")
+drowning_sounds_player = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/Drowning_Player")
+sfx_water_enter_soft = Array[AudioStream]([ExtResource("54_uad88"), ExtResource("55_plu2l"), ExtResource("56_5uk2g"), ExtResource("57_nk38m"), ExtResource("58_kdyj3"), ExtResource("59_biuir")])
+sfx_water_enter_medium = Array[AudioStream]([ExtResource("60_5aqon"), ExtResource("61_biuxr"), ExtResource("62_j7cqi"), ExtResource("63_5hdmx"), ExtResource("64_0si45"), ExtResource("65_6y4ws")])
+sfx_water_enter_hard = Array[AudioStream]([ExtResource("66_vhrri"), ExtResource("67_jrr11"), ExtResource("68_v3cp2"), ExtResource("69_pmvmb"), ExtResource("70_dtp48"), ExtResource("71_11r38")])
+sfx_water_exit_soft = Array[AudioStream]([ExtResource("72_s2nug"), ExtResource("73_gah24"), ExtResource("74_rqyji"), ExtResource("75_nc172"), ExtResource("76_266g3"), ExtResource("77_rnmmi")])
+sfx_water_exit_medium = Array[AudioStream]([ExtResource("78_wghvy"), ExtResource("79_jdydq")])
+sfx_water_exit_hard = Array[AudioStream]([ExtResource("78_wghvy"), ExtResource("79_jdydq")])
+homing_reticle_texture = ExtResource("80_666ya")
+homing_reticle_sound = ExtResource("81_viuye")
+sonic_boom_shader = ExtResource("82_hnicc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=56278430]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.082, 0, 0.096)
+shape = SubResource("SphereShape3D_64fmr")
+
+[node name="WaterDetector" type="Area3D" parent="." unique_id=999999999]
+collision_layer = 0
+collision_mask = 2147483647
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WaterDetector" unique_id=999999998]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_64fmr")
+
+[node name="HeadWaterDetector" type="Area3D" parent="." unique_id=999999997]
+collision_layer = 0
+collision_mask = 2147483647
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HeadWaterDetector" unique_id=999999996]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0323266, -0.05074227)
+shape = SubResource("SphereShape3D_wwjg1")
+
+[node name="ModelRoot" type="Node3D" parent="." unique_id=71309623]
+
+[node name="FootstepDustEmitters" type="Node3D" parent="ModelRoot" unique_id=401462914]
+
+[node name="LeftFootDustEmitter" type="Node3D" parent="ModelRoot/FootstepDustEmitters" unique_id=146689354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28, -1, 0)
+
+[node name="RightFootDustEmitter" type="Node3D" parent="ModelRoot/FootstepDustEmitters" unique_id=1098505450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, -1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ModelRoot" unique_id=1011336951]
+mesh = SubResource("SphereMesh_v3bn8")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="ModelRoot" unique_id=2129892349]
+
+[node name="Sonic_NeoAdv_Root" parent="ModelRoot" unique_id=1917975666 instance=ExtResource("88_1dpl8")]
+transform = Transform3D(-0.4, 0, 3.4969112e-08, 0, 0.4, 0, -3.4969112e-08, 0, -0.4, 0, -1, 0)
+
+[node name="Eyeglobe" parent="ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D" parent_id_path=PackedInt32Array(1917975666, 1387501511) index="3" unique_id=1413997121]
+surface_material_override/0 = SubResource("ShaderMaterial_2xxo6")
+
+[node name="JumpDashTrail" type="MeshInstance3D" parent="." unique_id=1503759778]
+script = ExtResource("89_3t11h")
+radius = 1.2
+sides = 14
+max_points = 60
+max_sample_distance = 30.0
+speed_fade_threshold = 35.0
+fade_out_time = 0.7
+tint = Color(0.08333349, 0, 1, 1)
+
+[node name="JumpBall" parent="." unique_id=190440021 instance=ExtResource("90_1r0oa")]
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 0)
+visible = false
+jump_ball_material = SubResource("ShaderMaterial_jlluh")
+tint = Color(0.08333349, 0, 1, 0.72)
+tail_fade_axis = Vector3(0, 1, 0)
+
+[node name="GroundRay" type="RayCast3D" parent="." unique_id=1390065307]
+visibility_parent = NodePath("../ModelRoot/MeshInstance3D")
+collision_mask = 17
+hit_back_faces = false
+debug_shape_custom_color = Color(0, 0.82129085, 0.6667499, 1)
+debug_shape_thickness = 5
+
+[node name="LandingRay" type="RayCast3D" parent="." unique_id=1248549613]
+collision_mask = 17
+hit_back_faces = false
+
+[node name="Abilities" type="Node" parent="." unique_id=1737524739]
+
+[node name="InstaShield" type="Node" parent="Abilities" unique_id=650673865]
+script = ExtResource("insta_shield_script")
+
+[node name="Grounded" type="Node" parent="Abilities" unique_id=2051000001]
+script = ExtResource("92_0bvu8")
+run_top_speed = 65.0
+walk_top_speed = 20.85
+decel = 60.0
+ground_decel_curve = ExtResource("decel_ground")
+ground_accel_curve = SubResource("Curve_kgdrl")
+walk_ground_accel_curve = SubResource("Curve_jlluh")
+ground_turn_angle_curve = SubResource("Curve_dmo1e")
+walk_turn_angle_curve = SubResource("Curve_j5dg1")
+ground_turn_sharp_rate_multiplier = 1.0
+ground_turn_speed_preservation = 0.0
+ground_brake_decel = 162.0
+ground_turn_max_penalty_angle_curve = ExtResource("97_6u2aj")
+ground_turn_free_angle_curve = ExtResource("98_q35c6")
+slope_downhill_accel = 55.0
+slope_downhill_accel_curve = SubResource("Curve_6bbcc")
+slope_uphill_decel_curve = SubResource("Curve_eoe07")
+slope_gravity_angle_curve = ExtResource("93_3iu31")
+slope_uphill_control_ratio_curve = ExtResource("101_mgtjj")
+slope_slide_start_angle_deg = 45.0
+skid_enter_angle_deg = 153.0
+skid_decel = 170.0
+
+[node name="Fall" type="Node" parent="Abilities" unique_id=2051000008]
+script = ExtResource("102_v2huq")
+on_air_jump_pressed_homing_action = NodePath("../Homing")
+on_air_jump_pressed_action = NodePath("../Jumpdash")
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_fall_homing"), SubResource("AbilityRoute_sonic_fall_jumpdash"), SubResource("AbilityRoute_sonic_fall_bounce")])
+
+[node name="Roll" type="Node" parent="Abilities" unique_id=2051000002]
+script = ExtResource("104_s3a1k")
+roll_decel = 4.0
+roll_air_decel = 3.0
+roll_turn_deg_per_sec = 130.0
+roll_air_top_speed_slowdown_enabled = true
+roll_top_speed_slowdown_scale = 0.45
+roll_downhill_accel_multiplier = 1.0
+roll_downhill_accel_multiplier_curve = SubResource("Curve_glcl3")
+roll_uphill_decel_multiplier = 1.0
+roll_uphill_decel_multiplier_curve = SubResource("Curve_3iu31")
+permits_attack_magnetism = true
+can_pick_up_carryables_while_active = false
+can_execute_while_carrying = false
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_roll_jump")])
+combat_class = 1
+
+[node name="Spindash" type="Node" parent="Abilities" unique_id=2051000003]
+script = ExtResource("107_0g45c")
+spindash_max_launch_speed = 145.0
+spindash_rail_max_launch_speed = 145.0
+on_spindash_jump_action = NodePath("../Jump")
+can_pick_up_carryables_while_active = false
+can_execute_while_carrying = false
+activation_voice_chance = 0.2
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_spindash_jump")])
+combat_class = 1
+
+[node name="Spring" type="Node" parent="Abilities" unique_id=2051000005]
+script = ExtResource("109_pbky6")
+
+[node name="Hurt" type="Node" parent="Abilities" unique_id=2051000006]
+script = ExtResource("110_552pl")
+
+[node name="RailGrind" type="Node" parent="Abilities" unique_id=2051000007]
+script = ExtResource("111_egg70")
+
+[node name="Jump" type="Node" parent="Abilities" unique_id=1792721473]
+script = ExtResource("112_02ltt")
+jump_speed = 29.0
+jump_hold_time_max = 1.0
+jump_hold_gravity_scale = 0.6
+jump_apex_gravity_scale = 0.2
+jump_apex_speed_threshold = 0.3
+coyote_jump_duration = 0.18
+jump_damp_min_speed = 50.0
+jump_damp_strength = 1.0
+jump_damp_curve = SubResource("Curve_2xxo6")
+on_air_jump_pressed_homing_action = NodePath("../Homing")
+on_air_jump_pressed_action = NodePath("../Jumpdash")
+uses_homing_targeting = true
+permits_attack_magnetism = true
+activation_voice_clips = Array[AudioStream]([ExtResource("114_gfq2d"), ExtResource("47_tahfu"), ExtResource("115_rgbr0"), ExtResource("116_oebl7")])
+activation_voice_chance = 0.65
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_jump_homing"), SubResource("AbilityRoute_sonic_jump_jumpdash"), SubResource("AbilityRoute_sonic_jump_bounce")])
+combat_class = 1
+
+[node name="Homing" type="Node" parent="Abilities" unique_id=763827544]
+script = ExtResource("117_pwalf")
+homing_speed = 65.0
+enemy_bounce_min_speed = 30.0
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_homing_bounce")])
+combat_class = 1
+
+[node name="Jumpdash" type="Node" parent="Abilities" unique_id=583154869]
+script = ExtResource("118_sujkc")
+jump_dash_add_speed = 80.0
+jump_dash_impulse_stop_speed = 75.0
+activation_voice_clips = Array[AudioStream]([ExtResource("49_fj32l"), ExtResource("46_uy5cg"), ExtResource("49_fj32l")])
+activation_voice_chance = 0.85
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_jumpdash_bounce")])
+combat_class = 1
+
+[node name="Bounce" type="Node" parent="Abilities" unique_id=2105886231]
+script = ExtResource("120_wudh1")
+quick_release_activation_enabled = true
+quick_release_max_hold_time = 0.13
+route_on_activation_input_release = false
+bounce_gravity_scale = 1.5
+bounce_down_impulse = 45.0
+bounce_min_impact_speed = 15.0
+bounce_add_speed = 4.0
+bounce_min_up_speed = 1.5
+bounce_max_up_speed = 52.0
+bounce_land_horizontal_threshold = 50.0
+bounce_land_horizontal_subtract = 90.0
+on_bounce_released_action = NodePath("../Stomp")
+bounce_audio_node = NodePath("../../ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_BounceStart")
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_bounce_stomp")])
+combat_class = 1
+
+[node name="BounceRebound" type="Node" parent="Abilities" unique_id=1167560329]
+script = ExtResource("121_lqxdj")
+uses_homing_targeting = true
+permits_attack_magnetism = true
+combat_class = 1
+
+[node name="TrickState" type="Node" parent="Abilities" unique_id=410416549]
+script = ExtResource("122_mu5sv")
+
+[node name="Stomp" type="Node" parent="Abilities" unique_id=2105886232]
+script = ExtResource("123_aos1s")
+stomp_gravity_scale = 1.4
+stomp_down_impulse = 32.0
+stomp_land_speed_subtract = 5.0
+stomp_land_horizontal_threshold = 50.0
+stomp_land_horizontal_subtract = 10.0
+stomp_audio_node = NodePath("../../ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_StompStart")
+combat_class = 1
+
+[node name="KickContacts" type="Node3D" parent="." node_paths=PackedStringArray("skeleton")]
+script = ExtResource("kick_contacts_script")
+skeleton = NodePath("../ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+right_foot_bone = &"foot.r"
+
+[node name="UppercutKickAbility" type="Node" parent="Abilities" node_paths=PackedStringArray("kick_contacts")]
+script = ExtResource("uppercut_script")
+kick_contacts = NodePath("../../KickContacts")
+compact_collision = true
+shows_jump_ball = false
+can_pick_up_carryables_while_active = false
+can_execute_while_carrying = false
+combat_class = 1
+
+[node name="SpinKickAbility" type="Node" parent="Abilities" node_paths=PackedStringArray("kick_contacts") unique_id=1248682870]
+script = ExtResource("124_8fq8v")
+kick_contacts = NodePath("../../KickContacts")
+tornado_kick_allowed_source_actions = Array[StringName]([&"fall", &"jump", &"bounce", &"bounce_rebound", &"stomp", &"uppercut_kick"])
+on_air_jump_pressed_action = NodePath("../Jump")
+on_air_jump_pressed_no_coyote_action = NodePath("../Jumpdash")
+permits_attack_magnetism = true
+shows_jump_ball = false
+can_pick_up_carryables_while_active = false
+can_execute_while_carrying = false
+activation_voice_clips = Array[AudioStream]([ExtResource("47_tahfu"), ExtResource("46_uy5cg")])
+routes = Array[Resource]([SubResource("AbilityRoute_sonic_spin_bounce"), SubResource("AbilityRoute_sonic_spin_coyote_jump"), SubResource("AbilityRoute_sonic_spin_no_coyote_jumpdash")])
+combat_class = 1
+
+[node name="LightspeedDashAbility" type="Node" parent="Abilities" unique_id=1359162103]
+script = ExtResource("125_7k1em")
+
+[node name="DrownedAction" type="Node" parent="Abilities" unique_id=2004745244]
+script = ExtResource("126_cpucr")
+
+[node name="LedgeMantleAbility" type="Node" parent="Abilities" unique_id=844092240]
+script = ExtResource("117_2xxo6")
+allowed_source_actions = Array[StringName]([&"fall", &"jump", &"jumpdash", &"parkour"])
+maximum_upward_catch_speed = 50.0
+maximum_fall_speed = 100.0
+slot_id = &""
+
+[node name="TrickSystem" type="Node" parent="." unique_id=667902398]
+script = ExtResource("127_hx56a")
+score_left_spin = 100.0
+score_right_spin = 100.0
+score_frontflip_left_spin = 100.0
+score_backflip_left_spin = 100.0
+score_backflip_right_spin = 100.0
+score_frontflip_right_spin = 100.0
+score_rail_forward_crouch = 12.0
+score_rail_backward_crouch = 12.0
+trick_sound = ExtResource("128_b0s5g")
+perfect_landing_sound = ExtResource("129_cytd7")
+
+[node name="TrickUI_Layer" type="CanvasLayer" parent="." unique_id=109575334]
+
+[node name="TrickUI" parent="TrickUI_Layer" unique_id=720644738 instance=ExtResource("130_pq5c0")]
+
+[node name="ControlAnchor" type="Node3D" parent="." unique_id=1559180932]
+
+[node name="SonicBoomFX" parent="." unique_id=985696941 instance=ExtResource("131_7asju")]
+transform = Transform3D(-0.135, 0, 2.0384434e-08, 0, 0.135, 0, -2.0384434e-08, 0, -0.135, 0, 0, 0)
+boom_light_max_energy = 1.8
+boom_light_range = 20.0
+
+[node name="BoomLight" parent="SonicBoomFX" index="1" unique_id=844705975]
+light_color = Color(0.6203907, 0.744543, 1, 1)
+
+[editable path="ModelRoot/Sonic_NeoAdv_Root"]
+[editable path="SonicBoomFX"]

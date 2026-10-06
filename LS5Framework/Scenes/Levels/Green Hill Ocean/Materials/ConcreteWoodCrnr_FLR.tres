@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cso3e5e4jmhkh"]
+
+[ext_resource type="Texture2D" uid="uid://b1madpklupass" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_ConcreteWoodCrnr.jpg" id="1_58bm1"]
+
+[resource]
+resource_name = "ConcreteWoodCrnr_FLR"
+cull_mode = 2
+albedo_texture = ExtResource("1_58bm1")

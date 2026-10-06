@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://dh2syi1rumb1t"]
+
+[ext_resource type="AudioStream" uid="uid://cs6hob8faajy5" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Action_03.ogg" id="1_dctny"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_2qvla"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_k1nco"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_txawo"]
+
+[sub_resource type="Resource" id="Resource_eukmk"]
+script = ExtResource("2_2qvla")
+pose_id = &"EXP_BROWS_UP"
+end_time = 0.29999999999999993
+blend_in = 0.14999999999999997
+blend_out = 0.06999999999999997
+
+[sub_resource type="Resource" id="Resource_8egha"]
+script = ExtResource("2_2qvla")
+pose_id = &"EXP_ANGRY"
+start_time = 0.17000000000000004
+end_time = 0.47
+row = 1
+blend_in = 0.14999999999999997
+blend_out = 0.14999999999999997
+
+[sub_resource type="Resource" id="Resource_aqtks"]
+script = ExtResource("2_2qvla")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.01
+end_time = 0.24513513513513513
+blend_in = 0.08756756756756756
+blend_out = 0.11756756756756756
+
+[sub_resource type="Resource" id="Resource_c6fg6"]
+script = ExtResource("2_2qvla")
+pose_id = &"VIS_Ah"
+start_time = 0.07
+end_time = 0.33000000000000007
+row = 1
+blend_in = 0.13
+blend_out = 0.13
+
+[sub_resource type="Resource" id="Resource_a5qa6"]
+script = ExtResource("2_2qvla")
+pose_id = &"VIS_R"
+start_time = 0.12
+end_time = 0.45513513513513515
+row = 2
+blend_in = 0.16256756756756757
+blend_out = 0.16756756756756758
+
+[sub_resource type="Resource" id="Resource_v58j6"]
+script = ExtResource("2_2qvla")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.25486486486486487
+end_time = 0.51
+row = 3
+blend_in = 0.08756756756756756
+blend_out = 0.08756756756756756
+
+[resource]
+script = ExtResource("4_txawo")
+profile = ExtResource("3_k1nco")
+audio = ExtResource("1_dctny")
+transcript = "HUERG"
+audible_start = 0.01
+audible_end = 0.45
+viseme_cues = Array[ExtResource("2_2qvla")]([SubResource("Resource_aqtks"), SubResource("Resource_c6fg6"), SubResource("Resource_a5qa6"), SubResource("Resource_v58j6")])
+expression_cues = Array[ExtResource("2_2qvla")]([SubResource("Resource_eukmk"), SubResource("Resource_8egha")])
+word_spans = Array[Dictionary]([{
+"end": 0.45000000000000007,
+"start": 0.01,
+"word": "HUERG"
+}])

@@ -1,0 +1,100 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://baph6hn4c4ykw"]
+
+[ext_resource type="AudioStream" uid="uid://dxiqdym13l67o" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_DangIt_01.ogg" id="1_6midf"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_o57jr"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_gahhk"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_83d3k"]
+
+[sub_resource type="Resource" id="Resource_rkmg5"]
+script = ExtResource("2_o57jr")
+pose_id = &"EXP_ANGRY"
+start_time = 0.08000000000000004
+end_time = 0.83
+blend_in = 0.2
+blend_out = 0.2
+strength = 0.6
+
+[sub_resource type="Resource" id="Resource_tnsy8"]
+script = ExtResource("2_o57jr")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.25
+end_time = 0.5599999999999999
+row = 1
+blend_in = 0.15499999999999997
+blend_out = 0.15499999999999997
+
+[sub_resource type="Resource" id="Resource_ce8te"]
+script = ExtResource("2_o57jr")
+pose_id = &"EXP_BROWS_DOWN"
+start_time = 0.46
+end_time = 0.6599999999999998
+row = 2
+blend_in = 0.0999999999999999
+blend_out = 0.0999999999999999
+
+[sub_resource type="Resource" id="Resource_y1aki"]
+script = ExtResource("2_o57jr")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.15092907386133447
+end_time = 0.32906831754720767
+blend_in = 0.0890696218429366
+blend_out = 0.0890696218429366
+
+[sub_resource type="Resource" id="Resource_3gjdh"]
+script = ExtResource("2_o57jr")
+pose_id = &"VIS_Ah"
+start_time = 0.24
+end_time = 0.47
+row = 1
+blend_in = 0.11500000000000002
+blend_out = 0.11500000000000002
+
+[sub_resource type="Resource" id="Resource_d01cj"]
+script = ExtResource("2_o57jr")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.39
+end_time = 0.48576709242304783
+row = 2
+blend_in = 0.04788354621152391
+blend_out = 0.04788354621152391
+
+[sub_resource type="Resource" id="Resource_g2urs"]
+script = ExtResource("2_o57jr")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.43348604860482737
+end_time = 0.5916252922907006
+blend_in = 0.07906962184293662
+blend_out = 0.07906962184293662
+
+[sub_resource type="Resource" id="Resource_iwaat"]
+script = ExtResource("2_o57jr")
+pose_id = &"VIS_Ih"
+start_time = 0.46
+end_time = 0.5398367142659846
+row = 3
+blend_in = 0.03991835713299224
+blend_out = 0.03991835713299224
+
+[resource]
+script = ExtResource("4_83d3k")
+profile = ExtResource("3_gahhk")
+audio = ExtResource("1_6midf")
+transcript = "Dang it"
+audible_start = 0.15092907386133447
+audible_end = 0.5916252922907006
+new_blend_in = 0.2
+new_blend_out = 0.2
+new_expression_blend_in = 0.2
+new_expression_blend_out = 0.2
+smoothing_time = 0.0
+viseme_cues = Array[ExtResource("2_o57jr")]([SubResource("Resource_y1aki"), SubResource("Resource_3gjdh"), SubResource("Resource_d01cj"), SubResource("Resource_g2urs"), SubResource("Resource_iwaat")])
+expression_cues = Array[ExtResource("2_o57jr")]([SubResource("Resource_rkmg5"), SubResource("Resource_tnsy8"), SubResource("Resource_ce8te")])
+word_spans = Array[Dictionary]([{
+"end": 0.4065328805503668,
+"start": 0.15092907386133447,
+"word": "Dang"
+}, {
+"end": 0.5916252922907006,
+"start": 0.4065328805503668,
+"word": "it"
+}])

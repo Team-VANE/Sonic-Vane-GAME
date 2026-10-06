@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cetyrykwoioga"
+path="res://.godot/imported/RaceStart_Record_01.ogg-2b5c3245222e6f8c54d6f2a8b8ce0d05.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_Record_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_Record_01.ogg-2b5c3245222e6f8c54d6f2a8b8ce0d05.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

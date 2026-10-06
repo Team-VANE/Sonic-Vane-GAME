@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcow1cl6vd0n3"]
+
+[ext_resource type="Script" uid="uid://3pgjpe6hfv50" path="res://LS5Framework/Objects/Music/MusicTrigger.gd" id="1_d5s40"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nptg1"]
+size = Vector3(4, 2, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nptg1"]
+size = Vector3(4, 2, 4)
+
+[node name="MusicTrigger" type="Area3D"]
+collision_layer = 32
+collision_mask = 4
+script = ExtResource("1_d5s40")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_nptg1")
+
+[node name="DisplayMesh" type="MeshInstance3D" parent="."]
+transparency = 0.74
+mesh = SubResource("BoxMesh_nptg1")

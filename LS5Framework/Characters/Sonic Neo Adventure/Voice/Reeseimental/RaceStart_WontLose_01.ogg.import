@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://putaqbgfuspc"
+path="res://.godot/imported/RaceStart_WontLose_01.ogg-9f0ffbafa2c53658c603042e3a6cd948.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_WontLose_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_WontLose_01.ogg-9f0ffbafa2c53658c603042e3a6cd948.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

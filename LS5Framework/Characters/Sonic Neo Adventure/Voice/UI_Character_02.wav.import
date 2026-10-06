@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d5te2t5v02pd"
+path="res://.godot/imported/UI_Character_02.wav-be9e309acf3a4cc2a53d5545f5312763.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/UI_Character_02.wav"
+dest_files=["res://.godot/imported/UI_Character_02.wav-be9e309acf3a4cc2a53d5545f5312763.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

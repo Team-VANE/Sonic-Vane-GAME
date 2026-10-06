@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c34etrp6u22jj"
+path="res://.godot/imported/Collision Chaos 'G' Mix US.mp3-3c1506a2cb917451d6b1879bac1c03e5.mp3str"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Collision Chaos 'G' Mix US.mp3"
+dest_files=["res://.godot/imported/Collision Chaos 'G' Mix US.mp3-3c1506a2cb917451d6b1879bac1c03e5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

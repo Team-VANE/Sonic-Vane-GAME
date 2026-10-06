@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bft7bos1p0y1o"]
+
+[ext_resource type="Texture2D" uid="uid://dsnfiarqio43w" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_Map__16_Stucco.png" id="1_cqcbr"]
+
+[resource]
+resource_name = "stein_x_gras_STN"
+cull_mode = 2
+albedo_texture = ExtResource("1_cqcbr")

@@ -1,0 +1,757 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cauj0ic5q6kw3"
+path="res://.godot/imported/EC_18_EXPORT.blend-bb5213baa2a2b079daebd2138156816d.scn"
+
+[deps]
+
+source_file="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EC_18_EXPORT.blend"
+dest_files=["res://.godot/imported/EC_18_EXPORT.blend-bb5213baa2a2b079daebd2138156816d.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"Reflecty_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/Reflecty_TIL.tres",
+"use_external/path": "uid://beydl430ccjs3"
+},
+"material_B8BDA4_GRV": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B8BDA4_GRV.tres",
+"use_external/path": "uid://dw2glpcr8hgxl"
+},
+"material_B8BDB8_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B8BDB8_STN.tres",
+"use_external/path": "uid://d0gcohvpy8oqr"
+},
+"material_B8BDCC_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B8BDCC_STN.tres",
+"use_external/path": "uid://dmgyx8rgxjris"
+},
+"material_B8BDE0_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B8BDE0_STN.tres",
+"use_external/path": "uid://bc7q8g7b8kpvw"
+},
+"material_B95668_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B95668_SND.tres",
+"use_external/path": "uid://kyii10kdkiri"
+},
+"material_B9567C_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B9567C_SND.tres",
+"use_external/path": "uid://gf2ms2mosm05"
+},
+"material_B956A4_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B956A4_SND.tres",
+"use_external/path": "uid://buyjcyn1ldmsm"
+},
+"material_B9BA50_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B9BA50_SND.tres",
+"use_external/path": "uid://uek35v7aolci"
+},
+"material_B9BA64_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B9BA64_SND.tres",
+"use_external/path": "uid://cfrlt0hp312c"
+},
+"material_B9BA8C_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_B9BA8C_SND.tres",
+"use_external/path": "uid://c2m2qjgmfceog"
+},
+"material_BA1698_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA1698_SND.tres",
+"use_external/path": "uid://cpl251myu42w8"
+},
+"material_BA16AC_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA16AC_SND.tres",
+"use_external/path": "uid://di1r44nmmes70"
+},
+"material_BA16D4_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA16D4_SND.tres",
+"use_external/path": "uid://cgnl2jf87kipr"
+},
+"material_BA5584_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA5584_SND.tres",
+"use_external/path": "uid://bwp2cjqwytspe"
+},
+"material_BA55AC_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA55AC_SND.tres",
+"use_external/path": "uid://dchie13lmxqke"
+},
+"material_BA6BD4_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA6BD4_SND.tres",
+"use_external/path": "uid://chkvnrfpgca0b"
+},
+"material_BA6BFC_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA6BFC_SND.tres",
+"use_external/path": "uid://cst8kcakpkw4y"
+},
+"material_BA6C24_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA6C24_SND.tres",
+"use_external/path": "uid://bw0dootmp4w30"
+},
+"material_BA7EB8_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA7EB8_SND.tres",
+"use_external/path": "uid://dv4j8g0t6pm3q"
+},
+"material_BA8F50_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA8F50_SND.tres",
+"use_external/path": "uid://dlf2en075bt06"
+},
+"material_BA8F78_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA8F78_SND.tres",
+"use_external/path": "uid://ehvbo0fq5jtd"
+},
+"material_BA8F8C_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BA8F8C_SND.tres",
+"use_external/path": "uid://cdnxcuptjcvpi"
+},
+"material_BAE808_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BAE808_STN.tres",
+"use_external/path": "uid://b1f6gktn44r6i"
+},
+"material_BAF320_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BAF320_STN.tres",
+"use_external/path": "uid://cfwucngu7fkya"
+},
+"material_BAF334_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BAF334_STN.tres",
+"use_external/path": "uid://d3ym65rgqbb8k"
+},
+"material_BAF370_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BAF370_STN.tres",
+"use_external/path": "uid://bt36q24kj54g"
+},
+"material_BB3C58_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB3C58_GRS.tres",
+"use_external/path": "uid://brbvvaaburc"
+},
+"material_BB3C6C_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB3C6C_GRS.tres",
+"use_external/path": "uid://c7xvrpuja7pix"
+},
+"material_BB58E8_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB58E8_FLR.tres",
+"use_external/path": "uid://ixoh1lc83x4e"
+},
+"material_BB58FC_CON": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB58FC_CON.tres",
+"use_external/path": "uid://ceakc4u15a7dg"
+},
+"material_BB8498_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB8498_STN.tres",
+"use_external/path": "uid://bmy0j0iamvfof"
+},
+"material_BB84AC_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB84AC_STN.tres",
+"use_external/path": "uid://b8prsq6500w7d"
+},
+"material_BB84D4_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BB84D4_STN.tres",
+"use_external/path": "uid://dclb7wxth1rfq"
+},
+"material_BBA140_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBA140_STN.tres",
+"use_external/path": "uid://cbnch5qxk5shj"
+},
+"material_BBB2E4_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBB2E4_STN.tres",
+"use_external/path": "uid://dob1bdsxdjiyj"
+},
+"material_BBC668_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBC668_SND.tres",
+"use_external/path": "uid://dwx72m41kwrw0"
+},
+"material_BBC67C_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBC67C_GRS.tres",
+"use_external/path": "uid://bco0otuvssu6g"
+},
+"material_BBC6E0_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBC6E0_STN.tres",
+"use_external/path": "uid://ckq3jwn4th84q"
+},
+"material_BBE9A4_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBE9A4_STN.tres",
+"use_external/path": "uid://b264fkjbmxwe"
+},
+"material_BBE9CC_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBE9CC_STN.tres",
+"use_external/path": "uid://b68cv1wgq7bra"
+},
+"material_BBE9E0_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBE9E0_SND.tres",
+"use_external/path": "uid://7m5s3edpsg2f"
+},
+"material_BBE9F4_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBE9F4_SND.tres",
+"use_external/path": "uid://vmto7qcetm7m"
+},
+"material_BBEA80_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBEA80_GRS.tres",
+"use_external/path": "uid://cbhybyb8pknc5"
+},
+"material_BBEABC_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBEABC_STN.tres",
+"use_external/path": "uid://br5mhyg8cnpa3"
+},
+"material_BBEAE4_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BBEAE4_GRS.tres",
+"use_external/path": "uid://dwjivyplggk6s"
+},
+"material_BC3B08_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC3B08_GRS.tres",
+"use_external/path": "uid://dro66w4kn8idn"
+},
+"material_BC3B1C_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC3B1C_STN.tres",
+"use_external/path": "uid://bmerih0k5h7w4"
+},
+"material_BC3B30_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC3B30_STN.tres",
+"use_external/path": "uid://bbdc5olnef4f4"
+},
+"material_BC4C60_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC4C60_STN.tres",
+"use_external/path": "uid://bt8678gl5muiu"
+},
+"material_BC5DD8_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC5DD8_STN.tres",
+"use_external/path": "uid://bi6rvoepp1xsp"
+},
+"material_BC7270_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC7270_SND.tres",
+"use_external/path": "uid://3suq0nfiqfd6"
+},
+"material_BC8804_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC8804_SND.tres",
+"use_external/path": "uid://5lvcnet7kax8"
+},
+"material_BC8818_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BC8818_SND.tres",
+"use_external/path": "uid://hb35mu3vyci4"
+},
+"material_BCA5D4_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCA5D4_GRS.tres",
+"use_external/path": "uid://b40ss8pv5fr2l"
+},
+"material_BCD490_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD490_FLR.tres",
+"use_external/path": "uid://bl3of1seyoexh"
+},
+"material_BCD4A4_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD4A4_GRS.tres",
+"use_external/path": "uid://dib71khk3re36"
+},
+"material_BCD4B8_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD4B8_WOD.tres",
+"use_external/path": "uid://d4cw0ijmevl8t"
+},
+"material_BCD4CC_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD4CC_FLR.tres",
+"use_external/path": "uid://xhgly5y5l18m"
+},
+"material_BCD4E0_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD4E0_GRS.tres",
+"use_external/path": "uid://byg0hfecwrfnn"
+},
+"material_BCD4F4_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD4F4_FLR.tres",
+"use_external/path": "uid://bhx4nsbly5ebm"
+},
+"material_BCD508_MTL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD508_MTL.tres",
+"use_external/path": "uid://bcdjn0r5c341a"
+},
+"material_BCD51C_MTL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCD51C_MTL.tres",
+"use_external/path": "uid://dv1daw7v6442h"
+},
+"material_BCF0A8_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCF0A8_STN.tres",
+"use_external/path": "uid://7mx3bj7u7gx1"
+},
+"material_BCF0BC_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BCF0BC_STN.tres",
+"use_external/path": "uid://cao3pyb60o7ad"
+},
+"material_BD5CE0_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD5CE0_FLR.tres",
+"use_external/path": "uid://dojlskw2dk1gb"
+},
+"material_BD6398_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD6398_FLR.tres",
+"use_external/path": "uid://b6udns4jl7aik"
+},
+"material_BD6528_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD6528_FLR.tres",
+"use_external/path": "uid://35cyw6uufcj7"
+},
+"material_BD6550_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD6550_FLR.tres",
+"use_external/path": "uid://35j2m7ehdie4"
+},
+"material_BD73E4_MTL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD73E4_MTL.tres",
+"use_external/path": "uid://dwnj2agly71cd"
+},
+"material_BD73F8_MTL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD73F8_MTL.tres",
+"use_external/path": "uid://dx7jt5vcn7c4s"
+},
+"material_BD740C_MTL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BD740C_MTL.tres",
+"use_external/path": "uid://cb4jf5psik8gu"
+},
+"material_BE0390_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE0390_GRS.tres",
+"use_external/path": "uid://d0si2t0ok461g"
+},
+"material_BE2578_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE2578_FLR.tres",
+"use_external/path": "uid://dw7ljgy0yxqwi"
+},
+"material_BE258C_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE258C_FLR.tres",
+"use_external/path": "uid://bkluvllmiy8ry"
+},
+"material_BE25A0_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE25A0_FLR.tres",
+"use_external/path": "uid://btdk2k5abbtq4"
+},
+"material_BE25B4_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE25B4_FLR.tres",
+"use_external/path": "uid://bs5ly715r5qw7"
+},
+"material_BE25DC_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE25DC_FLR.tres",
+"use_external/path": "uid://dqe6xaj3ncnni"
+},
+"material_BE2604_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE2604_FLR.tres",
+"use_external/path": "uid://bx2ceu84i2kcd"
+},
+"material_BE2618_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE2618_FLR.tres",
+"use_external/path": "uid://b33otfc3jq7en"
+},
+"material_BE30D4_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE30D4_FLR.tres",
+"use_external/path": "uid://b5ab0nlelyq0w"
+},
+"material_BE30FC_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE30FC_FLR.tres",
+"use_external/path": "uid://8us3wbvnqa3p"
+},
+"material_BE3110_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE3110_FLR.tres",
+"use_external/path": "uid://bxowja7act73k"
+},
+"material_BE3124_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE3124_FLR.tres",
+"use_external/path": "uid://bbg3sfv87h6y4"
+},
+"material_BE3160_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE3160_FLR.tres",
+"use_external/path": "uid://devq47ls5rlvy"
+},
+"material_BE31B0_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE31B0_TIL.tres",
+"use_external/path": "uid://wgtckaob3e86"
+},
+"material_BE3200_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BE3200_TIL.tres",
+"use_external/path": "uid://chifqjc00fdy"
+},
+"material_BEA23C_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEA23C_FLR.tres",
+"use_external/path": "uid://cdwndj8qfklpv"
+},
+"material_BEA250_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEA250_FLR.tres",
+"use_external/path": "uid://cd8b8fk7vmvds"
+},
+"material_BEA2A0_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEA2A0_FLR.tres",
+"use_external/path": "uid://c0ma2cfi7quy8"
+},
+"material_BEC890_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEC890_FLR.tres",
+"use_external/path": "uid://bvca4bdbffppa"
+},
+"material_BEC908_CON": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEC908_CON.tres",
+"use_external/path": "uid://bd5qgn7veenm4"
+},
+"material_BEC91C_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEC91C_FLR.tres",
+"use_external/path": "uid://nmu4jmeyi0e4"
+},
+"material_BEE884_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BEE884_FLR.tres",
+"use_external/path": "uid://bt033tan1lemx"
+},
+"material_BF0640_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF0640_FLR.tres",
+"use_external/path": "uid://ceakcd1ntbyb5"
+},
+"material_BF0E10_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF0E10_TIL.tres",
+"use_external/path": "uid://c63mloepa4g1y"
+},
+"material_BF0E4C_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF0E4C_FLR.tres",
+"use_external/path": "uid://crrvm388d0hmn"
+},
+"material_BF17E4_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF17E4_FLR.tres",
+"use_external/path": "uid://7mx6qljfbomw"
+},
+"material_BF17F8_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF17F8_FLR.tres",
+"use_external/path": "uid://dqqljc54thcgf"
+},
+"material_BF2980_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF2980_FLR.tres",
+"use_external/path": "uid://caqh7ahf3fpi6"
+},
+"material_BF2994_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF2994_FLR.tres",
+"use_external/path": "uid://c4kef484tak3d"
+},
+"material_BF29A8_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF29A8_FLR.tres",
+"use_external/path": "uid://drru8ge70kf3l"
+},
+"material_BF29D0_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF29D0_FLR.tres",
+"use_external/path": "uid://drdraq3njyetn"
+},
+"material_BF52DC_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF52DC_STN.tres",
+"use_external/path": "uid://dkg6pofmn5ims"
+},
+"material_BF5304_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF5304_GRS.tres",
+"use_external/path": "uid://bejnhar7iblrt"
+},
+"material_BF5318_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF5318_GRS.tres",
+"use_external/path": "uid://casynk7iig63a"
+},
+"material_BF537C_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF537C_STN.tres",
+"use_external/path": "uid://cp1nibmy8666t"
+},
+"material_BF53F4_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BF53F4_STN.tres",
+"use_external/path": "uid://caxwab8570ors"
+},
+"material_BFD688_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BFD688_STN.tres",
+"use_external/path": "uid://g07j1pi4t4q2"
+},
+"material_BFD6B0_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BFD6B0_GRS.tres",
+"use_external/path": "uid://7nfrc7155y7k"
+},
+"material_BFD6D8_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BFD6D8_GRS.tres",
+"use_external/path": "uid://dprnr6py581lv"
+},
+"material_BFD728_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_BFD728_STN.tres",
+"use_external/path": "uid://broagfqeo0dxb"
+},
+"material_C0C65C_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0C65C_GRS.tres",
+"use_external/path": "uid://dnvocqbm060ye"
+},
+"material_C0C670_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0C670_STN.tres",
+"use_external/path": "uid://dbaf6fail8hqo"
+},
+"material_C0C684_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0C684_STN.tres",
+"use_external/path": "uid://dia86rr6gmb1h"
+},
+"material_C0C6C0_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0C6C0_STN.tres",
+"use_external/path": "uid://de4kb2kfewjcw"
+},
+"material_C0C6E8_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0C6E8_STN.tres",
+"use_external/path": "uid://dj563b2vd8cm"
+},
+"material_C0C710_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0C710_SND.tres",
+"use_external/path": "uid://b3xosskeb2lvu"
+},
+"material_C0EE4C_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0EE4C_SND.tres",
+"use_external/path": "uid://r3xinfxqrkgx"
+},
+"material_C0EE60_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0EE60_SND.tres",
+"use_external/path": "uid://dvsjqyraq1wp1"
+},
+"material_C0F904_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0F904_STN.tres",
+"use_external/path": "uid://bi35u650jfceb"
+},
+"material_C0F92C_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C0F92C_GRS.tres",
+"use_external/path": "uid://cbpj1th1i3v13"
+},
+"material_C10C24_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C10C24_STN.tres",
+"use_external/path": "uid://yoiwuepw3x0g"
+},
+"material_C10C60_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C10C60_STN.tres",
+"use_external/path": "uid://ciqqpkwkxbdl0"
+},
+"material_C18744_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C18744_WOD.tres",
+"use_external/path": "uid://vh0hr3ro0rcb"
+},
+"material_C18758_MTL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C18758_MTL.tres",
+"use_external/path": "uid://bjgrh62mfm7hf"
+},
+"material_C1876C_CON": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C1876C_CON.tres",
+"use_external/path": "uid://bpiijcc8l3elt"
+},
+"material_C18780_CON": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C18780_CON.tres",
+"use_external/path": "uid://cad5d5d1qsl00"
+},
+"material_C1ACA8_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/Materials/material_C1ACA8_FLR.tres",
+"use_external/path": "uid://4x1s6hk7ss3"
+}
+},
+"nodes": {
+"PATH:EmeraldCoast_1": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_001": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_002": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_003": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_004": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_005": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_006": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_007": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_008": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_009": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_010": {
+"generate/physics": true
+},
+"PATH:EmeraldCoast_1_011": {
+"generate/physics": true
+},
+"PATH:PathCorrect_NOATTACH": {
+"generate/physics": true,
+"physics/layer": 64
+},
+"PATH:Separator_NOATTACH": {
+"generate/physics": true,
+"physics/layer": 64
+}
+}
+}
+blender/nodes/visible=0
+blender/nodes/active_collection_only=false
+blender/nodes/punctual_lights=true
+blender/nodes/cameras=true
+blender/nodes/custom_properties=true
+blender/nodes/modifiers=1
+blender/meshes/vertex_colors=2
+blender/meshes/uvs=true
+blender/meshes/normals=true
+blender/meshes/export_geometry_nodes_instances=false
+blender/meshes/gpu_instances=false
+blender/meshes/tangents=true
+blender/meshes/skins=2
+blender/meshes/export_bones_deforming_mesh_only=false
+blender/materials/unpack_enabled=true
+blender/materials/export_materials=1
+blender/animation/limit_playback=true
+blender/animation/always_sample=true
+blender/animation/group_tracks=true
+gltf/naming_version=2
+gltf/texture_map_mode=0

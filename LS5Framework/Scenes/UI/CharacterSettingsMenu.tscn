@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CharacterSettingsMenu.gd" id="1_script"]
+
+[node name="CharacterSettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_script")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="Center" type="CenterContainer" parent="Dimmer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Dimmer/Center"]
+custom_minimum_size = Vector2(1120, 0)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Dimmer/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Dimmer/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Dimmer/Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Character Settings"
+horizontal_alignment = 1
+
+[node name="Tabs" type="TabContainer" parent="Dimmer/Center/Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Loadout" type="VBoxContainer" parent="Dimmer/Center/Panel/Margin/Content/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 12
+metadata/_tab_name = "Loadout Remapping"
+
+[node name="Hint" type="Label" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Loadout"]
+layout_mode = 2
+text = "Assign each modular ability to a generic input slot and activation gesture. Physical keys and controller buttons remain configured in Controls."
+autowrap_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Loadout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Loadout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="ConflictLabel" type="Label" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Loadout"]
+layout_mode = 2
+modulate = Color(1, 0.72, 0.3, 1)
+autowrap_mode = 2
+
+[node name="Routes" type="VBoxContainer" parent="Dimmer/Center/Panel/Margin/Content/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 12
+metadata/_tab_name = "Action Routing"
+
+[node name="Hint" type="Label" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Routes"]
+layout_mode = 2
+text = "Route inputs and action lifecycle events into other modular abilities. Ability input sources follow their current loadout assignments."
+autowrap_mode = 2
+
+[node name="AddRouteButton" type="Button" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Routes"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Add Route"
+
+[node name="Scroll" type="ScrollContainer" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Routes"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="Dimmer/Center/Panel/Margin/Content/Tabs/Routes/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Footer" type="HBoxContainer" parent="Dimmer/Center/Panel/Margin/Content"]
+layout_mode = 2
+alignment = 2
+theme_override_constants/separation = 12
+
+[node name="ResetButton" type="Button" parent="Dimmer/Center/Panel/Margin/Content/Footer"]
+layout_mode = 2
+text = "Restore Loadout Defaults"
+
+[node name="ResetRoutesButton" type="Button" parent="Dimmer/Center/Panel/Margin/Content/Footer"]
+layout_mode = 2
+text = "Restore Routing Defaults"
+
+[node name="CloseButton" type="Button" parent="Dimmer/Center/Panel/Margin/Content/Footer"]
+layout_mode = 2
+text = "Close"

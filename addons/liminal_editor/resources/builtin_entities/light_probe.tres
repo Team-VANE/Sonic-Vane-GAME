@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://bmmfuuws6xq6p"]
+
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="1_2id8i"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="2_8vmf7"]
+
+[resource]
+script = ExtResource("2_8vmf7")
+entity_name = "light_probe"
+identifier = "LightmapProbe"
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

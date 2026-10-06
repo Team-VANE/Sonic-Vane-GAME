@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bah560t0bj33t"
+path="res://.godot/imported/Insult_NotCool_02.ogg-ff6d5ef713a3e39f72511b5a13a3b497.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_NotCool_02.ogg"
+dest_files=["res://.godot/imported/Insult_NotCool_02.ogg-ff6d5ef713a3e39f72511b5a13a3b497.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

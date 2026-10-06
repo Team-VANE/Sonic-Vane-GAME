@@ -1,0 +1,645 @@
+[gd_scene format=3 uid="uid://dly2us572gvv0"]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="1_i62wg"]
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="1_rc8ud"]
+[ext_resource type="Script" uid="uid://ds5kvbpmvq3ds" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightProfile.gd" id="2_ftc5c"]
+[ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="2_r68ua"]
+[ext_resource type="AudioStream" uid="uid://ccir36fnnhaga" path="res://LS5Framework/Sounds/Music/08 - HIGH AND BROKEN.mp3" id="3_h0nvc"]
+[ext_resource type="PackedScene" uid="uid://pxj5ncd7a7f7" path="res://LS5Framework/Scenes/Levels/AeroGarden/aero_garden_mesh.tscn" id="3_h67nk"]
+[ext_resource type="Script" uid="uid://bjqfip2tur0i0" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightWeather.gd" id="3_x7atd"]
+[ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="4_d7n5k"]
+[ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="4_ihbxp"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="4_t48is"]
+[ext_resource type="AudioStream" uid="uid://dxavnsgfcvjbx" path="res://LS5Framework/Sounds/Music/ChrisSenn-EmeraldClouds.ogg" id="5_2idqw"]
+[ext_resource type="PackedScene" uid="uid://c12m0rampjump" path="res://LS5Framework/Objects/Ramps/JumpPanelRamp.tscn" id="6_2idqw"]
+[ext_resource type="PackedScene" uid="uid://by35k35q3p0d1" path="res://LS5Framework/Objects/Rail/Rail.tscn" id="10_45bcy"]
+[ext_resource type="PackedScene" uid="uid://crm288go70sj3" path="res://LS5Framework/Objects/Spring/DashRing.tscn" id="10_s3bf4"]
+[ext_resource type="Texture2D" uid="uid://ddvmsaux20gfe" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_23.jpg" id="11_j4v2v"]
+[ext_resource type="PackedScene" uid="uid://bswvitj3v4stb" path="res://LS5Framework/Objects/Rail/RailBooster.tscn" id="11_olunl"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="11_t48is"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="12_dftnh"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="13_eq5tt"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="14_olunl"]
+[ext_resource type="PackedScene" uid="uid://e1tkwisehr5p" path="res://LS5Framework/Objects/DashPanels/DashPanel.tscn" id="15_o6lti"]
+[ext_resource type="PackedScene" uid="uid://yt1f44l0qcs0" path="res://LS5Framework/Objects/Camera/CameraOverrideVolume.tscn" id="16_iydqp"]
+[ext_resource type="PackedScene" uid="uid://bf2o7d3qsovh6" path="res://LS5Framework/Objects/Automation/AutomationSpline.tscn" id="17_lpi2t"]
+[ext_resource type="PackedScene" uid="uid://cyglqqs3uhsy0" path="res://LS5Framework/Objects/Camera/CameraConstraint.tscn" id="18_ps2wp"]
+[ext_resource type="PackedScene" uid="uid://dab7ow5oahfhc" path="res://LS5Framework/Objects/Homing/HomingTarget.tscn" id="19_27jgf"]
+[ext_resource type="PackedScene" uid="uid://ghucsw5061eo" path="res://LS5Framework/Objects/Gameplay/DeathPlane.tscn" id="20_c1asd"]
+[ext_resource type="PackedScene" uid="uid://b2jkv0kca2k6q" path="res://LS5Framework/Objects/Rings/RingSpline.tscn" id="21_jmllb"]
+
+[sub_resource type="Gradient" id="Gradient_eq5tt"]
+offsets = PackedFloat32Array(0.35029355)
+colors = PackedColorArray(0.09328576, 0.21435475, 0.49166715, 1)
+
+[sub_resource type="Curve" id="Curve_5y65v"]
+_data = [Vector2(0, 0.38), 0.0, 0.0, 0, 0, Vector2(0.2, 0.42), 0.0, 0.0, 0, 0, Vector2(0.3, 0.76), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 0.76), 0.0, 0.0, 0, 0, Vector2(0.8, 0.42), 0.0, 0.0, 0, 0, Vector2(1, 0.38), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Gradient" id="Gradient_nujg0"]
+offsets = PackedFloat32Array(0, 0.08774584, 0.2193646, 0.5, 0.80181545, 0.8804841, 1)
+colors = PackedColorArray(0.18, 0.22, 0.34, 1, 1.1, 0.36, 0.16, 1, 1, 0.82, 0.66, 1, 1, 0.98, 0.94, 1, 1, 0.82, 0.66, 1, 1.05, 0.3, 0.13, 1, 0.18, 0.22, 0.34, 1)
+
+[sub_resource type="Gradient" id="Gradient_44y4x"]
+offsets = PackedFloat32Array(0, 0.290469, 0.42208776, 0.5, 0.5869894, 1)
+colors = PackedColorArray(0.009657698, 0.013515849, 0.0322028, 1, 0.06, 0.08, 0.14, 1, 0.27, 0.3, 0.38, 1, 0.34, 0.4, 0.5, 1, 0.06, 0.08, 0.14, 1, 0.019968132, 0.027939206, 0.06244079, 1)
+
+[sub_resource type="Gradient" id="Gradient_2fuwv"]
+offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.5, 0.65, 0.73, 0.8, 1)
+colors = PackedColorArray(0.035, 0.05, 0.11, 1, 0.05, 0.075, 0.15, 1, 0.55, 0.18, 0.09, 1, 0.52, 0.68, 0.9, 1, 0.6048, 0.7528, 0.96, 1, 0.52, 0.68, 0.9, 1, 0.52, 0.14, 0.07, 1, 0.05, 0.075, 0.15, 1, 0.035, 0.05, 0.11, 1)
+
+[sub_resource type="Curve" id="Curve_4kwc5"]
+_limits = [0.0, 0.01, 0.0, 1.0]
+_data = [Vector2(0, 0.00032), 0.0, 0.0, 0, 0, Vector2(0.24, 0.0005), 0.0, 0.0, 0, 0, Vector2(0.36, 0.0002), 0.0, 0.0, 0, 0, Vector2(0.64, 0.0002), 0.0, 0.0, 0, 0, Vector2(0.76, 0.0005), 0.0, 0.0, 0, 0, Vector2(1, 0.00032), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Curve" id="Curve_gfl2m"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.22, 0), 0.0, 0.0, 0, 0, Vector2(0.28, 0.48), 0.0, 0.0, 0, 0, Vector2(0.38, 0.16), 0.0, 0.0, 0, 0, Vector2(0.62, 0.16), 0.0, 0.0, 0, 0, Vector2(0.72, 0.48), 0.0, 0.0, 0, 0, Vector2(0.78, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Gradient" id="Gradient_ifxxm"]
+offsets = PackedFloat32Array(0, 0.26928896, 1)
+colors = PackedColorArray(0.16867894, 0.3101061, 0.6158878, 1, 0.5062106, 0.74976903, 1.049999, 1, 0.35856855, 0.4850582, 0.76295394, 1)
+
+[sub_resource type="Gradient" id="Gradient_x2lkb"]
+offsets = PackedFloat32Array(0, 0.2, 0.28, 0.72, 0.8, 1)
+colors = PackedColorArray(0.62, 0.72, 0.95, 1, 0.68, 0.76, 0.98, 1, 0.55, 0.63, 0.78, 1, 0.55, 0.63, 0.78, 1, 0.68, 0.76, 0.98, 1, 0.62, 0.72, 0.95, 1)
+
+[sub_resource type="Curve" id="Curve_8xbgl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.2, 0.9), 0.0, 0.0, 0, 0, Vector2(0.28, 0), 0.0, 0.0, 0, 0, Vector2(0.72, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 0.9), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Curve" id="Curve_rv457"]
+_data = [Vector2(0, 0.24), 0.0, 0.0, 0, 0, Vector2(0.2, 0.28), 0.0, 0.0, 0, 0, Vector2(0.28, 0.65), 0.0, 0.0, 0, 0, Vector2(0.36, 1), 0.0, 0.0, 0, 0, Vector2(0.64, 1), 0.0, 0.0, 0, 0, Vector2(0.72, 0.65), 0.0, 0.0, 0, 0, Vector2(0.8, 0.28), 0.0, 0.0, 0, 0, Vector2(1, 0.24), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Curve" id="Curve_awis5"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.19, 1), 0.0, 0.0, 0, 0, Vector2(0.28, 0), 0.0, 0.0, 0, 0, Vector2(0.72, 0), 0.0, 0.0, 0, 0, Vector2(0.81, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Gradient" id="Gradient_wihol"]
+offsets = PackedFloat32Array(0, 0.225, 0.27, 0.35, 0.5, 0.65, 0.73, 0.775, 1)
+colors = PackedColorArray(0.2, 0.24, 0.32, 1, 0.95, 0.22, 0.055, 1, 1, 0.48, 0.16, 1, 1, 0.78, 0.52, 1, 1, 0.94, 0.82, 1, 1, 0.78, 0.52, 1, 1, 0.42, 0.12, 1, 0.85, 0.16, 0.04, 1, 0.2, 0.24, 0.32, 1)
+
+[sub_resource type="Curve" id="Curve_hga6m"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.22, 0), 0.0, 0.0, 0, 0, Vector2(0.27, 0.32), 0.0, 0.0, 0, 0, Vector2(0.34, 0.82), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.66, 0.82), 0.0, 0.0, 0, 0, Vector2(0.73, 0.32), 0.0, 0.0, 0, 0, Vector2(0.78, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 9
+
+[sub_resource type="Gradient" id="Gradient_a3gdf"]
+offsets = PackedFloat32Array(0, 0.3, 0.5, 0.7, 0.76, 0.82, 1)
+colors = PackedColorArray(0.012, 0.025, 0.065, 1, 0.15846297, 0.3809507, 0.88010114, 1, 0.20641851, 0.4393055, 0.9526989, 1, 0.09, 0.27, 0.68, 1, 0.07, 0.12, 0.27, 1, 0.025, 0.055, 0.135, 1, 0.012, 0.025, 0.065, 1)
+
+[sub_resource type="Resource" id="Resource_m2ekc"]
+script = ExtResource("2_ftc5c")
+ground_color = Color(0, 0.22253099, 0.5891042, 1)
+ground_visibility = 0.0
+rayleigh_strength = 1.65
+mie_strength = 1.236
+mie_eccentricity = 0.23
+turbidity = 18.1
+sun_angular_diameter_degrees = 2.3699999999999997
+moon_disk_intensity = 9.78
+sun_energy_scale = 1.82
+moon_energy_scale = 0.171
+sky_energy_scale = 1.14
+ambient_energy_scale = 1.28
+zenith_color = SubResource("Gradient_a3gdf")
+horizon_color = SubResource("Gradient_ifxxm")
+sun_color = SubResource("Gradient_wihol")
+moon_color = SubResource("Gradient_x2lkb")
+ambient_color = SubResource("Gradient_eq5tt")
+fog_color = SubResource("Gradient_2fuwv")
+cloud_light_color = SubResource("Gradient_nujg0")
+cloud_shadow_color = SubResource("Gradient_44y4x")
+sun_energy = SubResource("Curve_hga6m")
+moon_energy = SubResource("Curve_8xbgl")
+sky_energy = SubResource("Curve_rv457")
+ambient_energy = SubResource("Curve_5y65v")
+star_visibility = SubResource("Curve_awis5")
+fog_density = SubResource("Curve_4kwc5")
+fog_sun_scatter = SubResource("Curve_gfl2m")
+
+[sub_resource type="Resource" id="Resource_tojsi"]
+script = ExtResource("3_x7atd")
+cloud_coverage = 0.6
+cloud_density = 1.0
+cloud_softness = 0.42
+cloud_scale = 7.66
+cloud_detail = 1.04
+cloud_light_absorption = 0.39
+lower_layer_height = 0.051
+upper_layer_amount = 0.62
+upper_layer_height = 0.154
+upper_layer_scale = 0.61
+distance_fade_start = 0.22
+distance_fade_end = 0.94
+distance_haze_strength = 1.0
+below_horizon_visibility = 1.0
+below_horizon_fade_depth = 1.0
+wind_direction = Vector2(1, -0.28)
+wind_speed = 0.7484
+overcast_light_multiplier = 0.91
+overcast_ambient_multiplier = 1.65
+fog_density_multiplier = 7.13
+saturation_multiplier = 1.12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t48is"]
+resource_local_to_scene = true
+shader = ExtResource("4_t48is")
+shader_parameter/sun_direction = Vector3(0.07745165, 0.9948454, 0.06545171)
+shader_parameter/moon_direction = Vector3(-0.143383, -0.98222184, -0.12116802)
+shader_parameter/zenith_color = Color(0.20254211, 0.4345885, 0.9468306, 1)
+shader_parameter/horizon_color = Color(0.46286136, 0.67204714, 0.9657196, 1)
+shader_parameter/ground_color = Color(0, 0.22253099, 0.5891042, 1)
+shader_parameter/ground_visibility = 0.0
+shader_parameter/sun_color = Color(1, 0.92275554, 0.7876667, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(1, 0.9707828, 0.92386997, 1)
+shader_parameter/cloud_shadow_color = Color(0.32547513, 0.37925017, 0.47510022, 1)
+shader_parameter/rayleigh_strength = 1.65
+shader_parameter/mie_strength = 1.236
+shader_parameter/mie_eccentricity = 0.23
+shader_parameter/turbidity = 18.1
+shader_parameter/sun_angular_radius = 0.020682151636132802
+shader_parameter/sun_disk_intensity = 18.0
+shader_parameter/moon_angular_radius = 0.004537856055185257
+shader_parameter/moon_disk_intensity = 9.78
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.6
+shader_parameter/cloud_density = 1.0
+shader_parameter/cloud_softness = 0.42
+shader_parameter/cloud_scale = 7.66
+shader_parameter/cloud_detail = 1.04
+shader_parameter/cloud_light_absorption = 0.39
+shader_parameter/cloud_volume_depth = 0.0
+shader_parameter/cloud_volume_steps = 1
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 0.0
+shader_parameter/cloud_edge_light_strength = 1.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.051
+shader_parameter/upper_layer_amount = 0.62
+shader_parameter/upper_layer_height = 0.154
+shader_parameter/upper_layer_scale = 0.61
+shader_parameter/upper_layer_wind_multiplier = 1.45
+shader_parameter/distance_fade_start = 0.22
+shader_parameter/distance_fade_end = 0.94
+shader_parameter/distance_haze_strength = 1.0
+shader_parameter/above_horizon_clouds_enabled = true
+shader_parameter/below_horizon_clouds_enabled = true
+shader_parameter/below_horizon_visibility = 1.0
+shader_parameter/below_horizon_fade_depth = 1.0
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.72
+
+[sub_resource type="Sky" id="Sky_dftnh"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_t48is")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_eq5tt"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 1.14
+sky = SubResource("Sky_dftnh")
+ambient_light_source = 3
+ambient_light_color = Color(0.09328576, 0.21435475, 0.49166715, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 1.7792
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_min_cell_size = 0.9243164
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_aerial_perspective = 0.7
+fog_sky_affect = 0.35
+fog_height = -607.81
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0002
+volumetric_fog_albedo = Color(0.8904162, 0.91650736, 0.9408581, 1)
+volumetric_fog_emission = Color(0.17392367, 0.22725227, 0.34898388, 1)
+volumetric_fog_emission_energy = 0.0
+volumetric_fog_gi_inject = 1.46
+volumetric_fog_length = 412.05
+volumetric_fog_detail_spread = 2.378414
+volumetric_fog_ambient_inject = 1.55
+adjustment_enabled = true
+adjustment_saturation = 1.5559797
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwjsw"]
+albedo_color = Color(0.23319526, 0.5001385, 1.5229772, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s3bf4"]
+size = Vector3(41.040085, 6, 23.870415)
+
+[sub_resource type="PrismMesh" id="PrismMesh_0c5dn"]
+left_to_right = 0.0
+size = Vector3(3, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2idqw"]
+size = Vector3(26.118591, 33.963867, 206.10492)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5y65v"]
+render_priority = 0
+shader = ExtResource("11_t48is")
+shader_parameter/tex_flat = ExtResource("12_dftnh")
+shader_parameter/tex_glow = ExtResource("13_eq5tt")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 52.052
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h0nvc"]
+size = Vector3(52.86328, 23.474121, 20.675903)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4kwc5"]
+size = Vector3(52.86328, 23.474121, 20.675903)
+
+[sub_resource type="Curve3D" id="Curve3D_olunl"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, -27.43, 110.605, 3.7407637, 24.937347, -29.985535, 0, 0, -103.375, 0, 0, 59.26, 4.036625, 51.576996, 162.72302, 0, 0, -40.145, 0, 0, 121.34, -98.86899, -31.736664, 344.54004, 0, 0, 0, 0, 0, 0, 6.5266953, -71.26755, 602.5967),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6lti"]
+albedo_texture = ExtResource("11_j4v2v")
+uv1_scale = Vector3(1, 7.74, 1)
+uv1_offset = Vector3(0, 0.54, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o6lti"]
+size = Vector3(12, 3.98938, 5.0271606)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nujg0"]
+resource_local_to_scene = true
+radius = 6.0
+
+[sub_resource type="Curve3D" id="Curve3D_44y4x"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2fuwv"]
+resource_local_to_scene = true
+radius = 6.0
+
+[sub_resource type="Curve3D" id="Curve3D_4kwc5"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gfl2m"]
+resource_local_to_scene = true
+
+[sub_resource type="Curve3D" id="Curve3D_ifxxm"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_x2lkb"]
+resource_local_to_scene = true
+
+[sub_resource type="Curve3D" id="Curve3D_8xbgl"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rv457"]
+resource_local_to_scene = true
+
+[sub_resource type="Curve3D" id="Curve3D_awis5"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wihol"]
+resource_local_to_scene = true
+
+[sub_resource type="Curve3D" id="Curve3D_hga6m"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_a3gdf"]
+resource_local_to_scene = true
+height = 5.0718994
+radius = 1.4550781
+
+[sub_resource type="Curve3D" id="Curve3D_m2ekc"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dftnh"]
+size = Vector3(18.068039, 6.2976074, 4.926178)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lpi2t"]
+size = Vector3(95, 67, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ps2wp"]
+size = Vector3(140, 106, 140)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c1asd"]
+size = Vector3(49.176514, 55.982178, 37.589844)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jmllb"]
+size = Vector3(140, 132.6416, 140)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iydqp"]
+size = Vector3(95, 67, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_27jgf"]
+size = Vector3(140, 106, 140)
+
+[sub_resource type="Curve3D" id="Curve3D_ps2wp"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 204.915, 39.025, 17.465, 0, 2.1526794, 0, -90.825, -24.89, 22.21, 83.615, 36.15, -11.77, 262.53223, 106.21161, -160.11478, 25.17, -7.94, -18.015, -34.935, 14.36, 18.34, 313.13074, 154.14857, -85.46619, 0, -10.345, 38.92, 0, 0.395, 0, 247.57837, 183.46269, -136.17989, -198.495, 24.79, 37.05, 0, 0, 0, 439.7224, 199.44437, -300.05234, -52.165, 0, -15.085, 0, 0, 0, 550.66003, 190.13873, -296.43826),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hhdxj"]
+size = Vector3(408.1463, 159.58075, 223.96294)
+
+[sub_resource type="Curve3D" id="Curve3D_lpi2t"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 220.665, -11.16, -78.355, -36.090744, 112.95197, -50.513794, -148.015, 19.265, -75.71, 0, 0, 0, 439.5937, 60.500496, 2.9363124),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8k4c3"]
+size = Vector3(501.00018, 119.58969, 134.6305)
+
+[sub_resource type="Curve3D" id="Curve3D_27jgf"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 36.875, -3.645, 24, 97.04166, 53.143257, -78.4196, -42.205, 39.405, -108.34, 26.72, -30.42, 152.365, 225.02739, 5.5227146, 58.36466, -44.42, 23.1, 151.545, 15.52, -16.725, -79.425, 82.38716, -73.92275, 40.47792, 13.31, 0, 0, 0, 0, 0, 230.30505, -88.9292, -120.08775),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i62wg"]
+size = Vector3(333.80893, 224.72522, 274.42288)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ftc5c"]
+size = Vector3(137, 96, 104)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x7atd"]
+size = Vector3(75.86511, 11.940384, 31.097351)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t48is"]
+size = Vector3(387.90204, 244.60117, 481.805)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nujg0"]
+size = Vector3(137, 96, 104)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_44y4x"]
+size = Vector3(6.610779, 13.386696, 16.112778)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2fuwv"]
+size = Vector3(206.53223, 244.60117, 261.5423)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4kwc5"]
+size = Vector3(6, 10.174484, 8.798691)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gfl2m"]
+size = Vector3(46.976013, 18.26178, 27.660034)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iuohy"]
+albedo_color = Color(1, 0.37046835, 0.64279974, 1)
+metallic = 0.85
+roughness = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_27jgf"]
+material = SubResource("StandardMaterial3D_iuohy")
+radius = 1.5
+height = 3.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x2lkb"]
+size = Vector3(350, 3, 350)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8xbgl"]
+size = Vector3(4234.438, 3, 5131.2354)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rv457"]
+size = Vector3(12000, 3, 12000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_awis5"]
+size = Vector3(4190.0605, 3, 4918.625)
+
+[sub_resource type="Curve3D" id="Curve3D_i62wg"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 16.79, 140.1, 162.06128, -28.566223, -15.009277, 0, 0, 0, 0, -2.735, 0, 35.03174, 9.391022, 150.21692, 0, 29.895, 194.575, 0, 12.31, 0, -140.40698, -38.490143, -23.274658),
+"tilts": PackedFloat32Array(0.7853982, 0.7853982, 0.7853982)
+}
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nydfv"]
+albedo_texture = ExtResource("11_j4v2v")
+uv1_scale = Vector3(1, 7.74, 1)
+uv1_offset = Vector3(0, 0.54, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eq5tt"]
+size = Vector3(6, 29.587036, 42.274292)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5y65v"]
+size = Vector3(52.639526, 51.869263, 50.07373)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ifxxm"]
+size = Vector3(11.516037, 2.3579102, 5.0271606)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wihol"]
+size = Vector3(7, 1, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hga6m"]
+size = Vector3(12, 4, 5.0271606)
+
+[sub_resource type="Curve3D" id="Curve3D_hhdxj"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72.02),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_jmllb"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72.02),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_wihol"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 14.54, 30.105, 0, 0, -21.89, 0, 14.4, -46.97, 0, 0, 0, 0, 0, 125.655),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_t48is"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 4.83, 9.4, 0, 0, -13.96, 0, 5.555, -8.49, 0, 0, 0, 0, 0, 25.933),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_8k4c3"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 150, 0, 0, 0, -191.935, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="AeroGarden" type="Node3D" unique_id=141954137]
+
+[node name="Lights" type="Node3D" parent="." unique_id=1393460621]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.446808, 68.01083, -58.525085)
+
+[node name="MiddayLight_1" type="DirectionalLight3D" parent="Lights" unique_id=194780236]
+transform = Transform3D(0.39408627, 0.7036694, -0.59122354, -2.5097407e-08, 0.6432822, 0.76562923, 0.91907346, -0.30172396, 0.2535087, 0, 25.784826, 0)
+visible = false
+light_color = Color(0.6243515, 0.6974201, 0.731047, 1)
+light_energy = 1.522
+light_indirect_energy = 1.747
+light_specular = 1.132
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="MiddayLight_2" type="DirectionalLight3D" parent="Lights" unique_id=1359366255]
+transform = Transform3D(-0.6297328, -0.26937833, 0.7286096, -0.08540182, 0.956271, 0.27973604, -0.7721031, 0.11393443, -0.6252007, 133.81694, -164.48657, 67.86885)
+visible = false
+light_color = Color(0.8387106, 0.7019574, 0.49706048, 1)
+light_energy = 2.0
+light_indirect_energy = 5.25
+light_specular = 1.132
+shadow_enabled = true
+directional_shadow_mode = 0
+directional_shadow_fade_start = 0.87
+directional_shadow_max_distance = 220.0
+
+[node name="SunsetLight" type="DirectionalLight3D" parent="Lights" unique_id=230895712]
+transform = Transform3D(-0.25881913, 0.1393373, -0.9558232, -2.2239316e-16, 0.989541, 0.14425258, 0.9659258, 0.037335314, -0.256112, 0, 25.784826, 36)
+visible = false
+light_color = Color(0.80455923, 0.6951896, 0.58724815, 1)
+light_energy = 0.929
+light_indirect_energy = 1.747
+light_specular = 1.132
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="EnvironmentWeatherSystem" parent="Lights" unique_id=159668205 instance=ExtResource("1_i62wg")]
+environment_profile = SubResource("Resource_m2ekc")
+initial_time_of_day_hours = 11.073
+time_progression_enabled = false
+day_length_minutes = 8.0
+use_weather_presets = false
+initial_weather_id = &"scene"
+dynamic_weather_enabled = false
+precipitation_enabled = false
+persistent_weather_enabled = false
+weather_persistence_namespace = &"windyvalley"
+time_persistence_reference = "windyvalley"
+
+[node name="DayNightCycle" parent="Lights/EnvironmentWeatherSystem" index="0"]
+profile = SubResource("Resource_m2ekc")
+weather = SubResource("Resource_tojsi")
+time_of_day_hours = 11.612
+cycle_enabled = false
+fixed_scene_fog = true
+time_controls_fog = false
+sun_path_azimuth_degrees = -40.19999999999999
+
+[node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
+environment = SubResource("Environment_eq5tt")
+
+[node name="Sun" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="1" unique_id=370270526]
+transform = Transform3D(0.9969832, 0.005080236, 0.07745165, -0.07761808, 0.065254256, 0.9948454, 0, -0.9978558, 0.06545171, 0, 0, 0)
+light_color = Color(1, 0.92275554, 0.7876667, 1)
+light_energy = 1.7126114
+light_angular_distance = 2.37
+directional_shadow_split_1 = 0.122
+directional_shadow_split_2 = 0.249
+directional_shadow_split_3 = 0.56
+directional_shadow_blend_splits = true
+directional_shadow_fade_start = 0.754
+directional_shadow_max_distance = 414.7
+directional_shadow_pancake_size = 0.0
+
+[node name="Moon" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="2" unique_id=1577357035]
+transform = Transform3D(-0.9895125, 0.01750239, -0.143383, 0.14444727, 0.11989727, -0.98222184, 0, -0.9926321, -0.12116802, 0, 0, 0)
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1081310151]
+script = ExtResource("1_rc8ud")
+downwarp_enabled = true
+
+[node name="PlayerBox" type="CSGBox3D" parent="." unique_id=1539746332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 160.80511, 0.38155317)
+size = Vector3(1, 2.7050781, 1)
+material = SubResource("StandardMaterial3D_xwjsw")
+
+[node name="Level" type="Node3D" parent="." unique_id=1124568987]
+
+[node name="AeroGarden" parent="Level" unique_id=1851461814 instance=ExtResource("3_h67nk")]
+transform = Transform3D(48, 0, 0, 0, 48, 0, 0, 0, 48, 0, 0, 0)
+metadata/_edit_lock_ = true
+
+[node name="LevelMusic" type="Node3D" parent="." unique_id=1040506208]
+script = ExtResource("4_d7n5k")
+autoplay_stream = ExtResource("5_2idqw")
+autoplay_fade_in = 0.1
+
+[node name="Objects" type="Node3D" parent="." unique_id=1136700385]
+
+[node name="JumpPanelRamp" parent="Objects" unique_id=1925311467 instance=ExtResource("6_2idqw")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5687.03, -1973.0887, 1.1847768)
+forward_speed = 130.0
+up_speed = 83.0
+hold_forward_time = 1.5
+movement_lock_time = 2.0
+action_lock_time = 2.0
+
+[node name="CollisionShape3D" parent="Objects/JumpPanelRamp" index="0" unique_id=641640871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5402006, 2.7000732, -4.1533203)
+shape = SubRe

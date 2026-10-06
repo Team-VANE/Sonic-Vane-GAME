@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cnk410nxgnjcw"
+path="res://.godot/imported/Bump_06.wav-0273261f907ecbfd14d20b7247ca5d0e.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Bump_06.wav"
+dest_files=["res://.godot/imported/Bump_06.wav-0273261f907ecbfd14d20b7247ca5d0e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

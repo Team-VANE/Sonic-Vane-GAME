@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://oplg3m5cepxa"]
+
+[node name="RingParticle" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]

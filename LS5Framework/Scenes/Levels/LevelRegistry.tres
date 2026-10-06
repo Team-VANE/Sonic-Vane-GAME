@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LevelPackManifest" load_steps=2 format=3 uid="uid://048l0vfyn8qn"]
+
+[ext_resource type="Script" uid="uid://c2mrixwgjjkff" path="res://LS5Framework/Scripts/World/LevelPackManifest.gd" id="1_level_pack_manifest"]
+
+[resource]
+script = ExtResource("1_level_pack_manifest")
+pack_id = "base"
+level_docs = Array[String](["res://LS5Framework/Scenes/Levels/LVL_CityEscape.tres", "res://LS5Framework/Scenes/Levels/LVL_EmeraldCoast.tres", "res://LS5Framework/Scenes/Levels/LVL_FinalEgg.tres", "res://LS5Framework/Scenes/Levels/LVL_GreenHillCanyon.tres", "res://LS5Framework/Scenes/Levels/LVL_GreenHillOcean.tres", "res://LS5Framework/Scenes/Levels/LVLTEST.tres", "res://LS5Framework/Scenes/Levels/LVL_AeroGarden.tres"])

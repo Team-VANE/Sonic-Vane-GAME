@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://dqmv5tb7t6p0q"]
+
+[ext_resource type="Script" uid="uid://ci1mmcmrxpf5g" path="res://LS5Framework/Effects/JumpBall/JumpBall.gd" id="1_jump_ball"]
+[ext_resource type="PackedScene" uid="uid://bitk7rls8riju" path="res://LS5Framework/Effects/JumpBall/JumpBall.glb" id="2_visual"]
+[ext_resource type="Shader" uid="uid://clv1mkthe7ndf" path="res://LS5Framework/Effects/JumpBall/JumpBall.gdshader" id="3_shader"]
+[ext_resource type="AnimationLibrary" path="res://LS5Framework/Effects/JumpBall/JumpBallAnimationLibrary.tres" id="4_anim_library"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jump_ball"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_shader")
+shader_parameter/jump_ball_color = Color(0.2, 0.8, 1, 0.72)
+shader_parameter/jump_ball_alpha = 0.0
+shader_parameter/tail_fade_strength = 0.0
+shader_parameter/tail_fade_axis = Vector3(0, 0, -1)
+shader_parameter/tail_fade_start = 0.18
+shader_parameter/tail_fade_length = 1.35
+shader_parameter/tail_min_alpha = 0.08
+shader_parameter/rim_strength = 0.22
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_basis"]
+animation = &"JumpBall/Ball_Basis"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_extrusion"]
+animation = &"JumpBall/Ball_Extrusion"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_jump_ball"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_basis")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_extrusion")
+blend_point_1/pos = 1.0
+min_space = 0.0
+sync = true
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_jump_ball"]
+nodes/output/position = Vector2(360, 60)
+nodes/JumpBallBlend/node = SubResource("AnimationNodeBlendSpace1D_jump_ball")
+nodes/JumpBallBlend/position = Vector2(40, 60)
+node_connections = [&"output", 0, &"JumpBallBlend"]
+
+[node name="JumpBall" type="Node3D" unique_id=1890085055]
+script = ExtResource("1_jump_ball")
+jump_ball_material = SubResource("ShaderMaterial_jump_ball")
+speed_for_full_tail_fade = 40.0
+heading_angle_offset_deg = 0.0
+tail_fade_length = 2.0
+
+[node name="Visual" parent="." unique_id=994195089 instance=ExtResource("2_visual")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=390181091]
+root_node = NodePath("../Visual")
+libraries/JumpBall = ExtResource("4_anim_library")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=609296481]
+root_node = NodePath("../Visual")
+tree_root = SubResource("AnimationNodeBlendTree_jump_ball")
+anim_player = NodePath("../AnimationPlayer")
+parameters/JumpBallBlend/blend_position = 0.0

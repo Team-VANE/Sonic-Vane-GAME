@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://b6t3r2nak1q0p"]
+
+[ext_resource type="Script" uid="uid://dr81mdvvdkdr8" path="res://LS5Framework/Objects/Terminal/Terminal.gd" id="1_terminal"]
+[ext_resource type="AudioStream" uid="uid://cpfhlp4dckfnh" path="res://LS5Framework/Sounds/Objects/Terminal_Idle.ogg" id="2_4wmnd"]
+[ext_resource type="PackedScene" uid="uid://cl7c1iu4xvpq7" path="res://LS5Framework/Objects/Gameplay/GazeTarget.tscn" id="3_4wmnd"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_terminal"]
+size = Vector3(7, 4.5, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fr2og"]
+albedo_color = Color(0.556953, 0.556953, 0.556953, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4wmnd"]
+size = Vector3(6.3, 4.05, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8muaa"]
+albedo_color = Color(1.1326848, 1.3990892, 1.6028101, 1)
+metallic = 0.87
+metallic_specular = 0.89
+roughness = 0.82
+emission_enabled = true
+emission = Color(0.8238874, 0.85291636, 0.9150143, 1)
+emission_energy_multiplier = 3.74
+
+[sub_resource type="BoxMesh" id="BoxMesh_fr2og"]
+size = Vector3(5.6, 3.6, 0.665)
+
+[sub_resource type="SphereShape3D" id="SphereShape_terminal"]
+radius = 5.0
+
+[node name="Terminal" type="Node3D" unique_id=107229639]
+script = ExtResource("1_terminal")
+idle_sound = ExtResource("2_4wmnd")
+
+[node name="Visual" type="Node3D" parent="." unique_id=701101439]
+
+[node name="Body" type="MeshInstance3D" parent="Visual" unique_id=574412278]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6050553, -2.3662415)
+mesh = SubResource("BoxMesh_terminal")
+surface_material_override/0 = SubResource("StandardMaterial3D_fr2og")
+
+[node name="Body3" type="MeshInstance3D" parent="Visual" unique_id=1198818540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6050553, -2.3204865)
+mesh = SubResource("BoxMesh_4wmnd")
+surface_material_override/0 = SubResource("StandardMaterial3D_8muaa")
+
+[node name="Body2" type="MeshInstance3D" parent="Visual" unique_id=702633259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6050553, -2.7126145)
+mesh = SubResource("BoxMesh_fr2og")
+surface_material_override/0 = SubResource("StandardMaterial3D_fr2og")
+
+[node name="InteractArea" type="Area3D" parent="." unique_id=1316950401]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea" unique_id=1501673783]
+shape = SubResource("SphereShape_terminal")
+
+[node name="IdleAudio" type="AudioStreamPlayer3D" parent="." unique_id=2020434507]
+autoplay = true
+max_distance = 30.0
+bus = &"SFX"
+
+[node name="InteractAudio" type="AudioStreamPlayer3D" parent="." unique_id=1746563110]
+bus = &"SFX"
+
+[node name="GazeTarget" parent="." unique_id=1519721248 instance=ExtResource("3_4wmnd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8333793, -2.3874726)
+gaze_max_distance = 12.0

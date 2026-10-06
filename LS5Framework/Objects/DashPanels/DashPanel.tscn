@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://e1tkwisehr5p"]
+
+[ext_resource type="Script" uid="uid://c5gp8noh0icuw" path="res://LS5Framework/Objects/DashPanels/DashPanel.gd" id="1_6b4pv"]
+[ext_resource type="AudioStream" uid="uid://v53dxrkdnign" path="res://LS5Framework/Sounds/Objects/DashPanel.wav" id="2_yf8o2"]
+[ext_resource type="PackedScene" uid="uid://cq7gyi4vlbgh1" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/DashPanelMesh.tscn" id="3_minmf"]
+[ext_resource type="Script" uid="uid://ih5b0ix1xrej" path="res://LS5Framework/Scripts/EmissionBlink.gd" id="4_4tnew"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yf8o2"]
+size = Vector3(5, 1, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yf8o2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_minmf"]
+albedo_color = Color(0.21104747, 0.4728089, 0.87333727, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_minmf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cap"]
+albedo_color = Color(0.72, 0.08, 0.04, 1)
+metallic = 0.6
+roughness = 0.3
+
+[sub_resource type="SphereMesh" id="SphereMesh_8ijlt"]
+material = SubResource("StandardMaterial3D_cap")
+radius = 1.0
+height = 2.0
+radial_segments = 24
+rings = 12
+
+[node name="DashPanel" type="Area3D" unique_id=1418350663 node_paths=PackedStringArray("sfx_player")]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_6b4pv")
+min_additive_launch_speed = 10.0
+sfx_player = NodePath("AudioStreamPlayer3D")
+dash_sounds = Array[AudioStream]([ExtResource("2_yf8o2")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1646361553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_yf8o2")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TempMesh" type="MeshInstance3D" parent="." unique_id=294809374]
+transform = Transform3D(2.5, 0, 0, 0, 0.333, 0, 0, 0, 3.75, 0, 0.13, 0)
+visible = false
+mesh = SubResource("BoxMesh_yf8o2")
+surface_material_override/0 = SubResource("StandardMaterial3D_minmf")
+metadata/_uniform_size_base_position = Vector3(0, 0.13, 0)
+metadata/_uniform_size_base_scale = Vector3(2.5, 0.333, 3.75)
+
+[node name="TempMesh2" type="MeshInstance3D" parent="." unique_id=955308747]
+transform = Transform3D(2.5, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, 0.43887413, -1.3630276)
+visible = false
+mesh = SubResource("BoxMesh_minmf")
+surface_material_override/0 = SubResource("StandardMaterial3D_minmf")
+metadata/_uniform_size_base_position = Vector3(0, 0.43887413, -1.3630276)
+metadata/_uniform_size_base_scale = Vector3(2.5, 0.3, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1840417855]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1324056182]
+max_db = 0.2
+max_distance = 60.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+
+[node name="Mesh" type="Node3D" parent="." unique_id=107706107]
+
+[node name="DashPanelMesh" parent="Mesh" unique_id=1210066314 instance=ExtResource("3_minmf")]
+transform = Transform3D(-3.059797e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, -3.059797e-08, 0, 0.021169916, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0.021169916, 0)
+metadata/_uniform_size_base_scale = Vector3(0.7, 0.7, 0.7)
+
+[node name="LeftCap" type="MeshInstance3D" parent="Mesh" unique_id=1650063905]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -1.0771878, 0.20250002, -1.4175001)
+mesh = SubResource("SphereMesh_8ijlt")
+
+[node name="RightCap" type="MeshInstance3D" parent="Mesh" unique_id=1308263881]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 1.077, 0.203, -1.418)
+mesh = SubResource("SphereMesh_8ijlt")
+
+[node name="CapEmissionBlink" type="Node" parent="Mesh" unique_id=662063471]
+script = ExtResource("4_4tnew")
+target_paths = Array[NodePath]([NodePath("../LeftCap"), NodePath("../RightCap")])
+emission_color = Color(0.99999934, 0.796872, 0.7649625, 1)
+cycle_duration = 0.5

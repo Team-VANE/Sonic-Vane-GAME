@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://c5gr2xrmhumi6"]
+
+[ext_resource type="PackedScene" uid="uid://byxgtstu6dr8y" path="res://LS5Framework/Objects/Reference/Sonic_NeoAdventure_REF.glb" id="1_gck1h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gck1h"]
+albedo_color = Color(0, 1.1417737, 1.8247963, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vivr"]
+transparency = 1
+albedo_color = Color(0, 0.85, 0.8358334, 0.3372549)
+
+[node name="CharacterReference" type="Node3D" unique_id=971145136]
+
+[node name="Sonic_NeoAdventure_REF" parent="." unique_id=194952354 instance=ExtResource("1_gck1h")]
+
+[node name="Body" parent="Sonic_NeoAdventure_REF" index="0" unique_id=1218820235]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body2" parent="Sonic_NeoAdventure_REF" index="1" unique_id=1655383245]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body3" parent="Sonic_NeoAdventure_REF" index="2" unique_id=578320811]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body4" parent="Sonic_NeoAdventure_REF" index="3" unique_id=1584959142]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body5" parent="Sonic_NeoAdventure_REF" index="4" unique_id=145737576]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body6" parent="Sonic_NeoAdventure_REF" index="5" unique_id=85395472]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body7" parent="Sonic_NeoAdventure_REF" index="6" unique_id=427206464]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body8" parent="Sonic_NeoAdventure_REF" index="7" unique_id=1461836845]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="Body9" parent="Sonic_NeoAdventure_REF" index="8" unique_id=588190289]
+surface_material_override/0 = SubResource("StandardMaterial3D_gck1h")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=593437751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+radius = 1.0
+material = SubResource("StandardMaterial3D_1vivr")
+
+[editable path="Sonic_NeoAdventure_REF"]

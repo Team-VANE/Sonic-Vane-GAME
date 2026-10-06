@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/HUDItemNotifier.gd" id="1_notifier"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_power_up_bar"]
+bg_color = Color(0.018, 0.028, 0.065, 0.9)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2, 0.55, 1, 0.95)
+corner_radius_top_left = 20
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 20
+shadow_color = Color(0, 0, 0, 0.58)
+shadow_size = 10
+
+[node name="HUDItemNotifier" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_notifier")
+
+[node name="PowerUpBar" type="PanelContainer" parent="."]
+visible = false
+z_index = -1
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 128.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_power_up_bar")
+
+[node name="EntryLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

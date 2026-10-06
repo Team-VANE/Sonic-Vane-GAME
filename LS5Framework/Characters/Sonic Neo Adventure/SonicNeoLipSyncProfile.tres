@@ -1,0 +1,201 @@
+[gd_resource type="Resource" script_class="LipSyncProfile" format=3 uid="uid://bosx3dco55inh"]
+
+[ext_resource type="Script" uid="uid://ba45r8rof5ct8" path="res://addons/ls5_lipsync/runtime/lip_sync_pose.gd" id="1_ajlh1"]
+[ext_resource type="Animation" uid="uid://dii2nqxnpxfm3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_CONFUSED.res" id="2_ot8sq"]
+[ext_resource type="Animation" uid="uid://bjl276h0gcjcv" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_SURPRISE.res" id="3_3841m"]
+[ext_resource type="Animation" uid="uid://cfxkpbrysk13p" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_HAPPY.res" id="4_t7b2g"]
+[ext_resource type="Animation" uid="uid://b7tveyay3odb2" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_SMUG.res" id="5_3cw1n"]
+[ext_resource type="Animation" uid="uid://cbb1r8nj8otk8" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_ANGRY.res" id="6_s3dnp"]
+[ext_resource type="Animation" uid="uid://bl4klh1dfxmbq" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_SAD.res" id="7_xc0l6"]
+[ext_resource type="Animation" uid="uid://b43u2lt6djm86" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_BROWS_UP.res" id="8_3cw1n"]
+[ext_resource type="PackedScene" uid="uid://blqntntuqiitm" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure.glb" id="8_p4xrs"]
+[ext_resource type="Script" uid="uid://ch02memh80hmo" path="res://addons/ls5_lipsync/runtime/lip_sync_profile.gd" id="9_p2fnh"]
+[ext_resource type="Animation" uid="uid://d2sq53whwl3q8" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_BROWS_DOWN.res" id="9_s3dnp"]
+[ext_resource type="Animation" uid="uid://m7pc0c11fgg0" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_AE.res" id="10_satr8"]
+[ext_resource type="Animation" uid="uid://du0skqupxuu07" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_BROWS_SKEW_R.res" id="10_xc0l6"]
+[ext_resource type="Animation" uid="uid://bghr11syy28ql" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EXP_BROWS_SKEW_L.res" id="11_p4xrs"]
+[ext_resource type="Animation" uid="uid://cwp520q6y1vhm" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_Uh.res" id="11_wu700"]
+[ext_resource type="Animation" uid="uid://ib20qsx5ko0e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_Ch_J.res" id="12_jwpvn"]
+[ext_resource type="Animation" uid="uid://bs0gniv740yne" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_Th.res" id="13_txi45"]
+[ext_resource type="Animation" uid="uid://evdo1b0ubkql" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_F_V.res" id="14_rk4wq"]
+[ext_resource type="Animation" uid="uid://dq4qj2ptj5jj2" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_SILENT.res" id="15_6jw33"]
+[ext_resource type="Animation" uid="uid://ck8mqrnv3pmaf" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_B_M_P.res" id="16_s13ja"]
+[ext_resource type="Animation" uid="uid://bq8f5e2goqqdl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_T_L_D_N.res" id="17_m0tq4"]
+[ext_resource type="Animation" uid="uid://c23rf5e1gjppc" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_K_G_H_NG.res" id="18_ty4lu"]
+[ext_resource type="Animation" uid="uid://blpd8kbmypecr" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_R.res" id="19_fnxwr"]
+[ext_resource type="Animation" uid="uid://rot03f8pq8xf" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_S_Z.res" id="20_jb4rm"]
+[ext_resource type="Animation" uid="uid://lv2xvwxih41c" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_W_OO.res" id="21_nop45"]
+[ext_resource type="Animation" uid="uid://bo6t0yyb6c684" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_Oh.res" id="22_brbfl"]
+[ext_resource type="Animation" uid="uid://pujw7cm882lb" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_Ih.res" id="23_ev455"]
+[ext_resource type="Animation" uid="uid://c1y7hr25yexg1" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_EE.res" id="24_jdx0r"]
+[ext_resource type="Animation" uid="uid://bqwilrqk0gbup" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/VIS_Ah.res" id="25_d0lgd"]
+
+[sub_resource type="Resource" id="Resource_33svj"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_CONFUSED"
+animation = ExtResource("2_ot8sq")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_7l8du"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_SURPRISE"
+animation = ExtResource("3_3841m")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_402m2"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_HAPPY"
+animation = ExtResource("4_t7b2g")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_e8qiv"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_SMUG"
+animation = ExtResource("5_3cw1n")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_lpo51"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_ANGRY"
+animation = ExtResource("6_s3dnp")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_h3xnn"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_SAD"
+animation = ExtResource("7_xc0l6")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_qpb48"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_BROWS_UP"
+animation = ExtResource("8_3cw1n")
+spelling_patterns = PackedStringArray()
+metadata/_custom_type_script = "uid://ba45r8rof5ct8"
+
+[sub_resource type="Resource" id="Resource_rxpyx"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_BROWS_DOWN"
+animation = ExtResource("9_s3dnp")
+spelling_patterns = PackedStringArray()
+metadata/_custom_type_script = "uid://ba45r8rof5ct8"
+
+[sub_resource type="Resource" id="Resource_lobw2"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_BROWS_SKEW_R"
+animation = ExtResource("10_xc0l6")
+spelling_patterns = PackedStringArray()
+metadata/_custom_type_script = "uid://ba45r8rof5ct8"
+
+[sub_resource type="Resource" id="Resource_3ssj7"]
+script = ExtResource("1_ajlh1")
+id = &"EXP_BROWS_SKEW_L"
+animation = ExtResource("11_p4xrs")
+spelling_patterns = PackedStringArray()
+metadata/_custom_type_script = "uid://ba45r8rof5ct8"
+
+[sub_resource type="Resource" id="Resource_wxvqm"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_AE"
+animation = ExtResource("10_satr8")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_3q5ml"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_Uh"
+animation = ExtResource("11_wu700")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_dimf7"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_Ch_J"
+animation = ExtResource("12_jwpvn")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_qphp4"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_Th"
+animation = ExtResource("13_txi45")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_82ja4"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_F_V"
+animation = ExtResource("14_rk4wq")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_vpe3i"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_SILENT"
+animation = ExtResource("15_6jw33")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_1v5su"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_B_M_P"
+animation = ExtResource("16_s13ja")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_8w8hb"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_T_L_D_N"
+animation = ExtResource("17_m0tq4")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_x5stb"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_K_G_H_NG"
+animation = ExtResource("18_ty4lu")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_2tttj"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_R"
+animation = ExtResource("19_fnxwr")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_0863k"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_S_Z"
+animation = ExtResource("20_jb4rm")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_74704"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_W_OO"
+animation = ExtResource("21_nop45")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_ypgll"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_Oh"
+animation = ExtResource("22_brbfl")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_0s2b2"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_Ih"
+animation = ExtResource("23_ev455")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_dvsld"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_EE"
+animation = ExtResource("24_jdx0r")
+spelling_patterns = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_dvi0e"]
+script = ExtResource("1_ajlh1")
+id = &"VIS_Ah"
+animation = ExtResource("25_d0lgd")
+spelling_patterns = PackedStringArray()
+
+[resource]
+script = ExtResource("9_p2fnh")
+preview_scene = ExtResource("8_p4xrs")
+preview_distance = 2.5
+visemes = Array[ExtResource("1_ajlh1")]([SubResource("Resource_wxvqm"), SubResource("Resource_3q5ml"), SubResource("Resource_dimf7"), SubResource("Resource_qphp4"), SubResource("Resource_82ja4"), SubResource("Resource_vpe3i"), SubResource("Resource_1v5su"), SubResource("Resource_8w8hb"), SubResource("Resource_x5stb"), SubResource("Resource_2tttj"), SubResource("Resource_0863k"), SubResource("Resource_74704"), SubResource("Resource_ypgll"), SubResource("Resource_0s2b2"), SubResource("Resource_dvsld"), SubResource("Resource_dvi0e")])
+expressions = Array[ExtResource("1_ajlh1")]([SubResource("Resource_33svj"), SubResource("Resource_7l8du"), SubResource("Resource_402m2"), SubResource("Resource_e8qiv"), SubResource("Resource_lpo51"), SubResource("Resource_h3xnn"), SubResource("Resource_qpb48"), SubResource("Resource_rxpyx"), SubResource("Resource_lobw2"), SubResource("Resource_3ssj7")])
+viseme_bones = PackedStringArray("DEF-tongue", "DEF-tongue.001", "DEF-tongue.002", "DEF-Mouth_Bottom", "DEF-Mouth_Top", "DEF-Mouth_Bottom.R", "DEF-Mouth_Top.R", "DEF-Mouth.R", "DEF-Mouth_Bottom.L", "DEF-Mouth_Top.L", "DEF-Mouth.L", "DEF-teethBottom", "DEF-teethBottom.R", "DEF-teethBottom.L", "DEF-teethTop", "DEF-teethTop.L", "DEF-teethTop.R", "DEF-teethTop_Fang.R", "DEF-teethTop_Fang.L")
+expression_bones = PackedStringArray("DEF-brow", "DEF-brow.R", "DEF-browIn.R", "DEF-browOut.R", "DEF-brow.L", "DEF-browIn.L", "DEF-browOut.L", "ROT-quill_top.R", "DEF-quill_top.R", "DEF-quill_top.R.001", "DEF-quill_top.R.002", "ROT-quill_top.L", "DEF-quill_top.L", "DEF-quill_top.L.001", "DEF-quill_top.L.002", "DEF-browMuzzle.R", "DEF-browMuzzle.L", "DEF-tongue", "DEF-tongue.001", "DEF-tongue.002", "ROT-quill_bottom.R", "DEF-quill_bottom.R", "DEF-quill_bottom.R.001", "DEF-quill_bottom.R.002", "ROT-quill_mid", "DEF-quill_mid", "DEF-quill_mid.001", "DEF-quill_mid.002", "ROT-quill_bottom.L", "DEF-quill_bottom.L", "DEF-quill_bottom.L.001", "DEF-quill_bottom.L.002", "ROT-quill_top", "DEF-quill_top", "DEF-quill_top.001", "DEF-quill_top.002", "DEF-Mouth_Bottom", "DEF-Mouth_Top", "DEF-Mouth_Bottom.R", "DEF-Mouth_Top.R", "DEF-Mouth.R", "DEF-Mouth_Bottom.L", "DEF-Mouth_Top.L", "DEF-Mouth.L", "DEF-teethBottom", "DEF-teethBottom.R", "DEF-teethBottom.L", "DEF-teethTop", "DEF-teethTop.L", "DEF-teethTop.R", "DEF-teethTop_Fang.R", "DEF-teethTop_Fang.L", "DEF-Ear.L", "DEF-Ear.L.001", "DEF-Ear.R", "DEF-Ear.R.001")
+clip_paths = PackedStringArray("uid://uiprtey4o3rt", "uid://37edpih1fgtl", "uid://dh2syi1rumb1t", "uid://dds7cfit1ctox", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_05.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_06.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_07.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_08.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_09.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_10.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_11.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_12.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_13.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_14.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_15.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_16.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Action_17.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Anger_DangIt_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Anger_DangIt_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Anger_Growl_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Anger_Growl_06.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Anger_Oh_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Anger_Shoot_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Back_Always_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Back_DontCount_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Back_MissMe_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/BRB_Jif_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/BRB_OneSec_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/BRB_StayPut_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_05.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_06.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Bump_07.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Celebrate_Yes_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Cheer_JuicedUp_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Cheer_WayPast_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Confused_Huh_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Confused_Huh_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Confused_Uh_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Confused_Uh_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Death_Fall.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Death_No_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Exhaust_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Exhaust_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Exhaust_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Exhaust_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/FinishLine_JustMade_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Follow_FollowMe_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Follow_ShowYou_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Follow_ThisWay_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/GoodJob_DoIt_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/GoodJob_NiceOne_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Wait_AnyTime_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Wait_BetterGetGoing_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Wait_ComeOn_06.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_05.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_Up_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_Up_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Go_Up_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Happy_CantComplain_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Happy_FeelingGood_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Happy_Happening_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hello_LongTime_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hello_Shakin_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hello_SupBuddy_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hello_SupCuz_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/HereIGo.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_06.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_08.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_09.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_10.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_11.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_12.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_13.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_14.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_15.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_16.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_17.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Hup_18.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_NotCool_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_NotCool_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_Rare_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_Rare_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_Really_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_Really_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_Suitcase_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_Suitcase_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_WayPast_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Insult_WayPast_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Later_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/Later_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/LFR_GoEasy_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/LFR_UpFor_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/LFR_Wanna_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/LFR_Wanna_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/NeverMind_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/NeverMind_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/NeverMind_Changed_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/NeverMind_Changed_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/NeverMind_Nah_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_Exasperated_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_Exasperated_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_Exasperated_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_MmMm_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_MmMm_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_NahDude_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_Nah_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/No_UhUh_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/PowerUp_01.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/PowerUp_02.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/PowerUp_03.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/PowerUp_04.lipsync.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/LipSync/PowerUp_05.lipsync.tres")

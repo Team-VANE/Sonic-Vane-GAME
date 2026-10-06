@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://dvbqjy8cv7rs5"]
+
+[ext_resource type="Texture2D" uid="uid://1677d21esubu" path="res://LS5Framework/Scenes/Levels/Materials/Skies/kloofendal_48d_partly_cloudy_puresky_8k.exr" id="1_iotfd"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_l2wl7"]
+panorama = ExtResource("1_iotfd")
+
+[sub_resource type="Sky" id="Sky_2s6xl"]
+sky_material = SubResource("PanoramaSkyMaterial_l2wl7")
+
+[sub_resource type="Environment" id="Environment_ehpxi"]
+background_mode = 2
+sky = SubResource("Sky_2s6xl")
+sky_rotation = Vector3(0, -1.850049, 0)
+ambient_light_source = 3
+ambient_light_color = Color(0.08468992, 0.08468992, 0.08468992, 1)
+reflected_light_source = 2
+tonemap_mode = 4
+tonemap_exposure = 1.15
+tonemap_agx_contrast = 1.58
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+ssil_radius = 10.65
+sdfgi_enabled = true
+sdfgi_min_cell_size = 1.3076172
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.67
+glow_hdr_threshold = 0.27
+fog_enabled = true
+fog_light_color = Color(0.8015374, 0.8458886, 0.88698024, 1)
+fog_light_energy = 1.05
+fog_density = 0.0002
+fog_aerial_perspective = 0.931
+fog_height = -140.2
+fog_depth_curve = 1.4640837
+fog_depth_begin = 0.0
+fog_depth_end = 1511.7
+volumetric_fog_density = 0.0191
+volumetric_fog_albedo = Color(0.5864278, 0.71716243, 0.83381176, 1)
+volumetric_fog_emission = Color(0.32101145, 0.5073168, 0.6240778, 1)
+volumetric_fog_emission_energy = 0.7
+volumetric_fog_gi_inject = 1.66
+volumetric_fog_detail_spread = 2.1435473
+volumetric_fog_ambient_inject = 0.16
+volumetric_fog_sky_affect = 0.13
+adjustment_enabled = true
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_2va0m"]
+auto_exposure_scale = 0.6
+
+[sub_resource type="Compositor" id="Compositor_8blru"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=1025406150]
+environment = SubResource("Environment_ehpxi")
+camera_attributes = SubResource("CameraAttributesPhysical_2va0m")
+compositor = SubResource("Compositor_8blru")

@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://b2nrkiqgq11cr"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_e8rjs"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_fhah3"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_2xpx1"]
+
+[sub_resource type="Resource" id="Resource_arg01"]
+script = ExtResource("1_e8rjs")
+type = "arrow"
+euler = "90,0,0"
+bindings = {
+"color": "arrow_color",
+"length": "arrow_length"
+}
+
+[sub_resource type="Resource" id="Resource_arp01"]
+script = ExtResource("2_fhah3")
+name = "arrow_length"
+type = "float"
+default_value = 1.0
+
+[sub_resource type="Resource" id="Resource_arp02"]
+script = ExtResource("2_fhah3")
+name = "arrow_color"
+type = "Color"
+default_value = [1.0, 0.2, 0.2, 1.0]
+
+[resource]
+script = ExtResource("3_2xpx1")
+entity_name = "test_gizmo_arrow"
+description = "Test: arrow gizmo with euler rotation offset and bindable length and color"
+properties = Array[ExtResource("2_fhah3")]([SubResource("Resource_arp01"), SubResource("Resource_arp02")])
+gizmos = Array[ExtResource("1_e8rjs")]([SubResource("Resource_arg01")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

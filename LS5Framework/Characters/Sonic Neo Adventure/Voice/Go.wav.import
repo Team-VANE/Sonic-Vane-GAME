@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dwer51cvstd32"
+path="res://.godot/imported/Go.wav-3b0683a2c437317ac86456e87b2e9eb7.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Go.wav"
+dest_files=["res://.godot/imported/Go.wav-3b0683a2c437317ac86456e87b2e9eb7.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

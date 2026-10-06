@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="PlayerCharacterVisualProfile" format=3 uid="uid://cvxe1u503isqj"]
+
+[ext_resource type="Material" uid="uid://btouj0vckmd1a" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/ANVIL_EXPORT_Material_3.tres" id="1_j0nwf"]
+[ext_resource type="Material" uid="uid://dynui31beak5h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/ANVIL_EXPORT_Material_8.tres" id="2_c6y8o"]
+[ext_resource type="Texture2D" uid="uid://dmhyy251765pw" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Fur.png" id="3_rnlm7"]
+[ext_resource type="Texture2D" uid="uid://bb3ywc3yb7es4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Shoe_Red_Sole_MASK.png" id="5_5kyrl"]
+[ext_resource type="Script" uid="uid://bptw4vdcfuiih" path="res://LS5Framework/Scripts/Player/PlayerCharacterVisualProfile.gd" id="5_i74mw"]
+[ext_resource type="Texture2D" uid="uid://drd3s7eqa2plj" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Shoe_Red_Sole.png" id="6_kerjs"]
+[ext_resource type="Script" uid="uid://c3dpxgqxiu1up" path="res://LS5Framework/Scripts/Player/CharacterColorMaterialEntry.gd" id="7_entry"]
+[ext_resource type="Material" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/FootAfterImage.tres" id="8_wheel_mat"]
+[ext_resource type="Texture2D" uid="uid://utth2bo1ym42" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Foot_AfterImage_Red.png" id="9_wheel_tex"]
+[ext_resource type="Texture2D" uid="uid://dhh0qohlugdg1" path="res://LS5Framework/Characters/Sonic Neo Adventure/Foot_AfterImage_Mask.png" id="10_wheel_mask"]
+
+[sub_resource type="Resource" id="CharacterColorMaterialEntry_fur"]
+script = ExtResource("7_entry")
+material = ExtResource("1_j0nwf")
+texture = ExtResource("3_rnlm7")
+
+[sub_resource type="Resource" id="CharacterColorMaterialEntry_shoes"]
+script = ExtResource("7_entry")
+material = ExtResource("2_c6y8o")
+texture = ExtResource("6_kerjs")
+color_slot = 1
+mask = ExtResource("5_5kyrl")
+
+[sub_resource type="Resource" id="CharacterColorMaterialEntry_wheel_run"]
+script = ExtResource("7_entry")
+material = ExtResource("8_wheel_mat")
+texture = ExtResource("9_wheel_tex")
+color_slot = 1
+mask = ExtResource("10_wheel_mask")
+
+[resource]
+script = ExtResource("5_i74mw")
+default_primary_color = Color(0, 0.25521097, 0.61859804, 1)
+default_secondary_color = Color(0.92, 0.08, 0.08, 1)
+trick_name_backflip = "Backflip"
+trick_name_frontflip = "Frontflip"
+trick_name_left_spin = "Method"
+trick_name_right_spin = "Indy"
+trick_name_frontflip_left_spin = "Corkscrew"
+trick_name_backflip_left_spin = "Misty Flip"
+trick_name_backflip_right_spin = "Barani"
+trick_name_frontflip_right_spin = "McTwist"
+trick_name_rail_forward = "Frontside"
+trick_name_rail_backward = "Backside"
+trick_name_rail_forward_crouch = "FS Royale"
+trick_name_rail_backward_crouch = "BS Royale"
+trick_name_rail_forward_crouch_fast = "FS Fahrvergnügen"
+trick_name_rail_backward_crouch_fast = "BS Fahrvergnügen"
+trick_name_bounce_pogo = "POGO!"
+trick_name_stomp_darehog = "DAREHOG!"
+feat_name_spring_launch = "Sproing!"
+feat_name_bumper_bounce = "Boink!"
+feat_name_dash_panel = "Zoom!"
+feat_name_badnik_defeat = "Squashed!"
+feat_name_drift = "Floor Carve"
+feat_name_ledge_mantle = "Alley-oop~"
+feat_name_landing_roll = "Safe Landing!"
+feat_name_rejected_landing_roll = "Sketchy Landing!"
+feat_name_rough_landing = "Gnarly Landing!"
+feat_name_wall_carve = "Wall Carve"
+feat_name_wall_cling = "Sticky-Hog"
+feat_name_wall_run_kick = "Wall Kick"
+feat_name_wall_kick = "Tic-Tac!"
+feat_name_object_pickup = "Gimme!"
+feat_name_object_placed = "Here, Take It"
+feat_name_object_throw = "EAT THIS!"
+feat_name_vault_bar = "Woosh!"
+feat_name_skydive = "Comin' In Hot!"
+combo_rating_score_thresholds = null
+combo_rating_flavour_texts = PackedStringArray("SO-SO!", "ALRIGHT!", "SWEET!", "SICK!", "KILLER!", "EPIC!", "TRUE BLUE!", "JUICIN\'!", "STEADFAST!", "UP, OVER, AND GONE!")
+combo_rating_colors = null
+color_materials = Array[ExtResource("7_entry")]([SubResource("CharacterColorMaterialEntry_fur"), SubResource("CharacterColorMaterialEntry_shoes"), SubResource("CharacterColorMaterialEntry_wheel_run")])

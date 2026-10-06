@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gameplay/PhysicsShapeEmitter.gd" id="1_emitter"]
+
+[node name="PhysicsShapeEmitter" type="Node3D"]
+script = ExtResource("1_emitter")

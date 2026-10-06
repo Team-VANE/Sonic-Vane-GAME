@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://condjm12n08od"
+path="res://.godot/imported/1-07 BIG Fishes at Emerald Coast.ogg-c2158377cf716b32d2c8d5cc9156e27a.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/1-07 BIG Fishes at Emerald Coast.ogg"
+dest_files=["res://.godot/imported/1-07 BIG Fishes at Emerald Coast.ogg-c2158377cf716b32d2c8d5cc9156e27a.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

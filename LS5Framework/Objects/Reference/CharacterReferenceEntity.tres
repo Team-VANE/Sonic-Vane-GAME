@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://nk5vhatmd340"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_wqgxu"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_fgmua"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_i1ruy"]
+
+[sub_resource type="Resource" id="Resource_wqgxu"]
+script = ExtResource("1_wqgxu")
+type = "sphere"
+radius = "1.5"
+color = "#ff73d2"
+offset = "0,1.5,0"
+
+[resource]
+script = ExtResource("3_i1ruy")
+entity_name = "CharacterReferenceEntity"
+identifier = "uid://c5gr2xrmhumi6"
+gizmos = Array[ExtResource("1_wqgxu")]([SubResource("Resource_wqgxu")])

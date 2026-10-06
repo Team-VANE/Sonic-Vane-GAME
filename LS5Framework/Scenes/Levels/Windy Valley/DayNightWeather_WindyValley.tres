@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="DayNightWeather" format=3 uid="uid://bm4gmn6cu2m5g"]
+
+[ext_resource type="Script" uid="uid://bjqfip2tur0i0" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightWeather.gd" id="1_ik14q"]
+
+[resource]
+script = ExtResource("1_ik14q")
+cloud_coverage = 0.65
+cloud_density = 1.0
+cloud_light_absorption = 0.12
+cloud_volume_depth = 1.36
+cloud_volume_steps = 3
+cloud_core_shadow_strength = 1.0
+cloud_edge_light_strength = 2.0
+upper_layer_wind_multiplier = 2.34
+distance_fade_start = 0.43
+distance_fade_end = 1.0
+distance_haze_strength = 0.79
+above_horizon_clouds_enabled = false
+below_horizon_visibility = 1.0
+below_horizon_haze_strength = 0.78
+wind_direction = Vector2(1, -0.28)
+wind_speed = 0.1418
+overcast_light_multiplier = 0.92
+overcast_ambient_multiplier = 1.6
+saturation_multiplier = 1.08

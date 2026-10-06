@@ -1,0 +1,900 @@
+[gd_scene format=3 uid="uid://revn1ckrrjt"]
+
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="1_ug21l"]
+[ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="2_ktkqb"]
+[ext_resource type="AudioStream" uid="uid://brvxqk3mstw5m" path="res://LS5Framework/Sounds/Music/Windy Hill.ogg" id="3_mhrmh"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="4_elt86"]
+[ext_resource type="PackedScene" uid="uid://c2cq3ct4j1e42" path="res://LS5Framework/Scenes/Levels/Blueberry Beach/SandLevel.glb" id="5_ktkqb"]
+[ext_resource type="PackedScene" uid="uid://ie7142myiknm" path="res://LS5Framework/Objects/Water/Water_Volume.tscn" id="6_dueik"]
+[ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="7_pcds6"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="8_pcds6"]
+[ext_resource type="PackedScene" uid="uid://ghucsw5061eo" path="res://LS5Framework/Objects/Gameplay/DeathPlane.tscn" id="10_fmstv"]
+[ext_resource type="PackedScene" uid="uid://c0knuae0s4d15" path="res://LS5Framework/Objects/Race/RaceCollectionItem.tscn" id="11_glame"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Race/RaceObjectLayout.tscn" id="11_v038r"]
+[ext_resource type="AudioStream" uid="uid://cxy2p1rufk8un" path="res://LS5Framework/Sounds/Music/Some_Guy_On_The_Internet-EmeraldHill_Faithfully_Restored.ogg" id="13_07swv"]
+[ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="13_50ke2"]
+[ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="14_07swv"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mhrmh"]
+size = Vector2(10999.935, 14000.025)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_elt86"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qnnpr"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_elt86")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jnjal"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_putq6"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_jnjal")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_erx8o"]
+load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ondq"]
+render_priority = 0
+shader = ExtResource("7_pcds6")
+shader_parameter/albedo = Color(0, 0.7316994, 0.88269347, 1)
+shader_parameter/albedo2 = Color(0.8127987, 0.86050355, 0.97439605, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/alpha = 0.95
+shader_parameter/wave = SubResource("CompressedTexture2D_erx8o")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_qnnpr")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_putq6")
+shader_parameter/wave_uv_scale = 0.455
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/color_deep = Color(0.16016582, 0.2380532, 0.36666462, 1)
+shader_parameter/color_shallow = Color(0.41579995, 0.6932566, 0.77, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 50.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.91, 1, 0.9925, 1)
+shader_parameter/edge_start = 0.34
+shader_parameter/edge_width = 3.65
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.058
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnnpr"]
+size = Vector3(8000, 139.09326, 8000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_50ke2"]
+size = Vector3(38, 7.436035, 55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_07swv"]
+size = Vector3(30, 25, 30)
+
+[node name="Blueberry_Beach" type="Node3D" unique_id=794803344]
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1015454562]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.124775, 197.31477, -905.9243)
+script = ExtResource("1_ug21l")
+downwarp_enabled = true
+downwarp_distance = 300.0
+
+[node name="LevelMusic" type="Node3D" parent="." unique_id=110015106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4356785, -5.233658)
+script = ExtResource("2_ktkqb")
+autoplay_stream = ExtResource("3_mhrmh")
+
+[node name="Lights" type="Node3D" parent="." unique_id=1451312442]
+
+[node name="MiddayLight_2" type="DirectionalLight3D" parent="Lights" unique_id=533417132]
+transform = Transform3D(-0.41631773, 0.8217213, -0.38917056, 0.3098098, 0.5306183, 0.7889627, 0.85480845, 0.20789032, -0.47548312, 27.167847, -29.899796, -29.989319)
+visible = false
+light_color = Color(0.92953783, 0.9253411, 0.913914, 1)
+light_indirect_energy = 3.967
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.194
+directional_shadow_max_distance = 300.0
+
+[node name="EnvironmentWeatherSystem" parent="Lights" unique_id=1736747719 instance=ExtResource("4_elt86")]
+day_length_minutes = 8.0
+
+[node name="SandLevel" parent="." unique_id=916959676 instance=ExtResource("5_ktkqb")]
+metadata/_edit_lock_ = true
+
+[node name="WATERNODE" parent="." unique_id=896649702 instance=ExtResource("6_dueik")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 212.2456, -174.55038, -1008.58325)
+size = Vector3(10999.935, 800, 14000.025)
+water_alpha = 0.95
+inner_subdivisions = 1
+wave_height = 2.0
+
+[node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE" unique_id=1994567877]
+process_mode = 4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 80, 0)
+cast_shadow = 0
+gi_mode = 0
+instance_shader_parameters/height_scale = 2.0
+mesh = SubResource("PlaneMesh_mhrmh")
+surface_material_override/0 = SubResource("ShaderMaterial_7ondq")
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=400068973]
+
+[node name="SPRINGS" type="Node3D" parent="OBJECTS" unique_id=824406634]
+
+[node name="SpringWall1" type="Node3D" parent="OBJECTS/SPRINGS" unique_id=984234053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.887085, 0, 0)
+
+[node name="Spring" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1538883451 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring2" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1211186045 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring3" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1024265108 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring4" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1466319233 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring5" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1265332029 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring6" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1404127184 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring7" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=163423376 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring8" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1871032560 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring9" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=2146352937 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring10" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=852834536 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring11" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1326328033 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring12" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1882021571 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring13" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1652547406 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring14" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=325501721 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring15" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1663700741 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring16" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=115366125 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring17" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=412603392 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring18" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=894107748 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring19" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=680397908 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring20" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=66665466 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring21" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=19347201 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring22" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=854293464 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring23" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=15108196 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring24" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1163281344 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="SpringWall2" type="Node3D" parent="OBJECTS/SPRINGS" unique_id=1199141482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.803284, 0, 0)
+
+[node name="Spring25" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1146971802 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring26" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1927167801 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring27" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=81245807 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring28" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=332794629 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring29" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=917250067 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring30" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1582477511 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring31" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=2023665734 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring32" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=646637109 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring33" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=886456710 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring34" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1115059310 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring35" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=112394558 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring36" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=2123146981 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring37" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1415070851 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring38" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1103519319 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring39" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1955999443 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring40" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1147647653 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring41" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1606182288 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring42" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1986753516 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring43" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1084306256 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring44" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=411312898 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring45" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=765970725 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring46" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=743417057 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring47" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1665555217 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring48" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1909607932 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring49" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1594330927 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring50" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1498255774 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring51" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=138415795 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring52" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1133666497 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring25" parent="OBJECTS/SPRINGS" unique_id=1912620786 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(7.9273925, 1.0753825, 0, -1.0753825, 7.9273925, 0, 0, 0, 8, -1002.86975, 178.01654, -835.4517)
+strength = 300.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.6
+action_lock_time = 0.6
+align_time = 0.6
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring26" parent="OBJECTS/SPRINGS" unique_id=1762248228 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(7.9273925, 1.0753825, 0, -1.0753825, 7.9273925, 0, 0, 0, 8, -1002.86975, 178.01654, -808.4517)
+strength = 300.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.6
+action_lock_time = 0.6
+align_time = 0.6
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring27" parent="OBJECTS/SPRINGS" unique_id=1239894493 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-4.588612, 6.553216, 0, -6.553216, -4.588612, 0, 0, 0, 8, -988.077, 256.06265, -835.4517)
+strength = 185.0
+min_additive_launch_speed = 120.0
+additive_mirrored_bounce_ratio = 2.0
+max_additive_launch_speed = 200.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring28" parent="OBJECTS/SPRINGS" unique_id=1248010825 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-4.588612, 6.553216, 0, -6.553216, -4.588612, 0, 0, 0, 8, -988.077, 256.06265, -808.4517)
+strength = 185.0
+min_additive_launch_speed = 120.0
+additive_mirrored_bounce_ratio = 2.0
+max_additive_launch_speed = 200.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="ENEMIES" type="Node3D" parent="OBJECTS" unique_id=523753481]
+
+[node name="DeathPlane" parent="OBJECTS" unique_id=719304138 instance=ExtResource("10_fmstv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -513.0647, -269.4173, -539.626)
+
+[node name="CollisionShape3D" parent="OBJECTS/DeathPlane" index="0" unique_id=172183619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -68.04663, 0)
+shape = SubResource("BoxShape3D_qnnpr")
+
+[node name="RaceObjectLayout_CollectionRace01" parent="OBJECTS" unique_id=650659054 instance=ExtResource("11_v038r")]
+race_id = "BBZCOL01"
+
+[node name="Spring53" parent="OBJECTS/RaceObjectLayout_CollectionRace01" unique_id=282606771 instance=ExtResource("8_pcds6")]
+process_mode = 3
+transform = Transform3D(-0.20362727, -7.9974074, 1.9071219e-06, 7.9974074, -0.20362727, 1.7801653e-08, 3.0746868e-08, 1.9069571e-06, 8, 101.95601, 167.46962, -905.89404)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="RaceStart_BBZ_COLLECTION_01" parent="OBJECTS" unique_id=765918458 instance=ExtResource("13_50ke2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.587204, 157.00266, -908.2348)
+race_type = 1
+collection_required_count = 3
+collection_finish_goal_path = NodePath("../RaceGoal_BBZ_COLLECTION_01")
+level_name = "Blueberry Beach Zone"
+race_id = "BBZCOL01"
+go_music_stream = ExtResource("13_07swv")
+go_music_fade_in = 0.0
+
+[node name="CollisionShape3D" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5441895, 0.5)
+shape = SubResource("BoxShape3D_50ke2")
+
+[node name="StartingLine" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9965515, 0)
+
+[node name="RaceGoal_BBZ_COLLECTION_01" parent="OBJECTS" unique_id=1001605477 instance=ExtResource("14_07swv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.1344, 199.134, -109.06793)
+downwarp_distance = 100.0
+
+[node name="CollisionShape3D" parent="OBJECTS/RaceGoal_BBZ_COLLECTION_01" index="0" unique_id=377308896]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 9.5, 0.5)
+shape = SubResource("BoxShape3D_07swv")
+
+[node name="RaceCollectionItem" parent="OBJECTS" unique_id=1530268029 instance=ExtResource("11_glame")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1159.182, 548.924, -813.8838)
+collection_radius = 30.0
+race_start_path = NodePath("../RaceStart_BBZ_COLLECTION_01")
+race_id = "BBZCOL01"
+
+[node name="RaceCollectionItem2" parent="OBJECTS" unique_id=1048908075 instance=ExtResource("11_glame")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -669.0935, 827.54694, 74.73682)
+collection_radius = 60.0
+race_start_path = NodePath("../RaceStart_BBZ_COLLECTION_01")
+race_id = "BBZCOL01"
+
+[node name="RaceCollectionItem3" parent="OBJECTS" unique_id=282260698 instance=ExtResource("11_glame")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -577.118, 928.1478, -852.24554)
+collection_radius = 80.0
+race_start_path = NodePath("../RaceStart_BBZ_COLLECTION_01")
+race_id = "BBZCOL01"
+
+[editable path="Lights/EnvironmentWeatherSystem"]
+[editable path="OBJECTS/DeathPlane"]
+[editable path="OBJECTS/RaceStart_BBZ_COLLECTION_01"]
+[editable path="OBJECTS/RaceGoal_BBZ_COLLECTION_01"]
+[editable path="OBJECTS/RaceGoal_BBZ_COLLECTION_01/GoalModel"]
+[editable path="OBJECTS/RaceGoal_BBZ_COLLECTION_01/GoalModel/GoalRing2"]

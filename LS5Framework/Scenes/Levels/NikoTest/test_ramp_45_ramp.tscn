@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cvwdmdf4oiuua"]
+
+[ext_resource type="PackedScene" uid="uid://bc2xismjbxyaw" path="res://LS5Framework/Scenes/Levels/NikoTest/TestRamp_45Ramp.glb" id="1_rhujn"]
+
+[node name="TestRamp_45Ramp" unique_id=676132801 instance=ExtResource("1_rhujn")]
+
+[node name="Cylinder_003" parent="." index="0" unique_id=1043224670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

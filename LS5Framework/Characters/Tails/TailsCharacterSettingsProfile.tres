@@ -1,0 +1,296 @@
+[gd_resource type="Resource" script_class="CharacterSettingsProfile" format=3 uid="uid://bx0pj5paiti3s"]
+
+[ext_resource type="Script" uid="uid://cg665frckn63u" path="res://LS5Framework/Scripts/Settings/CharacterSettingsProfile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+character_id = &"tails"
+profile_version = 7
+selection_category = "Work In Progress"
+ability_catalog = Array[Dictionary]([{
+"ability_id": &"uppercut_kick",
+"description": "Press Spin Kick and Jump together to trade horizontal speed for an upward kick. Ground launch is stronger; the air use refreshes on landing or bounce.",
+"display_name": "Uppercut Kick",
+"supported_gestures": Array[StringName]([&"press"])
+}, {
+"ability_id": &"insta_shield",
+"description": "Press and hold the Dive and Parkour inputs together to parry, block, and brake momentum.",
+"display_name": "Insta-Shield",
+"supported_gestures": Array[StringName]([&"press"])
+}, {
+"ability_id": &"parkour",
+"description": "Hold to run or slide along walls. Press Jump to kick away while preserving momentum.",
+"display_name": "Parkour",
+"supported_gestures": Array[StringName]([&"press"])
+}, {
+"ability_id": &"jump",
+"description": "Jump from the ground and use Tails' jump chain in the air.",
+"display_name": "Jump",
+"supported_gestures": Array[StringName]([&"press"])
+}, {
+"ability_id": &"propeller_flight",
+"description": "Begin and maintain Propeller Flight while airborne.",
+"display_name": "Propeller Flight",
+"supported_gestures": Array[StringName]([&"press"])
+}, {
+"ability_id": &"skydive",
+"description": "Dive while held and transition into a glide on release.",
+"display_name": "Dive",
+"supported_gestures": Array[StringName]([&"press", &"hold"])
+}, {
+"ability_id": &"stomp",
+"description": "Drop rapidly toward the ground.",
+"display_name": "Stomp",
+"supported_gestures": Array[StringName]([&"release", &"tap", &"press"])
+}, {
+"ability_id": &"spin_kick",
+"description": "Perform Spin Kick on the ground or Tornado Kick in the air.",
+"display_name": "Spin Kick",
+"supported_gestures": Array[StringName]([&"tap", &"press"])
+}, {
+"ability_id": &"spindash",
+"description": "Charge a Spindash until the assigned slot is released.",
+"display_name": "Spindash",
+"supported_gestures": Array[StringName]([&"hold", &"press"])
+}, {
+"ability_id": &"roll",
+"description": "Enter or maintain Tails' rolling state.",
+"display_name": "Roll",
+"supported_gestures": Array[StringName]([&"press"])
+}, {
+"ability_id": &"drift",
+"description": "Enter a drift while the assigned slot is held.",
+"display_name": "Drift",
+"supported_gestures": Array[StringName]([&"press"])
+}])
+default_loadout = Array[Dictionary]([{
+"ability_id": &"uppercut_kick",
+"allow_shared": true,
+"chord_abilities": Array[StringName]([&"spin_kick", &"jump"]),
+"gesture": &"press",
+"hold_time": 0.0,
+"required_slots": Array[StringName]([&"ability_slot_01"]),
+"slot": &"ability_slot_03"
+}, {
+"ability_id": &"insta_shield",
+"allow_shared": true,
+"gesture": &"press",
+"hold_time": 0.0,
+"required_slots": Array[StringName]([&"ability_slot_07"]),
+"slot": &"ability_slot_06"
+}, {
+"ability_id": &"parkour",
+"gesture": &"press",
+"hold_time": 0.0,
+"slot": &"ability_slot_07"
+}, {
+"ability_id": &"jump",
+"allow_shared": true,
+"gesture": &"press",
+"hold_time": 0.0,
+"slot": &"ability_slot_01"
+}, {
+"ability_id": &"propeller_flight",
+"allow_shared": true,
+"gesture": &"press",
+"hold_time": 0.0,
+"slot": &"ability_slot_01"
+}, {
+"ability_id": &"stomp",
+"gesture": &"release",
+"hold_time": 0.0,
+"slot": &"ability_slot_02"
+}, {
+"ability_id": &"skydive",
+"allow_shared": true,
+"gesture": &"hold",
+"hold_time": 0.01,
+"slot": &"ability_slot_06"
+}, {
+"ability_id": &"spin_kick",
+"gesture": &"tap",
+"hold_time": 0.19,
+"slot": &"ability_slot_03"
+}, {
+"ability_id": &"spindash",
+"gesture": &"hold",
+"hold_time": 0.19,
+"modifier_ability_id": &"roll",
+"modifier_bypasses_hold": true,
+"modifier_slot": &"ability_slot_04",
+"slot": &"ability_slot_03"
+}, {
+"ability_id": &"roll",
+"allow_shared": true,
+"gesture": &"press",
+"hold_time": 0.0,
+"slot": &"ability_slot_04"
+}, {
+"ability_id": &"drift",
+"allow_shared": true,
+"gesture": &"press",
+"hold_time": 0.0,
+"slot": &"ability_slot_05"
+}])
+default_routes = Array[Dictionary]([{
+"display_name": "Uppercut Kick: Skydive",
+"event": &"ability_triggered",
+"input_ability": &"skydive",
+"priority": 10,
+"reason": &"air_action_pressed",
+"required_state": &"airborne",
+"route_id": &"uppercut_skydive",
+"source_action": &"uppercut_kick",
+"target_action": &"skydive"
+}, {
+"display_name": "Uppercut Kick: Propeller Flight",
+"event": &"ability_triggered",
+"input_ability": &"jump",
+"priority": 100,
+"reason": &"jump_pressed_in_air",
+"required_state": &"airborne",
+"route_id": &"uppercut_propeller_flight",
+"source_action": &"uppercut_kick",
+"target_action": &"propeller_flight"
+}, {
+"display_name": "Fall: Propeller Flight",
+"event": &"ability_triggered",
+"input_ability": &"jump",
+"priority": 10,
+"reason": &"jump_pressed_in_air",
+"required_state": &"airborne",
+"route_id": &"fall_propeller_flight",
+"source_action": &"fall",
+"target_action": &"propeller_flight"
+}, {
+"display_name": "Fall: Dive",
+"event": &"ability_triggered",
+"input_ability": &"skydive",
+"priority": 10,
+"reason": &"air_action_pressed",
+"required_state": &"airborne",
+"route_id": &"fall_skydive",
+"source_action": &"fall",
+"target_action": &"skydive"
+}, {
+"allowed_source_actions": Array[StringName]([&"grounded", &"fall", &"jump", &"skydive", &"spindash"]),
+"blocked_source_actions": Array[StringName]([&"propeller_flight"]),
+"display_name": "Roll Activation Policy",
+"event": &"policy",
+"priority": 10,
+"reason": &"roll_policy",
+"route_id": &"activation_policy",
+"source_action": &"roll"
+}, {
+"display_name": "Roll: Jump",
+"event": &"ability_triggered",
+"input_ability": &"jump",
+"priority": 10,
+"reason": &"roll_jump",
+"required_state": &"grounded",
+"route_id": &"roll_jump",
+"source_action": &"roll",
+"target_action": &"jump"
+}, {
+"activation": &"toggle_off",
+"consume_input": true,
+"display_name": "Spin Kick Input: Clear Roll Toggle",
+"event": &"input_pressed",
+"input_ability": &"spin_kick",
+"priority": 100,
+"reason": &"spin_kick_clear_roll_toggle",
+"route_id": &"spin_kick_clear_roll_toggle",
+"source_action": &"roll",
+"suppress_input_until_release": true,
+"target_action": &"roll"
+}, {
+"activation": &"clear_active",
+"consume_input": false,
+"display_name": "Roll: Clear for Dive Chord",
+"event": &"ability_triggered",
+"input_ability": &"skydive",
+"priority": 200,
+"reason": &"dive_chord_clear_roll",
+"required_state": &"airborne",
+"route_id": &"dive_chord_clear_roll",
+"source_action": &"roll"
+}, {
+"display_name": "Roll: Dive",
+"event": &"ability_triggered",
+"input_ability": &"skydive",
+"priority": 100,
+"reason": &"air_action_pressed",
+"required_state": &"airborne",
+"route_id": &"roll_skydive",
+"source_action": &"roll",
+"target_action": &"skydive"
+}, {
+"display_name": "Spindash Jump",
+"event": &"manual",
+"priority": 10,
+"reason": &"spindash_jump",
+"route_id": &"spindash_jump",
+"source_action": &"spindash",
+"target_action": &"jump"
+}, {
+"display_name": "Jump: Propeller Flight",
+"event": &"ability_triggered",
+"input_ability": &"jump",
+"priority": 10,
+"reason": &"jump_pressed_in_air",
+"required_state": &"airborne",
+"route_id": &"jump_propeller_flight",
+"source_action": &"jump",
+"target_action": &"propeller_flight"
+}, {
+"display_name": "Jump: Dive",
+"event": &"ability_triggered",
+"input_ability": &"skydive",
+"priority": 10,
+"reason": &"air_action_pressed",
+"required_state": &"airborne",
+"route_id": &"jump_skydive",
+"source_action": &"jump",
+"target_action": &"skydive"
+}, {
+"display_name": "Spin Kick: Dive",
+"event": &"ability_triggered",
+"input_ability": &"skydive",
+"priority": 10,
+"reason": &"air_action_pressed",
+"required_state": &"airborne",
+"route_id": &"spin_kick_skydive",
+"source_action": &"spin_kick",
+"target_action": &"skydive"
+}, {
+"display_name": "Spin Kick Coyote Jump",
+"event": &"manual",
+"priority": 10,
+"reason": &"air_jump_pressed",
+"required_state": &"airborne",
+"route_id": &"coyote_jump",
+"source_action": &"spin_kick",
+"target_action": &"jump"
+}, {
+"activation": &"activate",
+"display_name": "Propeller Flight: Exit",
+"event": &"input_pressed",
+"input_action": &"interact",
+"priority": 10,
+"reason": &"propeller_flight_exit",
+"required_state": &"airborne",
+"route_id": &"exit",
+"source_action": &"propeller_flight",
+"target_action": &"fall"
+}, {
+"activation": &"toggle_on",
+"display_name": "Spindash Completion: Toggle Roll",
+"enabled": false,
+"event": &"completed",
+"priority": 10,
+"reason": &"spindash_completed",
+"route_id": &"spindash_complete_roll",
+"source_action": &"spindash",
+"target_action": &"roll"
+}])
+routes_authoritative = true

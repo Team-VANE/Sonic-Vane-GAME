@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://i4te4g8a8l1f"]
+
+[ext_resource type="Script" uid="uid://bi121jf2e3xdl" path="res://LS5Framework/Scripts/Camera/SonicCameraRig.gd" id="1_qpk8e"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_qpk8e"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_64fmr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v3bn8"]
+albedo_color = Color(3.080368e-06, 0.712354, 0.8973062, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwm0n"]
+albedo_color = Color(0, 0.84750366, 0.29089946, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwnvw"]
+albedo_color = Color(0.9999998, 0.18852222, 0.19105059, 1)
+
+[node name="CameraRig" type="Node3D" node_paths=PackedStringArray("yaw_node", "pitch_node", "camera")]
+script = ExtResource("1_qpk8e")
+yaw_node = NodePath("CameraYawRig")
+pitch_node = NodePath("CameraYawRig/CameraPitchRig")
+camera = NodePath("CameraYawRig/CameraPitchRig/SonicCamera")
+auto_target_group = &"player"
+min_vertical_offset = 0.7
+max_vertical_offset = 2.2
+min_pitch_deg = -85.0
+max_pitch_deg = 85.0
+smooth_follow = true
+follow_smooth = 20.0
+override_cancel_mouse_threshold = 200.0
+drift_camera_blend_speed = 0.0
+drift_velocity_smoothing = 18.0
+drift_turn_yaw_offset_max_deg = 10.0
+drift_turn_yaw_offset_per_turn_speed = 0.05
+drift_turn_yaw_offset_slerp_speed = 12.0
+drift_lookahead_lateral_strength = 0.55
+drift_lookahead_heading_deadzone_deg = 1.5
+drift_lookahead_heading_full_response_deg = 12.0
+drift_lookahead_heading_persistence = 0.03
+drift_lookahead_heading_smoothing = 14.0
+drift_lookahead_heading_max_turn_rate_deg = 220.0
+drift_lookahead_time_multiplier = 1.15
+drift_lateral_leash_multiplier = 0.8
+min_distance = 1.5
+max_distance = 500.0
+zoom_smooth = 7.5
+camera_collision_mask = 17
+
+[node name="CameraYawRig" type="Node3D" parent="."]
+
+[node name="CameraPitchRig" type="Node3D" parent="CameraYawRig"]
+
+[node name="SonicCamera" type="Camera3D" parent="CameraYawRig/CameraPitchRig"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+attributes = SubResource("CameraAttributesPractical_qpk8e")
+
+[node name="AudioListener3D" type="AudioListener3D" parent="CameraYawRig/CameraPitchRig/SonicCamera"]
+doppler_tracking = 1
+current = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CameraYawRig/CameraPitchRig"]
+transform = Transform3D(-1.2211786e-08, -0.9343835, 1.2211785e-08, 0, -4.0843208e-08, -0.27937305, 0.2793731, -4.08432e-08, 1.5263265e-15, 0, 0, 7)
+visible = false
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_v3bn8")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="CameraYawRig"]
+transform = Transform3D(0.2793731, 0, 0, 0, -0.9343835, 2.4423569e-08, 0, -8.168641e-08, -0.27937305, 0, 0, 5)
+visible = false
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_fwm0n")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.2211786e-08, -0.9343835, 1.2211785e-08, 0, -4.0843208e-08, -0.27937305, 0.2793731, -4.08432e-08, 1.5263265e-15, 1, 0, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_uwnvw")

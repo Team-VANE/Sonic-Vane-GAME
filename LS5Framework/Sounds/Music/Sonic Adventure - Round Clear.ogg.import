@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cjcghn0ber4pt"
+path="res://.godot/imported/Sonic Adventure - Round Clear.ogg-2575c687e5dc33a2e15a74f250156b11.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Sonic Adventure - Round Clear.ogg"
+dest_files=["res://.godot/imported/Sonic Adventure - Round Clear.ogg-2575c687e5dc33a2e15a74f250156b11.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

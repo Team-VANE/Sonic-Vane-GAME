@@ -1,0 +1,307 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Race/GhostSelectionDialog.gd" id="1_dialog"]
+[ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_theme"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="3_crt_effect"]
+[ext_resource type="FontVariation" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="4_orbitron_900"]
+[ext_resource type="FontVariation" path="res://LS5Framework/Resources/Fonts/Orbitron600.tres" id="5_orbitron_600"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/ui_warning.wav" id="6_warning"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ghost_list"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghost_list"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.012, 0.03, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.1, 0.26, 0.55, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghost_list_focus"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.72, 1, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+shadow_color = Color(0.04, 0.42, 1, 0.25)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghost_warning"]
+bg_color = Color(0.16, 0.018, 0.025, 0.98)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.12, 0.16, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 12
+
+[node name="GhostSelectionDialog" type="CanvasLayer"]
+script = ExtResource("1_dialog")
+
+[node name="SfxWarning" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_warning")
+bus = &"UI"
+
+[node name="CRTUIBackgroundEffect" type="Node" parent="."]
+script = ExtResource("3_crt_effect")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+
+[node name="Shade" type="ColorRect" parent="Root"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.005, 0.015, 0.04, 0.72)
+
+[node name="Panel" type="Panel" parent="Root"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.08
+anchor_right = 0.5
+anchor_bottom = 0.92
+offset_left = -465.0
+offset_right = 465.0
+grow_horizontal = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Root/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Choose Ghost"
+horizontal_alignment = 1
+
+[node name="Info" type="Label" parent="Root/Panel/VBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "Level\nRace ID"
+
+[node name="MainRow" type="HBoxContainer" parent="Root/Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="ListColumn" type="VBoxContainer" parent="Root/Panel/VBox/MainRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="GhostList" type="ItemList" parent="Root/Panel/VBox/MainRow/ListColumn"]
+material = SubResource("CanvasItemMaterial_ghost_list")
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+focus_neighbor_right = NodePath("../../ActionColumn/Select")
+focus_neighbor_bottom = NodePath("../../ActionColumn/Select")
+focus_next = NodePath("../../ActionColumn/Select")
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_ghost_list_focus")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ghost_list")
+select_mode = 0
+
+[node name="Details" type="RichTextLabel" parent="Root/Panel/VBox/MainRow/ListColumn"]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+text = "[center]No ghost selected.[/center]"
+
+[node name="ActionColumn" type="VBoxContainer" parent="Root/Panel/VBox/MainRow"]
+custom_minimum_size = Vector2(205, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Select" type="Button" parent="Root/Panel/VBox/MainRow/ActionColumn"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../ListColumn/GhostList")
+focus_neighbor_top = NodePath("../Cancel")
+focus_neighbor_bottom = NodePath("../UseBest")
+focus_next = NodePath("../UseBest")
+focus_previous = NodePath("../../ListColumn/GhostList")
+text = "Use Selected"
+
+[node name="UseBest" type="Button" parent="Root/Panel/VBox/MainRow/ActionColumn"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../ListColumn/GhostList")
+focus_neighbor_top = NodePath("../Select")
+focus_neighbor_bottom = NodePath("../Clear")
+focus_next = NodePath("../Clear")
+focus_previous = NodePath("../Select")
+text = "Use Best"
+
+[node name="Clear" type="Button" parent="Root/Panel/VBox/MainRow/ActionColumn"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../ListColumn/GhostList")
+focus_neighbor_top = NodePath("../UseBest")
+focus_neighbor_bottom = NodePath("../DeleteSelected")
+focus_next = NodePath("../DeleteSelected")
+focus_previous = NodePath("../UseBest")
+text = "Clear Selection"
+
+[node name="DeleteSelected" type="Button" parent="Root/Panel/VBox/MainRow/ActionColumn"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../ListColumn/GhostList")
+focus_neighbor_top = NodePath("../Clear")
+focus_neighbor_bottom = NodePath("../ClearAll")
+focus_next = NodePath("../ClearAll")
+focus_previous = NodePath("../Clear")
+text = "Delete Selected Ghost"
+
+[node name="ClearAll" type="Button" parent="Root/Panel/VBox/MainRow/ActionColumn"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../ListColumn/GhostList")
+focus_neighbor_top = NodePath("../DeleteSelected")
+focus_neighbor_bottom = NodePath("../Cancel")
+focus_next = NodePath("../Cancel")
+focus_previous = NodePath("../DeleteSelected")
+text = "Clear Level Ghost Data"
+
+[node name="Cancel" type="Button" parent="Root/Panel/VBox/MainRow/ActionColumn"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../../ListColumn/GhostList")
+focus_neighbor_top = NodePath("../ClearAll")
+focus_neighbor_bottom = NodePath("../Select")
+focus_next = NodePath("../../ListColumn/GhostList")
+focus_previous = NodePath("../ClearAll")
+text = "Cancel"
+
+[node name="ConfirmDialog" type="Control" parent="Root"]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="Root/ConfirmDialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.015, 0.002, 0.004, 0.78)
+
+[node name="WarningFrame" type="PanelContainer" parent="Root/ConfirmDialog"]
+custom_minimum_size = Vector2(580, 260)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -130.0
+offset_right = 290.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ghost_warning")
+
+[node name="Margin" type="MarginContainer" parent="Root/ConfirmDialog/WarningFrame"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Root/ConfirmDialog/WarningFrame/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Root/ConfirmDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("4_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "DELETE GHOST DATA?"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="Root/ConfirmDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.83, 1)
+theme_override_fonts/font = ExtResource("5_orbitron_600")
+theme_override_font_sizes/font_size = 16
+text = "This cannot be undone."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Root/ConfirmDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Confirm" type="Button" parent="Root/ConfirmDialog/WarningFrame/Margin/Content/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../Cancel")
+focus_neighbor_top = NodePath("../Cancel")
+focus_neighbor_right = NodePath("../Cancel")
+focus_neighbor_bottom = NodePath("../Cancel")
+focus_next = NodePath("../Cancel")
+focus_previous = NodePath("../Cancel")
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("5_orbitron_600")
+text = "Delete"
+
+[node name="Cancel" type="Button" parent="Root/ConfirmDialog/WarningFrame/Margin/Content/Buttons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../Confirm")
+focus_neighbor_top = NodePath("../Confirm")
+focus_neighbor_right = NodePath("../Confirm")
+focus_neighbor_bottom = NodePath("../Confirm")
+focus_next = NodePath("../Confirm")
+focus_previous = NodePath("../Confirm")
+theme_override_fonts/font = ExtResource("5_orbitron_600")
+text = "Cancel"

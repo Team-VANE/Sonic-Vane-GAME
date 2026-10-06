@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://fwht3ycpd0ak"
+path="res://.godot/imported/RaceStart_LetsRock_01.ogg-ef8091e99788a79778622a4866232aa2.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_LetsRock_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_LetsRock_01.ogg-ef8091e99788a79778622a4866232aa2.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

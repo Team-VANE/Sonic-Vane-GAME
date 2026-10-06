@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bt1lsexr3gnjp"
+path="res://.godot/imported/Enraged_01.ogg-5484b968300239e1d4fc9f42a24f982d.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Enraged_01.ogg"
+dest_files=["res://.godot/imported/Enraged_01.ogg-5484b968300239e1d4fc9f42a24f982d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

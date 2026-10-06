@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bew3pvavqxpo"
+path="res://.godot/imported/UI_Exit_OneMoreRace_01.ogg-ede1ba2fabb99016eb6fb2957ae1eeef.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Exit_OneMoreRace_01.ogg"
+dest_files=["res://.godot/imported/UI_Exit_OneMoreRace_01.ogg-ede1ba2fabb99016eb6fb2957ae1eeef.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

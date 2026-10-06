@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2xshst362q5m"]
+
+[ext_resource type="PackedScene" uid="uid://ds4oaoye7xdes" path="res://LS5Framework/Scenes/Levels/Minecraft/Stage/minecraft_1.tscn" id="1_af0em"]
+
+[node name="MINE_CRAFT" type="Node3D"]
+
+[node name="Minecraft1" parent="." instance=ExtResource("1_af0em")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -8169.4, 6.9677696, -1053.7756)
+visible = false

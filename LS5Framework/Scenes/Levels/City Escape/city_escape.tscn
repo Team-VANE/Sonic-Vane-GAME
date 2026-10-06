@@ -1,0 +1,397 @@
+[gd_scene format=3 uid="uid://be0p7xmu2wpb0"]
+
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="1_luu5b"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="2_jpxnj"]
+[ext_resource type="PackedScene" uid="uid://dp3yyscs1w0cc" path="res://LS5Framework/Scenes/Levels/City Escape/ce_mesh.tscn" id="3_apwl0"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="3_s63xp"]
+[ext_resource type="PackedScene" uid="uid://by35k35q3p0d1" path="res://LS5Framework/Objects/Rail/Rail.tscn" id="4_581c6"]
+[ext_resource type="PackedScene" uid="uid://d1okvbdxqc08b" path="res://LS5Framework/Objects/VaultBar/VaultBar.tscn" id="5_apwl0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hhypk"]
+resource_local_to_scene = true
+shader = ExtResource("3_s63xp")
+shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
+shader_parameter/moon_direction = Vector3(-0.76604444, -0.64278764, 0)
+shader_parameter/zenith_color = Color(0.095625, 0.29625002, 0.755, 1)
+shader_parameter/horizon_color = Color(0.5, 0.7, 1.05, 1)
+shader_parameter/ground_color = Color(0.035, 0.028, 0.025, 1)
+shader_parameter/ground_visibility = 1.0
+shader_parameter/sun_color = Color(1, 0.8066667, 0.57, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(1, 0.8466667, 0.7066667, 1)
+shader_parameter/cloud_shadow_color = Color(0.29625002, 0.3375, 0.42499998, 1)
+shader_parameter/rayleigh_strength = 2.0
+shader_parameter/mie_strength = 0.08
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/turbidity = 4.0
+shader_parameter/sun_angular_radius = 0.0046251225177849735
+shader_parameter/sun_disk_intensity = 18.0
+shader_parameter/moon_angular_radius = 0.004537856055185257
+shader_parameter/moon_disk_intensity = 1.2
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.35
+shader_parameter/cloud_density = 0.82
+shader_parameter/cloud_softness = 0.12
+shader_parameter/cloud_scale = 3.2
+shader_parameter/cloud_detail = 0.72
+shader_parameter/cloud_light_absorption = 0.42
+shader_parameter/cloud_volume_depth = 0.0
+shader_parameter/cloud_volume_steps = 1
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 0.0
+shader_parameter/cloud_edge_light_strength = 1.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.022
+shader_parameter/upper_layer_amount = 0.12
+shader_parameter/upper_layer_height = 0.07
+shader_parameter/upper_layer_scale = 0.62
+shader_parameter/upper_layer_wind_multiplier = 1.45
+shader_parameter/distance_fade_start = 0.82
+shader_parameter/distance_fade_end = 0.995
+shader_parameter/distance_haze_strength = 0.78
+shader_parameter/above_horizon_clouds_enabled = true
+shader_parameter/below_horizon_clouds_enabled = true
+shader_parameter/below_horizon_visibility = 0.0
+shader_parameter/below_horizon_fade_depth = 0.35
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.72
+
+[sub_resource type="Sky" id="Sky_s7b25"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_hhypk")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_c7g2f"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 1.0000001
+sky = SubResource("Sky_s7b25")
+ambient_light_source = 3
+ambient_light_color = Color(0.42999998, 0.57, 0.8333333, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 0.91235775
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_min_cell_size = 1.3685547
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_aerial_perspective = 0.7
+fog_sky_affect = 0.35
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+adjustment_enabled = true
+
+[sub_resource type="Curve3D" id="Curve3D_581c6"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.96017456, 0.6711426, 0.5500488, 0, 0, 0, 0, 0, 0, 45.904106, -29.030396, 0.46728516, 0, 0, 0, 0, 0, 0, 48.735, -29.028442, 0.46704102),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_apwl0"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.96017456, 0.6711426, 0.5500488, 0, 0, 0, 0, 0, 0, 46.7334, -29.848145, 0.46730042),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_jpxnj"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.96017456, 0.6711426, 0.5500488, 0, 0, 0, 40, -12.23, 0, 91.43201, -59.315186, 0.46728516, 0, 8.245, -25, 0, 0, 0, 151.13, -89.455, 60, 0, 0, 0, 0, -12.9, 47.98, 151.13, -149.755, 150.83, 0, 1.265, 0, -72.445, -22.67, 0, 101.93, -175.81, 209.81, 0, 5.03, 0, 0, -0.11, 0, 31.345, -209.535, 270.57, 0, 0, 0, 0, 0, 0, 31.345, -227.605, 297.365),
+"tilts": PackedFloat32Array(0.017453292, 0.017453292, 0.017453292, 0.017453292, 0.017453292, 0.017453292, 0.017453292)
+}
+point_count = 7
+
+[sub_resource type="Curve3D" id="Curve3D_s63xp"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.96017456, 0.6711426, 0.5500488, 0, 0, 0, 0, 0, 0, 13.274689, 0.6710205, 0.5500488, 0, 0, 0, 0, 0, 0, 28.033, -14.993, 0.55),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_hhypk"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.445, 0.056, 0.55, 0, 0, 0, 0, 0, 0, 90.488, -60, 0.467),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_s7b25"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -0.235, 0.311, 0.55, 0, 0, 0, 0, 0, 0, 11.83, 0.311, 0.55, 0, 0, 0, 0, 0, 0, 41.593, -29.63, 0.467),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c7g2f"]
+resource_local_to_scene = true
+size = Vector3(47.9, 6, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bar"]
+albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ib6y0"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 47.9
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_ch1j1"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mrjw8"]
+resource_local_to_scene = true
+size = Vector3(51.1, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_40nou"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 51.1
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_op0n3"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_42m72"]
+resource_local_to_scene = true
+size = Vector3(51.1, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_inshn"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 51.1
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_bno6j"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="CityEscapeLevel" type="Node3D" unique_id=163941884]
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1958306769]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17331886, 3.6555357, -17.740974)
+script = ExtResource("1_luu5b")
+downwarp_enabled = true
+
+[node name="Lights" type="Node3D" parent="." unique_id=2014701819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -138.94287, 0, -282.7218)
+
+[node name="EnvironmentWeatherSystem" parent="Lights" unique_id=799242298 instance=ExtResource("2_jpxnj")]
+initial_time_of_day_hours = 8.0
+day_length_minutes = 14.0
+
+[node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
+environment = SubResource("Environment_c7g2f")
+
+[node name="CE_1" parent="." unique_id=480591242 instance=ExtResource("3_apwl0")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+
+[node name="Rail" parent="." unique_id=1414018937 instance=ExtResource("4_581c6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.319756, -1879.1672, 3003.9893)
+
+[node name="Path3D" parent="Rail" index="0" unique_id=1934614080]
+curve = SubResource("Curve3D_581c6")
+
+[node name="CSGPolygon3D" parent="Rail" index="1" unique_id=231682346]
+visible = false
+
+[node name="Rail3" parent="." unique_id=647552641 instance=ExtResource("4_581c6")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -213.48036, -1877.3622, 2995.1702)
+
+[node name="Path3D" parent="Rail3" index="0" unique_id=1934614080]
+curve = SubResource("Curve3D_apwl0")
+
+[node name="CSGPolygon3D" parent="Rail3" index="1" unique_id=231682346]
+visible = false
+
+[node name="Rail6" parent="." unique_id=604419035 instance=ExtResource("4_581c6")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1442.5394, -3006.708, 1361.812)
+
+[node name="Path3D" parent="Rail6" index="0" unique_id=1934614080]
+curve = SubResource("Curve3D_jpxnj")
+
+[node name="CSGPolygon3D" parent="Rail6" index="1" unique_id=231682346]
+visible = false
+
+[node name="Rail4" parent="." unique_id=1171064839 instance=ExtResource("4_581c6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -384.47235, -1860.2739, 2804.78)
+
+[node name="Path3D" parent="Rail4" index="0" unique_id=1934614080]
+curve = SubResource("Curve3D_s63xp")
+
+[node name="CSGPolygon3D" parent="Rail4" index="1" unique_id=231682346]
+visible = false
+
+[node name="Rail2" parent="." unique_id=938522026 instance=ExtResource("4_581c6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.179886, -1908.1913, 3003.9893)
+
+[node name="Path3D" parent="Rail2" index="0" unique_id=1934614080]
+curve = SubResource("Curve3D_hhypk")
+
+[node name="CSGPolygon3D" parent="Rail2" index="1" unique_id=231682346]
+visible = false
+
+[node name="Rail5" parent="." unique_id=549025084 instance=ExtResource("4_581c6")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 88.296104, -1937.9042, 2929.6233)
+
+[node name="Path3D" parent="Rail5" index="0" unique_id=1934614080]
+curve = SubResource("Curve3D_s7b25")
+
+[node name="CSGPolygon3D" parent="Rail5" index="1" unique_id=231682346]
+visible = false
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=1062933157]
+
+[node name="Vault Bars" type="Node3D" parent="OBJECTS" unique_id=560448403]
+
+[node name="VaultBar" parent="OBJECTS/Vault Bars" unique_id=1078076926 instance=ExtResource("5_apwl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 97.23774, -1946.829, 2968.0176)
+bar_length = 47.9
+manual_swing_speed_enabled = true
+rotation_speed_deg = 780.0
+launch_speed_mode = 1
+fixed_launch_speed = 80.0
+vertical_arc_enabled = true
+vertical_arc_height = 20.0
+
+[node name="CollisionShape3D" parent="OBJECTS/Vault Bars/VaultBar" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_c7g2f")
+
+[node name="Bar" parent="OBJECTS/Vault Bars/VaultBar/Model" parent_id_path=PackedInt32Array(1078076926, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_ib6y0")
+
+[node name="LeftCap" parent="OBJECTS/Vault Bars/VaultBar/Model" parent_id_path=PackedInt32Array(1078076926, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -23.95, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/Vault Bars/VaultBar/Model" parent_id_path=PackedInt32Array(1078076926, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 23.95, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/Vault Bars/VaultBar" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1235504, 6.3288574, -66.52515)
+
+[node name="SplinePath" parent="OBJECTS/Vault Bars/VaultBar" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_ch1j1")
+
+[node name="VaultBar2" parent="OBJECTS/Vault Bars" unique_id=1685228124 instance=ExtResource("5_apwl0")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2297.8157, -4342.506, 1738.6136)
+bar_length = 51.1
+spins_before_launch = 2
+rotation_speed_deg = 900.0
+launch_speed_mode = 1
+fixed_launch_speed = 80.0
+vertical_arc_enabled = true
+vertical_arc_height = 25.0
+movement_lock_time = 0.5
+action_lock_time = 0.5
+
+[node name="CollisionShape3D" parent="OBJECTS/Vault Bars/VaultBar2" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_mrjw8")
+
+[node name="Bar" parent="OBJECTS/Vault Bars/VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_40nou")
+
+[node name="LeftCap" parent="OBJECTS/Vault Bars/VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -25.55, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/Vault Bars/VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 25.55, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/Vault Bars/VaultBar2" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4259867e-06, 22.146973, -44.18872)
+
+[node name="SplinePath" parent="OBJECTS/Vault Bars/VaultBar2" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_op0n3")
+
+[node name="VaultBar3" parent="OBJECTS/Vault Bars" unique_id=1074637952 instance=ExtResource("5_apwl0")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2297.8157, -4319.845, 1782.4789)
+bar_length = 51.1
+spins_before_launch = 2
+rotation_speed_deg = 900.0
+launch_speed_mode = 1
+fixed_launch_speed = 107.0
+vertical_arc_enabled = true
+vertical_arc_height = 25.0
+movement_lock_time = 1.0
+action_lock_time = 1.0
+align_time = 1.0
+
+[node name="CollisionShape3D" parent="OBJECTS/Vault Bars/VaultBar3" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_42m72")
+
+[node name="Bar" parent="OBJECTS/Vault Bars/VaultBar3/Model" parent_id_path=PackedInt32Array(1074637952, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_inshn")
+
+[node name="LeftCap" parent="OBJECTS/Vault Bars/VaultBar3/Model" parent_id_path=PackedInt32Array(1074637952, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -25.55, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/Vault Bars/VaultBar3/Model" parent_id_path=PackedInt32Array(1074637952, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 25.55, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/Vault Bars/VaultBar3" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.845215, -102.75525)
+
+[node name="SplinePath" parent="OBJECTS/Vault Bars/VaultBar3" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_bno6j")
+
+[editable path="Lights/EnvironmentWeatherSystem"]
+[editable path="Lights/EnvironmentWeatherSystem/DayNightCycle"]
+[editable path="Rail"]
+[editable path="Rail3"]
+[editable path="Rail6"]
+[editable path="Rail4"]
+[editable path="Rail2"]
+[editable path="Rail5"]
+[editable path="OBJECTS/Vault Bars/VaultBar"]
+[editable path="OBJECTS/Vault Bars/VaultBar2"]
+[editable path="OBJECTS/Vault Bars/VaultBar3"]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://ccurs6tsp2p7s"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_1wcuv"]
+
+[resource]
+script = ExtResource("1_1wcuv")
+level_name = "Boss Test"
+order = 145
+selection_category = "Test"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Boss Test/boss_test.tscn"

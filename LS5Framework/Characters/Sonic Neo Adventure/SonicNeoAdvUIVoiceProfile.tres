@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterUIVoiceProfile" format=3 uid="uid://d4kf1jph0lang"]
+
+[ext_resource type="AudioStream" uid="uid://byfwr21ycachl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Character_01.ogg" id="1_0iy4u"]
+[ext_resource type="Script" uid="uid://dci13bhu83wvh" path="res://LS5Framework/Scripts/UI/CharacterUIVoiceProfile.gd" id="1_profile"]
+[ext_resource type="AudioStream" uid="uid://bdylapy6ns02m" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Character_02.ogg" id="2_2c0l4"]
+[ext_resource type="AudioStream" uid="uid://bml5susa7uj67" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Character_03.ogg" id="3_antdd"]
+[ext_resource type="AudioStream" uid="uid://bwvptx10t2mrg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Character_04.ogg" id="4_m157p"]
+[ext_resource type="AudioStream" uid="uid://c2wjq0puauqv3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Confirm_01.ogg" id="5_17l64"]
+[ext_resource type="AudioStream" uid="uid://cqfxwc0nt71ku" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Exit_DontGo_01.ogg" id="6_n5lnp"]
+[ext_resource type="AudioStream" uid="uid://bfhrp1dd0iaa0" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Exit_HabitForming_02.ogg" id="7_sr5gk"]
+[ext_resource type="AudioStream" uid="uid://b4ueswhhq4mj2" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Exit_LeavingAlready_02.ogg" id="8_0p8hq"]
+[ext_resource type="AudioStream" uid="uid://bew3pvavqxpo" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Exit_OneMoreRace_01.ogg" id="9_ddgu4"]
+[ext_resource type="AudioStream" uid="uid://1ppndqdaw7vu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Stage_01.ogg" id="10_cr5ud"]
+[ext_resource type="AudioStream" uid="uid://d4pg4qo5kmjh" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Stage_02.ogg" id="11_hbcvy"]
+
+[resource]
+script = ExtResource("1_profile")
+confirm_clips = Array[AudioStream]([ExtResource("5_17l64")])
+character_clips = Array[AudioStream]([ExtResource("1_0iy4u"), ExtResource("2_2c0l4"), ExtResource("3_antdd"), ExtResource("4_m157p")])
+level_clips = Array[AudioStream]([ExtResource("10_cr5ud"), ExtResource("11_hbcvy")])
+confirm_exit_clips = Array[AudioStream]([ExtResource("6_n5lnp"), ExtResource("7_sr5gk"), ExtResource("8_0p8hq"), ExtResource("9_ddgu4")])

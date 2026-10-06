@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://bw6qyasmj3h7p"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_mker6"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_0fx7c"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_vbdhe"]
+
+[sub_resource type="Resource" id="Resource_e6x2c"]
+script = ExtResource("1_mker6")
+type = "billboard"
+bindings = {
+"color": "marker_color",
+"size": "marker_size"
+}
+
+[resource]
+script = ExtResource("3_vbdhe")
+entity_name = "test_gizmo_billboard"
+description = "Test: billboard gizmo (always camera-facing) with bindable size and color"
+gizmos = Array[ExtResource("1_mker6")]([SubResource("Resource_e6x2c")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

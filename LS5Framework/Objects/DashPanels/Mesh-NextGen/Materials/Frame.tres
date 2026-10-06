@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bthoh5rfp45qn"]
+
+[ext_resource type="Texture2D" uid="uid://2rkrc6gxonce" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/cmn_dashpanel01_dfsp_j.png" id="1_uwqj8"]
+[ext_resource type="Texture2D" uid="uid://b1ettlv7e337e" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/cmn_dashpanel01_dfsp_j alpha_normal.png" id="2_0tnyg"]
+
+[resource]
+resource_name = "Frame"
+cull_mode = 2
+albedo_texture = ExtResource("1_uwqj8")
+roughness = 0.76363635
+normal_enabled = true
+normal_texture = ExtResource("2_0tnyg")

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RivalProfile" format=3 uid="uid://dq0f44ifr5qfr"]
+
+[ext_resource type="Script" uid="uid://cbbpkaqmp72m1" path="res://LS5Framework/Scripts/AI/RivalProfile.gd" id="1_rival_profile"]
+
+[resource]
+script = ExtResource("1_rival_profile")
+rival_display_name = "RIVAL_NAME"
+rival_character_id = "sonic_neo_adventure"
+rival_chase_range = 250.0

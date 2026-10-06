@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://c0si2ghch3nds"]
+
+[ext_resource type="AudioStream" uid="uid://b7jm0chn73khn" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Death_No_01.ogg" id="1_xj3r3"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_jtd56"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_3lppf"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_6tej2"]
+
+[sub_resource type="Resource" id="Resource_74jdf"]
+script = ExtResource("2_jtd56")
+pose_id = &"EXP_SAD"
+end_time = 1.3
+blend_in = 0.225
+blend_out = 0.65
+
+[sub_resource type="Resource" id="Resource_2wnoc"]
+script = ExtResource("2_jtd56")
+pose_id = &"VIS_T_L_D_N"
+end_time = 0.27
+blend_in = 0.135
+blend_out = 0.135
+
+[sub_resource type="Resource" id="Resource_b3jd1"]
+script = ExtResource("2_jtd56")
+pose_id = &"VIS_Ah"
+start_time = 0.13
+end_time = 0.4600000000000001
+row = 1
+blend_in = 0.16500000000000004
+blend_out = 0.16500000000000004
+
+[sub_resource type="Resource" id="Resource_wq5e4"]
+script = ExtResource("2_jtd56")
+pose_id = &"VIS_Uh"
+start_time = 0.3
+end_time = 0.62
+row = 3
+blend_in = 0.11
+blend_out = 0.12
+
+[sub_resource type="Resource" id="Resource_53wpm"]
+script = ExtResource("2_jtd56")
+pose_id = &"VIS_W_OO"
+start_time = 0.45
+end_time = 0.93
+row = 2
+blend_in = 0.19500000000000003
+blend_out = 0.24000000000000002
+
+[resource]
+script = ExtResource("4_6tej2")
+profile = ExtResource("3_3lppf")
+audio = ExtResource("1_xj3r3")
+audible_start = 0.04392517026280984
+audible_end = 0.6630609034909867
+viseme_cues = Array[ExtResource("2_jtd56")]([SubResource("Resource_2wnoc"), SubResource("Resource_b3jd1"), SubResource("Resource_wq5e4"), SubResource("Resource_53wpm")])
+expression_cues = Array[ExtResource("2_jtd56")]([SubResource("Resource_74jdf")])

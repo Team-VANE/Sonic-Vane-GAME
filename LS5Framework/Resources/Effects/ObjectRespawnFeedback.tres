@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="ObjectRespawnFeedback" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Resources/Effects/ObjectRespawnFeedback.gd" id="1_feedback"]
+
+[resource]
+script = ExtResource("1_feedback")

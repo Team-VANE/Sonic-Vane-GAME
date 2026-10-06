@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gameplay/MovementCorrectionSurface.gd" id="1_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_correction"]
+size = Vector3(8, 4, 0.25)
+
+[node name="MovementCorrectionSurface" type="Area3D"]
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_correction")

@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://db4e3q0s5bl8p"]
+
+[ext_resource type="AudioStream" uid="uid://doo8p3m4q5q8x" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_01.ogg" id="1_nykli"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_cfyx2"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_4p5bq"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_tuhow"]
+
+[sub_resource type="Resource" id="Resource_wxss6"]
+script = ExtResource("2_cfyx2")
+pose_id = &"EXP_ANGRY"
+start_time = 0.16
+end_time = 0.98
+blend_in = 0.15
+blend_out = 0.15
+strength = 0.3235294117647059
+
+[sub_resource type="Resource" id="Resource_qf346"]
+script = ExtResource("2_cfyx2")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.15
+end_time = 0.41000000000000003
+blend_in = 0.13
+blend_out = 0.13
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_fyqu4"]
+script = ExtResource("2_cfyx2")
+pose_id = &"VIS_Ah"
+start_time = 0.24
+end_time = 0.56
+row = 1
+blend_in = 0.16000000000000003
+blend_out = 0.16000000000000003
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_0onwy"]
+script = ExtResource("2_cfyx2")
+pose_id = &"VIS_Oh"
+start_time = 0.33
+end_time = 0.64
+row = 2
+blend_in = 0.155
+blend_out = 0.155
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_j22qm"]
+script = ExtResource("2_cfyx2")
+pose_id = &"VIS_W_OO"
+start_time = 0.34
+end_time = 0.8500000000000001
+row = 3
+blend_in = 0.25500000000000006
+blend_out = 0.25500000000000006
+lock_max_blend = true
+strength = 0.7058823529411764
+
+[resource]
+script = ExtResource("4_tuhow")
+profile = ExtResource("3_4p5bq")
+audio = ExtResource("1_nykli")
+audible_start = 0.21935498295351863
+audible_end = 0.8797836708545219
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_cfyx2")]([SubResource("Resource_qf346"), SubResource("Resource_fyqu4"), SubResource("Resource_0onwy"), SubResource("Resource_j22qm")])
+expression_cues = Array[ExtResource("2_cfyx2")]([SubResource("Resource_wxss6")])

@@ -1,0 +1,228 @@
+[gd_scene load_steps=14 format=3 uid="uid://coxb8hlg7x21s"]
+
+[ext_resource type="Script" uid="uid://ekepnaawg03q" path="res://LS5Framework/Scripts/UI/Speedometer.gd" id="1_speedometer"]
+[ext_resource type="Shader" path="res://LS5Framework/Shaders/UI/HUDMaskedGauge.gdshader" id="2_gauge_shader"]
+[ext_resource type="Texture2D" uid="uid://do5lkcjvoyqun" path="res://LS5Framework/Images/UI/VANE/HUD_Speed_Mask.png" id="3_speed_mask"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/UI/VANE/HUD_BB_Mask.png" id="4_barrier_mask"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/UI/VANE/HUD_Readout_Mask.png" id="5_readout_mask"]
+[ext_resource type="Texture2D" uid="uid://dvy40rn1yl5tg" path="res://LS5Framework/Images/UI/VANE/HUD_Speedometer.png" id="6_frame"]
+[ext_resource type="FontFile" path="res://LS5Framework/Resources/Fonts/7segment.ttf" id="7_segments"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="8_header_font"]
+[ext_resource type="Shader" uid="uid://c4l8qox42d5kl" path="res://LS5Framework/Shaders/UI/HUDColorize.gdshader" id="9_colorize"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_speed"]
+shader = ExtResource("2_gauge_shader")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_barrier"]
+shader = ExtResource("2_gauge_shader")
+shader_parameter/gauge_type = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_readout"]
+shader = ExtResource("2_gauge_shader")
+shader_parameter/gauge_type = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_frame"]
+shader = ExtResource("9_colorize")
+
+[node name="Speedometer" type="Control" unique_id=731278715]
+custom_minimum_size = Vector2(520, 183)
+layout_mode = 3
+offset_right = 520.0
+offset_bottom = 183.0
+mouse_filter = 2
+script = ExtResource("1_speedometer")
+
+[node name="Art" type="Control" parent="."]
+layout_mode = 1
+offset_right = 1200.0
+offset_bottom = 422.0
+scale = Vector2(0.433333, 0.433333)
+mouse_filter = 2
+
+[node name="SpeedMask" type="TextureRect" parent="Art"]
+material = SubResource("ShaderMaterial_speed")
+layout_mode = 1
+offset_right = 1200.0
+offset_bottom = 422.0
+mouse_filter = 2
+texture = ExtResource("3_speed_mask")
+
+[node name="BarrierMask" type="TextureRect" parent="Art"]
+material = SubResource("ShaderMaterial_barrier")
+layout_mode = 1
+offset_right = 1200.0
+offset_bottom = 422.0
+mouse_filter = 2
+texture = ExtResource("4_barrier_mask")
+
+[node name="ReadoutMask" type="TextureRect" parent="Art"]
+material = SubResource("ShaderMaterial_readout")
+layout_mode = 1
+offset_right = 1200.0
+offset_bottom = 422.0
+mouse_filter = 2
+texture = ExtResource("5_readout_mask")
+
+[node name="Frame" type="TextureRect" parent="Art"]
+material = SubResource("ShaderMaterial_frame")
+layout_mode = 1
+offset_right = 1200.0
+offset_bottom = 422.0
+mouse_filter = 2
+texture = ExtResource("6_frame")
+
+[node name="Readout" type="Control" parent="Art"]
+clip_contents = true
+layout_mode = 1
+offset_left = 517.0
+offset_top = 241.0
+offset_right = 902.0
+offset_bottom = 397.0
+mouse_filter = 2
+
+[node name="CurrentGhostHundreds" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 103.0
+offset_top = -4.0
+offset_right = 163.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.04, 0.09, 0.16, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+text = "8"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentGhostTens" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 163.0
+offset_top = -4.0
+offset_right = 223.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.04, 0.09, 0.16, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+text = "8"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentGhostOnes" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 223.0
+offset_top = -4.0
+offset_right = 283.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.04, 0.09, 0.16, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+text = "8"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Divider" type="ColorRect" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 88.0
+offset_top = 84.0
+offset_right = 297.0
+offset_bottom = 86.0
+mouse_filter = 2
+color = Color(0.7, 0.85, 1, 0.8)
+
+[node name="MaximumGhost" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 0.0
+offset_top = 84.0
+offset_right = 385.0
+offset_bottom = 156.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.04, 0.09, 0.16, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 65
+text = "888"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentThousands" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 43.0
+offset_top = -4.0
+offset_right = 103.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentHundreds" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 103.0
+offset_top = -4.0
+offset_right = 163.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentTens" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 163.0
+offset_top = -4.0
+offset_right = 223.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentOnes" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 223.0
+offset_top = -4.0
+offset_right = 283.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 96
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Maximum" type="Label" parent="Art/Readout"]
+layout_mode = 1
+offset_left = 0.0
+offset_top = 84.0
+offset_right = 385.0
+offset_bottom = 156.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("7_segments")
+theme_override_font_sizes/font_size = 65
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BarrierBlastLabel" type="Label" parent="Art"]
+layout_mode = 1
+offset_left = 604.0
+offset_top = 6.0
+offset_right = 1148.0
+offset_bottom = 56.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_header_font")
+theme_override_font_sizes/font_size = 32
+text = "BARRIER BLAST"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true

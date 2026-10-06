@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bq6lnp4r0a2xs"]
+
+[ext_resource type="Script" uid="uid://d1y0nrr6t3cy5" path="res://LS5Framework/Objects/Carry/CarryableRespawnPlane.gd" id="1_respawn_plane"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_respawn_plane"]
+size = Vector3(50, 3, 50)
+
+[node name="CarryableRespawnPlane" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_respawn_plane")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_respawn_plane")
+debug_color = Color(0.3, 0.9, 1, 0.45)

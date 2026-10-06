@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://byu54fqfc1s02"
+path="res://.godot/imported/RaceStart_Blitz_01.ogg-6a650c6e7f0b0bbdc8f6c8c7214a09ba.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_Blitz_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_Blitz_01.ogg-6a650c6e7f0b0bbdc8f6c8c7214a09ba.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

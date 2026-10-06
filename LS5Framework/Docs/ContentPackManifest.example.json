@@ -1,0 +1,17 @@
+{
+  "id": "org.example.environment-assets",
+  "version": "1.2.0",
+  "dependencies": [
+    {
+      "id": "org.example.material-library",
+      "version": ">=1.0.0 <2.0.0"
+    }
+  ],
+  "optional_dependencies": [
+    "org.example.hd-textures"
+  ],
+  "load_after": [
+    "objects"
+  ],
+  "replace_files": true
+}

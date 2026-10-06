@@ -1,0 +1,3370 @@
+extends CharacterBody3D
+
+# -----------------------------------------------------------
+# NODE REFERENCES
+# -----------------------------------------------------------
+@export_group("Node References")
+
+## Camera node controlling view direction.
+@export var camera: Camera3D
+
+## Camera rig (source of yaw). Optional; falls back to camera parent if not set.
+@export var camera_rig: Node3D
+
+## Model root node used for visual orientation.
+@export var model_root: Node3D
+
+## Ground RayCast3D used for surface-follow while attached.
+@export var ground_ray: RayCast3D
+
+## Optional respawn transform.
+@export var respawn_point: Node3D
+
+@export var anim_tree: AnimationTree
+var anim_state: AnimationNodeStateMachinePlayback
+
+@export var control_anchor: Node3D
+
+
+# -----------------------------------------------------------
+# MOVEMENT PARAMETERS
+# -----------------------------------------------------------
+@export_group("Movement")
+
+@export_subgroup("Landing")
+
+## Global scale on how much of the tangential component is kept.
+## 1.0 = keep exactly the tangential speed, 0.5 = keep half, etc.
+@export var landing_tangent_retention_scale: float = 1.0
+
+## Maximum floor angle considered valid landing (deg).
+@export var landing_floor_max_angle_deg: float = 60.0
+
+## How strongly floor-ish surfaces keep tangential speed (old behaviour)
+@export var landing_momentum_scale: float = 1.0
+
+## Below this tilt angle, we don't convert vertical speed into along-slope speed.
+@export var landing_convert_min_tilt_deg: float = 10.0
+
+## At / above this tilt angle, we convert (almost) all vertical speed into tangential.
+## Think deep bowls, steep ramps, loop bottoms, etc.
+@export var landing_convert_max_tilt_deg: float = 70.0
+
+## Scale for how much vertical speed is added into tangential on steep slopes.
+@export var landing_vertical_to_tangent_scale: float = 1.0
+
+## If your tangential speed after impact is below this, you just stop.
+@export var landing_stop_speed_threshold: float = 7.5
+
+## Below this slope angle (deg) we do not convert downward speed into ground speed.
+@export var landing_min_slope_deg: float = 30.0
+
+## At or above this slope angle (deg) we convert as much as possible.
+@export var landing_max_slope_deg: float = 90.0
+
+## Angle where we start to keep any speed at all (in degrees).
+@export var landing_min_tilt_deg: float = 0.0
+
+## Angle where we keep *full* incoming speed (e.g. steep loop / ceiling).
+@export var landing_full_tilt_deg: float = 135.0
+
+## Global scale on retained speed (1.0 = keep exactly what we decide, <1.0 = softer).
+@export var landing_global_scale: float = 1.0
+
+## How much of your speed you keep on a perfectly flat floor (0 = stop dead).
+@export var landing_floor_retention_scale: float = 0.0
+
+
+@export_subgroup("Acceleration")
+
+## Speed reached by running on flat.
+@export var run_top_speed: float = 120.0
+
+## Speed reached by running on flat while airborne (soft cap).
+@export var air_top_speed: float = 50.0
+
+## Absolute maximum lateral speed (slopes, launches, etc.).
+@export var max_speed: float = 220.0
+
+## How strongly we pull the player back down toward their top speed (0 = off, 1 = normal, 2+ = very strong)
+@export var top_speed_slowdown_strength: float = 0.35
+
+## Ground acceleration curve.
+## X: speed fraction (0..1), Y: acceleration (units/sec^2).
+@export var ground_accel_curve: Curve
+
+## Air acceleration curve.
+## X: speed fraction (0..1), Y: acceleration (units/sec^2).
+@export var air_accel_curve: Curve
+
+## Ground deceleration when no input (still lateral-only).
+@export var decel: float = 34.0
+
+@export var air_decel: float = 16.0
+
+
+@export_subgroup("Jumping n Gravity")
+
+## Gravity strength applied when airborne.
+@export var gravity_strength: float = 65.0
+
+## Maximum downward velocity.
+@export var max_fall_speed: float = 100.0
+
+## Jump speed along the surface normal when attached.
+@export var jump_speed: float = 30.0
+
+@export_subgroup("Variable Jump")
+
+## Maximum surface angle (vs world up, in degrees) that allows
+## variable-height jump & hang-time. Above this (walls/loops/ceilings),
+## jump behaves with fixed height.
+@export var variable_jump_max_surface_angle_deg: float = 95.0
+
+## How long (seconds) holding the jump button can influence the jump.
+@export var jump_hold_time_max: float = 0.65
+
+## Gravity scale while rising AND holding jump (softer gravity = higher jump).
+@export var jump_hold_gravity_scale: float = 0.8
+
+## Extra-soft gravity scale near the apex while holding jump, for “hang time”.
+@export var jump_apex_gravity_scale: float = 0.3
+
+## Vertical speed (units/sec, along current up) within which we consider
+## we are “near the apex”.
+@export var jump_apex_speed_threshold: float = 2.0
+
+## Gravity scale after release while still moving upward
+## (he falls sooner but not with a hard velocity cut).
+@export var jump_release_gravity_scale: float = 1.8
+
+@export_subgroup("Jump Dash")
+
+## Whether the jump dash can only be used while airborne.
+@export var jump_dash_air_only: bool = true
+
+## Whether the dash can only be used once per airtime (classic SA-ish).
+@export var jump_dash_once_per_air: bool = true
+
+## How much speed to add in the facing direction (units/sec).
+@export var jump_dash_add_speed: float = 32.0
+
+## Max lateral speed allowed immediately after a dash.
+## If <= 0, falls back to max_speed.
+@export var jump_dash_max_lateral_speed: float = 60.0
+
+@export_group("Spring State")
+
+## Extra gravity while in spring state (align timer > 0, airborne).
+## 1.0 = same as normal, >1 = stronger pull downward.
+@export var spring_gravity_scale: float = 1.8
+
+## Whether very low speeds should automatically end the spring state.
+@export var spring_exit_on_low_speed: bool = true
+
+## If spring_exit_on_low_speed is true, spring state ends when
+## |velocity| < this value.
+@export var spring_exit_speed_threshold: float = 5.0
+
+
+@export_subgroup("Horizontal Jump Damping")
+
+## Minimum horizontal (lateral) speed at which damping activates while holding jump.
+@export var jump_damp_min_speed: float = 18.0
+
+## How strongly horizontal speed is damped each second while holding jump.
+## (SA1 used a very gentle value. Start with 4–8 range.)
+@export var jump_damp_strength: float = 6.0
+
+## Curve controlling how strongly horizontal speed is damped
+## while holding the jump button.
+## X = speed fraction (0..1), based on max_speed.
+## Y = damping strength (units/sec).
+@export var jump_damp_curve: Curve
+
+@export_group("Turning")
+
+@export_subgroup("Visual")
+@export var model_turn_speed: float = 30.0
+
+
+@export_subgroup("Ground Turning")
+
+## Ground turn angle per second as a curve.
+## X: speed fraction (0..1), Y: degrees per second.
+@export var ground_turn_angle_curve: Curve
+
+@export var ground_turn_free_angle_deg: float = 6.0
+@export var ground_turn_max_penalty_angle_deg: float = 800.0
+@export var ground_turn_min_speed_factor: float = 0.3
+
+
+@export_subgroup("Air Turning")
+
+## Air turn angle per second as a curve.
+## X: speed fraction (0..1), Y: degrees per second.
+@export var air_turn_angle_curve: Curve
+
+@export var air_turn_free_angle_deg: float = 30.0
+@export var air_turn_max_penalty_angle_deg: float = 225.0
+@export var air_turn_min_speed_factor: float = 0.7
+
+@export_group("Skidding")
+
+## Minimum lateral speed before skidding can start.
+@export var skid_enter_min_speed: float = 25.0
+
+## Speed below which skidding will auto-exit (even if angle is still opposite).
+@export var skid_exit_min_speed: float = 3.0
+
+## Angle (deg) between movement direction and input direction at which
+## skidding starts (close to 180°).
+@export var skid_enter_angle_deg: float = 155.0
+
+## Angle (deg) below which skidding cancels again (input no longer
+## strongly opposite movement).
+@export var skid_exit_angle_deg: float = 140.0
+
+## Extra deceleration applied while skidding (on top of usual stuff).
+@export var skid_decel: float = 90.0
+
+## Maximum slope angle (deg, vs world up) on which skidding is allowed.
+## This keeps skids restricted to "ground-like" surfaces, not walls/loops.
+@export var skid_max_ground_angle_deg: float = 80.0
+
+
+# -----------------------------------------------------------
+# COLLISION GEOMETRY LOCKING
+# -----------------------------------------------------------
+@export_group("Collision Geometry")
+
+## Distance from the character center to the contact point along the surface normal.
+## For a 2-unit tall capsule centered on the character, this is usually about 1.0.
+@export var collision_ground_distance: float = 1.0
+
+
+# -----------------------------------------------------------
+# GROUND FOLLOW (RAYCAST WHILE ATTACHED)
+# -----------------------------------------------------------
+@export_group("Ground Follow")
+
+## Ray length used when attached (follows surface normal, used for loops and walls).
+@export var ground_ray_length: float = 1.9
+
+
+# -----------------------------------------------------------
+# ADHESION / LOOP PHYSICS
+# -----------------------------------------------------------
+@export_group("Adhesion n Loop Physics")
+@export_subgroup("General")
+
+# ...
+@export var adhesion_enabled: bool = true
+@export var launch_immunity_time: float = 0.1
+
+## When attached to a non-floor surface, if we bump into a floor-like
+## surface and our speed is below this, we detach and fall.
+@export var nonfloor_floor_detach_speed: float = 0.5
+
+@export_subgroup("Loop Launch")
+## Minimum world-up angle (deg) for ramp/loop launch to kick in.
+## Below this, detach just keeps tangential velocity (no extra pop).
+@export var launch_min_world_angle_deg: float = 120.0
+
+@export_subgroup("Loop Control")
+## Above this world-up angle, we treat the surface as loop-like and
+## drive forward/back along the current tangential velocity instead
+## of using camera yaw. (Helps diagonal loops behave.)
+@export var loop_input_steep_angle_deg: float = 90.0
+
+## Above this world-up angle (deg) we start blending from camera-based
+## forward to loop-tangent based forward for input.
+@export var loop_input_blend_start_deg: float = 60.0
+
+## At / above this angle (deg) input forward is fully aligned to loop tangent.
+@export var loop_input_blend_full_deg: float = 135.0
+
+@export_subgroup("Detach Fallback")
+## If the normal used to detach differs from the current surface normal
+## by more than this angle (deg) while on a floor-like surface, ignore
+## that last-moment normal and use the current ground normal instead.
+@export var detach_ignore_last_moment_angle_deg: float = 50.0
+
+@export_subgroup("Angle Ranges")
+
+## Minimum angle (deg) where the surface begins to count as non-flat for adhesion.
+@export var adhesion_min_angle_deg: float = 5.0
+
+## Angle (deg) past which adhesion requires sufficient speed instead of automatic sticking.
+@export var adhesion_detach_angle_start_deg: float = 120.0
+
+## Maximum angle (deg). Beyond this value, adhesion is not allowed.
+@export var adhesion_max_angle_deg: float = 175.0
+
+## Maximum angle (deg) between the current surface normal and a new
+## contact's normal for collision-based "follow" attachment.
+## Larger changes require a proper radial landing from air.
+@export var adhesion_max_step_angle_from_current_deg: float = 30.0
+
+## Band around 90° (vertical) where adhesion is NEVER allowed.
+## e.g. 1.5 = anything in [88.5°, 91.5°] is treated as non-attachable.
+@export var adhesion_vertical_forbid_half_width_deg: float = 1.5
+
+
+@export_subgroup("Speed Requirements")
+
+## Required lateral speed to remain attached at exactly vertical (90°).
+@export var adhesion_speed_at_90: float = 8.0
+
+## Required lateral speed to remain attached at fully inverted (180°).
+@export var adhesion_speed_at_180: float = 16.0
+
+
+@export_subgroup("Airborne Visual Up Blending")
+
+## Delay before visual_up begins blending back toward world-up while airborne.
+@export var airborne_up_blend_delay: float = 0.1
+
+## Blend speed for visual_up → world_up transition.
+@export var airborne_up_blend_speed: float = 2.0
+
+@export_group("Wall Slide n Friction")
+
+## Angle (deg) from Sonic's current up-direction that is still considered
+## walkable. Anything steeper behaves like a wall for friction/grazing.
+@export var walkable_from_up_max_angle_deg: float = 50.0
+
+## Angle (deg) between approach direction and wall normal at which
+## the contact is treated as a strong head-on hit.
+@export var wall_stop_max_angle_deg: float = 35.0
+
+## Angle (deg) at which the contact is considered a pure side-scrape.
+@export var wall_graze_min_angle_deg: float = 65.0
+
+## Base wall friction strength (units/sec^2).
+@export var wall_friction: float = 60.0
+
+## Fraction of friction used when grazing along a wall.
+@export var wall_graze_friction_scale: float = 0.2
+
+#@export_group("Animation")
+#@export var hard_landing_speed_threshold: float = 28.0
+@export var landing_linger_time: float = 0.15
+@export var jump_dash_recent_time: float = 0.35
+
+# -----------------------------------------------------------
+# RADIAL LANDING (ANGLE / SPEED RULES)
+# -----------------------------------------------------------
+@export_group("Radial Landing (Collision-Based)")
+
+
+@export_subgroup("Radial Grab (Walls n Ceilings)")
+
+## Minimum hit angle (deg) between approach direction and surface normal for attachment.
+## Lower angles are treated as head-on impacts.
+@export var radial_landing_min_angle_deg: float = 35.0
+
+## Minimum tangential speed required to attach via radial landing on walls/ceilings.
+@export var radial_landing_min_speed: float = 7.0
+
+@export var landing_momentum_floor_scale: float = 1.0
+@export var landing_momentum_nonfloor_scale: float = 1.0
+@export var debug_landing_momentum: bool = false
+
+@export_subgroup("Floor → Wall Exceptions")
+
+## Angle (deg) from world-up considered "floor-like" for detach surface.
+@export var floor_like_max_angle_deg: float = 25.0
+
+## Range of angles (deg) around 90° considered "wall-like".
+@export var wall_like_min_angle_deg: float = 88.5
+@export var wall_like_max_angle_deg: float = 91.5
+
+## Time window (sec) after leaving a non-floor surface during which
+## wall attachment is still allowed. After this, wall behaves like a bonk.
+@export var nonfloor_to_wall_grace_time: float = 1.0
+
+## Angle (deg) up to which a previous surface is still considered
+## "floor-like" FOR THE PURPOSE of blocking floor→wall radial grabs.
+## Anything <= this is treated as floor-ish and cannot stick to walls
+## immediately after detach.
+@export var wall_block_floor_like_angle_deg: float = 80.0
+
+
+
+# -----------------------------------------------------------
+# SLOPE PHYSICS
+# -----------------------------------------------------------
+@export_group("Slope Physics")
+@export_subgroup("General")
+
+## Angle (deg) from world-up considered flat. Below this, slope gravity has no effect.
+@export var slope_flat_angle_threshold_deg: float = 3.0
+
+## Maximum angle (deg) where slope gravity and sliding forces are applied.
+## Above this, adhesion / detachment logic governs behaviour.
+@export var slope_max_effect_angle_deg: float = 120.0
+
+
+@export_subgroup("Downhill n Uphill")
+
+## Acceleration applied along the surface when moving downhill.
+@export var slope_downhill_accel: float = 25.0
+
+## Extra deceleration applied when moving uphill against gravity.
+@export var slope_uphill_decel: float = 20.0
+
+
+@export_subgroup("Sliding")
+
+## Angle (deg) from world-up where passive sliding begins to dominate.
+@export var slope_slide_start_angle_deg: float = 40.0
+
+## Base acceleration used when sliding on steep slopes.
+## Effective sliding strength scales with slope angle.
+@export var slope_slide_accel: float = 50.0
+
+## Maximum lateral speed treated as "nearly standing" for sliding decisions.
+@export var slope_slide_min_speed: float = 3.0
+
+@export_group("Audio")
+
+@export_subgroup("Footsteps")
+@export var footstep_player: AudioStreamPlayer3D          # Drop your SFX player node here in the inspector
+@export var footstep_sounds: Array[AudioStream] = [] # Drop 1–4+ step sounds here
+
+var _last_footstep_index: int = -1
+
+@export_subgroup("Footsteps/Footstep Volume By Speed")
+@export_range(0.0, 1.0) var footstep_min_volume: float = 0.2  # 20% at 0 speed
+@export_range(0.0, 1.0) var footstep_max_volume: float = 1.0  # 100% at top speed
+@export var footstep_full_volume_speed: float = 120.0         # speed that counts as "top speed"
+
+@export_subgroup("Ability Sounds")
+@export var sfx_player: AudioStreamPlayer3D          # Drop your SFX player node here in the inspector
+@export var jump_sounds: Array[AudioStream] = []
+@export var jumpdash_sounds: Array[AudioStream] = []
+
+# Volumes (these are NOT speed-scaled)
+@export_range(0.0, 2.0) var jump_volume: float = 1.0
+@export_range(0.0, 2.0) var jumpdash_volume: float = 1.0
+
+var _last_jump_index: int = -1
+var _last_jumpdash_index: int = -1
+
+
+
+# -----------------------------------------------------------
+# INPUT / CAMERA / DEBUG
+# -----------------------------------------------------------
+@export_group("Input n Camera n Debug")
+@export var debug_add_up_speed: float = 25.0
+@export var debug_add_up_use_physics_up: bool = true
+
+@export_subgroup("Mouse Lock")
+
+## Whether mouse is captured during gameplay.
+@export var lock_cursor_to_game: bool = true
+
+
+# -----------------------------------------------------------
+# INTERNAL STATE
+# -----------------------------------------------------------
+
+# Gameplay state
+var _is_skidding: bool = false
+var _prev_skidding: bool = false
+
+var _just_jumped: bool = false              # true only on the frame a jump is triggered
+
+var _jump_dash_recent_timer: float = 0.0    # counts down after a jump dash;
+											# > 0 means "recent_jump_dash == true"
+var _landing_timer: float = 0.0             # short timer after touching ground,
+											# lets us treat a landing as “fresh” for a bit
+var _last_landing_impact_speed: float = 0.0 # how hard we hit the ground (downward speed
+											# at the moment we landed)
+var _loop_forward_dir: Vector3 = Vector3.ZERO
+
+var _hard_landing_speed_threshold: float = 0
+
+
+# Jump state
+var _is_jumping: bool = false
+var _jump_variable: bool = false
+var _jump_time: float = 0.0
+var _jump_hang_allowed: bool = false
+var _jump_requested: bool = false       # set by JumpAbility via queue_jump()
+
+var _is_falling: bool = false
+
+# Jump dash state
+var _jump_dash_requested: bool = false
+var _jump_dash_used_this_air: bool = false
+var _jump_dashing: bool = false
+
+# Input state
+var _move_input: Vector2 = Vector2.ZERO
+var _move_direction: Vector3 = Vector3.ZERO
+
+# ===========================================================
+# INPUT SPACE HELPERS
+# ===========================================================
+var _input_up_last: Vector3 = Vector3.UP  # smoothed up for input/control space
+
+var _stick_length: float = 0.0    # magnitude of analog input
+var _stick_turn: float = 0.0      # signed angle between look & move (radians)
+
+# Control-space basis for mapping 2D input to 3D movement.
+var _control_forward: Vector3 = -Vector3.FORWARD
+var _control_right: Vector3 = Vector3.RIGHT
+
+# Loop control
+var _loop_control_active: bool = false
+
+# Last airborne velocity for landing conversion.
+var _last_air_velocity: Vector3 = Vector3.ZERO
+var _horizontal_speed: float
+
+# Attachment state
+var attached: bool = false
+var _prev_attached: bool = false
+
+var _loop_sticky: bool = false
+
+var surface_normal: Vector3 = Vector3.UP
+var surface_point: Vector3 = Vector3.ZERO
+var _prev_surface_normal: Vector3 = Vector3.UP
+var _last_detach_normal: Vector3
+
+# Detach classification (used for floor → wall exception)
+var _detached_from_floor_like: bool = true
+var _last_detach_angle_deg: float = 0.0
+
+var _physics_up_last: Vector3 = Vector3.UP
+
+# Visual orientation
+var visual_up: Vector3 = Vector3.UP
+var _model_forward: Vector3 = -Vector3.FORWARD
+
+# Timers
+var _attachment_immunity: float = 0.0
+var _airborne_time: float = 0.0
+
+# Ground follow ray debug
+var _follow_hit: bool = false
+var _follow_normal: Vector3 = Vector3.UP
+var _follow_point: Vector3 = Vector3.ZERO
+var _follow_ray_origin: Vector3 = Vector3.ZERO
+var _follow_ray_target: Vector3 = Vector3.ZERO
+
+# Debug HUD
+var _debug_label: Label
+var _debug_visible: bool = false
+var _normal_delta_angle_deg: float = 0.0
+
+var _radial_attach_this_frame: bool = false
+var _debug_radial_angle: float = 0.0
+var _debug_radial_ns: float = 0.0
+var _debug_radial_ts: float = 0.0
+
+# --- Debug state ---------------------------------------------------------
+var _dbg_surface_angle_deg: float = 0.0
+var _dbg_surface_is_floor_like: bool = false
+
+var _dbg_last_detach_world_angle: float = 0.0
+var _dbg_last_detach_step_angle: float = 0.0
+var _dbg_last_detach_used_filtered: bool = false
+var _dbg_last_detach_from_floor_like: bool = false
+
+var _dbg_radial_angle: float = 0.0
+var _dbg_radial_into_speed: float = 0.0
+var _dbg_radial_tangent_speed: float = 0.0
+
+var _pending_landing_velocity: Vector3 = Vector3.ZERO
+var _pending_landing_has_velocity: bool = false
+
+# timers so the HUD text doesn't flash
+var _dbg_radial_hit_timer: float = 0.0
+var _dbg_detach_timer: float = 0.0
+
+# --- Spring lock / alignment state ----------------------------------------
+var _spring_movement_lock_timer: float = 0.0
+var _spring_action_lock_timer: float = 0.0
+var _spring_align_dir: Vector3 = Vector3.ZERO   # launch direction
+var _spring_lock_sideways: bool = false         # if true, freeze sideways motion
+var _spring_sideways_gravity_scale: float = 0.0 # 0 = no sideways from gravity, 1 = normal
+var _spring_cancel_on_ground: bool = true       # stop align when we land
+var _spring_align_timer: float = 0.0
+var _spring_align_up: Vector3 = Vector3.ZERO
+var _spring_align_forward: Vector3 = Vector3.ZERO
+var _spring_clear_move_on_ground: bool = false
+var _spring_clear_action_on_ground: bool = false
+var _spring_detached: bool = false
+
+# Respawn
+var _initial_transform: Transform3D
+
+# Ability system
+const MAX_ACTION_SLOTS: int = 12  # tweak if you want more
+
+# slot_index -> Array[CharacterAbility]
+var _abilities_by_slot: Dictionary = {}
+
+
+
+# ===========================================================
+# SPLINE SPRING STATE
+# ===========================================================
+var _spline_active: bool = false
+var _spline_path: Path3D = null
+var _spline_distance: float = 0.0
+var _spline_speed: float = 0.0
+var _spline_total_length: float = 0.0
+var _spline_align_model: bool = true
+var _spline_detach_from_ground: bool = true
+var _spline_allow_input_cancel: bool = false
+
+# ===========================================================
+# HIGH-LEVEL PLAYER STATE
+# ===========================================================
+
+enum MainState {
+	GROUNDED,
+	AIRBORNE,
+	SPRING,
+	SPLINE,
+}
+
+var main_state: int = MainState.AIRBORNE
+var main_state_time: float = 0.0  # time spent in current main state
+
+# Bit flags for sub-states / tags.
+const STATE_GROUNDED      := 1 << 0
+const STATE_MOVING        := 1 << 1
+const STATE_SKIDDING      := 1 << 2
+const STATE_JUMPING       := 1 << 3
+const STATE_FALLING       := 1 << 4
+const STATE_LOOPING       := 1 << 5
+const STATE_JUMP_DASH     := 1 << 6
+const STATE_SPRING        := 1 << 7
+const STATE_SPLINE        := 1 << 8
+const STATE_LANDING_HARD  := 1 << 9
+
+var state_flags: int = 0  # current frame tags
+
+# If you want to call upon these anywhere, use commands like this:
+
+# if player.has_state(SonicPlayer.STATE_SKIDDING):
+	# do skid-specific VFX
+
+# if player.main_state == SonicPlayer.MainState.SPRING:
+	# camera rail behaviour, etc.
+
+const SM_BASE := "parameters/StateMachine"
+
+# ===========================================================
+# LIFECYCLE
+# ===========================================================
+func _ready() -> void:
+	randomize()
+	floor_max_angle = deg_to_rad(45.0)
+	floor_block_on_wall = true
+	floor_snap_length = 0.0
+	
+	# Footstep volume fallback
+	if footstep_full_volume_speed <= 0.0:
+		footstep_full_volume_speed = run_top_speed
+
+	# If unset, tie full-volume speed to run_top_speed
+	if footstep_full_volume_speed <= 0.0:
+		footstep_full_volume_speed = run_top_speed
+		
+		
+	floor_max_angle = deg_to_rad(45.0)
+	floor_block_on_wall = true
+	floor_snap_length = 0.0
+
+	if ground_ray != null:
+		ground_ray.exclude_parent = true
+		ground_ray.collide_with_areas = false
+		ground_ray.add_exception(self)
+
+	_initial_transform = global_transform
+
+	_update_mouse_lock()
+	_create_debug_hud()
+	_init_abilities()
+
+	if anim_tree:
+		anim_tree.active = true
+		anim_state = anim_tree.get(SM_BASE+ "/playback")
+		#_dump_animtree_params()
+		if anim_state == null:
+			push_error("AnimationTree playback not found – check path '%s/playback'" % SM_BASE)
+
+		
+		#_debug_anim_tree_params()
+
+
+func _create_debug_hud() -> void:
+	var canvas: CanvasLayer = CanvasLayer.new()
+	add_child(canvas)
+	_debug_label = Label.new()
+	canvas.add_child(_debug_label)
+	_debug_label.anchor_left = 0.0
+	_debug_label.anchor_top = 0.0
+	_debug_label.offset_left = 10.0
+	_debug_label.offset_top = 10.0
+	_debug_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+	_debug_label.visible = _debug_visible
+
+func _update_mouse_lock() -> void:
+	if lock_cursor_to_game:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	# F12: toggle debug HUD
+	if event is InputEventKey and not event.echo and event.keycode == Key.KEY_F12:
+		_debug_visible = !_debug_visible
+		if _debug_label:
+			_debug_label.visible = _debug_visible
+		return
+
+	if event.is_action_pressed("toggle_mouse_lock"):
+		lock_cursor_to_game = !lock_cursor_to_game
+		_update_mouse_lock()
+	elif event.is_action_pressed("respawn"):
+		_respawn()
+
+
+
+func _respawn() -> void:
+	var target_transform: Transform3D = _initial_transform
+	if respawn_point != null:
+		target_transform = respawn_point.global_transform
+
+	global_transform = target_transform
+	velocity = Vector3.ZERO
+
+	attached = false
+	_prev_attached = false
+	surface_normal = Vector3.UP
+	surface_point = global_transform.origin
+	visual_up = Vector3.UP
+	_attachment_immunity = 0.0
+	_airborne_time = 0.0
+
+
+func get_up_vector() -> Vector3:
+	return visual_up
+
+func _process(delta: float) -> void:
+	if _debug_visible:
+		_debug_draw_control_anchor()
+
+	
+func _physics_process(delta: float) -> void:
+	var was_attached: bool = attached
+	
+	_pending_landing_has_velocity = false
+	
+	# Reset per-frame radial attach flag
+	_radial_attach_this_frame = false
+
+	_jump_dash_recent_timer = max(_jump_dash_recent_timer - delta, 0.0)
+	_landing_timer = max(_landing_timer - delta, 0.0)
+
+	# Spring-related timers (count down every frame)
+	_spring_movement_lock_timer = max(_spring_movement_lock_timer - delta, 0.0)
+	_spring_action_lock_timer = max(_spring_action_lock_timer - delta, 0.0)
+	_spring_align_timer       = max(_spring_align_timer - delta, 0.0)
+
+	# Debug timers – keep values visible for a short time
+	_dbg_radial_hit_timer = max(_dbg_radial_hit_timer - delta, 0.0)
+	_dbg_detach_timer     = max(_dbg_detach_timer - delta, 0.0)
+
+	if _attachment_immunity > 0.0:
+		_attachment_immunity = max(_attachment_immunity - delta, 0.0)
+
+	_read_input()
+	_process_ability_inputs()
+
+	# ==========================================================
+	# [SPLINE] Override: if in spline spring, handle that first
+	# ==========================================================
+	if _spline_active:
+		# Use world-up while on spline for movement / visuals
+		var physics_up := Vector3.UP
+		up_direction = physics_up
+		# DO NOT update _physics_up_last here – keep last true ground up.
+		# _physics_up_last stays whatever it was when we last were attached.
+
+		# Advance along spline; this may set _spline_active = false
+		_update_spline_spring(delta)
+
+		if _spline_active:
+			# Still on spline this frame: move along current velocity
+			move_and_slide()
+
+			# Update anchor/visuals/anim like normal
+			_update_control_anchor(physics_up)
+			_update_visual_up(delta)
+			_update_model_orientation(delta)
+			_debug_draw()
+			_update_animation(delta)
+
+			_jump_requested = false
+			_prev_attached = attached
+			return
+		# If we just exited spline this frame (_spline_active became false),
+		# fall through into normal physics using whatever velocity the spline
+		# left us with.
+
+	# 1) Decide physics_up from gameplay “input up”:
+	#    - attached      → surface_normal
+	#    - recently left → last steep surface for a short window
+	#    - otherwise     → world up
+	var physics_up: Vector3 = _get_input_up()
+	if physics_up.length() < 0.001:
+		physics_up = Vector3.UP
+
+	# During spring state you still want pure world-up frame of reference.
+	if _spring_align_timer > 0.0:
+		physics_up = Vector3.UP
+
+	up_direction = physics_up
+	if attached:
+		_physics_up_last = physics_up
+
+	# 🔹DEBUG: manual upward kick on V
+	_debug_inputs(physics_up)
+	
+	# Update stick info in this frame's control space
+	_update_stick(physics_up)
+
+	# During spring alignment we want no slope/sideways ground effects
+	# → treat as airborne for movement.
+	var is_attached_for_movement := attached and (_spring_align_timer <= 0.0)
+
+	# 2) Movement integration.
+	var v_before: Vector3 = velocity
+	_apply_movement(delta, physics_up, is_attached_for_movement)
+
+	move_and_slide()
+
+	# Update debug/control anchor so its basis matches our control space.
+	_update_control_anchor(physics_up)
+
+	# --- Spring state auto-exit on low speed (physics side) ---
+	if _spring_align_timer > 0.0 and spring_exit_on_low_speed:
+		if velocity.length() <= spring_exit_speed_threshold:
+			_spring_align_timer = 0.0
+			_spring_align_up = Vector3.ZERO
+			_spring_align_forward = Vector3.ZERO
+			_spring_lock_sideways = false
+			# movement/action locks continue counting down normally
+
+	# 3) Collision-based landing / attachment.
+	_process_collisions_for_attachment(v_before, delta)
+
+	# 4) Landing momentum (AIR -> GROUND) and landing bookkeeping.
+	if attached and not was_attached:
+		# Prefer the exact pre-collision velocity if we have it,
+		# otherwise fall back to the generic last-air velocity.
+		var landing_vel := _last_air_velocity
+		if _pending_landing_has_velocity:
+			landing_vel = _pending_landing_velocity
+
+		_apply_landing_momentum(surface_normal, landing_vel)
+
+		_is_jumping = false
+		_jump_variable = false
+		_jump_time = 0.0
+		_jump_hang_allowed = false
+		_just_jumped = true
+		_jump_dash_used_this_air = false
+
+		# ... (rest of your landing block unchanged)
+
+		# Alignment ALWAYS ends when we touch ground if requested.
+		if _spring_cancel_on_ground:
+			_spring_align_timer = 0.0
+			_spring_align_up = Vector3.ZERO
+			_spring_align_forward = Vector3.ZERO
+			_spring_lock_sideways = false
+
+		# Clear locks on landing if configured by the spring.
+		if _spring_clear_move_on_ground:
+			_spring_movement_lock_timer = 0.0
+		if _spring_clear_action_on_ground:
+			_spring_action_lock_timer = 0.0
+		_spring_clear_move_on_ground = false
+		_spring_clear_action_on_ground = false
+		
+		# Kill horizontal lock when touching a surface
+		_spring_lock_sideways = false
+
+		# --- record impact for landing / hard-landing conditions ---
+		var up_for_impact := _physics_up_last.normalized()
+		if up_for_impact.length() < 0.001:
+			up_for_impact = Vector3.UP
+
+		var v_air := _last_air_velocity
+		var impact_speed := (-v_air).dot(up_for_impact) # downward speed as positive
+		_last_landing_impact_speed = max(impact_speed, 0.0)
+		_landing_timer = landing_linger_time
+
+# 5) Ground follow + update attachment after ray probe.
+	_ground_follow_probe(delta)
+	_update_attachment_state_after_move(delta)
+
+	# 6) Lock to surface if attached.
+	_lock_to_surface()
+
+	# 7) Visuals + debug.
+	_update_visual_up(delta)
+	_update_model_orientation(delta)
+	_debug_draw()
+
+	# 8) High-level state snapshot (for anim, AI, etc.)
+	_update_main_state_and_flags(delta)
+
+	# Animation + end-of-frame bookkeeping.
+	_update_animation(delta)
+	_jump_requested = false
+	_prev_attached = attached
+
+# ===========================================================
+# INPUT / CAMERA
+# ===========================================================
+func _read_input() -> void:
+	if _spring_movement_lock_timer > 0.0:
+		_move_input = Vector2.ZERO
+		return
+
+	var x: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	var z: float = Input.get_action_strength("move_forward") - Input.get_action_strength("move_back")
+	_move_input = Vector2(x, z)
+	if _move_input.length() > 1.0:
+		_move_input = _move_input.normalized()
+
+
+func _compute_move_direction() -> void:
+	if _move_input.length() < 0.001:
+		_move_direction = Vector3.ZERO
+		return
+
+	var forward := _control_forward
+	var right   := _control_right
+
+	var dir := forward * _move_input.y + right * _move_input.x
+	if dir.length() < 0.001:
+		_move_direction = Vector3.ZERO
+	else:
+		_move_direction = dir.normalized()
+
+
+# ===========================================================
+# COLLISION-BASED ATTACHMENT
+# ===========================================================
+func _process_collisions_for_attachment(v_before: Vector3, delta: float) -> void:
+	var world_up: Vector3 = Vector3.UP
+	var collision_count: int = get_slide_collision_count()
+
+	# For collision-based follow while already attached.
+	var best_follow_normal: Vector3 = Vector3.ZERO
+	var best_follow_point: Vector3 = Vector3.ZERO
+	var best_follow_score: float = -1.0
+
+	# var detach_to_floor: bool = false
+
+	# Classify current surface once (vs world up, for floor/non-floor rules).
+	var curr_n: Vector3 = surface_normal.normalized()
+	if curr_n.length() < 0.001:
+		curr_n = world_up
+	var curr_dot_up: float = clamp(curr_n.dot(world_up), -1.0, 1.0)
+	var curr_angle_deg: float = rad_to_deg(acos(curr_dot_up))
+	var curr_is_floor_like: bool = curr_angle_deg <= floor_like_max_angle_deg
+
+	for i: int in range(collision_count):
+		var col: KinematicCollision3D = get_slide_collision(i)
+		var hit_normal: Vector3 = col.get_normal()
+		var hit_point: Vector3 = col.get_position()
+
+		# Always apply wall friction, regardless of attach state.
+		_apply_wall_slide_and_friction(hit_normal, _physics_up_last, world_up, delta)
+
+		if attached:
+			var n: Vector3 = hit_normal.normalized()
+			if n.length() < 0.001:
+				continue
+
+			# ------------------------------------------------------------------
+			# LOCAL-UP STEP ANGLE:
+			# Ignore normals that are too different from the surface we're on.
+			# This protects against sharp convex edges / backfaces, but still
+			# allows smooth curves (loops, ramps) even if they become "wall-like"
+			# relative to WORLD up.
+			# ------------------------------------------------------------------
+			var curr_up_local: Vector3 = surface_normal.normalized()
+			if curr_up_local.length() < 0.001:
+				curr_up_local = world_up
+
+			var cos_step: float = clamp(curr_up_local.dot(n), -1.0, 1.0)
+			var step_angle_deg: float = rad_to_deg(acos(cos_step))
+			if step_angle_deg > adhesion_max_step_angle_from_current_deg:
+				continue
+
+						# Global classification vs world-up for nonfloor→floor rule.
+				var dot_up: float = clamp(n.dot(world_up), -1.0, 1.0)
+				var angle_deg: float = rad_to_deg(acos(dot_up))
+				var new_is_floor_like: bool = angle_deg <= floor_like_max_angle_deg
+
+				# --- Special case: non-floor surface + FLOOR contact + low speed ---
+				if not curr_is_floor_like and new_is_floor_like:
+					var speed_now: float = velocity.length()
+
+					# If we've basically come to rest while touching the true floor,
+					# give the floor priority instead of launching/detaching.
+					if speed_now <= nonfloor_floor_detach_speed:
+						# Hard-switch to the floor as our new surface.
+						attached = true
+						surface_normal = n
+						surface_point = hit_point
+						_prev_surface_normal = n
+
+						# Kill any upward world-space velocity so we don't "pop" off.
+						var v_tmp: Vector3 = velocity
+						var up_comp: float = v_tmp.dot(world_up)
+						if up_comp > 0.0:
+							v_tmp -= world_up * up_comp
+						velocity = v_tmp
+
+						# From here on, treat this as floor-like for the rest of this step.
+						curr_is_floor_like = true
+						curr_n = n
+
+					# In all cases, skip adhesion-follow for this contact.
+					continue
+
+
+			# From here on, let adhesion rules (LOCAL-UP based) decide if we can stay.
+			if not _can_stay_attached(n, world_up):
+				continue
+
+			# Pick the contact whose normal is closest to our current surface.
+			if cos_step > best_follow_score:
+				best_follow_score = cos_step
+				best_follow_normal = n
+				best_follow_point = hit_point
+
+			continue
+
+		# --------------- Airborne → possible attach ---------------
+		if _attachment_immunity > 0.0:
+			continue
+
+		if _can_attach_from_collision(v_before, hit_normal, world_up):
+			attached = true
+			surface_normal = hit_normal.normalized()
+			surface_point = hit_point
+			_airborne_time = 0.0
+			_radial_attach_this_frame = true
+			_loop_forward_dir = Vector3.ZERO
+
+			# Remember the actual impact velocity we used for this attach.
+			_pending_landing_velocity = v_before
+			_pending_landing_has_velocity = true
+
+			break
+
+
+	# --------------- Apply follow / special detach ---------------
+	if attached:
+		if best_follow_score > -1.0:
+			_prev_surface_normal = surface_normal
+			surface_normal = best_follow_normal
+			surface_point = best_follow_point
+
+			var prev_n2: Vector3 = _prev_surface_normal.normalized()
+			var curr_n2: Vector3 = surface_normal.normalized()
+			var dot_nd: float = clamp(prev_n2.dot(curr_n2), -1.0, 1.0)
+			_normal_delta_angle_deg = rad_to_deg(acos(dot_nd))
+		#elif detach_to_floor:
+			# We've run out of slope and gently bumped a floor.
+			#_start_detach(surface_normal, world_up)
+
+	# Update airborne time based on final state.
+	if attached:
+		_airborne_time = 0.0
+	else:
+		_airborne_time += delta
+
+
+func _can_attach_from_collision(v_before: Vector3, normal: Vector3, world_up: Vector3) -> bool:
+	var n: Vector3 = normal.normalized()
+	if n.length() < 0.001:
+		return false
+
+	var v: Vector3 = v_before
+	var speed: float = v.length()
+	if speed < 0.0001:
+		return false
+
+	var in_spring_state: bool = _spring_align_timer > 0.0
+
+	# Angle vs world-up for broad classification.
+	var dot_up: float = clamp(n.dot(world_up), -1.0, 1.0)
+	var surf_angle_deg: float = rad_to_deg(acos(dot_up))
+	# 0°   = floor
+	# 90°  = wall
+	# 180° = ceiling
+
+	# ------------------------------------------------------------------
+	# VERTICAL FORBID BAND
+	#   Normally: don't attach to a narrow band near 90° (pure walls).
+	#   BUT: while in spring state, we *allow* this so springs can grab
+	#   vertical/near-vertical and ceiling-like surfaces.
+	# ------------------------------------------------------------------
+	if not in_spring_state:
+		if abs(surf_angle_deg - 90.0) <= adhesion_vertical_forbid_half_width_deg:
+			return false
+
+	# --------------------------------
+	# Special-case: ceiling landing
+	# --------------------------------
+	# In your earlier version you had special logic for ceiling landings.
+	# During spring we don't want to block that path at all – ceiling
+	# should be treated like any other radial landing.
+	if surf_angle_deg >= 135.0 and not in_spring_state:
+		# "Normal" (non-spring) ceiling rules – keep whatever you had here
+		# or keep it simple and just require enough speed upwards:
+		if not adhesion_enabled:
+			return false
+
+		var world_up_speed := v.dot(world_up)
+		if world_up_speed <= 0.0:
+			return false
+
+		return true
+
+	# --------------------------------
+	# Low-speed “static” floor landing
+	# --------------------------------
+	if speed < 0.05:
+		var min_floor_dot_static: float = cos(deg_to_rad(landing_floor_max_angle_deg))
+		return dot_up >= min_floor_dot_static
+
+	# --------------------------------
+	# Floor / slope landing (world-up logic)
+	# --------------------------------
+	var min_floor_dot: float = cos(deg_to_rad(landing_floor_max_angle_deg))
+	var down_speed: float = v.dot(-world_up)
+
+	if dot_up >= min_floor_dot and down_speed > 0.0:
+		# Normal floor / gentle slope landing.
+		return true
+
+	# From here on, only radial landing on non-floor surfaces is allowed.
+	if not adhesion_enabled and not in_spring_state:
+		return false
+	# While in spring, *force* adhesion enabled for the purposes of
+	# radial grabs so springs can grab walls / ceilings:
+	# (we don't early-return if adhesion_enabled is false.)
+
+	# --------------------------------
+	# Radial landing on non-floor surfaces
+	# --------------------------------
+	if speed < radial_landing_min_speed:
+		return false
+
+	var metrics := compute_radial_landing_metrics(v, n)
+	var radial_angle: float = metrics.angle
+	var into_speed: float = metrics.into_speed
+	var tangential_speed: float = metrics.tangent_speed
+
+	# Debug – just for HUD, not for gating.
+	_dbg_radial_angle = radial_angle
+	_dbg_radial_into_speed = into_speed
+	_dbg_radial_tangent_speed = tangential_speed
+	_dbg_radial_hit_timer = 0.25
+
+	# 1) Must actually be moving into the surface.
+	if into_speed <= 0.0:
+		return false
+
+	# 2) Need enough tangential speed.
+	if tangential_speed < radial_landing_min_speed:
+		return false
+
+	# Floor → wall exception (your existing rule),
+	# but while in spring we let springs ignore that too.
+	if not in_spring_state:
+		if not _passes_floor_wall_exception(n, world_up):
+			return false
+
+	return true
+
+
+func _passes_floor_wall_exception(new_normal: Vector3, world_up: Vector3) -> bool:
+	var n_new: Vector3 = new_normal.normalized()
+	if n_new.length() < 0.001:
+		return true
+
+	# If we're in spring flight, allow the wall/ceiling regardless.
+	if _spring_align_timer > 0.0 and _spring_detached:
+		return true
+
+	# Is the *target* surface wall-like?
+	var dot_up: float = clamp(n_new.dot(world_up), -1.0, 1.0)
+	var new_angle_deg: float = rad_to_deg(acos(dot_up))
+	var is_wall_like: bool = (
+		new_angle_deg >= wall_like_min_angle_deg
+		and new_angle_deg <= wall_like_max_angle_deg
+	)
+
+	if not is_wall_like:
+		# Not a vertical-ish wall, no special rule needed.
+		return true
+
+	# If the last surface we detached from was not extremely steep
+	# (angle vs world up <= wall_block_floor_like_angle_deg),
+	# treat it as "floor-like" and block this wall grab.
+	if _last_detach_angle_deg <= wall_block_floor_like_angle_deg:
+		return false
+
+	# If we truly came from a very steep / inverted surface, we *do*
+	# allow a wall grab for a short grace period.
+	if _airborne_time <= nonfloor_to_wall_grace_time:
+		return true
+
+	# Grace window expired → treat like a floor→wall bonk.
+	return false
+
+
+# ===========================================================
+# GROUND FOLLOW WHILE ATTACHED
+# ===========================================================
+func _ground_follow_probe(delta: float) -> void:
+	_follow_hit = false
+	_follow_ray_origin = Vector3.ZERO
+	_follow_ray_target = Vector3.ZERO
+
+	if not attached:
+		return
+	if ground_ray == null:
+		return
+
+	var world_up: Vector3 = Vector3.UP
+	var origin_center: Vector3 = global_transform.origin
+
+	var up_for_ray: Vector3 = surface_normal.normalized()
+	if up_for_ray.length() < 0.001:
+		up_for_ray = world_up
+
+	# NEW:
+	# Start the ray at the character center (not raised upward),
+	# and cast FULL ground_ray_length downward along surface normal.
+	var origin_follow: Vector3 = origin_center
+	var target_follow: Vector3 = origin_center - up_for_ray * ground_ray_length
+
+	ground_ray.global_position = origin_follow
+	ground_ray.target_position = ground_ray.to_local(target_follow)
+	ground_ray.force_raycast_update()
+
+	_follow_ray_origin = origin_follow
+	_follow_ray_target = target_follow
+
+	if ground_ray.is_colliding():
+		_follow_hit = true
+		_follow_point = ground_ray.get_collision_point()
+		_follow_normal = ground_ray.get_collision_normal()
+
+
+func _update_attachment_state_after_move(delta: float) -> void:
+	var world_up: Vector3 = Vector3.UP
+	_prev_attached = attached
+	_prev_surface_normal = surface_normal
+
+	if not attached:
+		return
+
+	if _follow_hit:
+		if _can_stay_attached(_follow_normal, world_up):
+			surface_normal = _follow_normal.normalized()
+			surface_point = _follow_point
+
+			var prev_n: Vector3 = _prev_surface_normal.normalized()
+			var curr_n: Vector3 = surface_normal.normalized()
+			var dot_nd: float = clamp(prev_n.dot(curr_n), -1.0, 1.0)
+			_normal_delta_angle_deg = rad_to_deg(acos(dot_nd))
+		else:
+			_start_detach(surface_normal, world_up)
+	else:
+		# No follow hit
+		# Decide if we should detach or give one-frame radial grace.
+		var n_det: Vector3 = surface_normal.normalized()
+		if n_det.length() < 0.001:
+			n_det = world_up
+		var dot_up_det: float = clamp(n_det.dot(world_up), -1.0, 1.0)
+		var surf_angle_det: float = rad_to_deg(acos(dot_up_det))
+		# 0° = floor, 90° = wall, 180° = ceiling
+
+		var ceiling_min_angle_deg := 135.0
+		var ceiling_like := surf_angle_det >= ceiling_min_angle_deg
+
+		# Only suppress detach if:
+		# - we JUST radial-attached this frame, AND
+		# - this surface is ceiling-like.
+		if _radial_attach_this_frame and ceiling_like:
+			# Stay attached this frame; next frame _radial_attach_this_frame will be false
+			# and we can detach normally if follow still fails.
+			pass
+		else:
+			_start_detach(surface_normal, world_up)
+
+
+func _can_stay_attached(normal: Vector3, world_up: Vector3) -> bool:
+	var n: Vector3 = normal.normalized()
+	if n.length() < 0.001:
+		return false
+
+	var in_spring_state: bool = _spring_align_timer > 0.0
+
+	# --------------------------------------------------
+	# 1) LOCAL-UP STEP ANGLE (is this the same surface?)
+	# --------------------------------------------------
+	var curr_up: Vector3 = surface_normal.normalized()
+	if curr_up.length() < 0.001:
+		curr_up = world_up
+
+	var dot_local: float = clamp(n.dot(curr_up), -1.0, 1.0)
+	var step_angle_deg: float = rad_to_deg(acos(dot_local))
+
+	# If the new surface differs too much from what we're standing on,
+	# don't treat it as a smooth continuation (detach instead).
+	if step_angle_deg > adhesion_max_step_angle_from_current_deg:
+		return false
+
+	# --------------------------------------------------
+	# 2) WORLD-UP ANGLE (how "upside down" are we?)
+	# --------------------------------------------------
+	var dot_world: float = clamp(n.dot(world_up), -1.0, 1.0)
+	var surf_angle_deg: float = rad_to_deg(acos(dot_world))
+	# 0°   = floor facing straight up
+	# 90°  = vertical wall
+	# 180° = ceiling facing straight down
+
+	# --- SPRING OVERRIDE ---
+	# While spring alignment is active, we *do not* want the normal
+	# adhesion "too steep / ceiling" checks to immediately kick us off.
+	# As long as the surface is locally continuous (step_angle OK),
+	# we allow staying attached and let spring motion + landing momentum
+	# carry the movement.
+	if in_spring_state:
+		return true
+
+	# Mild / moderate slopes/walls: always allowed if step-angle was OK.
+	if surf_angle_deg < adhesion_min_angle_deg:
+		return true
+
+	if surf_angle_deg <= adhesion_detach_angle_start_deg:
+		# Up to this angle we don't require extra speed to cling.
+		return true
+
+	# Special-case: if we *just* radial-attached, be a bit more forgiving
+	# on required speed for very steep surfaces in the first frame.
+	if _radial_attach_this_frame and surf_angle_deg >= adhesion_detach_angle_start_deg:
+		return true
+
+	# --------------------------------------------------
+	# 3) VERY STEEP / CEILING-LIKE: require speed
+	# --------------------------------------------------
+	var v: Vector3 = velocity
+	var vertical_surf: float = v.dot(n)
+	var lateral_surf: Vector3 = v - n * vertical_surf
+	var speed: float = lateral_surf.length()
+
+	var steepness_deg: float = surf_angle_deg
+	var required_speed: float = 0.0
+
+	if steepness_deg <= 90.0:
+		# From adhesion_min_angle_deg up to 90°,
+		# ramp required speed from 0 → adhesion_speed_at_90.
+		var denom: float = max(90.0 - adhesion_min_angle_deg, 0.001)
+		var t: float = (steepness_deg - adhesion_min_angle_deg) / denom
+		t = clamp(t, 0.0, 1.0)
+		required_speed = lerp(0.0, adhesion_speed_at_90, t)
+	else:
+		# From 90° (vertical) up to 180° (ceiling),
+		# ramp required speed from adhesion_speed_at_90 → adhesion_speed_at_180.
+		var t2: float = (steepness_deg - 90.0) / 90.0
+		t2 = clamp(t2, 0.0, 1.0)
+		required_speed = lerp(adhesion_speed_at_90, adhesion_speed_at_180, t2)
+
+	# If we don't have enough lateral speed, we can't stay attached.
+	return speed >= required_speed
+
+
+func _start_detach(detach_normal: Vector3, world_up: Vector3) -> void:
+	if not attached:
+		return
+
+	var curr_up: Vector3 = surface_normal.normalized()
+	var det_n: Vector3 = detach_normal.normalized()
+
+	if curr_up.length() < 0.001:
+		curr_up = world_up
+	if det_n.length() < 0.001:
+		det_n = curr_up
+
+	# --- LOCAL-UP LOGIC ---
+	# How different is the detach normal from our current surface?
+	var dot_local : float = clamp(curr_up.dot(det_n), -1.0, 1.0)
+	var step_angle_deg := rad_to_deg(acos(dot_local))
+
+	# If the new normal is too different from local-up, ignore it entirely.
+	if step_angle_deg > adhesion_max_step_angle_from_current_deg:
+		det_n = curr_up
+
+	_record_detach_state(det_n, world_up)
+	attached = false
+	_attachment_immunity = launch_immunity_time
+	_loop_forward_dir = Vector3.ZERO  # reset loop forward when we leave surface
+	_apply_launch_from_surface(det_n, world_up)
+
+func _apply_wall_slide_and_friction(normal: Vector3, physics_up: Vector3, world_up: Vector3, delta: float) -> void:
+	# Disable wall friction while in spring alignment – let the launch play out cleanly.
+	if _spring_align_timer > 0.0:
+		return
+
+	var n: Vector3 = normal.normalized()
+	if n.length() < 0.001:
+		return
+
+	# --- Classify surface relative to Sonic's current "up" (loop vs floor) ---
+	var dot_up_sonic: float = clamp(n.dot(physics_up.normalized()), -1.0, 1.0)
+	var angle_vs_sonic_deg: float = rad_to_deg(acos(dot_up_sonic))
+
+	# Within walkable range relative to Sonic's up = treat as slope/floor.
+	if angle_vs_sonic_deg <= walkable_from_up_max_angle_deg:
+		return
+
+	var v: Vector3 = velocity
+	var speed: float = v.length()
+	if speed < 0.01:
+		return
+
+	# Only care if we're actually moving INTO the surface.
+	var into: float = v.dot(n)
+	if into >= 0.0:
+		return
+
+	# 0° = straight into wall, 90° = pure side scrape
+	var approach_dir: Vector3 = (-v).normalized()
+	var cos_ang: float = clamp(approach_dir.dot(n), -1.0, 1.0)
+	var angle_deg: float = rad_to_deg(acos(cos_ang))
+
+	# --- Decompose velocity ---
+	# 1) Normal component (into/out of wall)
+	var normal_comp: Vector3 = n * v.dot(n)
+
+	# 2) Tangential (lying in the wall plane)
+	var tangential: Vector3 = v - normal_comp
+
+	# 3) Split tangential into:
+	#    - vertical (world_up)
+	#    - horizontal along the wall (everything else)
+	var tangential_vert: Vector3 = world_up * tangential.dot(world_up)
+	var tangential_side: Vector3 = tangential - tangential_vert
+
+	# Start from "no into wall" velocity.
+	var new_side: Vector3 = tangential_side
+
+	var stop_angle: float = wall_stop_max_angle_deg
+	var graze_angle: float = wall_graze_min_angle_deg
+	if graze_angle <= stop_angle:
+		graze_angle = stop_angle + 0.1
+
+	if angle_deg <= stop_angle:
+		# Very head-on: strong friction on sideways component only.
+		var max_drop: float = wall_friction * delta
+		new_side = new_side.move_toward(Vector3.ZERO, max_drop)
+	elif angle_deg < graze_angle:
+		# Between head-on and graze: blend friction (sideways only).
+		var t: float = (angle_deg - stop_angle) / (graze_angle - stop_angle)
+		var fric: float = lerp(wall_friction, wall_friction * wall_graze_friction_scale, t)
+		new_side = new_side.move_toward(Vector3.ZERO, fric * delta)
+	else:
+		# Pure side scrape: light friction on sideways component.
+		var fric_graze: float = wall_friction * wall_graze_friction_scale
+		new_side = new_side.move_toward(Vector3.ZERO, fric_graze * delta)
+
+	# Rebuild final velocity:
+	#  - no into-wall normal component
+	#  - sideways (horizontal) damped by friction
+	#  - vertical (world-up/down) untouched so gravity still works
+	velocity = tangential_vert + new_side
+
+
+
+# ===========================================================
+# RAMP / LOOP LAUNCH
+# ===========================================================
+func _apply_launch_from_surface(detach_normal: Vector3, world_up: Vector3) -> void:
+	var v_current: Vector3 = velocity
+	var speed_current: float = v_current.length()
+	if speed_current <= 0.01:
+		return
+
+	var surf_up: Vector3 = detach_normal.normalized()
+	if surf_up.length() < 0.001:
+		surf_up = world_up
+
+	# Angle of the surface vs world-up (0° = floor, 90° = wall, 180° = ceiling).
+	var surf_angle_deg := rad_to_deg(acos(clamp(surf_up.dot(world_up), -1.0, 1.0)))
+
+	# Are we currently moving UPWARD in world space?
+	var world_vert_before: float = v_current.dot(world_up)
+
+	# ------------------------------------------------------------------
+	# CASE A: NON-LAUNCH DETACH
+	#
+	# Conditions:
+	#   - surface is not "deeply inverted" (below launch_min_world_angle_deg), OR
+	#   - we're not actually going upward in world space
+	#
+	# In this case we just keep the tangential component of the velocity
+	# and do NOT add an extra upward "pop".
+	# ------------------------------------------------------------------
+	if surf_angle_deg <= launch_min_world_angle_deg or world_vert_before <= 0.0:
+		# Remove any into-surface component so we leave cleanly.
+		var normal_comp: Vector3 = surf_up * v_current.dot(surf_up)
+		var tangent: Vector3 = v_current - normal_comp
+
+		if tangent.length() > 0.001:
+			velocity = tangent.normalized() * speed_current
+		else:
+			# If for some reason we had no tangential component, just keep what we had.
+			velocity = v_current
+		return
+
+	# ------------------------------------------------------------------
+	# CASE B: TRUE RAMP / LOOP LAUNCH
+	#
+	# Surface is steep *and* upside-down enough (angle >= launch_min_world_angle_deg),
+	# and we are travelling upward in world space.
+	# This is the classic Sonic ramp/loop exit where you get a big arc.
+	# ------------------------------------------------------------------
+
+	# Use the visual/model forward as the primary launch heading,
+	# projected onto the surface so it follows the ramp.
+	var forward_dir: Vector3 = _model_forward
+	if forward_dir.length() < 0.001:
+		forward_dir = v_current
+	forward_dir = forward_dir.normalized()
+
+	var forward_on_surface: Vector3 = forward_dir - surf_up * forward_dir.dot(surf_up)
+	var f_len: float = forward_on_surface.length()
+	if f_len < 0.001:
+		# Fallback: use current velocity tangent on the surface.
+		var tangent2: Vector3 = v_current - surf_up * v_current.dot(surf_up)
+		if tangent2.length() < 0.001:
+			tangent2 = Vector3.FORWARD
+		forward_on_surface = tangent2.normalized()
+	else:
+		forward_on_surface /= f_len
+
+	# Angle vs world up, clamped for launch.
+	var surf_angle_rad: float = acos(clamp(surf_up.dot(world_up), -1.0, 1.0))
+	var max_launch_angle_rad: float = deg_to_rad(60.0) # still your old clamp
+	var launch_angle: float = min(surf_angle_rad, max_launch_angle_rad)
+
+	# Always launch upward relative to world_up.
+	var launch_dir: Vector3 = (
+		forward_on_surface * cos(launch_angle)
+		+ world_up * sin(launch_angle)
+	).normalized()
+
+	velocity = launch_dir * speed_current
+
+
+# ===========================================================
+# MOVEMENT / SLOPE PHYSICS
+# ===========================================================
+func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -> void:
+	var physics_up: Vector3 = up_for_physics.normalized()
+	if physics_up.length() < 0.001:
+		physics_up = Vector3.UP
+
+	var world_up: Vector3 = Vector3.UP
+
+	# Spring state flag
+	var in_spring_state := _spring_align_timer > 0.0
+
+	# While in spring state *and* the spring detached us, treat physics up as world-up.
+	if in_spring_state and _spring_detached:
+		physics_up = world_up
+
+	var v: Vector3 = velocity
+	var vertical: float = v.dot(physics_up)
+	var lateral: Vector3 = v - physics_up * vertical
+
+	# --------------------------------------------------
+	# SPRING OVERRIDE: no local steering / slopes / skid
+	# --------------------------------------------------
+	if in_spring_state and _spring_detached:
+		# Simple world-up gravity while in spring
+		var gravity_scale: float = spring_gravity_scale
+		vertical -= gravity_strength * gravity_scale * delta
+
+		if vertical < -max_fall_speed:
+			vertical = -max_fall_speed
+
+		var v_final: Vector3 = lateral + physics_up * vertical  # physics_up is world_up here
+
+		# Lock velocity along spring direction if requested
+		if _spring_align_dir.length() > 0.001 and _spring_lock_sideways:
+			var dir := _spring_align_dir.normalized()
+			var along_speed: float = v_final.dot(dir)
+			var v_along: Vector3 = dir * along_speed
+			var v_side: Vector3 = v_final - v_along
+
+			if _spring_sideways_gravity_scale <= 0.0:
+				v_final = v_along
+			else:
+				v_final = v_along + v_side * _spring_sideways_gravity_scale
+
+		velocity = v_final
+		_last_air_velocity = v_final
+		return
+
+	# --------------------------------------------------
+	# Slope information (only when attached)
+	# --------------------------------------------------
+	var slope_angle_deg: float = 0.0
+	var has_slope: bool = false
+	var downhill_dir: Vector3 = Vector3.ZERO
+	var slope_factor: float = 0.0       # 0..1 for slide / basic forces
+	var slope_speed_factor: float = 0.0 # 0..1 for speed logic, peaks at 90°
+
+	if is_attached and surface_normal.length() > 0.001:
+		var surf_n: Vector3 = surface_normal.normalized()
+
+		# Angle vs world-up:
+		# 0°   = floor
+		# 90°  = vertical wall
+		# 180° = ceiling
+		var cos_up: float = clamp(surf_n.dot(world_up), -1.0, 1.0)
+		slope_angle_deg = rad_to_deg(acos(cos_up))
+
+		# Treat anything above flat_threshold as "slope-like".
+		var flat_threshold := slope_flat_angle_threshold_deg
+
+		# ---- Basic slope factor (for slide & generic forces), uses slope_max_effect_angle_deg ----
+		var angle_above_flat: float = max(slope_angle_deg - flat_threshold, 0.0)
+		var clamped_for_slide: float = min(slope_angle_deg, slope_max_effect_angle_deg)
+		var angle_range_slide: float = max(slope_max_effect_angle_deg - flat_threshold, 0.001)
+
+		if angle_above_flat > 0.0 and slope_angle_deg <= slope_max_effect_angle_deg:
+			has_slope = true
+			slope_factor = clamp((clamped_for_slide - flat_threshold) / angle_range_slide, 0.0, 1.0)
+		else:
+			has_slope = slope_angle_deg > flat_threshold
+
+		# ---- Speed slope factor (for downhill/uphill speed), goes all the way to 90° ----
+		if slope_angle_deg > flat_threshold:
+			var clamped_for_speed: float = min(slope_angle_deg, 90.0)
+			var angle_range_speed: float = max(90.0 - flat_threshold, 0.001)
+			slope_speed_factor = clamp(
+				(clamped_for_speed - flat_threshold) / angle_range_speed,
+				0.0,
+				1.0
+			)
+
+		# Downhill direction = gravity projected onto the surface
+		var g: Vector3 = Vector3.DOWN * gravity_strength
+		var g_tangent: Vector3 = g - surf_n * g.dot(surf_n)
+		var g_len: float = g_tangent.length()
+		if g_len > 0.001:
+			downhill_dir = g_tangent / g_len
+
+	# --------------------------------------------------
+	# Loop surface classification WITH HYSTERESIS (Godot 4.5 safe)
+	# --------------------------------------------------
+	var is_loop_surface: bool = false
+
+	if attached and surface_normal.length() > 0.001:
+		var n := surface_normal.normalized()
+		var dot_w: float = clamp(n.dot(world_up), -1.0, 1.0)
+		var surf_angle := rad_to_deg(acos(dot_w))
+
+		# Enter loop mode at steep angle
+		var enter_deg := loop_input_steep_angle_deg        # e.g. 90
+		# Exit loop mode at a noticeably lower angle (prevents jitter at 90°)
+		var exit_deg: float = max(loop_input_steep_angle_deg - 15.0, 0.0)
+
+		if _loop_sticky:
+			# Stay in loop mode until angle gets comfortably below exit threshold
+			_loop_sticky = surf_angle >= exit_deg
+		else:
+			# Enter loop mode when angle exceeds the steep threshold
+			_loop_sticky = surf_angle >= enter_deg
+
+		is_loop_surface = _loop_sticky
+	else:
+		_loop_sticky = false
+
+	# --------------------------------------------------
+	# Update loop forward direction from lateral motion
+	# --------------------------------------------------
+	if is_attached and is_loop_surface:
+		var lat_speed := lateral.length()
+		if lat_speed > 0.1:
+			_loop_forward_dir = (lateral / lat_speed)
+
+	_update_control_basis(physics_up, is_attached, is_loop_surface, lateral)
+	_compute_move_direction()
+
+	# --------------------------------------------------
+	# Sliding determination (idle on steep slopes)
+	# --------------------------------------------------
+	var sliding: bool = false
+	if is_attached and has_slope:
+		var lateral_speed_for_slide: float = lateral.length()
+		if slope_angle_deg >= slope_slide_start_angle_deg and lateral_speed_for_slide <= slope_slide_min_speed:
+			sliding = true
+
+	var has_input: bool = _move_direction != Vector3.ZERO
+
+	# --------------------------------------------------
+	# SPRING OVERRIDE FOR LATERAL (no steering while in spring)
+	# --------------------------------------------------
+	if in_spring_state:
+		has_input = false
+	else:
+		# --------------------------------------------------
+		# SKID STATE UPDATE (ground-only, uses enter/exit speeds)
+		# --------------------------------------------------
+		if not is_attached or not has_input:
+			_is_skidding = false
+		else:
+			var skid_allowed: bool = slope_angle_deg <= skid_max_ground_angle_deg
+
+			if skid_allowed:
+				var lateral_speed: float = lateral.length()
+				if lateral_speed >= skid_enter_min_speed or _is_skidding:
+					var vel_dir: Vector3 = lateral.normalized()
+
+					var move_dir := _move_direction
+					if move_dir.length() > 0.0001:
+						move_dir -= physics_up * move_dir.dot(physics_up)
+						if move_dir.length() > 0.0001:
+							move_dir = move_dir.normalized()
+						else:
+							move_dir = vel_dir
+					else:
+						move_dir = vel_dir
+
+					var dot_dir: float = clamp(vel_dir.dot(move_dir), -1.0, 1.0)
+					var angle_deg: float = rad_to_deg(acos(dot_dir))
+
+					if not _is_skidding:
+						if lateral_speed >= skid_enter_min_speed and angle_deg >= skid_enter_angle_deg:
+							_is_skidding = true
+					else:
+						if angle_deg <= skid_exit_angle_deg or lateral_speed <= skid_exit_min_speed:
+							_is_skidding = false
+				else:
+					_is_skidding = false
+			else:
+				_is_skidding = false
+
+	# --------------------------------------------------
+	# Input-based lateral movement
+	# --------------------------------------------------
+	if has_input:
+		var input_dir_full: Vector3 = _move_direction.normalized()
+		var move_dir: Vector3 = input_dir_full - physics_up * input_dir_full.dot(physics_up)
+		var move_dir_len: float = move_dir.length()
+		if move_dir_len > 0.0001:
+			move_dir /= move_dir_len
+		else:
+			if lateral.length() > 0.0001:
+				move_dir = lateral.normalized()
+			else:
+				move_dir = Vector3.ZERO
+
+		var lateral_speed: float = lateral.length()
+
+		if is_attached:
+			if _is_skidding:
+				if lateral_speed > 0.01:
+					var vel_dir_skid: Vector3 = lateral / lateral_speed
+					var drop: float = skid_decel * delta
+					var new_speed_skid: float = max(lateral_speed - drop, 0.0)
+					lateral = vel_dir_skid * new_speed_skid
+			else:
+				var used_accel: float = _sample_curve_by_speed(
+					ground_accel_curve,
+					lateral_speed,
+					35.0
+				)
+				used_accel = max(used_accel, 0.0)
+
+				var turn_deg_per_sec: float = _sample_curve_by_speed(
+					ground_turn_angle_curve,
+					lateral_speed,
+					540.0
+				)
+				turn_deg_per_sec = max(turn_deg_per_sec, 0.0)
+
+				var target_speed: float = run_top_speed
+
+				if lateral_speed < 0.01:
+					var gained: float = min(target_speed, used_accel * delta)
+					lateral = move_dir * gained
+				else:
+					var speed_diff: float = target_speed - lateral_speed
+					var max_speed_step: float = used_accel * delta
+					var speed_step: float = clamp(speed_diff, -max_speed_step, max_speed_step)
+					var new_speed: float = lateral_speed + speed_step
+
+					var vel_dir: Vector3 = lateral / lateral_speed
+					var dot_dir: float = clamp(vel_dir.dot(move_dir), -1.0, 1.0)
+					var angle_rad: float = acos(dot_dir)
+
+					var max_step_rad: float = deg_to_rad(turn_deg_per_sec) * delta
+
+					var turned_dir: Vector3 = vel_dir
+					if angle_rad > 0.001 and max_step_rad > 0.0:
+						var t_turn: float = min(1.0, max_step_rad / angle_rad)
+						turned_dir = vel_dir.slerp(move_dir, t_turn).normalized()
+					else:
+						turned_dir = move_dir
+
+					var speed_before_penalty: float = new_speed
+					lateral = turned_dir * speed_before_penalty
+
+					if not _loop_control_active:
+						var angle_deg_turn: float = rad_to_deg(angle_rad)
+						var over: float = max(angle_deg_turn - ground_turn_free_angle_deg, 0.0)
+						var range: float = max(ground_turn_max_penalty_angle_deg - ground_turn_free_angle_deg, 0.001)
+						var penalty_t: float = clamp(over / range, 0.0, 1.0)
+
+						if penalty_t > 0.0:
+							var penalty_factor: float = lerp(1.0, ground_turn_min_speed_factor, penalty_t)
+							var final_speed: float = speed_before_penalty * penalty_factor
+							lateral = turned_dir * final_speed
+		else:
+			var used_accel_air: float = _sample_curve_by_speed(
+				air_accel_curve,
+				lateral_speed,
+				20.0
+			)
+			used_accel_air = max(used_accel_air, 0.0)
+
+			var air_turn_deg_per_sec: float = _sample_curve_by_speed(
+				air_turn_angle_curve,
+				lateral_speed,
+				720.0
+			)
+			air_turn_deg_per_sec = max(air_turn_deg_per_sec, 0.0)
+
+			var target_speed_air: float = air_top_speed
+
+			if lateral_speed < 0.01:
+				var gained_air: float = min(target_speed_air, used_accel_air * delta)
+				lateral = move_dir * gained_air
+			else:
+				var speed_diff_air: float = target_speed_air - lateral_speed
+				var max_speed_step_air: float = used_accel_air * delta
+				var speed_step_air: float = clamp(speed_diff_air, -max_speed_step_air, max_speed_step_air)
+				var new_speed_air: float = lateral_speed + speed_step_air
+
+				var vel_dir_air: Vector3 = lateral / lateral_speed
+				var dot_dir_air: float = clamp(vel_dir_air.dot(move_dir), -1.0, 1.0)
+				var angle_rad_air: float = acos(dot_dir_air)
+
+				var max_step_rad_air: float = deg_to_rad(air_turn_deg_per_sec) * delta
+
+				var turned_dir_air: Vector3 = vel_dir_air
+				if angle_rad_air > 0.001 and max_step_rad_air > 0.0:
+					var t_turn_air: float = min(1.0, max_step_rad_air / angle_rad_air)
+					turned_dir_air = vel_dir_air.slerp(move_dir, t_turn_air).normalized()
+				else:
+					turned_dir_air = move_dir
+
+				var speed_before_air_penalty: float = new_speed_air
+				lateral = turned_dir_air * speed_before_air_penalty
+
+				var angle_deg_air: float = rad_to_deg(angle_rad_air)
+				var over_air: float = max(angle_deg_air - air_turn_free_angle_deg, 0.0)
+				var range_air: float = max(air_turn_max_penalty_angle_deg - air_turn_free_angle_deg, 0.001)
+				var penalty_t_air: float = clamp(over_air / range_air, 0.0, 1.0)
+
+				if penalty_t_air > 0.0:
+					var penalty_factor_air: float = lerp(1.0, air_turn_min_speed_factor, penalty_t_air)
+					var final_speed_air: float = speed_before_air_penalty * penalty_factor_air
+					lateral = turned_dir_air * final_speed_air
+	else:
+		if is_attached:
+			var friction_scale: float = 1.0 + slope_factor * 0.3
+			lateral = lateral.move_toward(Vector3.ZERO, decel * friction_scale * delta)
+		else:
+			if not in_spring_state:
+				lateral = lateral.move_toward(Vector3.ZERO, air_decel * delta)
+
+	# --------------------------------------------------
+	# Slope influence on lateral velocity (ONLY when attached)
+	# --------------------------------------------------
+	if is_attached and has_slope and downhill_dir.length() > 0.0:
+		var downhill_component: float = lateral.dot(downhill_dir)
+
+		# Extra idle sliding boost on steep slopes.
+		if sliding:
+			var slide_angle_range: float = max(slope_max_effect_angle_deg - slope_slide_start_angle_deg, 0.001)
+			var slide_factor: float = clamp(
+				(slope_angle_deg - slope_slide_start_angle_deg) / slide_angle_range,
+				0.0,
+				1.0
+			)
+			var slide_accel: float = slope_slide_accel * slide_factor * slope_factor
+			lateral += downhill_dir * slide_accel * delta
+
+		# Continuous slope gravity effect (scaled by slope_speed_factor so 90° is strongest).
+		if downhill_component >= 0.0:
+			var downhill_accel: float = slope_downhill_accel * slope_speed_factor
+			lateral += downhill_dir * downhill_accel * delta
+		else:
+			var uphill_accel: float = slope_uphill_decel * slope_speed_factor
+			lateral += downhill_dir * uphill_accel * delta
+
+	# --------------------------------------------------
+	# Vertical / gravity behaviour
+	# --------------------------------------------------
+	if is_attached:
+		if vertical > 0.0:
+			vertical = 0.0
+	else:
+		var gravity_scale: float = 1.0
+		var jump_held: bool = Input.is_action_pressed("action_0")
+
+		if _is_jumping and _jump_variable:
+			_jump_time += delta
+
+			if vertical > 0.0:
+				if not jump_held:
+					_jump_hang_allowed = false
+
+				if _jump_hang_allowed and jump_held and _jump_time < jump_hold_time_max:
+					if abs(vertical) <= jump_apex_speed_threshold:
+						gravity_scale = jump_apex_gravity_scale
+					else:
+						gravity_scale = jump_hold_gravity_scale
+				else:
+					gravity_scale = jump_release_gravity_scale
+
+				if jump_held:
+					var horz_vel: Vector3 = lateral
+					var horz_speed: float = horz_vel.length()
+
+					if horz_speed >= jump_damp_min_speed and horz_speed > 0.001:
+						var damp_strength: float = _sample_curve_by_speed(
+							jump_damp_curve,
+							horz_speed,
+							jump_damp_strength
+						)
+
+						var damp_amount: float = damp_strength * delta
+						var new_speed: float = max(horz_speed - damp_amount, 0.0)
+
+						if new_speed < horz_speed:
+							var horz_dir: Vector3 = horz_vel / horz_speed
+							lateral = horz_dir * new_speed
+			else:
+				_is_jumping = false
+				_is_falling = true
+
+		if in_spring_state:
+			gravity_scale *= spring_gravity_scale
+
+		vertical -= gravity_strength * gravity_scale * delta
+
+		if vertical < -max_fall_speed:
+			vertical = -max_fall_speed
+
+	# --------------------------------------------------
+	# Jump from attached state
+	# --------------------------------------------------
+	if is_attached and _jump_requested:
+		var surf_n: Vector3 = surface_normal.normalized()
+		if surf_n.length() < 0.001:
+			surf_n = world_up
+
+		var dot_up: float = clamp(surf_n.dot(world_up), -1.0, 1.0)
+		var surf_ang_deg: float = rad_to_deg(acos(dot_up))
+
+		var is_floorish_for_jump := (surf_ang_deg <= variable_jump_max_surface_angle_deg and dot_up > 0.0)
+
+		var jump_dir: Vector3 = physics_up
+		if jump_dir.length() < 0.001:
+			jump_dir = world_up
+		jump_dir = jump_dir.normalized()
+
+		vertical = jump_speed
+
+		play_jump_sfx()
+
+		attached = false
+		_attachment_immunity = launch_immunity_time
+		_airborne_time = 0.0
+		_is_skidding = false
+
+		_jump_variable = is_floorish_for_jump
+		_is_jumping = is_floorish_for_jump
+		_jump_time = 0.0
+		_jump_hang_allowed = is_floorish_for_jump
+
+	# --------------------------------------------------
+	# Jump Dash impulse
+	# --------------------------------------------------
+	if _jump_dash_requested:
+		lateral = _perform_jump_dash(physics_up, is_attached, lateral)
+		_jump_dash_requested = false
+
+	# --------------------------------------------------
+	# Soft cap toward ground/air top speed (configurable strength)
+	# --------------------------------------------------
+	var lateral_speed_soft: float = lateral.length()
+	var soft_top_speed: float = run_top_speed if is_attached else air_top_speed
+
+	if is_attached and has_slope and downhill_dir.length() > 0.0 and lateral_speed_soft > 0.001:
+		var move_dir_for_cap: Vector3 = lateral / lateral_speed_soft
+		var downhill_dot: float = move_dir_for_cap.dot(downhill_dir)  # +1 downhill, -1 uphill
+
+		if downhill_dot > 0.0:
+			# More vertical & more aligned → closer to max_speed
+			var t_cap: float = clamp(slope_speed_factor * downhill_dot, 0.0, 1.0)
+			soft_top_speed = lerp(run_top_speed, max_speed, t_cap)
+		else:
+			soft_top_speed = run_top_speed
+
+	if not in_spring_state:
+		if soft_top_speed > 0.0 and lateral_speed_soft > soft_top_speed and lateral_speed_soft > 0.001:
+			var over: float = lateral_speed_soft - soft_top_speed
+			var base_bleed: float = decel if is_attached else air_decel
+			var bleed_rate: float = base_bleed * top_speed_slowdown_strength
+			if bleed_rate > 0.0:
+				var drop: float = min(over, bleed_rate * delta)
+				var new_speed: float = lateral_speed_soft - drop
+				lateral = lateral.normalized() * new_speed
+
+	# --------------------------------------------------
+	# Clamp lateral speed to max_speed
+	# --------------------------------------------------
+	var lateral_speed_final: float = lateral.length()
+	if lateral_speed_final > max_speed and lateral_speed_final > 0.0:
+		lateral = lateral.normalized() * max_speed
+
+	# --- RECOMBINE VELOCITY FROM LATERAL + VERTICAL ---
+	var v_final: Vector3 = lateral + physics_up * vertical
+
+	# --------------------------------------------------
+	# Spring alignment: lock sideways while timer active
+	# --------------------------------------------------
+	if in_spring_state \
+		and _spring_align_dir.length() > 0.001 \
+		and _spring_lock_sideways:
+
+		var dir := _spring_align_dir.normalized()
+		# Decompose final velocity into "along spring" + "sideways"
+		var along_speed: float = v_final.dot(dir)
+		var v_along: Vector3 = dir * along_speed
+		var v_side: Vector3 = v_final - v_along
+
+		# Optionally keep a bit of sideways from gravity, etc.
+		if _spring_sideways_gravity_scale <= 0.0:
+			v_final = v_along
+		else:
+			v_final = v_along + v_side * _spring_sideways_gravity_scale
+
+	velocity = v_final
+
+	if not is_attached:
+		_last_air_velocity = v_final
+
+func _update_control_basis(
+	physics_up: Vector3,
+	is_attached_for_movement: bool,
+	is_loop_surface: bool,
+	lateral: Vector3
+) -> void:
+	var character_up := physics_up.normalized()
+	if character_up.length() < 0.001:
+		character_up = Vector3.UP
+
+	var world_up: Vector3 = Vector3.UP
+
+	# 1) Camera forward/right in WORLD-UP frame
+	var cam_fwd_world := _get_camera_forward_world_up(world_up)
+	if cam_fwd_world.length() < 0.001:
+		cam_fwd_world = -Vector3.FORWARD
+	cam_fwd_world = cam_fwd_world.normalized()
+
+	var cam_right_world := cam_fwd_world.cross(world_up)
+	if cam_right_world.length() < 0.001:
+		cam_right_world = Vector3.RIGHT - world_up * Vector3.RIGHT.dot(world_up)
+		if cam_right_world.length() < 0.001:
+			cam_right_world = Vector3.RIGHT
+	cam_right_world = cam_right_world.normalized()
+
+	# 2) Rotate WORLD-UP frame into CHARACTER-UP frame
+	var rot_world_to_char := _basis_from_to(world_up, character_up)
+
+	var cam_fwd_char := rot_world_to_char * cam_fwd_world
+	var cam_right_char := rot_world_to_char * cam_right_world
+
+	# 3) Project onto tangent plane of character_up
+	cam_fwd_char -= character_up * cam_fwd_char.dot(character_up)
+	if cam_fwd_char.length() < 0.001:
+		cam_fwd_char = _control_forward
+	cam_fwd_char = cam_fwd_char.normalized()
+
+	cam_right_char -= character_up * cam_right_char.dot(character_up)
+	if cam_right_char.length() < 0.001:
+		cam_right_char = cam_fwd_char.cross(character_up)
+		if cam_right_char.length() < 0.001:
+			cam_right_char = Vector3.RIGHT - character_up * Vector3.RIGHT.dot(character_up)
+	if cam_right_char.length() < 0.001:
+		cam_right_char = Vector3.RIGHT
+	cam_right_char = cam_right_char.normalized()
+
+	_control_forward = cam_fwd_char
+	_control_right = cam_right_char
+
+	# Behavioural flag only (for turn penalty, etc.)
+	_loop_control_active = is_attached_for_movement and is_loop_surface
+	
+func _update_stick(physics_up: Vector3) -> void:
+	# Magnitude of stick (0..1)
+	_stick_length = _move_input.length()
+
+	if _move_direction == Vector3.ZERO:
+		_stick_turn = 0.0
+		return
+
+	var up := physics_up.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	var look := _control_forward
+	var move := _move_direction
+
+	# Project both onto tangent plane
+	look -= up * look.dot(up)
+	move -= up * move.dot(up)
+
+	if look.length() < 0.001 or move.length() < 0.001:
+		_stick_turn = 0.0
+		return
+
+	look = look.normalized()
+	move = move.normalized()
+
+	# Signed angle: +left / -right around up
+	_stick_turn = look.signed_angle_to(move, up)
+
+
+# ===========================================================
+# Apply landing momentum (speed retention, all surfaces)
+# ===========================================================
+func _apply_landing_momentum(landing_normal: Vector3, incoming_velocity: Vector3) -> void:
+	var n := landing_normal.normalized()
+	if n.length() < 0.001:
+		velocity = Vector3.ZERO
+		return
+
+	var v := incoming_velocity
+	var speed := v.length()
+	if speed <= 0.01:
+		velocity = Vector3.ZERO
+		return
+
+	# Decompose velocity into:
+	#   v_normal   = along the surface normal (head-on component)
+	#   v_tangent  = lying in the surface plane (glancing / along-surface component)
+	var v_normal := n * v.dot(n)
+	var v_tangent := v - v_normal
+
+	var tangent_speed := v_tangent.length()
+	if tangent_speed <= 0.001:
+		# We hit basically head-on → no usable speed along the surface.
+		velocity = Vector3.ZERO
+		return
+
+	# Direction along the surface we’re going to keep.
+	var tangent_dir := v_tangent / tangent_speed
+
+	# Amount of speed to keep:
+	#   - never more than the tangential component
+	#   - never more than the total incoming speed
+	var kept_speed := tangent_speed * landing_tangent_retention_scale
+	if kept_speed > speed:
+		kept_speed = speed
+	if kept_speed < 0.0:
+		kept_speed = 0.0
+
+	velocity = tangent_dir * kept_speed
+
+# ===========================================================
+# GENERAL HELPERS
+# ===========================================================
+func _sample_curve_by_speed(curve: Curve, t: float, default_value: float) -> float:
+	# If no curve assigned, return default.
+	if curve == null:
+		return default_value
+
+	var point_count := curve.get_point_count()
+	if point_count <= 0:
+		return default_value
+
+	# Assume last point's X value is the highest.
+	var max_x := curve.get_point_position(point_count - 1).x
+
+	# Clamp input t (speed) into curve domain.
+	var x : float = clamp(t, 0.0, max_x)
+
+	# Sample the curve at the given X position.
+	return curve.sample(x)
+
+func _basis_from_to(from: Vector3, to: Vector3) -> Basis:
+	var f := from.normalized()
+	var t := to.normalized()
+
+	if f.length() < 0.001 or t.length() < 0.001:
+		return Basis.IDENTITY
+
+	var cos_theta : float = clamp(f.dot(t), -1.0, 1.0)
+
+	# Almost the same direction → no rotation
+	if cos_theta > 0.9999:
+		return Basis.IDENTITY
+
+	# Opposite directions → 180° around any axis orthogonal to from
+	if cos_theta < -0.9999:
+		var axis := f.cross(Vector3.RIGHT)
+		if axis.length() < 0.001:
+			axis = f.cross(Vector3.FORWARD)
+		axis = axis.normalized()
+		return Basis(axis, PI)
+
+	# General case → rotate around cross(from, to)
+	var axis := f.cross(t)
+	var axis_len := axis.length()
+	if axis_len < 0.0001:
+		return Basis.IDENTITY
+	axis /= axis_len
+
+	var angle := acos(cos_theta)
+	return Basis(axis, angle)
+	
+func has_state(flag: int) -> bool:
+	return (state_flags & flag) != 0
+	
+func _update_main_state_and_flags(delta: float) -> void:
+	# ------------------------------
+	# MAIN STATE (coarse locomotion)
+	# ------------------------------
+	var new_main_state: int
+
+	if _spline_active:
+		new_main_state = MainState.SPLINE
+	elif _spring_align_timer > 0.0 and _spring_detached:
+		new_main_state = MainState.SPRING
+	elif attached:
+		new_main_state = MainState.GROUNDED
+	else:
+		new_main_state = MainState.AIRBORNE
+
+	if new_main_state != main_state:
+		main_state = new_main_state
+		main_state_time = 0.0
+	else:
+		main_state_time += delta
+
+	# ------------------------------
+	# SUB-STATE FLAGS (tags)
+	# ------------------------------
+	var flags := 0
+
+	# Grounded vs airborne
+	if attached:
+		flags |= STATE_GROUNDED
+
+	# Moving vs idle (use your anim lateral speed helper if you have one)
+	var lateral_speed := velocity.length()
+	if _move_direction != Vector3.ZERO and lateral_speed > 0.5:
+		flags |= STATE_MOVING
+
+	# Skidding
+	if _is_skidding:
+		flags |= STATE_SKIDDING
+
+	# Jumping & falling
+	if _is_jumping:
+		flags |= STATE_JUMPING
+	if _is_falling:
+		flags |= STATE_FALLING
+
+	# Loop / steep surface
+	if _loop_control_active:
+		flags |= STATE_LOOPING
+
+	# Jump dash (recent)
+	if _jump_dash_recent_timer > 0.0:
+		flags |= STATE_JUMP_DASH
+
+	# Spring / spline tags
+	if main_state == MainState.SPRING:
+		flags |= STATE_SPRING
+	if main_state == MainState.SPLINE:
+		flags |= STATE_SPLINE
+
+	# Hard landing (for a few frames after impact)
+	if _landing_timer > 0.0 and _last_landing_impact_speed >= _hard_landing_speed_threshold:
+		flags |= STATE_LANDING_HARD
+
+	state_flags = flags
+
+func compute_radial_landing_metrics(v: Vector3, n: Vector3) -> Dictionary:
+	# v = velocity before collision
+	# n = collision normal from get_normal()
+	#
+	# into_speed  > 0  → moving INTO the surface
+	# into_speed <= 0  → moving away / scraping off
+	#
+	# angle (for debug):
+	#   0°  = sliding perfectly along the surface
+	#   90° = straight into the surface
+	var n_norm := n.normalized()
+	var v_len := v.length()
+	if v_len < 0.0001:
+		return {
+			"angle": 0.0,
+			"into_speed": 0.0,
+			"tangent_speed": 0.0
+		}
+
+	var into_speed := -v.dot(n_norm) # positive when moving into the surface
+	var tangent_vec := v + n_norm * into_speed
+	var tangent_speed := tangent_vec.length()
+
+	var angle := 0.0
+	if into_speed > 0.0 or tangent_speed > 0.0001:
+		angle = rad_to_deg(atan2(max(into_speed, 0.0), max(tangent_speed, 0.0001)))
+
+	return {
+		"angle": angle,
+		"into_speed": into_speed,
+		"tangent_speed": tangent_speed
+	}
+
+func _update_control_anchor(physics_up: Vector3) -> void:
+	if control_anchor == null:
+		return
+
+	# Use the same "up" as the movement logic.
+	var up := physics_up.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	# Use the current control forward as our anchor forward.
+	var f: Vector3 = _control_forward
+	if f.length() < 0.001:
+		f = -Vector3.FORWARD
+
+	# Make sure forward is tangent to the current up.
+	f = f - up * f.dot(up)
+	if f.length() < 0.001:
+		# Fallback if something degenerates
+		f = -Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)
+	if f.length() < 0.001:
+		f = -Vector3.FORWARD
+	f = f.normalized()
+
+	# Right = forward × up
+	var r: Vector3 = f.cross(up)
+	if r.length() < 0.001:
+		r = Vector3.RIGHT - up * Vector3.RIGHT.dot(up)
+	if r.length() < 0.001:
+		r = Vector3.RIGHT
+	r = r.normalized()
+
+	# Build basis: X = right, Y = up, Z = -forward (same convention as model_root)
+	var basis := Basis(r, up, -f)
+
+	# Place the anchor at the player’s origin so gizmos are intuitive.
+	control_anchor.global_transform = Transform3D(basis, global_transform.origin)
+
+# Some useful math helpers
+
+func get_look():
+	return -global_transform.basis.z
+
+func get_up():
+	return global_transform.basis.y
+
+func get_right():
+	return global_transform.basis.x
+
+func to_speed(vector: Vector3) -> Vector3:
+	var speed = global_transform.basis.inverse() * vector
+	return Vector3(-speed.z, speed.y, speed.x) / 60
+
+func from_speed(speed: Vector3) -> Vector3:
+	var vector = global_transform.basis * Vector3(speed.z, speed.y, -speed.x)
+	return vector * 60
+	
+func _vel_to_local(v: Vector3, forward: Vector3, right: Vector3, up: Vector3) -> Vector3:
+	return Vector3(
+		v.dot(forward),  # local forward
+		v.dot(up),       # local up
+		v.dot(right)     # local right
+	)
+
+func _vel_from_local(s: Vector3, forward: Vector3, right: Vector3, up: Vector3) -> Vector3:
+	return forward * s.x + up * s.y + right * s.z
+	
+
+# ===========================================================
+# LOCK TO SURFACE
+# ===========================================================
+func _lock_to_surface() -> void:
+	if not attached:
+		return
+
+	var n: Vector3 = surface_normal.normalized()
+	if n.length() < 0.001:
+		return
+
+	var t: Transform3D = global_transform
+	var current_center: Vector3 = t.origin
+
+	var to_center: Vector3 = current_center - surface_point
+	var current_dist: float = to_center.dot(n)
+
+	var delta_dist: float = collision_ground_distance - current_dist
+	t.origin = current_center + n * delta_dist
+	global_transform = t
+
+
+# ===========================================================
+# VISUAL ORIENTATION
+# ===========================================================
+@export var visual_up_lerp_speed_deg: float = 720.0
+
+func _update_visual_up(delta: float) -> void:
+	var world_up := Vector3.UP
+
+	# Target = current physics up
+	var target := up_direction
+	if target.length() < 0.001:
+		target = world_up
+	target = target.normalized()
+
+	# Initialize _visual_up if uninitialized or garbage
+	if visual_up.length() < 0.001:
+		visual_up = target
+		return
+
+	visual_up = visual_up.normalized()
+
+	# Angle between current visual up and target up
+	var dot_ut : float = clamp(visual_up.dot(target), -1.0, 1.0)
+	var angle := acos(dot_ut)
+
+	# Already almost aligned: snap to target
+	if angle < 0.0001:
+		visual_up = target
+		return
+
+	# How far we can rotate this frame
+	var max_step := deg_to_rad(visual_up_lerp_speed_deg) * delta
+	var t : float = min(1.0, max_step / angle)
+
+	# Rotation axis = cross between current and target
+	var axis := visual_up.cross(target)
+	var axis_len := axis.length()
+
+	# If cross is tiny, vectors are nearly parallel or anti-parallel.
+	# In that case, just snap.
+	if axis_len < 0.0001:
+		visual_up = target
+		return
+
+	axis /= axis_len  # ✅ ensure axis is normalized
+
+	var rot := Basis(axis, angle * t)
+	visual_up = (rot * visual_up).normalized()
+
+func _update_model_orientation(delta: float) -> void:
+	if model_root == null:
+		return
+
+	# --- UP AXIS (always from visual_up) ---
+	var up: Vector3 = visual_up.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	var forward_src: Vector3
+
+	# --- SPRING OVERRIDE FOR FORWARD ---
+	if _spring_align_timer > 0.0 and _spring_detached and _spring_align_dir.length() > 0.001:
+		# Follow spring trajectory visually
+		forward_src = _spring_align_dir
+	else:
+		# Your original velocity-driven facing logic
+		var move_dir: Vector3 = velocity - up * velocity.dot(up)
+		if move_dir.length() > 0.05:
+			move_dir = move_dir.normalized()
+			_model_forward = move_dir
+		else:
+			# Preserve prior forward, but keep it tangent to the surface / up vector.
+			_model_forward = _model_forward - up * _model_forward.dot(up)
+			if _model_forward.length() > 0.001:
+				_model_forward = _model_forward.normalized()
+
+		# Fallback if we somehow lost forward
+		if _model_forward.length() < 0.001:
+			_model_forward = (-Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)).normalized()
+
+		forward_src = _model_forward
+
+	# --- PROJECT FORWARD ONTO TANGENT PLANE ---
+	var forward: Vector3 = forward_src - up * forward_src.dot(up)
+	if forward.length() < 0.001:
+		forward = -Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)
+	if forward.length() < 0.001:
+		forward = Vector3.FORWARD
+	forward = forward.normalized()
+
+	# Right from forward × up
+	var right: Vector3 = forward.cross(up)
+	if right.length() < 0.001:
+		right = Vector3.RIGHT - up * Vector3.RIGHT.dot(up)
+	if right.length() < 0.001:
+		right = Vector3.RIGHT
+	right = right.normalized()
+
+	# Rebuild forward to ensure orthogonality
+	forward = up.cross(right).normalized()
+
+	# Keep internal forward in sync with final forward we actually use
+	_model_forward = forward
+
+	var target_basis: Basis = Basis(right, up, -forward)
+	var t: Transform3D = model_root.global_transform
+
+	# Snap instantly on new attach, so landing looks firm.
+	if attached and not _prev_attached:
+		t.basis = target_basis
+		model_root.global_transform = t
+		return
+
+	# Otherwise, smoothly turn.
+	var current_basis: Basis = t.basis
+	var current_q: Quaternion = current_basis.get_rotation_quaternion()
+	var target_q: Quaternion = target_basis.get_rotation_quaternion()
+	var new_q: Quaternion = current_q.slerp(target_q, model_turn_speed * delta)
+
+	t.basis = Basis(new_q)
+	model_root.global_transform = t
+
+
+func snap_model_to_normal(normal: Vector3, forward_hint: Vector3 = Vector3.FORWARD) -> void:
+	if model_root == null:
+		return
+
+	var up: Vector3 = normal.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	# Project the forward hint onto the plane perpendicular to 'up'
+	var f: Vector3 = forward_hint - up * forward_hint.dot(up)
+	if f.length() < 0.001:
+		# Fallback: use current model forward or some stable default.
+		if _model_forward.length() > 0.001:
+			f = _model_forward - up * _model_forward.dot(up)
+		else:
+			f = -Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)
+	if f.length() < 0.001:
+		f = Vector3.FORWARD
+	else:
+		f = f.normalized()
+
+	var right: Vector3 = f.cross(up)
+	if right.length() < 0.001:
+		right = Vector3.RIGHT - up * Vector3.RIGHT.dot(up)
+	if right.length() < 0.001:
+		right = Vector3.RIGHT
+	right = right.normalized()
+
+	var forward: Vector3 = up.cross(right).normalized()
+
+	var basis := Basis(right, up, -forward)
+	var t := model_root.global_transform
+	t.basis = basis
+	model_root.global_transform = t
+
+	# Keep internal state consistent.
+	visual_up = up
+	_model_forward = forward
+
+func _record_detach_state(detach_normal: Vector3, world_up: Vector3) -> void:
+	var n: Vector3 = detach_normal.normalized()
+	if n.length() < 0.001:
+		n = world_up
+
+	var dot_up: float = clamp(n.dot(world_up), -1.0, 1.0)
+	var angle_deg: float = rad_to_deg(acos(dot_up))
+
+	_last_detach_angle_deg = angle_deg
+
+	# True if we left something that was basically “floor-like”.
+	_detached_from_floor_like = angle_deg <= floor_like_max_angle_deg
+
+	# Reset airborne timer – this is the moment of detach.
+	_airborne_time = 0.0
+
+func _get_input_up() -> Vector3:
+	var world_up := Vector3.UP
+
+	# 1) If attached, use current surface normal.
+	if attached and surface_normal.length() > 0.001:
+		return surface_normal.normalized()
+
+	# 2) Recently detached from a steep / non-floor surface:
+	#    reuse last detach normal for a short window (attachment_immunity).
+	if _attachment_immunity > 0.0 and _last_detach_normal.length() > 0.001:
+		var n := _last_detach_normal.normalized()
+		var dot_up : float = clamp(n.dot(world_up), -1.0, 1.0)
+		var angle_deg := rad_to_deg(acos(dot_up))
+		# Treat anything steeper than your "floor-like" threshold as steep.
+		if angle_deg >= floor_like_max_angle_deg:
+			return n
+
+	# 3) Default: world up.
+	return world_up
+
+
+func _get_camera_forward_world_up(world_up: Vector3) -> Vector3:
+	var up := world_up.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	# a) Preferred: CameraRig yaw around world-up
+	if camera_rig != null and camera_rig.has_method("get_yaw"):
+		var yaw: float = float(camera_rig.get_yaw())
+
+		var base_forward: Vector3 = -Vector3.FORWARD
+		base_forward -= up * base_forward.dot(up)
+		if base_forward.length() < 0.001:
+			base_forward = Vector3.FORWARD - up * Vector3.FORWARD.dot(up)
+		base_forward = base_forward.normalized()
+
+		return base_forward.rotated(up, yaw)
+
+	# b) Fallback: actual camera forward projected onto world-up plane
+	if camera != null:
+		var raw_forward: Vector3 = -camera.global_transform.basis.z
+		var cam_forward := raw_forward - up * raw_forward.dot(up)
+		if cam_forward.length() < 0.001:
+			cam_forward = -Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)
+		return cam_forward.normalized()
+
+	# c) Final fallback: model forward projected to world-up plane
+	var f: Vector3 = _model_forward
+	f -= up * f.dot(up)
+	if f.length() < 0.001:
+		f = -Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)
+	return f.normalized()
+
+
+# ===========================================================
+# ABILITY CODE
+# ===========================================================
+
+func _init_abilities() -> void:
+	_abilities_by_slot.clear()
+
+	# Start from the Abilities container if it exists, otherwise from self
+	var root: Node = self
+	if has_node("Abilities"):
+		root = get_node("Abilities")
+
+	_collect_abilities_recursive(root)
+
+
+func _collect_abilities_recursive(node: Node) -> void:
+	for child in node.get_children():
+		if child is CharacterAbility:
+			var ability: CharacterAbility = child
+			ability.init(self)
+
+			var slot := ability.slot_index
+			if not _abilities_by_slot.has(slot):
+				_abilities_by_slot[slot] = []
+			
+			_abilities_by_slot[slot].append(ability)
+
+		# Recurse so we can nest abilities in folders
+		_collect_abilities_recursive(child)
+
+
+func _process_ability_inputs() -> void:
+	for slot in _abilities_by_slot.keys():
+		var action_name := "action_%d" % int(slot)
+
+		if Input.is_action_just_pressed(action_name):
+			# If actions are locked, pressing any action breaks movement lock,
+			# but the action itself does not fire while lock is active.
+			if _spring_action_lock_timer > 0.0:
+				_spring_movement_lock_timer = 0.0
+				continue
+
+			# Normal behaviour: trigger abilities in this slot
+			var list: Array = _abilities_by_slot[slot]
+			for ability in list:
+				if ability != null:
+					ability.on_action_pressed()
+
+func _perform_jump_dash(physics_up: Vector3, is_attached: bool, lateral: Vector3) -> Vector3:
+	# Respect "air only" flag
+	if jump_dash_air_only and is_attached:
+		return lateral
+
+	# One dash per airtime, if enabled
+	if jump_dash_once_per_air and _jump_dash_used_this_air:
+		return lateral
+
+	var before_lateral := lateral
+
+	var up: Vector3 = physics_up.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	# Base facing direction: model forward
+	var forward: Vector3 = _model_forward
+	if forward.length() < 0.001:
+		# Fallback to lateral movement direction, then a sane default
+		if lateral.length() > 0.001:
+			forward = lateral.normalized()
+		else:
+			forward = -Vector3.FORWARD
+
+	# Project forward onto plane perpendicular to up (purely horizontal/along surface)
+	var dash_dir: Vector3 = forward - up * forward.dot(up)
+	if dash_dir.length() < 0.001:
+		dash_dir = forward
+	dash_dir = dash_dir.normalized()
+
+	# --- SA1-style: fixed additive speed in facing direction ---
+	var dash_vec: Vector3 = dash_dir * jump_dash_add_speed
+	lateral += dash_vec
+
+	# Clamp lateral speed to dash limit / global max
+	var max_dash_speed: float = jump_dash_max_lateral_speed
+	if max_dash_speed <= 0.0:
+		max_dash_speed = max_speed
+
+	var lateral_speed: float = lateral.length()
+	if lateral_speed > max_dash_speed and lateral_speed > 0.0:
+		lateral = lateral.normalized() * max_dash_speed
+
+	# ----------------------------------------------------------------
+	# Only mark used + play SFX if dash actually changed lateral vel.
+	# (Prevents SFX if, for some reason, the dash had no effect.)
+	# ----------------------------------------------------------------
+	if lateral.distance_to(before_lateral) < 0.01:
+		return lateral
+
+	play_jumpdash_sfx()
+	_jump_dash_used_this_air = true
+	_jump_dash_recent_timer = jump_dash_recent_time
+	return lateral
+
+
+# ===========================================================
+# ABILITY QUEUE
+# ===========================================================
+func queue_jump() -> void:
+	_jump_requested = true
+	
+func queue_jump_dash() -> void:
+	_jump_dash_requested = true
+
+func _get_lateral_speed_for_anim() -> float:
+	# Use the same "physics up" you already store for movement
+	var up := _physics_up_last.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	var v := velocity
+	var vertical := v.dot(up)
+	var lateral := v - up * vertical
+	return lateral.length()
+
+# ===========================================================
+# ANIMATION
+# ===========================================================
+
+func _update_animation(delta: float) -> void:
+	if anim_tree == null or anim_state == null:
+		return
+
+	# ----------------------------------------
+	# Basic kinematics used by animations
+	# ----------------------------------------
+	var up := _physics_up_last.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	var grounded: bool = attached
+	var vertical_speed: float = velocity.dot(up)
+	var speed: float = _get_lateral_speed_for_anim()
+
+	var landing_this_frame: bool = grounded and not _prev_attached
+	var land_moving: bool = landing_this_frame and speed > 0.5
+
+	# ----------------------------------------
+	# High-level state flags (from state_flags)
+	# ----------------------------------------
+	# These come from _update_main_state_and_flags()
+	var st_grounded   := has_state(STATE_GROUNDED)
+	var st_moving     := has_state(STATE_MOVING)
+	var st_skid       := has_state(STATE_SKIDDING)
+	var st_jump       := has_state(STATE_JUMPING)
+	var st_fall       := has_state(STATE_FALLING)
+	var st_loop       := has_state(STATE_LOOPING)
+	var st_spring     := has_state(STATE_SPRING) or has_state(STATE_SPLINE)
+	var st_hard_land  := has_state(STATE_LANDING_HARD)
+	var st_jump_dash  := has_state(STATE_JUMP_DASH)
+
+	# ----------------------------------------
+	# Push booleans into AnimationTree
+	# (uses your existing _set_anim_bool_param helper)
+	# ----------------------------------------
+	_set_anim_bool_param("conditions/Grounded", st_grounded)
+	_set_anim_bool_param("conditions/Moving", st_moving)
+	_set_anim_bool_param("conditions/Skidding", st_skid)
+	_set_anim_bool_param("conditions/Jumping", st_jump)
+	_set_anim_bool_param("conditions/Falling", st_fall)
+	_set_anim_bool_param("conditions/Looping", st_loop)
+	_set_anim_bool_param("conditions/Spring", st_spring)
+	_set_anim_bool_param("conditions/HardLanding", st_hard_land)
+	_set_anim_bool_param("conditions/Landing", landing_this_frame)
+	_set_anim_bool_param("conditions/LandMoving", land_moving)
+	_set_anim_bool_param("conditions/JumpDashing", st_jump_dash)
+
+	# If you have float params in the tree, you can also set them here:
+	# (uncomment / adjust names to match your AnimationTree)
+	# anim_tree.set("parameters/StateMachine/conditions/speed", speed)
+	# anim_tree.set("parameters/StateMachine/conditions/vertical_speed", vertical_speed)
+
+	# ----------------------------------------
+	# GroundMove blend: (speed, turn)
+	# ----------------------------------------
+	var speed_blend: float = clamp(speed, 0.0, 120.0)
+	var turn_amount: float = _get_turn_amount_for_anim()
+
+	anim_tree.set(
+		"parameters/StateMachine/GroundMove/blend_position",
+		Vector2(speed_blend, turn_amount)
+	)
+
+	# ----------------------------------------
+	# MoveTimeScale: scale run cycle with speed
+	# ----------------------------------------
+	var current_state: StringName = anim_state.get_current_node()
+	var move_time_scale := 1.0
+
+	if current_state == "GroundMove" or String(current_state).begins_with("GAME_Move"):
+		var speed_norm := 0.0
+		if run_top_speed > 0.0:
+			speed_norm = clamp(speed / run_top_speed, 0.0, 1.0)
+
+		var min_scale := 0.95
+		var max_scale := 1.9
+		move_time_scale = lerp(min_scale, max_scale, speed_norm)
+
+	anim_tree.set("parameters/MoveTimeScale/scale", move_time_scale)
+
+
+func _get_turn_amount_for_anim() -> float:
+	# Uses lateral velocity vs desired move direction.
+	# Returns -1..1 where:
+	#   -1 = hard left, 0 = straight, +1 = hard right (relative to current up)
+	var up := _physics_up_last.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	var v := velocity
+	var vertical := v.dot(up)
+	var lateral := v - up * vertical
+	if lateral.length() < 0.01 or _move_direction.length() < 0.01:
+		return 0.0
+
+	var vel_dir := lateral.normalized()
+
+	# Desired direction based on input, projected onto the surface plane
+	var input_dir_full := _move_direction.normalized()
+	var input_dir := input_dir_full - up * input_dir_full.dot(up)
+	if input_dir.length() < 0.001:
+		return 0.0
+	input_dir = input_dir.normalized()
+
+	var dot_dir : float = clamp(vel_dir.dot(input_dir), -1.0, 1.0)
+	var angle_rad := acos(dot_dir)
+
+	# Signed side using cross product vs up
+	var cross := vel_dir.cross(input_dir)
+	var side : float = sign(cross.dot(up))  # +1 = right, -1 = left
+
+	# Map 0..max_angle to 0..1
+	var max_turn_rad := deg_to_rad(90.0) # tweak – angle that counts as "full turn"
+	var t : float = clamp(angle_rad / max_turn_rad, 0.0, 1.0)
+
+	return t * side
+
+func _set_anim_bool_param(rel_path: String, value: bool) -> void:
+	var full_path := "%s/%s" % [SM_BASE, rel_path]
+	if _anim_param_exists(full_path):
+		anim_tree.set(full_path, value)
+
+# ===========================================================
+# DEBUG
+# ===========================================================
+func _debug_inputs(physics_up: Vector3) -> void:
+	if Input.is_action_just_pressed("debug_add_up"):
+		var up := physics_up.normalized()
+		if up.length() < 0.001 or not debug_add_up_use_physics_up:
+			up = Vector3.UP
+
+		var delta_v := up * debug_add_up_speed
+		velocity += delta_v
+
+		print("DEBUG: +up velocity ", delta_v, " | new velocity = ", velocity)
+
+func _debug_draw() -> void:
+	var up: Vector3 = visual_up.normalized()
+	if up.length() < 0.001:
+		up = Vector3.UP
+
+	var origin: Vector3 = global_transform.origin + up * 0.5
+
+	#DebugDraw3d.arrow(origin, origin + surface_normal, Color(1.0, 0.0, 0.0, 1.0))
+	#DebugDraw3d.arrow(origin, origin + _prev_surface_normal, Color(1.0, 0.5, 0.0, 1.0))
+	#DebugDraw3d.arrow(origin, origin + visual_up, Color(0.0, 1.0, 0.0, 1.0))
+	#DebugDraw3d.arrow(origin, origin + velocity * 0.1, Color(0.0, 0.5, 1.0, 1.0))
+	
+	if not control_anchor:
+		return
+
+	var f = -control_anchor.global_transform.basis.z
+	var u = control_anchor.global_transform.basis.y
+
+	var forward_angle = rad_to_deg(atan2(f.x, f.z))
+	var up_pitch = rad_to_deg(acos(Vector3.UP.dot(u)))
+
+	var msg = "ForwardYaw = %.2f°\nUpTilt = %.2f°" % [forward_angle, up_pitch]
+
+	if camera != null:
+		var cam_forward: Vector3 = -camera.global_transform.basis.z
+		#DebugDraw3d.arrow(origin, origin + cam_forward, Color(1.0, 1.0, 0.0, 1.0))
+
+	if model_root != null:
+		var model_basis: Basis = model_root.global_transform.basis
+		var model_forward: Vector3 = -model_basis.z
+		var model_origin: Vector3 = model_root.global_transform.origin + up * 0.5
+		#DebugDraw3d.arrow(model_origin, model_origin + model_forward, Color(1.0, 0.0, 1.0, 1.0))
+
+	#if _follow_ray_origin != _follow_ray_target:
+		#DebugDraw3d.line(_follow_ray_origin, _follow_ray_target, Color(0.0, 1.0, 1.0, 1.0))
+
+	if _debug_label != null and _debug_visible:
+		var state_str := "ATTACHED"
+		if not attached:
+			state_str = "AIRBORNE"
+		elif _is_skidding:
+			state_str = "SKID"
+
+		var spd: float = velocity.length()
+
+		# Show “YES” only while the timer > 0
+		var radial_str := "YES" if _dbg_radial_hit_timer > 0.0 else "no"
+
+		# Detach info only while timer > 0
+		var detach_str := "RECENT" if _dbg_detach_timer > 0.0 else "none"
+		var filtered_str := "YES" if _dbg_last_detach_used_filtered else "no"
+		var from_floor_str := "YES" if _dbg_last_detach_from_floor_like else "no"
+		var surf_kind_str := "FLOOR" if _dbg_surface_is_floor_like else "NON-FLOOR"
+
+		_debug_label.text = ""
+		_debug_label.text += "STATE: %s\n" % state_str
+		_debug_label.text += "SPD:   %.1f\n" % spd
+		_debug_label.text += "NΔ:    %.1f°\n" % _normal_delta_angle_deg
+		_debug_label.text += "\n"
+
+		_debug_label.text += "SURF ANGLE: %.1f°  (%s)\n" % [
+			_dbg_surface_angle_deg,
+			surf_kind_str
+		]
+		
+		_debug_label.text += "\n"
+
+		_debug_label.text += "--- RADIAL ---\n"
+		_debug_label.text += "Hit:   %s\n" % radial_str
+		_debug_label.text += "Angle: %.1f°\n" % _dbg_radial_angle
+		_debug_label.text += "Into:  %.1f\n" % _dbg_radial_into_speed
+		_debug_label.text += "Tang:  %.1f\n" % _dbg_radial_tangent_speed
+		_debug_label.text += "\n"
+
+		_debug_label.text += "--- DETACH ---\n"
+		_debug_label.text += "Recent:   %s\n" % detach_str
+		_debug_label.text += "FromFloor:%s\n" % from_floor_str
+		_debug_label.text += "WorldAng: %.1f°\n" % _dbg_last_detach_world_angle
+		_debug_label.text += "StepAng:  %.1f°\n" % _dbg_last_detach_step_angle
+		_debug_label.text += "Filtered: %s\n" % filtered_str
+		
+		if anim_state != null:
+			_debug_label.text += "\nANIM STATE: %s\n" % str(anim_state.get_current_node())
+			
+func _debug_draw_control_anchor() -> void:
+	if not control_anchor:
+		return
+
+	var origin = control_anchor.global_position
+
+	# Forward (-Z)  → BLUE
+	var f = -control_anchor.global_transform.basis.z * 1.5
+	# Right (+X)    → RED
+	var r = control_anchor.global_transform.basis.x * 1.5
+	# Up (+Y)       → GREEN
+	var u = control_anchor.global_transform.basis.y * 1.5
+
+	DebugDraw3d.arrow(origin, origin + f, Color.CORAL)
+	DebugDraw3d.arrow(origin, origin + r, Color.RED)
+	DebugDraw3d.arrow(origin, origin + u, Color.GREEN)
+
+func _debug_anim_tree_params() -> void:
+	print("\n=== ANIM TREE DEBUG ===")
+
+	if anim_tree == null:
+		print("anim_tree is NULL")
+		return
+	else:
+		print("anim_tree OK, active =", anim_tree.active)
+
+	if anim_state == null:
+		print("anim_state (%s/playback) is NULL" % SM_BASE)
+	else:
+		print("anim_state OK, current state =", anim_state.get_current_node())
+
+	var paths := [
+		"%s/conditions/Grounded" % SM_BASE,
+		"%s/conditions/Moving" % SM_BASE,
+		"%s/conditions/Landing" % SM_BASE,
+		"%s/conditions/HardLanding" % SM_BASE,
+		"%s/conditions/JumpDashing" % SM_BASE,
+	]
+
+	for p in paths:
+		var exists := _anim_param_exists(p)
+		print("param '%s' exists? %s" % [p, exists])
+
+	print("=== END ANIM TREE DEBUG ===\n")
+
+func _anim_param_exists(path: String) -> bool:
+	if anim_tree == null:
+		return false
+
+	for d in anim_tree.get_property_list():
+		if d.name == path:
+			return true
+	return false
+
+func _dump_animtree_params() -> void:
+	if anim_tree == null:
+		return
+	print("\n=== ANIMTREE PARAMS ===")
+	for p in anim_tree.get_property_list():
+		var n := String(p.name)
+		if n.begins_with("parameters"):
+			print(n, " = ", anim_tree.get(n))
+	print("=== END PARAMS ===\n")
+
+# ===========================================================
+# AUDIO
+# ===========================================================
+
+func _play_random_sfx_from_list(
+	player: AudioStreamPlayer3D,
+	sounds: Array[AudioStream],
+	last_index: int,
+	avoid_repeat: bool = true
+) -> int:
+	if player == null or sounds.is_empty():
+		return last_index
+
+	var idx := randi_range(0, sounds.size() - 1)
+
+	if avoid_repeat and sounds.size() > 1 and idx == last_index:
+		idx = (idx + 1) % sounds.size()
+
+	player.stream = sounds[idx]
+	player.play()
+	return idx
+
+
+# --- Speed-based volume for FOOTSTEPS ONLY ---
+func _get_footstep_volume_linear() -> float:
+	var speed := _get_lateral_speed_for_anim()
+
+	if footstep_full_volume_speed <= 0.0:
+		return footstep_max_volume
+
+	var t : float = clamp(speed / footstep_full_volume_speed, 0.0, 1.0)
+	return lerp(footstep_min_volume, footstep_max_volume, t)
+
+
+func play_footstep() -> void:
+	if footstep_player == null:
+		return
+
+	var vol_linear := _get_footstep_volume_linear()
+	footstep_player.volume_db = linear_to_db(vol_linear)
+
+	_last_footstep_index = _play_random_sfx_from_list(
+		footstep_player,
+		footstep_sounds,
+		_last_footstep_index,
+		true
+	)
+
+
+# --- Jump & jumpdash SFX (fixed volume, NOT speed-scaled) ---
+
+func play_jump_sfx() -> void:
+	if sfx_player == null:
+		return
+
+	sfx_player.volume_db = linear_to_db(jump_volume)
+
+	_last_jump_index = _play_random_sfx_from_list(
+		sfx_player,
+		jump_sounds,
+		_last_jump_index,
+		true
+	)
+
+
+func play_jumpdash_sfx() -> void:
+	if sfx_player == null:
+		return
+
+	sfx_player.volume_db = linear_to_db(jumpdash_volume)
+
+	_last_jumpdash_index = _play_random_sfx_from_list(
+		sfx_player,
+		jumpdash_sounds,
+		_last_jumpdash_index,
+		true
+	)
+
+# ===========================================================
+# EXTERNAL IMPULSES / OBJECT INTERACTION (SPRINGS, ETC)
+# ===========================================================
+func apply_spring_impulse(
+	spring_position: Vector3,
+	spring_direction: Vector3,
+	spring_strength: float,
+	snap_to_center: bool,
+	stop_momentum: bool,
+	additive_mode: int,
+	min_additive_launch_speed: float,
+	movement_lock_time: float,
+	action_lock_time: float,
+	align_time: float,
+	spring_basis: Basis,
+	clear_move_on_ground: bool,
+	clear_action_on_ground: bool,
+	lock_horizontal_during_align: bool,
+	sideways_gravity_scale: float,
+	detach_from_ground: bool
+) -> void:
+	var dir := spring_direction.normalized()
+	if dir.length() < 0.001:
+		dir = Vector3.UP
+
+	# --- Guarantee a detach from ground when using a spring ---
+	var world_up := Vector3.UP
+	if attached:
+		_record_detach_state(surface_normal, world_up)
+	attached = false
+	_attachment_immunity = launch_immunity_time
+	_airborne_time = 0.0
+
+	# Optionally snap player to spring center.
+	if snap_to_center:
+		global_position = spring_position
+		surface_point = spring_position
+
+	var v: Vector3 = velocity
+
+	if stop_momentum:
+		# Pure spring velocity, overriding previous motion.
+		velocity = dir * spring_strength
+	else:
+		# --- ADDITIVE MODES ---
+		match additive_mode:
+			0: # IgnorePriorVertical
+				var world_up2 := Vector3.UP
+				var vert := v.dot(world_up2)
+				var lateral := v - world_up2 * vert
+				var launch := dir * spring_strength
+				velocity = lateral + launch
+
+			1: # FullyAdditiveWithMinLaunch
+				v += dir * spring_strength
+
+				var along := v.dot(dir)
+				if along < min_additive_launch_speed:
+					var delta_along := min_additive_launch_speed - along
+					v += dir * delta_along
+
+				velocity = v
+			_:
+				var world_up2 := Vector3.UP
+				var vert := v.dot(world_up2)
+				var lateral := v - world_up2 * vert
+				var launch := dir * spring_strength
+				velocity = lateral + launch
+
+	# --- Apply locks / alignment timers ---
+	if movement_lock_time > 0.0:
+		_spring_movement_lock_timer = max(_spring_movement_lock_timer, movement_lock_time)
+
+	if action_lock_time > 0.0:
+		_spring_action_lock_timer = max(_spring_action_lock_timer, action_lock_time)
+
+	if align_time > 0.0:
+		_spring_align_timer = max(_spring_align_timer, align_time)
+		_spring_align_up = spring_basis.y.normalized()
+		_spring_align_forward = (-spring_basis.z).normalized()
+		_spring_align_dir = dir
+		_spring_lock_sideways = lock_horizontal_during_align
+		_spring_sideways_gravity_scale = sideways_gravity_scale
+		_spring_cancel_on_ground = true
+
+	# Remember whether to clear locks on next landing.
+	_spring_clear_move_on_ground = clear_move_on_ground
+	_spring_clear_action_on_ground = clear_action_on_ground
+
+func start_spline_spring(
+	path: Path3D,
+	speed: float,
+	align_model: bool,
+	detach_from_ground: bool,
+	allow_input_cancel: bool
+) -> void:
+	if path == null or path.curve == null:
+		return
+
+	var curve := path.curve
+	var length := curve.get_baked_length()
+	if length <= 0.001:
+		return
+
+	_spline_path = path
+	_spline_total_length = length
+	_spline_speed = speed
+	_spline_align_model = align_model
+	_spline_detach_from_ground = detach_from_ground
+	_spline_allow_input_cancel = allow_input_cancel
+	_spline_active = true
+
+	# Start at beginning of the path (offset 0). 
+	# If you want closest point instead, we can add that later.
+	_spline_distance = 0.0
+
+	# Optional: detach from ground so adhesion doesn't fight the spline
+	if detach_from_ground and attached:
+		var world_up := Vector3.UP
+		_record_detach_state(surface_normal, world_up)
+		attached = false
+		_attachment_immunity = launch_immunity_time
+		_airborne_time = 0.0
+
+	# Clear spring / skid state so nothing competes
+	_spring_align_timer = 0.0
+	_is_skidding = false
+
+
+func _update_spline_spring(delta: float) -> void:
+	if not _spline_active or _spline_path == null or _spline_path.curve == null:
+		_spline_active = false
+		return
+
+	var curve := _spline_path.curve
+
+	# Optional: allow cancelling with input
+	if _spline_allow_input_cancel and _move_input.length() > 0.2:
+		_spline_active = false
+		return
+
+	# Advance along the spline
+	_spline_distance += _spline_speed * delta
+
+	# End of spline → stop and hand control back
+	if _spline_distance >= _spline_total_length:
+		_spline_active = false
+		return
+
+	# Sample *local* positions on the curve
+	var local_pos: Vector3 = curve.sample_baked(_spline_distance)
+	var ahead_dist : float = min(_spline_distance + 0.1, _spline_total_length)
+	var local_pos_ahead: Vector3 = curve.sample_baked(ahead_dist)
+
+	# Convert to world space using the Path3D transform
+	var world_pos: Vector3 = _spline_path.to_global(local_pos)
+	var world_pos_ahead: Vector3 = _spline_path.to_global(local_pos_ahead)
+
+	var tangent: Vector3 = (world_pos_ahead - world_pos).normalized()
+	if tangent.length() < 0.001:
+		tangent = Vector3.FORWARD
+
+	# Velocity in world space for collisions
+	velocity = tangent * _spline_speed
+
+	# Place the player in world space
+	global_position = world_pos
+
+	# Optional: align model to tangent
+	if _spline_align_model and model_root:
+		var up := Vector3.UP
+		var f := tangent.normalized()
+		var r := f.cross(up)
+		if r.length() < 0.001:
+			up = Vector3.FORWARD
+			r = f.cross(up)
+		r = r.normalized()
+		up = r.cross(f).normalized()
+		var basis := Basis(r, up, -f)
+		model_root.global_transform = Transform3D(
+			basis,
+			model_root.global_transform.origin
+		)

@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="DayNightProfile" format=3 uid="uid://cjmgd2k0s6kk3"]
+
+[ext_resource type="Script" uid="uid://ds5kvbpmvq3ds" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightProfile.gd" id="1_profile"]
+
+[sub_resource type="Gradient" id="Gradient_ambient"]
+colors = PackedColorArray(0.25, 0.08, 0.42, 1, 0.25, 0.08, 0.42, 1)
+
+[sub_resource type="Curve" id="Curve_one"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_zero"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_horizon"]
+colors = PackedColorArray(0.035, 0.006, 0.075, 1, 0.035, 0.006, 0.075, 1)
+
+[sub_resource type="Gradient" id="Gradient_zenith"]
+colors = PackedColorArray(0.008, 0.002, 0.025, 1, 0.008, 0.002, 0.025, 1)
+
+[resource]
+script = ExtResource("1_profile")
+ground_color = Color(0.008, 0.002, 0.025, 1)
+ground_visibility = 0.0
+rayleigh_strength = 0.0
+mie_strength = 0.0
+turbidity = 0.1
+fog_enabled = false
+sun_disk_intensity = 0.0
+moon_disk_intensity = 0.0
+star_intensity = 3.0
+star_scale = 840.0
+star_density = 0.48
+star_lower_hemisphere_visibility = 1.0
+star_cool_color = Color(0.5, 0.68, 1.25, 1)
+star_warm_color = Color(1.25, 0.48, 0.92, 1)
+sun_energy_scale = 0.0
+moon_energy_scale = 0.0
+sky_energy_scale = 0.85
+ambient_energy_scale = 0.28
+zenith_color = SubResource("Gradient_zenith")
+horizon_color = SubResource("Gradient_horizon")
+ambient_color = SubResource("Gradient_ambient")
+sun_energy = SubResource("Curve_zero")
+moon_energy = SubResource("Curve_zero")
+sky_energy = SubResource("Curve_one")
+ambient_energy = SubResource("Curve_one")
+star_visibility = SubResource("Curve_one")
+fog_density = SubResource("Curve_zero")
+fog_sun_scatter = SubResource("Curve_zero")

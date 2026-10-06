@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://durs0ydpv8kko"]
+
+[ext_resource type="PackedScene" uid="uid://c31eqcn7dsxvg" path="res://LS5Framework/Effects/SonicBoom/SonicBoomFX.glb" id="1_8exlh"]
+[ext_resource type="Shader" uid="uid://0sk7430anc5t" path="res://LS5Framework/Shaders/SonicBoomFX.gdshader" id="2_43lmj"]
+[ext_resource type="Script" uid="uid://dsl6septea1sm" path="res://LS5Framework/Scripts/Effects/SonicBoomFXController.gd" id="2_q83s8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q83s8"]
+render_priority = 0
+shader = ExtResource("2_43lmj")
+shader_parameter/boom_color = Color(0.7545745, 1.3048736, 3.2944162, 1)
+shader_parameter/boom_alpha = 1.0
+shader_parameter/boom_progress = 1.0
+shader_parameter/boom_max_alpha = 1.7
+shader_parameter/edge_radius = 0.49
+shader_parameter/edge_softness = 0.205
+shader_parameter/fray_strength = 0.37
+shader_parameter/fray_scale = 55.14
+shader_parameter/fray_speed = 29.52
+shader_parameter/edge_line_count = 4.045
+shader_parameter/edge_line_strength = 0.76
+shader_parameter/edge_line_sharpness = 1.44
+shader_parameter/edge_line_speed = 41.04
+shader_parameter/inner_start = 0.2
+shader_parameter/inner_softness = 0.08
+shader_parameter/inner_fray_strength = 0.25
+shader_parameter/intersection_softness = 0.2
+shader_parameter/intersection_strength = 1.0
+
+[node name="SonicBoomFX" unique_id=1632188964 instance=ExtResource("1_8exlh")]
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 0, 0)
+script = ExtResource("2_q83s8")
+boom_light_max_energy = 3.0
+boom_light_range = 25.0
+
+[node name="Sphere_002" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.316, 13.779)
+surface_material_override/0 = SubResource("ShaderMaterial_q83s8")
+
+[node name="BoomLight" type="OmniLight3D" parent="." index="1" unique_id=844705975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 20)
+omni_range = 25.0

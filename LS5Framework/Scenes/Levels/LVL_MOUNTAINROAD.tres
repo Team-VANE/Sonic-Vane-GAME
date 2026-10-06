@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://c1h5wownxw3r5"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_nan2v"]
+
+[resource]
+script = ExtResource("1_nan2v")
+level_name = "Mountain Road"
+order = 141
+selection_category = "Misc"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/MountainRoad/MountainRoad.tscn"

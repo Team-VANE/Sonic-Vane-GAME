@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://das874eyrhrpx"]
+
+[ext_resource type="PackedScene" uid="uid://brooig216vblr" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/MonoBeetle.glb" id="1_x2xxy"]
+
+[node name="MonoBeetle" unique_id=69757520 instance=ExtResource("1_x2xxy")]
+
+[node name="Armature" parent="." index="0" unique_id=374480620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024824273, 0)

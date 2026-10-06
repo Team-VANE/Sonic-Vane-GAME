@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c0j3qkeci04ft"]
+
+[ext_resource type="Texture2D" uid="uid://bw1vwo60tnqqo" path="res://LS5Framework/Objects/Spring/Spring_NextGen/cmn_spring02_dfsp_j.png" id="1_xtlif"]
+
+[resource]
+resource_name = "Standardmaterial.001"
+cull_mode = 2
+albedo_texture = ExtResource("1_xtlif")
+metallic = 0.6545454
+roughness = 0.6090909

@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://c3582u6762t7h"]
+
+[ext_resource type="Script" uid="uid://wlkrj87uttgg" path="res://LS5Framework/Objects/Environment/Rain/RainSystem.gd" id="1_system"]
+[ext_resource type="Resource" uid="uid://dfh5rrly1j0r4" path="res://LS5Framework/Objects/Environment/Rain/Profiles/SteadyRain.tres" id="2_profile"]
+[ext_resource type="Shader" uid="uid://ds2v4pucwn4rn" path="res://LS5Framework/Objects/Environment/Rain/rain_streak.gdshader" id="3_shader"]
+[ext_resource type="AudioStream" uid="uid://cshaqqvqqhc5l" path="res://LS5Framework/Sounds/Ambient/Rain_Med.wav" id="4_outdoor_rain"]
+[ext_resource type="AudioStream" uid="uid://dw7kn3atugbhh" path="res://LS5Framework/Sounds/Ambient/Thunder_Loud_1.wav" id="5_thunder_loud_1"]
+[ext_resource type="AudioStream" uid="uid://4d7as8c4sa42" path="res://LS5Framework/Sounds/Ambient/Thunder_Loud_2.wav" id="6_thunder_loud_2"]
+[ext_resource type="AudioStream" uid="uid://baj7raugl7iql" path="res://LS5Framework/Sounds/Ambient/Thunder_Loud_3.wav" id="7_thunder_loud_3"]
+[ext_resource type="AudioStream" uid="uid://bka33mqfhkbwo" path="res://LS5Framework/Sounds/Ambient/Thunder_Rumbling_1.wav" id="8_thunder_rumble_1"]
+[ext_resource type="AudioStream" uid="uid://bbc8jieqd0cld" path="res://LS5Framework/Sounds/Ambient/Thunder_Rumbling_2.wav" id="9_thunder_rumble_2"]
+
+[sub_resource type="Gradient" id="Gradient_lifetime_alpha"]
+offsets = PackedFloat32Array(0, 0.06, 0.86, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lifetime_alpha"]
+gradient = SubResource("Gradient_lifetime_alpha")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_near"]
+resource_local_to_scene = true
+particle_flag_align_y = true
+emission_shape = 3
+emission_box_extents = Vector3(15, 0.1, 15)
+direction = Vector3(0, -1, 0)
+spread = 1.8
+initial_velocity_min = 28.16
+initial_velocity_max = 35.84
+gravity = Vector3(0, 0, 0)
+scale_min = 0.65
+scale_max = 1.35
+color_ramp = SubResource("GradientTexture1D_lifetime_alpha")
+collision_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_near"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_shader")
+shader_parameter/rain_tint = Color(0.72, 0.82, 0.92, 0.58)
+shader_parameter/drop_diameter = 0.02
+shader_parameter/drop_length = 1.25
+shader_parameter/edge_highlight_strength = 0.65
+shader_parameter/emission_strength = 0.18
+shader_parameter/lighting_multiplier = 1.0
+shader_parameter/tip_softness = 0.16
+shader_parameter/fade_in_start = 0.0
+shader_parameter/fade_in_end = 0.01
+shader_parameter/fade_out_start = 12.0
+shader_parameter/fade_out_end = 23.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_near"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_near")
+height = 1.0
+radial_segments = 4
+rings = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_far"]
+resource_local_to_scene = true
+particle_flag_align_y = true
+emission_shape = 3
+emission_box_extents = Vector3(48, 0.1, 48)
+direction = Vector3(0, -1, 0)
+spread = 1.8
+initial_velocity_min = 28.16
+initial_velocity_max = 35.84
+gravity = Vector3(0, 0, 0)
+scale_min = 0.75
+scale_max = 1.3
+color_ramp = SubResource("GradientTexture1D_lifetime_alpha")
+collision_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_far"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_shader")
+shader_parameter/rain_tint = Color(0.72, 0.82, 0.92, 0.58)
+shader_parameter/drop_diameter = 0.027
+shader_parameter/drop_length = 2.0
+shader_parameter/edge_highlight_strength = 0.65
+shader_parameter/emission_strength = 0.18
+shader_parameter/lighting_multiplier = 1.0
+shader_parameter/tip_softness = 0.16
+shader_parameter/fade_in_start = 12.0
+shader_parameter/fade_in_end = 20.0
+shader_parameter/fade_out_start = 200.0
+shader_parameter/fade_out_end = 240.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_far"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_far")
+height = 1.0
+radial_segments = 4
+rings = 1
+
+[node name="RainSystem" type="Node3D" unique_id=2100654657]
+script = ExtResource("1_system")
+profile = ExtResource("2_profile")
+outdoor_rain_stream = ExtResource("4_outdoor_rain")
+audio_volume_offset_db = 1.6000000000000014
+loud_thunder_streams = Array[AudioStream]([ExtResource("5_thunder_loud_1"), ExtResource("6_thunder_loud_2"), ExtResource("7_thunder_loud_3")])
+rumbling_thunder_streams = Array[AudioStream]([ExtResource("8_thunder_rumble_1"), ExtResource("9_thunder_rumble_2")])
+thunder_volume_offset_db = -9.2
+
+[node name="EmitterAnchor" type="Node3D" parent="." unique_id=2087622592]
+
+[node name="NearRain" type="GPUParticles3D" parent="EmitterAnchor" unique_id=1738626884]
+amount = 1100
+amount_ratio = 0.65
+lifetime = 1.2
+preprocess = 1.5
+randomness = 0.28
+fixed_fps = 60
+collision_base_size = 0.06
+visibility_aabb = AABB(-25, -50, -25, 50, 62, 50)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_near")
+draw_pass_1 = SubResource("CapsuleMesh_near")
+
+[node name="FarRain" type="GPUParticles3D" parent="EmitterAnchor" unique_id=1571044002]
+amount = 1400
+amount_ratio = 0.65
+lifetime = 1.2
+preprocess = 1.5
+randomness = 0.36
+fixed_fps = 60
+collision_base_size = 0.05
+visibility_aabb = AABB(-512, -50, -512, 1024, 62, 1024)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_far")
+draw_pass_1 = SubResource("CapsuleMesh_far")
+
+[node name="RainCollisionHeightfield" type="GPUParticlesCollisionHeightField3D" parent="." unique_id=529412118]
+size = Vector3(110, 70, 110)
+resolution = 1
+
+[node name="OutdoorRainAudio" type="AudioStreamPlayer" parent="." unique_id=1561441541]
+stream = ExtResource("4_outdoor_rain")
+volume_db = -60.0
+bus = &"Rain"
+
+[node name="ThunderAudio" type="AudioStreamPlayer" parent="." unique_id=1792872206]
+bus = &"Rain"

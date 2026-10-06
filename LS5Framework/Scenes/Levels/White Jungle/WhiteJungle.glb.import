@@ -1,0 +1,198 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://buflpakpapnpt"
+path="res://.godot/imported/WhiteJungle.glb-21d63205e6df9356474016a028c94f21.scn"
+
+[deps]
+
+source_file="res://LS5Framework/Scenes/Levels/White Jungle/WhiteJungle.glb"
+dest_files=["res://.godot/imported/WhiteJungle.glb-21d63205e6df9356474016a028c94f21.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"nodes": {
+"PATH:Path_Grassy_GENCOL_attachlimit=110|": {
+"generate/physics": true
+},
+"PATH:Path_Grassy_GENCOL_attachlimit=181|_001": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL_001": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL_002": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL_003": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL_004": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL_005": {
+"generate/physics": true
+},
+"PATH:_DECORATIONS/_BACKDROP/Cube_GENCOL_006": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_Branch|_040": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_001": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_002": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_003": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_004": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_005": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_006": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_007": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_008": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_009": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_010": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_012": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_013": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_014": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_015": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_016": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_017": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_018": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_019": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_020": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_021": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_NOATTACH|_022": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_anglelimit=181|": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_anglelimit=181|2": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_anglelimit=181|3": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_attachlimit=100|_010": {
+"generate/physics": true
+},
+"PATH:_GIANT_TREES/GiantTree_GENCOL_attachlimit=100|_0102": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Bevel_GENCOL_attachlimit=90|_001": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Bevel_GENCOL_attachlimit=90|_004": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Bevel_GENCOL_attachlimit=90|_0042": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Bevel_GENCOL_attachlimit=90|_0043": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Bevel_GENCOL_attachlimit=90|_0044": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=120|_004": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=120|_0042": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=90|_001": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=90|_003": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=90|_005": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=90|_0052": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=90|_0053": {
+"generate/physics": true
+},
+"PATH:__PLATFORMS/Platform_Wood_Edge_GENCOL_attachlimit=90|_0054": {
+"generate/physics": true
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=1

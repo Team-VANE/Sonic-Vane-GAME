@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://rhaquulhh6dl"
+path="res://.godot/imported/BRB_OneSec_03.ogg-ccb751db62ff6844f15d6bf295285e75.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/BRB_OneSec_03.ogg"
+dest_files=["res://.godot/imported/BRB_OneSec_03.ogg-ccb751db62ff6844f15d6bf295285e75.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

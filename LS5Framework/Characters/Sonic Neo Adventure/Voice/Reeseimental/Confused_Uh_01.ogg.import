@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d05fg8wyp3o3i"
+path="res://.godot/imported/Confused_Uh_01.ogg-c0f004fae61fc6a2b0ff6da8480fc129.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Confused_Uh_01.ogg"
+dest_files=["res://.godot/imported/Confused_Uh_01.ogg-c0f004fae61fc6a2b0ff6da8480fc129.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

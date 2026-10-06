@@ -1,0 +1,159 @@
+[gd_scene format=3 uid="uid://dg6y304tie4qj"]
+
+[ext_resource type="Script" uid="uid://utprhi3djtiw" path="res://LS5Framework/Scenes/HUD/HUD.gd" id="1_xk6s5"]
+[ext_resource type="Theme" uid="uid://dpl7x0l87ydk0" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_menu_theme"]
+[ext_resource type="PackedScene" uid="uid://coxb8hlg7x21s" path="res://LS5Framework/Scenes/UI/Speedometer.tscn" id="3_speedometer"]
+[ext_resource type="Script" uid="uid://dcg31xt0t5v2b" path="res://LS5Framework/Scripts/UI/HUDResolutionScale.gd" id="4_hud_scale"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/CameraOrientationIndicator.tscn" id="5_camera_orientation"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDStatContainer.tscn" id="6_stat_container"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDAbilityMeter.tscn" id="7_ability_meter"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDItemNotifier.tscn" id="8_item_notifier"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDMusicTrackDisplay.tscn" id="9_music_display"]
+[ext_resource type="Script" uid="uid://cgyprok5wgbje" path="res://LS5Framework/Scenes/HUD/PlayerLocator.gd" id="10_player_locator"]
+[ext_resource type="Script" uid="uid://cddrxj1wujx2p" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="11_crt_effect"]
+[ext_resource type="Texture2D" uid="uid://dafx21pkcolky" path="res://LS5Framework/Images/UI/HUD_Coyote_Indicator.png" id="12_coyote_indicator"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDActionPrompts.tscn" id="13_action_prompts"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDContextualPrompts.tscn" id="14_contextual_prompts"]
+
+[node name="HUD" type="CanvasLayer" unique_id=1918681239 groups=["HUD"]]
+script = ExtResource("1_xk6s5")
+
+[node name="CRTUIBackgroundEffect" type="Node" parent="." unique_id=1920192239]
+script = ExtResource("11_crt_effect")
+
+[node name="HUDRoot" type="Control" parent="." unique_id=403502993]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_menu_theme")
+script = ExtResource("4_hud_scale")
+
+[node name="TopLeftPanel" type="MarginContainer" parent="HUDRoot" unique_id=2015993121]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 272.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="StatsVBox" type="VBoxContainer" parent="HUDRoot/TopLeftPanel" unique_id=289660145]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ScoreStat" parent="HUDRoot/TopLeftPanel/StatsVBox" unique_id=1971818583 instance=ExtResource("6_stat_container")]
+layout_mode = 2
+stat_name = "Score"
+initial_value = "000000"
+dim_leading_zeros = true
+
+[node name="TimeStat" parent="HUDRoot/TopLeftPanel/StatsVBox" unique_id=1775695848 instance=ExtResource("6_stat_container")]
+layout_mode = 2
+stat_name = "Time"
+initial_value = "00:00:00"
+
+[node name="RingsStat" parent="HUDRoot/TopLeftPanel/StatsVBox" unique_id=270249433 instance=ExtResource("6_stat_container")]
+layout_mode = 2
+stat_name = "Rings"
+initial_value = "000"
+dim_leading_zeros = true
+warning_flash_enabled = true
+
+[node name="CameraOrientationIndicator" parent="HUDRoot" unique_id=532333541 instance=ExtResource("5_camera_orientation")]
+custom_minimum_size = Vector2(210, 126)
+layout_mode = 1
+offset_left = 320.0
+offset_top = 20.0
+offset_right = 530.0
+offset_bottom = 146.0
+
+[node name="CoyoteJumpIndicator" type="TextureRect" parent="HUDRoot" unique_id=1441448467]
+custom_minimum_size = Vector2(124.937, 94)
+layout_mode = 1
+offset_left = 364.82
+offset_top = 154.0
+offset_right = 489.7567
+offset_bottom = 248.0
+mouse_filter = 2
+texture = ExtResource("12_coyote_indicator")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BottomLeftSafeArea" type="VBoxContainer" parent="HUDRoot" unique_id=1264260916]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -218.0
+offset_right = 232.14285
+offset_bottom = -20.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="CharacterIcon" type="TextureRect" parent="HUDRoot/BottomLeftSafeArea" unique_id=1184158558]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+stretch_mode = 2
+
+[node name="AbilityMeter" parent="HUDRoot" unique_id=2042693245 instance=ExtResource("7_ability_meter")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -157.5
+offset_top = -110.0
+offset_right = 157.5
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Speedometer" parent="HUDRoot" unique_id=1752517169 instance=ExtResource("3_speedometer")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -540.0
+offset_top = -203.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="ItemNotifier" parent="HUDRoot" unique_id=1805378498 instance=ExtResource("8_item_notifier")]
+layout_mode = 1
+power_up_right_margin = 550.0
+power_up_scale = 0.5
+power_up_bar_padding = Vector2(12, 8)
+
+[node name="MusicTrackDisplay" parent="HUDRoot" unique_id=1049587132 instance=ExtResource("9_music_display")]
+layout_mode = 1
+
+[node name="ActionPrompts" parent="HUDRoot" instance=ExtResource("13_action_prompts")]
+layout_mode = 1
+
+[node name="ContextualPrompts" parent="HUDRoot" instance=ExtResource("14_contextual_prompts")]
+layout_mode = 1
+
+[node name="PlayerLocator" type="Control" parent="HUDRoot" unique_id=297500802]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("10_player_locator")

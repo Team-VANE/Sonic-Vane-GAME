@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c2cn81exi4yqx"]
+
+[ext_resource type="PackedScene" uid="uid://b35mxcc3d74di" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Scene/WaterPlane.tscn" id="1_8u2yh"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_cusnu"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_k7sfj"]
+
+[sub_resource type="Sky" id="Sky_2p17s"]
+sky_material = SubResource("PanoramaSkyMaterial_k7sfj")
+
+[sub_resource type="Environment" id="Environment_a76v2"]
+background_mode = 2
+sky = SubResource("Sky_2p17s")
+ambient_light_source = 3
+reflected_light_source = 2
+volumetric_fog_density = 0.0
+
+[node name="Node3D" type="Node3D" unique_id=1873829067]
+transform = Transform3D(0.999997, 0.00183603, 0.00135851, -0.00183804, 0.999997, 0.00148084, -0.0013558, -0.00148333, 0.999998, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=232735854]
+transform = Transform3D(-0.943025, -0.00307868, -0.332709, -0.00406404, 0.999989, 0.00226579, 0.332699, 0.00348884, -0.943027, -5.72553, 0.958037, -1.96375)
+
+[node name="Water" parent="." unique_id=1971317260 instance=ExtResource("1_8u2yh")]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1745014881]
+transform = Transform3D(1, 3.81607e-05, -2.44179e-05, -2.66023e-05, 0.93082, 0.365478, 3.66836e-05, -0.365478, 0.93082, -2.55382, 3.50696, 1.39698e-09)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1186573066]
+transform = Transform3D(0.999989, -0.00367808, -0.00270886, 0.00367003, 0.999988, -0.00296914, 0.00271975, 0.00295917, 0.999994, -4.72219, -0.114658, 0.00254413)
+mesh = SubResource("SphereMesh_cusnu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1919201499]
+environment = SubResource("Environment_a76v2")

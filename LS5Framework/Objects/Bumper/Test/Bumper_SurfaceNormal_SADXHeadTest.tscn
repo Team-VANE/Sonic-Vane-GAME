@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://yb5utiaqix3e"]
+
+[ext_resource type="Script" uid="uid://bin2opm5nnxoy" path="res://LS5Framework/Objects/Bumper/Bumper.gd" id="1_2h4hi"]
+[ext_resource type="AudioStream" uid="uid://cpgnukcjxpkio" path="res://LS5Framework/Sounds/Objects/Bumper.wav" id="2_twmcd"]
+[ext_resource type="PackedScene" uid="uid://dbr0ge26sd4a2" path="res://LS5Framework/Resources/Testing/SADX Head Test/SADX_Sonic_Head.glb" id="3_twmcd"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape_pyramid"]
+points = PackedVector3Array(-2.5, -2, -2.5, 2.5, -2, -2.5, 2.5, -2, 2.5, -2.5, -2, 2.5, 0, 2.5, 0)
+
+[node name="BumperSurfaceNormal" type="Area3D" unique_id=1869424327 node_paths=PackedStringArray("surface_normal_source", "surface_collision_body", "trimesh_source", "sfx_player", "visual_root")]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_2h4hi")
+launch_mode = 1
+minimum_impulse = 50.0
+maximum_impulse = 120.0
+specified_launch_direction = Vector3(0, 0, 0)
+surface_normal_source = NodePath("SADX_Sonic_Head/object_5695944")
+surface_collision_body = NodePath("SolidBody")
+trimesh_source = NodePath("SADX_Sonic_Head/object_5695944")
+generate_trimesh_collision = true
+surface_contact_distance = 4.0
+sfx_player = NodePath("AudioStreamPlayer3D")
+bumper_sound = ExtResource("2_twmcd")
+visual_root = NodePath("SADX_Sonic_Head")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=198581562]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape_pyramid")
+disabled = true
+
+[node name="SolidBody" type="StaticBody3D" parent="." unique_id=274694156]
+collision_layer = 64
+collision_mask = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SolidBody" unique_id=2143822589]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1075002922]
+volume_db = 50.0
+unit_size = 60.0
+max_distance = 65.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+
+[node name="SADX_Sonic_Head" parent="." unique_id=1498408705 instance=ExtResource("3_twmcd")]

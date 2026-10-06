@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bi52405lau600"]
+
+[ext_resource type="Texture2D" uid="uid://cwtcek56gehwu" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_side2.jpg" id="1_t3g0y"]
+
+[resource]
+resource_name = "Material__2468_STN"
+cull_mode = 2
+albedo_texture = ExtResource("1_t3g0y")

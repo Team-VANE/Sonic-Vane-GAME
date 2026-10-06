@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://7r3lelutcqfk"
+path="res://.godot/imported/Insult_WayPast_02.ogg-7a11db32ee4148726797205642d2699f.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_WayPast_02.ogg"
+dest_files=["res://.godot/imported/Insult_WayPast_02.ogg-7a11db32ee4148726797205642d2699f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

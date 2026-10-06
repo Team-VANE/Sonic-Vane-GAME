@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ct2cysaxpc75p"
+path="res://.godot/imported/NeverMind_04.ogg-6a4b7f100aba7f47f989ca90cbc389af.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/NeverMind_04.ogg"
+dest_files=["res://.godot/imported/NeverMind_04.ogg-6a4b7f100aba7f47f989ca90cbc389af.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

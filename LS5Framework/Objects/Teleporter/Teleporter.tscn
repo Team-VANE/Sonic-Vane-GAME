@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://du0visohrxf4k"]
+
+[ext_resource type="Script" uid="uid://b36at0ehgpx3q" path="res://LS5Framework/Objects/Teleporter/Teleporter.gd" id="1_t1emn"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_t1emn"]
+
+[node name="Teleporter" type="Node3D" node_paths=PackedStringArray("entrance_area", "exit_node")]
+script = ExtResource("1_t1emn")
+keep_velocity = false
+entrance_area = NodePath("Entrance")
+exit_node = NodePath("Exit")
+
+[node name="Entrance" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entrance"]
+shape = SubResource("SphereShape3D_t1emn")
+
+[node name="Exit" type="Node3D" parent="."]

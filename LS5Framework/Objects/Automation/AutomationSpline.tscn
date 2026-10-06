@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bf2o7d3qsovh6"]
+
+[ext_resource type="Script" uid="uid://c8h5jdve2k1w7" path="res://LS5Framework/Objects/Automation/AutomationSpline.gd" id="1_auto"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(8.33371, 16.540047, 6.014656)
+
+[node name="AutomationSpline" type="Node3D" unique_id=2094852401]
+script = ExtResource("1_auto")
+
+[node name="Path3D" type="Path3D" parent="." unique_id=716481439]
+debug_custom_color = Color(0.6281065, 1.8249975, 0.5605292, 1)
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1793801836]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=775713540]
+shape = SubResource("BoxShape3D_1")

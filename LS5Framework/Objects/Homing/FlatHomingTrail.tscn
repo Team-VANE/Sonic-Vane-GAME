@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Homing/FlatHomingTrail.gd" id="1_trail"]
+
+[node name="FlatHomingTrail" type="MeshInstance3D"]
+script = ExtResource("1_trail")

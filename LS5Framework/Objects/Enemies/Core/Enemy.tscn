@@ -1,0 +1,78 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/Core/Enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorHealth.gd" id="2_health"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorGravityReceiver3D.gd" id="3_gravity"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/Core/EnemyPerception.gd" id="4_perception"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd" id="5_brain"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorCollisionController3D.gd" id="6_collision"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/Core/EnemyAnimationDriver.gd" id="7_animation"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorAudioCues3D.gd" id="8_audio"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorDefeatEffects3D.gd" id="9_effects"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorRespawnComponent3D.gd" id="10_respawn"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/Core/Locomotion/EnemyLocomotion.gd" id="11_locomotion"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttackController.gd" id="12_attacks"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorTargetable3D.gd" id="13_targetable"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Actors/ActorHurtbox3D.gd" id="14_hurtbox"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gameplay/ScoreAward.gd" id="15_score"]
+
+[node name="Enemy" type="CharacterBody3D"]
+collision_layer = 128
+collision_mask = 1
+script = ExtResource("1_enemy")
+size_target_paths = Array[NodePath]([NodePath("CollisionShape3D"), NodePath("Visual"), NodePath("Targetable"), NodePath("Hurtbox/CollisionShape3D")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Targetable" type="Marker3D" parent="."]
+script = ExtResource("13_targetable")
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("14_hurtbox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="Health" type="Node" parent="Components"]
+script = ExtResource("2_health")
+
+[node name="Gravity" type="Node" parent="Components"]
+script = ExtResource("3_gravity")
+
+[node name="Perception" type="Node" parent="Components"]
+script = ExtResource("4_perception")
+
+[node name="Brain" type="Node" parent="Components"]
+script = ExtResource("5_brain")
+
+[node name="Collision" type="Node" parent="Components"]
+script = ExtResource("6_collision")
+managed_collision_paths = Array[NodePath]([NodePath("Hurtbox")])
+
+[node name="Animation" type="Node" parent="Components"]
+script = ExtResource("7_animation")
+
+[node name="Audio" type="Node3D" parent="Components"]
+script = ExtResource("8_audio")
+
+[node name="DefeatEffects" type="Node3D" parent="Components"]
+script = ExtResource("9_effects")
+
+[node name="Respawn" type="Node" parent="Components"]
+script = ExtResource("10_respawn")
+
+[node name="Optional" type="Node" parent="Components"]
+
+[node name="Locomotion" type="Node" parent="."]
+script = ExtResource("11_locomotion")
+
+[node name="Attacks" type="Node" parent="."]
+script = ExtResource("12_attacks")
+
+[node name="ScoreAward" type="Node" parent="."]
+script = ExtResource("15_score")

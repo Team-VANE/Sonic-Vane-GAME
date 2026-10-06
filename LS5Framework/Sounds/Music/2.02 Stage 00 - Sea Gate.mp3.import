@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://iufjpn2a54hd"
+path="res://.godot/imported/2.02 Stage 00 - Sea Gate.mp3-ff719f01a7c1db275c49963234644750.mp3str"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/2.02 Stage 00 - Sea Gate.mp3"
+dest_files=["res://.godot/imported/2.02 Stage 00 - Sea Gate.mp3-ff719f01a7c1db275c49963234644750.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=15.85
+bpm=130.0
+beat_count=398
+bar_beats=4

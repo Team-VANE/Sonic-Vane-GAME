@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LMChoicesStatic" format=3 uid="uid://f3wvc8hn2xp5r"]
+
+[ext_resource type="Script" uid="uid://c3822myfeybtx" path="res://addons/liminal_editor/src/lm_choices_static.gd" id="1_bakemode"]
+
+[resource]
+script = ExtResource("1_bakemode")
+type_key = "Light3D.BakeMode"
+items = {"Disabled": 0, "Static": 1, "Dynamic": 2}

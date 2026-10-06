@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyytsuvntmox5"]
+
+[ext_resource type="PackedScene" uid="uid://bbeeeqtng0mmm" path="res://LS5Framework/Scenes/Levels/NikoTest/Test.fbx" id="1_vjlg0"]
+[ext_resource type="Texture2D" uid="uid://bdqotcscdk0pd" path="res://LS5Framework/Scenes/Levels/NikoTest/Test_Diffuse.png" id="2_dwbo7"]
+[ext_resource type="PackedScene" uid="uid://dx8ilodblar05" path="res://LS5Framework/Scenes/Levels/NikoTest/Test.glb" id="3_tryod"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tryod"]
+albedo_texture = ExtResource("2_dwbo7")
+metallic = 0.45
+metallic_specular = 0.8
+roughness = 0.5
+
+[node name="Test" instance=ExtResource("1_vjlg0")]
+
+[node name="Skeleton" parent="." index="0"]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0, 92.19696, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_tryod")
+
+[node name="Test" parent="." index="1" instance=ExtResource("3_tryod")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 92.197, 0)

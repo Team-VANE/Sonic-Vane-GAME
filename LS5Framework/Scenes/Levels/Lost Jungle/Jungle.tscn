@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://d87xbobhv2a5"]
+
+[ext_resource type="PackedScene" uid="uid://bwtaq0rqomw3t" path="res://LS5Framework/Scenes/Levels/Lost Jungle/jungle_Mesh.tscn" id="10_i6own"]
+
+[node name="TestStage" type="Node3D"]
+
+[node name="Players" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2142, 79.6706, -4)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.972232, -0.000640123, -0.23402, 0.196379, 0.546129, 0.814358, 0.127284, -0.837701, 0.53109, -0.027525, 41.7399, -36.0211)
+light_energy = 0.41
+light_volumetric_fog_energy = 5.0
+light_bake_mode = 0
+shadow_enabled = true
+shadow_bias = 0.01
+shadow_normal_bias = 8.0
+shadow_opacity = 0.5
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 8.52641e-05, 4.33647e-05, -8.52561e-05, 1, -0.000186322, -4.33806e-05, 0.000186318, 1, -120.668, 13.2859, -265.756)
+light_color = Color(1, 0.745098, 0, 1)
+omni_range = 100.0
+omni_attenuation = 0.435275
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -12.0
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -513, 0)
+size = Vector3(8196, 1024, 8196)
+
+[node name="Jungle" parent="." instance=ExtResource("10_i6own")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6519, -2.87708, 0)

@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/MovingPlatform/MovingPlatform.gd" id="1_moving_platform"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/MovingPlatform/MovingPlatformBody.gd" id="2_moving_platform_body"]
+
+[sub_resource type="Curve3D" id="Curve3D_moving_platform"]
+point_count = 2
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
+albedo_color = Color(0.35, 0.35, 0.35, 1)
+
+[node name="MovingPlatform" type="Node3D"]
+script = ExtResource("1_moving_platform")
+
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_moving_platform")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+loop = false
+progress = 0.0
+
+[node name="PlatformBody" type="AnimatableBody3D" parent="Path3D/PathFollow3D"]
+script = ExtResource("2_moving_platform_body")
+sync_to_physics = false
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/PlatformBody"]
+shape = SubResource("BoxShape3D_platform")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Path3D/PathFollow3D/PlatformBody"]
+mesh = SubResource("BoxMesh_platform")
+surface_material_override/0 = SubResource("StandardMaterial3D_platform")
+
+[node name="StartTrigger" type="Area3D" parent="Path3D/PathFollow3D/PlatformBody"]
+monitoring = false
+monitorable = false
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/PlatformBody/StartTrigger"]
+disabled = true
+shape = SubResource("BoxShape3D_platform")

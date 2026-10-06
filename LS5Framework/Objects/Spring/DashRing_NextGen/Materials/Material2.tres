@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://wwsf4r8tnfy"]
+
+[ext_resource type="Texture2D" uid="uid://bl2pi25g4g3o0" path="res://LS5Framework/Objects/Spring/DashRing_NextGen/cmn_dashring02_dfsp_j.png" id="1_isok3"]
+[ext_resource type="Texture2D" uid="uid://coonopp3u28yx" path="res://LS5Framework/Objects/Spring/DashRing_NextGen/cmn_dashring02_dfsp_j Alpha_normal.png" id="2_kc2ir"]
+
+[resource]
+resource_name = "Material2"
+cull_mode = 2
+albedo_texture = ExtResource("1_isok3")
+roughness = 0.76363635
+normal_enabled = true
+normal_texture = ExtResource("2_kc2ir")

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bxhspx5dlv7hl"]
+
+[resource]
+resource_name = "ORANGE"
+cull_mode = 2
+albedo_color = Color(0.6469508, 0.34418955, 0.04480002, 1)
+metallic = 0.13993198
+roughness = 0.83617747

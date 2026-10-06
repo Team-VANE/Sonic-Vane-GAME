@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/HUDContextualPrompts.gd" id="1_contextual"]
+
+[node name="ContextualPrompts" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -540.0
+offset_top = -430.0
+offset_right = -20.0
+offset_bottom = -225.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_contextual")
+contextual = true
+maximum_rows = 2
+
+[node name="Rows" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+alignment = 2

@@ -1,0 +1,744 @@
+newmtl LANDTX13_material_0
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd miu128_ce005.png
+newmtl LANDTX13_material_1
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd miu256_ce001.png
+newmtl LANDTX13_material_2
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd miu64_ce001.png
+newmtl LANDTX13_material_3
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd miu64_ce049.png
+newmtl LANDTX13_material_4
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_1.png
+newmtl LANDTX13_material_5
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_10.png
+newmtl LANDTX13_material_6
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_11.png
+newmtl LANDTX13_material_7
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_12.png
+newmtl LANDTX13_material_8
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_13.png
+newmtl LANDTX13_material_9
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_15.png
+newmtl LANDTX13_material_10
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_16.png
+newmtl LANDTX13_material_11
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_17.png
+newmtl LANDTX13_material_12
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_18.png
+newmtl LANDTX13_material_13
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_19.png
+newmtl LANDTX13_material_14
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_2.png
+newmtl LANDTX13_material_15
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_20.png
+newmtl LANDTX13_material_16
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_21.png
+newmtl LANDTX13_material_17
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_22.png
+newmtl LANDTX13_material_18
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_23.png
+newmtl LANDTX13_material_19
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_24.png
+newmtl LANDTX13_material_20
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_25.png
+newmtl LANDTX13_material_21
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_26.png
+newmtl LANDTX13_material_22
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_28.png
+newmtl LANDTX13_material_23
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_29.png
+newmtl LANDTX13_material_24
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_3.png
+newmtl LANDTX13_material_25
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_30.png
+newmtl LANDTX13_material_26
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_31.png
+newmtl LANDTX13_material_27
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_32.png
+newmtl LANDTX13_material_28
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_33.png
+newmtl LANDTX13_material_29
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_34.png
+newmtl LANDTX13_material_30
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_35.png
+newmtl LANDTX13_material_31
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_36.png
+newmtl LANDTX13_material_32
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_37.png
+newmtl LANDTX13_material_33
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_38.png
+newmtl LANDTX13_material_34
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_39.png
+newmtl LANDTX13_material_35
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_4.png
+newmtl LANDTX13_material_36
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_40.png
+newmtl LANDTX13_material_37
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_41.png
+newmtl LANDTX13_material_38
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_42.png
+newmtl LANDTX13_material_39
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_43.png
+newmtl LANDTX13_material_40
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_44.png
+newmtl LANDTX13_material_41
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_45.png
+newmtl LANDTX13_material_42
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_46.png
+newmtl LANDTX13_material_43
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_47.png
+newmtl LANDTX13_material_44
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_49.png
+newmtl LANDTX13_material_45
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_5.png
+newmtl LANDTX13_material_46
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_6.png
+newmtl LANDTX13_material_47
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_7.png
+newmtl LANDTX13_material_48
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_8.png
+newmtl LANDTX13_material_49
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity128_9.png
+newmtl LANDTX13_material_50
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity256_1.png
+newmtl LANDTX13_material_51
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity256_4.png
+newmtl LANDTX13_material_52
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity256_5.png
+newmtl LANDTX13_material_53
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity256_6.png
+newmtl LANDTX13_material_54
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_1.png
+newmtl LANDTX13_material_55
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_10.png
+newmtl LANDTX13_material_56
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_11.png
+newmtl LANDTX13_material_57
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_12.png
+newmtl LANDTX13_material_58
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_13.png
+newmtl LANDTX13_material_59
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_14.png
+newmtl LANDTX13_material_60
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_15.png
+newmtl LANDTX13_material_61
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_2.png
+newmtl LANDTX13_material_62
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_3.png
+newmtl LANDTX13_material_63
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_4.png
+newmtl LANDTX13_material_64
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_5.png
+newmtl LANDTX13_material_65
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_6.png
+newmtl LANDTX13_material_66
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity32_9.png
+newmtl LANDTX13_material_67
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_1.png
+newmtl LANDTX13_material_68
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_10.png
+newmtl LANDTX13_material_69
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_11.png
+newmtl LANDTX13_material_70
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_12.png
+newmtl LANDTX13_material_71
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_14.png
+newmtl LANDTX13_material_72
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_15.png
+newmtl LANDTX13_material_73
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_16.png
+newmtl LANDTX13_material_74
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_17.png
+newmtl LANDTX13_material_75
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_18.png
+newmtl LANDTX13_material_76
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_19.png
+newmtl LANDTX13_material_77
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_2.png
+newmtl LANDTX13_material_78
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_20.png
+newmtl LANDTX13_material_79
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_21.png
+newmtl LANDTX13_material_80
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_22.png
+newmtl LANDTX13_material_81
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_23.png
+newmtl LANDTX13_material_82
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_24.png
+newmtl LANDTX13_material_83
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_25.png
+newmtl LANDTX13_material_84
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_26.png
+newmtl LANDTX13_material_85
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_27.png
+newmtl LANDTX13_material_86
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_28.png
+newmtl LANDTX13_material_87
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_29.png
+newmtl LANDTX13_material_88
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_3.png
+newmtl LANDTX13_material_89
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_30.png
+newmtl LANDTX13_material_90
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_31.png
+newmtl LANDTX13_material_91
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_32.png
+newmtl LANDTX13_material_92
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_34.png
+newmtl LANDTX13_material_93
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_35.png
+newmtl LANDTX13_material_94
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_37.png
+newmtl LANDTX13_material_95
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_38.png
+newmtl LANDTX13_material_96
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_39.png
+newmtl LANDTX13_material_97
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_4.png
+newmtl LANDTX13_material_98
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_40.png
+newmtl LANDTX13_material_99
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_43.png
+newmtl LANDTX13_material_100
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_44.png
+newmtl LANDTX13_material_101
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_45.png
+newmtl LANDTX13_material_102
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_46.png
+newmtl LANDTX13_material_103
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_47.png
+newmtl LANDTX13_material_104
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_48.png
+newmtl LANDTX13_material_105
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_49.png
+newmtl LANDTX13_material_106
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_5.png
+newmtl LANDTX13_material_107
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_50.png
+newmtl LANDTX13_material_108
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_51.png
+newmtl LANDTX13_material_109
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_52.png
+newmtl LANDTX13_material_110
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_53.png
+newmtl LANDTX13_material_111
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_6.png
+newmtl LANDTX13_material_112
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_7.png
+newmtl LANDTX13_material_113
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_8.png
+newmtl LANDTX13_material_114
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity64_9.png
+newmtl LANDTX13_material_115
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd scity_kage32.png
+newmtl LANDTX13_material_116
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_lower128_11.png
+newmtl LANDTX13_material_117
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_lower128_5.png
+newmtl LANDTX13_material_118
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_lower128_8.png
+newmtl LANDTX13_material_119
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_senro128.png
+newmtl LANDTX13_material_120
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_win128_4.png
+newmtl LANDTX13_material_121
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_win128_5.png
+newmtl LANDTX13_material_122
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd t_win128_9.png
+newmtl LANDTX13_material_123
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd miu32_ce003.png

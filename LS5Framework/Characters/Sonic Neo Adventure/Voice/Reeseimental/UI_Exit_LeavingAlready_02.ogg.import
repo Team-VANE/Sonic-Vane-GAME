@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b4ueswhhq4mj2"
+path="res://.godot/imported/UI_Exit_LeavingAlready_02.ogg-9d1df15d805fe2f5b680d88adbc3e7e5.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/UI_Exit_LeavingAlready_02.ogg"
+dest_files=["res://.godot/imported/UI_Exit_LeavingAlready_02.ogg-9d1df15d805fe2f5b680d88adbc3e7e5.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

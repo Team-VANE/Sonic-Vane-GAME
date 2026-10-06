@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://d1okvbdxqc08b"]
+
+[ext_resource type="Script" uid="uid://1rbeo14tu867" path="res://LS5Framework/Objects/VaultBar/VaultBar.gd" id="1_vault_bar"]
+[ext_resource type="AudioStream" uid="uid://qy5eh2425a0i" path="res://LS5Framework/Sounds/Objects/VaultBar_Rotation.wav" id="2_rotation"]
+[ext_resource type="AudioStream" uid="uid://ck7di4sl386e3" path="res://LS5Framework/Sounds/Objects/VaultBar_Jump.wav" id="3_jump"]
+[ext_resource type="AudioStream" uid="uid://ciaicu52uj4v5" path="res://LS5Framework/Sounds/Objects/VaultBar_Touch.wav" id="4_touch"]
+[ext_resource type="Script" uid="uid://ih5b0ix1xrej" path="res://LS5Framework/Scripts/EmissionBlink.gd" id="5_emission_blink"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bar"]
+size = Vector3(8, 6, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bar"]
+albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bar"]
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 8.0
+radial_segments = 24
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6wiq5"]
+albedo_color = Color(0.72, 0.08, 0.04, 1)
+metallic = 0.6
+roughness = 0.3
+
+[sub_resource type="SphereMesh" id="SphereMesh_cap"]
+material = SubResource("StandardMaterial3D_6wiq5")
+radius = 1.0
+height = 2.0
+radial_segments = 24
+rings = 12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_preview"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0.1, 0.8, 1, 0.65)
+
+[sub_resource type="SphereMesh" id="SphereMesh_preview"]
+material = SubResource("StandardMaterial3D_preview")
+
+[sub_resource type="Curve3D" id="Curve3D_launch"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="VaultBar" type="Area3D" unique_id=1685228124]
+process_mode = 3
+collision_layer = 32
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_vault_bar")
+collision_radius = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=789556539]
+shape = SubResource("BoxShape3D_bar")
+
+[node name="Model" type="Node3D" parent="." unique_id=1361387532]
+
+[node name="Bar" type="MeshInstance3D" parent="Model" unique_id=511214259]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_bar")
+
+[node name="LeftCap" type="MeshInstance3D" parent="Model" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -4, 0, 0)
+mesh = SubResource("SphereMesh_cap")
+
+[node name="RightCap" type="MeshInstance3D" parent="Model" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 4, 0, 0)
+mesh = SubResource("SphereMesh_cap")
+
+[node name="CapEmissionBlink" type="Node" parent="Model" unique_id=1483264925]
+script = ExtResource("5_emission_blink")
+target_paths = Array[NodePath]([NodePath("../LeftCap"), NodePath("../RightCap")])
+emission_color = Color(1, 0.648568, 0.5942587, 1)
+cycle_duration = 0.65
+
+[node name="LaunchDirection" type="Marker3D" parent="." unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -5)
+gizmo_extents = 0.75
+
+[node name="Preview" type="MeshInstance3D" parent="LaunchDirection" unique_id=1711242086]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_preview")
+
+[node name="OppositeLaunchDirection" type="Marker3D" parent="." unique_id=1628098239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 5)
+gizmo_extents = 0.75
+
+[node name="Preview" type="MeshInstance3D" parent="OppositeLaunchDirection" unique_id=1107538196]
+visible = false
+cast_shadow = 0
+mesh = SubResource("SphereMesh_preview")
+
+[node name="SplinePath" type="Path3D" parent="." unique_id=51402399]
+curve = SubResource("Curve3D_launch")
+
+[node name="RotationSFX" type="AudioStreamPlayer3D" parent="." unique_id=2053714469]
+stream = ExtResource("2_rotation")
+unit_size = 60.0
+max_distance = 80.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+attenuation_filter_db = 0.0
+
+[node name="TouchSFX" type="AudioStreamPlayer3D" parent="." unique_id=1047322388]
+stream = ExtResource("4_touch")
+unit_size = 60.0
+max_distance = 80.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+attenuation_filter_db = 0.0
+
+[node name="JumpSFX" type="AudioStreamPlayer3D" parent="." unique_id=977091619]
+stream = ExtResource("3_jump")
+unit_size = 60.0
+max_distance = 80.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+attenuation_filter_db = 0.0

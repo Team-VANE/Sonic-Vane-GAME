@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://ddj7d3ue1la8i"]
+
+[ext_resource type="Script" uid="uid://c1rk71fl0lh8s" path="res://LS5Framework/Objects/Carry/CarryableObject.gd" id="1_carryable"]
+[ext_resource type="AudioStream" uid="uid://l2jpyc1e3he4" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard1.wav" id="2_3h0u8"]
+[ext_resource type="PackedScene" uid="uid://cl8cgqg8wxrdn" path="res://LS5Framework/Particles/FootstepDustBurst.tscn" id="2_ms858"]
+[ext_resource type="AudioStream" uid="uid://bvjl441qgfiba" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard2.wav" id="3_ms858"]
+[ext_resource type="AudioStream" uid="uid://bhrf8vtiiihed" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard3.wav" id="4_mb1yy"]
+[ext_resource type="AudioStream" uid="uid://dbepeulhcl7nm" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard4.wav" id="5_y5sdl"]
+[ext_resource type="AudioStream" uid="uid://quy2y0vkeq17" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard5.wav" id="6_d8dnb"]
+[ext_resource type="AudioStream" uid="uid://cdc14esa2m2y4" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard6.wav" id="7_vi853"]
+[ext_resource type="AudioStream" uid="uid://bmrp4pclos1lh" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard7.wav" id="8_o2643"]
+[ext_resource type="AudioStream" uid="uid://b5q2dp8atjawr" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_scrape_smooth_loop1.wav" id="9_dadu1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate"]
+albedo_color = Color(0.62, 0.42, 0.22, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_crate"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
+
+[node name="CarryableCrate" type="RigidBody3D" unique_id=174097419 node_paths=PackedStringArray("surface_impact_sfx_player", "surface_slide_sfx_player") groups=["carryable_object", "dynamic_physics_object"]]
+collision_layer = 2
+collision_mask = 5
+continuous_cd = true
+script = ExtResource("1_carryable")
+carry_friction = 0.2
+surface_dust_scene = ExtResource("2_ms858")
+surface_impact_min_speed = 0.5
+surface_impact_sounds = Array[AudioStream]([ExtResource("2_3h0u8"), ExtResource("3_ms858"), ExtResource("4_mb1yy"), ExtResource("5_y5sdl"), ExtResource("6_d8dnb"), ExtResource("7_vi853"), ExtResource("8_o2643")])
+surface_slide_sounds = Array[AudioStream]([ExtResource("9_dadu1")])
+surface_impact_sfx_player = NodePath("SFX_Collision")
+surface_slide_sfx_player = NodePath("SFX_Sliding")
+surface_sound_max_volume_db = 10.0
+surface_sound_max_speed = 60.0
+surface_effect_probe_max_skin = 0.5
+surface_effect_probe_max_speed = 100.0
+surface_effect_probe_correction_min_speed = 5.0
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=336480478]
+material_override = SubResource("StandardMaterial3D_crate")
+mesh = SubResource("BoxMesh_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=879323581]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="SFX_Collision" type="AudioStreamPlayer3D" parent="." unique_id=708789386]
+unit_size = 60.0
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -3.0
+
+[node name="SFX_Sliding" type="AudioStreamPlayer3D" parent="." unique_id=318415026]
+unit_size = 60.0
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -3.0

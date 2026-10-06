@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d2kuis4cw3knr"
+path="res://.godot/imported/BRB_StayPut_01.ogg-487ce3dc19ea4e27e94523f52119c45f.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/BRB_StayPut_01.ogg"
+dest_files=["res://.godot/imported/BRB_StayPut_01.ogg-487ce3dc19ea4e27e94523f52119c45f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

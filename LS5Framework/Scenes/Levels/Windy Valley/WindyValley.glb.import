@@ -1,0 +1,114 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cr1wi82j5u23d"
+path="res://.godot/imported/WindyValley.glb-1dc0b63028ab2380ec802d127d7f2858.scn"
+
+[deps]
+
+source_file="res://LS5Framework/Scenes/Levels/Windy Valley/WindyValley.glb"
+dest_files=["res://.godot/imported/WindyValley.glb-1dc0b63028ab2380ec802d127d7f2858.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"nodes": {
+"PATH:1 (archive": {
+"generate/physics": true
+},
+"PATH:2 archive": {
+"generate/physics": true
+},
+"PATH:AAAPLATFORMS": {
+"generate/physics": true
+},
+"PATH:ARCHIVED EDITS": {
+"generate/physics": true
+},
+"PATH:Archive edits": {
+"generate/physics": true
+},
+"PATH:BASE MESH": {
+"generate/physics": true
+},
+"PATH:CANYONS": {
+"generate/physics": true
+},
+"PATH:object_00781D24": {
+"generate/physics": true
+},
+"PATH:road_001": {
+"generate/physics": true
+},
+"PATH:road_002": {
+"generate/physics": true
+},
+"PATH:road_003": {
+"generate/physics": true
+},
+"PATH:road_004": {
+"generate/physics": true
+},
+"PATH:road_005": {
+"generate/physics": true
+},
+"PATH:road_006": {
+"generate/physics": true
+},
+"PATH:road_007": {
+"generate/physics": true
+},
+"PATH:road_008": {
+"generate/physics": true
+},
+"PATH:road_009": {
+"generate/physics": true
+},
+"PATH:road_010": {
+"generate/physics": true
+},
+"PATH:road_011": {
+"generate/physics": true
+},
+"PATH:road_012": {
+"generate/physics": true
+},
+"PATH:road_013": {
+"generate/physics": true
+},
+"PATH:tidbits": {
+"generate/physics": true
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=1

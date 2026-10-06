@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://dds7cfit1ctox"]
+
+[ext_resource type="AudioStream" uid="uid://p826v80f16v" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Action_04.ogg" id="1_1xr18"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_e1b0o"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_pvdk5"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_n1yjc"]
+
+[sub_resource type="Resource" id="Resource_plms1"]
+script = ExtResource("2_e1b0o")
+pose_id = &"EXP_BROWS_UP"
+end_time = 0.1299999999999999
+blend_in = 0.06499999999999995
+blend_out = 0.06499999999999995
+
+[sub_resource type="Resource" id="Resource_dwa22"]
+script = ExtResource("2_e1b0o")
+pose_id = &"EXP_SMUG"
+start_time = 0.06
+end_time = 0.41
+row = 1
+blend_in = 0.15
+blend_out = 0.15
+
+[sub_resource type="Resource" id="Resource_g6tak"]
+script = ExtResource("2_e1b0o")
+pose_id = &"VIS_Ch_J"
+end_time = 0.2490563969365099
+blend_in = 0.09
+blend_out = 0.10452819846825497
+
+[sub_resource type="Resource" id="Resource_c00mr"]
+script = ExtResource("2_e1b0o")
+pose_id = &"VIS_EE"
+start_time = 0.07
+end_time = 0.40971664502182864
+row = 1
+blend_in = 0.10485832251091431
+blend_out = 0.11485832251091432
+
+[sub_resource type="Resource" id="Resource_y67v2"]
+script = ExtResource("2_e1b0o")
+pose_id = &"VIS_Ah"
+start_time = 0.15
+end_time = 0.52
+row = 2
+blend_in = 0.09000000000000001
+blend_out = 0.17500000000000002
+
+[resource]
+script = ExtResource("4_n1yjc")
+profile = ExtResource("3_pvdk5")
+audio = ExtResource("1_1xr18")
+transcript = "Shea"
+audible_start = 0.01
+audible_end = 0.3487730419583386
+viseme_cues = Array[ExtResource("2_e1b0o")]([SubResource("Resource_g6tak"), SubResource("Resource_c00mr"), SubResource("Resource_y67v2")])
+expression_cues = Array[ExtResource("2_e1b0o")]([SubResource("Resource_plms1"), SubResource("Resource_dwa22")])
+word_spans = Array[Dictionary]([{
+"end": 0.3487730419583386,
+"start": 0.01,
+"word": "Shea"
+}])

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b1b1w31vdt37h"
+path="res://.godot/imported/TrickEx_03.wav-667a82402e1501b329ba63b4bf7eff86.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_03.wav"
+dest_files=["res://.godot/imported/TrickEx_03.wav-667a82402e1501b329ba63b4bf7eff86.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

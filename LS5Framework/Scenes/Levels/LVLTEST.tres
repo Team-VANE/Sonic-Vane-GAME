@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://dlv74hk73jbga"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_level_doc"]
+
+[resource]
+script = ExtResource("1_level_doc")
+level_name = "Niko Test"
+order = 30
+is_test = true
+selection_category = "Test"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn"

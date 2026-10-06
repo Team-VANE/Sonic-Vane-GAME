@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://7x2htwmmrsbv"
+path="res://.godot/imported/White_Jungle.ogg-115bc699bc2d2bee5271711791b60f45.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Scenes/Levels/White Jungle/Audio/White_Jungle.ogg"
+dest_files=["res://.godot/imported/White_Jungle.ogg-115bc699bc2d2bee5271711791b60f45.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=18.95
+bpm=152.0
+beat_count=0
+bar_beats=4

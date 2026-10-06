@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cys5ffcq5mxlf"]
+
+[ext_resource type="Texture2D" uid="uid://cvhpefoq8xfa7" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_bridge.png" id="1_30f7w"]
+
+[resource]
+resource_name = "Texture10_WOD"
+cull_mode = 2
+albedo_texture = ExtResource("1_30f7w")

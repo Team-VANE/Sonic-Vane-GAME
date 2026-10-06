@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://6pxnnfgp0w7o"]
+
+[ext_resource type="AudioStream" uid="uid://bqofhss5ueco" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Bump_01.ogg" id="1_q5lb0"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_6whlm"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_pqshv"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_t0pc0"]
+
+[sub_resource type="Resource" id="Resource_iabdb"]
+script = ExtResource("2_6whlm")
+pose_id = &"EXP_BROWS_UP"
+end_time = 0.19999999999999996
+row = 1
+blend_in = 0.09999999999999998
+blend_out = 0.09999999999999998
+
+[sub_resource type="Resource" id="Resource_jmxjj"]
+script = ExtResource("2_6whlm")
+pose_id = &"EXP_ANGRY"
+end_time = 0.59
+blend_in = 0.27
+blend_out = 0.295
+
+[sub_resource type="Resource" id="Resource_bj4kx"]
+script = ExtResource("2_6whlm")
+pose_id = &"EXP_BROWS_DOWN"
+start_time = 0.1
+end_time = 0.36999999999999994
+row = 2
+blend_in = 0.13499999999999995
+blend_out = 0.13499999999999995
+strength = 0.6
+
+[sub_resource type="Resource" id="Resource_j615e"]
+script = ExtResource("2_6whlm")
+pose_id = &"VIS_Ah"
+end_time = 0.23000000000000007
+blend_in = 0.08500000000000003
+blend_out = 0.08500000000000003
+
+[sub_resource type="Resource" id="Resource_x1oa5"]
+script = ExtResource("2_6whlm")
+pose_id = &"VIS_EE"
+start_time = 0.08
+end_time = 0.37
+row = 1
+blend_in = 0.145
+blend_out = 0.145
+
+[resource]
+script = ExtResource("4_t0pc0")
+profile = ExtResource("3_pqshv")
+audio = ExtResource("1_q5lb0")
+audible_end = 0.3091346636210801
+viseme_cues = Array[ExtResource("2_6whlm")]([SubResource("Resource_j615e"), SubResource("Resource_x1oa5")])
+expression_cues = Array[ExtResource("2_6whlm")]([SubResource("Resource_iabdb"), SubResource("Resource_jmxjj"), SubResource("Resource_bj4kx")])

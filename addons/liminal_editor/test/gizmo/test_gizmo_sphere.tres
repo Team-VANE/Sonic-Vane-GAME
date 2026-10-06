@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://cxosljrhr22ds"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_gkg4c"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_7qtmy"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_ueh7g"]
+
+[sub_resource type="Resource" id="Resource_spg01"]
+script = ExtResource("1_gkg4c")
+type = "sphere"
+style = "solid"
+alpha = "0.2"
+bindings = {
+"color": "sphere_color",
+"radius": "sphere_radius"
+}
+
+[sub_resource type="Resource" id="Resource_spp01"]
+script = ExtResource("2_7qtmy")
+name = "sphere_radius"
+type = "float"
+default_value = 3.0
+
+[sub_resource type="Resource" id="Resource_spp02"]
+script = ExtResource("2_7qtmy")
+name = "sphere_color"
+type = "Color"
+default_value = [0.2, 0.4, 1.0, 1.0]
+
+[resource]
+script = ExtResource("3_ueh7g")
+entity_name = "test_gizmo_sphere"
+description = "Test: sphere gizmo with solid fill and bindable radius and color"
+properties = Array[ExtResource("2_7qtmy")]([SubResource("Resource_spp01"), SubResource("Resource_spp02")])
+gizmos = Array[ExtResource("1_gkg4c")]([SubResource("Resource_spg01")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

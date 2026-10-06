@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://i5vmx6mh7of3"
+path="res://.godot/imported/Happy_Happening_03.ogg-cd44166cc525f9df93ae539affc66953.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Happy_Happening_03.ogg"
+dest_files=["res://.godot/imported/Happy_Happening_03.ogg-cd44166cc525f9df93ae539affc66953.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bje5wimnqgpc4"
+path="res://.godot/imported/LFR_UpFor_02.ogg-ed3fd2a3da92224a8464a8bc2a105cf7.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_UpFor_02.ogg"
+dest_files=["res://.godot/imported/LFR_UpFor_02.ogg-ed3fd2a3da92224a8464a8bc2a105cf7.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

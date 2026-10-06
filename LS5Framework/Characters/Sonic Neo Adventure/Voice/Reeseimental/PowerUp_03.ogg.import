@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://byqhmbkjg407r"
+path="res://.godot/imported/PowerUp_03.ogg-72613501daac2aaf2d0a8e089a4ca48c.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/PowerUp_03.ogg"
+dest_files=["res://.godot/imported/PowerUp_03.ogg-72613501daac2aaf2d0a8e089a4ca48c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

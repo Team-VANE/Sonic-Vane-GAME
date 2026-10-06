@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LevelPackManifest" format=3 uid="uid://d2daavh5sewb5"]
+
+[ext_resource type="Script" uid="uid://c2mrixwgjjkff" path="res://LS5Framework/Scripts/World/LevelPackManifest.gd" id="1_mt3fj"]
+
+[resource]
+script = ExtResource("1_mt3fj")
+pack_id = "mountainroad"
+level_docs = Array[String](["res://LS5Framework/Scenes/Levels/LVL_MOUNTAINROAD.tres"])

@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dbpgp0dmkydoc"]
+
+[ext_resource type="Texture2D" uid="uid://cebny8wgkbw21" path="res://LS5Framework/Objects/Ramps/Mesh-Heroes/obj_dsr2.png" id="1_ic27y"]
+
+[resource]
+resource_name = "mat3"
+cull_mode = 2
+albedo_texture = ExtResource("1_ic27y")
+roughness = 0.92928934

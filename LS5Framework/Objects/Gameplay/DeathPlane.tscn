@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ghucsw5061eo"]
+
+[ext_resource type="Script" uid="uid://dy7gn81us3vdb" path="res://LS5Framework/Objects/Gameplay/DeathPlane.gd" id="1_deathplane"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(350, 3, 350)
+
+[node name="DeathPlane" type="Area3D" unique_id=719304138]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_deathplane")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=172183619]
+shape = SubResource("BoxShape3D_1")
+debug_color = Color(1.8247963, 0.36372238, 1.1186109, 1)

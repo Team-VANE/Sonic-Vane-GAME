@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://dx4mbt7qpls8r"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_gvt7j"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_3y2qg"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_2fpme"]
+
+[sub_resource type="Resource" id="Resource_bxg01"]
+script = ExtResource("1_gvt7j")
+type = "box"
+style = "solid"
+alpha = "0.2"
+bindings = {
+"color": "zone_color",
+"size": "zone_half_size"
+}
+
+[sub_resource type="Resource" id="Resource_bxg02"]
+script = ExtResource("1_gvt7j")
+type = "box"
+style = "solid"
+alpha = "0.2"
+offset = "4,0,0"
+bindings = {
+"color": "zone_color",
+"size_x": "zone_half_size_x",
+"size_y": "zone_half_size_y",
+"size_z": "zone_half_size_z"
+}
+
+[sub_resource type="Resource" id="Resource_bxp01"]
+script = ExtResource("2_3y2qg")
+name = "zone_half_size"
+type = "float"
+default_value = 2.0
+
+[sub_resource type="Resource" id="Resource_bxp02"]
+script = ExtResource("2_3y2qg")
+name = "zone_color"
+type = "Color"
+default_value = [1.0, 0.5, 0.1, 1.0]
+
+[sub_resource type="Resource" id="Resource_bxp03"]
+script = ExtResource("2_3y2qg")
+name = "zone_half_size_x"
+type = "float"
+default_value = 0.5
+
+[sub_resource type="Resource" id="Resource_bxp04"]
+script = ExtResource("2_3y2qg")
+name = "zone_half_size_y"
+type = "float"
+default_value = 1.5
+
+[sub_resource type="Resource" id="Resource_bxp05"]
+script = ExtResource("2_3y2qg")
+name = "zone_half_size_z"
+type = "float"
+default_value = 3.0
+
+[resource]
+script = ExtResource("3_2fpme")
+entity_name = "test_gizmo_box"
+description = "Test: box gizmo with solid fill and bindable half-size and color — uniform box plus a second box offset alongside it using independent size_x/size_y/size_z"
+properties = Array[ExtResource("2_3y2qg")]([SubResource("Resource_bxp01"), SubResource("Resource_bxp02"), SubResource("Resource_bxp03"), SubResource("Resource_bxp04"), SubResource("Resource_bxp05")])
+gizmos = Array[ExtResource("1_gvt7j")]([SubResource("Resource_bxg01"), SubResource("Resource_bxg02")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

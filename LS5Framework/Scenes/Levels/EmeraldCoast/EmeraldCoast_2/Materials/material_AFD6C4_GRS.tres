@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cqcf4sxpsj2eb"]
+
+[ext_resource type="Texture2D" uid="uid://cb8fqbusyg61w" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/sea2_21.png" id="1_8054q"]
+
+[resource]
+resource_name = "material_AFD6C4_GRS"
+cull_mode = 2
+albedo_texture = ExtResource("1_8054q")

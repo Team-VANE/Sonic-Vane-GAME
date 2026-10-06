@@ -1,0 +1,191 @@
+[gd_scene format=3 uid="uid://wbmkbvyk5v7w"]
+
+[ext_resource type="PackedScene" uid="uid://bma81mdkcv3uw" path="res://LS5Framework/Scenes/RivalActor/RivalActorPlayer.tscn" id="1_bpibg"]
+[ext_resource type="AudioStream" uid="uid://d11c1dsp3kcy5" path="res://LS5Framework/Characters/Tails/Voice/Hup_06.wav" id="2_lyjfp"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_01.wav" id="3_7bq3s"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TrickEx_04.wav" id="4_hdxul"]
+[ext_resource type="Material" uid="uid://cdrd75vn4rhn5" path="res://LS5Framework/Scenes/Levels/Materials/NikoChecker.tres" id="5_o0xi6"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="6_yd552"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="7_37s6u"]
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="8_jnsth"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flqib"]
+resource_local_to_scene = true
+shader = ExtResource("7_37s6u")
+shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
+shader_parameter/moon_direction = Vector3(-0.76604444, -0.64278764, 0)
+shader_parameter/zenith_color = Color(0.095625, 0.29625002, 0.755, 1)
+shader_parameter/horizon_color = Color(0.5, 0.7, 1.05, 1)
+shader_parameter/ground_color = Color(0.035, 0.028, 0.025, 1)
+shader_parameter/ground_visibility = 1.0
+shader_parameter/sun_color = Color(1, 0.8066667, 0.57, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(1, 0.8466667, 0.7066667, 1)
+shader_parameter/cloud_shadow_color = Color(0.29625002, 0.3375, 0.42499998, 1)
+shader_parameter/rayleigh_strength = 2.0
+shader_parameter/mie_strength = 0.08
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/turbidity = 4.0
+shader_parameter/sun_angular_radius = 0.0046251225177849735
+shader_parameter/sun_disk_intensity = 18.0
+shader_parameter/moon_angular_radius = 0.004537856055185257
+shader_parameter/moon_disk_intensity = 1.2
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.35
+shader_parameter/cloud_density = 0.82
+shader_parameter/cloud_softness = 0.12
+shader_parameter/cloud_scale = 3.2
+shader_parameter/cloud_detail = 0.72
+shader_parameter/cloud_light_absorption = 0.42
+shader_parameter/cloud_volume_depth = 0.0
+shader_parameter/cloud_volume_steps = 1
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 0.0
+shader_parameter/cloud_edge_light_strength = 1.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.022
+shader_parameter/upper_layer_amount = 0.12
+shader_parameter/upper_layer_height = 0.07
+shader_parameter/upper_layer_scale = 0.62
+shader_parameter/upper_layer_wind_multiplier = 1.45
+shader_parameter/distance_fade_start = 0.82
+shader_parameter/distance_fade_end = 0.995
+shader_parameter/distance_haze_strength = 0.78
+shader_parameter/above_horizon_clouds_enabled = true
+shader_parameter/below_horizon_clouds_enabled = true
+shader_parameter/below_horizon_visibility = 0.0
+shader_parameter/below_horizon_fade_depth = 0.35
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.72
+
+[sub_resource type="Sky" id="Sky_x0ss2"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_flqib")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_yvw21"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 1.0000001
+sky = SubResource("Sky_x0ss2")
+ambient_light_source = 3
+ambient_light_color = Color(0.42999998, 0.57, 0.8333333, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 0.91235775
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_min_cell_size = 1.3685547
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_aerial_perspective = 0.7
+fog_sky_affect = 0.35
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+adjustment_enabled = true
+
+[node name="Boss_Test" type="Node3D" unique_id=272854666]
+
+[node name="RivalActorPlayer" parent="." unique_id=1697683124 node_paths=PackedStringArray("sfx_rail_detach") instance=ExtResource("1_bpibg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_mask = 19
+wall_min_slide_angle = 0.0
+rival_profile_path = ""
+rival_character_id = ""
+rival_character_data_dir = "res://LS5Framework/Characters"
+rival_affiliation = &"rival"
+rival_apply_character_colors = true
+rival_primary_color = Color(0.10424379, 0.37348628, 0.08645592, 1)
+rival_secondary_color = Color(0.011087579, 0.011087578, 0.01108758, 1)
+rival_trail_color = Color(0.055279188, 0.60911804, 3.85046e-07, 1)
+activation_distance = 50.0
+deactivation_distance = 100.0
+rival_dynamic_target_discovery_enabled = true
+rival_dynamic_target_search_radius = 100.0
+rival_max_health = 5
+rival_rings_restore_health = true
+rival_health_self_preservation_threshold = 0.4
+rival_defeated_idle_duration = 3.0
+rival_ring_search_radius = 100.0
+movement_time_scale = 1.0
+carry_orientation_bone_name = &""
+carry_bone_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 180, 1, -1.7, 1.5, 0)
+air_top_speed = 110.0
+max_speed = 320.0
+top_speed_slowdown_strength = 0.215
+top_speed_slowdown_strength_curve = null
+air_decel = 32.0
+fast_fall_horizontal_drag_start_speed = 115.0
+fast_fall_horizontal_drag_max_decel = 60.0
+launch_momentum_full_speed = 180.0
+launch_momentum_min_control = 0.4
+launch_momentum_recovery_time = 0.8
+anim_movespeed_min_scale = 0.76
+anim_movespeed_max_scale = 2.07
+barrier_blast_slope_downhill_accel_curve = null
+barrier_blast_slope_uphill_decel_curve = null
+barrier_blast_slope_gravity_angle_curve = null
+roll_downhill_accel_multiplier = 1.22
+roll_uphill_decel_multiplier = 1.25
+carry_hold_blend_speed = 18.0
+carry_overlay_filter_bones = Array[StringName]([&"clavicle_r", &"upperarm_r", &"lowerarm_r", &"hand_r", &"index_01_r", &"index_02_r", &"index_03_r", &"index_04_leaf_r", &"thumb_01_r", &"thumb_02_r", &"thumb_03_r", &"middle_01_r", &"middle_02_r", &"middle_03_r", &"middle_04_leaf_r", &"ring_01_r", &"ring_02_r", &"ring_03_r", &"ring_04_leaf_r", &"pinky_01_r", &"pinky_02_r", &"pinky_03_r", &"pinky_04_leaf_r"])
+adhesion_min_tangent_fraction = 0.45
+adhesion_max_outward_speed = 18.0
+floor_like_max_angle_deg = 30.0
+ceiling_like_min_angle_deg = 165.0
+wall_like_min_angle_deg = 60.0
+wall_like_max_angle_deg = 120.0
+nonfloor_to_wall_grace_time = 2.0
+slope_downhill_accel = 75.0
+slope_uphill_decel = 30.0
+speed_shoes_acceleration_curve = null
+sfx_rail_detach = NodePath("ModelRoot/Sonic_NeoAdv_Root/PlayerAudio/AbilitySounds/SFX_RailDetach")
+voice_drift_end_clips = Array[AudioStream]([ExtResource("2_lyjfp"), ExtResource("3_7bq3s"), ExtResource("4_hdxul")])
+voice_drift_end_chance = 1.0
+water_top_speed_multiplier = 0.45
+water_surface_slowdown_strength = 3.0
+barrier_foot_trails_enabled = false
+barrier_foot_trail_width = 0.11
+barrier_foot_trail_trajectory_follow_smooth = 18.0
+barrier_foot_trail_outward_axis = Vector3(1, 0, 0)
+barrier_foot_trail_color_source = 2
+barrier_foot_trail_edge_softness = 0.16
+
+[node name="CSGBox3D33" type="CSGBox3D" parent="." unique_id=1515676839 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -32, 0)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("5_o0xi6")
+
+[node name="EnvironmentWeatherSystem" parent="." unique_id=1019294976 instance=ExtResource("6_yd552")]
+initial_time_of_day_hours = 8.0
+day_length_minutes = 14.0
+
+[node name="WorldEnvironment" parent="EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
+environment = SubResource("Environment_yvw21")
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1300281762]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.201128, 1.0014162, 178.4553)
+script = ExtResource("8_jnsth")
+
+[editable path="EnvironmentWeatherSystem"]
+[editable path="EnvironmentWeatherSystem/DayNightCycle"]

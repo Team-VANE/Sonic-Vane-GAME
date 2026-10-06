@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="DayNightProfile" format=3 uid="uid://y3a5nxihwfwg"]
+
+[ext_resource type="Script" uid="uid://ds5kvbpmvq3ds" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightProfile.gd" id="1_fpgrq"]
+
+[sub_resource type="Gradient" id="Gradient_cijua"]
+offsets = PackedFloat32Array(0.35)
+colors = PackedColorArray(0.007977329, 0.07472076, 0.24345255, 1)
+
+[sub_resource type="Curve" id="Curve_eu7it"]
+_data = [Vector2(0, 0.38), 0.0, 0.0, 0, 0, Vector2(0.2, 0.42), 0.0, 0.0, 0, 0, Vector2(0.3, 0.76), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 0.76), 0.0, 0.0, 0, 0, Vector2(0.8, 0.42), 0.0, 0.0, 0, 0, Vector2(1, 0.38), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Gradient" id="Gradient_pcpw1"]
+offsets = PackedFloat32Array(0.5)
+colors = PackedColorArray(0.34556603, 0.49225652, 0.77241516, 1)
+
+[sub_resource type="Gradient" id="Gradient_xj7jq"]
+offsets = PackedFloat32Array(0, 0.290469, 0.42208776, 0.5, 0.5869894, 1)
+colors = PackedColorArray(0.009657698, 0.013515849, 0.0322028, 1, 0.06, 0.08, 0.14, 1, 0.27, 0.3, 0.38, 1, 0.34, 0.4, 0.5, 1, 0.06, 0.08, 0.14, 1, 0.019968132, 0.027939206, 0.06244079, 1)
+
+[sub_resource type="Gradient" id="Gradient_nn120"]
+offsets = PackedFloat32Array(0.5)
+colors = PackedColorArray(0.05691903, 0.17780119, 0.3392246, 1)
+
+[sub_resource type="Curve" id="Curve_vir5y"]
+_limits = [0.0, 0.01, 0.0, 1.0]
+_data = [Vector2(0, 0.00032), 0.0, 0.0, 0, 0, Vector2(0.24, 0.0005), 0.0, 0.0, 0, 0, Vector2(0.36, 0.0002), 0.0, 0.0, 0, 0, Vector2(0.64, 0.0002), 0.0, 0.0, 0, 0, Vector2(0.76, 0.0005), 0.0, 0.0, 0, 0, Vector2(1, 0.00032), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Curve" id="Curve_pe2p4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.22, 0), 0.0, 0.0, 0, 0, Vector2(0.28, 0.48), 0.0, 0.0, 0, 0, Vector2(0.38, 0.16), 0.0, 0.0, 0, 0, Vector2(0.62, 0.16), 0.0, 0.0, 0, 0, Vector2(0.72, 0.48), 0.0, 0.0, 0, 0, Vector2(0.78, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Gradient" id="Gradient_77hmd"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.035913393, 0.08997441, 0.23951647, 1)
+
+[sub_resource type="Gradient" id="Gradient_jjrwi"]
+offsets = PackedFloat32Array(0, 0.2, 0.28, 0.72, 0.8, 1)
+colors = PackedColorArray(0.62, 0.72, 0.95, 1, 0.68, 0.76, 0.98, 1, 0.55, 0.63, 0.78, 1, 0.55, 0.63, 0.78, 1, 0.68, 0.76, 0.98, 1, 0.62, 0.72, 0.95, 1)
+
+[sub_resource type="Curve" id="Curve_j75tx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.2, 0.9), 0.0, 0.0, 0, 0, Vector2(0.28, 0), 0.0, 0.0, 0, 0, Vector2(0.72, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 0.9), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Curve" id="Curve_8d1jp"]
+_data = [Vector2(0, 0.24), 0.0, 0.0, 0, 0, Vector2(0.2, 0.28), 0.0, 0.0, 0, 0, Vector2(0.28, 0.65), 0.0, 0.0, 0, 0, Vector2(0.36, 1), 0.0, 0.0, 0, 0, Vector2(0.64, 1), 0.0, 0.0, 0, 0, Vector2(0.72, 0.65), 0.0, 0.0, 0, 0, Vector2(0.8, 0.28), 0.0, 0.0, 0, 0, Vector2(1, 0.24), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Curve" id="Curve_auver"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.19, 1), 0.0, 0.0, 0, 0, Vector2(0.28, 0), 0.0, 0.0, 0, 0, Vector2(0.72, 0), 0.0, 0.0, 0, 0, Vector2(0.81, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Gradient" id="Gradient_4f8i4"]
+offsets = PackedFloat32Array(0.5)
+colors = PackedColorArray(0.83597463, 0.8884728, 0.8167028, 1)
+
+[sub_resource type="Curve" id="Curve_ibp0n"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.22, 0), 0.0, 0.0, 0, 0, Vector2(0.27, 0.32), 0.0, 0.0, 0, 0, Vector2(0.34, 0.82), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.66, 0.82), 0.0, 0.0, 0, 0, Vector2(0.73, 0.32), 0.0, 0.0, 0, 0, Vector2(0.78, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 9
+
+[sub_resource type="Gradient" id="Gradient_pnl5f"]
+offsets = PackedFloat32Array(0.50172216)
+colors = PackedColorArray(0.021682782, 0.13962081, 0.41899043, 1)
+
+[resource]
+script = ExtResource("1_fpgrq")
+ground_color = Color(2.8201613e-10, 0.0015338598, 0.009123913, 1)
+rayleigh_strength = 0.0
+mie_strength = 0.63
+mie_eccentricity = -0.06999999999999995
+turbidity = 0.7999999999999999
+sun_angular_diameter_degrees = 0.47
+sun_disk_intensity = 0.1
+moon_angular_diameter_degrees = 0.05
+moon_disk_intensity = 0.0
+sun_energy_scale = 0.59
+zenith_color = SubResource("Gradient_pnl5f")
+horizon_color = SubResource("Gradient_77hmd")
+sun_color = SubResource("Gradient_4f8i4")
+moon_color = SubResource("Gradient_jjrwi")
+ambient_color = SubResource("Gradient_cijua")
+fog_color = SubResource("Gradient_nn120")
+cloud_light_color = SubResource("Gradient_pcpw1")
+cloud_shadow_color = SubResource("Gradient_xj7jq")
+sun_energy = SubResource("Curve_ibp0n")
+moon_energy = SubResource("Curve_j75tx")
+sky_energy = SubResource("Curve_8d1jp")
+ambient_energy = SubResource("Curve_eu7it")
+star_visibility = SubResource("Curve_auver")
+fog_density = SubResource("Curve_vir5y")
+fog_sun_scatter = SubResource("Curve_pe2p4")

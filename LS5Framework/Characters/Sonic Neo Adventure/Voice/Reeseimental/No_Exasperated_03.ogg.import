@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://clx3gm886o65k"
+path="res://.godot/imported/No_Exasperated_03.ogg-0d60a5678905044d55cdaecb093c4218.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_Exasperated_03.ogg"
+dest_files=["res://.godot/imported/No_Exasperated_03.ogg-0d60a5678905044d55cdaecb093c4218.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

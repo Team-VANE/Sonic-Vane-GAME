@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bavkddcnjuxm2"
+path="res://.godot/imported/Green Hill Zone Synthetic Emerald - SonikkuZaHedgehog127.mp3-7b2a84fbaf15a5f974487557c6b75cb3.mp3str"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Green Hill Zone Synthetic Emerald - SonikkuZaHedgehog127.mp3"
+dest_files=["res://.godot/imported/Green Hill Zone Synthetic Emerald - SonikkuZaHedgehog127.mp3-7b2a84fbaf15a5f974487557c6b75cb3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

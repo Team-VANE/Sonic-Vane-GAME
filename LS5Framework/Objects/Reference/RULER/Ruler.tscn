@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://t1db85176ty3"]
+
+[ext_resource type="PackedScene" uid="uid://dqhho6mugx3v8" path="res://LS5Framework/Objects/Reference/RULER/LS5E3_RULER.glb" id="1_od7lo"]
+
+[node name="Ruler" type="Node3D" unique_id=1363666048]
+
+[node name="LS5E3_RULER" parent="." unique_id=246767759 instance=ExtResource("1_od7lo")]

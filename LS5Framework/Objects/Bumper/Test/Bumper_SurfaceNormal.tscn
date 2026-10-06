@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://dcok1e2uobeqg"]
+
+[ext_resource type="Script" uid="uid://bin2opm5nnxoy" path="res://LS5Framework/Objects/Bumper/Bumper.gd" id="1_script"]
+[ext_resource type="AudioStream" uid="uid://cpgnukcjxpkio" path="res://LS5Framework/Sounds/Objects/Bumper.wav" id="2_sound"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape_pyramid"]
+points = PackedVector3Array(-2.5, -2, -2.5, 2.5, -2, -2.5, 2.5, -2, 2.5, -2.5, -2, 2.5, 0, 2.5, 0)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape_solid"]
+points = PackedVector3Array(-2.35, -1.85, -2.35, 2.35, -1.85, -2.35, 2.35, -1.85, 2.35, -2.35, -1.85, 2.35, 0, 2.35, 0)
+
+[sub_resource type="StandardMaterial3D" id="Material_pyramid"]
+albedo_color = Color(0.72, 0.035, 0.045, 1)
+metallic = 0.5
+roughness = 0.22
+emission_enabled = true
+emission = Color(0.22, 0.008, 0.005, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="StandardMaterial3D" id="Material_base"]
+albedo_color = Color(1, 0.62, 0.035, 1)
+metallic = 0.7
+roughness = 0.18
+
+[node name="BumperSurfaceNormal" type="Area3D" unique_id=1869424327 node_paths=PackedStringArray("surface_normal_source", "surface_collision_body", "sfx_player", "visual_root")]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_script")
+launch_mode = 1
+minimum_impulse = 50.0
+maximum_impulse = 120.0
+specified_launch_direction = Vector3(0, 0, 0)
+surface_normal_source = NodePath("CollisionShape3D")
+surface_collision_body = NodePath("SolidBody")
+sfx_player = NodePath("AudioStreamPlayer3D")
+bumper_sound = ExtResource("2_sound")
+visual_root = NodePath("PyramidVisual")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=198581562]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape_pyramid")
+
+[node name="SolidBody" type="StaticBody3D" parent="." unique_id=274694156]
+collision_layer = 64
+collision_mask = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SolidBody" unique_id=2143822589]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape_solid")
+
+[node name="PyramidVisual" type="CSGPolygon3D" parent="." unique_id=569693601]
+polygon = PackedVector2Array(0, 2.5, 3.5, -2, 0, -2)
+mode = 1
+spin_degrees = 360.0
+spin_sides = 4
+material = SubResource("Material_pyramid")
+
+[node name="BaseAccent" type="CSGBox3D" parent="PyramidVisual" unique_id=345929903]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, -1.94, 0)
+size = Vector3(5.5, 0.18, 5.5)
+material = SubResource("Material_base")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1075002922]
+volume_db = 50.0
+unit_size = 60.0
+max_distance = 65.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0

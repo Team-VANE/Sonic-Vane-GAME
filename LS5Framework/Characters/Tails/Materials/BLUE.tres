@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dnv4xt6ngid5"]
+
+[ext_resource type="Texture2D" uid="uid://cmckc8ehs7rqc" path="res://LS5Framework/Characters/Tails/Tails_Eye_Re_1.png" id="1_pa1xc"]
+[ext_resource type="Texture2D" uid="uid://dlrc5oseobnh3" path="res://LS5Framework/Characters/Tails/Tails_Eye_Re_1_Metallic-Eye_Re_1_Rough.png" id="2_51uvf"]
+
+[resource]
+resource_name = "BLUE"
+cull_mode = 2
+albedo_texture = ExtResource("1_pa1xc")
+metallic = 1.0
+metallic_texture = ExtResource("2_51uvf")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_51uvf")
+roughness_texture_channel = 1

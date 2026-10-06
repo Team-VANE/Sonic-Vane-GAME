@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://414uudpynm71"
+path="res://.godot/imported/Back_DontCount_03.ogg-ae2fdeb882d52bfbdc307629456bfd58.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Back_DontCount_03.ogg"
+dest_files=["res://.godot/imported/Back_DontCount_03.ogg-ae2fdeb882d52bfbdc307629456bfd58.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

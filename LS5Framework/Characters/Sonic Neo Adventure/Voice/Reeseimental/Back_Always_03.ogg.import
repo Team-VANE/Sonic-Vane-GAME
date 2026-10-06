@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dn7q3eidc13kq"
+path="res://.godot/imported/Back_Always_03.ogg-2cbb536fd61ab1fc10cb52982771f606.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Back_Always_03.ogg"
+dest_files=["res://.godot/imported/Back_Always_03.ogg-2cbb536fd61ab1fc10cb52982771f606.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

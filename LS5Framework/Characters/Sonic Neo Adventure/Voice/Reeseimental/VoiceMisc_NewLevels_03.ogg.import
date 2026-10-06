@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://j75bh76bvw6x"
+path="res://.godot/imported/VoiceMisc_NewLevels_03.ogg-ac9cdb8436bfb290a3a3a9c146347e2d.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_NewLevels_03.ogg"
+dest_files=["res://.godot/imported/VoiceMisc_NewLevels_03.ogg-ac9cdb8436bfb290a3a3a9c146347e2d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

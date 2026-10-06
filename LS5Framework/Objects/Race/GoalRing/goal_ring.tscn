@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://crry8l805lrqc"]
+
+[ext_resource type="PackedScene" uid="uid://cyfprciob25q4" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_model.tscn" id="1_3e8uw"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="GoalRing2" parent="." instance=ExtResource("1_3e8uw")]

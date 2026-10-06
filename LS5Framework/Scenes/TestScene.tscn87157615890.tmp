@@ -1,0 +1,150 @@
+[gd_scene load_steps=12 format=3 uid="uid://bnqag1mdwxy4j"]
+
+[ext_resource type="Script" uid="uid://dnsfns6ucd7k3" path="res://LS5Framework/Scripts/Player/SonicPlayer.gd" id="1_64fmr"]
+[ext_resource type="Script" uid="uid://bi121jf2e3xdl" path="res://LS5Framework/Scripts/Camera/SonicCameraRig.gd" id="1_tm2rn"]
+[ext_resource type="PackedScene" uid="uid://dyytsuvntmox5" path="res://LS5Framework/Scenes/Levels/NikoTest/NikoTest.tscn" id="3_64fmr"]
+
+[sub_resource type="Curve" id="Curve_8jxvy"]
+_limits = [0.0, 1.0, 0.0, 2.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_64fmr"]
+_limits = [0.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0, 540), 0.0, 0.0, 0, 0, Vector2(1, 180), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_64fmr"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_64fmr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jxvy"]
+albedo_color = Color(0.14731085, 0, 0.9034348, 1)
+
+[sub_resource type="Environment" id="Environment_64fmr"]
+ssr_enabled = true
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+volumetric_fog_density = 0.0191
+volumetric_fog_albedo = Color(0.74623877, 0.8646485, 0.96975154, 1)
+volumetric_fog_gi_inject = 1.22
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_8jxvy"]
+
+[sub_resource type="Compositor" id="Compositor_gdgd5"]
+
+[node name="Scene" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154.22447, -31.692043, 10.94668)
+use_collision = true
+size = Vector3(155.32507, 64.03131, 26.54834)
+
+[node name="SonicPlayer" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera", "camera_rig", "model_root", "ground_ray", "respawn_point")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4.9242234, -2.742569)
+floor_constant_speed = true
+floor_max_angle = 1.4835298
+floor_snap_length = 0.0
+script = ExtResource("1_64fmr")
+camera = NodePath("../SonicCameraPivot/SonicCamera")
+camera_rig = NodePath("../SonicCameraPivot")
+model_root = NodePath("ModelRoot")
+ground_ray = NodePath("GroundRay")
+respawn_point = NodePath("../Respawn point")
+run_top_speed = null
+max_speed = null
+accel = null
+decel = null
+air_accel = null
+accel_curve = SubResource("Curve_8jxvy")
+gravity_strength = null
+max_fall_speed = null
+jump_speed = 28.0
+model_turn_speed = null
+turn_max_angle_per_second = null
+turn_free_angle_deg = 110.0
+turn_max_penalty_angle_deg = 500.0
+turn_min_speed_factor = null
+turn_speed = null
+turn_angle_curve = SubResource("Curve_64fmr")
+air_turn_max_angle_per_second = null
+collision_ground_distance = null
+ground_ray_length = 3.0
+adhesion_enabled = null
+launch_immunity_time = null
+adhesion_min_angle_deg = null
+adhesion_detach_angle_start_deg = null
+adhesion_max_angle_deg = null
+adhesion_speed_at_90 = null
+adhesion_speed_at_180 = null
+airborne_up_blend_delay = null
+airborne_up_blend_speed = null
+landing_floor_max_angle_deg = 15.0
+radial_landing_min_angle_deg = 20.0
+radial_landing_min_speed = null
+slope_flat_angle_threshold_deg = 35.0
+slope_max_effect_angle_deg = null
+slope_downhill_accel = 130.0
+slope_uphill_decel = 130.0
+slope_slide_start_angle_deg = null
+slope_slide_accel = 80.0
+slope_slide_min_speed = null
+lock_cursor_to_game = null
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SonicPlayer"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_64fmr")
+
+[node name="ModelRoot" type="Node3D" parent="SonicPlayer"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicPlayer/ModelRoot"]
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SonicPlayer/ModelRoot"]
+transform = Transform3D(0.2793731, 0, 0, 0, -2.2690667e-08, -0.27937308, 0, 0.519102, -1.2211785e-08, 0, 0.36798668, -0.74790287)
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
+
+[node name="GroundRay" type="RayCast3D" parent="SonicPlayer"]
+visibility_parent = NodePath("../ModelRoot/MeshInstance3D")
+target_position = Vector3(0, -1.5, 0)
+debug_shape_custom_color = Color(0, 0.82129085, 0.6667499, 1)
+debug_shape_thickness = 4
+
+[node name="LandingRay" type="RayCast3D" parent="SonicPlayer"]
+target_position = Vector3(0, -1.5, 0)
+
+[node name="Test2" parent="." instance=ExtResource("3_64fmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.038145, -21.906828, -353.7473)
+
+[node name="SonicCameraPivot" type="Node3D" parent="." node_paths=PackedStringArray("target", "camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+script = ExtResource("1_tm2rn")
+target = NodePath("../SonicPlayer")
+camera = NodePath("SonicCamera")
+min_pitch_deg = -85.0
+max_pitch_deg = 85.0
+
+[node name="SonicCamera" type="Camera3D" parent="SonicCameraPivot"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_64fmr")
+camera_attributes = SubResource("CameraAttributesPhysical_8jxvy")
+compositor = SubResource("Compositor_gdgd5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.42871445, 0.90343994, 0, -0.90343994, -0.42871445, 0, 25.784826, 0)
+shadow_enabled = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.883847, 10.503914, 22.476479)
+light_energy = 4.794
+shadow_enabled = true
+omni_range = 50.637
+
+[node name="Respawn point" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.69886, 3.2386804, 51.528324)

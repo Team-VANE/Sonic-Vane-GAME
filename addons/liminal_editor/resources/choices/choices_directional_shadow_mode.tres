@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LMChoicesStatic" format=3 uid="uid://dsmq4k7rjnb0c"]
+
+[ext_resource type="Script" uid="uid://c3822myfeybtx" path="res://addons/liminal_editor/src/lm_choices_static.gd" id="1_dirshad"]
+
+[resource]
+script = ExtResource("1_dirshad")
+type_key = "DirectionalLight3D.ShadowMode"
+items = {"Orthogonal": 0, "Parallel 2 Splits": 1, "Parallel 4 Splits": 2}

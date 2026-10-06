@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://bllpmesyupgnp"]
+
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="1_fs0hq"]
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_q0i47"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="2_q0i47"]
+[ext_resource type="Resource" uid="uid://b8i0q6kfique0" path="res://addons/liminal_editor/resources/choices/choices_light_bake_mode.tres" id="3_y72ww"]
+
+[sub_resource type="Resource" id="Resource_b65do"]
+script = ExtResource("1_q0i47")
+type = "cone"
+bindings = {
+"angle": "spot_angle",
+"color": "light_color",
+"length": "spot_range"
+}
+
+[sub_resource type="Resource" id="Resource_xb2n7"]
+script = ExtResource("1_fs0hq")
+name = "light_color"
+type = "Color"
+default_value = [1.0, 1.0, 1.0, 1.0]
+
+[sub_resource type="Resource" id="Resource_e5g8j"]
+script = ExtResource("1_fs0hq")
+name = "light_energy"
+type = "float"
+default_value = 1.0
+
+[sub_resource type="Resource" id="Resource_l2mbf"]
+script = ExtResource("1_fs0hq")
+name = "light_bake_mode"
+type = "choices"
+default_value = 2
+choices = ExtResource("3_y72ww")
+
+[sub_resource type="Resource" id="Resource_12g5q"]
+script = ExtResource("1_fs0hq")
+name = "shadow_enabled"
+type = "bool"
+default_value = false
+
+[sub_resource type="Resource" id="Resource_08c8b"]
+script = ExtResource("1_fs0hq")
+name = "spot_range"
+type = "float"
+default_value = 5.0
+
+[sub_resource type="Resource" id="Resource_ahg51"]
+script = ExtResource("1_fs0hq")
+name = "spot_attenuation"
+type = "float"
+default_value = 1.0
+
+[sub_resource type="Resource" id="Resource_wcran"]
+script = ExtResource("1_fs0hq")
+name = "spot_angle"
+type = "float"
+default_value = 45.0
+
+[sub_resource type="Resource" id="Resource_lpsas"]
+script = ExtResource("1_fs0hq")
+name = "spot_angle_attenuation"
+type = "float"
+default_value = 1.0
+
+[resource]
+script = ExtResource("2_q0i47")
+entity_name = "light_spot"
+identifier = "SpotLight3D"
+properties = Array[ExtResource("1_fs0hq")]([SubResource("Resource_xb2n7"), SubResource("Resource_e5g8j"), SubResource("Resource_l2mbf"), SubResource("Resource_12g5q"), SubResource("Resource_08c8b"), SubResource("Resource_ahg51"), SubResource("Resource_wcran"), SubResource("Resource_lpsas")])
+gizmos = Array[ExtResource("1_q0i47")]([SubResource("Resource_b65do")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

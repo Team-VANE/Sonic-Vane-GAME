@@ -1,0 +1,1793 @@
+[gd_scene format=3 uid="uid://du3abhad0t7ec"]
+
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="1_lvt53"]
+[ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="2_eho5r"]
+[ext_resource type="AudioStream" uid="uid://7x2htwmmrsbv" path="res://LS5Framework/Scenes/Levels/White Jungle/Audio/White_Jungle.ogg" id="3_grkv5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="4_8kxhi"]
+[ext_resource type="Resource" uid="uid://y3a5nxihwfwg" path="res://LS5Framework/Scenes/Levels/White Jungle/DayNightProfile_WhiteJungle.tres" id="5_grkv5"]
+[ext_resource type="Resource" uid="uid://dwb12drj43op" path="res://LS5Framework/Scenes/Levels/White Jungle/WeatherProfile_WhiteJungle.tres" id="6_nyme6"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="7_yakyj"]
+[ext_resource type="Resource" uid="uid://fln7qge8inbs" path="res://LS5Framework/Objects/Environment/Rain/Profiles/Thunderstorm.tres" id="8_nyme6"]
+[ext_resource type="PackedScene" uid="uid://ie7142myiknm" path="res://LS5Framework/Objects/Water/Water_Volume.tscn" id="8_tsq52"]
+[ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="9_0f8ae"]
+[ext_resource type="PackedScene" uid="uid://e1tkwisehr5p" path="res://LS5Framework/Objects/DashPanels/DashPanel.tscn" id="10_h8oh1"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="11_8q4nn"]
+[ext_resource type="PackedScene" uid="uid://d1okvbdxqc08b" path="res://LS5Framework/Objects/VaultBar/VaultBar.tscn" id="13_nyme6"]
+[ext_resource type="PackedScene" uid="uid://ghucsw5061eo" path="res://LS5Framework/Objects/Gameplay/DeathPlane.tscn" id="13_xs5qd"]
+[ext_resource type="PackedScene" uid="uid://c3gu5qijp7yb3" path="res://LS5Framework/Objects/Enemies/SpikeBall/SpikeBall.tscn" id="14_grkv5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Race/RaceObjectLayout.tscn" id="14_tv0dn"]
+[ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="15_0wrn3"]
+[ext_resource type="PackedScene" uid="uid://cyglqqs3uhsy0" path="res://LS5Framework/Objects/Camera/CameraConstraint.tscn" id="15_plmnn"]
+[ext_resource type="PackedScene" uid="uid://d0twxxsygymbf" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/FlyingEnemy_SA2MonoBeetle.tscn" id="17_7ffvg"]
+[ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="17_cb65a"]
+[ext_resource type="PackedScene" uid="uid://bf2o7d3qsovh6" path="res://LS5Framework/Objects/Automation/AutomationSpline.tscn" id="19_714gf"]
+[ext_resource type="PackedScene" uid="uid://cwsdj34dkp0dx" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn" id="19_oak5x"]
+[ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="20_2hsu3"]
+[ext_resource type="PackedScene" uid="uid://b2jkv0kca2k6q" path="res://LS5Framework/Objects/Rings/RingSpline.tscn" id="22_7ffvg"]
+[ext_resource type="PackedScene" uid="uid://buflpakpapnpt" path="res://LS5Framework/Scenes/Levels/White Jungle/WhiteJungle.glb" id="22_grkv5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MovingPlatform/MovingPlatform.tscn" id="26_sgtbw"]
+[ext_resource type="PackedScene" uid="uid://c4srftbywv6sa" path="res://LS5Framework/Scenes/Levels/White Jungle/Platform.glb" id="27_plmnn"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="28_vxyra"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="29_oc2vc"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="30_o422y"]
+[ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
+[ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
+[ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
+[ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
+[ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xa4nu"]
+resource_local_to_scene = true
+shader = ExtResource("7_yakyj")
+shader_parameter/sun_direction = Vector3(-0.59042233, 0.63439333, -0.49894556)
+shader_parameter/moon_direction = Vector3(0.5459445, -0.69935155, 0.46135888)
+shader_parameter/zenith_color = Color(0.021682782, 0.13962081, 0.41899043, 1)
+shader_parameter/horizon_color = Color(0.035913393, 0.08997441, 0.23951647, 1)
+shader_parameter/ground_color = Color(2.8201613e-10, 0.0015338598, 0.009123913, 1)
+shader_parameter/ground_visibility = 1.0
+shader_parameter/sun_color = Color(0.83597463, 0.8884728, 0.8167028, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(0.34556603, 0.49225652, 0.77241516, 1)
+shader_parameter/cloud_shadow_color = Color(0.054801263, 0.073239125, 0.12992778, 1)
+shader_parameter/rayleigh_strength = 0.0
+shader_parameter/mie_strength = 0.63
+shader_parameter/mie_eccentricity = -0.06999999999999995
+shader_parameter/turbidity = 0.7999999999999999
+shader_parameter/sun_angular_radius = 0.004101523742186674
+shader_parameter/sun_disk_intensity = 0.1
+shader_parameter/moon_angular_radius = 0.0004363323129985824
+shader_parameter/moon_disk_intensity = 0.0
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.79
+shader_parameter/cloud_density = 0.81
+shader_parameter/cloud_softness = 0.37
+shader_parameter/cloud_scale = 6.14
+shader_parameter/cloud_detail = 0.13
+shader_parameter/cloud_light_absorption = 0.87
+shader_parameter/cloud_volume_depth = 0.0
+shader_parameter/cloud_volume_steps = 1
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 0.0
+shader_parameter/cloud_edge_light_strength = 1.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.051
+shader_parameter/upper_layer_amount = 0.62
+shader_parameter/upper_layer_height = 0.154
+shader_parameter/upper_layer_scale = 0.61
+shader_parameter/upper_layer_wind_multiplier = 1.45
+shader_parameter/distance_fade_start = 0.56
+shader_parameter/distance_fade_end = 1.0
+shader_parameter/distance_haze_strength = 0.18
+shader_parameter/above_horizon_clouds_enabled = true
+shader_parameter/below_horizon_clouds_enabled = false
+shader_parameter/below_horizon_visibility = 1.0
+shader_parameter/below_horizon_fade_depth = 0.45
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.72
+
+[sub_resource type="Sky" id="Sky_735ug"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_xa4nu")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_txwto"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 0.9972632
+sky = SubResource("Sky_735ug")
+ambient_light_source = 3
+ambient_light_color = Color(0.007977329, 0.07472076, 0.24345255, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 1.0824708
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_min_cell_size = 0.9243164
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_light_energy = 1.62
+fog_sun_scatter = 0.16315696
+fog_density = 7.552961e-10
+fog_aerial_perspective = 0.7
+fog_height = -30.04
+fog_height_density = 0.0225
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.001
+volumetric_fog_albedo = Color(0.8904162, 0.91650736, 0.9408581, 1)
+volumetric_fog_emission = Color(0.3110243, 0.39173713, 0.50033456, 1)
+volumetric_fog_length = 300.0
+volumetric_fog_detail_spread = 2.378414
+volumetric_fog_ambient_inject = 1.55
+adjustment_enabled = true
+adjustment_saturation = 1.1207566
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_832yd"]
+size = Vector2(70000, 70000)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m1hfo"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mqgto"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_m1hfo")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ecyc2"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fm801"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_ecyc2")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_11mo8"]
+load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_77gai"]
+render_priority = 0
+shader = ExtResource("9_0f8ae")
+shader_parameter/albedo = Color(0.8956017, 0.8382013, 0.7715775, 1)
+shader_parameter/albedo2 = Color(0.91306794, 0.95670706, 0.87449753, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.17
+shader_parameter/alpha = 0.87
+shader_parameter/wave = SubResource("CompressedTexture2D_11mo8")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_mqgto")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_fm801")
+shader_parameter/wave_uv_scale = 0.455
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.045
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/normal_detail_fade_start = 500.0
+shader_parameter/normal_detail_fade_end = 4000.0
+shader_parameter/distant_normal_strength = 0.2
+shader_parameter/specular_aa_strength = 0.35
+shader_parameter/distant_roughness = 0.3
+shader_parameter/ssr_camera_fade_start = 750.0
+shader_parameter/ssr_camera_fade_end = 3000.0
+shader_parameter/water_scatter_strength = 0.06
+shader_parameter/gi_fallback_fade_start = 450.0
+shader_parameter/gi_fallback_fade_end = 850.0
+shader_parameter/gi_fallback_irradiance = 0.45
+shader_parameter/gi_fallback_near_blend = 0.45
+shader_parameter/color_deep = Color(0.18134058, 0.08693161, 0.033989515, 1)
+shader_parameter/color_shallow = Color(8.663535e-07, 0.9474037, 0.66557914, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 50.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.6156165, 0.70811653, 0.72014815, 1)
+shader_parameter/edge_start = 0.89
+shader_parameter/edge_width = 4.19
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.089
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3r51i"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_tpfvk"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hig5r"]
+resource_local_to_scene = true
+height = 24.113018
+radius = 14.944336
+
+[sub_resource type="Curve3D" id="Curve3D_haucv"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nscxb"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_fkyjr"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ibwfs"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_4mbrs"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1exaj"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_cosca"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_168bj"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_7dqaw"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1i6gv"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_b75rr"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r3a6h"]
+resource_local_to_scene = true
+size = Vector3(28.8, 6, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bar"]
+albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_q3ivt"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 28.8
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_yryxb"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0aq1v"]
+resource_local_to_scene = true
+size = Vector3(28.8, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ji0ag"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 28.8
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_mk4ch"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qwynq"]
+resource_local_to_scene = true
+size = Vector3(95, 10, 10)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bsfh3"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 95.0
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_6jc6s"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_netyy"]
+resource_local_to_scene = true
+size = Vector3(95, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p77aj"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 95.0
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_3mt3v"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lxlfp"]
+resource_local_to_scene = true
+size = Vector3(95, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bnmyi"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 95.0
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_03iy7"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1bytx"]
+size = Vector3(150.62463, 53.96029, 12.083252)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u14bl"]
+size = Vector3(32.31556, 32.457657, 23.74556)
+
+[sub_resource type="Curve3D" id="Curve3D_plmnn"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, -49.9, 17.02, -64.73, 0, 0, 0, 151.3, -60.725, -15.645, -176.025, 29.975, 0, -224.90216, 52.781128, -76.555664, -207.04, 25.29, 0, 376.915, -42.495, 0, -225.16144, -84.875336, 275.43744, 66.515, 0, 0, 0, 0, 0, -91.48834, -172.8053, -55.104004),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Resource" id="CameraTrait_0001"]
+resource_name = "Enter Volume"
+script = ExtResource("cam_trait_activation")
+event = 1
+area_path = NodePath("../Tree_CamEnter")
+
+[sub_resource type="Resource" id="CameraTrait_0002"]
+resource_name = "Exit Volume"
+script = ExtResource("cam_trait_activation")
+event = 2
+area_path = NodePath("../Tree_CamExit")
+
+[sub_resource type="Resource" id="CameraTrait_0003"]
+resource_name = "Failsafe Distance"
+script = ExtResource("cam_trait_activation")
+event = 5
+exit_distance = 889.31
+reference_path = NodePath(".")
+
+[sub_resource type="Resource" id="CameraTrait_0004"]
+resource_name = "Stationary Camera"
+script = ExtResource("cam_trait_position")
+
+[sub_resource type="Resource" id="CameraTrait_0005"]
+resource_name = "Face Player"
+script = ExtResource("cam_trait_orientation")
+
+[sub_resource type="Resource" id="CameraTrait_0006"]
+resource_name = "Roll"
+script = ExtResource("cam_trait_orientation")
+mode = 4
+roll_degrees = 5.0
+tracking_response = 0.0
+
+[sub_resource type="Resource" id="CameraTrait_0007"]
+resource_name = "Fixed FOV"
+script = ExtResource("cam_trait_lens")
+fov = 50.0
+
+[sub_resource type="Resource" id="CameraTrait_0008"]
+resource_name = "Timed Entry"
+script = ExtResource("cam_trait_transition")
+mode = 1
+duration = 1.55
+
+[sub_resource type="Resource" id="CameraTrait_0009"]
+resource_name = "Gradual Exit"
+script = ExtResource("cam_trait_transition")
+phase = 1
+mode = 1
+duration = 1.35
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plmnn"]
+size = Vector3(614, 593, 695)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7ffvg"]
+size = Vector3(60.814095, 143.10312, 12.083252)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oc2vc"]
+size = Vector3(36.016678, 676.1688, 952.6109)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnnpr"]
+size = Vector3(100000, 139.093, 100000)
+
+[sub_resource type="Resource" id="Resource_flnt6"]
+resource_local_to_scene = true
+script = ExtResource("20_2hsu3")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_ahc61"]
+resource_local_to_scene = true
+script = ExtResource("20_2hsu3")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_kuwly"]
+resource_local_to_scene = true
+script = ExtResource("20_2hsu3")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Curve3D" id="Curve3D_8vrlf"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 46.085, 112.985, -12.4, -31.495527, -93.93109, -3.482774, -155.52, 82.575, 233.33, 0, 0, 0, 80.77167, 119.080414, -101.48474),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_kh34s"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -30, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_xa4nu"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -71.14087, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_7ffvg"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 96.505, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vxyra"]
+size = Vector3(29.987976, 30.03479, 12.08783)
+
+[sub_resource type="Curve3D" id="Curve3D_sgtbw"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sgtbw"]
+size = Vector3(29.987976, 30.03479, 12.232269)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_p77aj"]
+height = 14.124512
+radius = 14.385742
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0pi3p"]
+render_priority = 0
+shader = ExtResource("28_vxyra")
+shader_parameter/tex_flat = ExtResource("29_oc2vc")
+shader_parameter/tex_glow = ExtResource("30_o422y")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 836.256
+
+[node name="White_Jungle" type="Node3D" unique_id=794803344]
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1015454562]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 164.01105, 314.51077, -1047.9944)
+script = ExtResource("1_lvt53")
+downwarp_enabled = true
+downwarp_distance = 300.0
+
+[node name="LevelMusic" type="Node3D" parent="." unique_id=110015106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4356785, -5.233658)
+script = ExtResource("2_eho5r")
+autoplay_stream = ExtResource("3_grkv5")
+
+[node name="Lights" type="Node3D" parent="." unique_id=1451312442]
+
+[node name="EnvironmentWeatherSystem" parent="Lights" unique_id=1736747719 instance=ExtResource("4_8kxhi")]
+environment_profile = ExtResource("5_grkv5")
+initial_time_of_day_hours = 11.073
+time_progression_enabled = false
+day_length_minutes = 8.0
+use_weather_presets = false
+initial_weather_id = &"Thunderstorm"
+dynamic_weather_enabled = false
+persistent_weather_enabled = false
+weather_persistence_namespace = &"whitejungle"
+persistent_time_enabled = false
+
+[node name="DayNightCycle" parent="Lights/EnvironmentWeatherSystem" index="0"]
+profile = ExtResource("5_grkv5")
+weather = ExtResource("6_nyme6")
+time_of_day_hours = 15.375
+cycle_enabled = false
+time_controls_fog = false
+sun_path_azimuth_degrees = -40.19999999999999
+
+[node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
+environment = SubResource("Environment_txwto")
+
+[node name="Sun" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="1" unique_id=370270526]
+transform = Transform3D(-0.6454577, 0.4845471, -0.59042233, 0, 0.7730105, 0.63439333, 0.76379603, 0.40947405, -0.49894556, 0, 0, 0)
+light_color = Color(0.83597463, 0.8884728, 0.8167028, 1)
+light_energy = 0.20084682
+light_angular_distance = 0.47
+directional_shadow_split_1 = 0.122
+directional_shadow_split_2 = 0.249
+directional_shadow_split_3 = 0.56
+directional_shadow_blend_splits = true
+directional_shadow_fade_start = 0.754
+directional_shadow_max_distance = 414.7
+directional_shadow_pancake_size = 0.0
+
+[node name="Moon" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="2" unique_id=1577357035]
+transform = Transform3D(0.6454577, 0.5341619, 0.5459445, 0, 0.7147779, -0.69935155, -0.76379603, 0.45140183, 0.46135888, 0, 0, 0)
+light_angular_distance = 0.05
+
+[node name="RainSystem" parent="Lights/EnvironmentWeatherSystem" index="1"]
+profile = ExtResource("8_nyme6")
+thunder_volume_offset_db = 5.700000000000003
+
+[node name="WATERNODE" parent="." unique_id=896649702 instance=ExtResource("8_tsq52")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3054.052, -147.61594, -1008.58325)
+size = Vector3(70000, 800, 70000)
+water_surface_color = Color(0.8956017, 0.8382013, 0.7715775, 1)
+water_fresnel_color = Color(0.91306794, 0.95670706, 0.87449753, 1)
+water_roughness = 0.17
+water_shallow_color = Color(8.663535e-07, 0.9474037, 0.66557914, 1)
+water_deep_color = Color(0.18134058, 0.08693161, 0.033989515, 1)
+water_edge_color = Color(0.6156165, 0.70811653, 0.72014815, 1)
+water_edge_start = 0.89
+water_edge_thickness = 4.19
+water_alpha = 0.87
+water_refraction_strength = 0.089
+inner_subdivisions = 1
+wave_height = 20.0
+wave_speed = 0.045
+gi_fallback_fade_start = 450.0
+gi_fallback_fade_end = 850.0
+gi_fallback_near_blend = 0.45
+
+[node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE" unique_id=2044781619]
+process_mode = 4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 80, 0)
+cast_shadow = 0
+instance_shader_parameters/clipmap_displacement_fade_start = 0.0
+instance_shader_parameters/clipmap_inner_radius = 0.0
+instance_shader_parameters/clipmap_lod_scale = 0.0
+instance_shader_parameters/clipmap_outer_radius = 0.0
+instance_shader_parameters/height_scale = 20.0
+mesh = SubResource("PlaneMesh_832yd")
+surface_material_override/0 = SubResource("ShaderMaterial_77gai")
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=400068973]
+
+[node name="SPRINGS" type="Node3D" parent="OBJECTS" unique_id=824406634]
+
+[node name="DASH PANELS" type="Node3D" parent="OBJECTS/SPRINGS" unique_id=313849699]
+
+[node name="DashPanel" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=1418350663 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.9200996, -0.017797345, -0.39128026, -0.116847835, 0.94100773, -0.31757048, 0.37384966, 0.3379167, 0.8637411, -1979.8817, 323.36954, -1732.0614)
+strength = 120.0
+movement_lock_time = 0.4
+
+[node name="DashPanel2" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=619337848 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.8740644, -0.43695, 0.2123353, 0.35809618, 0.87484664, 0.3262064, -0.32829672, -0.20908892, 0.9211423, -4456.175, 136.10585, 210.66347)
+size = 1.75
+strength = 80.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 120.0
+movement_lock_time = 0.4
+
+[node name="DashPanel3" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=1258880297 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.9535883, 0.25374538, 0.16211946, -0.2909392, 0.91520107, 0.2788572, -0.077613175, -0.31308186, 0.9465494, -4472.843, 136.24965, 214.05045)
+size = 1.75
+strength = 115.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 45.0
+movement_lock_time = 0.4
+
+[node name="DashPanel4" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=1053103441 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.5624549, 0.10961181, 0.8195305, -0.8142647, 0.24556495, 0.5259964, -0.14359263, -0.96316326, 0.22737193, -4218.5146, 388.34512, 557.45795)
+size = 1.75
+strength = 80.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 120.0
+movement_lock_time = 0.4
+
+[node name="DashPanel5" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=2009876433 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.38231432, 0.50215024, 0.77568054, -0.75645995, -0.312005, 0.5748229, 0.5306637, -0.80653447, 0.2605724, -4226.877, 402.2403, 553.1634)
+size = 1.75
+strength = 115.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 45.0
+movement_lock_time = 0.4
+
+[node name="DashPanel6" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=768825491 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.5063535, -0.43184248, 0.7464035, -0.8601041, -0.19081827, 0.47308588, -0.061870925, -0.88153315, -0.468051, -3903.9204, 610.9667, 516.1249)
+size = 1.75
+strength = 80.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 120.0
+movement_lock_time = 0.4
+
+[node name="DashPanel7" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=638158031 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(0.6637516, 0.04425492, 0.74664235, -0.52511626, -0.683287, 0.50731844, 0.5326226, -0.7288076, -0.43029416, -3915.0374, 623.7437, 511.44357)
+size = 1.75
+strength = 115.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 45.0
+movement_lock_time = 0.4
+
+[node name="DashPanel8" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=1747043909 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(-0.8597281, -0.45620897, 0.22965692, -0.44141775, 0.88987005, 0.115249984, -0.25694242, -0.0022914866, -0.96642447, -3682.9958, 711.8473, 155.81146)
+size = 1.75
+strength = 80.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 120.0
+movement_lock_time = 0.4
+
+[node name="DashPanel9" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=490304401 instance=ExtResource("10_h8oh1")]
+transform = Transform3D(-0.29380584, -0.9430254, 0.15614682, -0.94163007, 0.31362972, 0.122351736, -0.16435254, -0.11108491, -0.9801269, -3675.0425, 724.8813, 158.7466)
+size = 1.75
+strength = 115.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 45.0
+movement_lock_time = 0.4
+
+[node name="Spring29" parent="OBJECTS/SPRINGS" unique_id=700707654 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2485.4026, -31.598505, -1101.5406)
+strength = 60.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.2
+action_lock_time = 0.2
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring33" parent="OBJECTS/SPRINGS" unique_id=1538883451 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.3136234, 0.7584209, 1.3035302, -1, 1.7320508, 0, -1.1288903, -0.6517651, 1.5168418, -982.49194, -29.386173, -869.1329)
+strength = 100.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.4
+action_lock_time = 0.4
+align_time = 0.4
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring35" parent="OBJECTS/SPRINGS" unique_id=1030646937 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.8367459, 0, 0.7914315, 0, 2, 0, -0.7914314, 0, 1.836746, -768.72174, 440.79367, -556.97394)
+strength = 100.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.4
+action_lock_time = 0.4
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring34" parent="OBJECTS/SPRINGS" unique_id=1516895553 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5168418, 2.6077032e-08, 1.3035302, -2.9802322e-08, 2, 0, -1.3035302, 0, 1.5168418, -930.70044, 10.436908, -913.64105)
+strength = 175.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+trajectory_arc_enabled = true
+movement_lock_time = 0.4
+action_lock_time = 0.4
+align_time = 0.4
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring34" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_3r51i")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring34" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.173597, 92.50606, 1.9073486e-06)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring34" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_tpfvk")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring34" index="5" unique_id=1922896033]
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Spring36" parent="OBJECTS/SPRINGS" unique_id=359561725 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5887667, 5.3870943e-09, -1.2148334, -2.9802322e-08, 2, 0, 1.2148334, 2.551452e-08, 1.5887667, -748.91583, 284.43893, -871.0234)
+strength = 600.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+use_trajectory_solver = true
+trajectory_arc_enabled = true
+trajectory_arc_height = 78.0
+trajectory_arc_speed = 600.0
+movement_lock_time = 0.4
+action_lock_time = 0.4
+align_time = 0.4
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring36" index="0" unique_id=594366491]
+transform = Transform3D(1, 4.440892e-16, 0, -4.440892e-16, 1, 0, 0, 0, 1, 0, 2.6043396, 0)
+shape = SubResource("CylinderShape3D_hig5r")
+metadata/_uniform_size_base_position = Vector3(0, 2.6043396, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring36" index="1"]
+transform = Transform3D(1, 0, 0, -4.440892e-16, 1, 0, 0, 0, 1, -184.74078, 80.03841, -478.11926)
+visible = true
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring36" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_haucv")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring36" index="5" unique_id=1922896033]
+transform = Transform3D(0.92442137, -0.32737288, -0.19556992, 0.32737285, 0.4182756, 0.8472589, -0.19556989, -0.8472589, 0.49384198, 0, 0, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.9999877, 0.9999876, 0.9999876)
+
+[node name="Spring37" parent="OBJECTS/SPRINGS" unique_id=747168758 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5887667, 5.3870943e-09, -1.2148334, -2.9802322e-08, 2, 0, 1.2148334, 2.551452e-08, 1.5887667, -461.77383, 444.42203, -1855.3762)
+strength = 600.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+use_trajectory_solver = true
+trajectory_arc_enabled = true
+trajectory_arc_height = 55.0
+trajectory_arc_speed = 600.0
+movement_lock_time = 0.4
+action_lock_time = 0.4
+align_time = 0.4
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring37" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_nscxb")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring37" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -230.61896, 43.80256, 621.7296)
+visible = true
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring37" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_fkyjr")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring37" index="5" unique_id=1922896033]
+transform = Transform3D(0.9063663, -0.3387792, 0.25239286, 0.3387792, 0.22593589, -0.9133208, 0.25239283, 0.9133208, 0.3195563, 0, 0, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.99998665, 0.9999866, 0.9999866)
+
+[node name="Spring38" parent="OBJECTS/SPRINGS" unique_id=1148282272 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5887667, 5.3870943e-09, -1.2148334, -2.9802322e-08, 2, 0, 1.2148334, 2.551452e-08, 1.5887667, -1583.7852, 532.5344, -1147.7716)
+strength = 600.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+use_trajectory_solver = true
+trajectory_arc_enabled = true
+trajectory_arc_height = 90.0
+trajectory_arc_speed = 600.0
+movement_lock_time = 0.4
+action_lock_time = 0.4
+align_time = 0.4
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring38" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_ibwfs")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring38" index="1"]
+transform = Transform3D(1, 0, 0, -4.440892e-16, 1, 0, 0, 0, 1, -335.5008, -91.20299, -116.98825)
+visible = true
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring38" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_4mbrs")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring38" index="5" unique_id=1922896033]
+transform = Transform3D(0.324575, -0.9160534, -0.23551361, 0.9160534, 0.24245203, 0.31942543, -0.23551363, -0.31942546, 0.9178618, 0, 0, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.9999849, 0.9999849, 0.9999848)
+
+[node name="Spring39" parent="OBJECTS/SPRINGS" unique_id=127278279 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5887667, 5.3870943e-09, -1.2148334, -2.9802322e-08, 2, 0, 1.2148334, 2.551452e-08, 1.5887667, -1975.7738, 350.43698, -1739.6809)
+strength = 90.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+use_trajectory_solver = true
+trajectory_arc_enabled = true
+trajectory_arc_height = 0.0
+trajectory_arc_speed = 600.0
+movement_lock_time = 0.1
+action_lock_time = 0.1
+align_time = 0.1
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring39" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_1exaj")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring39" index="1"]
+transform = Transform3D(1, 0, 0, -4.440892e-16, 1, 0, 0, 0, 1, 0.73876953, -12.774719, 4.3985596)
+visible = true
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring39" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_cosca")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring39" index="5" unique_id=1922896033]
+transform = Transform3D(0.9466495, 0.054596692, -0.31755903, -0.054596692, -0.9440971, -0.32506874, -0.317559, 0.32506868, -0.89076155, 0, 0, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.9999849, 0.9999849, 0.9999848)
+
+[node name="Spring31" parent="OBJECTS/SPRINGS" unique_id=1272611010 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2670.7375, -24.127985, -1088.7476)
+strength = 80.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+trajectory_arc_height = 9.0
+movement_lock_time = 0.2
+action_lock_time = 0.2
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring31" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_168bj")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring31" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.137615, 20.614294, 0)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring31" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_7dqaw")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring31" index="5" unique_id=1922896033]
+transform = Transform3D(0.99999535, 0, 0, 0, 0.99999535, 0, 0, 0, 1, 0, 0, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.99999535, 0.99999535, 1)
+
+[node name="Spring32" parent="OBJECTS/SPRINGS" unique_id=910121609 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2497.5215, 73.85755, -1031.062)
+strength = 110.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+use_trajectory_solver = true
+trajectory_arc_enabled = true
+trajectory_arc_height = 5.7
+movement_lock_time = 0.2
+action_lock_time = 0.2
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring32" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_1i6gv")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TrajectorySolver" parent="OBJECTS/SPRINGS/Spring32" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.279907, 21.36987, -22.355408)
+visible = true
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring32" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_b75rr")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring32" index="5" unique_id=1922896033]
+transform = Transform3D(0.54902244, -0.8194277, -0.16451116, 0.8194277, 0.48900756, 0.29893345, -0.16451114, -0.29893342, 0.9399607, 0, 0, 0)
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.9999757, 0.9999757, 0.9999756)
+
+[node name="Spring30" parent="OBJECTS/SPRINGS" unique_id=350953128 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2485.4026, -31.598505, -1095.5406)
+strength = 60.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.2
+action_lock_time = 0.2
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="VaultBar" parent="OBJECTS/SPRINGS" unique_id=1685228124 instance=ExtResource("13_nyme6")]
+transform = Transform3D(-0.025538981, 0, -0.99967384, 0, 1, 0, 0.99967384, 0, -0.025538981, -2694.7583, 6.5741577, -1098.6443)
+bar_length = 28.8
+rotation_speed_deg = 700.0
+launch_speed_mode = 1
+fixed_launch_speed = 110.0
+launch_aim_origin = 1
+vertical_arc_enabled = true
+vertical_arc_height = 5.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/VaultBar" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_r3a6h")
+
+[node name="Bar" parent="OBJECTS/SPRINGS/VaultBar/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_q3ivt")
+
+[node name="LeftCap" parent="OBJECTS/SPRINGS/VaultBar/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -14.4, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/SPRINGS/VaultBar/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 14.4, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/SPRINGS/VaultBar" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 2.9802322e-08, 0, 1, 0, -2.9802322e-08, 0, 1, 0.04333496, 32.60925, -30.958008)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/VaultBar" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_yryxb")
+
+[node name="VaultBar5" parent="OBJECTS/SPRINGS" unique_id=911172835 instance=ExtResource("13_nyme6")]
+transform = Transform3D(0.025538893, 0, 0.99967384, 0, 1, 0, -0.99967384, 0, 0.025538893, -2663.2336, 38.908253, -1097.8389)
+bar_length = 28.8
+rotation_speed_deg = 700.0
+launch_speed_mode = 1
+fixed_launch_speed = 115.0
+launch_aim_origin = 1
+vertical_arc_enabled = true
+vertical_arc_height = 5.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/VaultBar5" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_0aq1v")
+
+[node name="Bar" parent="OBJECTS/SPRINGS/VaultBar5/Model" parent_id_path=PackedInt32Array(911172835, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_ji0ag")
+
+[node name="LeftCap" parent="OBJECTS/SPRINGS/VaultBar5/Model" parent_id_path=PackedInt32Array(911172835, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -14.4, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/SPRINGS/VaultBar5/Model" parent_id_path=PackedInt32Array(911172835, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 14.4, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/SPRINGS/VaultBar5" index="2" unique_id=1347758509]
+transform = Transform3D(0.99999976, 0, 2.9802322e-08, 0, 1, 0, -2.9802322e-08, 0, 0.99999976, -1.206335, -6.7388115, -44.67404)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/VaultBar5" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_mk4ch")
+
+[node name="VaultBar2" parent="OBJECTS/SPRINGS" unique_id=1263329471 instance=ExtResource("13_nyme6")]
+transform = Transform3D(-0.8407382, 0, 0.54144186, 0, 1, 0, -0.54144186, 0, -0.8407382, -780.68774, 101.819084, -1104.7772)
+bar_length = 95.0
+collision_radius = 5.0
+rotation_speed_deg = 700.0
+launch_speed_mode = 1
+fixed_launch_speed = 120.0
+launch_aim_origin = 1
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/VaultBar2" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_qwynq")
+
+[node name="Bar" parent="OBJECTS/SPRINGS/VaultBar2/Model" parent_id_path=PackedInt32Array(1263329471, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_bsfh3")
+
+[node name="LeftCap" parent="OBJECTS/SPRINGS/VaultBar2/Model" parent_id_path=PackedInt32Array(1263329471, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -47.5, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/SPRINGS/VaultBar2/Model" parent_id_path=PackedInt32Array(1263329471, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 47.5, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/SPRINGS/VaultBar2" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3908458e-05, 82.345764, -44.596157)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/VaultBar2" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_6jc6s")
+
+[node name="VaultBar3" parent="OBJECTS/SPRINGS" unique_id=1271223244 instance=ExtResource("13_nyme6")]
+transform = Transform3D(-0.6719551, 0, 0.7405918, 0, 1, 0, -0.7405918, 0, -0.6719551, -989.2929, 187.78526, -879.45807)
+bar_length = 95.0
+rotation_speed_deg = 700.0
+launch_speed_mode = 1
+fixed_launch_speed = 110.0
+vertical_arc_enabled = true
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/VaultBar3" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_netyy")
+
+[node name="Bar" parent="OBJECTS/SPRINGS/VaultBar3/Model" parent_id_path=PackedInt32Array(1271223244, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_p77aj")
+
+[node name="LeftCap" parent="OBJECTS/SPRINGS/VaultBar3/Model" parent_id_path=PackedInt32Array(1271223244, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -47.5, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/SPRINGS/VaultBar3/Model" parent_id_path=PackedInt32Array(1271223244, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 47.5, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/SPRINGS/VaultBar3" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5886453, 69.24161, 76.56263)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/VaultBar3" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_3mt3v")
+
+[node name="VaultBar4" parent="OBJECTS/SPRINGS" unique_id=1432194187 instance=ExtResource("13_nyme6")]
+transform = Transform3D(0.6430873, 0, -0.7657927, 0, 1, 0, 0.7657927, 0, 0.6430873, -930.92303, 255.9592, -932.41833)
+bar_length = 95.0
+swing_direction = 1
+rotation_speed_deg = 700.0
+launch_speed_mode = 1
+fixed_launch_speed = 110.0
+launch_aim_origin = 1
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/VaultBar4" index="0" unique_id=789556539]
+shape = SubResource("BoxShape3D_lxlfp")
+
+[node name="Bar" parent="OBJECTS/SPRINGS/VaultBar4/Model" parent_id_path=PackedInt32Array(1432194187, 1361387532) index="0" unique_id=511214259]
+mesh = SubResource("CylinderMesh_bnmyi")
+
+[node name="LeftCap" parent="OBJECTS/SPRINGS/VaultBar4/Model" parent_id_path=PackedInt32Array(1432194187, 1361387532) index="1" unique_id=568321050]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -47.5, 0, 0)
+
+[node name="RightCap" parent="OBJECTS/SPRINGS/VaultBar4/Model" parent_id_path=PackedInt32Array(1432194187, 1361387532) index="2" unique_id=1285943122]
+transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 47.5, 0, 0)
+
+[node name="LaunchDirection" parent="OBJECTS/SPRINGS/VaultBar4" index="2" unique_id=1347758509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1458613e-06, 53.365997, 80.02231)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/VaultBar4" index="4" unique_id=51402399]
+curve = SubResource("Curve3D_03iy7")
+
+[node name="AutoEnter" type="Area3D" parent="OBJECTS/SPRINGS" unique_id=236962740]
+transform = Transform3D(0.77887845, 0.38989577, 0.49125293, -0.44763282, 0.8942175, 3.7252903e-09, -0.43928704, -0.21990098, 0.8710169, -654.05444, 455.10706, -814.70953)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OBJECTS/SPRINGS/AutoEnter" unique_id=947214428]
+transform = Transform3D(1.0000021, 1.4901161e-08, 8.940697e-08, -7.450581e-09, 1.0000002, 0, -1.1920929e-07, 1.4901161e-08, 1.0000021, -9.821381, 23.133087, 2.5526123)
+shape = SubResource("BoxShape3D_1bytx")
+
+[node name="AutoExit" type="Area3D" parent="OBJECTS/SPRINGS" unique_id=304864371]
+transform = Transform3D(0.84171176, 0, -0.5399271, 0, 1, 0, 0.5399271, 0, 0.84171176, -752.2047, 282.68253, -874.6427)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OBJECTS/SPRINGS/AutoExit" unique_id=111008209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.562378, 5.3332214, -7.720215)
+shape = SubResource("BoxShape3D_u14bl")
+
+[node name="AutomationSpline" parent="OBJECTS/SPRINGS" unique_id=2094852401 instance=ExtResource("19_714gf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -843.5622, 456.98596, -721.01794)
+use_entrance_exit_areas = true
+entrance_area_path = NodePath("../AutoEnter")
+exit_area_path = NodePath("../AutoExit")
+failsafe_exit_distance = 451.6
+preferred_offset_window = 2.6
+force_surface_adhesion = true
+max_turn_deg_per_sec = 0.0
+lock_controls = true
+lock_movement = true
+lock_actions = true
+lock_drift = true
+nudge_toward_strength_base = 50.0
+nudge_toward_strength_per_speed = 0.235
+tangent_snap_strength = 9.032
+along_assist_target_speed = 500.0
+along_assist_accel = 2020.0
+override_player_max_speed = true
+player_max_speed_override = 500.0
+
+[node name="Path3D" parent="OBJECTS/SPRINGS/AutomationSpline" index="0" unique_id=716481439]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 183.70203, 0, -93.45361)
+curve = SubResource("Curve3D_plmnn")
+
+[node name="CameraConstraint" parent="OBJECTS/SPRINGS" unique_id=1011385268 instance=ExtResource("15_plmnn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -829.42883, 323.69977, -699.14514)
+override_previous_constraints = true
+activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0001"), SubResource("CameraTrait_0002"), SubResource("CameraTrait_0003")])
+position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0004")])
+orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("CameraTrait_0005"), SubResource("CameraTrait_0006")])
+lens_traits = Array[ExtResource("cam_trait_lens")]([SubResource("CameraTrait_0007")])
+transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("CameraTrait_0008"), SubResource("CameraTrait_0009")])
+collision_mode = 2
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/CameraConstraint" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 204.5, -67.5)
+shape = SubResource("BoxShape3D_plmnn")
+
+[node name="ConstraintPoint" parent="OBJECTS/SPRINGS/CameraConstraint" index="1" unique_id=495541008]
+transform = Transform3D(0.8509869, 0, -0.52518696, 0, 1, 0, 0.52518696, 0, 0.8509869, 150.46037, 0, -454.3637)
+
+[node name="Tree_CamEnter" type="Area3D" parent="OBJECTS/SPRINGS" unique_id=1901067788]
+transform = Transform3D(-0.3976802, -0.8291558, -0.39287564, -0.90622234, 0.42195207, 0.026783373, 0.14356706, 0.36668387, -0.9192015, -649.89655, 461.9229, -810.028)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OBJECTS/SPRINGS/Tree_CamEnter" unique_id=472906311]
+transform = Transform3D(1.0000027, -6.593764e-07, -3.874302e-07, -2.2351742e-07, 1.0000002, -3.2782555e-07, -1.1920929e-07, 2.0861626e-07, 1.0000033, -11.1927185, 5.08136, 2.5526123)
+shape = SubResource("BoxShape3D_7ffvg")
+
+[node name="Tree_CamExit" type="Area3D" parent="OBJECTS/SPRINGS" unique_id=86272317]
+transform = Transform3D(0.73298156, 0, -0.68024826, 0, 1, 0, 0.68024826, 0, 0.73298156, -1172.5762, 485.53836, -1166.6881)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OBJECTS/SPRINGS/Tree_CamExit" unique_id=2104767086]
+transform = Transform3D(1.0000021, 1.4901161e-08, 1.1920929e-07, -7.450581e-09, 1.0000002, 0, -1.7881393e-07, 1.4901161e-08, 1.0000021, 1.2055664, -59.71579, 37.506958)
+shape = SubResource("BoxShape3D_oc2vc")
+
+[node name="ENEMIES" type="Node3D" parent="OBJECTS" unique_id=523753481]
+
+[node name="SpikeBall" parent="OBJECTS/ENEMIES" unique_id=2132038934 instance=ExtResource("14_grkv5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2491.4011, -12.706043, -1110.3466)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall22" parent="OBJECTS/ENEMIES" unique_id=924795530 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.2138532, 0.9602706, 0.17929685, -0.941488, 0.15365924, 0.2999822, 0.2605135, -0.23295796, 0.93694353, -4492.151, 160.72948, 214.74301)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall23" parent="OBJECTS/ENEMIES" unique_id=1368915104 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.37797964, 0.9082864, 0.17929687, -0.8582745, -0.41638404, 0.2999822, 0.34712616, -0.04049875, 0.93694353, -4491.036, 174.78564, 210.02922)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall24" parent="OBJECTS/ENEMIES" unique_id=1542200893 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.24635212, -0.6157706, 0.748423, -0.06603615, 0.75976354, 0.6468378, -0.96692806, -0.20877255, 0.14650618, -4197.0063, 371.185, 534.5073)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall25" parent="OBJECTS/ENEMIES" unique_id=1006488954 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.5559362, -0.36166, 0.74842286, -0.49139804, 0.583206, 0.6468379, -0.67042, -0.727374, 0.14650631, -4203.175, 375.4133, 547.35657)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall26" parent="OBJECTS/ENEMIES" unique_id=131890988 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.5151128, -0.5502377, 0.65718865, -0.10915288, 0.8026076, 0.5864359, -0.85014397, 0.2303466, -0.4734934, -3898.7073, 583.5319, 484.8786)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall27" parent="OBJECTS/ENEMIES" unique_id=1718122085 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.104406446, -0.7464599, 0.65718865, -0.55131835, 0.5934148, 0.58643603, -0.8277363, -0.30109248, -0.47349322, -3893.913, 587.8917, 496.4853)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall28" parent="OBJECTS/ENEMIES" unique_id=224405625 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.104406446, -0.7464599, 0.65718865, -0.55131835, 0.5934148, 0.58643603, -0.8277363, -0.30109248, -0.47349322, -3895.1753, 597.84216, 507.52747)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall29" parent="OBJECTS/ENEMIES" unique_id=1986280793 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.8595958, -0.41918266, 0.2922007, -0.4184029, 0.9056821, 0.06840847, -0.29331663, -0.06345422, -0.9539074, -3703.4224, 759.41406, 155.34662)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall30" parent="OBJECTS/ENEMIES" unique_id=1434923398 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.461524, -0.8376243, 0.29220077, -0.86351866, 0.4996558, 0.06840869, -0.2033004, -0.22074881, -0.9539071, -3689.1548, 755.1787, 158.74062)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall31" parent="OBJECTS/ENEMIES" unique_id=150866914 instance=ExtResource("14_grkv5")]
+transform = Transform3D(-0.461524, -0.8376243, 0.29220077, -0.86351866, 0.4996558, 0.06840869, -0.2033004, -0.22074881, -0.9539071, -3680.2764, 743.2262, 161.36679)
+size = 2.0
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall2" parent="OBJECTS/ENEMIES" unique_id=1438800698 instance=ExtResource("14_grkv5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2491.4011, -12.706043, -1116.3466)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall13" parent="OBJECTS/ENEMIES" unique_id=13114226 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2080.9243, 242.65335, -1491.7583)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall14" parent="OBJECTS/ENEMIES" unique_id=1186044294 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2087.8037, 245.6023, -1495.1154)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall15" parent="OBJECTS/ENEMIES" unique_id=588895126 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2095.553, 243.86514, -1498.8966)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall16" parent="OBJECTS/ENEMIES" unique_id=1955893379 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2129.5095, 224.5531, -1383.2731)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall17" parent="OBJECTS/ENEMIES" unique_id=316338452 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2136.3892, 227.50204, -1386.6301)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall18" parent="OBJECTS/ENEMIES" unique_id=11971619 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2144.1382, 225.7649, -1390.4114)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall19" parent="OBJECTS/ENEMIES" unique_id=117629727 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2194.268, 163.4605, -1241.912)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall20" parent="OBJECTS/ENEMIES" unique_id=2115625382 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2201.1477, 166.40944, -1245.269)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall21" parent="OBJECTS/ENEMIES" unique_id=2002370969 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.8987057, 0, -0.4385522, 0, 1, 0, 0.4385522, 0, 0.8987057, -2208.8967, 164.67229, -1249.0503)
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall11" parent="OBJECTS/ENEMIES" unique_id=1642605480 instance=ExtResource("14_grkv5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2595.566, -21.706043, -1085.3466)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall12" parent="OBJECTS/ENEMIES" unique_id=252806680 instance=ExtResource("14_grkv5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2595.566, -21.706043, -1113.3466)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall3" parent="OBJECTS/ENEMIES" unique_id=207038865 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -943.92206, -20.82988, -930.28577)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall4" parent="OBJECTS/ENEMIES" unique_id=28258917 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -949.10223, -20.82988, -936.235)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall5" parent="OBJECTS/ENEMIES" unique_id=1292314187 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -954.3556, -20.82988, -942.2684)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall6" parent="OBJECTS/ENEMIES" unique_id=831331579 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -959.6822, -20.82988, -948.386)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall7" parent="OBJECTS/ENEMIES" unique_id=833822697 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -964.86237, -20.82988, -954.3352)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall8" parent="OBJECTS/ENEMIES" unique_id=1071944206 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -970.1157, -20.82988, -960.3686)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall9" parent="OBJECTS/ENEMIES" unique_id=50954191 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -975.4673, -20.82988, -966.5067)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="SpikeBall10" parent="OBJECTS/ENEMIES" unique_id=351855820 instance=ExtResource("14_grkv5")]
+transform = Transform3D(0.75417686, 0, 0.65667135, 0, 1, 0, -0.65667135, 0, 0.75417686, -980.64746, -20.82988, -972.45593)
+movement_mode = 1
+crash_top_hold_duration = 0.5
+crash_ground_hold_duration = 0.5
+crash_fall_acceleration = 95.0
+crash_rise_speed = 50.0
+
+[node name="GUNMonoBeetle" parent="OBJECTS/ENEMIES" unique_id=1219405340 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -747.2288, 74.313126, -1137.0771)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle/Components" parent_id_path=PackedInt32Array(1219405340, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle2" parent="OBJECTS/ENEMIES" unique_id=1013580270 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -758.98883, 84.64641, -1125.3171)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle2/Components" parent_id_path=PackedInt32Array(1013580270, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle2" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle3" parent="OBJECTS/ENEMIES" unique_id=1437238193 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -771.0075, 95.26502, -1113.2983)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle3/Components" parent_id_path=PackedInt32Array(1437238193, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle3" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle4" parent="OBJECTS/ENEMIES" unique_id=69456843 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -851.33624, 171.79837, -1032.9696)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle4/Components" parent_id_path=PackedInt32Array(69456843, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle4" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle5" parent="OBJECTS/ENEMIES" unique_id=195948131 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -875.1792, 177.79837, -996.0012)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle5/Components" parent_id_path=PackedInt32Array(195948131, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle5" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle6" parent="OBJECTS/ENEMIES" unique_id=1579963718 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -915.82166, 182.79837, -978.66095)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle6/Components" parent_id_path=PackedInt32Array(1579963718, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle6" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle7" parent="OBJECTS/ENEMIES" unique_id=863393679 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -930.87744, 183.79837, -939.9766)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle7/Components" parent_id_path=PackedInt32Array(863393679, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle7" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle8" parent="OBJECTS/ENEMIES" unique_id=1705428902 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -963.7663, 186.79837, -920.53955)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle8/Components" parent_id_path=PackedInt32Array(1705428902, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle8" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle9" parent="OBJECTS/ENEMIES" unique_id=1287923739 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -2805.5054, 17.196148, -1064.8594)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle9/Components" parent_id_path=PackedInt32Array(1287923739, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle9" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle10" parent="OBJECTS/ENEMIES" unique_id=2063139403 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -2832.5012, 11.905561, -1045.2916)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle10/Components" parent_id_path=PackedInt32Array(2063139403, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle10" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="GUNMonoBeetle11" parent="OBJECTS/ENEMIES" unique_id=1031704840 instance=ExtResource("17_7ffvg")]
+transform = Transform3D(0.70710677, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.70710677, -2846.4814, 9.677462, -1022.6409)
+
+[node name="Brain" parent="OBJECTS/ENEMIES/GUNMonoBeetle11/Components" parent_id_path=PackedInt32Array(1031704840, 1754993030) index="3" unique_id=263850557]
+follow_target = false
+attacks_enabled = false
+
+[node name="Locomotion" parent="OBJECTS/ENEMIES/GUNMonoBeetle11" index="6" unique_id=230773163]
+face_pitch = false
+
+[node name="DeathPlane" parent="OBJECTS" unique_id=719304138 instance=ExtResource("13_xs5qd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -513.0647, -58.477158, -539.626)
+visible = false
+
+[node name="CollisionShape3D" parent="OBJECTS/DeathPlane" index="0" unique_id=172183619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 760.8085, -68.04663, -1081.6133)
+shape = SubResource("BoxShape3D_qnnpr")
+
+[node name="RaceObjectLayout_CollectionRace01" parent="OBJECTS" unique_id=650659054 instance=ExtResource("14_tv0dn")]
+race_id = "BBZCOL01"
+
+[node name="Spring53" parent="OBJECTS/RaceObjectLayout_CollectionRace01" unique_id=282606771 instance=ExtResource("11_8q4nn")]
+process_mode = 3
+transform = Transform3D(-0.20362727, -7.9974074, 1.9071219e-06, 7.9974074, -0.20362727, 1.7801653e-08, 3.0746868e-08, 1.9069571e-06, 8, 101.95601, 167.46962, -905.89404)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="MONITORS" type="Node3D" parent="OBJECTS" unique_id=874783363]
+
+[node name="ItemMonitor" parent="OBJECTS/MONITORS" unique_id=1395552001 instance=ExtResource("19_oak5x")]
+transform = Transform3D(0.63341314, 0, -0.7738138, 0, 1, 0, 0.7738138, 0, 0.63341314, -987.84564, -33.907776, -843.24036)
+rewards = Array[ExtResource("20_2hsu3")]([SubResource("Resource_flnt6")])
+leave_base_after_break = true
+
+[node name="ItemMonitor2" parent="OBJECTS/MONITORS" unique_id=1261042180 instance=ExtResource("19_oak5x")]
+transform = Transform3D(0.63341314, 0, -0.7738138, 0, 1, 0, 0.7738138, 0, 0.63341314, -991.0127, -33.907776, -847.10944)
+rewards = Array[ExtResource("20_2hsu3")]([SubResource("Resource_ahc61")])
+leave_base_after_break = true
+
+[node name="ItemMonitor3" parent="OBJECTS/MONITORS" unique_id=450474160 instance=ExtResource("19_oak5x")]
+transform = Transform3D(0.8845927, 0, -0.46636432, 0, 1, 0, 0.46636432, 0, 0.8845927, -2137.3728, 209.00388, -1386.4242)
+rewards = Array[ExtResource("20_2hsu3")]([SubResource("Resource_kuwly")])
+allow_player_pass_through = true
+
+[node name="RINGS" type="Node3D" parent="OBJECTS" unique_id=1192911114]
+
+[node name="RingSpline" parent="OBJECTS/RINGS" unique_id=2125630419 instance=ExtResource("22_7ffvg")]
+transform = Transform3D(0.9196095, 0, -0.39283383, 0, 1, 0, 0.39283383, 0, 0.9196095, -882.53, 321.3151, -496.09564)
+ring_spacing = 10.0
+
+[node name="Path3D" parent="OBJECTS/RINGS/RingSpline" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_8vrlf")
+
+[node name="RingSpline2" parent="OBJECTS/RINGS" unique_id=1463933275 instance=ExtResource("22_7ffvg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2475.8445, -28.732677, -1112.7589)
+ring_spacing = 10.0
+terrain_warp_enabled = true
+
+[node name="Path3D" parent="OBJECTS/RINGS/RingSpline2" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_kh34s")
+
+[node name="RingSpline3" parent="OBJECTS/RINGS" unique_id=38122609 instance=ExtResource("22_7ffvg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2541.238, -28.732677, -1100.5205)
+ring_spacing = 13.0
+terrain_warp_enabled = true
+
+[node name="Path3D" parent="OBJECTS/RINGS/RingSpline3" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_xa4nu")
+
+[node name="WhiteJungle" parent="." unique_id=641492518 instance=ExtResource("22_grkv5")]
+
+[node name="FogLayer" parent="WhiteJungle/_DECORATIONS" parent_id_path=PackedInt32Array(641492518, 800090949) index="2" unique_id=58859545]
+visible = false
+
+[node name="FogLayerBottom" parent="WhiteJungle/_DECORATIONS" parent_id_path=PackedInt32Array(641492518, 800090949) index="3" unique_id=322092628]
+visible = false
+
+[node name="MovingPlatform" parent="." unique_id=977946799 instance=ExtResource("26_sgtbw")]
+transform = Transform3D(0.96703976, 0, -0.2546253, 0, 1, 0, 0.2546253, 0, 0.96703976, -853.8356, 245.57472, -507.7818)
+motion_mode = 1
+speed = 45.0
+slerp_in_out = true
+
+[node name="Path3D" parent="MovingPlatform" index="0"]
+curve = SubResource("Curve3D_7ffvg")
+
+[node name="PathFollow3D" parent="MovingPlatform/Path3D" index="0"]
+transform = Transform3D(-4.371139e-08, 0.99999845, -4.371132e-08, 0, -4.371132e-08, -0.99999845, -1, -4.371132e-08, 1.9106825e-15, 0, 0, 0)
+
+[node name="Platform" parent="MovingPlatform/Path3D/PathFollow3D/PlatformBody" index="0" unique_id=564952940 instance=ExtResource("27_plmnn")]
+transform = Transform3D(-1.1920929e-07, 0, -3, 3.0000048, -1.3113439e-07, -1.1920929e-07, -1.3113437e-07, -3.0000048, 3.5527137e-15, 0, 0, 0)
+
+[node name="CollisionShape3D" parent="MovingPlatform/Path3D/PathFollow3D/PlatformBody/Platform/Platform_Wood_Bevel_attachlimit=90|/StaticBody3D" parent_id_path=PackedInt32Array(564952940, 1408372933) index="0" unique_id=705821766]
+disabled = true
+
+[node name="CollisionShape3D" parent="MovingPlatform/Path3D/PathFollow3D/PlatformBody" index="1"]
+transform = Transform3D(1.000001, -6.556511e-07, 1.110223e-13, 1.6391277e-07, 1.0000019, 1.8740565e-13, 1.5942803e-12, -6.4035444e-12, 1, -0.00491333, -0.00030517578, 0.0012512207)
+shape = SubResource("BoxShape3D_vxyra")
+
+[node name="MovingPlatform2" parent="." unique_id=1352712048 instance=ExtResource("26_sgtbw")]
+transform = Transform3D(0.98643327, 0, -0.16416249, 0, 1, 0, 0.16416249, 0, 0.98643327, -804.03516, 432.64786, -499.5387)
+motion_mode = 1
+speed = 45.0
+slerp_in_out = true
+
+[node name="Path3D" parent="MovingPlatform2" index="0"]
+curve = SubResource("Curve3D_sgtbw")
+
+[node name="PathFollow3D" parent="MovingPlatform2/Path3D" index="0"]
+transform = Transform3D(-4.371139e-08, 0.99999845, 4.371132e-08, 0, -4.371132e-08, 0.99999845, 1, 4.371132e-08, 1.9106825e-15, 0, 0, 0)
+
+[node name="Platform" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody" index="0" unique_id=1908408971 instance=ExtResource("27_plmnn")]
+transform = Transform3D(-1.4901161e-07, 1.3322719e-15, 3, 3.0000048, -1.3113439e-07, 1.4901161e-07, 1.3113437e-07, 3.0000048, 5.3290705e-15, 0, 0, 0)
+
+[node name="CollisionShape3D" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody/Platform/Platform_Wood_Bevel_attachlimit=90|/StaticBody3D" parent_id_path=PackedInt32Array(1908408971, 1408372933) index="0" unique_id=705821766]
+disabled = true
+
+[node name="CollisionShape3D" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody" index="1"]
+transform = Transform3D(1.000001, -6.556511e-07, 1.1146639e-13, 1.4901161e-07, 1.0000019, 1.2656542e-13, 1.6022739e-12, -6.331269e-12, 1, -0.004852295, -0.0004272461, 0.110839844)
+shape = SubResource("BoxShape3D_sgtbw")
+
+[node name="MovingPlatform3" parent="." unique_id=1497977939 instance=ExtResource("26_sgtbw")]
+transform = Transform3D(0.9118626, 0, 0.41049516, 0, 1, 0, -0.41049516, 0, 0.9118626, -773.761, 432.64786, -552.4721)
+enabled = false
+
+[node name="Path3D" parent="MovingPlatform3" index="0"]
+curve = SubResource("Curve3D_sgtbw")
+
+[node name="PathFollow3D" parent="MovingPlatform3/Path3D" index="0"]
+transform = Transform3D(-4.371139e-08, 0.99999845, 4.371132e-08, 0, -4.371132e-08, 0.99999845, 1, 4.371132e-08, 1.9106825e-15, 0, 0, 0)
+
+[node name="Platform" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody" index="0" unique_id=1379766737 instance=ExtResource("27_plmnn")]
+transform = Transform3D(1.1920929e-07, 0, 3, 3.0000048, -1.3113439e-07, 0, 1.3113439e-07, 3.0000048, 3.5527137e-15, 0, 0, 0)
+
+[node name="CollisionShape3D" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody/Platform/Platform_Wood_Bevel_attachlimit=90|/StaticBody3D" parent_id_path=PackedInt32Array(1379766737, 1408372933) index="0" unique_id=705821766]
+disabled = true
+
+[node name="CollisionShape3D" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody" index="1"]
+transform = Transform3D(1.000001, -6.556511e-07, 1.2434498e-13, -1.4901161e-07, 1.0000019, 1.5720758e-13, 1.6058266e-12, -6.3744565e-12, 1, -0.0048828125, -0.00030517578, 0.054779053)
+shape = SubResource("BoxShape3D_sgtbw")
+
+[node name="RaceStart" parent="." unique_id=1344341188 instance=ExtResource("15_0wrn3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 157.35143, 306.66232, -1046.7449)
+level_name = "White Jungle"
+race_id = "WJCR1"
+countdown_start_delay = 1.0
+countdown_seconds = 2
+go_music_stream = ExtResource("3_grkv5")
+
+[node name="CollisionShape3D" parent="RaceStart" index="0" unique_id=1655613209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7209473, 0)
+shape = SubResource("CylinderShape3D_p77aj")
+
+[node name="BoundaryVisual" parent="RaceStart" index="1" unique_id=950711976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7209473, 0)
+
+[node name="CameraFacingDirection" parent="RaceStart" index="3"]
+transform = Transform3D(-2.000307e-07, -0.40292317, 0.91523373, -8.8061654e-08, 0.91523373, 0.40292317, -1, 0, -2.1855693e-07, 0, 0, 0)
+
+[node name="RaceGoal" parent="." unique_id=767008932 instance=ExtResource("17_cb65a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2906.9338, 4.5164585, -994.7814)
+race_start_path = NodePath("../RaceStart")
+
+[node name="GoalCamera" parent="RaceGoal" index="2" unique_id=1169733806]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.92749, 1.1838436, -14.99292)
+
+[node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
+material_override = SubResource("ShaderMaterial_0pi3p")
+
+[editable path="Lights/EnvironmentWeatherSystem"]
+[editable path="Lights/EnvironmentWeatherSystem/DayNightCycle"]
+[editable path="OBJECTS/SPRINGS/Spring34"]
+[editable path="OBJECTS/SPRINGS/Spring36"]
+[editable path="OBJECTS/SPRINGS/Spring37"]
+[editable path="OBJECTS/SPRINGS/Spring38"]
+[editable path="OBJECTS/SPRINGS/Spring39"]
+[editable path="OBJECTS/SPRINGS/Spring31"]
+[editable path="OBJECTS/SPRINGS/Spring32"]
+[editable path="OBJECTS/SPRINGS/VaultBar"]
+[editable path="OBJECTS/SPRINGS/VaultBar5"]
+[editable path="OBJECTS/SPRINGS/VaultBar2"]
+[editable path="OBJECTS/SPRINGS/VaultBar3"]
+[editable path="OBJECTS/SPRINGS/VaultBar4"]
+[editable path="OBJECTS/SPRINGS/AutomationSpline"]
+[editable path="OBJECTS/SPRINGS/CameraConstraint"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle2"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle2/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle2/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle3"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle3/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle3/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle4"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle4/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle4/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle5"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle5/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle5/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle6"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle6/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle6/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle7"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle7/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle7/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle8"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle8/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle8/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle9"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle9/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle9/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle10"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle10/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle10/MonoBeetle_Fractures"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle11"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle11/Visual/MonoBeetle"]
+[editable path="OBJECTS/ENEMIES/GUNMonoBeetle11/MonoBeetle_Fractures"]
+[editable path="OBJECTS/DeathPlane"]
+[editable path="OBJECTS/RINGS/RingSpline"]
+[editable path="OBJECTS/RINGS/RingSpline2"]
+[editable path="OBJECTS/RINGS/RingSpline3"]
+[editable path="WhiteJungle"]
+[editable path="MovingPlatform"]
+[editable path="MovingPlatform/Path3D/PathFollow3D/PlatformBody/Platform"]
+[editable path="MovingPlatform2"]
+[editable path="MovingPlatform2/Path3D/PathFollow3D/PlatformBody/Platform"]
+[editable path="MovingPlatform3"]
+[editable path="MovingPlatform3/Path3D/PathFollow3D/PlatformBody/Platform"]
+[editable path="RaceStart"]
+[editable path="RaceGoal"]
+[editable path="RaceGoal/GoalModel"]
+[editable path="RaceGoal/GoalModel/GoalRing2"]

@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c765irme1fsa6"]
+
+[ext_resource type="Texture2D" uid="uid://utth2bo1ym42" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Foot_AfterImage_Red.png" id="1_1rgmk"]
+
+[resource]
+resource_name = "ANVIL_EXPORT_Material_1"
+transparency = 4
+cull_mode = 2
+albedo_texture = ExtResource("1_1rgmk")
+metallic_specular = 0.0
+metadata/_gltf_primary_texture_coord = 0

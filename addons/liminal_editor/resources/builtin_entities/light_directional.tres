@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://cjemxubnru8xx"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_d2nsm"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="1_i7inq"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="2_d2nsm"]
+[ext_resource type="Resource" uid="uid://dsmq4k7rjnb0c" path="res://addons/liminal_editor/resources/choices/choices_directional_shadow_mode.tres" id="3_d2nsm"]
+
+[sub_resource type="Resource" id="Resource_kh7sw"]
+script = ExtResource("1_d2nsm")
+type = "arrow"
+length = "0.5"
+bindings = {
+"color": "light_color"
+}
+
+[sub_resource type="Resource" id="Resource_mkh3m"]
+script = ExtResource("1_i7inq")
+name = "light_color"
+type = "Color"
+default_value = [1.0, 1.0, 1.0, 1.0]
+
+[sub_resource type="Resource" id="Resource_x8g7d"]
+script = ExtResource("1_i7inq")
+name = "light_energy"
+type = "float"
+default_value = 1.0
+
+[sub_resource type="Resource" id="Resource_urdyy"]
+script = ExtResource("1_i7inq")
+name = "shadow_enabled"
+type = "bool"
+default_value = false
+
+[sub_resource type="Resource" id="Resource_j3ypl"]
+script = ExtResource("1_i7inq")
+name = "directional_shadow_mode"
+type = "choices"
+default_value = 2
+choices = ExtResource("3_d2nsm")
+
+[resource]
+script = ExtResource("2_d2nsm")
+entity_name = "light_directional"
+identifier = "DirectionalLight3D"
+properties = Array[ExtResource("1_i7inq")]([SubResource("Resource_mkh3m"), SubResource("Resource_x8g7d"), SubResource("Resource_urdyy"), SubResource("Resource_j3ypl")])
+gizmos = Array[ExtResource("1_d2nsm")]([SubResource("Resource_kh7sw")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

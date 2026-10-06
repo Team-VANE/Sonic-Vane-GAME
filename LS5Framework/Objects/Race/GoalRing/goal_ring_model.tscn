@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cyfprciob25q4"]
+
+[ext_resource type="PackedScene" uid="uid://b06nfbiq02nw2" path="res://LS5Framework/Objects/Race/GoalRing/GoalRing.glb" id="1_wstrr"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="2_it03t"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="4_it03t"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="5_f41q6"]
+[ext_resource type="Script" uid="uid://bsqaycd655rpo" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap_light.gd" id="5_swap_light"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80wkp"]
+render_priority = 0
+shader = ExtResource("2_it03t")
+shader_parameter/tex_flat = ExtResource("4_it03t")
+shader_parameter/tex_glow = ExtResource("5_f41q6")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 7473.551
+
+[node name="GoalRing2" unique_id=318024387 instance=ExtResource("1_wstrr")]
+process_mode = 3
+script = ExtResource("5_swap_light")
+swap_light_enabled = true
+flat_light_energy = 20.0
+glow_light_energy = 40.0
+
+[node name="Circle" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(744465181) index="0" unique_id=1294627438]
+surface_material_override/0 = SubResource("ShaderMaterial_80wkp")
+
+[node name="SwapLight" type="OmniLight3D" parent="." index="2" unique_id=1016145482]
+light_color = Color(4.6205523e-06, 0.86919, 0.37387237, 1)
+light_energy = 20.0
+light_indirect_energy = 3.5
+shadow_enabled = true
+omni_range = 175.0

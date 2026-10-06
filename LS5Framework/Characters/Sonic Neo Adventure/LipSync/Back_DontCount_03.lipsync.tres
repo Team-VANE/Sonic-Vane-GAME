@@ -1,0 +1,192 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://vkemj2854fld"]
+
+[ext_resource type="AudioStream" uid="uid://414uudpynm71" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Back_DontCount_03.ogg" id="1_vskbx"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_nuekq"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_y6n0b"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_spp3w"]
+
+[sub_resource type="Resource" id="Resource_5pyd5"]
+script = ExtResource("2_nuekq")
+pose_id = &"EXP_HAPPY"
+start_time = 0.07
+end_time = 1.5
+blend_in = 0.26
+blend_out = 0.32999999999999996
+
+[sub_resource type="Resource" id="Resource_om3ey"]
+script = ExtResource("2_nuekq")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.51
+end_time = 1.21
+row = 1
+blend_in = 0.35
+blend_out = 0.35
+
+[sub_resource type="Resource" id="Resource_g32uh"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.08126128005096689
+end_time = 0.19614630626902604
+blend_in = 0.029954010487223653
+blend_out = 0.029954010487223653
+
+[sub_resource type="Resource" id="Resource_qgne8"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_Oh"
+start_time = 0.12619229578180235
+end_time = 0.3034968403525029
+row = 1
+blend_in = 0.029954010487223653
+blend_out = 0.029954010487223653
+
+[sub_resource type="Resource" id="Resource_3lje2"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.22354282986527924
+end_time = 0.3634048613269502
+row = 2
+blend_in = 0.029954010487223653
+blend_out = 0.029954010487223653
+
+[sub_resource type="Resource" id="Resource_dmnix"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.28345085083972654
+end_time = 0.44006963905815427
+row = 3
+blend_in = 0.029954010487223653
+blend_out = 0.023467524000737178
+
+[sub_resource type="Resource" id="Resource_uwiaw"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.3466021150574171
+end_time = 0.4570046870596286
+blend_in = 0.023467524000737178
+blend_out = 0.023467524000737178
+
+[sub_resource type="Resource" id="Resource_sjbg1"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_Ah"
+start_time = 0.39353716305889147
+end_time = 0.4932741400620244
+row = 1
+blend_in = 0.04346752400073718
+blend_out = 0.04986848850156647
+
+[sub_resource type="Resource" id="Resource_8qrjq"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_W_OO"
+start_time = 0.44999999999999996
+end_time = 0.54
+row = 3
+blend_in = 0.044999999999999984
+blend_out = 0.03499999999999999
+strength = 0.6
+
+[sub_resource type="Resource" id="Resource_ppcmy"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.52
+end_time = 0.5704025720022114
+row = 2
+blend_in = 0.023467524000737178
+blend_out = 0.023467524000737178
+strength = 0.4
+
+[sub_resource type="Resource" id="Resource_s57q4"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_B_M_P"
+start_time = 0.5636767120642361
+end_time = 0.6550574050445686
+blend_in = 0.023467524000737205
+blend_out = 0.031858772391985535
+
+[sub_resource type="Resource" id="Resource_j1am0"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_EE"
+start_time = 0.6231986326525829
+end_time = 0.7654590435957791
+row = 1
+blend_in = 0.0711302054715981
+blend_out = 0.0711302054715981
+
+[sub_resource type="Resource" id="Resource_xic06"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_Ah"
+start_time = 0.6998790146492786
+end_time = 0.8078537113067605
+row = 2
+blend_in = 0.04398734832874096
+blend_out = 0.04398734832874096
+strength = 0.8
+
+[sub_resource type="Resource" id="Resource_xhoku"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_W_OO"
+start_time = 0.73
+end_time = 0.9800000000000002
+row = 3
+blend_in = 0.07000000000000003
+blend_out = 0.12000000000000004
+strength = 0.5
+
+[sub_resource type="Resource" id="Resource_aa78q"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_EE"
+start_time = 0.8159029598892225
+end_time = 1.0402922223730346
+blend_in = 0.1121946312419061
+blend_out = 0.08014585527703254
+
+[sub_resource type="Resource" id="Resource_706y5"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_Ah"
+start_time = 0.980146367096002
+end_time = 1.2090174222969012
+row = 1
+blend_in = 0.08443552760044959
+blend_out = 0.08443552760044959
+
+[sub_resource type="Resource" id="Resource_dff44"]
+script = ExtResource("2_nuekq")
+pose_id = &"VIS_T_L_D_N"
+start_time = 1.1120045882802656
+end_time = 1.2045366733218543
+row = 2
+blend_in = 0.037012834016635465
+blend_out = 0.037012834016635465
+
+[resource]
+script = ExtResource("4_spp3w")
+profile = ExtResource("3_y6n0b")
+audio = ExtResource("1_vskbx")
+transcript = "Don't count me out yet"
+audible_start = 0.08126128005096689
+audible_end = 1.2045366733218543
+new_blend_in = 0.5
+new_blend_out = 0.5
+smoothing_time = 0.0
+viseme_cues = Array[ExtResource("2_nuekq")]([SubResource("Resource_g32uh"), SubResource("Resource_qgne8"), SubResource("Resource_3lje2"), SubResource("Resource_dmnix"), SubResource("Resource_uwiaw"), SubResource("Resource_sjbg1"), SubResource("Resource_8qrjq"), SubResource("Resource_ppcmy"), SubResource("Resource_s57q4"), SubResource("Resource_j1am0"), SubResource("Resource_xic06"), SubResource("Resource_xhoku"), SubResource("Resource_aa78q"), SubResource("Resource_706y5"), SubResource("Resource_dff44")])
+expression_cues = Array[ExtResource("2_nuekq")]([SubResource("Resource_5pyd5"), SubResource("Resource_om3ey")])
+word_spans = Array[Dictionary]([{
+"end": 0.3583358770577857,
+"start": 0.08126128005096689,
+"word": "Don't"
+}, {
+"end": 0.5754104740646047,
+"start": 0.3583358770577857,
+"word": "count"
+}, {
+"end": 0.7426690291225289,
+"start": 0.5754104740646047,
+"word": "me"
+}, {
+"end": 0.8899275841804533,
+"start": 0.7426690291225289,
+"word": "out"
+}, {
+"end": 1.2045366733218543,
+"start": 0.8899275841804533,
+"word": "yet"
+}])

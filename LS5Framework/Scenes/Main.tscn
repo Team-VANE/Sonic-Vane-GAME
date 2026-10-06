@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://xk1xbyd2vrn4"]
+
+[ext_resource type="PackedScene" uid="uid://cqw6ysgvayksf" path="res://LS5Framework/Scenes/Camera/SonicCameraRig.tscn" id="1_camrig"]
+[ext_resource type="PackedScene" uid="uid://dph8b0op2olul" path="res://LS5Framework/Scenes/Pause/PauseMenu.tscn" id="2_pause"]
+[ext_resource type="PackedScene" uid="uid://dg6y304tie4qj" path="res://LS5Framework/Scenes/HUD/HUD.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Net/ChatUI.tscn" id="4_chat"]
+[ext_resource type="PackedScene" uid="uid://c05cy1vg2lfyi" path="res://LS5Framework/Objects/Music/MusicController.tscn" id="5_music"]
+[ext_resource type="Script" uid="uid://dnilj75i7lmy3" path="res://LS5Framework/Scripts/Net/NetworkSession.gd" id="6_net"]
+[ext_resource type="Script" uid="uid://dvcol30s2dqbm" path="res://LS5Framework/Scripts/Settings/GraphicsSettingsBinder.gd" id="8_gfx"]
+[ext_resource type="Script" uid="uid://bh61wf6unbp8c" path="res://LS5Framework/Scripts/World/LevelManager.gd" id="9_level"]
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="11_spawn"]
+
+[node name="Main" type="Node3D" unique_id=248113872]
+
+[node name="Characters" type="Node3D" parent="." unique_id=1682387528]
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1013884432]
+script = ExtResource("11_spawn")
+
+[node name="NetworkSession" type="Node" parent="." unique_id=371832278]
+script = ExtResource("6_net")
+players_root_name = "Characters"
+
+[node name="CameraRig" parent="." unique_id=1146759852 instance=ExtResource("1_camrig")]
+vertical_offset = 2.5
+min_vertical_offset = 0.8
+max_vertical_offset = 2.7
+max_distance = 30.0
+
+[node name="Lights" type="Node3D" parent="." unique_id=808993509]
+
+[node name="MusicController" parent="." unique_id=1728833691 instance=ExtResource("5_music")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1519126006]
+follow_viewport_enabled = true
+
+[node name="PauseMenu" parent="CanvasLayer" unique_id=243817358 instance=ExtResource("2_pause")]
+
+[node name="HUD" parent="." unique_id=710717939 instance=ExtResource("3_hud")]
+
+[node name="ChatUI" parent="." unique_id=1902345529 instance=ExtResource("4_chat")]
+
+[node name="GraphicsSettingsBinder" type="Node" parent="." unique_id=953214492]
+script = ExtResource("8_gfx")
+world_environment_path = NodePath("Lights/WorldEnvironment")
+directional_light_path = NodePath("Lights/DirectionalLight3D")
+camera_path = NodePath("CameraRig/CameraYawRig/CameraPitchRig/SonicCamera")
+
+[node name="LevelRoot" type="Node3D" parent="." unique_id=1884776118]
+
+[node name="LevelManager" type="Node" parent="." unique_id=95589114]
+script = ExtResource("9_level")
+fallback_world_environment_path = NodePath("")

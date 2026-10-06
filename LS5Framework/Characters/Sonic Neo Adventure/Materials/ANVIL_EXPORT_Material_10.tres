@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://u58e3wpkomhu"]
+
+[ext_resource type="Texture2D" uid="uid://dch11al5cfok7" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_t_sonicpupil_diff.png" id="1_vumfj"]
+
+[resource]
+resource_name = "ANVIL_EXPORT_Material_10"
+cull_mode = 2
+albedo_texture = ExtResource("1_vumfj")
+metallic_specular = 0.0
+roughness = 0.2727273
+uv1_scale = Vector3(-3, 3, 1)
+uv1_offset = Vector3(0.49999997, -2.5, 0)
+texture_filter = 2
+texture_repeat = false
+metadata/_gltf_primary_texture_coord = 0

@@ -1,0 +1,71 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cpff0niuaqf0e"]
+
+[ext_resource type="Texture2D" uid="uid://drd3s7eqa2plj" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Shoe_Red_Sole.png" id="1_78k1s"]
+[ext_resource type="Shader" uid="uid://cbefot22xu6ic" path="res://LS5Framework/Shaders/CharacterUekawaRim.gdshader" id="2_uekawa"]
+[ext_resource type="Shader" uid="uid://br1hly0kubha7" path="res://LS5Framework/Shaders/CharacterSurfaceOutline.gdshader" id="3_outline"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+resource_name = "Character Surface Outline"
+render_priority = 1
+shader = ExtResource("3_outline")
+shader_parameter/outline_width = 0.035
+shader_parameter/darkness = 0.91999997943616
+shader_parameter/alpha_threshold = 0.1
+shader_parameter/base_tex = ExtResource("1_78k1s")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/tint_enabled = false
+shader_parameter/primary_color = Color(1, 1, 1, 1)
+shader_parameter/secondary_color = Color(1, 1, 1, 1)
+shader_parameter/primary_strength = 1.0
+shader_parameter/secondary_strength = 0.0
+shader_parameter/saturation_threshold = 0.25
+shader_parameter/saturation_softness = 0.2
+shader_parameter/saturation_exponent = 1.0
+shader_parameter/overlay_strength = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uekawa"]
+resource_name = "Character Uekawa Rim"
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_outline")
+shader = ExtResource("2_uekawa")
+shader_parameter/effect_opacity = 0.82
+shader_parameter/shadow_start = 0.18
+shader_parameter/shadow_end = 0.62
+shader_parameter/shadow_depth = 0.62
+shader_parameter/rim_start = 0.68
+shader_parameter/rim_end = 0.9
+shader_parameter/lit_rim_strength = 1.15
+shader_parameter/lit_rim_hue_target = 0.14
+shader_parameter/lit_rim_hue_shift = 0.28
+shader_parameter/lit_rim_brightness = 0.72
+shader_parameter/lit_rim_bleach = 0.46
+shader_parameter/back_rim_strength = 0.34
+shader_parameter/back_rim_color = Color(0.12, 0.82, 1, 1)
+shader_parameter/back_rim_tint = 0.58
+shader_parameter/minimum_strength = 0.1
+shader_parameter/lighting_response = 1.0
+shader_parameter/alpha_threshold = 0.1
+shader_parameter/base_tex = ExtResource("1_78k1s")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/tint_enabled = false
+shader_parameter/primary_color = Color(1, 1, 1, 1)
+shader_parameter/secondary_color = Color(1, 1, 1, 1)
+shader_parameter/primary_strength = 1.0
+shader_parameter/secondary_strength = 0.0
+shader_parameter/saturation_threshold = 0.25
+shader_parameter/saturation_softness = 0.2
+shader_parameter/saturation_exponent = 1.0
+shader_parameter/overlay_strength = 1.0
+
+[resource]
+resource_name = "ANVIL_EXPORT_Material_6"
+next_pass = SubResource("ShaderMaterial_uekawa")
+cull_mode = 2
+albedo_texture = ExtResource("1_78k1s")
+metallic_specular = 0.0
+roughness = 0.93
+texture_filter = 2
+stencil_mode = 3
+stencil_flags = 2
+stencil_reference = 32
+metadata/_gltf_primary_texture_coord = 0

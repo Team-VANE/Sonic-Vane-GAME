@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Bumper/Bumper.tscn" id="1_bumper"]
+
+[node name="BumperOvercharged" instance=ExtResource("1_bumper")]
+launch_mode = 0
+mirrored_bounce_ratio = 15.0
+minimum_impulse = 60.0
+maximum_impulse = 180.0
+preserve_tangential_velocity = true
+visual_bounce_peak_scale = 1.35

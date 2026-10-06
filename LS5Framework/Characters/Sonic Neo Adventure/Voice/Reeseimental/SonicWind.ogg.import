@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ca7bt1kjqwydr"
+path="res://.godot/imported/SonicWind.ogg-a02754e8a974bf0514a6d4de3a9a63f1.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/SonicWind.ogg"
+dest_files=["res://.godot/imported/SonicWind.ogg-a02754e8a974bf0514a6d4de3a9a63f1.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

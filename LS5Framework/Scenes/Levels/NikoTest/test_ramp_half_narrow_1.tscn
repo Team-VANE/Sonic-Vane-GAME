@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c0i0uj7njkdy3"]
+
+[ext_resource type="PackedScene" uid="uid://dm7cuouef12s7" path="res://LS5Framework/Scenes/Levels/NikoTest/TestRampHalf_Narrow_1.glb" id="1_ub315"]
+[ext_resource type="Texture2D" uid="uid://bdqotcscdk0pd" path="res://LS5Framework/Scenes/Levels/NikoTest/Test_Diffuse.png" id="2_tnabk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5roof"]
+albedo_texture = ExtResource("2_tnabk")
+metallic = 0.45
+roughness = 0.8
+backlight = Color(0.7204674, 0.7204675, 0.7204674, 1)
+
+[node name="TestRampHalf_Narrow_1" unique_id=198639561 instance=ExtResource("1_ub315")]
+
+[node name="Cylinder_002" parent="." index="0" unique_id=828947690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_5roof")

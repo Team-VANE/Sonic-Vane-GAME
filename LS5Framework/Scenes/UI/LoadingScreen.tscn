@@ -1,0 +1,182 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/LoadingScreen.gd" id="1_loading"]
+[ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_menu_theme"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="3_crt_effect"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_loading_banner"]
+bg_color = Color(0.018, 0.035, 0.075, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.16, 0.5, 1, 0.96)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.7)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_loading_progress"]
+bg_color = Color(0.018, 0.035, 0.075, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.16, 0.5, 1, 0.96)
+shadow_color = Color(0, 0, 0, 0.7)
+shadow_size = 10
+
+[node name="LoadingScreen" type="CanvasLayer"]
+script = ExtResource("1_loading")
+
+[node name="CRTUIBackgroundEffect" type="Node" parent="."]
+script = ExtResource("3_crt_effect")
+
+[node name="Root" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme = ExtResource("2_menu_theme")
+
+[node name="Background" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 1)
+
+[node name="Banner" type="VBoxContainer" parent="Root"]
+custom_minimum_size = Vector2(520, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -125.0
+offset_right = 400.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="LevelFrame" type="PanelContainer" parent="Root/Banner"]
+custom_minimum_size = Vector2(0, 158)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_loading_banner")
+
+[node name="FrameContent" type="HBoxContainer" parent="Root/Banner/LevelFrame"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Accent" type="ColorRect" parent="Root/Banner/LevelFrame/FrameContent"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.15, 0.55, 1, 1)
+
+[node name="Margin" type="MarginContainer" parent="Root/Banner/LevelFrame/FrameContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 15
+
+[node name="Content" type="VBoxContainer" parent="Root/Banner/LevelFrame/FrameContent/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Prefix" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.53, 0.74, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 19
+text = "Get ready for"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="LevelName" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 42
+text = "LEVEL NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Suffix" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.53, 0.74, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.92)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 19
+text = "Is WAY past cool"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="ProgressInset" type="MarginContainer" parent="Root/Banner"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_right = 44
+
+[node name="ProgressFrame" type="PanelContainer" parent="Root/Banner/ProgressInset"]
+custom_minimum_size = Vector2(0, 112)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_loading_progress")
+
+[node name="Margin" type="MarginContainer" parent="Root/Banner/ProgressInset/ProgressFrame"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Content" type="VBoxContainer" parent="Root/Banner/ProgressInset/ProgressFrame/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="ResourceStatus" type="Label" parent="Root/Banner/ProgressInset/ProgressFrame/Margin/Content"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.78, 0.95, 1)
+theme_override_font_sizes/font_size = 14
+text = "Preparing resources..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LoadProgress" type="ProgressBar" parent="Root/Banner/ProgressInset/ProgressFrame/Margin/Content"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+mouse_filter = 2
+show_percentage = true

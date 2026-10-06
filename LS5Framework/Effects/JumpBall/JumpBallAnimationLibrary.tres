@@ -1,0 +1,10 @@
+[gd_resource type="AnimationLibrary" load_steps=3 format=3]
+
+[ext_resource type="Animation" uid="uid://xxgp8ywpk8wm" path="res://LS5Framework/Effects/JumpBall/Animations/Ball_Basis.res" id="1_basis"]
+[ext_resource type="Animation" uid="uid://dwxasho1stgbd" path="res://LS5Framework/Effects/JumpBall/Animations/Ball_Extrusion.res" id="2_extrusion"]
+
+[resource]
+_data = {
+&"Ball_Basis": ExtResource("1_basis"),
+&"Ball_Extrusion": ExtResource("2_extrusion")
+}

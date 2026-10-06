@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://crm288go70sj3"]
+
+[ext_resource type="Script" uid="uid://cr7fu80oepmw6" path="res://LS5Framework/Objects/Spring/Spring.gd" id="1_kwj0v"]
+[ext_resource type="PackedScene" uid="uid://bw0uufb57y064" path="res://LS5Framework/Objects/Spring/DashRing_NextGen/dash_ring_mesh.tscn" id="3_m8vft"]
+[ext_resource type="AudioStream" uid="uid://dd0yaj02p778n" path="res://LS5Framework/Sounds/Objects/DashRing.wav" id="3_syjmy"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kwj0v"]
+radius = 6.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eykro"]
+albedo_color = Color(1, 0, 0, 1)
+metallic = 0.5
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ql8kk"]
+material = SubResource("StandardMaterial3D_eykro")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vbxi4"]
+albedo_color = Color(0.63226223, 0.62709224, 0.64045024, 1)
+metallic = 0.5
+roughness = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6pmed"]
+material = SubResource("StandardMaterial3D_vbxi4")
+
+[sub_resource type="Curve3D" id="Curve3D_default"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_syjmy"]
+albedo_color = Color(8.663535e-07, 0.4564252, 0.21642968, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8vft"]
+albedo_color = Color(0.099985994, 0.099985994, 0.099985994, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_solver"]
+transparency = 1
+shading_mode = 0
+no_depth_test = true
+albedo_color = Color(0.1, 0.8, 1, 0.55)
+
+[sub_resource type="SphereMesh" id="SphereMesh_solver"]
+material = SubResource("StandardMaterial3D_solver")
+radius = 0.6
+height = 1.2
+
+[node name="DashRing" type="Area3D" unique_id=161984591 node_paths=PackedStringArray("sfx_player")]
+collision_layer = 32
+collision_mask = 6
+audio_bus_name = &"SFX"
+script = ExtResource("1_kwj0v")
+sfx_player = NodePath("AudioStreamPlayer3D")
+spring_sounds = Array[AudioStream]([ExtResource("3_syjmy")])
+homing_target_enabled = false
+preserve_active_flight = true
+preserved_flight_time_bonus = 1.0
+
+[node name="Mesh" type="Node3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1628548631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_kwj0v")
+
+[node name="TrajectorySolver" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+visible = false
+gizmo_extents = 1.0
+
+[node name="SolverShape" type="MeshInstance3D" parent="TrajectorySolver"]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_solver")
+
+[node name="TempMesh" type="MeshInstance3D" parent="Mesh" unique_id=437698428]
+transform = Transform3D(2.5, 0, 0, 0, 0.333, 0, 0, 0, 2.5, 0, 0.13, 0)
+visible = false
+mesh = SubResource("CylinderMesh_ql8kk")
+
+[node name="TempMesh2" type="MeshInstance3D" parent="Mesh" unique_id=1503687382]
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, -0.5, 0)
+visible = false
+mesh = SubResource("CylinderMesh_6pmed")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=814315616]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=2000608308]
+max_db = 0.2
+max_distance = 60.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+
+[node name="SplinePath" type="Path3D" parent="." unique_id=1615889928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+curve = SubResource("Curve3D_default")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Mesh" unique_id=806302185]
+transform = Transform3D(-1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, 0, 1, -3.444478e-08, 0.21199524, 0)
+visible = false
+inner_radius = 3.0
+outer_radius = 4.0
+sides = 12
+material = SubResource("StandardMaterial3D_syjmy")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Mesh" unique_id=294384232]
+transform = Transform3D(-1.8105853e-08, 1, 6.181724e-08, -0.7071068, -8.742278e-08, 0.7071068, 0.7071068, 0, 0.7071068, -3.043509e-08, 0.7578608, 3.2928932)
+visible = false
+polygon = PackedVector2Array(0, -1, 0, 1, 2, 1, 2, -1)
+material = SubResource("StandardMaterial3D_m8vft")
+
+[node name="CSGPolygon3D2" type="CSGPolygon3D" parent="Mesh" unique_id=1069457992]
+transform = Transform3D(-0.6123726, -0.49999994, -0.6123724, -0.70710677, 1.7901819e-08, 0.7071069, -0.35355335, 0.8660253, -0.35355335, -3, 0.7270675, -1.7071068)
+visible = false
+polygon = PackedVector2Array(0, -1, 0, 1, 2, 1, 2, -1)
+material = SubResource("StandardMaterial3D_m8vft")
+
+[node name="CSGPolygon3D3" type="CSGPolygon3D" parent="Mesh" unique_id=634808274]
+transform = Transform3D(0.6123725, -0.5, 0.6123725, -0.70710695, -7.907744e-09, 0.7071068, -0.3535534, -0.86602545, -0.35355347, 3, 0.727067, -1.7071068)
+visible = false
+polygon = PackedVector2Array(0, -1, 0, 1, 2, 1, 2, -1)
+material = SubResource("StandardMaterial3D_m8vft")
+
+[node name="DashRing" parent="Mesh" unique_id=1724912847 instance=ExtResource("3_m8vft")]
+transform = Transform3D(-3.4969112e-08, -0.8, 0, 0.8, -3.4969112e-08, 0, 0, 0, 0.8, 0, -1.1735418, 0)

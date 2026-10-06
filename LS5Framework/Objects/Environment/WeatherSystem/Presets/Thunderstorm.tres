@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="DynamicWeatherPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/WeatherSystem/DynamicWeatherPreset.gd" id="1_preset"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/DayNightCycle/Weather/Storm.tres" id="2_weather"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/Rain/Profiles/Thunderstorm.tres" id="3_rain"]
+
+[resource]
+script = ExtResource("1_preset")
+preset_id = &"thunderstorm"
+display_name = "Thunderstorm"
+feature_tags = Array[StringName]([&"clouds", &"rain", &"storm", &"thunder"])
+sky_weather = ExtResource("2_weather")
+rain_profile = ExtResource("3_rain")
+selection_weight = 0.22
+severity = 1.0
+daytime_weight_multiplier = 0.9
+nighttime_weight_multiplier = 1.15
+duration_range_seconds = Vector2(80, 200)
+transition_range_seconds = Vector2(10, 22)

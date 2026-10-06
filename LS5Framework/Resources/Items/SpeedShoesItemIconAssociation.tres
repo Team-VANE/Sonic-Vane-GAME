@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemIconAssociation" format=3 uid="uid://c7h1tbwn71a0t"]
+
+[ext_resource type="Script" uid="uid://c4tarss6rnwwn" path="res://LS5Framework/Resources/Items/ItemIconAssociation.gd" id="1_association"]
+[ext_resource type="Texture2D" uid="uid://clfpltb7gi2uu" path="res://LS5Framework/Images/Icons/ItemMonitor_Icon_SpeedShoe.png" id="2_speed_shoes_icon"]
+
+[resource]
+script = ExtResource("1_association")
+item_id = &"speed_shoes"
+icon_texture = ExtResource("2_speed_shoes_icon")
+is_power_up = true

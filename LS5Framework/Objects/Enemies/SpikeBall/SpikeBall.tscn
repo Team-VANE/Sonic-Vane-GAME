@@ -1,0 +1,194 @@
+[gd_scene format=3 uid="uid://c3gu5qijp7yb3"]
+
+[ext_resource type="Script" uid="uid://dmnp2anprap0b" path="res://LS5Framework/Objects/Enemies/SpikeBall/SpikeBall.gd" id="1_spike_ball"]
+[ext_resource type="PackedScene" uid="uid://3ab0dtsse860" path="res://LS5Framework/Objects/Enemies/SpikeBall/Model_Frontiers/SpikeBall.glb" id="2_6771i"]
+[ext_resource type="AudioStream" uid="uid://d2t4qbu6lo4k6" path="res://LS5Framework/Sounds/Objects/Enemies/SpikeBall_Crash.wav" id="2_crash"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_core"]
+albedo_color = Color(0.018, 0.024, 0.035, 1)
+metallic = 0.82
+roughness = 0.22
+
+[sub_resource type="SphereMesh" id="SphereMesh_core"]
+material = SubResource("StandardMaterial3D_core")
+radius = 3.0
+height = 6.0
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_solid"]
+resource_local_to_scene = true
+radius = 1.9
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_damage"]
+resource_local_to_scene = true
+radius = 2.1
+
+[sub_resource type="Gradient" id="Gradient_landing_dust_alpha"]
+offsets = PackedFloat32Array(0, 0.48, 0.78, 1)
+colors = PackedColorArray(1, 1, 1, 0.72, 1, 1, 1, 0.62, 1, 1, 1, 0.2, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_landing_dust_alpha"]
+gradient = SubResource("Gradient_landing_dust_alpha")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_landing_dust_radial_velocity"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.15, 1), 0.0, -1.0, 0, 0, Vector2(0.45, 0.25), -1.0, -1.0, 0, 0, Vector2(0.7, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_landing_dust_radial_velocity"]
+curve = SubResource("Curve_landing_dust_radial_velocity")
+
+[sub_resource type="Curve" id="Curve_landing_dust_scale"]
+_limits = [0.0, 2.0, 0.0, 2.0]
+_data = [Vector2(0, 0.35), 0.0, 3.0, 0, 0, Vector2(0.28, 1), 1.2, 1.2, 0, 0, Vector2(1, 1.45), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_landing_dust_scale"]
+curve = SubResource("Curve_landing_dust_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_landing_dust"]
+resource_local_to_scene = true
+lifetime_randomness = 0.3
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.08
+emission_ring_inner_radius = 0.02
+emission_ring_cone_angle = 90.0
+radial_velocity_min = 10.0
+radial_velocity_max = 16.0
+radial_velocity_curve = SubResource("CurveTexture_landing_dust_radial_velocity")
+gravity = Vector3(0, 0.8, 0)
+damping_min = 1.0
+damping_max = 2.0
+scale_min = 0.65
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_landing_dust_scale")
+color = Color(0.78, 0.74, 0.66, 0.72)
+color_ramp = SubResource("GradientTexture1D_landing_dust_alpha")
+
+[sub_resource type="Shader" id="Shader_landing_dust"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_never, cull_disabled, unshaded, shadows_disabled;
+
+uniform sampler2D edge_texture : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D noise_texture : filter_linear_mipmap, repeat_enable;
+uniform vec4 dust_tint : source_color = vec4(0.72, 0.68, 0.58, 0.68);
+uniform float noise_scale = 2.5;
+uniform float noise_strength = 0.38;
+uniform vec2 noise_velocity = vec2(0.1, -0.06);
+
+void vertex() {
+	vec3 scale = vec3(length(MODEL_MATRIX[0].xyz), length(MODEL_MATRIX[1].xyz), length(MODEL_MATRIX[2].xyz));
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(
+		vec4(INV_VIEW_MATRIX[0].xyz * scale.x, 0.0),
+		vec4(INV_VIEW_MATRIX[1].xyz * scale.y, 0.0),
+		vec4(INV_VIEW_MATRIX[2].xyz * scale.z, 0.0),
+		MODEL_MATRIX[3]
+	);
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+}
+
+void fragment() {
+	vec4 edge = texture(edge_texture, UV);
+	vec2 noise_uv_a = UV * noise_scale + TIME * noise_velocity;
+	vec2 noise_uv_b = UV * (noise_scale * 1.8) - TIME * noise_velocity.yx * 0.7;
+	float noise_a = texture(noise_texture, noise_uv_a).r;
+	float noise_b = texture(noise_texture, noise_uv_b).r;
+	float body = mix(1.0 - noise_strength, 1.0, mix(noise_a, noise_b, 0.45));
+	ALBEDO = dust_tint.rgb * COLOR.rgb * body;
+	ALPHA = edge.a * dust_tint.a * COLOR.a * body;
+}"
+
+[sub_resource type="Gradient" id="Gradient_landing_dust_edge"]
+offsets = PackedFloat32Array(0, 0.12, 0.58, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.92, 0.55, 0.5, 0.4, 0.2, 0.42, 0.38, 0.3, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_landing_dust_edge"]
+gradient = SubResource("Gradient_landing_dust_edge")
+width = 96
+height = 96
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_landing_dust"]
+frequency = 0.07
+fractal_octaves = 4
+fractal_lacunarity = 2.1
+fractal_gain = 0.52
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_landing_dust"]
+width = 128
+height = 128
+noise = SubResource("FastNoiseLite_landing_dust")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_landing_dust"]
+render_priority = 0
+shader = SubResource("Shader_landing_dust")
+shader_parameter/edge_texture = SubResource("GradientTexture2D_landing_dust_edge")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_landing_dust")
+shader_parameter/dust_tint = Color(1.0472637, 1.0223492, 0.96421486, 0.6784314)
+shader_parameter/noise_scale = 2.5
+shader_parameter/noise_strength = 0.38
+shader_parameter/noise_velocity = Vector2(0.1, -0.06)
+
+[sub_resource type="QuadMesh" id="QuadMesh_landing_dust"]
+material = SubResource("ShaderMaterial_landing_dust")
+size = Vector2(3, 3)
+
+[node name="SpikeBall" type="RigidBody3D" unique_id=2132038934 groups=["mantle_excluded"]]
+collision_layer = 66
+collision_mask = 7
+continuous_cd = true
+script = ExtResource("1_spike_ball")
+collision_radius = 1.9
+damage_contact_margin = 0.2
+
+[node name="Visual" type="Node3D" parent="." unique_id=1313079530]
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Core" type="MeshInstance3D" parent="Visual" unique_id=1066257249]
+visible = false
+mesh = SubResource("SphereMesh_core")
+
+[node name="SpikeBall" parent="Visual" unique_id=1723116650 instance=ExtResource("2_6771i")]
+transform = Transform3D(4.6, 0, 0, 0, 4.6, 0, 0, 0, 4.6, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1915965611]
+shape = SubResource("SphereShape3D_solid")
+
+[node name="DamageArea" type="Area3D" parent="." unique_id=131768372]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea" unique_id=838537603]
+shape = SubResource("SphereShape3D_damage")
+
+[node name="CrashAudio" type="AudioStreamPlayer3D" parent="." unique_id=238410754]
+stream = ExtResource("2_crash")
+volume_db = -15.0
+unit_size = 60.0
+max_db = 1.0
+max_distance = 120.0
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -1.0
+
+[node name="LandingDust" type="GPUParticles3D" parent="." unique_id=1084621061]
+emitting = false
+amount = 20
+lifetime = 1.6
+one_shot = true
+explosiveness = 1.0
+randomness = 0.72
+visibility_aabb = AABB(-12, -6, -12, 24, 12, 24)
+process_material = SubResource("ParticleProcessMaterial_landing_dust")
+draw_pass_1 = SubResource("QuadMesh_landing_dust")
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]

@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Foot_AfterImage_Red.png" id="1_dmhvh"]
+
+[resource]
+resource_name = "FootAfterImage"
+transparency = 2
+alpha_scissor_threshold = 0.279
+alpha_antialiasing_mode = 0
+cull_mode = 2
+depth_draw_mode = 1
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(1, 1, 1, 0.7647059)
+albedo_texture = ExtResource("1_dmhvh")
+metallic_specular = 0.0
+emission = Color(1, 0.54800874, 0.55432606, 1)
+emission_energy_multiplier = 2.35
+emission_operator = 1
+emission_texture = ExtResource("1_dmhvh")

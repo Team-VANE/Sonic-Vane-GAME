@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cie4bnd6j805s"]
+
+[ext_resource type="Texture2D" uid="uid://6jpygo8ydfs3" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/cmn_dashpanel02_dfsp_j.png" id="1_8mwvn"]
+[ext_resource type="Texture2D" uid="uid://bauw34icvrp05" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/cmn_dashpanel02_dfsp_j alpha_normal.png" id="2_oedum"]
+[ext_resource type="Texture2D" uid="uid://ckpbwrx7tp53u" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/cmn_dashpanel02_dfsp_j_EMISSIVE.png" id="2_oitng"]
+
+[resource]
+resource_name = "Panel"
+cull_mode = 2
+albedo_texture = ExtResource("1_8mwvn")
+roughness = 0.25
+emission = Color(1, 0.55, 0.5, 1)
+emission_energy_multiplier = 0.64
+emission_operator = 1
+emission_texture = ExtResource("2_oitng")
+normal_enabled = true
+normal_texture = ExtResource("2_oedum")

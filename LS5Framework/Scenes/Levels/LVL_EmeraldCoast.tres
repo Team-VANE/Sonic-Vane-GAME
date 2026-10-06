@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://em8ditouu2hg"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_level_doc"]
+
+[resource]
+script = ExtResource("1_level_doc")
+level_name = "Emerald Coast"
+order = 40
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/EmeraldCoast/emerald_coast.tscn"

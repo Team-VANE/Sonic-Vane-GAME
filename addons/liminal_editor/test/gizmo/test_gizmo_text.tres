@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://ct8n4ygpl5v2b"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_xwe4j"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_kvof6"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_qmvtq"]
+
+[sub_resource type="Resource" id="Resource_txg01"]
+script = ExtResource("1_xwe4j")
+type = "text"
+text = "{{label_text}}"
+bindings = {
+"color": "label_color",
+"size": "label_size"
+}
+
+[sub_resource type="Resource" id="Resource_txp01"]
+script = ExtResource("2_kvof6")
+name = "label_text"
+type = "String"
+default_value = "Hello Gizmo"
+
+[sub_resource type="Resource" id="Resource_txp02"]
+script = ExtResource("2_kvof6")
+name = "label_size"
+type = "float"
+default_value = 14.0
+
+[sub_resource type="Resource" id="Resource_txp03"]
+script = ExtResource("2_kvof6")
+name = "label_color"
+type = "Color"
+default_value = [1.0, 1.0, 1.0, 1.0]
+
+[resource]
+script = ExtResource("3_qmvtq")
+entity_name = "test_gizmo_text"
+description = "Test: text gizmo with {{label_text}} template token, bindable font size and color"
+properties = Array[ExtResource("2_kvof6")]([SubResource("Resource_txp01"), SubResource("Resource_txp02"), SubResource("Resource_txp03")])
+gizmos = Array[ExtResource("1_xwe4j")]([SubResource("Resource_txg01")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bomen3v116vvd"]
+
+[ext_resource type="Texture2D" uid="uid://cebimrrfvt7e3" path="res://LS5Framework/Objects/Spring/DashRing_NextGen/cmn_dashring01_dfsp_j.png" id="1_r0nud"]
+[ext_resource type="Texture2D" uid="uid://d1ff1x8ky3bvu" path="res://LS5Framework/Objects/Spring/DashRing_NextGen/cmn_dashring01_dfsp_j_EMISSIVE.png" id="2_modqm"]
+[ext_resource type="Texture2D" uid="uid://djpuca1yyfnj2" path="res://LS5Framework/Objects/Spring/DashRing_NextGen/cmn_dashring01_dfsp_j Alpha_normal.png" id="3_0kb4s"]
+
+[resource]
+resource_name = "Material1"
+cull_mode = 2
+albedo_texture = ExtResource("1_r0nud")
+metallic = 0.7
+roughness = 0.6
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 4.13
+emission_operator = 1
+emission_texture = ExtResource("2_modqm")
+normal_enabled = true
+normal_texture = ExtResource("3_0kb4s")

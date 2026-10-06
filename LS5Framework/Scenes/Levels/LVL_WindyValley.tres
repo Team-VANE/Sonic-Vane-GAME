@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://cw8shv5oesp86"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_8oj88"]
+
+[resource]
+script = ExtResource("1_8oj88")
+level_name = "Windy Valley (Astral Edit)"
+order = 8
+selection_category = "Work In Progress"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Windy Valley/windy_valley.tscn"

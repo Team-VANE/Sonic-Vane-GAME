@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://inw8oodi5fuu"]
+
+[ext_resource type="Script" uid="uid://cud2tifemvycd" path="res://LS5Framework/Scripts/Race/RaceGhost.gd" id="1_ghost_script"]
+
+[node name="RaceGhost" type="Node3D" unique_id=306183113]
+script = ExtResource("1_ghost_script")

@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://6vg76uqhqbdv"]
+
+[ext_resource type="AudioStream" uid="uid://dltlt63armewa" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Confused_Huh_02.ogg" id="1_43d84"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_3vb31"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_q4y7m"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_b3smo"]
+
+[sub_resource type="Resource" id="Resource_pmwnu"]
+script = ExtResource("2_3vb31")
+pose_id = &"EXP_BROWS_SKEW_R"
+start_time = 0.04000000000000003
+end_time = 1.15
+row = 2
+blend_in = 0.15
+blend_out = 0.15
+
+[sub_resource type="Resource" id="Resource_jla5j"]
+script = ExtResource("2_3vb31")
+pose_id = &"EXP_SAD"
+start_time = 0.06
+end_time = 0.7699999999999999
+blend_in = 0.32
+blend_out = 0.355
+strength = 0.7
+
+[sub_resource type="Resource" id="Resource_1ej1x"]
+script = ExtResource("2_3vb31")
+pose_id = &"EXP_SURPRISE"
+start_time = 0.22000000000000003
+end_time = 1.16
+row = 1
+blend_in = 0.345
+blend_out = 0.345
+
+[sub_resource type="Resource" id="Resource_tb0y3"]
+script = ExtResource("2_3vb31")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.07
+end_time = 0.35000000000000003
+blend_in = 0.13
+blend_out = 0.14
+
+[sub_resource type="Resource" id="Resource_emnwi"]
+script = ExtResource("2_3vb31")
+pose_id = &"VIS_Ah"
+start_time = 0.18
+end_time = 0.6100000000000001
+row = 1
+blend_in = 0.17500000000000004
+blend_out = 0.17500000000000004
+
+[sub_resource type="Resource" id="Resource_o1mpl"]
+script = ExtResource("2_3vb31")
+pose_id = &"VIS_Uh"
+start_time = 0.48
+end_time = 0.73
+row = 2
+blend_in = 0.125
+blend_out = 0.125
+
+[resource]
+script = ExtResource("4_b3smo")
+profile = ExtResource("3_q4y7m")
+audio = ExtResource("1_43d84")
+audible_start = 0.00039639283
+audible_end = 0.5355267160921358
+viseme_cues = Array[ExtResource("2_3vb31")]([SubResource("Resource_tb0y3"), SubResource("Resource_emnwi"), SubResource("Resource_o1mpl")])
+expression_cues = Array[ExtResource("2_3vb31")]([SubResource("Resource_pmwnu"), SubResource("Resource_jla5j"), SubResource("Resource_1ej1x")])

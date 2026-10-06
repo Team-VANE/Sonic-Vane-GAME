@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/HUDMusicTrackDisplay.gd" id="1_display"]
+
+[node name="HUDMusicTrackDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_display")
+
+[node name="NotificationStack" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -740.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 380.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 8

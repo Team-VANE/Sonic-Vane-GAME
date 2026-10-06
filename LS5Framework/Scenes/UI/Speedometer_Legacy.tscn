@@ -1,0 +1,233 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/Speedometer_Legacy.gd" id="1_speedometer"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="2_orbitron_900"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_speedometer_frame"]
+bg_color = Color(0.018, 0.028, 0.065, 0.9)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2, 0.55, 1, 0.95)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0, 0, 0, 0.62)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_readout_frame"]
+bg_color = Color(0.008, 0.014, 0.032, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.42, 0.7, 1, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Speedometer" type="Control" unique_id=731278715]
+custom_minimum_size = Vector2(270, 312)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 270.0
+offset_bottom = 312.0
+mouse_filter = 2
+script = ExtResource("1_speedometer")
+
+[node name="Frame" type="PanelContainer" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_speedometer_frame")
+
+[node name="BarrierBlastLabel" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 16.0
+offset_right = -12.0
+offset_bottom = 54.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 21
+text = "BARRIER BLAST !!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReadoutFrame" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -244.0
+offset_top = -54.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_readout_frame")
+
+[node name="Margin" type="MarginContainer" parent="ReadoutFrame"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 3
+
+[node name="ReadoutEffect" type="Control" parent="ReadoutFrame/Margin"]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ReadoutGlow" type="Control" parent="ReadoutFrame/Margin/ReadoutEffect"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Current" type="Label" parent="ReadoutFrame/Margin/ReadoutEffect/ReadoutGlow"]
+layout_mode = 1
+anchor_right = 0.44
+anchor_bottom = 1.0
+offset_right = -6.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 25
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Separator" type="Label" parent="ReadoutFrame/Margin/ReadoutEffect/ReadoutGlow"]
+layout_mode = 1
+anchor_left = 0.44
+anchor_right = 0.56
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 25
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Maximum" type="Label" parent="ReadoutFrame/Margin/ReadoutEffect/ReadoutGlow"]
+layout_mode = 1
+anchor_left = 0.56
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 25
+text = "1"
+vertical_alignment = 1
+
+[node name="ReadoutText" type="Control" parent="ReadoutFrame/Margin/ReadoutEffect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Current" type="Label" parent="ReadoutFrame/Margin/ReadoutEffect/ReadoutText" unique_id=973260371]
+layout_mode = 1
+anchor_right = 0.44
+anchor_bottom = 1.0
+offset_right = -6.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.72)
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 25
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+clip_text = true
+
+[node name="Separator" type="Label" parent="ReadoutFrame/Margin/ReadoutEffect/ReadoutText"]
+layout_mode = 1
+anchor_left = 0.44
+anchor_right = 0.56
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.72)
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 25
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Maximum" type="Label" parent="ReadoutFrame/Margin/ReadoutEffect/ReadoutText"]
+layout_mode = 1
+anchor_left = 0.56
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.96)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.72)
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_orbitron_900")
+theme_override_font_sizes/font_size = 25
+text = "1"
+vertical_alignment = 1
+clip_text = true
+

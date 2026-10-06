@@ -1,0 +1,203 @@
+[gd_scene format=3 uid="uid://d0twxxsygymbf"]
+
+[ext_resource type="Script" uid="uid://ccq5yu8651pfv" path="res://LS5Framework/Objects/Enemies/Core/Enemy.gd" id="1_enemy"]
+[ext_resource type="PackedScene" uid="uid://das874eyrhrpx" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/mono_beetle.tscn" id="2_model"]
+[ext_resource type="PackedScene" uid="uid://d3usecwjryhfc" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/MonoBeetle_Fractures.glb" id="3_fractures"]
+[ext_resource type="Texture2D" uid="uid://dywcl3l11l0h6" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/MonoBeetle_Tex_0057_0.png" id="3_pw831"]
+[ext_resource type="Texture2D" uid="uid://4w7ec6odjxjx" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/MonoBeetle_Fractures_Tex_0057_0_EMISSIVE.png" id="4_4wsnq"]
+[ext_resource type="AudioStream" uid="uid://coq51cqlglw8x" path="res://LS5Framework/Sounds/Objects/Enemies/GUN_Footstep.wav" id="4_damage_sound"]
+[ext_resource type="Script" uid="uid://b3tr2jsh60x7a" path="res://LS5Framework/Objects/Gameplay/ObjectFractureEmitter.gd" id="5_fracture_emitter"]
+[ext_resource type="AudioStream" uid="uid://bq7e304joncv1" path="res://LS5Framework/Sounds/Objects/Enemies/GUN_Beetle_Idle.wav" id="6_idle_sound"]
+[ext_resource type="AudioStream" uid="uid://dppdof2i4mkx7" path="res://LS5Framework/Sounds/Objects/Enemies/GUN_Enemy_Explode.wav" id="7_defeat_sound"]
+[ext_resource type="PackedScene" uid="uid://du58elexijmqe" path="res://LS5Framework/Effects/Explosion/ExplosionEffect.tscn" id="8_explosion"]
+[ext_resource type="Script" uid="uid://c8t75yhaf5r4e" path="res://LS5Framework/Scripts/Animation/GazeTarget3D.gd" id="9_gaze"]
+[ext_resource type="Script" uid="uid://cn17erwd7t2dh" path="res://LS5Framework/Objects/Gameplay/ScoreAward.gd" id="10_score"]
+[ext_resource type="Script" uid="uid://cdwnvk0ci23ar" path="res://LS5Framework/Scripts/Actors/ActorHealth.gd" id="11_health"]
+[ext_resource type="Script" uid="uid://cldhg7femsy4x" path="res://LS5Framework/Scripts/Actors/ActorGravityReceiver3D.gd" id="12_gravity"]
+[ext_resource type="Script" uid="uid://bhj8tanhuo7hv" path="res://LS5Framework/Objects/Enemies/Core/EnemyPerception.gd" id="13_perception"]
+[ext_resource type="Script" uid="uid://dt6i0muc6ubs" path="res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd" id="14_brain"]
+[ext_resource type="Script" uid="uid://dx8vv7jx1ohnb" path="res://LS5Framework/Scripts/Actors/ActorCollisionController3D.gd" id="15_collision"]
+[ext_resource type="Script" uid="uid://dl2l8jyue7aei" path="res://LS5Framework/Objects/Enemies/Core/EnemyAnimationDriver.gd" id="16_animation"]
+[ext_resource type="Script" uid="uid://bqgf2x8djxral" path="res://LS5Framework/Scripts/Actors/ActorAudioCues3D.gd" id="17_audio"]
+[ext_resource type="Script" uid="uid://ceq8k61ipwtmu" path="res://LS5Framework/Scripts/Actors/ActorDefeatEffects3D.gd" id="18_effects"]
+[ext_resource type="Script" uid="uid://8phnf15chfjg" path="res://LS5Framework/Scripts/Actors/ActorRespawnComponent3D.gd" id="19_respawn"]
+[ext_resource type="Script" uid="uid://bmuij6ei8ae11" path="res://LS5Framework/Objects/Enemies/Core/Locomotion/FlyingEnemyLocomotion.gd" id="20_flight"]
+[ext_resource type="Script" uid="uid://j2u1k48dpnht" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttackController.gd" id="21_attacks"]
+[ext_resource type="Script" uid="uid://wqhw3ja216wm" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyProjectileAttack.gd" id="22_projectile_attack"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Enemies/Core/EnemyProjectile.tscn" id="23_projectile"]
+[ext_resource type="Script" uid="uid://rnxcpdi1i6m5" path="res://LS5Framework/Scripts/Actors/ActorTargetable3D.gd" id="24_targetable"]
+[ext_resource type="Script" uid="uid://btwll4rjg6ko" path="res://LS5Framework/Scripts/Actors/ActorHurtbox3D.gd" id="25_hurtbox"]
+
+[sub_resource type="SphereShape3D" id="BodyShape"]
+radius = 0.78
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bnmyi"]
+cull_mode = 2
+albedo_texture = ExtResource("3_pw831")
+emission_enabled = true
+emission_energy_multiplier = 10.0
+emission_texture = ExtResource("4_4wsnq")
+
+[sub_resource type="SphereShape3D" id="HurtboxShape"]
+radius = 3.0
+
+[node name="GUNMonoBeetle" type="CharacterBody3D" unique_id=1219405340]
+collision_layer = 128
+script = ExtResource("1_enemy")
+size_target_paths = Array[NodePath]([NodePath("CollisionShape3D"), NodePath("Visual"), NodePath("Targetable"), NodePath("Hurtbox/CollisionShape3D"), NodePath("Muzzle"), NodePath("MonoBeetle_Fractures")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1329675914]
+shape = SubResource("BodyShape")
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Visual" type="Node3D" parent="." unique_id=652736276]
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="MonoBeetle" parent="Visual" unique_id=76268734 instance=ExtResource("2_model")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, -1.3, 0)
+
+[node name="Mesh_0176_002" parent="Visual/MonoBeetle/Armature/Skeleton3D" parent_id_path=PackedInt32Array(76268734, 1109208875) index="0" unique_id=2009148764]
+surface_material_override/2 = SubResource("StandardMaterial3D_bnmyi")
+
+[node name="Targetable" type="Marker3D" parent="." unique_id=748162126]
+script = ExtResource("24_targetable")
+attack_magnetism_range = 30.0
+attack_magnetism_strength_multiplier = 1.15
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=728511984]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -1.55)
+metadata/_enemy_size_base_position = Vector3(0, -0.1, -1.55)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=2011491721]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("25_hurtbox")
+bounce_player_speed = 14.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=430848242]
+shape = SubResource("HurtboxShape")
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Components" type="Node3D" parent="." unique_id=1754993030]
+
+[node name="Health" type="Node" parent="Components" unique_id=1903521744]
+script = ExtResource("11_health")
+
+[node name="Gravity" type="Node" parent="Components" unique_id=350393743]
+script = ExtResource("12_gravity")
+
+[node name="Perception" type="Node" parent="Components" unique_id=324270395]
+script = ExtResource("13_perception")
+detection_radius = 42.0
+loss_radius = 50.0
+field_of_view_deg = 260.0
+vertical_tolerance = 20.0
+sight_origin_path = NodePath("Muzzle")
+
+[node name="Brain" type="Node" parent="Components" unique_id=263850557]
+script = ExtResource("14_brain")
+alert_duration_sec = 0.45
+maximum_leash_distance = 50.0
+return_speed_ratio = 0.7
+
+[node name="Collision" type="Node" parent="Components" unique_id=45108788]
+script = ExtResource("15_collision")
+managed_collision_paths = Array[NodePath]([NodePath("Hurtbox")])
+
+[node name="Animation" type="Node" parent="Components" unique_id=47564855]
+script = ExtResource("16_animation")
+animation_player_path = NodePath("Visual/MonoBeetle/AnimationPlayer")
+animation_idle = &"Hover_Idle"
+animation_alert = &"Hover_Idle"
+animation_move = &"Hover_Idle"
+animation_attack_primary = &"Hover_Idle"
+
+[node name="Audio" type="Node3D" parent="Components" unique_id=1651438975]
+script = ExtResource("17_audio")
+idle_sound = ExtResource("6_idle_sound")
+damage_sound = ExtResource("4_damage_sound")
+defeat_sound = ExtResource("7_defeat_sound")
+attack_sound = ExtResource("4_damage_sound")
+projectile_sound = ExtResource("4_damage_sound")
+volume_db = 15.0
+max_distance = 150.0
+idle_sound_bus = &"EnemyIdle"
+idle_volume_db = 3.0
+idle_max_distance = 130.0
+idle_pitch_variation = 0.03
+idle_voice_group = &"gun_beetle"
+idle_full_voice_count = 4
+idle_max_voice_count = 6
+idle_reduced_volume_db = -12.0
+
+[node name="DefeatEffects" type="Node3D" parent="Components" unique_id=661783885]
+script = ExtResource("18_effects")
+defeat_effect_scene = ExtResource("8_explosion")
+effect_origin_path = NodePath("Targetable")
+fracture_emitter_path = NodePath("FractureEmitter")
+
+[node name="Respawn" type="Node" parent="Components" unique_id=1043459277]
+script = ExtResource("19_respawn")
+respawn_enabled = true
+respawn_delay_sec = 5.0
+
+[node name="Optional" type="Node" parent="Components" unique_id=223339869]
+
+[node name="Locomotion" type="Node" parent="." unique_id=230773163]
+script = ExtResource("20_flight")
+horizontal_speed = 7.5
+vertical_speed = 4.5
+acceleration = 21.0
+deceleration = 25.0
+face_pitch = true
+facing_speed_deg = 300.0
+
+[node name="Attacks" type="Node" parent="." unique_id=766132160]
+script = ExtResource("21_attacks")
+
+[node name="PrimaryProjectile" type="Node" parent="Attacks" unique_id=1730958928]
+script = ExtResource("22_projectile_attack")
+projectile_scene = ExtResource("23_projectile")
+projectile_speed = 28.0
+projectile_lifetime_sec = 7.0
+projectile_homing_turn_speed_deg = 95.0
+projectiles_per_shot = 3
+spread_angle_deg = 10.0
+priority = 10
+minimum_range = 4.0
+maximum_range = 15.0
+windup_duration_sec = 0.55
+active_duration_sec = 0.0
+cooldown_duration_sec = 1.8
+
+[node name="ScoreAward" type="Node" parent="." unique_id=1156694883]
+script = ExtResource("10_score")
+score_amount = 300
+
+[node name="FractureEmitter" type="Node3D" parent="." unique_id=317402334]
+script = ExtResource("5_fracture_emitter")
+fracture_source_path = NodePath("../MonoBeetle_Fractures")
+piece_mass = 4.0
+upward_impulse = 2.0
+random_impulse = 2.0
+lifetime_sec = 7.0
+
+[node name="MonoBeetle_Fractures" parent="." unique_id=1103639648 instance=ExtResource("3_fractures")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, -1.3, 0)
+visible = false
+metadata/_enemy_size_base_position = Vector3(0, -1.3, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="GazeTarget3D" type="Marker3D" parent="." unique_id=352293017 groups=["gaze_targets"]]
+script = ExtResource("9_gaze")
+gaze_priority = 5
+gaze_max_distance = 35.0
+
+[editable path="Visual/MonoBeetle"]
+[editable path="MonoBeetle_Fractures"]

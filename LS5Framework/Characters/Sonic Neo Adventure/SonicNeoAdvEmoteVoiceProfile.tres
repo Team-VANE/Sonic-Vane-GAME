@@ -1,0 +1,188 @@
+[gd_resource type="Resource" script_class="EmoteVoiceProfile" format=3 uid="uid://sdsi07ril7y6"]
+
+[ext_resource type="AudioStream" uid="uid://ii2qxsfdvfef" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Celebrate_Yes_01.ogg" id="clip_1"]
+[ext_resource type="AudioStream" uid="uid://doo8p3m4q5q8x" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_01.ogg" id="clip_2"]
+[ext_resource type="AudioStream" uid="uid://bgnaeerrojmfg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_02.ogg" id="clip_3"]
+[ext_resource type="AudioStream" uid="uid://dl8ufk6s7md8f" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_03.ogg" id="clip_4"]
+[ext_resource type="AudioStream" uid="uid://ca5dthyeo8gkp" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_Exasperated_01.ogg" id="clip_5"]
+[ext_resource type="AudioStream" uid="uid://dknmehsvwkl5w" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_Exasperated_02.ogg" id="clip_6"]
+[ext_resource type="AudioStream" uid="uid://clx3gm886o65k" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_Exasperated_03.ogg" id="clip_7"]
+[ext_resource type="AudioStream" uid="uid://ctf34afqpin0h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_MmMm_01.ogg" id="clip_8"]
+[ext_resource type="AudioStream" uid="uid://bux26sbrsk5oy" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_MmMm_02.ogg" id="clip_9"]
+[ext_resource type="AudioStream" uid="uid://7twq824ulcks" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_Nah_01.ogg" id="clip_10"]
+[ext_resource type="AudioStream" uid="uid://su6s0yp2w7ic" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_NahDude_01.ogg" id="clip_11"]
+[ext_resource type="AudioStream" uid="uid://4d6tq4uufwos" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_UhUh_01.ogg" id="clip_12"]
+[ext_resource type="AudioStream" uid="uid://cyobkvck7wkbx" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Follow_FollowMe_01.ogg" id="clip_13"]
+[ext_resource type="AudioStream" uid="uid://be07h23qnl5pk" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Follow_ShowYou_02.ogg" id="clip_14"]
+[ext_resource type="AudioStream" uid="uid://bwpadt85f50xe" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Follow_ThisWay_02.ogg" id="clip_15"]
+[ext_resource type="AudioStream" uid="uid://c3bai7yk5lt4d" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/NeverMind_03.ogg" id="clip_16"]
+[ext_resource type="AudioStream" uid="uid://ct2cysaxpc75p" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/NeverMind_04.ogg" id="clip_17"]
+[ext_resource type="AudioStream" uid="uid://1ijeq5u3b0h7" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/NeverMind_Changed_01.ogg" id="clip_18"]
+[ext_resource type="AudioStream" uid="uid://bjtwbnocoeky" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/NeverMind_Changed_03.ogg" id="clip_19"]
+[ext_resource type="AudioStream" uid="uid://1wjn2tay72ig" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/NeverMind_Nah_01.ogg" id="clip_20"]
+[ext_resource type="AudioStream" uid="uid://bcvyqmj2livqn" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Go_01.ogg" id="clip_21"]
+[ext_resource type="AudioStream" uid="uid://cgvxal6l6f4xl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Go_02.ogg" id="clip_22"]
+[ext_resource type="AudioStream" uid="uid://be2m081h8xwa8" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Go_03.ogg" id="clip_23"]
+[ext_resource type="AudioStream" uid="uid://d1kov635enype" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Go_04.ogg" id="clip_24"]
+[ext_resource type="AudioStream" uid="uid://dbqysscehbs0e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Go_05.ogg" id="clip_25"]
+[ext_resource type="AudioStream" uid="uid://cx6lilakmdgw4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_GoEasy_01.ogg" id="clip_26"]
+[ext_resource type="AudioStream" uid="uid://bje5wimnqgpc4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_UpFor_02.ogg" id="clip_27"]
+[ext_resource type="AudioStream" uid="uid://c1pmwfyxihwy4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_Wanna_01.ogg" id="clip_28"]
+[ext_resource type="AudioStream" uid="uid://hxevykxbdl6" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_Wanna_03.ogg" id="clip_29"]
+[ext_resource type="AudioStream" uid="uid://d3cpkuubdcc0p" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hello_LongTime_03.ogg" id="clip_30"]
+[ext_resource type="AudioStream" uid="uid://cx5yhmp6pnth3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hello_Shakin_02.ogg" id="clip_31"]
+[ext_resource type="AudioStream" uid="uid://dv0qpd1aaw8iu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hello_SupBuddy_04.ogg" id="clip_32"]
+[ext_resource type="AudioStream" uid="uid://blkt666thj6j8" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hello_SupCuz_01.ogg" id="clip_33"]
+[ext_resource type="AudioStream" uid="uid://trcrfortm4f0" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Later_01.ogg" id="clip_34"]
+[ext_resource type="AudioStream" uid="uid://tkb70oeq42um" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Later_02.ogg" id="clip_35"]
+[ext_resource type="AudioStream" uid="uid://vpx6jy2fpr1h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/SeeYouLater_01.ogg" id="clip_36"]
+[ext_resource type="AudioStream" uid="uid://cbnfv6oly3go3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/SeeYouLater_02.ogg" id="clip_37"]
+[ext_resource type="AudioStream" uid="uid://cglewksjydqls" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/SeeYouLater_03.ogg" id="clip_38"]
+[ext_resource type="AudioStream" uid="uid://drudy73jsdi4f" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_01.ogg" id="clip_39"]
+[ext_resource type="AudioStream" uid="uid://cdo101cl7fwiu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_04.ogg" id="clip_40"]
+[ext_resource type="AudioStream" uid="uid://2rgh2rxlke5h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_ALot_01.ogg" id="clip_41"]
+[ext_resource type="AudioStream" uid="uid://b6eg3nycrekef" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_ALot_04.ogg" id="clip_42"]
+[ext_resource type="AudioStream" uid="uid://ca3do5hx04xtd" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_Owe_01.ogg" id="clip_43"]
+[ext_resource type="AudioStream" uid="uid://cokr0efi8xieb" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_Owe_03.ogg" id="clip_44"]
+[ext_resource type="AudioStream" uid="uid://bk6mq5uofs5rf" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_03.ogg" id="clip_45"]
+[ext_resource type="AudioStream" uid="uid://buca45ok5u3m0" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_04.ogg" id="clip_46"]
+[ext_resource type="AudioStream" uid="uid://cepxsssvddj42" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_Oops_01.ogg" id="clip_47"]
+[ext_resource type="AudioStream" uid="uid://slilid3qr5y3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_Whoops_01.ogg" id="clip_48"]
+[ext_resource type="AudioStream" uid="uid://cdh8elm51nr44" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_Whoopsie_02.ogg" id="clip_49"]
+[ext_resource type="AudioStream" uid="uid://clhki7nbmj51b" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_Whoopsie_03.ogg" id="clip_50"]
+[ext_resource type="AudioStream" uid="uid://qrhsow8ewdmu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/BRB_Jif_03.ogg" id="clip_51"]
+[ext_resource type="AudioStream" uid="uid://rhaquulhh6dl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/BRB_OneSec_03.ogg" id="clip_52"]
+[ext_resource type="AudioStream" uid="uid://d2kuis4cw3knr" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/BRB_StayPut_01.ogg" id="clip_53"]
+[ext_resource type="AudioStream" uid="uid://dn7q3eidc13kq" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Back_Always_03.ogg" id="clip_54"]
+[ext_resource type="AudioStream" uid="uid://414uudpynm71" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Back_DontCount_03.ogg" id="clip_55"]
+[ext_resource type="AudioStream" uid="uid://bn7464y8e6fsl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Back_MissMe_01.ogg" id="clip_56"]
+[ext_resource type="AudioStream" uid="uid://clyl0k01yxkqg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/GoodJob_DoIt_01.ogg" id="clip_57"]
+[ext_resource type="AudioStream" uid="uid://caqd654sg2igu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/GoodJob_NiceOne_03.ogg" id="clip_58"]
+[ext_resource type="AudioStream" uid="uid://djc4ia34ancaf" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Cheer_JuicedUp_01.ogg" id="clip_59"]
+[ext_resource type="AudioStream" uid="uid://dwxc0m2xquxtb" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Cheer_WayPast_02.ogg" id="clip_60"]
+[ext_resource type="AudioStream" uid="uid://i3d7q5dtr2im" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Huh_02.ogg" id="clip_61"]
+[ext_resource type="AudioStream" uid="uid://dvt5iovhrng78" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Huh_03.ogg" id="clip_62"]
+[ext_resource type="AudioStream" uid="uid://bsmmoqncwg54p" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Oh_01.ogg" id="clip_63"]
+[ext_resource type="AudioStream" uid="uid://cejucv8qtagfm" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Oh_03.ogg" id="clip_64"]
+[ext_resource type="AudioStream" uid="uid://cky50n7vll83p" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Uh_01.ogg" id="clip_65"]
+[ext_resource type="AudioStream" uid="uid://drvkgffiytisk" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Uh_02.ogg" id="clip_66"]
+[ext_resource type="AudioStream" uid="uid://dxiqdym13l67o" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_DangIt_01.ogg" id="clip_67"]
+[ext_resource type="AudioStream" uid="uid://bpyt6knansytr" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_DangIt_02.ogg" id="clip_68"]
+[ext_resource type="AudioStream" uid="uid://c8seju8e706lp" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_Growl_01.ogg" id="clip_69"]
+[ext_resource type="AudioStream" uid="uid://88t6takj441o" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_Growl_06.ogg" id="clip_70"]
+[ext_resource type="AudioStream" uid="uid://dmb1c7xfx4ny8" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_Oh_01.ogg" id="clip_71"]
+[ext_resource type="AudioStream" uid="uid://ctxng8lr4018w" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_Shoot_01.ogg" id="clip_72"]
+[ext_resource type="AudioStream" uid="uid://c8cjmd1h3rmog" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_NotCool_01.ogg" id="clip_73"]
+[ext_resource type="AudioStream" uid="uid://bah560t0bj33t" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_NotCool_02.ogg" id="clip_74"]
+[ext_resource type="AudioStream" uid="uid://bcyc3hch4wr0u" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_01.ogg" id="clip_75"]
+[ext_resource type="AudioStream" uid="uid://qacq0ajwmt4h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_02.ogg" id="clip_76"]
+[ext_resource type="AudioStream" uid="uid://cfr1dp3ot1wht" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Really_01.ogg" id="clip_77"]
+[ext_resource type="AudioStream" uid="uid://br4iu3hqd2he4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Really_04.ogg" id="clip_78"]
+[ext_resource type="AudioStream" uid="uid://cd6i81iwgfvyx" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Suitcase_02.ogg" id="clip_79"]
+[ext_resource type="AudioStream" uid="uid://qk4pvjefhyxf" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Suitcase_03.ogg" id="clip_80"]
+[ext_resource type="AudioStream" uid="uid://wsmif1gk3psv" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_WayPast_01.ogg" id="clip_81"]
+[ext_resource type="AudioStream" uid="uid://7r3lelutcqfk" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_WayPast_02.ogg" id="clip_82"]
+[ext_resource type="AudioStream" uid="uid://ybu87ncsjl7r" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_Engine2_01.ogg" id="clip_83"]
+[ext_resource type="AudioStream" uid="uid://cvpq7h60ar722" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_LowBudget_01.ogg" id="clip_84"]
+[ext_resource type="AudioStream" uid="uid://b2ddf8h1ui5k5" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_Muzzle_01.ogg" id="clip_85"]
+[ext_resource type="AudioStream" uid="uid://j75bh76bvw6x" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_NewLevels_03.ogg" id="clip_86"]
+[ext_resource type="AudioStream" uid="uid://g8fxd0ajgq0n" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_ParkourOP_01.ogg" id="clip_87"]
+[ext_resource type="AudioStream" uid="uid://ciun5n6v51bfr" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_ShoesPointy_01.ogg" id="clip_88"]
+[ext_resource type="AudioStream" uid="uid://dhdobf56iin2i" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_SlowerBuild_01.ogg" id="clip_89"]
+[ext_resource type="AudioStream" uid="uid://ww2xy7y0m5vo" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_ThreeBugs_02.ogg" id="clip_90"]
+[ext_resource type="Script" uid="uid://cdi13bvlw2k46" path="res://LS5Framework/Resources/Emotes/EmoteVoiceEntry.gd" id="entry"]
+[ext_resource type="Script" uid="uid://dvhanhbdvf0gi" path="res://LS5Framework/Resources/Emotes/EmoteVoiceProfile.gd" id="profile"]
+
+[sub_resource type="Resource" id="emote_yes"]
+script = ExtResource("entry")
+emote_id = &"yes"
+clips = Array[AudioStream]([ExtResource("clip_1")])
+
+[sub_resource type="Resource" id="emote_no"]
+script = ExtResource("entry")
+emote_id = &"no"
+clips = Array[AudioStream]([ExtResource("clip_2"), ExtResource("clip_3"), ExtResource("clip_4"), ExtResource("clip_5"), ExtResource("clip_6"), ExtResource("clip_7"), ExtResource("clip_8"), ExtResource("clip_9"), ExtResource("clip_10"), ExtResource("clip_11"), ExtResource("clip_12")])
+
+[sub_resource type="Resource" id="emote_follow_me"]
+script = ExtResource("entry")
+emote_id = &"follow_me"
+clips = Array[AudioStream]([ExtResource("clip_13"), ExtResource("clip_14"), ExtResource("clip_15")])
+
+[sub_resource type="Resource" id="emote_never_mind"]
+script = ExtResource("entry")
+emote_id = &"never_mind"
+clips = Array[AudioStream]([ExtResource("clip_16"), ExtResource("clip_17"), ExtResource("clip_18"), ExtResource("clip_19"), ExtResource("clip_20")])
+
+[sub_resource type="Resource" id="emote_go"]
+script = ExtResource("entry")
+emote_id = &"go"
+clips = Array[AudioStream]([ExtResource("clip_21"), ExtResource("clip_22"), ExtResource("clip_23"), ExtResource("clip_24"), ExtResource("clip_25")])
+
+[sub_resource type="Resource" id="emote_looking_for_race"]
+script = ExtResource("entry")
+emote_id = &"looking_for_race"
+clips = Array[AudioStream]([ExtResource("clip_26"), ExtResource("clip_27"), ExtResource("clip_28"), ExtResource("clip_29")])
+
+[sub_resource type="Resource" id="emote_hello"]
+script = ExtResource("entry")
+emote_id = &"hello"
+clips = Array[AudioStream]([ExtResource("clip_30"), ExtResource("clip_31"), ExtResource("clip_32"), ExtResource("clip_33")])
+
+[sub_resource type="Resource" id="emote_goodbye"]
+script = ExtResource("entry")
+emote_id = &"goodbye"
+clips = Array[AudioStream]([ExtResource("clip_34"), ExtResource("clip_35"), ExtResource("clip_36"), ExtResource("clip_37"), ExtResource("clip_38")])
+
+[sub_resource type="Resource" id="emote_thanks"]
+script = ExtResource("entry")
+emote_id = &"thanks"
+clips = Array[AudioStream]([ExtResource("clip_39"), ExtResource("clip_40"), ExtResource("clip_41"), ExtResource("clip_42"), ExtResource("clip_43"), ExtResource("clip_44")])
+
+[sub_resource type="Resource" id="emote_apologise"]
+script = ExtResource("entry")
+emote_id = &"apologise"
+clips = Array[AudioStream]([ExtResource("clip_45"), ExtResource("clip_46"), ExtResource("clip_47"), ExtResource("clip_48"), ExtResource("clip_49"), ExtResource("clip_50")])
+
+[sub_resource type="Resource" id="emote_brb"]
+script = ExtResource("entry")
+emote_id = &"brb"
+clips = Array[AudioStream]([ExtResource("clip_51"), ExtResource("clip_52"), ExtResource("clip_53")])
+
+[sub_resource type="Resource" id="emote_back"]
+script = ExtResource("entry")
+emote_id = &"back"
+clips = Array[AudioStream]([ExtResource("clip_54"), ExtResource("clip_55"), ExtResource("clip_56")])
+
+[sub_resource type="Resource" id="emote_good_job"]
+script = ExtResource("entry")
+emote_id = &"good_job"
+clips = Array[AudioStream]([ExtResource("clip_57"), ExtResource("clip_58")])
+
+[sub_resource type="Resource" id="emote_cheer"]
+script = ExtResource("entry")
+emote_id = &"cheer"
+clips = Array[AudioStream]([ExtResource("clip_59"), ExtResource("clip_60")])
+
+[sub_resource type="Resource" id="emote_surprise"]
+script = ExtResource("entry")
+emote_id = &"surprise"
+clips = Array[AudioStream]([ExtResource("clip_61"), ExtResource("clip_62"), ExtResource("clip_63"), ExtResource("clip_64"), ExtResource("clip_65"), ExtResource("clip_66")])
+
+[sub_resource type="Resource" id="emote_anger"]
+script = ExtResource("entry")
+emote_id = &"anger"
+clips = Array[AudioStream]([ExtResource("clip_67"), ExtResource("clip_68"), ExtResource("clip_69"), ExtResource("clip_70"), ExtResource("clip_71"), ExtResource("clip_72")])
+
+[sub_resource type="Resource" id="emote_insult"]
+script = ExtResource("entry")
+emote_id = &"insult"
+clips = Array[AudioStream]([ExtResource("clip_73"), ExtResource("clip_74"), ExtResource("clip_75"), ExtResource("clip_76"), ExtResource("clip_77"), ExtResource("clip_78"), ExtResource("clip_79"), ExtResource("clip_80"), ExtResource("clip_81"), ExtResource("clip_82")])
+
+[sub_resource type="Resource" id="emote_wild_card"]
+script = ExtResource("entry")
+emote_id = &"wild_card"
+clips = Array[AudioStream]([ExtResource("clip_83"), ExtResource("clip_84"), ExtResource("clip_85"), ExtResource("clip_86"), ExtResource("clip_87"), ExtResource("clip_88"), ExtResource("clip_89"), ExtResource("clip_90")])
+
+[resource]
+script = ExtResource("profile")
+entries = Array[ExtResource("entry")]([SubResource("emote_yes"), SubResource("emote_no"), SubResource("emote_follow_me"), SubResource("emote_never_mind"), SubResource("emote_go"), SubResource("emote_looking_for_race"), SubResource("emote_hello"), SubResource("emote_goodbye"), SubResource("emote_thanks"), SubResource("emote_apologise"), SubResource("emote_brb"), SubResource("emote_back"), SubResource("emote_good_job"), SubResource("emote_cheer"), SubResource("emote_surprise"), SubResource("emote_anger"), SubResource("emote_insult"), SubResource("emote_wild_card")])

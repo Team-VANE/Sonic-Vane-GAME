@@ -1,0 +1,468 @@
+[gd_scene format=3 uid="uid://ce32jl2wm15fj"]
+
+[ext_resource type="PackedScene" uid="uid://cauj0ic5q6kw3" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EC_18_EXPORT.blend" id="1_kodfe"]
+[ext_resource type="Texture2D" uid="uid://b1o7y46t0vilg" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/m128_sand001.png" id="2_wpr1d"]
+[ext_resource type="PackedScene" uid="uid://kxliwerurin4" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/Pt2_EXPORT.blend" id="3_wpr1d"]
+[ext_resource type="PackedScene" uid="uid://bhq2gwoxmm447" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/backdrop_island.tscn" id="4_l8tsd"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_m7aqq"]
+size = Vector2(24000, 24000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbse2"]
+albedo_color = Color(0.060371235, 0.14116654, 0.14825544, 1)
+albedo_texture = ExtResource("2_wpr1d")
+uv1_scale = Vector3(74.915, 34.823, 50.925)
+
+[node name="EmeraldCoastPt1" type="Node3D" unique_id=1511839976]
+
+[node name="EC_18_EXPORT" parent="." unique_id=666295997 instance=ExtResource("1_kodfe")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, -0.14828026, 0, -0.37375617)
+
+[node name="SeaFloor" type="MeshInstance3D" parent="." unique_id=1710120118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2307.5264, -723.14905, 175.45895)
+mesh = SubResource("PlaneMesh_m7aqq")
+surface_material_override/0 = SubResource("StandardMaterial3D_pbse2")
+
+[node name="Pt2_EXPORT" parent="." unique_id=2133274632 instance=ExtResource("3_wpr1d")]
+transform = Transform3D(3, 0, -4.8280947e-07, 0, 3, 0, 4.8280947e-07, 0, 3, 2770.5342, 0.3386078, 870.8379)
+
+[node name="Backdrop" type="Node3D" parent="." unique_id=1126775474]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3397064, 0)
+
+[node name="BACKDROP_ISLAND" parent="Backdrop" unique_id=2040340797 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7419992, 0, -0.67040074, 0, 1, 0, 0.67040074, 0, -0.7419992, 4583.077, -2.1227303, 888.97)
+
+[node name="BACKDROP_ISLAND5" parent="Backdrop" unique_id=1544063648 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7405555, 0, -0.3155988, 0, 0.805, 0, 0.3155988, 0, -0.7405555, 4386.324, -2.122715, 927.70233)
+
+[node name="BACKDROP_ISLAND17" parent="Backdrop" unique_id=2080094042 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.37834162, 0, -0.925666, 0, 1, 0, 0.925666, 0, -0.37834162, 5397.894, -2.1227303, 1167.8641)
+
+[node name="BACKDROP_ISLAND18" parent="Backdrop" unique_id=737355474 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.5307416, 0, -0.6052588, 0, 0.8049999, 0, 0.6052588, 0, -0.5307416, 5237.3403, -2.122715, 1288.0073)
+
+[node name="BACKDROP_ISLAND19" parent="Backdrop" unique_id=1327610978 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.5631463, 0, -0.17597216, 0, 0.59, 0, 0.17597216, 0, -0.5631463, 5019.194, -2.122715, 1327.3666)
+
+[node name="BACKDROP_ISLAND20" parent="Backdrop" unique_id=2089485648 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.99367017, 0, -0.1123361, 0, 1, 0, 0.1123361, 0, 0.99367017, 5242.6743, -2.1227303, -840.21185)
+
+[node name="BACKDROP_ISLAND21" parent="Backdrop" unique_id=1957108204 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7267866, 0, -0.34613016, 0, 0.8049999, 0, 0.34613016, 0, 0.7267866, 5401.953, -2.122715, -718.384)
+
+[node name="BACKDROP_ISLAND22" parent="Backdrop" unique_id=25785112 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.32249334, 0, -0.49406272, 0, 0.59, 0, 0.49406272, 0, 0.32249334, 5499.1563, -2.122715, -519.164)
+
+[node name="BACKDROP_ISLAND23" parent="Backdrop" unique_id=30055612 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7583732, 0, -0.6518204, 0, 1, 0, 0.6518204, 0, 0.7583732, 5871.994, -2.1228523, -637.8642)
+
+[node name="BACKDROP_ISLAND24" parent="Backdrop" unique_id=2095339396 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.40620533, 0, -0.6949979, 0, 0.8049999, 0, 0.6949979, 0, 0.40620533, 5935.1567, -2.122837, -326.63882)
+
+[node name="BACKDROP_ISLAND33" parent="Backdrop" unique_id=2125295434 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.9960611, 0, 0.08866823, 0, 1, 0, -0.08866823, 0, 0.9960611, 5236.55, -2.1228523, -1580.4155)
+
+[node name="BACKDROP_ISLAND34" parent="Backdrop" unique_id=1124609422 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7813287, 0, -0.19377908, 0, 0.8049999, 0, 0.19377908, 0, 0.7813287, 5503.603, -2.122837, -1408.5636)
+
+[node name="BACKDROP_ISLAND25" parent="Backdrop" unique_id=1371373646 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.011275053, 0, -0.5898922, 0, 0.59, 0, 0.5898922, 0, -0.011275053, 5903.462, -2.122837, -107.247635)
+
+[node name="BACKDROP_ISLAND9" parent="Backdrop" unique_id=776573063 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.40855354, 0, -0.9127344, 0, 1, 0, 0.9127344, 0, 0.40855354, 5873.847, -2.1227303, 311.7478)
+
+[node name="BACKDROP_ISLAND10" parent="Backdrop" unique_id=1306368913 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.07153192, 0, -0.8018155, 0, 0.8049999, 0, 0.8018155, 0, 0.07153192, 5849.939, -2.122715, 510.84662)
+
+[node name="BACKDROP_ISLAND2" parent="Backdrop" unique_id=1890650474 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6869353, 0, -0.72671866, 0, 1, 0, 0.72671866, 0, -0.6869353, 5253.3057, -2.1227608, 664.69934)
+
+[node name="BACKDROP_ISLAND3" parent="Backdrop" unique_id=866996918 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.5585573, 0, -0.3789969, 0, 0.67499995, 0, 0.3789969, 0, -0.5585573, 5071.7383, -2.1226082, 713.74896)
+
+[node name="BACKDROP_ISLAND26" parent="Backdrop" unique_id=43283793 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.9868895, 0, 0.16139719, 0, 1, 0, -0.16139719, 0, 0.9868895, 4837.9453, -2.1227303, -647.3375)
+
+[node name="BACKDROP_ISLAND27" parent="Backdrop" unique_id=1560514422 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.79342484, 0, -0.13602167, 0, 0.8049999, 0, 0.13602167, 0, 0.79342484, 5024.298, -2.122715, -573.2794)
+
+[node name="BACKDROP_ISLAND28" parent="Backdrop" unique_id=1980507921 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8195622, 0, 0.5729901, 0, 1, 0, -0.5729901, 0, 0.8195622, 4304.2344, -2.1227303, -1323.2527)
+
+[node name="BACKDROP_ISLAND29" parent="Backdrop" unique_id=1318659715 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7740359, 0, 0.22111821, 0, 0.8049999, 0, -0.22111821, 0, 0.7740359, 4504.276, -2.122715, -1337.2329)
+
+[node name="BACKDROP_ISLAND30" parent="Backdrop" unique_id=1585631695 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.5686601, 0, -0.15724388, 0, 0.59, 0, 0.15724388, 0, 0.5686601, 4708.9487, -2.122715, -1252.1095)
+
+[node name="BACKDROP_ISLAND31" parent="Backdrop" unique_id=1717133199 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.97112596, 0, 0.2385675, 0, 1, 0, -0.2385675, 0, 0.97112596, 4153.1147, -2.1227608, -822.01086)
+
+[node name="BACKDROP_ISLAND32" parent="Backdrop" unique_id=2009399477 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6748131, 0, 0.015879333, 0, 0.67499995, 0, -0.015879333, 0, 0.6748131, 4332.295, -2.1226082, -764.85254)
+
+[node name="BACKDROP_ISLAND43" parent="Backdrop" unique_id=2011178683 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.0044414727, 0, 0.6749853, 0, 0.67499995, 0, -0.6749853, 0, -0.0044414727, 2895.5046, -2.1226082, -245.39258)
+
+[node name="BACKDROP_ISLAND4" parent="Backdrop" unique_id=481963843 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.042983145, 0, -0.67363006, 0, 0.675, 0, 0.67363006, 0, -0.042983145, 5505.4077, -2.1227913, 442.3236)
+
+[node name="BACKDROP_ISLAND6" parent="Backdrop" unique_id=1755578047 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.4952768, 0, -0.86873525, 0, 1, 0, 0.86873525, 0, 0.4952768, 5404.5205, -2.1227608, 7.2312365)
+
+[node name="BACKDROP_ISLAND7" parent="Backdrop" unique_id=1738244527 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.1999855, 0, -0.6446942, 0, 0.6749999, 0, 0.6446942, 0, 0.1999855, 5398.591, -2.1226082, 195.21379)
+
+[node name="BACKDROP_ISLAND8" parent="Backdrop" unique_id=1288946852 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.63194376, 0, -0.23721729, 0, 0.675, 0, 0.23721729, 0, 0.63194376, 5346.588, -2.1227913, -161.07866)
+
+[node name="BACKDROP_ISLAND46" parent="Backdrop" unique_id=891471857 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6724235, 0, -0.44257373, 0, 0.8049999, 0, 0.44257373, 0, -0.6724235, 4319.712, -2.122837, 1672.8718)
+
+[node name="BACKDROP_ISLAND47" parent="Backdrop" unique_id=1748172297 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.5896576, 0, -0.02009666, 0, 0.59, 0, 0.02009666, 0, -0.5896576, 4098.9463, -2.122837, 1652.8834)
+
+[node name="BACKDROP_ISLAND48" parent="Backdrop" unique_id=1888872122 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 3678.969, -2.1227303, 1645.5824)
+
+[node name="BACKDROP_ISLAND49" parent="Backdrop" unique_id=1680608199 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 3478.8806, -2.122715, 1632.291)
+
+[node name="BACKDROP_ISLAND50" parent="Backdrop" unique_id=162755379 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.76220536, 0, 0.6473353, 0, 1, 0, -0.6473353, 0, -0.76220536, 3293.5315, -2.1227608, 1044.6794)
+
+[node name="BACKDROP_ISLAND51" parent="Backdrop" unique_id=2042477494 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.40815133, 0, 0.537622, 0, 0.67499995, 0, -0.537622, 0, -0.40815133, 3234.9, -2.1226082, 865.9758)
+
+[node name="BACKDROP_ISLAND52" parent="Backdrop" unique_id=793450961 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6749625, 0, 0.0071154833, 0, 0.67500013, 0, -0.0071154833, 0, -0.6749625, 3528.9932, -2.1227913, 1284.6046)
+
+[node name="BACKDROP_ISLAND53" parent="Backdrop" unique_id=436421389 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 3958.108, -2.1227608, 1160.7327)
+
+[node name="BACKDROP_ISLAND54" parent="Backdrop" unique_id=173519697 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 3770.076, -2.1226082, 1164.8036)
+
+[node name="BACKDROP_ISLAND55" parent="Backdrop" unique_id=1929036206 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 4123.1006, -2.1227913, 1093.9353)
+
+[node name="BACKDROP_ISLAND56" parent="Backdrop" unique_id=1220820885 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6724235, 0, -0.44257373, 0, 0.8049999, 0, 0.44257373, 0, -0.6724235, 2407.8313, -2.122837, 1545.3105)
+
+[node name="BACKDROP_ISLAND57" parent="Backdrop" unique_id=1272403320 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.5896576, 0, -0.02009666, 0, 0.59, 0, 0.02009666, 0, -0.5896576, 2187.0657, -2.122837, 1525.3221)
+
+[node name="BACKDROP_ISLAND58" parent="Backdrop" unique_id=1742703893 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 1767.0884, -2.1227303, 1518.0211)
+
+[node name="BACKDROP_ISLAND59" parent="Backdrop" unique_id=1964610081 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 1567, -2.122715, 1504.7297)
+
+[node name="BACKDROP_ISLAND72" parent="Backdrop" unique_id=1369568427 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 1138.2349, -2.1227303, 1192.8672)
+
+[node name="BACKDROP_ISLAND73" parent="Backdrop" unique_id=463655782 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 938.1465, -2.122715, 1179.5758)
+
+[node name="BACKDROP_ISLAND60" parent="Backdrop" unique_id=1256871324 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.9174285, 0, -0.3979006, 0, 1, 0, 0.3979006, 0, -0.9174285, 1445.447, -2.1227608, 840.9314)
+
+[node name="BACKDROP_ISLAND61" parent="Backdrop" unique_id=700217078 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.662614, 0, -0.12871514, 0, 0.67499995, 0, 0.12871514, 0, -0.662614, 1259.2231, -2.1226082, 814.6013)
+
+[node name="BACKDROP_ISLAND62" parent="Backdrop" unique_id=550671243 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6749625, 0, 0.0071154833, 0, 0.67500013, 0, -0.0071154833, 0, -0.6749625, 1617.1125, -2.1227913, 1157.0433)
+
+[node name="BACKDROP_ISLAND63" parent="Backdrop" unique_id=332323513 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 2046.2273, -2.1227608, 1033.1714)
+
+[node name="BACKDROP_ISLAND64" parent="Backdrop" unique_id=1427877891 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 1858.1953, -2.1226082, 1037.2423)
+
+[node name="BACKDROP_ISLAND65" parent="Backdrop" unique_id=480827447 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 2211.22, -2.1227913, 966.374)
+
+[node name="BACKDROP_ISLAND125" parent="Backdrop" unique_id=153627393 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6724235, 0, -0.44257373, 0, 0.8049999, 0, 0.44257373, 0, -0.6724235, 3131.2695, -2.1229591, 1711.9672)
+
+[node name="BACKDROP_ISLAND126" parent="Backdrop" unique_id=665902535 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.5896576, 0, -0.02009666, 0, 0.59, 0, 0.02009666, 0, -0.5896576, 2910.504, -2.1229591, 1691.9788)
+
+[node name="BACKDROP_ISLAND127" parent="Backdrop" unique_id=1308295889 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 2769.6655, -2.1228828, 1199.828)
+
+[node name="BACKDROP_ISLAND128" parent="Backdrop" unique_id=1535536147 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 2581.6335, -2.1227303, 1203.8989)
+
+[node name="BACKDROP_ISLAND129" parent="Backdrop" unique_id=1493687462 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 2934.6582, -2.1229134, 1133.0306)
+
+[node name="BACKDROP_ISLAND66" parent="Backdrop" unique_id=654003973 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 472.2284, -2.1227303, 1379.019)
+
+[node name="BACKDROP_ISLAND67" parent="Backdrop" unique_id=953739327 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 272.14, -2.122715, 1365.7277)
+
+[node name="BACKDROP_ISLAND130" parent="Backdrop" unique_id=2092531554 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 1125.1384, -2.1227303, 1646.1799)
+
+[node name="BACKDROP_ISLAND131" parent="Backdrop" unique_id=841628923 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 925.05, -2.122715, 1632.8885)
+
+[node name="BACKDROP_ISLAND68" parent="Backdrop" unique_id=1430684185 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6749625, 0, 0.0071154833, 0, 0.67500013, 0, -0.0071154833, 0, -0.6749625, 322.25256, -2.1227913, 1018.04126)
+
+[node name="BACKDROP_ISLAND141" parent="Backdrop" unique_id=1070360692 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.60474676, 0, -0.29984388, 0, 0.6750001, 0, 0.29984388, 0, -0.60474676, 678.6323, -2.1227913, 1375.2291)
+
+[node name="BACKDROP_ISLAND69" parent="Backdrop" unique_id=98665942 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 751.3673, -2.1227608, 894.1693)
+
+[node name="BACKDROP_ISLAND70" parent="Backdrop" unique_id=1411346283 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 563.3353, -2.1226082, 898.24023)
+
+[node name="BACKDROP_ISLAND71" parent="Backdrop" unique_id=1770039100 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 916.36, -2.1227913, 827.37195)
+
+[node name="BACKDROP_ISLAND82" parent="Backdrop" unique_id=1878967880 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.99999416, 0, 0.0034207404, 0, 1, 0, -0.0034207404, 0, -0.99999416, -184.64238, -2.1227303, 1976.5818)
+
+[node name="BACKDROP_ISLAND83" parent="Backdrop" unique_id=47331214 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.76016766, 0, 0.26489693, 0, 0.8049998, 0, -0.26489693, 0, -0.76016766, -356.24515, -2.122715, 1872.8296)
+
+[node name="BACKDROP_ISLAND139" parent="Backdrop" unique_id=1802399020 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.737949, 0, -0.6748565, 0, 1, 0, 0.6748565, 0, -0.737949, 239.56195, -2.1227303, 1904.7478)
+
+[node name="BACKDROP_ISLAND140" parent="Backdrop" unique_id=1058557768 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.73864186, 0, -0.32005224, 0, 0.80499995, 0, 0.32005224, 0, -0.73864186, 43.04541, -2.122715, 1944.6636)
+
+[node name="BACKDROP_ISLAND84" parent="Backdrop" unique_id=698811057 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.59620523, 0, 0.31648746, 0, 0.6750001, 0, -0.31648746, 0, -0.59620523, -151.96367, -2.1227913, 1587.0566)
+
+[node name="BACKDROP_ISLAND85" parent="Backdrop" unique_id=1259498095 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.995598, 0, -0.09372613, 0, 1, 0, 0.09372613, 0, -0.995598, 286.08237, -2.1227608, 1674.231)
+
+[node name="BACKDROP_ISLAND86" parent="Backdrop" unique_id=874584744 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.66985875, 0, 0.08315039, 0, 0.6749998, 0, -0.08315039, 0, -0.66985875, 117.20908, -2.1226082, 1591.4397)
+
+[node name="BACKDROP_ISLAND87" parent="Backdrop" unique_id=2123168661 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.47633797, 0, -0.4782541, 0, 0.6750001, 0, 0.4782541, 0, -0.47633797, 463.318, -2.1227913, 1690.7239)
+
+[node name="BACKDROP_ISLAND74" parent="Backdrop" unique_id=1044766608 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.932166, 0, 0.36203128, 0, 1, 0, -0.36203128, 0, -0.932166, -392.7163, -2.1227303, 1508.5398)
+
+[node name="BACKDROP_ISLAND75" parent="Backdrop" unique_id=2102479034 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.61448395, 0, 0.52003336, 0, 0.8049998, 0, -0.52003336, 0, -0.61448395, -515.65967, -2.122715, 1350.1196)
+
+[node name="BACKDROP_ISLAND137" parent="Backdrop" unique_id=1059774553 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.9987769, 0, -0.04944253, 0, 1, 0, 0.04944253, 0, -0.9987769, -808.2372, -2.1227303, 1626.9581)
+
+[node name="BACKDROP_ISLAND138" parent="Backdrop" unique_id=1356189961 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.77310705, 0, 0.224345, 0, 0.80499995, 0, -0.224345, 0, -0.77310705, -985.0842, -2.122715, 1532.4218)
+
+[node name="BACKDROP_ISLAND76" parent="Backdrop" unique_id=1439904652 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.932166, 0, 0.36203128, 0, 1, 0, -0.36203128, 0, -0.932166, -974.191, -2.1227303, 1134.2346)
+
+[node name="BACKDROP_ISLAND77" parent="Backdrop" unique_id=548195661 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.61448395, 0, 0.52003336, 0, 0.8049998, 0, -0.52003336, 0, -0.61448395, -1097.1343, -2.122715, 975.8144)
+
+[node name="BACKDROP_ISLAND78" parent="Backdrop" unique_id=806724014 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.4429288, 0, 0.5093516, 0, 0.6750001, 0, -0.5093516, 0, -0.4429288, -803.9113, -2.1227913, 782.37866)
+
+[node name="BACKDROP_ISLAND79" parent="Backdrop" unique_id=413247890 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.9629228, 0, 0.26977694, 0, 1, 0, -0.26977694, 0, -0.9629228, -426.3213, -2.1227608, 1020.9358)
+
+[node name="BACKDROP_ISLAND80" parent="Backdrop" unique_id=1991074521 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.59540766, 0, 0.31798488, 0, 0.6749998, 0, -0.31798488, 0, -0.59540766, -554.2386, -2.1226082, 883.0599)
+
+[node name="BACKDROP_ISLAND81" parent="Backdrop" unique_id=529479082 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.61623025, 0, -0.27547252, 0, 0.6750001, 0, 0.27547252, 0, -0.61623025, -266.80804, -2.1227913, 1099.9294)
+
+[node name="BACKDROP_ISLAND134" parent="Backdrop" unique_id=2068655451 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6873032, 0, 0.7263708, 0, 1, 0, -0.7263708, 0, -0.6873032, -1513.3809, -2.1227608, 958.3538)
+
+[node name="BACKDROP_ISLAND135" parent="Backdrop" unique_id=323025842 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.34727687, 0, 0.5788121, 0, 0.6749997, 0, -0.5788121, 0, -0.34727687, -1552.2344, -2.1226082, 774.33484)
+
+[node name="BACKDROP_ISLAND136" parent="Backdrop" unique_id=617861533 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.67018723, 0, 0.08046068, 0, 0.67500013, 0, -0.08046068, 0, -0.67018723, -1417.1583, -2.1227913, 1108.106)
+
+[node name="BACKDROP_ISLAND88" parent="Backdrop" unique_id=2098038653 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6304863, 0, 0.7762004, 0, 1, 0, -0.7762004, 0, -0.6304863, -1383.9084, -2.1228523, 577.2018)
+
+[node name="BACKDROP_ISLAND89" parent="Backdrop" unique_id=774617487 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.27625024, 0, 0.7561158, 0, 0.80499995, 0, -0.7561158, 0, -0.27625024, -1412.2483, -2.122837, 378.68512)
+
+[node name="BACKDROP_ISLAND90" parent="Backdrop" unique_id=1565801462 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.13250634, 0, 0.6618663, 0, 0.675, 0, -0.6618663, 0, -0.13250634, -1061.7106, -2.1229134, 355.8733)
+
+[node name="BACKDROP_ISLAND91" parent="Backdrop" unique_id=308769478 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.3099631, 0, 0.95074856, 0, 1, 0, -0.95074856, 0, -0.3099631, -1153.3651, -2.1228523, 119.80934)
+
+[node name="BACKDROP_ISLAND92" parent="Backdrop" unique_id=1521808953 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.013473183, 0, 0.8048874, 0, 0.80499995, 0, -0.8048874, 0, 0.013473183, -1108.5818, -2.122837, -75.65541)
+
+[node name="BACKDROP_ISLAND93" parent="Backdrop" unique_id=397442185 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.3099631, 0, 0.95074856, 0, 1, 0, -0.95074856, 0, -0.3099631, -1231.7917, -2.1228523, -567.26154)
+
+[node name="BACKDROP_ISLAND94" parent="Backdrop" unique_id=419105700 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.013473183, 0, 0.8048874, 0, 0.80499995, 0, -0.8048874, 0, 0.013473183, -1187.0084, -2.122837, -762.7263)
+
+[node name="BACKDROP_ISLAND95" parent="Backdrop" unique_id=132510941 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.113823146, 0, 0.665334, 0, 0.6750001, 0, -0.665334, 0, 0.113823146, -851.6311, -2.1229134, -658.23175)
+
+[node name="BACKDROP_ISLAND96" parent="Backdrop" unique_id=1759596415 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.40084487, 0, 0.91614604, 0, 1, 0, -0.91614604, 0, -0.40084487, -797.21704, -2.1228828, -214.92274)
+
+[node name="BACKDROP_ISLAND97" parent="Backdrop" unique_id=801617462 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.13084234, 0, 0.66219705, 0, 0.6749997, 0, -0.66219705, 0, -0.13084234, -771.485, -2.1227303, -401.23016)
+
+[node name="BACKDROP_ISLAND98" parent="Backdrop" unique_id=125718350 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.60338515, 0, 0.30257428, 0, 0.67500013, 0, -0.30257428, 0, -0.60338515, -757.36743, -2.1229134, -41.43937)
+
+[node name="BACKDROP_ISLAND99" parent="Backdrop" unique_id=643109497 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6469494, 0, 0.762533, 0, 1, 0, -0.762533, 0, 0.6469494, -972.2819, -2.1229744, -1056.2213)
+
+[node name="BACKDROP_ISLAND100" parent="Backdrop" unique_id=65008463 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.692382, 0, 0.41064882, 0, 0.80499995, 0, -0.41064882, 0, 0.692382, -782.3683, -2.1229591, -1120.6016)
+
+[node name="BACKDROP_ISLAND101" parent="Backdrop" unique_id=1387159189 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6261883, 0, 0.25201824, 0, 0.6750001, 0, -0.25201824, 0, 0.6261883, -695.45197, -2.1230354, -780.245)
+
+[node name="BACKDROP_ISLAND102" parent="Backdrop" unique_id=989725762 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, -480.281, -2.1229744, -913.7672)
+
+[node name="BACKDROP_ISLAND103" parent="Backdrop" unique_id=1049539282 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, -279.91357, -2.1229591, -905.7112)
+
+[node name="BACKDROP_ISLAND132" parent="Backdrop" unique_id=2084539545 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, -264.34842, -2.1229744, -1338.5923)
+
+[node name="BACKDROP_ISLAND133" parent="Backdrop" unique_id=360156837 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, -63.980988, -2.1229591, -1330.5363)
+
+[node name="BACKDROP_ISLAND104" parent="Backdrop" unique_id=167988797 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, 180.63148, -2.1229744, -1117.2665)
+
+[node name="BACKDROP_ISLAND105" parent="Backdrop" unique_id=1605343551 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, 380.9989, -2.1229591, -1109.2103)
+
+[node name="BACKDROP_ISLAND144" parent="Backdrop" unique_id=1592873410 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, 505.23364, -2.1229744, -1334.4026)
+
+[node name="BACKDROP_ISLAND145" parent="Backdrop" unique_id=1889717111 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, 705.6011, -2.1229591, -1326.3464)
+
+[node name="BACKDROP_ISLAND106" parent="Backdrop" unique_id=726812016 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6749177, 0, 0.010531902, 0, 0.675, 0, -0.010531902, 0, 0.6749177, 339.9928, -2.1230354, -760.3326)
+
+[node name="BACKDROP_ISLAND107" parent="Backdrop" unique_id=1768459586 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8267566, 0, 0.5625597, 0, 1, 0, -0.5625597, 0, 0.8267566, -85.737045, -2.123005, -625.285)
+
+[node name="BACKDROP_ISLAND108" parent="Backdrop" unique_id=1020383728 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.62681955, 0, 0.25044352, 0, 0.6749998, 0, -0.25044352, 0, 0.62681955, 102.12422, -2.1228523, -634.27014)
+
+[node name="BACKDROP_ISLAND109" parent="Backdrop" unique_id=1654155862 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.18639475, 0, 0.648754, 0, 0.6750001, 0, -0.648754, 0, 0.18639475, -248.92708, -2.1230354, -554.19714)
+
+[node name="BACKDROP_ISLAND110" parent="Backdrop" unique_id=744262207 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8162787, 0, 0.57765836, 0, 1, 0, -0.57765836, 0, 0.8162787, 733.0912, -2.1229744, -981.06055)
+
+[node name="BACKDROP_ISLAND111" parent="Backdrop" unique_id=13486314 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7727616, 0, 0.22553219, 0, 0.80500007, 0, -0.22553219, 0, 0.7727616, 933.04956, -2.1229591, -996.18164)
+
+[node name="BACKDROP_ISLAND112" parent="Backdrop" unique_id=1749852563 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6691929, 0, 0.08835058, 0, 0.6750001, 0, -0.08835058, 0, 0.6691929, 932.5798, -2.1230354, -644.9028)
+
+[node name="BACKDROP_ISLAND113" parent="Backdrop" unique_id=521223882 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.96920073, 0, 0.24627185, 0, 1, 0, -0.24627185, 0, 0.96920073, 1174.199, -2.1229744, -720.7109)
+
+[node name="BACKDROP_ISLAND114" parent="Backdrop" unique_id=463871471 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8022248, 0, -0.06678648, 0, 0.80499995, 0, 0.06678648, 0, 0.8022248, 1366.2661, -2.1229591, -663.0719)
+
+[node name="BACKDROP_ISLAND142" parent="Backdrop" unique_id=1549887102 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.96920073, 0, 0.24627185, 0, 1, 0, -0.24627185, 0, 0.96920073, 1493.8654, -2.1229744, -934.86035)
+
+[node name="BACKDROP_ISLAND143" parent="Backdrop" unique_id=1498455527 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8022248, 0, -0.06678648, 0, 0.80499995, 0, 0.06678648, 0, 0.8022248, 1685.9325, -2.1229591, -877.22144)
+
+[node name="BACKDROP_ISLAND115" parent="Backdrop" unique_id=1206792541 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.96920073, 0, 0.24627185, 0, 1, 0, -0.24627185, 0, 0.96920073, 1864.957, -2.1229744, -753.4305)
+
+[node name="BACKDROP_ISLAND116" parent="Backdrop" unique_id=979886033 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8022248, 0, -0.06678648, 0, 0.80499995, 0, 0.06678648, 0, 0.8022248, 2057.024, -2.1229591, -695.7914)
+
+[node name="BACKDROP_ISLAND117" parent="Backdrop" unique_id=957971058 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6563276, 0, -0.15766712, 0, 0.6750001, 0, 0.15766712, 0, 0.6563276, 1930.5325, -2.1230354, -368.07648)
+
+[node name="BACKDROP_ISLAND118" parent="Backdrop" unique_id=755635313 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.9406973, 0, 0.33924705, 0, 1, 0, -0.33924705, 0, 0.9406973, 1484.5918, -2.123005, -343.16193)
+
+[node name="BACKDROP_ISLAND119" parent="Backdrop" unique_id=1405216250 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6694127, 0, 0.08666833, 0, 0.6749997, 0, -0.08666833, 0, 0.6694127, 1668.7844, -2.1228523, -305.13916)
+
+[node name="BACKDROP_ISLAND120" parent="Backdrop" unique_id=826332890 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.34189773, 0, 0.58200574, 0, 0.675, 0, -0.58200574, 0, 0.34189773, 1308.8489, -2.1230354, -314.8973)
+
+[node name="BACKDROP_ISLAND121" parent="Backdrop" unique_id=82270542 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6563276, 0, -0.15766712, 0, 0.6750001, 0, 0.15766712, 0, 0.6563276, 2852.891, -2.1227913, -550.6487)
+
+[node name="BACKDROP_ISLAND122" parent="Backdrop" unique_id=112293221 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.9406973, 0, 0.33924705, 0, 1, 0, -0.33924705, 0, 0.9406973, 2406.9504, -2.1227608, -525.73413)
+
+[node name="BACKDROP_ISLAND123" parent="Backdrop" unique_id=1602979818 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6694127, 0, 0.08666833, 0, 0.6749997, 0, -0.08666833, 0, 0.6694127, 2591.143, -2.1226082, -487.71136)
+
+[node name="BACKDROP_ISLAND124" parent="Backdrop" unique_id=1469851962 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.34189773, 0, 0.58200574, 0, 0.675, 0, -0.58200574, 0, 0.34189773, 2231.2075, -2.1227913, -497.4695)
+
+[node name="BACKDROP_ISLAND35" parent="Backdrop" unique_id=1739851172 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.683177, 0, 0.42578632, 0, 0.8049998, 0, -0.42578632, 0, 0.683177, 2925.46, -2.122837, -1120.9474)
+
+[node name="BACKDROP_ISLAND36" parent="Backdrop" unique_id=1875776750 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.5899744, 0, 0.0054884255, 0, 0.59, 0, -0.0054884255, 0, 0.5899744, 3145.6628, -2.122837, -1095.4983)
+
+[node name="BACKDROP_ISLAND37" parent="Backdrop" unique_id=115209749 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.9007589, 0, 0.43431956, 0, 1, 0, -0.43431956, 0, 0.9007589, 3565.3308, -2.1227303, -1077.7992)
+
+[node name="BACKDROP_ISLAND38" parent="Backdrop" unique_id=2043927081 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.7994597, 0, 0.09428273, 0, 0.8049998, 0, -0.09428273, 0, 0.7994597, 3765.0283, -2.122715, -1059.5571)
+
+[node name="BACKDROP_ISLAND39" parent="Backdrop" unique_id=186764881 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6745793, 0, -0.02382788, 0, 0.6750001, 0, 0.02382788, 0, 0.6745793, 3706.321, -2.1227913, -713.21814)
+
+[node name="BACKDROP_ISLAND40" parent="Backdrop" unique_id=2135938081 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.8543136, 0, 0.5197576, 0, 1, 0, -0.5197576, 0, 0.8543136, 3274.2705, -2.1227608, -600.0106)
+
+[node name="BACKDROP_ISLAND41" parent="Backdrop" unique_id=413089077 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.6387523, 0, 0.21822067, 0, 0.6749999, 0, -0.21822067, 0, 0.6387523, 3462.3457, -2.1226082, -599.42395)
+
+[node name="BACKDROP_ISLAND44" parent="Backdrop" unique_id=504323969 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.6285742, 0, 0.7777497, 0, 1, 0, -0.7777497, 0, -0.6285742, 3175.2534, -2.1227608, 104.69194)
+
+[node name="BACKDROP_ISLAND45" parent="Backdrop" unique_id=2106063194 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.30108848, 0, 0.60412765, 0, 0.6749998, 0, -0.60412765, 0, -0.30108848, 3150.8667, -2.1226082, -81.79642)
+
+[node name="BACKDROP_ISLAND42" parent="Backdrop" unique_id=830034676 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.21916792, 0, 0.638428, 0, 0.675, 0, -0.638428, 0, 0.21916792, 3107.6746, -2.1227913, -537.3197)
+
+[node name="BACKDROP_ISLAND11" parent="Backdrop" unique_id=1903295871 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.46826905, 0, -0.88358593, 0, 1, 0, 0.88358593, 0, -0.46826905, 5938.3145, -2.1227608, 1793.9214)
+
+[node name="BACKDROP_ISLAND12" parent="Backdrop" unique_id=1085694359 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(-0.43726557, 0, -0.5142215, 0, 0.6749999, 0, 0.5142215, 0, -0.43726557, 5776.4014, -2.1226082, 1889.6128)
+
+[node name="BACKDROP_ISLAND13" parent="Backdrop" unique_id=1050960781 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.13820788, 0, -0.6606993, 0, 0.675, 0, 0.6606993, 0, 0.13820788, 6049.4053, -2.1227913, 1654.8414)
+
+[node name="BACKDROP_ISLAND14" parent="Backdrop" unique_id=193316694 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.21957389, 0, -0.97559583, 0, 1, 0, 0.97559583, 0, 0.21957389, 6187.94, -2.1226387, 1006.0392)
+
+[node name="BACKDROP_ISLAND15" parent="Backdrop" unique_id=537856225 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.002709508, 0, -0.67499447, 0, 0.67499983, 0, 0.67499447, 0, 0.002709508, 6127.2964, -2.122486, 1184.0701)
+
+[node name="BACKDROP_ISLAND16" parent="Backdrop" unique_id=1351742913 instance=ExtResource("4_l8tsd")]
+transform = Transform3D(0.5349465, 0, -0.41165185, 0, 0.675, 0, 0.41165185, 0, 0.5349465, 6181.76, -2.1226692, 828.1453)
+
+[editable path="EC_18_EXPORT"]
+[editable path="Pt2_EXPORT"]

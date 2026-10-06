@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://c7pdpfing03al"]
+
+[ext_resource type="Script" uid="uid://bin2opm5nnxoy" path="res://LS5Framework/Objects/Bumper/Bumper.gd" id="1_script"]
+[ext_resource type="AudioStream" uid="uid://cpgnukcjxpkio" path="res://LS5Framework/Sounds/Objects/Bumper.wav" id="2_sound"]
+
+[sub_resource type="SphereShape3D" id="SphereShape_bumper"]
+radius = 2.5
+
+[sub_resource type="SphereShape3D" id="SphereShape_solid"]
+radius = 2.35
+
+[sub_resource type="StandardMaterial3D" id="Material_outer"]
+albedo_color = Color(0.62, 0.025, 0.035, 1)
+metallic = 0.55
+roughness = 0.24
+
+[sub_resource type="SphereMesh" id="Mesh_outer"]
+material = SubResource("Material_outer")
+radius = 2.5
+height = 5.0
+radial_segments = 12
+rings = 8
+
+[node name="Bumper" type="Area3D" unique_id=46049576 node_paths=PackedStringArray("surface_normal_source", "surface_collision_body", "sfx_player", "visual_root")]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_script")
+surface_normal_source = NodePath("CollisionShape3D")
+surface_collision_body = NodePath("SolidBody")
+sfx_player = NodePath("AudioStreamPlayer3D")
+bumper_sound = ExtResource("2_sound")
+visual_root = NodePath("Visual")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1369850383]
+shape = SubResource("SphereShape_bumper")
+
+[node name="SolidBody" type="StaticBody3D" parent="." unique_id=1111868102]
+collision_layer = 64
+collision_mask = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SolidBody" unique_id=166012920]
+shape = SubResource("SphereShape_solid")
+
+[node name="Visual" type="Node3D" parent="." unique_id=1598553867]
+
+[node name="OuterBody" type="MeshInstance3D" parent="Visual" unique_id=1363787900]
+mesh = SubResource("Mesh_outer")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=521327380]
+unit_size = 18.0
+max_distance = 65.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0

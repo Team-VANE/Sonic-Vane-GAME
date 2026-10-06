@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://k6ygy47hpnl7"]
+
+[ext_resource type="PackedScene" uid="uid://c468twl740k4x" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO.glb" id="1_kctb5"]
+
+[node name="GreenHillOcean" type="Node3D" unique_id=45773447]
+
+[node name="GHO" parent="." unique_id=421876479 instance=ExtResource("1_kctb5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10908699, 0, -0.28929734)
+
+[editable path="GHO"]

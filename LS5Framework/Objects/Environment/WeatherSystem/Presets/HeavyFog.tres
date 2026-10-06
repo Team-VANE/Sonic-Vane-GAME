@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="DynamicWeatherPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/WeatherSystem/DynamicWeatherPreset.gd" id="1_preset"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/DayNightCycle/Weather/HeavyFog.tres" id="2_weather"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/Rain/Profiles/Dry.tres" id="3_rain"]
+
+[resource]
+script = ExtResource("1_preset")
+preset_id = &"heavy_fog"
+display_name = "Heavy Fog"
+feature_tags = Array[StringName]([&"clouds", &"fog"])
+sky_weather = ExtResource("2_weather")
+rain_profile = ExtResource("3_rain")
+selection_weight = 0.35
+severity = 0.4
+daytime_weight_multiplier = 0.75
+nighttime_weight_multiplier = 1.4
+duration_range_seconds = Vector2(90, 220)
+transition_range_seconds = Vector2(24, 50)

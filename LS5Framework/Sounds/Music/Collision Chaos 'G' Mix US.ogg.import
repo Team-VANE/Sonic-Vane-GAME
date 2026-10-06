@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ddq565nrvg0g0"
+path="res://.godot/imported/Collision Chaos 'G' Mix US.ogg-b3a4cc8f5d3de70c84987ee04b83f679.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Collision Chaos 'G' Mix US.ogg"
+dest_files=["res://.godot/imported/Collision Chaos 'G' Mix US.ogg-b3a4cc8f5d3de70c84987ee04b83f679.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=25.375
+bpm=0.0
+beat_count=0
+bar_beats=4

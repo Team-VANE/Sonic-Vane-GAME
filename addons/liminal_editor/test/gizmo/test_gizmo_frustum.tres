@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://cm5fn8yrk2e6q"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_lcxsh"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_w65yt"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_4xwcj"]
+
+[sub_resource type="Resource" id="Resource_frg01"]
+script = ExtResource("1_lcxsh")
+type = "frustum"
+bindings = {
+"color": "frustum_color",
+"far": "far_plane",
+"fov": "fov",
+"near": "near_plane"
+}
+
+[sub_resource type="Resource" id="Resource_frp01"]
+script = ExtResource("2_w65yt")
+name = "fov"
+type = "float"
+default_value = 60.0
+
+[sub_resource type="Resource" id="Resource_frp02"]
+script = ExtResource("2_w65yt")
+name = "near_plane"
+type = "float"
+default_value = 0.3
+
+[sub_resource type="Resource" id="Resource_frp03"]
+script = ExtResource("2_w65yt")
+name = "far_plane"
+type = "float"
+default_value = 15.0
+
+[sub_resource type="Resource" id="Resource_frp04"]
+script = ExtResource("2_w65yt")
+name = "frustum_color"
+type = "Color"
+default_value = [0.1, 0.9, 0.9, 1.0]
+
+[resource]
+script = ExtResource("3_4xwcj")
+entity_name = "test_gizmo_frustum"
+description = "Test: frustum gizmo with bindable FOV, near/far planes, and color"
+properties = Array[ExtResource("2_w65yt")]([SubResource("Resource_frp01"), SubResource("Resource_frp02"), SubResource("Resource_frp03"), SubResource("Resource_frp04")])
+gizmos = Array[ExtResource("1_lcxsh")]([SubResource("Resource_frg01")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

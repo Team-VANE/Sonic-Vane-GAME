@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="DynamicWeatherPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/WeatherSystem/DynamicWeatherPreset.gd" id="1_preset"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/DayNightCycle/Weather/Clear.tres" id="2_weather"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/Rain/Profiles/Dry.tres" id="3_rain"]
+
+[resource]
+script = ExtResource("1_preset")
+preset_id = &"clear"
+display_name = "Clear"
+feature_tags = Array[StringName]([&"clear"])
+sky_weather = ExtResource("2_weather")
+rain_profile = ExtResource("3_rain")
+selection_weight = 1.2
+severity = 0.05
+daytime_weight_multiplier = 1.25
+nighttime_weight_multiplier = 0.9
+duration_range_seconds = Vector2(150, 360)
+transition_range_seconds = Vector2(18, 36)

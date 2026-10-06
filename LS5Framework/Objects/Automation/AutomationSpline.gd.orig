@@ -1,0 +1,349 @@
+extends Node3D
+
+@export var enabled: bool = true
+@export var require_group: StringName = &"player"
+
+@export var area_path: NodePath = NodePath("Area3D")
+@export var spline_path: NodePath = NodePath("Path3D")
+
+## If true, uses separate entrance and exit areas instead of the main area_path.
+## When enabled, the main area_path is ignored for body detection.
+@export var use_entrance_exit_areas: bool = false
+## Area3D for entry detection (used when use_entrance_exit_areas is true).
+## If unassigned and use_entrance_exit_areas is true, looks for a child node named "Entrance".
+@export var entrance_area_path: NodePath
+## Area3D for exit detection (used when use_entrance_exit_areas is true).
+## If unassigned and use_entrance_exit_areas is true, looks for a child node named "Exit".
+@export var exit_area_path: NodePath
+
+## If true, automation influence and locks apply only while grounded.
+@export var grounded_only: bool = true
+@export var align_player_rotation: bool = true
+## If true, prevent surface-launch detaches while the automation spline is active.
+## This keeps the player adhered to geometry as long as a valid surface is present.
+@export var force_surface_adhesion: bool = false
+
+## Legacy option: when true, locks movement, actions, and drift together.
+@export var lock_controls: bool = false
+## If true, movement input is ignored while the automation spline is active.
+@export var lock_movement: bool = false
+## If true, action inputs (jump/spindash/ability actions) are ignored while active.
+@export var lock_actions: bool = false
+## If true, drift input is ignored while the automation spline is active.
+@export var lock_drift: bool = false
+## Higher values win when multiple automation areas overlap.
+@export var priority: int = 0
+@export var continuous_force: bool = true
+## If true, water physics multipliers (slowdown, vertical limits) are ignored while on this spline.
+@export var ignore_water_physics_multipliers: bool = false
+
+@export var nudge_toward_strength_base: float = 3.0
+@export var nudge_toward_strength_per_speed: float = 0.035
+@export_range(0.0, 200.0) var nudge_radius: float = 0.0
+@export var max_turn_deg_per_sec: float = 240.0
+
+@export var along_assist_enabled: bool = true
+## If true, overrides the player's maximum speed while this spline is influencing them.
+@export var override_player_max_speed: bool = false
+## Maximum player speed used while override_player_max_speed is enabled.
+@export_range(0.0, 1000.0) var player_max_speed_override: float = 320.0
+@export var along_assist_target_speed: float = 35.0
+@export var along_assist_accel: float = 18.0
+
+@export var tangent_lookahead: float = 0.5
+## Arc-length window around the cached offset used to prevent cross-over jumps.
+## Also acts as the max world-space distance to keep trusting the cached offset.
+## Set to 0 to disable the window and always search the full spline.
+@export_range(0.0, 200.0) var preferred_offset_window: float = 6.0
+## Per-second strength for removing sideways velocity relative to the spline tangent.
+## Higher values keep fast movement aligned on narrow paths.
+@export_range(0.0, 200.0) var tangent_snap_strength: float = 0.0
+
+var _area = null
+var _path = null
+var _enter_area = null
+var _exit_area = null
+var _bodies: Array = []
+var _body_offsets: Dictionary = {}
+
+
+func _ready() -> void:
+	_path = get_node_or_null(spline_path)
+	
+	if use_entrance_exit_areas:
+		# Use assigned NodePaths, or fall back to child nodes named "Entrance"/"Exit"
+		_enter_area = get_node_or_null(entrance_area_path)
+		_exit_area = get_node_or_null(exit_area_path)
+		if _enter_area == null:
+			_enter_area = get_node_or_null("Entrance")
+		if _exit_area == null:
+			_exit_area = get_node_or_null("Exit")
+		_area = null  # Not used when entrance/exit mode is enabled
+		print("[AutomationSpline] Entrance/Exit mode - Enter: ", _enter_area, " Exit: ", _exit_area)
+	else:
+		# Use single area for both entry and exit
+		_area = get_node_or_null(area_path)
+		_enter_area = null
+		_exit_area = null
+		print("[AutomationSpline] Single area mode - Area: ", _area)
+	
+	# Determine which areas to use for signals
+	var entry_area: Area3D = _enter_area if _enter_area != null else _area
+	var exit_area: Area3D = _exit_area if _exit_area != null else _area
+	
+	print("[AutomationSpline] Entry area: ", entry_area, " Exit area: ", exit_area)
+	
+	# Connect entry signal (avoid double-connect if same area)
+	if entry_area != null and entry_area.has_signal("body_entered"):
+		if not entry_area.body_entered.is_connected(_on_body_entered):
+			entry_area.body_entered.connect(_on_body_entered)
+			print("[AutomationSpline] Connected body_entered to entry area")
+		else:
+			print("[AutomationSpline] body_entered already connected to entry area")
+	else:
+		print("[AutomationSpline] ERROR: Cannot connect entry signal - area null or no body_entered signal")
+	
+	# Connect exit signal (avoid double-connect if same as entry)
+	if exit_area != null and exit_area.has_signal("body_exited"):
+		if not exit_area.body_exited.is_connected(_on_body_exited):
+			exit_area.body_exited.connect(_on_body_exited)
+			print("[AutomationSpline] Connected body_exited to exit area")
+		else:
+			print("[AutomationSpline] body_exited already connected to exit area")
+	else:
+		print("[AutomationSpline] ERROR: Cannot connect exit signal - area null or no body_exited signal")
+	
+	set_physics_process(true)
+
+
+func _on_body_entered(body: Node) -> void:
+	print("[AutomationSpline] _on_body_entered called with: ", body)
+	if not enabled:
+		print("[AutomationSpline] Ignored - not enabled")
+		return
+	if require_group != &"" and body != null and not body.is_in_group(require_group):
+		print("[AutomationSpline] Ignored - body not in required group: ", require_group)
+		return
+	if body != null and not _bodies.has(body):
+		_bodies.append(body)
+		print("[AutomationSpline] Body added: ", body, " Total bodies: ", _bodies.size())
+
+
+func _on_body_exited(body: Node) -> void:
+	if body != null:
+		_bodies.erase(body)
+		_body_offsets.erase(body.get_instance_id())
+
+
+func _physics_process(delta: float) -> void:
+	if not enabled:
+		return
+	if _path == null or _path.curve == null:
+		return
+	# Check we have some area configuration (either single area or entrance/exit)
+	var has_area_setup: bool = _area != null or (_enter_area != null and _exit_area != null)
+	if not has_area_setup:
+		return
+
+	# Clean invalid bodies
+	var to_remove: Array = []
+	for b in _bodies:
+		if b == null or not is_instance_valid(b):
+			to_remove.append(b)
+	for b in to_remove:
+		_bodies.erase(b)
+		if b != null:
+			_body_offsets.erase(b.get_instance_id())
+
+	var curve = _path.curve
+	var length = curve.get_baked_length()
+	if length <= 0.001:
+		return
+
+	for body in _bodies:
+		if body == null:
+			continue
+		if multiplayer != null and multiplayer.has_multiplayer_peer():
+			if body.has_method("is_multiplayer_authority") and not body.is_multiplayer_authority():
+				continue
+
+		var body_pos = body.global_position
+		var local = _path.to_local(body_pos)
+		var up_world = Vector3.UP
+		if body.has_method("get_up_vector"):
+			var uv = body.call("get_up_vector")
+			if uv is Vector3 and (uv as Vector3).length() > 0.001:
+				up_world = (uv as Vector3).normalized()
+		var up_local = (_path.global_transform.basis.inverse() * up_world).normalized()
+		if up_local.length() < 0.001:
+			up_local = Vector3.UP
+
+		var offset = 0.0
+		var closest_local = local
+		var dist_sq = 0.0
+		var preferred_offset = -1.0
+		var body_id = body.get_instance_id()
+		if _body_offsets.has(body_id):
+			preferred_offset = float(_body_offsets[body_id])
+		var closest_data = _get_closest_on_plane(curve, local, up_local, preferred_offset)
+		if closest_data.has("offset"):
+			offset = float(closest_data["offset"])
+		if closest_data.has("point"):
+			closest_local = closest_data["point"]
+		if closest_data.has("dist_sq"):
+			dist_sq = float(closest_data["dist_sq"])
+
+		offset = clamp(offset, 0.0, length)
+		_body_offsets[body_id] = offset
+		var closest_world = _path.to_global(closest_local)
+
+		var ahead = min(offset + max(tangent_lookahead, 0.05), length)
+		var ahead_world = _path.to_global(curve.sample_baked(ahead))
+		var tangent = (ahead_world - closest_world)
+		if tangent.length() < 0.001:
+			continue
+		tangent = tangent.normalized()
+
+		var toward = (closest_world - body_pos)
+		if toward.length() > 0.001:
+			toward = toward.normalized()
+
+		var speed = 0.0
+		if body.has_method("get"):
+			var v = body.get("velocity")
+			if v is Vector3:
+				speed = (v as Vector3).length()
+
+		var toward_strength = nudge_toward_strength_base + speed * nudge_toward_strength_per_speed
+		toward_strength = max(toward_strength, 0.0)
+		if nudge_radius > 0.0:
+			var dist = sqrt(max(dist_sq, 0.0))
+			if dist >= nudge_radius:
+				toward = Vector3.ZERO
+				toward_strength = 0.0
+			elif nudge_radius > 0.001:
+				var radius_scale = 1.0 - (dist / nudge_radius)
+				toward_strength *= radius_scale
+
+		var lock_movement_effective: bool = lock_movement or lock_controls
+		var lock_actions_effective: bool = lock_actions or lock_controls
+		var lock_drift_effective: bool = lock_drift or lock_controls
+
+		if body.has_method("set_automation_spline"):
+			body.call(
+				"set_automation_spline",
+				tangent,
+				toward,
+				toward_strength,
+				max_turn_deg_per_sec,
+				lock_controls,
+				continuous_force,
+				align_player_rotation,
+				grounded_only,
+				force_surface_adhesion,
+				tangent_snap_strength,
+				along_assist_enabled,
+				along_assist_target_speed,
+				along_assist_accel,
+				lock_movement_effective,
+				lock_actions_effective,
+				lock_drift_effective,
+				priority,
+				ignore_water_physics_multipliers,
+				override_player_max_speed,
+				player_max_speed_override
+		)
+
+
+func _get_closest_on_plane(curve: Curve3D, local_pos: Vector3, up_local: Vector3, preferred_offset: float) -> Dictionary:
+	var points: PackedVector3Array = curve.get_baked_points()
+	var count = points.size()
+	if count == 0:
+		return {"offset": 0.0, "point": local_pos, "dist_sq": 0.0}
+	if count == 1:
+		var delta_single = points[0] - local_pos
+		delta_single -= up_local * delta_single.dot(up_local)
+		return {"offset": 0.0, "point": points[0], "dist_sq": delta_single.length_squared()}
+
+	var length: float = max(curve.get_baked_length(), 0.0)
+	var best_dist_sq = 1.0e30
+	var best_pref_delta = 1.0e30
+	var best_offset = 0.0
+	var best_point = points[0]
+	var best_window_dist_sq = 1.0e30
+	var best_window_pref_delta = 1.0e30
+	var best_window_offset = 0.0
+	var best_window_point = points[0]
+	var best_window_found: bool = false
+	var dist_accum = 0.0
+	var prefer: bool = preferred_offset >= 0.0 and length > 0.0
+	var use_window: bool = false
+	var prefer_offset: float = preferred_offset
+	var dist_eps = 0.0001
+	var is_closed: bool = curve.closed
+	var window: float = max(preferred_offset_window, 0.0)
+
+	if prefer:
+		prefer_offset = clamp(preferred_offset, 0.0, length)
+		var prefer_point: Vector3 = curve.sample_baked(prefer_offset)
+		var prefer_delta: Vector3 = prefer_point - local_pos
+		prefer_delta -= up_local * prefer_delta.dot(up_local)
+		var prefer_dist_sq: float = prefer_delta.length_squared()
+		if window > 0.0 and prefer_dist_sq <= window * window:
+			use_window = true
+		elif window > 0.0:
+			prefer = false
+
+	for i in range(count - 1):
+		var p0 = points[i]
+		var p1 = points[i + 1]
+		var seg = p1 - p0
+		var seg_len = seg.length()
+		if seg_len < 0.0001:
+			continue
+		var seg_flat = seg - up_local * seg.dot(up_local)
+		var seg_flat_len_sq = seg_flat.length_squared()
+		var t = 0.0
+		if seg_flat_len_sq > 0.000001:
+			var to_point = local_pos - p0
+			var to_point_flat = to_point - up_local * to_point.dot(up_local)
+			t = clamp(to_point_flat.dot(seg_flat) / seg_flat_len_sq, 0.0, 1.0)
+		var candidate = p0 + seg * t
+		var delta = candidate - local_pos
+		delta -= up_local * delta.dot(up_local)
+		var dist_sq = delta.length_squared()
+		var offset_candidate = dist_accum + seg_len * t
+		var pref_delta: float = 0.0
+		if prefer:
+			pref_delta = abs(offset_candidate - prefer_offset)
+			if is_closed:
+				pref_delta = min(pref_delta, max(length - pref_delta, 0.0))
+
+		if dist_sq < best_dist_sq - dist_eps:
+			best_dist_sq = dist_sq
+			best_pref_delta = pref_delta
+			best_offset = offset_candidate
+			best_point = candidate
+		elif abs(dist_sq - best_dist_sq) <= dist_eps and prefer and pref_delta < best_pref_delta:
+			best_pref_delta = pref_delta
+			best_offset = offset_candidate
+			best_point = candidate
+
+		if use_window:
+			if pref_delta <= window:
+				if dist_sq < best_window_dist_sq - dist_eps:
+					best_window_dist_sq = dist_sq
+					best_window_pref_delta = pref_delta
+					best_window_offset = offset_candidate
+					best_window_point = candidate
+					best_window_found = true
+				elif abs(dist_sq - best_window_dist_sq) <= dist_eps and prefer and pref_delta < best_window_pref_delta:
+					best_window_pref_delta = pref_delta
+					best_window_offset = offset_candidate
+					best_window_point = candidate
+					best_window_found = true
+		dist_accum += seg_len
+
+	if use_window and best_window_found:
+		return {"offset": best_window_offset, "point": best_window_point, "dist_sq": best_window_dist_sq}
+	return {"offset": best_offset, "point": best_point, "dist_sq": best_dist_sq}

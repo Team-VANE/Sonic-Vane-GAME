@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://h48h1vab42c1"]
+
+[ext_resource type="Script" uid="uid://6q3dfbd0s3fj" path="res://LS5Framework/Objects/Rings/Ring_Particle.gd" id="1_ring_particle"]
+
+[node name="RingParticle" type="Sprite3D" unique_id=1156274897]
+billboard = 1
+no_depth_test = true
+script = ExtResource("1_ring_particle")
+twinkle_start_scale = 0.007
+twinkle_fade_out_time = 0.3
+twinkle_pixel_size = 0.003
+twinkle_glow_color = Color(7.181, 7.181, 7.181, 1)

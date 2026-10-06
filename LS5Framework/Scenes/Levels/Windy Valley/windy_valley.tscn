@@ -1,0 +1,1282 @@
+[gd_scene format=3 uid="uid://b0f8eo0uvo8ow"]
+
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="1_771gn"]
+[ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="2_e5r1c"]
+[ext_resource type="AudioStream" uid="uid://brvxqk3mstw5m" path="res://LS5Framework/Sounds/Music/Windy Hill.ogg" id="3_diivr"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="4_b3wl0"]
+[ext_resource type="Resource" uid="uid://cqirsxrxgi777" path="res://LS5Framework/Scenes/Levels/Windy Valley/DayNightProfile_WindyValley.tres" id="5_1bytx"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="5_e5r1c"]
+[ext_resource type="PackedScene" uid="uid://ie7142myiknm" path="res://LS5Framework/Objects/Water/Water_Volume.tscn" id="6_3yovv"]
+[ext_resource type="Resource" uid="uid://bm4gmn6cu2m5g" path="res://LS5Framework/Scenes/Levels/Windy Valley/DayNightWeather_WindyValley.tres" id="6_u14bl"]
+[ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="7_y4hdg"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="8_1bytx"]
+[ext_resource type="PackedScene" uid="uid://ghucsw5061eo" path="res://LS5Framework/Objects/Gameplay/DeathPlane.tscn" id="10_0bwfm"]
+[ext_resource type="PackedScene" uid="uid://e1tkwisehr5p" path="res://LS5Framework/Objects/DashPanels/DashPanel.tscn" id="10_1bytx"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Race/RaceObjectLayout.tscn" id="11_q5cbk"]
+[ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="12_fu7ff"]
+[ext_resource type="AudioStream" uid="uid://cxy2p1rufk8un" path="res://LS5Framework/Sounds/Music/Some_Guy_On_The_Internet-EmeraldHill_Faithfully_Restored.ogg" id="13_g1ukp"]
+[ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="14_gqsdw"]
+[ext_resource type="PackedScene" uid="uid://cr1wi82j5u23d" path="res://LS5Framework/Scenes/Levels/Windy Valley/WindyValley.glb" id="15_771gn"]
+[ext_resource type="PackedScene" uid="uid://c0knuae0s4d15" path="res://LS5Framework/Objects/Race/RaceCollectionItem.tscn" id="15_we6kh"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="17_0bwfm"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="18_q5cbk"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="19_fu7ff"]
+[ext_resource type="PackedScene" uid="uid://bf2o7d3qsovh6" path="res://LS5Framework/Objects/Automation/AutomationSpline.tscn" id="19_u14bl"]
+[ext_resource type="AudioStream" uid="uid://behueoig0sph5" path="res://LS5Framework/Sounds/Music/Sonic Adventure - Windy Valley Remix.ogg" id="19_xndem"]
+[ext_resource type="AudioStream" uid="uid://cjcghn0ber4pt" path="res://LS5Framework/Sounds/Music/Sonic Adventure - Round Clear.ogg" id="20_3yovv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0bwfm"]
+resource_local_to_scene = true
+shader = ExtResource("5_e5r1c")
+shader_parameter/sun_direction = Vector3(0.07745165, 0.9948454, 0.06545171)
+shader_parameter/moon_direction = Vector3(-0.143383, -0.98222184, -0.12116802)
+shader_parameter/zenith_color = Color(0.22161907, 2.8300881e-05, 0.84968406, 1)
+shader_parameter/horizon_color = Color(0, 0.2666664, 1, 1)
+shader_parameter/ground_color = Color(0, 0.44456542, 0.98554534, 1)
+shader_parameter/ground_visibility = 0.0
+shader_parameter/sun_color = Color(0.9999998, 0.9809, 0.942714, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(0.9853911, 0.96976334, 0.91828036, 1)
+shader_parameter/cloud_shadow_color = Color(0.010866828, 0, 0.22669038, 1)
+shader_parameter/rayleigh_strength = 2.0
+shader_parameter/mie_strength = 0.08
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/turbidity = 15.6
+shader_parameter/sun_angular_radius = 0.020682151636132802
+shader_parameter/sun_disk_intensity = 18.0
+shader_parameter/moon_angular_radius = 0.004537856055185257
+shader_parameter/moon_disk_intensity = 1.2
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.65
+shader_parameter/cloud_density = 1.0
+shader_parameter/cloud_softness = 0.12
+shader_parameter/cloud_scale = 3.2
+shader_parameter/cloud_detail = 0.72
+shader_parameter/cloud_light_absorption = 0.12
+shader_parameter/cloud_volume_depth = 1.36
+shader_parameter/cloud_volume_steps = 3
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 1.0
+shader_parameter/cloud_edge_light_strength = 2.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.022
+shader_parameter/upper_layer_amount = 0.12
+shader_parameter/upper_layer_height = 0.07
+shader_parameter/upper_layer_scale = 0.62
+shader_parameter/upper_layer_wind_multiplier = 2.34
+shader_parameter/distance_fade_start = 0.43
+shader_parameter/distance_fade_end = 1.0
+shader_parameter/distance_haze_strength = 0.79
+shader_parameter/above_horizon_clouds_enabled = false
+shader_parameter/below_horizon_clouds_enabled = true
+shader_parameter/below_horizon_visibility = 1.0
+shader_parameter/below_horizon_fade_depth = 0.35
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.78
+
+[sub_resource type="Sky" id="Sky_q5cbk"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_0bwfm")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_fu7ff"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 1.14
+sky = SubResource("Sky_q5cbk")
+ambient_light_source = 3
+ambient_light_color = Color(0.024843235, 0.08540913, 0.24071947, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 1.4734
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_min_cell_size = 0.9243164
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_aerial_perspective = 1.0
+fog_sky_affect = 0.698
+fog_height = -197.21
+fog_height_density = 0.0007
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0008
+volumetric_fog_albedo = Color(0.36862746, 0.5137255, 0.7529412, 1)
+volumetric_fog_emission = Color(0.83176255, 0.8102863, 0.7321947, 1)
+volumetric_fog_emission_energy = 0.15
+volumetric_fog_gi_inject = 1.46
+volumetric_fog_length = 518.67
+volumetric_fog_ambient_inject = 1.0
+volumetric_fog_sky_affect = 0.707
+adjustment_enabled = true
+adjustment_saturation = 1.01508
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g1ukp"]
+size = Vector2(10999.935, 14000.025)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gqsdw"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_we6kh"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_gqsdw")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gxpyr"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xxi7j"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_gxpyr")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_se7dk"]
+load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ufyj7"]
+render_priority = 0
+shader = ExtResource("7_y4hdg")
+shader_parameter/albedo = Color(0, 0.7316994, 0.88269347, 1)
+shader_parameter/albedo2 = Color(0.8127987, 0.86050355, 0.97439605, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/alpha = 0.95
+shader_parameter/wave = SubResource("CompressedTexture2D_se7dk")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_we6kh")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_xxi7j")
+shader_parameter/wave_uv_scale = 0.455
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/normal_detail_fade_start = 500.0
+shader_parameter/normal_detail_fade_end = 4000.0
+shader_parameter/distant_normal_strength = 0.2
+shader_parameter/specular_aa_strength = 0.35
+shader_parameter/distant_roughness = 0.3
+shader_parameter/ssr_camera_fade_start = 750.0
+shader_parameter/ssr_camera_fade_end = 3000.0
+shader_parameter/water_scatter_strength = 0.06
+shader_parameter/gi_fallback_fade_start = 650.0
+shader_parameter/gi_fallback_fade_end = 1300.0
+shader_parameter/gi_fallback_irradiance = 0.45
+shader_parameter/gi_fallback_near_blend = 0.35
+shader_parameter/color_deep = Color(0.16016582, 0.2380532, 0.36666462, 1)
+shader_parameter/color_shallow = Color(0.41579995, 0.6932566, 0.77, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 50.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.91, 1, 0.9925, 1)
+shader_parameter/edge_start = 0.34
+shader_parameter/edge_width = 3.65
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.058
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0bwfm"]
+size = Vector3(11, 3, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnnpr"]
+size = Vector3(12000, 139.093, 12000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_50ke2"]
+size = Vector3(38, 7.436035, 55)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xxi7j"]
+size = Vector3(38, 7.436035, 55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_07swv"]
+size = Vector3(30, 25, 30)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p50qh"]
+render_priority = 0
+shader = ExtResource("17_0bwfm")
+shader_parameter/tex_flat = ExtResource("18_q5cbk")
+shader_parameter/tex_glow = ExtResource("19_fu7ff")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 956.464
+
+[sub_resource type="Curve3D" id="Curve3D_1vivr"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 9.85, -0.855, 0, 0, -29.675, 0, 0, 0, 0, -21.046402, 29.449997, 0, 0, 0, 0, 0, 12.665, 0, -21.046, 214.315, 0, 0, 13.135, 0, 0, 0, 0, -21.046, 214.315, -12.955, 0, 0, 0, 0, 0, 0, -21.046, 202.21, -12.955, -30.055, 0, 0, 0, 0, 0, 8.074, 181.09, -12.955),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q5cbk"]
+size = Vector3(58.241142, 245.932, 36.427185)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1bytx"]
+size = Vector3(2.6563873, 6.168869, 12.083252)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u14bl"]
+size = Vector3(2.6563873, 8.535757, 9.922668)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ef2lm"]
+size = Vector2(150, 150)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_r24r3"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hwh4x"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_r24r3")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_uk4we"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vhfd5"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_uk4we")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_on04s"]
+load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ra0ap"]
+render_priority = 0
+shader = ExtResource("7_y4hdg")
+shader_parameter/albedo = Color(0.2379024, 0.84541553, 0.99999946, 1)
+shader_parameter/albedo2 = Color(0.66525877, 0.74665874, 0.9498009, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/alpha = 0.85
+shader_parameter/wave = SubResource("CompressedTexture2D_on04s")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_hwh4x")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_vhfd5")
+shader_parameter/wave_uv_scale = 0.455
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/normal_detail_fade_start = 500.0
+shader_parameter/normal_detail_fade_end = 4000.0
+shader_parameter/distant_normal_strength = 0.2
+shader_parameter/specular_aa_strength = 0.35
+shader_parameter/distant_roughness = 0.3
+shader_parameter/ssr_camera_fade_start = 750.0
+shader_parameter/ssr_camera_fade_end = 3000.0
+shader_parameter/water_scatter_strength = 0.06
+shader_parameter/gi_fallback_fade_start = 650.0
+shader_parameter/gi_fallback_fade_end = 1300.0
+shader_parameter/gi_fallback_irradiance = 0.45
+shader_parameter/gi_fallback_near_blend = 0.35
+shader_parameter/color_deep = Color(0.28323993, 0.41831532, 0.6503568, 1)
+shader_parameter/color_shallow = Color(0.19727501, 0.4065899, 0.81331676, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 50.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.13641474, 0.6974191, 1, 1)
+shader_parameter/edge_start = 0.34
+shader_parameter/edge_width = 3.65
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.058
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[node name="Windy_Valley" type="Node3D" unique_id=794803344]
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=1015454562]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -908.3095, 4.1502075, 573.65015)
+script = ExtResource("1_771gn")
+downwarp_enabled = true
+downwarp_distance = 300.0
+
+[node name="LevelMusic" type="Node3D" parent="." unique_id=110015106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4356785, -5.233658)
+script = ExtResource("2_e5r1c")
+autoplay_stream = ExtResource("3_diivr")
+autoplay_fade_in = 0.0
+autoplay_fade_out = 1.0
+
+[node name="Lights" type="Node3D" parent="." unique_id=1451312442]
+
+[node name="EnvironmentWeatherSystem" parent="Lights" unique_id=1736747719 instance=ExtResource("4_b3wl0")]
+environment_profile = ExtResource("5_1bytx")
+initial_time_of_day_hours = 11.073
+time_progression_enabled = false
+day_length_minutes = 8.0
+use_weather_presets = false
+initial_weather_id = &"scene"
+dynamic_weather_enabled = false
+precipitation_enabled = false
+persistent_weather_enabled = false
+weather_persistence_namespace = &"windyvalley"
+time_persistence_reference = "windyvalley"
+
+[node name="DayNightCycle" parent="Lights/EnvironmentWeatherSystem" index="0"]
+profile = ExtResource("5_1bytx")
+weather = ExtResource("6_u14bl")
+time_of_day_hours = 11.612
+cycle_enabled = false
+time_controls_fog = false
+sun_path_azimuth_degrees = -40.19999999999999
+
+[node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
+environment = SubResource("Environment_fu7ff")
+
+[node name="Sun" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="1" unique_id=370270526]
+transform = Transform3D(0.9969832, 0.005080236, 0.07745165, -0.07761808, 0.065254256, 0.9948454, 0, -0.9978558, 0.06545171, 0, 0, 0)
+light_color = Color(0.9999998, 0.9809, 0.942714, 1)
+light_energy = 2.1311455
+light_angular_distance = 2.37
+directional_shadow_split_1 = 0.122
+directional_shadow_split_2 = 0.249
+directional_shadow_split_3 = 0.56
+directional_shadow_blend_splits = true
+directional_shadow_fade_start = 0.754
+directional_shadow_max_distance = 414.7
+directional_shadow_pancake_size = 0.0
+
+[node name="Moon" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="2" unique_id=1577357035]
+transform = Transform3D(-0.9895125, 0.01750239, -0.143383, 0.14444727, 0.11989727, -0.98222184, 0, -0.9926321, -0.12116802, 0, 0, 0)
+
+[node name="WATERNODE" parent="." unique_id=896649702 instance=ExtResource("6_3yovv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 212.2456, -6074.7334, -1008.58325)
+visible = false
+size = Vector3(10999.935, 800, 14000.025)
+water_alpha = 0.95
+inner_subdivisions = 1
+wave_height = 2.0
+
+[node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE" unique_id=1994567877]
+process_mode = 4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 80, 0)
+cast_shadow = 0
+instance_shader_parameters/clipmap_displacement_fade_start = 0.0
+instance_shader_parameters/clipmap_inner_radius = 0.0
+instance_shader_parameters/clipmap_lod_scale = 0.0
+instance_shader_parameters/clipmap_outer_radius = 0.0
+instance_shader_parameters/height_scale = 2.0
+mesh = SubResource("PlaneMesh_g1ukp")
+surface_material_override/0 = SubResource("ShaderMaterial_ufyj7")
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=400068973]
+
+[node name="SPRINGS" type="Node3D" parent="OBJECTS" unique_id=824406634]
+
+[node name="DASH PANELS" type="Node3D" parent="OBJECTS/SPRINGS" unique_id=313849699]
+
+[node name="DashPanel" parent="OBJECTS/SPRINGS/DASH PANELS" unique_id=1418350663 instance=ExtResource("10_1bytx")]
+transform = Transform3D(-4.371139e-08, 0.104376346, -0.9945379, 0, 0.9945379, 0.104376346, 1, 4.562435e-09, -4.347263e-08, -79.51496, 63.432396, 331.90164)
+strength = 120.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/DASH PANELS/DashPanel" index="0" unique_id=1646361553]
+shape = SubResource("BoxShape3D_0bwfm")
+
+[node name="SpringWall1" type="Node3D" parent="OBJECTS/SPRINGS" unique_id=984234053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.887085, 0, 0)
+
+[node name="Spring" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1538883451 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring2" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1211186045 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring3" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1024265108 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring4" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1466319233 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 255.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring5" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1265332029 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring6" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1404127184 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring7" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=163423376 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring8" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1871032560 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 282.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring9" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=2146352937 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring10" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=852834536 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring11" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1326328033 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring12" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1882021571 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 227.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring13" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1652547406 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring14" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=325501721 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring15" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1663700741 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring16" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=115366125 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 201.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring17" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=412603392 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring18" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=894107748 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring19" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=680397908 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring20" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=66665466 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 309.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring21" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=19347201 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -835.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring22" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=854293464 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -861.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring23" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=15108196 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -782.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring24" parent="OBJECTS/SPRINGS/SpringWall1" unique_id=1163281344 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(2.7361612, -7.517541, 0, 7.517541, 2.7361612, 0, 0, 0, 8, -546.9536, 336.01654, -808.4517)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="SpringWall2" type="Node3D" parent="OBJECTS/SPRINGS" unique_id=1199141482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.803284, 0, 0)
+
+[node name="Spring25" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1146971802 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring26" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1927167801 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring27" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=81245807 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring28" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=332794629 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 290.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring29" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=917250067 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring30" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1582477511 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring31" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=2023665734 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring32" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=646637109 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 317.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring33" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=886456710 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring34" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1115059310 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring35" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=112394558 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring36" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=2123146981 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 262.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring37" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1415070851 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring38" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1103519319 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring39" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1955999443 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring40" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1147647653 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 236.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring41" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1606182288 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring42" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1986753516 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring43" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1084306256 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring44" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=411312898 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 344.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring45" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=765970725 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring46" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=743417057 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring47" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1665555217 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring48" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1909607932 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 371.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring49" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1594330927 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -808.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring50" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1498255774 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -782.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring51" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=138415795 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -861.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring52" parent="OBJECTS/SPRINGS/SpringWall2" unique_id=1133666497 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-2.7361612, 7.517541, -1.2079664e-06, 7.517541, 2.7361612, 0, 4.1314885e-07, -1.1351171e-06, -8, -790.9531, 400.01654, -835.45197)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="Spring25" parent="OBJECTS/SPRINGS" unique_id=1912620786 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(7.9273925, 1.0753825, 0, -1.0753825, 7.9273925, 0, 0, 0, 8, -1002.86975, 178.01654, -835.4517)
+strength = 300.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.6
+action_lock_time = 0.6
+align_time = 0.6
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring26" parent="OBJECTS/SPRINGS" unique_id=1762248228 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(7.9273925, 1.0753825, 0, -1.0753825, 7.9273925, 0, 0, 0, 8, -1002.86975, 178.01654, -808.4517)
+strength = 300.0
+min_additive_launch_speed = 300.0
+max_additive_launch_speed = 300.0
+movement_lock_time = 0.6
+action_lock_time = 0.6
+align_time = 0.6
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring27" parent="OBJECTS/SPRINGS" unique_id=1239894493 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-4.588612, 6.553216, 0, -6.553216, -4.588612, 0, 0, 0, 8, -988.077, 256.06265, -835.4517)
+strength = 185.0
+min_additive_launch_speed = 120.0
+additive_mirrored_bounce_ratio = 2.0
+max_additive_launch_speed = 200.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring28" parent="OBJECTS/SPRINGS" unique_id=1248010825 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-4.588612, 6.553216, 0, -6.553216, -4.588612, 0, 0, 0, 8, -988.077, 256.06265, -808.4517)
+strength = 185.0
+min_additive_launch_speed = 120.0
+additive_mirrored_bounce_ratio = 2.0
+max_additive_launch_speed = 200.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="ENEMIES" type="Node3D" parent="OBJECTS" unique_id=523753481]
+
+[node name="DeathPlane" parent="OBJECTS" unique_id=719304138 instance=ExtResource("10_0bwfm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -513.0647, -427.33032, -539.626)
+visible = false
+
+[node name="CollisionShape3D" parent="OBJECTS/DeathPlane" index="0" unique_id=172183619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 760.8085, -68.04663, -1081.6133)
+shape = SubResource("BoxShape3D_qnnpr")
+
+[node name="RaceObjectLayout_CollectionRace01" parent="OBJECTS" unique_id=650659054 instance=ExtResource("11_q5cbk")]
+race_id = "BBZCOL01"
+
+[node name="Spring53" parent="OBJECTS/RaceObjectLayout_CollectionRace01" unique_id=282606771 instance=ExtResource("8_1bytx")]
+process_mode = 3
+transform = Transform3D(-0.20362727, -7.9974074, 1.9071219e-06, 7.9974074, -0.20362727, 1.7801653e-08, 3.0746868e-08, 1.9069571e-06, 8, 101.95601, 167.46962, -905.89404)
+snap_to_center = false
+strength = 1.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 80.0
+additive_mirrored_bounce_ratio = 3.0
+max_additive_launch_speed = 200.0
+downward_trajectory_align_speed_deg = 2160.0
+
+[node name="RaceStart_BBZ_COLLECTION_01" parent="OBJECTS" unique_id=765918458 instance=ExtResource("12_fu7ff")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.587204, 157.00266, -908.2348)
+race_type = 1
+collection_required_count = 3
+collection_finish_goal_path = NodePath("../RaceGoal_BBZ_COLLECTION_01")
+level_name = "Blueberry Beach Zone"
+race_id = "BBZCOL01"
+go_music_stream = ExtResource("13_g1ukp")
+go_music_fade_in = 0.0
+
+[node name="CollisionShape3D" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="0" unique_id=1655613209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5441895, 0.5)
+shape = SubResource("BoxShape3D_50ke2")
+
+[node name="BoundaryVisual" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="1" unique_id=950711976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5441895, 0.5)
+mesh = SubResource("BoxMesh_xxi7j")
+
+[node name="StartingLine" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="2" unique_id=96905968]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9965515, 0)
+
+[node name="RaceGoal_BBZ_COLLECTION_01" parent="OBJECTS" unique_id=1001605477 instance=ExtResource("14_gqsdw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.1344, 199.134, -109.06793)
+downwarp_distance = 100.0
+
+[node name="CollisionShape3D" parent="OBJECTS/RaceGoal_BBZ_COLLECTION_01" index="0" unique_id=377308896]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 9.5, 0.5)
+shape = SubResource("BoxShape3D_07swv")
+
+[node name="Circle" parent="OBJECTS/RaceGoal_BBZ_COLLECTION_01/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
+material_override = SubResource("ShaderMaterial_p50qh")
+
+[node name="RaceCollectionItem" parent="OBJECTS" unique_id=1530268029 instance=ExtResource("15_we6kh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1159.182, 548.924, -813.8838)
+collection_radius = 30.0
+race_start_path = NodePath("../RaceStart_BBZ_COLLECTION_01")
+race_id = "BBZCOL01"
+
+[node name="RaceCollectionItem2" parent="OBJECTS" unique_id=1048908075 instance=ExtResource("15_we6kh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -669.0935, 827.54694, 74.73682)
+collection_radius = 60.0
+race_start_path = NodePath("../RaceStart_BBZ_COLLECTION_01")
+race_id = "BBZCOL01"
+
+[node name="RaceCollectionItem3" parent="OBJECTS" unique_id=282260698 instance=ExtResource("15_we6kh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -577.118, 928.1478, -852.24554)
+collection_radius = 80.0
+race_start_path = NodePath("../RaceStart_BBZ_COLLECTION_01")
+race_id = "BBZCOL01"
+
+[node name="AutomationSpline" parent="OBJECTS" unique_id=2094852401 instance=ExtResource("19_u14bl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.44992, 64.89172, 331.47433)
+use_entrance_exit_areas = true
+entrance_area_path = NodePath("../AutoEnter")
+exit_area_path = NodePath("../AutoExit")
+failsafe_exit_distance = 100.0
+max_turn_deg_per_sec = 9999.0
+lock_controls = true
+lock_movement = true
+lock_actions = true
+lock_drift = true
+nudge_toward_strength_base = 60.0
+nudge_toward_strength_per_speed = 0.195
+nudge_radius = 8.197
+along_assist_target_speed = 115.0
+along_assist_accel = 120.0
+
+[node name="Path3D" parent="OBJECTS/AutomationSpline" index="0" unique_id=716481439]
+curve = SubResource("Curve3D_1vivr")
+
+[node name="CollisionShape3D" parent="OBJECTS/AutomationSpline/Area3D" parent_id_path=PackedInt32Array(2094852401, 1793801836) index="0" unique_id=775713540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.330536, 114.695984, -10.037445)
+shape = SubResource("BoxShape3D_q5cbk")
+
+[node name="AutoEnter" type="Area3D" parent="OBJECTS" unique_id=236962740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.63323, 65.41833, 329.84622)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OBJECTS/AutoEnter" unique_id=947214428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10222626, -0.76265717, 2.5526733)
+shape = SubResource("BoxShape3D_1bytx")
+
+[node name="AutoExit" type="Area3D" parent="OBJECTS" unique_id=304864371]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.42227, 248.27959, 316.98)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OBJECTS/AutoExit" unique_id=111008209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10222626, 2.1315765, -0.80825806)
+shape = SubResource("BoxShape3D_u14bl")
+
+[node name="WindyValley" parent="." unique_id=1703879490 instance=ExtResource("15_771gn")]
+transform = Transform3D(2.1, 0, 0, 0, 2.1, 0, 0, 0, 2.1, 0, 0, 0)
+
+[node name="WATER" parent="WindyValley" index="7" unique_id=582374749]
+visible = false
+
+[node name="RaceStart" parent="." unique_id=31650574 instance=ExtResource("12_fu7ff")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -920.52515, -19.15517, 572.3799)
+level_name = "Windy Valley"
+race_id = "WVCR01"
+go_music_stream = ExtResource("19_xndem")
+go_music_fade_in = 0.0
+go_music_fade_out = 1.0
+
+[node name="RaceGoal" parent="." unique_id=767008932 instance=ExtResource("14_gqsdw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1069.1808, 480.00977, -1164.3619)
+results_music_stream = ExtResource("20_3yovv")
+race_start_path = NodePath("../RaceStart")
+
+[node name="WATERNODE2" parent="." unique_id=1695261353 instance=ExtResource("6_3yovv")]
+transform = Transform3D(0.51035756, 0, -0.85996234, 0, 1, 0, 0.85996234, 0, 0.51035756, -703.35986, -195.44075, 663.30145)
+size = Vector3(150, 100, 150)
+water_surface_color = Color(0.2379024, 0.84541553, 0.99999946, 1)
+water_fresnel_color = Color(0.66525877, 0.74665874, 0.9498009, 1)
+water_shallow_color = Color(0.19727501, 0.4065899, 0.81331676, 1)
+water_deep_color = Color(0.28323993, 0.41831532, 0.6503568, 1)
+water_edge_color = Color(0.13641474, 0.6974191, 1, 1)
+inner_subdivisions = 1
+
+[node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE2" unique_id=1074266479]
+process_mode = 4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 80, 0)
+cast_shadow = 0
+instance_shader_parameters/clipmap_displacement_fade_start = 0.0
+instance_shader_parameters/clipmap_inner_radius = 0.0
+instance_shader_parameters/clipmap_lod_scale = 0.0
+instance_shader_parameters/clipmap_outer_radius = 0.0
+instance_shader_parameters/height_scale = 5.0
+mesh = SubResource("PlaneMesh_ef2lm")
+surface_material_override/0 = SubResource("ShaderMaterial_ra0ap")
+
+[node name="OBJECTS2" type="Node3D" parent="." unique_id=1235857715]
+
+[editable path="Lights/EnvironmentWeatherSystem"]
+[editable path="Lights/EnvironmentWeatherSystem/DayNightCycle"]
+[editable path="OBJECTS/SPRINGS/DASH PANELS/DashPanel"]
+[editable path="OBJECTS/DeathPlane"]
+[editable path="OBJECTS/RaceStart_BBZ_COLLECTION_01"]
+[editable path="OBJECTS/RaceGoal_BBZ_COLLECTION_01"]
+[editable path="OBJECTS/RaceGoal_BBZ_COLLECTION_01/GoalModel"]
+[editable path="OBJECTS/RaceGoal_BBZ_COLLECTION_01/GoalModel/GoalRing2"]
+[editable path="OBJECTS/AutomationSpline"]
+[editable path="WindyValley"]

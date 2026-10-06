@@ -1,0 +1,642 @@
+newmtl HIGHWAY03_material_0
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_35.png
+newmtl HIGHWAY03_material_1
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st2_25.png
+newmtl HIGHWAY03_material_2
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st2_27.png
+newmtl HIGHWAY03_material_3
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_14.png
+newmtl HIGHWAY03_material_4
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_15.png
+newmtl HIGHWAY03_material_5
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_23.png
+newmtl HIGHWAY03_material_6
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_27.png
+newmtl HIGHWAY03_material_7
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_56.png
+newmtl HIGHWAY03_material_8
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_3.png
+newmtl HIGHWAY03_material_9
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_68.png
+newmtl HIGHWAY03_material_10
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_90.png
+newmtl HIGHWAY03_material_11
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st2_14.png
+newmtl HIGHWAY03_material_12
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_96.png
+newmtl HIGHWAY03_material_13
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_5.png
+newmtl HIGHWAY03_material_14
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_80.png
+newmtl HIGHWAY03_material_15
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_25.png
+newmtl HIGHWAY03_material_16
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_g25.png
+newmtl HIGHWAY03_material_17
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_w18.png
+newmtl HIGHWAY03_material_18
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_13.png
+newmtl HIGHWAY03_material_19
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_58.png
+newmtl HIGHWAY03_material_20
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_7.png
+newmtl HIGHWAY03_material_21
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_77.png
+newmtl HIGHWAY03_material_22
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_86.png
+newmtl HIGHWAY03_material_23
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_26.png
+newmtl HIGHWAY03_material_24
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_28.png
+newmtl HIGHWAY03_material_25
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_55.png
+newmtl HIGHWAY03_material_26
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_85.png
+newmtl HIGHWAY03_material_27
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_94.png
+newmtl HIGHWAY03_material_28
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_101.png
+newmtl HIGHWAY03_material_29
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_89.png
+newmtl HIGHWAY03_material_30
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_9.png
+newmtl HIGHWAY03_material_31
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_88.png
+newmtl HIGHWAY03_material_32
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_1.png
+newmtl HIGHWAY03_material_33
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_w36.png
+newmtl HIGHWAY03_material_34
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_97.png
+newmtl HIGHWAY03_material_35
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_2.png
+newmtl HIGHWAY03_material_36
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_100.png
+newmtl HIGHWAY03_material_37
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_109.png
+newmtl HIGHWAY03_material_38
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_12.png
+newmtl HIGHWAY03_material_39
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd w4.png
+newmtl HIGHWAY03_material_40
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_6.png
+newmtl HIGHWAY03_material_41
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_20.png
+newmtl HIGHWAY03_material_42
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_108.png
+newmtl HIGHWAY03_material_43
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_46.png
+newmtl HIGHWAY03_material_44
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_6.png
+newmtl HIGHWAY03_material_45
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd k07.png
+newmtl HIGHWAY03_material_46
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_5.png
+newmtl HIGHWAY03_material_47
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_84.png
+newmtl HIGHWAY03_material_48
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_62.png
+newmtl HIGHWAY03_material_49
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_99.png
+newmtl HIGHWAY03_material_50
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_74.png
+newmtl HIGHWAY03_material_51
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_78.png
+newmtl HIGHWAY03_material_52
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_79.png
+newmtl HIGHWAY03_material_53
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_82.png
+newmtl HIGHWAY03_material_54
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st2_26.png
+newmtl HIGHWAY03_material_55
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_64.png
+newmtl HIGHWAY03_material_56
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_18.png
+newmtl HIGHWAY03_material_57
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_11.png
+newmtl HIGHWAY03_material_58
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_50.png
+newmtl HIGHWAY03_material_59
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_51.png
+newmtl HIGHWAY03_material_60
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_76.png
+newmtl HIGHWAY03_material_61
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_107.png
+newmtl HIGHWAY03_material_62
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd w5.png
+newmtl HIGHWAY03_material_63
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_w19.png
+newmtl HIGHWAY03_material_64
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_63.png
+newmtl HIGHWAY03_material_65
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_45.png
+newmtl HIGHWAY03_material_66
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_91.png
+newmtl HIGHWAY03_material_67
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st_E4.png
+newmtl HIGHWAY03_material_68
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_43.png
+newmtl HIGHWAY03_material_69
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_44.png
+newmtl HIGHWAY03_material_70
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_32.png
+newmtl HIGHWAY03_material_71
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_66.png
+newmtl HIGHWAY03_material_72
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st_E3.png
+newmtl HIGHWAY03_material_73
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado2.png
+newmtl HIGHWAY03_material_74
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado3.png
+newmtl HIGHWAY03_material_75
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd k08.png
+newmtl HIGHWAY03_material_76
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_w37.png
+newmtl HIGHWAY03_material_77
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_w38.png
+newmtl HIGHWAY03_material_78
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_65.png
+newmtl HIGHWAY03_material_79
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_8.png
+newmtl HIGHWAY03_material_80
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_98.png
+newmtl HIGHWAY03_material_81
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado5.png
+newmtl HIGHWAY03_material_82
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_59.png
+newmtl HIGHWAY03_material_83
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_69.png
+newmtl HIGHWAY03_material_84
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado4.png
+newmtl HIGHWAY03_material_85
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_8.png
+newmtl HIGHWAY03_material_86
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_67.png
+newmtl HIGHWAY03_material_87
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_71.png
+newmtl HIGHWAY03_material_88
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd w3.png
+newmtl HIGHWAY03_material_89
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado7.png
+newmtl HIGHWAY03_material_90
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_60.png
+newmtl HIGHWAY03_material_91
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_37.png
+newmtl HIGHWAY03_material_92
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_4.png
+newmtl HIGHWAY03_material_93
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st1_7.png
+newmtl HIGHWAY03_material_94
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_48.png
+newmtl HIGHWAY03_material_95
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_49.png
+newmtl HIGHWAY03_material_96
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado8.png
+newmtl HIGHWAY03_material_97
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_92.png
+newmtl HIGHWAY03_material_98
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_93.png
+newmtl HIGHWAY03_material_99
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_19.png
+newmtl HIGHWAY03_material_100
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd s_w28.png
+newmtl HIGHWAY03_material_101
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st2_9.png
+newmtl HIGHWAY03_material_102
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_87.png
+newmtl HIGHWAY03_material_103
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_10.png
+newmtl HIGHWAY03_material_104
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_mado6.png
+newmtl HIGHWAY03_material_105
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd st3_110.png
+newmtl HIGHWAY03_material_106
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+illum 1
+map_Kd los_wt00.png

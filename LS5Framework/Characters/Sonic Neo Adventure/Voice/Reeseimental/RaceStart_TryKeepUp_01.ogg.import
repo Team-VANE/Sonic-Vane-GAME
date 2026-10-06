@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://1jrpltgfmhx5"
+path="res://.godot/imported/RaceStart_TryKeepUp_01.ogg-f7092a6d2eb9b16387df70b5069f49ef.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_TryKeepUp_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_TryKeepUp_01.ogg-f7092a6d2eb9b16387df70b5069f49ef.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

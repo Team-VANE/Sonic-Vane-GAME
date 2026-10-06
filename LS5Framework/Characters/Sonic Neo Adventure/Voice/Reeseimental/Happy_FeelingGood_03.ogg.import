@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b5cj0w4pseb7x"
+path="res://.godot/imported/Happy_FeelingGood_03.ogg-3994a442d990b049d83fd1a5914444ad.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Happy_FeelingGood_03.ogg"
+dest_files=["res://.godot/imported/Happy_FeelingGood_03.ogg-3994a442d990b049d83fd1a5914444ad.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

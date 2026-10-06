@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="RainProfile" format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/Rain/RainProfile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+intensity = 0.28
+tint = Color(0.74, 0.84, 0.94, 0.42)
+fall_speed = 25.0
+velocity_randomness = 0.18
+direction_spread_degrees = 2.8
+spawn_height = 26.0
+near_radius = 13.0
+far_radius = 42.0
+near_drop_size = Vector2(0.02, 1.25)
+near_scale_min = 0.55
+near_scale_max = 1.15
+near_fade_out_start = 11.0
+near_fade_out_end = 21.0
+far_drop_size = Vector2(0.027, 2)
+far_scale_min = 0.7
+far_scale_max = 1.15
+far_fade_in_start = 12.0
+far_fade_in_end = 20.0
+far_fade_out_start = 200.0
+far_fade_out_end = 240.0

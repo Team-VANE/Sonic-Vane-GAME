@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://slilid3qr5y3"
+path="res://.godot/imported/Sorry_Whoops_01.ogg-d5842dfe54ccbb943398b37d33e8c4ce.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Sorry_Whoops_01.ogg"
+dest_files=["res://.godot/imported/Sorry_Whoops_01.ogg-d5842dfe54ccbb943398b37d33e8c4ce.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

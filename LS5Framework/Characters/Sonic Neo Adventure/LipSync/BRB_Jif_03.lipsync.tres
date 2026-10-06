@@ -1,0 +1,143 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://coo7l1gyayeg1"]
+
+[ext_resource type="AudioStream" uid="uid://qrhsow8ewdmu" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/BRB_Jif_03.ogg" id="1_68mrr"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_ybkt8"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_h1ned"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_vdvgx"]
+
+[sub_resource type="Resource" id="Resource_spbt8"]
+script = ExtResource("2_ybkt8")
+pose_id = &"EXP_HAPPY"
+end_time = 1.0399999999999998
+blend_in = 0.21
+blend_out = 0.25
+
+[sub_resource type="Resource" id="Resource_maqbf"]
+script = ExtResource("2_ybkt8")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.07
+end_time = 0.43
+row = 1
+blend_in = 0.16499999999999998
+blend_out = 0.175
+
+[sub_resource type="Resource" id="Resource_r3qqv"]
+script = ExtResource("2_ybkt8")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.43
+end_time = 0.8399999999999999
+row = 2
+blend_in = 0.19
+blend_out = 0.20499999999999993
+
+[sub_resource type="Resource" id="Resource_d0gok"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_B_M_P"
+start_time = 0.09
+end_time = 0.2543853073463268
+blend_in = 0.08175412293853074
+blend_out = 0.07175412293853073
+
+[sub_resource type="Resource" id="Resource_or2xb"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_Ah"
+start_time = 0.16263118440779611
+end_time = 0.3800862068965517
+row = 1
+blend_in = 0.061754122938530734
+blend_out = 0.04175412293853073
+
+[sub_resource type="Resource" id="Resource_nmre0"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.28833208395802096
+end_time = 0.40289466873706004
+row = 2
+blend_in = 0.05728129238951954
+blend_out = 0.020354554865424423
+strength = 0.4
+
+[sub_resource type="Resource" id="Resource_3gqc6"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_Ih"
+start_time = 0.38254011387163556
+end_time = 0.44968944099378877
+row = 3
+blend_in = 0.020354554865424423
+blend_out = 0.012525879917184263
+strength = 0.5
+
+[sub_resource type="Resource" id="Resource_153py"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.41000000000000003
+end_time = 0.4383385093167702
+blend_in = 0.012525879917184263
+blend_out = 0.012525879917184263
+
+[sub_resource type="Resource" id="Resource_us3nr"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_Ah"
+start_time = 0.42
+end_time = 0.4755292443064181
+row = 1
+blend_in = 0.012525879917184263
+blend_out = 0.01940217391304344
+strength = 0.5
+
+[sub_resource type="Resource" id="Resource_t2kdv"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_Ch_J"
+start_time = 0.4891032608695652
+end_time = 0.6233545727136431
+row = 2
+blend_in = 0.01940217391304344
+blend_out = 0.04982008995502249
+strength = 0.6
+
+[sub_resource type="Resource" id="Resource_1bky0"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_Ih"
+start_time = 0.5235344827586206
+end_time = 0.7852698650674662
+row = 3
+blend_in = 0.04982008995502249
+blend_out = 0.04982008995502246
+
+[sub_resource type="Resource" id="Resource_4mqiv"]
+script = ExtResource("2_ybkt8")
+pose_id = &"VIS_F_V"
+start_time = 0.6054497751124437
+end_time = 0.8599999999999999
+blend_in = 0.10982008995502246
+blend_out = 0.04982008995502246
+
+[resource]
+script = ExtResource("4_vdvgx")
+profile = ExtResource("3_h1ned")
+audio = ExtResource("1_68mrr")
+transcript = "Back in a jif"
+audible_start = 0.09
+audible_end = 0.86
+new_blend_in = 0.4
+new_blend_out = 0.4
+smoothing_time = 0.0
+viseme_cues = Array[ExtResource("2_ybkt8")]([SubResource("Resource_d0gok"), SubResource("Resource_or2xb"), SubResource("Resource_nmre0"), SubResource("Resource_3gqc6"), SubResource("Resource_153py"), SubResource("Resource_us3nr"), SubResource("Resource_t2kdv"), SubResource("Resource_1bky0"), SubResource("Resource_4mqiv")])
+expression_cues = Array[ExtResource("2_ybkt8")]([SubResource("Resource_spbt8"), SubResource("Resource_maqbf"), SubResource("Resource_r3qqv")])
+word_spans = Array[Dictionary]([{
+"end": 0.3927173913043478,
+"start": 0.09,
+"word": "Back"
+}, {
+"end": 0.45847826086956517,
+"start": 0.3927173913043478,
+"word": "in"
+}, {
+"end": 0.4988043478260869,
+"start": 0.46,
+"word": "a"
+}, {
+"end": 0.86,
+"start": 0.4988043478260869,
+"word": "jif"
+}])

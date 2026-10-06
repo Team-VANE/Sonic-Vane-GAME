@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemIconAssociation" format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Resources/Items/ItemIconAssociation.gd" id="1"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/Icons/ItemMonitor_Icon_Invincible.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+item_id = &"invincibility"
+icon_texture = ExtResource("2")
+is_power_up = true

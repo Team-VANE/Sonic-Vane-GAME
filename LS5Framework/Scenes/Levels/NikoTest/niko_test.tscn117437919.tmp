@@ -1,0 +1,3145 @@
+[gd_scene format=3 uid="uid://dn565ekblu308"]
+
+[ext_resource type="PackedScene" uid="uid://bdltank6nne8b" path="res://LS5Framework/Objects/Rings/Ring.tscn" id="1_22v2l"]
+[ext_resource type="PackedScene" uid="uid://dab7ow5oahfhc" path="res://LS5Framework/Objects/Homing/HomingTarget.tscn" id="2_7graj"]
+[ext_resource type="PackedScene" uid="uid://b2jkv0kca2k6q" path="res://LS5Framework/Objects/Rings/RingSpline.tscn" id="3_ehlmr"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WorldEnvironmentTrigger.tscn" id="3_fgwhi"]
+[ext_resource type="PackedScene" uid="uid://c12m0rampjump" path="res://LS5Framework/Objects/Ramps/JumpPanelRamp.tscn" id="4_18sbj"]
+[ext_resource type="PackedScene" uid="uid://dyl836mb3fewl" path="res://LS5Framework/Scenes/Levels/BlitzTest/blitz_sonic_test.tscn" id="5_65k7s"]
+[ext_resource type="Material" uid="uid://cdrd75vn4rhn5" path="res://LS5Framework/Scenes/Levels/Materials/NikoChecker.tres" id="6_pfl74"]
+[ext_resource type="PackedScene" uid="uid://bdko3pequhfe2" path="res://LS5Framework/Scenes/Levels/NikoTest/TestScaled.tscn" id="7_b56cm"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="8_y46bu"]
+[ext_resource type="AudioStream" uid="uid://ddq565nrvg0g0" path="res://LS5Framework/Sounds/Music/Collision Chaos 'G' Mix US.ogg" id="9_ehlmr"]
+[ext_resource type="PackedScene" uid="uid://e1tkwisehr5p" path="res://LS5Framework/Objects/DashPanels/DashPanel.tscn" id="9_g2p7k"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="9_mu1lr"]
+[ext_resource type="PackedScene" uid="uid://cu32rahix62jt" path="res://LS5Framework/Scenes/Levels/NikoTest/test_circle_1.tscn" id="10_0vtvo"]
+[ext_resource type="PackedScene" uid="uid://dpnhnshhijr7l" path="res://LS5Framework/Objects/Actors/Chao/Chao.tscn" id="10_5mp8f"]
+[ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="10_e4tho"]
+[ext_resource type="PackedScene" uid="uid://c6xyvqm8rq2k2" path="res://LS5Framework/Objects/Enemies/GroundedBlockout/GroundedEnemyBlockout.tscn" id="11_a6a28"]
+[ext_resource type="PackedScene" uid="uid://d1okvbdxqc08b" path="res://LS5Framework/Objects/VaultBar/VaultBar.tscn" id="13_07blk"]
+[ext_resource type="Texture2D" uid="uid://bdqotcscdk0pd" path="res://LS5Framework/Scenes/Levels/NikoTest/Test_Diffuse.png" id="13_7n3f4"]
+[ext_resource type="PackedScene" uid="uid://vypkwgl0dpr8" path="res://LS5Framework/Objects/Bumper/Test/Bumper_Directional.tscn" id="13_ega4b"]
+[ext_resource type="PackedScene" uid="uid://bf2o7d3qsovh6" path="res://LS5Framework/Objects/Automation/AutomationSpline.tscn" id="13_ijfms"]
+[ext_resource type="PackedScene" uid="uid://dcow1cl6vd0n3" path="res://LS5Framework/Objects/Music/MusicTrigger.tscn" id="14_8fh1j"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Race/RaceObjectLayout.tscn" id="14_ax8r5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Bumper/Test/Bumper_Overcharged.tscn" id="14_iwaxd"]
+[ext_resource type="AudioStream" uid="uid://bhr1hmgim63vb" path="res://LS5Framework/Sounds/Music/1-20 Letz Get This Party Started.mp3" id="15_01uw4"]
+[ext_resource type="PackedScene" uid="uid://bl1xupocp4dlw" path="res://LS5Framework/Objects/Bumper/Test/Bumper_RadialClassic.tscn" id="15_pmxsj"]
+[ext_resource type="PackedScene" uid="uid://dcok1e2uobeqg" path="res://LS5Framework/Objects/Bumper/Test/Bumper_SurfaceNormal.tscn" id="16_ak7f8"]
+[ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="16_phgj3"]
+[ext_resource type="PackedScene" uid="uid://yb5utiaqix3e" path="res://LS5Framework/Objects/Bumper/Test/Bumper_SurfaceNormal_SADXHeadTest.tscn" id="17_iwaxd"]
+[ext_resource type="Texture2D" uid="uid://bc7ebln3j6r3o" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/wave14.png" id="17_uuy2w"]
+[ext_resource type="PackedScene" uid="uid://ghucsw5061eo" path="res://LS5Framework/Objects/Gameplay/DeathPlane.tscn" id="18_u5mvm"]
+[ext_resource type="PackedScene" uid="uid://c1g10s7pyb8t3" path="res://LS5Framework/Objects/Gameplay/Checkpoint.tscn" id="19_s3xwx"]
+[ext_resource type="PackedScene" uid="uid://by35k35q3p0d1" path="res://LS5Framework/Objects/Rail/Rail.tscn" id="22_p0x6m"]
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="23_spawn"]
+[ext_resource type="Texture2D" uid="uid://ddvmsaux20gfe" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_23.jpg" id="23_tqx1w"]
+[ext_resource type="PackedScene" uid="uid://bswvitj3v4stb" path="res://LS5Framework/Objects/Rail/RailBooster.tscn" id="24_334di"]
+[ext_resource type="PackedScene" uid="uid://cyglqqs3uhsy0" path="res://LS5Framework/Objects/Camera/CameraConstraint.tscn" id="28_nydfv"]
+[ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="31_x6a63"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gameplay/PhysicsShapeEmitter.tscn" id="33_58wob"]
+[ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="34_a5p52"]
+[ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="35_ftftv"]
+[ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="36_vrbq5"]
+[ext_resource type="Script" uid="uid://04dv4knhynpt" path="res://LS5Framework/Objects/MovingPlatform/RigidBodyPlatform.gd" id="37_2ywqk"]
+[ext_resource type="PackedScene" uid="uid://ie7142myiknm" path="res://LS5Framework/Objects/Water/Water_Volume.tscn" id="38_ehlmr"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="41_1i28t"]
+[ext_resource type="PackedScene" uid="uid://dm7cuouef12s7" path="res://LS5Framework/Scenes/Levels/NikoTest/TestRampHalf_Narrow_1.glb" id="41_i15uf"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="42_4rehq"]
+[ext_resource type="PackedScene" uid="uid://bc2xismjbxyaw" path="res://LS5Framework/Scenes/Levels/NikoTest/TestRamp_45Ramp.glb" id="42_u8dme"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="43_jfrcj"]
+[ext_resource type="AudioStream" uid="uid://db86jppyv14ec" path="res://LS5Framework/Sounds/Music/Ska Cha Cha.ogg" id="44_07blk"]
+[ext_resource type="PackedScene" uid="uid://dcehqlv0l8yoj" path="res://LS5Framework/Objects/Reference/RULER/LS5E3_RULER.blend" id="44_ij0yl"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gravity/PlanetaryGravity.tscn" id="45_qirib"]
+[ext_resource type="PackedScene" uid="uid://bc31meew3vcbi" path="res://LS5Framework/Objects/Testing/Sphere_Inverted.glb" id="50_736jh"]
+[ext_resource type="Script" uid="uid://c1rk71fl0lh8s" path="res://LS5Framework/Objects/Carry/CarryableObject.gd" id="51_a6a28"]
+[ext_resource type="PackedScene" uid="uid://ddj7d3ue1la8i" path="res://LS5Framework/Objects/Carry/CarryableCrate.tscn" id="52_ak7f8"]
+[ext_resource type="PackedScene" uid="uid://cwsdj34dkp0dx" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn" id="52_mu1lr"]
+[ext_resource type="PackedScene" uid="uid://c3gu5qijp7yb3" path="res://LS5Framework/Objects/Enemies/SpikeBall/SpikeBall.tscn" id="53_mu1lr"]
+[ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="53_tg66e"]
+[ext_resource type="PackedScene" uid="uid://crpqw8jeu0oih" path="res://LS5Framework/Objects/Testing/Sphere_parameters.glb" id="54_tg66e"]
+[ext_resource type="PackedScene" uid="uid://d0twxxsygymbf" path="res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/FlyingEnemy_SA2MonoBeetle.tscn" id="57_5mp8f"]
+[ext_resource type="PackedScene" uid="uid://cl7c1iu4xvpq7" path="res://LS5Framework/Objects/Gameplay/GazeTarget.tscn" id="57_blvjp"]
+[ext_resource type="Script" uid="uid://h8r2mdi12h8a" path="res://LS5Framework/Objects/Enemies/Core/Components/EnemySelfDestructOnContactDamage.gd" id="58_5mp8f"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Automation/AutomationSpline2_5D.tscn" id="60_sq2vv"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Automation/AutomationSpline2_5DDepthProfile.tscn" id="61_depth_profile"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ax8r5"]
+resource_local_to_scene = true
+shader = ExtResource("10_e4tho")
+shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
+shader_parameter/moon_direction = Vector3(-0.76604444, -0.64278764, 0)
+shader_parameter/zenith_color = Color(0.095625, 0.29625002, 0.755, 1)
+shader_parameter/horizon_color = Color(0.5, 0.7, 1.05, 1)
+shader_parameter/ground_color = Color(0.30360106, 0.45174468, 0.71891415, 1)
+shader_parameter/ground_visibility = 0.6
+shader_parameter/sun_color = Color(1, 0.8066667, 0.57, 1)
+shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
+shader_parameter/cloud_light_color = Color(1, 0.8466667, 0.7066667, 1)
+shader_parameter/cloud_shadow_color = Color(0.29625002, 0.3375, 0.42499998, 1)
+shader_parameter/rayleigh_strength = 2.0
+shader_parameter/mie_strength = 0.08
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/turbidity = 4.0
+shader_parameter/sun_angular_radius = 0.0046251225177849735
+shader_parameter/sun_disk_intensity = 18.0
+shader_parameter/moon_angular_radius = 0.004537856055185257
+shader_parameter/moon_disk_intensity = 1.2
+shader_parameter/moon_phase = 0.5
+shader_parameter/star_visibility = 0.0
+shader_parameter/star_intensity = 1.4
+shader_parameter/star_scale = 720.0
+shader_parameter/star_density = 0.28
+shader_parameter/star_lower_hemisphere_visibility = 0.0
+shader_parameter/star_cool_color = Color(0.62, 0.72, 1, 1)
+shader_parameter/star_warm_color = Color(1, 0.88, 0.68, 1)
+shader_parameter/cloud_coverage = 0.35
+shader_parameter/cloud_density = 0.82
+shader_parameter/cloud_softness = 0.12
+shader_parameter/cloud_scale = 3.2
+shader_parameter/cloud_detail = 0.72
+shader_parameter/cloud_light_absorption = 0.42
+shader_parameter/cloud_volume_depth = 0.0
+shader_parameter/cloud_volume_steps = 1
+shader_parameter/cloud_optical_density = 1.0
+shader_parameter/cloud_core_shadow_strength = 0.0
+shader_parameter/cloud_edge_light_strength = 1.0
+shader_parameter/cloud_offset = Vector2(0, 0)
+shader_parameter/lower_layer_height = 0.022
+shader_parameter/upper_layer_amount = 0.12
+shader_parameter/upper_layer_height = 0.07
+shader_parameter/upper_layer_scale = 0.62
+shader_parameter/upper_layer_wind_multiplier = 1.45
+shader_parameter/distance_fade_start = 0.82
+shader_parameter/distance_fade_end = 0.995
+shader_parameter/distance_haze_strength = 0.78
+shader_parameter/above_horizon_clouds_enabled = true
+shader_parameter/below_horizon_clouds_enabled = true
+shader_parameter/below_horizon_visibility = 0.0
+shader_parameter/below_horizon_fade_depth = 0.35
+shader_parameter/below_horizon_scale = 1.0
+shader_parameter/below_horizon_detail = 1.0
+shader_parameter/below_horizon_curvature = 1.0
+shader_parameter/below_horizon_haze_strength = 0.72
+
+[sub_resource type="Sky" id="Sky_ebmlk"]
+resource_local_to_scene = true
+sky_material = SubResource("ShaderMaterial_ax8r5")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_1i28t"]
+resource_local_to_scene = true
+background_mode = 2
+background_energy_multiplier = 1.0000001
+sky = SubResource("Sky_ebmlk")
+ambient_light_source = 3
+ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
+ambient_light_sky_contribution = 0.82
+ambient_light_energy = 0.94372034
+reflected_light_source = 2
+tonemap_mode = 4
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_bounce_feedback = 0.75
+sdfgi_cascades = 3
+sdfgi_min_cell_size = 1.0699219
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.8
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.5333333, 0.69166666, 0.90999997, 1)
+fog_sun_scatter = 0.16315696
+fog_density = 0.00020000001
+fog_aerial_perspective = 0.7
+fog_sky_affect = 0.35
+fog_depth_begin = 0.0
+fog_depth_end = 4000.0
+adjustment_enabled = true
+
+[sub_resource type="Curve3D" id="Curve3D_o3xuo"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -77.28819, -266.65723, 0, -76.915, 0, 0, 56.435, 0, 0, -13.656937, -26.881165, 0, -46.42, 0, 0, 111.705, 0, -5.4100037, 99.07859, -148.46075, 0, 0, 0, 0, 0, 0, 0, 193.86453, 43.8537),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve3D" id="Curve3D_ehlmr"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 4.725, -25.48, -12.77, -82.69443, 20.21457, 18.079956, 0, 0, 21.695, 0, 0, -166.625, -53.85675, 0, -47.729614, -160, 0, 0, 0, 0, 0, 307.84235, -3.0517578e-05, -182.26013),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_ajssk"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 107.685, -83.85547, 90.70175, -37.234253, 0, 0, 104.275, 0, 0, -54.29, -82.63422, 0, -47.729614, 0, 0, 0, 0, 0, 0, -81.17053, -60.19725, -99.89685),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4rehq"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_jfrcj"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 13.835, 0, -55.915, 106.51, 0.295, 0, 0, 0, 0, -98.39, -19.43, 0, 0, 0, 7.03, 71.747, 14.025),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jodkd"]
+size = Vector3(444.27548, 2.922, 108.28115)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_58wob"]
+albedo_texture = ExtResource("13_7n3f4")
+metallic = 0.45
+roughness = 0.8
+backlight = Color(0.7204674, 0.7204675, 0.7204674, 1)
+uv1_scale = Vector3(4.695, 4.695, 4.695)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0k5m"]
+shading_mode = 0
+albedo_color = Color(0, 0.69411767, 0.2509804, 1)
+disable_receive_shadows = true
+stencil_flags = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2feqb"]
+albedo_color = Color(0, 0.656023, 0.9987233, 1)
+emission_enabled = true
+emission = Color(0, 0.654902, 1, 1)
+emission_energy_multiplier = 3.56
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebuav"]
+albedo_color = Color(0.659727, 0.99999994, 0.92621046, 1)
+emission_enabled = true
+emission = Color(0.65882355, 1, 0.9254902, 1)
+emission_energy_multiplier = 10.46
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cuqiy"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 4.18
+
+[sub_resource type="Curve3D" id="Curve3D_dpt8e"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.645, 0, 0, 14.665, 22.46, 0, 0, 0, 0, 0, -1.88, 30.005, 8.99, 36.785, 0, 0, -12.84, 0, 0, 0, 71.22, 0, 81.515),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_oiola"]
+size = Vector2(24.205, 35.77)
+subdivide_width = 100
+subdivide_depth = 100
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pvo1w"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4p57c"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_pvo1w")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_s06ev"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f1l0k"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_s06ev")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cuqiy"]
+render_priority = 0
+shader = ExtResource("16_phgj3")
+shader_parameter/albedo = Color(0.07418021, 0.34550384, 0.6393917, 1)
+shader_parameter/albedo2 = Color(0.2680032, 0.3885322, 0.7653088, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/alpha = 0.85
+shader_parameter/wave = ExtResource("17_uuy2w")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_4p57c")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_f1l0k")
+shader_parameter/wave_uv_scale = 0.42
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(0.7, 0)
+shader_parameter/wave_direction2 = Vector2(0, 0.725)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/normal_detail_fade_start = 500.0
+shader_parameter/normal_detail_fade_end = 4000.0
+shader_parameter/distant_normal_strength = 0.2
+shader_parameter/specular_aa_strength = 0.35
+shader_parameter/distant_roughness = 0.3
+shader_parameter/ssr_camera_fade_start = 750.0
+shader_parameter/ssr_camera_fade_end = 3000.0
+shader_parameter/water_scatter_strength = 0.06
+shader_parameter/gi_fallback_fade_start = 650.0
+shader_parameter/gi_fallback_fade_end = 1300.0
+shader_parameter/gi_fallback_irradiance = 0.45
+shader_parameter/gi_fallback_near_blend = 0.35
+shader_parameter/color_deep = Color(0.07368145, 0.200124, 0.518454, 1)
+shader_parameter/color_shallow = Color(0.30974367, 0.6030485, 0.96542925, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 6.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.7710305, 0.8614039, 0.97847265, 1)
+shader_parameter/edge_start = 0.02
+shader_parameter/edge_width = 0.2
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.03
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v7st7"]
+size = Vector3(16000, 2.922, 16000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4rehq"]
+size = Vector3(48.948975, 30.65918, 45.10254)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jfrcj"]
+top_radius = 0.75
+bottom_radius = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ebmlk"]
+size = Vector3(70, 47.208008, 53)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1i28t"]
+size = Vector3(48.948975, 89, 183)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jfrcj"]
+size = Vector3(48.948975, 131, 183)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ax8r5"]
+size = Vector3(48.948975, 196, 238)
+
+[sub_resource type="Curve3D" id="Curve3D_1m1bn"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, -60.67, 0, 0, 32.225, 0, 0, -14.04, 0, 0, 12.31, 0, 0, 0, 78.64, 0, -44.755, -21, 0, 0, 0, 16.6, 43.495, 96.305),
+"tilts": PackedFloat32Array(-5.0544734, 0.71383965, 2.3701572)
+}
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nydfv"]
+albedo_texture = ExtResource("23_tqx1w")
+uv1_scale = Vector3(1, 7.74, 1)
+uv1_offset = Vector3(0, 0.54, 0)
+
+[sub_resource type="Curve3D" id="Curve3D_d0abt"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, -30, 0, 0, 20, 0, 0, -30, 0, 0, 12.31, 0, 0, 20, 78.64),
+"tilts": PackedFloat32Array(1.5707964, 1.5707964)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_x6a63"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 12.31, 0, 0, 20, 300),
+"tilts": PackedFloat32Array(0.017453292, 0.017453292)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_g6lj7"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, -123.2, 0, 0, 0, 0, 0, 82.1, 0, 0, 0, 0, 0, -180, 52.1, 0, 0, 0, 0, 0, 0, 0, -219.79, 52.1, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_334di"]
+bake_interval = 3.5
+_data = {
+"points": PackedVector3Array(0, 0, 0, -100, 0, 0, 0, 20, 0, -100, 0, 0, 0, 12.31, 0, 0, 20, 300),
+"tilts": PackedFloat32Array(0.017453292, 0.017453292)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d0abt"]
+size = Vector3(68, 47, 6.413574)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_334di"]
+size = Vector3(136, 148, 68)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x6a63"]
+size = Vector3(97.3692, 157.25708, 238.4136)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbb5r"]
+render_priority = 0
+shader = ExtResource("41_1i28t")
+shader_parameter/tex_flat = ExtResource("42_4rehq")
+shader_parameter/tex_glow = ExtResource("43_jfrcj")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 116.342
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
+height = 8.0
+radius = 18.006348
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_syfp7"]
+render_priority = 0
+shader = ExtResource("41_1i28t")
+shader_parameter/tex_flat = ExtResource("42_4rehq")
+shader_parameter/tex_glow = ExtResource("43_jfrcj")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 116.342
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
+bounce = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_vrbq5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vrbq5"]
+radius = 8.0
+
+[sub_resource type="Curve3D" id="Curve3D_u8dme"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -52.108788, 0, -209.36583, 0, 0, 0, 0, 0, 0, -238.896, 0, -203.187, 0, 0, 0, 0, 0, 0, -258.964, 0, -65.192, 0, 0, 0, 0, 0, 0, -126.872, 0, -131.083, 0, 0, 0, 0, 0, 0, -59.757, 0, -18.688, 0, 0, 0, 0, 0, 0, -219.4, 0, -21.726, 0, 0, 0, 0, 0, 0, -458.73508, 0, -56.1005, 0, 0, 0, 0, 0, 0, -455.188, 0, -213.583, 0, 0, 0, 0, 0, 0, -204.36, 0, -156.448, 0, 0, 0, 0, 0, 0, -79.331, 0, -168.613, 0, 0, 0, 0, 0, 0, 70.79, 0, -189.767, 0, 0, 0, 0, 0, 0, 96.122, 0, -12.02, 0, 0, 0, 0, 0, 0, 2.474, 0, 181.77, 0, 0, 0, 0, 0, 0, -37.479, 0, 316.479, 0, 0, 0, 0, 0, 0, -332.4955, 0, 401.28894, 0, 0, 0, 0, 0, 0, -537.92896, 0, -23.66357),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 17
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_r8jnm"]
+size = Vector2(20000, 20000)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ncnqb"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c1j06"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_ncnqb")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ak61p"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jtfey"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_ak61p")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0c4yb"]
+load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2vd7"]
+render_priority = 0
+shader = ExtResource("16_phgj3")
+shader_parameter/albedo = Color(0, 0.7316994, 0.88269347, 1)
+shader_parameter/albedo2 = Color(0.8127987, 0.86050355, 0.97439605, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/alpha = 0.85
+shader_parameter/wave = SubResource("CompressedTexture2D_0c4yb")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_c1j06")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_jtfey")
+shader_parameter/wave_uv_scale = 0.455
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/normal_detail_fade_start = 500.0
+shader_parameter/normal_detail_fade_end = 4000.0
+shader_parameter/distant_normal_strength = 0.2
+shader_parameter/specular_aa_strength = 0.35
+shader_parameter/distant_roughness = 0.3
+shader_parameter/ssr_camera_fade_start = 750.0
+shader_parameter/ssr_camera_fade_end = 3000.0
+shader_parameter/water_scatter_strength = 0.06
+shader_parameter/gi_fallback_fade_start = 650.0
+shader_parameter/gi_fallback_fade_end = 1300.0
+shader_parameter/gi_fallback_irradiance = 0.45
+shader_parameter/gi_fallback_near_blend = 0.35
+shader_parameter/color_deep = Color(0.16016582, 0.2380532, 0.36666462, 1)
+shader_parameter/color_shallow = Color(0.41579995, 0.6932566, 0.77, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 50.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.91, 1, 0.9925, 1)
+shader_parameter/edge_start = 0.34
+shader_parameter/edge_width = 3.65
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.058
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ehlmr"]
+size = Vector3(43.465332, 96, 84.26786)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e4tho"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sq2vv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate"]
+albedo_color = Color(0.62, 0.42, 0.22, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_mu1lr"]
+size = Vector3(0.2, 1, 0.2)
+
+[sub_resource type="GDScript" id="GDScript_a6a28"]
+resource_name = "Vehicle_Engine"
+script/source = "extends VehicleBody3D
+
+func _physics_process(delta):
+	engine_force = 100.0 # Adjust value for speed
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tg66e"]
+albedo_color = Color(0.62, 0.42, 0.22, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="BoxMesh_ak7f8"]
+size = Vector3(7, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1vivr"]
+size = Vector3(7, 2.5, 10)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1vivr"]
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.375
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ak7f8"]
+size = Vector3(7, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_736jh"]
+size = Vector3(7, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_736jh"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.49411765)
+metallic = 0.79
+roughness = 0.17
+
+[sub_resource type="BoxMesh" id="BoxMesh_a6a28"]
+size = Vector3(1, 6, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blvjp"]
+size = Vector3(1, 6, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5mp8f"]
+size = Vector3(5, 6, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tg66e"]
+size = Vector3(5, 6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a6a28"]
+size = Vector3(7, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tg66e"]
+size = Vector3(7, 6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blvjp"]
+size = Vector3(7, 6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5mp8f"]
+size = Vector3(1, 6, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_736jh"]
+size = Vector3(1, 6, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blvjp"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.49411765)
+metallic = 0.79
+roughness = 0.17
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6a28"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.49411765)
+metallic = 0.79
+roughness = 0.17
+
+[sub_resource type="SphereMesh" id="SphereMesh_tg66e"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_736jh"]
+radius = 10.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ykvil"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3adtc"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_q6jdw"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_luhu6"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_l23he"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4lvf4"]
+radius = 71.0
+height = 400.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qirib"]
+radius = 4.0
+height = 35.984375
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ysjdg"]
+radius = 4.0
+height = 36.0
+
+[sub_resource type="Resource" id="Resource_anuua"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_2pldv"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 69.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_muffe"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 420.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_5l7yj"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 666.6
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_3yimx"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_4n6d6"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_tt4we"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_jvpi5"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_pkwk4"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_ydo33"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_344ll"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_jsxg6"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_ww8qt"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_0gvoy"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_lraxv"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_a6b6k"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_bch57"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_i48ms"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_svhyb"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_e8hu0"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_16jt8"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_2c72k"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_mwm1o"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_qqhw5"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_205et"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_mgnou"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_1dotr"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_avsee"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_uwgg4"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_t7kbn"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_us0iu"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_0igho"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_cq5cr"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_6xdjo"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 5.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_e6gbj"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+random_ring_pool = null
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sq2vv"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.29803923)
+albedo_texture = ExtResource("13_7n3f4")
+metallic = 0.45
+roughness = 0.8
+backlight = Color(0.7204674, 0.7204675, 0.7204674, 1)
+uv1_scale = Vector3(50, 50, 50)
+
+[sub_resource type="Curve3D" id="Curve3D_ejlbq"]
+bake_interval = 0.1
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -92.04183, 0, 10.581461, 0, 0, 0, 213.125, 0, 68.168, 89.95, 0, 10.581, 208.515, 0, 0, 146.95502, 0, 68.16791, -146.4424, 0, 251.03067),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g6lj7"]
+size = Vector3(270.2998, 90, 290)
+
+[sub_resource type="Curve3D" id="Curve3D_loop_depth_profile"]
+bake_interval = 0.1
+_data = {
+"points": PackedVector3Array(0, 0, 0, 20, 0, 0, -59.86029, 0, 4.21484, -20, 0, 0, 11.293247, 0, 0.8333333, 7.5412, -0.1899838, 4.21484, 0, -11.293247, -0.8333333, 0, 11.293247, 2.5, 27.989433, 20.25825, 6.71484, 11.293247, 0, -2.5, -11.293247, 0, 2.5, 7.5412, 40.706482, 14.21484, 0, 11.293247, -2.5, 0, -11.293247, 0.8333333, -12.907033, 20.25825, 21.71484, -11.293247, 0, -0.8333333, 20, 0, 0, 7.5412, -0.1899838, 24.21484, -20, 0, 0, 90.6, 0, 0, 100, 0, 24.21484),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_loop_depth_endpoint"]
+size = Vector3(7.175293, 42.64441, 41)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_07blk"]
+size = Vector3(5, 48, 46.2948)
+
+[node name="NIKO_TEST" type="Node3D" unique_id=794803344]
+
+[node name="ENVIRONMENT" type="Node3D" parent="." unique_id=1675057918]
+
+[node name="WorldEnvironmentTrigger" parent="ENVIRONMENT" unique_id=2040206882 instance=ExtResource("3_fgwhi")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -11.363529, -1.6765022, 179.98819)
+directional_light_path = NodePath("../Lights/MiddayLight_2")
+
+[node name="MusicTrigger NIKO" parent="ENVIRONMENT" unique_id=1645485828 instance=ExtResource("14_8fh1j")]
+transform = Transform3D(7.645, 0, 0, 0, 7.645, 0, 0, 0, 7.645, -12.606461, 2.6404762, 175.26367)
+visible = false
+music_stream = ExtResource("15_01uw4")
+fade_in_time = 0.0
+enabled = false
+
+[node name="Lights" type="Node3D" parent="ENVIRONMENT" unique_id=1451312442]
+
+[node name="MiddayLight_1" type="DirectionalLight3D" parent="ENVIRONMENT/Lights" unique_id=1814284921]
+transform = Transform3D(0.39408627, 0.7036694, -0.59122354, -2.5097407e-08, 0.6432822, 0.76562923, 0.91907346, -0.30172396, 0.2535087, 0, 25.784826, 0)
+visible = false
+light_color = Color(0.6243515, 0.6974201, 0.731047, 1)
+light_energy = 1.522
+light_indirect_energy = 1.747
+light_specular = 1.132
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="MiddayLight_2" type="DirectionalLight3D" parent="ENVIRONMENT/Lights" unique_id=2132092278]
+transform = Transform3D(-0.41631773, 0.8217213, -0.38917056, 0.3098098, 0.5306183, 0.7889627, 0.85480845, 0.20789032, -0.47548312, 5537.3105, 42.371746, -2856.8042)
+visible = false
+light_color = Color(0.6243515, 0.6974201, 0.731047, 1)
+light_energy = 1.522
+light_indirect_energy = 1.747
+light_specular = 1.132
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.15
+directional_shadow_fade_start = 0.7
+directional_shadow_max_distance = 350.0
+
+[node name="SunsetLight" type="DirectionalLight3D" parent="ENVIRONMENT/Lights" unique_id=1243244512]
+transform = Transform3D(-0.25881913, 0.1393373, -0.9558232, -2.2239316e-16, 0.989541, 0.14425258, 0.9659258, 0.037335314, -0.256112, 0, 25.784826, 36)
+visible = false
+light_color = Color(0.80455923, 0.6951896, 0.58724815, 1)
+light_energy = 0.929
+light_indirect_energy = 1.747
+light_specular = 1.132
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="LevelMusic" type="Node3D" parent="ENVIRONMENT" unique_id=110015106]
+script = ExtResource("31_x6a63")
+autoplay_stream = ExtResource("9_ehlmr")
+autoplay_volume_offset_db = 6.0
+
+[node name="EnvironmentWeatherSystem" parent="ENVIRONMENT" unique_id=1240519175 instance=ExtResource("9_mu1lr")]
+initial_time_of_day_hours = 8.0
+day_length_minutes = 14.0
+
+[node name="WorldEnvironment" parent="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
+environment = SubResource("Environment_1i28t")
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=1812384607]
+
+[node name="ENEMIES" type="Node3D" parent="OBJECTS" unique_id=344786271]
+
+[node name="RINGS" type="Node3D" parent="OBJECTS" unique_id=1136673259]
+
+[node name="Ring" parent="OBJECTS/RINGS" unique_id=321861285 instance=ExtResource("1_22v2l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.268757, 0.49864388, 184.38463)
+respawn_delay_sec = 1.0
+
+[node name="RingSpline" parent="OBJECTS/RINGS" unique_id=477858331 node_paths=PackedStringArray("path_node") instance=ExtResource("3_ehlmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -322.04065, 82.31364, 947.3716)
+ring_spacing = 11.0
+ring_respawn_delay = 5.0
+path_node = NodePath("Path3D")
+
+[node name="Path3D" parent="OBJECTS/RINGS/RingSpline" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_o3xuo")
+
+[node name="RingSpline2" parent="OBJECTS/RINGS" unique_id=1443305099 node_paths=PackedStringArray("path_node") instance=ExtResource("3_ehlmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -323.38223, 229.27348, 1233.5608)
+ring_spacing = 15.0
+ring_respawn_delay = 5.0
+path_node = NodePath("Path3D")
+
+[node name="Path3D" parent="OBJECTS/RINGS/RingSpline2" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_ehlmr")
+
+[node name="RingSpline3" parent="OBJECTS/RINGS" unique_id=2125630419 node_paths=PackedStringArray("path_node") instance=ExtResource("3_ehlmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -323.38223, 173.159, 1435.5061)
+ring_spacing = 15.0
+ring_respawn_delay = 5.0
+path_node = NodePath("Path3D")
+
+[node name="Path3D" parent="OBJECTS/RINGS/RingSpline3" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_ajssk")
+
+[node name="SPRINGS" type="Node3D" parent="OBJECTS" unique_id=697542569]
+
+[node name="Spring4" parent="OBJECTS/SPRINGS" unique_id=1596239449 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1065445, 11.320175, 161.2479)
+strength = 80.0
+stop_momentum = false
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring17" parent="OBJECTS/SPRINGS" unique_id=1538883451 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1065445, -0.6798248, 161.2479)
+strength = 5.0
+stop_momentum = false
+min_additive_launch_speed = 5.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring5" parent="OBJECTS/SPRINGS" unique_id=780955347 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 143.22954, 0.32017517, 285.20477)
+snap_to_center = false
+strength = 50.0
+stop_momentum = false
+
+[node name="Spring16" parent="OBJECTS/SPRINGS" unique_id=1555220974 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.705124, -0.8765023, 139.80655)
+snap_to_center = false
+strength = 90.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring18" parent="OBJECTS/SPRINGS" unique_id=1179249979 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 316.04276, 334.03806, 617.8549)
+snap_to_center = false
+strength = 62.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring6" parent="OBJECTS/SPRINGS" unique_id=1755178725 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(3, 0, 0, 0, 2.598076, -1.5, 0, 1.5, 2.598076, 160.46947, 0.32017517, 268.37988)
+snap_to_center = false
+strength = 75.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 25.0
+
+[node name="Spring13" parent="OBJECTS/SPRINGS" unique_id=1961058098 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-3, -2.2649371e-07, -3.922986e-07, 0, 2.598076, -1.5, 4.5298742e-07, -1.5, -2.598076, 160.46947, 0.32017517, 287.37988)
+snap_to_center = false
+strength = 75.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 25.0
+
+[node name="Spring14" parent="OBJECTS/SPRINGS" unique_id=1504300508 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-2.598076, 0.38822836, -1.4488889, -2.3652632e-07, 2.8977776, 0.7764571, 1.5000002, 0.67243165, -2.5095487, 179.63744, 0.32017517, 268.37988)
+snap_to_center = false
+strength = 75.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 25.0
+
+[node name="Spring15" parent="OBJECTS/SPRINGS" unique_id=1519697236 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-2.598076, -2.0909802e-07, -1.5000002, -2.3652632e-07, 3, -8.520437e-09, 1.5000002, 1.1088425e-07, -2.598076, 184.54185, 0.32017538, 276.87457)
+snap_to_center = false
+strength = 75.0
+stop_momentum = false
+additive_mode = 1
+min_additive_launch_speed = 25.0
+
+[node name="Spring2" parent="OBJECTS/SPRINGS" unique_id=50423352 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-1, 0, 8.742278e-08, 6.181724e-08, 0.7071069, 0.70710677, -6.181724e-08, 0.7071069, -0.70710677, -26.106544, 27.320175, 161.2479)
+strength = 100.0
+movement_lock_time = 2.0
+action_lock_time = 2.0
+align_time = 2.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring7" parent="OBJECTS/SPRINGS" unique_id=1494855939 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1.3113416e-07, 1.1920929e-07, -1, -1, 5.2108035e-15, -1.3113416e-07, -1.0421607e-14, 1, 1.1920929e-07, -26.106544, 34.320175, 190.2479)
+strength = 150.0
+movement_lock_time = 3.0
+action_lock_time = 3.0
+align_time = 3.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring8" parent="OBJECTS/SPRINGS" unique_id=1800530571 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1.3113416e-07, 1.1920929e-07, -1, -0.70710677, 0.70710677, -8.432153e-09, 0.70710677, 0.70710677, 1.7701954e-07, -26.106544, 34.320175, 276.2479)
+strength = 200.0
+movement_lock_time = 3.0
+action_lock_time = 3.0
+align_time = 3.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring9" parent="OBJECTS/SPRINGS" unique_id=1293296358 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-1.1920927e-07, 1.3113413e-07, -1, -0.25881892, -0.9659258, -9.5812226e-08, -0.9659258, 0.25881892, 1.4908733e-07, -26.106535, 87.35318, 329.2809)
+strength = 100.0
+movement_lock_time = 3.0
+action_lock_time = 3.0
+align_time = 3.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring10" parent="OBJECTS/SPRINGS" unique_id=2089619029 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-4.369187e-08, 0.9999943, -0.0033491482, 1.3059034e-09, -0.0033491482, -0.9999943, -0.9999999, -4.3696e-08, -1.1595659e-09, -26.10653, 39.25508, 342.67792)
+strength = 175.0
+movement_lock_time = 0.55
+action_lock_time = 0.55
+align_time = 0.42
+clear_movement_lock_on_ground = false
+clear_action_lock_on_ground = false
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring11" parent="OBJECTS/SPRINGS" unique_id=77589611 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(0.8660253, 0.50000006, -3.5527137e-15, 2.9802312e-08, -6.652032e-08, -0.99999994, -0.5000001, 0.86602527, -5.960466e-08, 78.893456, 1.48178, 376.6779)
+visible = false
+active = false
+snap_to_center = false
+strength = 175.0
+movement_lock_time = 2.0
+action_lock_time = 2.0
+clear_movement_lock_on_ground = false
+clear_action_lock_on_ground = false
+lock_horizontal_during_align = false
+align_model_during_spring = false
+downward_trajectory_min_angle_deg = 45.0
+detach_from_ground = false
+
+[node name="Spring12" parent="OBJECTS/SPRINGS" unique_id=515357337 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-4.966067, -0.5815346, 2.5419686e-08, 5.549136e-16, -2.1855695e-07, -5, 0.5815346, -4.966067, 2.1707368e-07, 99.609276, 33.46942, 543.11475)
+visible = false
+active = false
+snap_to_center = false
+strength = 190.0
+movement_lock_time = 1.0
+action_lock_time = 1.0
+clear_movement_lock_on_ground = false
+clear_action_lock_on_ground = false
+lock_horizontal_during_align = false
+align_model_during_spring = false
+downward_trajectory_min_angle_deg = 45.0
+detach_from_ground = false
+
+[node name="Spring3" parent="OBJECTS/SPRINGS" unique_id=1571741324 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(-1, 0, -8.742277e-08, 0, -0.99999994, 0, -8.742278e-08, 0, 0.99999994, -26.106544, 54.24194, 191.12749)
+strength = 80.0
+movement_lock_time = 1.0
+action_lock_time = 1.0
+align_time = 2.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring" parent="OBJECTS/SPRINGS" unique_id=232210195 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.106544, -0.6798248, 161.2479)
+strength = 80.0
+movement_lock_time = 2.0
+action_lock_time = 2.0
+align_time = 2.0
+downward_trajectory_min_angle_deg = 45.0
+
+[node name="Spring26" parent="OBJECTS/SPRINGS" unique_id=772941613 instance=ExtResource("8_y46bu")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, -26.106544, -0.6798248, 214.2479)
+strength = 150.0
+movement_lock_time = 2.0
+action_lock_time = 2.0
+align_time = 2.0
+downward_trajectory_min_angle_deg = 45.0
+spline_enabled = true
+spline_speed = 120.0
+
+[node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring26" index="0" unique_id=594366491]
+shape = SubResource("CylinderShape3D_4rehq")
+metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="SplinePath" parent="OBJECTS/SPRINGS/Spring26" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_jfrcj")
+
+[node name="Mesh" parent="OBJECTS/SPRINGS/Spring26" index="5" unique_id=1922896033]
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Chao" parent="OBJECTS" unique_id=174097419 instance=ExtResource("10_5mp8f")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 4.9301453, -1.1765022, 216.18994)
+
+[node name="GroundedEnemyBlockout" parent="OBJECTS" unique_id=783032802 instance=ExtResource("11_a6a28")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 441.0151, -0.8264984, 286.6605)
+fall_damage_surface_mask = 1
+fall_damage_slope_bias = 0.2
+fall_damage_minimum_opposition = 0.1
+
+[node name="Hurtbox" parent="OBJECTS/GroundedEnemyBlockout" index="4" unique_id=1353592142]
+bounce_airborne_players = true
+
+[node name="Health" parent="OBJECTS/GroundedEnemyBlockout/Components" parent_id_path=PackedInt32Array(783032802, 715420252) index="0" unique_id=1564675113]
+max_health = 1
+
+[node name="Locomotion" parent="OBJECTS/GroundedEnemyBlockout" index="7" unique_id=1237843529]
+movement_speed = 11.0
+acceleration = 18.0
+deceleration = 30.0
+
+[node name="SecondaryProjectile" parent="OBJECTS/GroundedEnemyBlockout/Attacks" parent_id_path=PackedInt32Array(783032802, 139398359) index="1" unique_id=1634550972]
+projectile_homing_turn_speed_deg = 0.0
+enabled = false
+
+[node name="GroundedEnemyBlockout3" parent="OBJECTS" unique_id=1271190946 instance=ExtResource("11_a6a28")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 775.9513, 82.95601, 636.2069)
+fall_damage_surface_mask = 1
+
+[node name="Hurtbox" parent="OBJECTS/GroundedEnemyBlockout3" index="4" unique_id=1353592142]
+bounce_airborne_players = true
+
+[node name="Health" parent="OBJECTS/GroundedEnemyBlockout3/Components" parent_id_path=PackedInt32Array(1271190946, 715420252) index="0" unique_id=1564675113]
+max_health = 1
+
+[node name="Locomotion" parent="OBJECTS/GroundedEnemyBlockout3" index="7" unique_id=1237843529]
+movement_speed = 11.0
+acceleration = 18.0
+deceleration = 30.0
+
+[node name="SecondaryProjectile" parent="OBJECTS/GroundedEnemyBlockout3/Attacks" parent_id_path=PackedInt32Array(1271190946, 139398359) index="1" unique_id=1634550972]
+projectile_homing_turn_speed_deg = 0.0
+enabled = false
+
+[node name="GroundedEnemyBlockout2" parent="OBJECTS" unique_id=343856060 instance=ExtResource("11_a6a28")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 563.01514, -0.8264984, 286.6605)
+fall_damage_surface_mask = 1
+fall_damage_slope_bias = 0.2
+fall_damage_minimum_opposition = 0.1
+
+[node name="Hurtbox" parent="OBJECTS/GroundedEnemyBlockout2" index="4" unique_id=1353592142]
+bounce_airborne_players = true
+
+[node name="SecondaryProjectile" parent="OBJECTS/GroundedEnemyBlockout2/Attacks" parent_id_path=PackedInt32Array(343856060, 139398359) index="1" unique_id=1634550972]
+projectile_homing_turn_speed_deg = 0.0
+
+[node name="VaultBarCollection1" type="Node3D" parent="OBJECTS" unique_id=1387787746]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1586.4363, 1082.0791)
+
+[node name="VaultBar" parent="OBJECTS/VaultBarCollection1" unique_id=1685228124 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.49585, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar2" parent="OBJECTS/VaultBarCollection1" unique_id=1519436337 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar3" parent="OBJECTS/VaultBarCollection1" unique_id=132280594 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar4" parent="OBJECTS/VaultBarCollection1" unique_id=193698557 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar5" parent="OBJECTS/VaultBarCollection1" unique_id=1449709637 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar6" parent="OBJECTS/VaultBarCollection1" unique_id=586240385 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar7" parent="OBJECTS/VaultBarCollection1" unique_id=1187231111 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar8" parent="OBJECTS/VaultBarCollection1" unique_id=766090389 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar9" parent="OBJECTS/VaultBarCollection1" unique_id=1125827524 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar10" parent="OBJECTS/VaultBarCollection1" unique_id=1714068132 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar11" parent="OBJECTS/VaultBarCollection1" unique_id=248239333 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBarCollection2" type="Node3D" parent="OBJECTS" unique_id=787661337]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1538.4457, 1643.1544)
+
+[node name="VaultBar" parent="OBJECTS/VaultBarCollection2" unique_id=1823630228 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.49585, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar2" parent="OBJECTS/VaultBarCollection2" unique_id=1231291626 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar3" parent="OBJECTS/VaultBarCollection2" unique_id=903644258 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar4" parent="OBJECTS/VaultBarCollection2" unique_id=223800162 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar5" parent="OBJECTS/VaultBarCollection2" unique_id=268222967 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar6" parent="OBJECTS/VaultBarCollection2" unique_id=463120356 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar7" parent="OBJECTS/VaultBarCollection2" unique_id=967704345 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar8" parent="OBJECTS/VaultBarCollection2" unique_id=864591914 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar9" parent="OBJECTS/VaultBarCollection2" unique_id=196687430 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar10" parent="OBJECTS/VaultBarCollection2" unique_id=1325626928 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar11" parent="OBJECTS/VaultBarCollection2" unique_id=1240984226 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBarCollection5" type="Node3D" parent="OBJECTS" unique_id=756014170]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 2208.2776, 1643.1544)
+
+[node name="VaultBar" parent="OBJECTS/VaultBarCollection5" unique_id=1732135242 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.49585, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar2" parent="OBJECTS/VaultBarCollection5" unique_id=1785013601 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar3" parent="OBJECTS/VaultBarCollection5" unique_id=2138442416 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar4" parent="OBJECTS/VaultBarCollection5" unique_id=1601872496 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar5" parent="OBJECTS/VaultBarCollection5" unique_id=1808420274 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar6" parent="OBJECTS/VaultBarCollection5" unique_id=1206238871 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar7" parent="OBJECTS/VaultBarCollection5" unique_id=1214830476 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar8" parent="OBJECTS/VaultBarCollection5" unique_id=1855883776 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar9" parent="OBJECTS/VaultBarCollection5" unique_id=212137978 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar10" parent="OBJECTS/VaultBarCollection5" unique_id=1681561158 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar11" parent="OBJECTS/VaultBarCollection5" unique_id=443155482 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBarCollection3" type="Node3D" parent="OBJECTS" unique_id=1321788286]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1469.4457, 2252.1543)
+
+[node name="VaultBar" parent="OBJECTS/VaultBarCollection3" unique_id=152303918 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.49585, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar2" parent="OBJECTS/VaultBarCollection3" unique_id=1385882928 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar3" parent="OBJECTS/VaultBarCollection3" unique_id=444631548 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar4" parent="OBJECTS/VaultBarCollection3" unique_id=770094503 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar5" parent="OBJECTS/VaultBarCollection3" unique_id=42573792 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar6" parent="OBJECTS/VaultBarCollection3" unique_id=1371226321 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar7" parent="OBJECTS/VaultBarCollection3" unique_id=570318979 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar8" parent="OBJECTS/VaultBarCollection3" unique_id=966334578 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar9" parent="OBJECTS/VaultBarCollection3" unique_id=639818090 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar10" parent="OBJECTS/VaultBarCollection3" unique_id=579379698 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar11" parent="OBJECTS/VaultBarCollection3" unique_id=1919736694 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBarCollection6" type="Node3D" parent="OBJECTS" unique_id=1953366146]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1469.4457, 2749.1543)
+
+[node name="VaultBar" parent="OBJECTS/VaultBarCollection6" unique_id=1548163156 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.49585, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar2" parent="OBJECTS/VaultBarCollection6" unique_id=1238071117 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar3" parent="OBJECTS/VaultBarCollection6" unique_id=1376059688 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar4" parent="OBJECTS/VaultBarCollection6" unique_id=632393420 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar5" parent="OBJECTS/VaultBarCollection6" unique_id=548675508 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar6" parent="OBJECTS/VaultBarCollection6" unique_id=1609698207 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar7" parent="OBJECTS/VaultBarCollection6" unique_id=1833048204 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar8" parent="OBJECTS/VaultBarCollection6" unique_id=30093731 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar9" parent="OBJECTS/VaultBarCollection6" unique_id=688884129 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar10" parent="OBJECTS/VaultBarCollection6" unique_id=1628283840 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar11" parent="OBJECTS/VaultBarCollection6" unique_id=561464383 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBarCollection4" type="Node3D" parent="OBJECTS" unique_id=1655179228]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 2137.4583, 2252.1543)
+
+[node name="VaultBar" parent="OBJECTS/VaultBarCollection4" unique_id=877748761 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.49585, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar2" parent="OBJECTS/VaultBarCollection4" unique_id=335004881 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar3" parent="OBJECTS/VaultBarCollection4" unique_id=1932641256 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar4" parent="OBJECTS/VaultBarCollection4" unique_id=198149492 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar5" parent="OBJECTS/VaultBarCollection4" unique_id=1705642041 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar6" parent="OBJECTS/VaultBarCollection4" unique_id=376024939 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar7" parent="OBJECTS/VaultBarCollection4" unique_id=1756769247 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar8" parent="OBJECTS/VaultBarCollection4" unique_id=1875421169 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar9" parent="OBJECTS/VaultBarCollection4" unique_id=1117244267 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar10" parent="OBJECTS/VaultBarCollection4" unique_id=531808442 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="VaultBar11" parent="OBJECTS/VaultBarCollection4" unique_id=1547756431 instance=ExtResource("13_07blk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
+bar_length = 100.0
+incoming_to_outgoing_speed_ratio = 1.25
+minimum_launch_impulse = 110.0
+maximum_launch_impulse = 250.0
+launch_aim_origin = 1
+opposite_entry_uses_separate_launch_direction = true
+
+[node name="RaceObjectLayout_Parkour1" parent="OBJECTS" unique_id=265609367 instance=ExtResource("14_ax8r5")]
+race_id = "NKOPRK1"
+
+[node name="DeathPlane3" parent="OBJECTS/RaceObjectLayout_Parkour1" unique_id=719304138 instance=ExtResource("18_u5mvm")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -311.70938, 403.5462, 533.36383)
+
+[node name="CollisionShape3D" parent="OBJECTS/RaceObjectLayout_Parkour1/DeathPlane3" index="0" unique_id=172183619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.45573, -26.009201, -13.074448)
+shape = SubResource("BoxShape3D_jodkd")
+
+[node name="LEVEL_PIECES" type="Node3D" parent="." unique_id=1763729794 groups=["level", "navmesh"]]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=4559000 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154.22447, -32.7077, 0.94668007)
+use_collision = true
+size = Vector3(155.32507, 62, 26.54834)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1241964178 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -171.21394, -3.0012627, 47.021034)
+use_collision = true
+size = Vector3(43.365234, 3, 29)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=362890964 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 98.922844, -35.367924, -44.34223)
+use_collision = true
+size = Vector3(24, 1, 92)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D18" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=796769538 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.8660253, 0, -0.8660253, 0.49999997, 98.922844, -107.5307, -99.67881)
+use_collision = true
+size = Vector3(24, 1, 92)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D19" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1227293049 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 0.11883724, 0.9929136, 0, -0.9929136, 0.11883724, 98.922844, -192.826, -128.02716)
+use_collision = true
+size = Vector3(24, 1, 92)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1351539425 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, -0.70710677, 0.70710677, 0, 0.70710677, 0.70710677, -1, 3.090862e-08, -3.090862e-08, 94.97636, 17.47229, 26.615517)
+use_collision = true
+size = Vector3(24, 1, 92)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1857581835 groups=["level", "navmesh"]]
+transform = Transform3D(-4.1910255e-08, -0.47708207, 0.87885875, 1.2418362e-08, 0.87885875, 0.47708207, -1, 3.090862e-08, -3.090862e-08, 706.855, 83.71987, 390.27252)
+use_collision = true
+size = Vector3(24, 1, 436)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D20" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=121007111 groups=["level", "navmesh"]]
+transform = Transform3D(-3.0086163e-08, 0.02626419, 0.999655, 3.1709746e-08, 0.999655, -0.02626419, -1, 3.090862e-08, -3.090862e-08, 929.63385, 186.83464, 390.27252)
+use_collision = true
+size = Vector3(24, 1, 62.90918)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D98" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1279640670 groups=["level", "navmesh"]]
+transform = Transform3D(-3.0086163e-08, 0.02626419, 0.999655, 3.1709746e-08, 0.999655, -0.02626419, -1, 3.090862e-08, -3.090862e-08, 743.10693, 72.51342, 638.14026)
+use_collision = true
+size = Vector3(48, 1, 50)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D102" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=410133317 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 469.20148, 54.70981, 664.4387)
+use_collision = true
+size = Vector3(48, 1, 50)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D159" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1417864191 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 163.61084, 18.810661, 748.8206)
+use_collision = true
+size = Vector3(48, 1, 72)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D109" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1461630537 groups=["level", "navmesh"]]
+transform = Transform3D(-3.0086163e-08, 0.02626419, 0.999655, 3.1709746e-08, 0.999655, -0.02626419, -1, 3.090862e-08, -3.090862e-08, 187.08539, 98.022194, 664.4387)
+use_collision = true
+size = Vector3(48, 1, 84)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D110" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1843978373 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 170.58539, 191.02219, 619.4387)
+use_collision = true
+size = Vector3(54, 1, 51)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D113" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=572523611 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 170.58539, 191.02219, 722.4387)
+use_collision = true
+size = Vector3(78, 1, 51)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D121" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1278897619 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 320.46307, 274.4743, 617.5006)
+use_collision = true
+size = Vector3(55, 1, 104)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D134" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1764624816 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 316.46307, 332.73807, 627.5974)
+use_collision = true
+size = Vector3(30.862793, 1, 12)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D136" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1142546970 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 347.46307, 356.22147, 596.666)
+use_collision = true
+size = Vector3(95, 1, 50)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D137" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=418176363 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 289.46307, 356.22147, 596.666)
+use_collision = true
+size = Vector3(95, 1, 42)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D163" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=560810507 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 7.713764, 399.78204, 556.9999)
+use_collision = true
+size = Vector3(41.56433, 1, 155.17624)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D165" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1448153042 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -339.0496, 469.4217, 485.53363)
+use_collision = true
+size = Vector3(184.49692, 1, 112.25635)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D166" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=838717186 groups=["level", "navmesh"]]
+transform = Transform3D(-1.6420284e-15, -0.9999999, -4.371138e-08, -4.3711385e-08, -4.371138e-08, 0.9999999, -1, 0, -4.3711385e-08, -394.79453, 487.7003, 485.53363)
+use_collision = true
+size = Vector3(184.49692, 1, 38)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D144" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=486662953 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -997.0369, 623.22144, 484.66602)
+use_collision = true
+size = Vector3(185, 1, 383)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D148" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=693090952 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -921.1765, 949.72144, 484.66602)
+use_collision = true
+size = Vector3(185, 6, 455)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D149" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2099252223 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 760.6575, 952.22144, 484.66602)
+use_collision = true
+size = Vector3(185, 1, 731)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D138" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1187603098 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 316.46307, 356.22147, 580.666)
+use_collision = true
+size = Vector3(63, 1, 12)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D139" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=414978319 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 316.46307, 356.22147, 634.166)
+use_collision = true
+size = Vector3(20, 1, 12)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D114" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1406295608 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 254.58539, 191.02219, 649.9387)
+use_collision = true
+size = Vector3(223, 1, 117)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D99" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=98529289 groups=["level", "navmesh"]]
+transform = Transform3D(-3.726809e-08, -0.23336053, 0.97239035, 2.2842388e-08, 0.97239035, 0.23336053, -1, 3.090862e-08, -3.090862e-08, 694.10693, 67.37265, 638.14026)
+use_collision = true
+size = Vector3(48, 1, 50)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=168407333 groups=["level", "navmesh"]]
+transform = Transform3D(-3.785517e-08, -0.9659258, 0.258819, -2.1855694e-08, 0.258819, 0.9659258, -1, 3.090862e-08, -3.090862e-08, 76.00662, 10.963966, -41.75714)
+use_collision = true
+size = Vector3(8, 1, 30)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D61" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1702789167 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -102.92688, 227.96304, 2805.656)
+use_collision = true
+size = Vector3(200, 5.045288, 371)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D82" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1389574758 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 63.31185, 226.60706, 2278.156)
+use_collision = true
+size = Vector3(157, 5.266726, 375)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D68" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2086125774 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 126.16128, 334.4628, 2083.854)
+use_collision = true
+size = Vector3(582, 6.295, 582)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D62" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2029613091 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 125.205185, 418.9625, 960.024)
+use_collision = true
+size = Vector3(119.839, 4.2932863, 385)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D64" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=51459468 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 125.528, 83.079315, 780.7132)
+use_collision = true
+size = Vector3(242, 5.045288, 368.1919)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D100" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2133056212 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 256.20322, 83.07931, 866.7132)
+use_collision = true
+size = Vector3(46, 5.045288, 368.1919)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D101" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=718476633 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 230.20323, 83.07931, 866.7132)
+use_collision = true
+size = Vector3(46, 5.045288, 368.1919)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D111" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1738109512 groups=["level", "navmesh"]]
+transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, 172.41595, 144.54784, 685.4075)
+use_collision = true
+size = Vector3(47.381348, 5.045288, 94)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D145" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1673099547 groups=["level", "navmesh"]]
+transform = Transform3D(1.3113414e-07, -0.9999999, 4.3711378e-08, -3.1058807e-22, -4.3711378e-08, -0.9999999, 0.9999999, 1.3113413e-07, -2.1793419e-15, 197.41595, 166.54784, 665.4075)
+use_collision = true
+size = Vector3(47.381348, 5.045288, 50)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D112" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2051313674 groups=["level", "navmesh"]]
+transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, 172.40228, 144.54784, 644.4075)
+use_collision = true
+size = Vector3(47.40869, 5.045288, 94)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D129" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1937396937 groups=["level", "navmesh"]]
+transform = Transform3D(1.3113416e-07, -0.99999994, 3.5527137e-15, 4.3711385e-08, 3.5527137e-15, -0.9999999, 0.99999994, 1.3113414e-07, 4.371138e-08, 147.10663, 144.54784, 664.4075)
+use_collision = true
+size = Vector3(46, 5.045288, 94)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D103" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=803204135 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, 339.5173, 43.98336, 722.7132)
+use_collision = true
+size = Vector3(313, 5.045288, 86)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D106" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1016903025 groups=["level", "navmesh"]]
+transform = Transform3D(0.9926962, 6.137004e-09, -0.12064122, -0.12064117, -4.327843e-08, -0.99269617, -1.13133405e-08, 0.99999994, -4.222196e-08, 434.69894, 77.45316, 641.0392)
+use_collision = true
+size = Vector3(126, 2, 39)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D108" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1512168191 groups=["level", "navmesh"]]
+transform = Transform3D(0.9926962, 6.137004e-09, -0.12064122, -0.12064117, -4.327843e-08, -0.99269617, -1.13133405e-08, 0.99999994, -4.222196e-08, 290.4013, 108.58882, 641.0392)
+use_collision = true
+size = Vector3(126, 2, 40)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D115" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=604265806 groups=["level", "navmesh"]]
+transform = Transform3D(0.9808871, 1.9312566e-08, 0.19457775, 0.19457778, -3.9213646e-08, -0.98088706, -1.131334e-08, 0.9999999, -4.2221956e-08, 343.9664, 223.82457, 641.0392)
+use_collision = true
+size = Vector3(82, 2, 74)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D116" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=230636415 groups=["level", "navmesh"]]
+transform = Transform3D(1.9106855e-15, 4.3711385e-08, 0.99999994, 1, -4.3711385e-08, 0, 4.371139e-08, 0.9999999, -4.3711385e-08, 391.91412, 240.4055, 641.0392)
+use_collision = true
+size = Vector3(93, 2, 41)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D127" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1423089493 groups=["level", "navmesh"]]
+transform = Transform3D(1.9106855e-15, 4.3711385e-08, 0.99999994, 1, -4.3711385e-08, 0, 4.371139e-08, 0.9999999, -4.3711385e-08, 174.06209, 202.114, 760.0392)
+use_collision = true
+size = Vector3(22.827148, 2, 58.7041)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D130" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1554996982 groups=["level", "navmesh"]]
+transform = Transform3D(3.5527137e-15, -0.9999999, 0, 1, 0, -4.3711385e-08, 4.3711385e-08, 0, 0.99999994, 146.06197, 202.114, 676.89124)
+use_collision = true
+size = Vector3(22.827148, 2, 167)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D128" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=168877624 groups=["level", "navmesh"]]
+transform = Transform3D(1.9106855e-15, 4.3711385e-08, 0.99999994, 1, -4.3711385e-08, 0, 4.371139e-08, 0.9999999, -4.3711385e-08, 174.06209, 202.114, 593.49036)
+use_collision = true
+size = Vector3(22.827148, 2, 58.7041)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D117" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1581542220 groups=["level", "navmesh"]]
+transform = Transform3D(3.090862e-08, 0.5, 0.8660252, 1, -4.2221952e-08, -1.1313338e-08, 3.0908616e-08, 0.8660252, -0.5, 419.49564, 242.90964, 636.6048)
+use_collision = true
+size = Vector3(94, 2, 24)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D123" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=960961932 groups=["level", "navmesh"]]
+transform = Transform3D(3.0908616e-08, 0.8660253, 0.49999985, 1, -4.222195e-08, 1.1313338e-08, 3.0908616e-08, 0.49999985, -0.8660253, 433.39392, 243.40964, 622.7065)
+use_collision = true
+size = Vector3(95, 2, 24)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D118" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=897377293 groups=["level", "navmesh"]]
+transform = Transform3D(4.2221956e-08, 0.9659257, 0.25881895, 1, -4.3711378e-08, -6.1780865e-22, 1.1313335e-08, 0.25881895, -0.9659257, 441.24268, 246.50363, 604.207)
+use_collision = true
+size = Vector3(96, 2, 22)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D122" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1713728071 groups=["level", "navmesh"]]
+transform = Transform3D(4.2221956e-08, 0.9659257, -0.25881907, 1, -4.3711378e-08, -6.1780865e-22, -1.1313342e-08, -0.25881907, -0.9659257, 441.24268, 248.00363, 584.1729)
+use_collision = true
+size = Vector3(99, 2, 22)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D119" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2136418693 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.70710665, -0.70710677, 1, -3.0908613e-08, 3.0908616e-08, -2.5121479e-15, -0.70710677, -0.70710665, 432.16354, 255.2525, 570.24023)
+use_collision = true
+size = Vector3(88, 2, 26)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D124" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=312802823 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.49999985, -0.8660253, 1, -2.185569e-08, 3.785517e-08, -2.4265484e-15, -0.8660253, -0.49999985, 415.20715, 258.2525, 556.5518)
+use_collision = true
+size = Vector3(84, 2, 21)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D120" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=859610700 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711392e-08, -5.9604645e-08, -0.9999999, 1, 3.5527137e-15, 4.371138e-08, -1.7763567e-15, -0.9999999, 5.9604645e-08, 332.3563, 317.49368, 549.8971)
+use_collision = true
+size = Vector3(139, 2, 126)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D126" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=124327292 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711392e-08, -5.9604645e-08, -0.9999999, 1, 3.5527137e-15, 4.371138e-08, -1.7763567e-15, -0.9999999, 5.9604645e-08, 320.3563, 261.47995, 590.9703)
+use_collision = true
+size = Vector3(26.972534, 2, 104)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D131" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=190501346 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 371.3563, 330.99368, 615.9703)
+use_collision = true
+size = Vector3(112, 2, 54)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D135" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1859135473 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 371.3563, 354.99368, 569.4703)
+use_collision = true
+size = Vector3(64, 2, 39)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D133" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1348651729 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 320.3563, 330.99368, 643.9703)
+use_collision = true
+size = Vector3(112, 2, 104)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D140" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=330471135 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 7.8562946, 434.99368, 577.548)
+use_collision = true
+size = Vector3(70, 0.8446045, 155)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D164" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1618253466 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, -0.9999999, -7.152951e-08, 1, -4.24743e-15, -4.3711385e-08, 4.371138e-08, -7.152951e-08, 0.9999999, -70.00547, 426.01706, 557.0084)
+use_collision = true
+size = Vector3(52.046753, 0.8446045, 41.581055)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D141" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1816988410 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 7.8562946, 434.99368, 536.548)
+use_collision = true
+size = Vector3(70, 0.8446045, 155)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D142" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=996772921 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, -547.6437, 587.9482, 577.548)
+use_collision = true
+size = Vector3(162, 0.8446045, 530)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D146" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1405179509 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1148.9261, 812.97656, 486.54797)
+use_collision = true
+size = Vector3(321, 0.8446045, 178)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D147" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2073807082 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1180.7837, 876.161, 484.54797)
+use_collision = true
+size = Vector3(354.58545, 0.8446045, 174)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D150" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=635220661 groups=["level", "navmesh"]]
+transform = Transform3D(-1.910685e-15, 0.9999999, -1.589326e-08, 0.8660254, -7.946634e-09, -0.49999997, -0.50000006, -1.3763965e-08, -0.86602527, 1144.1349, 1120.388, 536.14197)
+use_collision = true
+size = Vector3(266, 4.244568, 376)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D153" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1785830741 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 1046.47, 551.2213, 5059.335)
+use_collision = true
+size = Vector3(1665.7485, 1, 731)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D154" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1128046770 groups=["level", "navmesh"]]
+transform = Transform3D(-7.946634e-09, 0.9999999, -1.37639695e-08, 0.9659258, 1.123823e-08, 0.258819, 0.258819, -1.1238235e-08, -0.96592575, 1429.9474, 871.5986, 4314.998)
+use_collision = true
+size = Vector3(849.5609, 4.244568, 3176.7632)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D162" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=145888686 groups=["level", "navmesh"]]
+transform = Transform3D(-7.946634e-09, 0.9999999, -1.37639695e-08, 0.9659258, 1.123823e-08, 0.258819, 0.258819, -1.1238235e-08, -0.96592575, 644.57166, 871.5986, 4314.998)
+use_collision = true
+size = Vector3(849.5609, 4.244568, 3176.7632)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D161" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1630316803 groups=["level", "navmesh"]]
+transform = Transform3D(2.9802322e-08, -2.9947415e-08, 0.9999999, 0.99999994, 7.9466265e-09, -1.4901161e-08, -7.946633e-09, 0.9999999, 2.9947415e-08, 1037.0659, 568.8801, 5889.3394)
+use_collision = true
+size = Vector3(35.493088, 4.244568, 803)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D160" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1943687257 groups=["level", "navmesh"]]
+transform = Transform3D(1, -4.5821885e-08, -3.0228833e-09, -3.5764756e-08, -0.9659257, 0.258819, -4.3566292e-08, -0.258819, -0.96592575, 1038.305, 672.6387, 3836.0654)
+use_collision = true
+size = Vector3(786.17017, 4.244568, 1673.7563)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D151" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1833473043 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 1144.1349, 1477.6929, 829.8706)
+use_collision = true
+size = Vector3(764, 4.244568, 393)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D152" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1466457716 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 967.1859, 1471.6929, 830.3706)
+use_collision = true
+size = Vector3(752, 4.244568, 394)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D157" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1983934693 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 1144.1349, 1477.6929, 1403.3188)
+use_collision = true
+size = Vector3(764, 4.244568, 393)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D158" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1785819977 groups=["level", "navmesh"]]
+transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 967.1859, 1471.6929, 1403.8188)
+use_collision = true
+size = Vector3(752, 4.244568, 394)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D155" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1685843304 groups=["level", "navmesh"]]
+transform = Transform3D(-4.3711378e-08, -5.9604645e-08, -0.9999999, 1, -4.24743e-15, -4.371138e-08, 3.8213705e-15, -0.9999999, 5.9604645e-08, 812.1859, 1118.1929, 364.24832)
+use_collision = true
+size = Vector3(289, 4, 586)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D156" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=770730427 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711374e-08, 1.4702741e-07, 0.9999999, 1, -4.2474298e-15, -4.3711378e-08, -7.642741e-15, 0.9999999, -1.4702741e-07, 750.1859, 1118.1929, 612.5913)
+use_collision = true
+size = Vector3(289, 4, 462)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D143" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1261032096 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, -558.1437, 585.9482, 393.00177)
+use_collision = true
+size = Vector3(158, 0.8446045, 551)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D132" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=465265663 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 269.35632, 301.99368, 596.9703)
+use_collision = true
+size = Vector3(108, 2, 96)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D167" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1454264997 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 322.9737, 2491.4744, 589.56445)
+use_collision = true
+size = Vector3(188.98712, 1, 210.34058)
+material = SubResource("StandardMaterial3D_d0k5m")
+
+[node name="CSGBox3D168" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1347603040 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 322.9737, 2603.4744, 590.8938)
+use_collision = true
+size = Vector3(186.32837, 1, 210.34058)
+material = SubResource("StandardMaterial3D_d0k5m")
+
+[node name="CSGBox3D169" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1035905525 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711392e-08, -5.9604645e-08, -0.9999999, 1, 3.5527137e-15, 4.371138e-08, -1.7763567e-15, -0.9999999, 5.9604645e-08, 323.8563, 2546.0989, 498.25854)
+use_collision = true
+size = Vector3(115.78955, 2, 213)
+material = SubResource("StandardMaterial3D_d0k5m")
+
+[node name="CSGBox3D170" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1068902887 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 428.862, 2547.9937, 591.93207)
+use_collision = true
+size = Vector3(112, 2, 185.38135)
+material = SubResource("StandardMaterial3D_d0k5m")
+
+[node name="CSGBox3D172" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1692426167 groups=["level", "navmesh"]]
+transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 218.862, 2546.9575, 591.93207)
+use_collision = true
+size = Vector3(114.072266, 2, 185.38135)
+material = SubResource("StandardMaterial3D_d0k5m")
+
+[node name="CSGBox3D171" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1704420538 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 323.9454, 2546.8418, 683.04126)
+use_collision = true
+size = Vector3(114.30371, 2, 209.17822)
+material = SubResource("StandardMaterial3D_d0k5m")
+
+[node name="CSGBox3D125" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=86061278 groups=["level", "navmesh"]]
+transform = Transform3D(4.3711392e-08, 0.1569267, -0.9876101, 1, -6.8594836e-09, 4.3169806e-08, -1.7543481e-15, -0.9876101, -0.1569267, 398.12628, 266.49368, 550.6116)
+use_collision = true
+size = Vector3(73, 2, 20)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D107" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1786287925 groups=["level", "navmesh"]]
+transform = Transform3D(0.9926962, 6.137004e-09, -0.12064122, -0.12064117, -4.327843e-08, -0.99269617, -1.13133405e-08, 0.99999994, -4.222196e-08, 388.70578, 88.58311, 683.0392)
+use_collision = true
+size = Vector3(126, 2, 38)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D104" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1049745865 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, 359.5173, 44.48336, 774.7132)
+use_collision = true
+size = Vector3(351, 5.045288, 87)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D105" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1162351058 groups=["level", "navmesh"]]
+transform = Transform3D(-4.3711385e-08, 0.99999994, 0, 4.3711385e-08, 3.5527137e-15, -0.9999999, -0.99999994, -4.371139e-08, -4.371138e-08, 534.4237, 44.483364, 708.2132)
+use_collision = true
+size = Vector3(138, 5.045288, 87)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D71" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1151669095 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -792.472, 43.983368, 557.2132)
+use_collision = true
+size = Vector3(199, 5.045288, 102)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D72" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1354075534 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -596.472, 43.983368, 557.2132)
+use_collision = true
+size = Vector3(199, 5.045288, 102)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D75" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1896168877 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -599.8476, -0.016629457, 418.06906)
+use_collision = true
+size = Vector3(82, 5.045288, 14)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D76" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1124358669 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -599.522, -0.016628742, 377.90857)
+use_collision = true
+size = Vector3(82, 5.045288, 14)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D80" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=99165430 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -672.98, 5.9326, 133.64107)
+use_collision = true
+size = Vector3(876.8613, 5.045288, 25.898438)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D81" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=337859184 groups=["level", "navmesh"]]
+transform = Transform3D(-4.3711385e-08, 0.99999994, 0, 4.3711385e-08, 3.5527137e-15, -0.9999999, -0.99999994, -4.371139e-08, -4.371138e-08, -1109.0739, 5.932581, 572.64105)
+use_collision = true
+size = Vector3(876.8613, 5.045288, 25.898438)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D77" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=308016104 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -834.522, 0.9833708, 330.90857)
+use_collision = true
+size = Vector3(82, 5.045288, 16)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D78" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=263200166 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -834.522, 0.9833708, 269.90857)
+use_collision = true
+size = Vector3(82, 5.045288, 16)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D79" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2035413225 groups=["level", "navmesh"]]
+transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -834.522, 8.088032, 300.4312)
+use_collision = true
+size = Vector3(82, 60, 2)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D73" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=973881085 groups=["level", "navmesh"]]
+transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, -694.472, 43.983368, 459.2132)
+use_collision = true
+size = Vector3(199, 5.045288, 102)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D74" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=723691241 groups=["level", "navmesh"]]
+transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, -694.472, 43.983368, 654.2132)
+use_collision = true
+size = Vector3(199, 5.045288, 102)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D63" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=706198649 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 146.53087, 409.28, 1203.8387)
+use_collision = true
+size = Vector3(627.2485, 46.949936, 285)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D70" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=316484796 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 43.380177, 628.12396, 1731.8564)
+use_collision = true
+size = Vector3(373.4562, 2.4971313, 99)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D67" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2046680737 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -410.822, 381.25528, 1577.6138)
+use_collision = true
+size = Vector3(1656, 5.045288, 702)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D83" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1778896361 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -410.82196, 514.75525, 2611.1138)
+use_collision = true
+size = Vector3(411, 5.045288, 969)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D66" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2085057976 groups=["level", "navmesh"]]
+transform = Transform3D(-1.6420284e-15, -8.742276e-08, -0.9999999, 4.3711385e-08, -0.9999999, 8.742276e-08, -1, -4.3711385e-08, 1.9106855e-15, -163.63303, 224.46263, 1198.9196)
+use_collision = true
+size = Vector3(359.6294, 5.045288, 520)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D69" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1280595661 groups=["level", "navmesh"]]
+transform = Transform3D(-1.6420284e-15, -8.742276e-08, -0.9999999, 4.3711385e-08, -0.9999999, 8.742276e-08, -1, -4.3711385e-08, 1.9106855e-15, -164.63303, 53.46263, 1198.9196)
+use_collision = true
+size = Vector3(359.6294, 5.045288, 518)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D65" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1210528692 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 39.96629, 447.04187, 1426.7084)
+use_collision = true
+size = Vector3(200.1098, 5.311493, 167.81635)
+material = SubResource("StandardMaterial3D_58wob")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2080999740 groups=["level", "navmesh"]]
+transform = Transform3D(-4.222196e-08, -0.8660255, 0.5, -1.131334e-08, 0.5, 0.8660255, -1, 3.0908623e-08, -3.0908623e-08, 79.35385, 10.277784, -32.410706)
+use_collision = true
+size = Vector3(8, 1, 30)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1762383479 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, -0.7071068, 0.7071067, 0, 0.7071067, 0.7071068, -1, 3.0908623e-08, -3.0908623e-08, 81.8353, 7.201704, -11.410706)
+use_collision = true
+size = Vector3(8, 1, 30)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=725216449 groups=["level", "navmesh"]]
+transform = Transform3D(-4.2221963e-08, -0.8660254, 0.49999988, -1.1313338e-08, 0.49999988, 0.8660254, -1, 3.0908623e-08, -3.0908623e-08, 46.434998, 3.9440188, -11.410706)
+use_collision = true
+size = Vector3(8, 1, 9.472168)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=8134566 groups=["level", "navmesh"]]
+transform = Transform3D(-4.3711392e-08, -0.70710677, 0.7071067, 8.881784e-16, 0.7071067, 0.70710677, -1, 3.0908623e-08, -3.0908623e-08, 46.434998, 3.9440188, -20.25071)
+use_collision = true
+size = Vector3(8, 1, 9.472168)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=744418090 groups=["level", "navmesh"]]
+transform = Transform3D(-4.222196e-08, -0.5, 0.86602527, 1.1313343e-08, 0.86602527, 0.5, -1, 3.0908623e-08, -3.0908623e-08, 46.434998, 4.944019, -29.25071)
+use_collision = true
+size = Vector3(8, 1, 9.472168)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D21" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1822652269 groups=["level", "navmesh"]]
+transform = Transform3D(-3.090862e-08, -5.9604645e-08, 0.9999999, 3.0908623e-08, 0.9999999, 5.9604645e-08, -1, 3.0908623e-08, -3.090862e-08, -25.165043, 5.9494557, -133.08325)
+use_collision = true
+collision_layer = 64
+size = Vector3(91.823, 1, 25.309204)
+material = SubResource("StandardMaterial3D_2feqb")
+
+[node name="CSGBox3D23" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=874409974 groups=["level", "navmesh"]]
+transform = Transform3D(-3.090862e-08, -5.9604645e-08, 0.9999999, 3.0908623e-08, 0.9999999, 5.9604645e-08, -1, 3.0908623e-08, -3.090862e-08, 88.69891, 38.949455, 457.82825)
+size = Vector3(184, 1, 4)
+material = SubResource("StandardMaterial3D_ebuav")
+
+[node name="CSGBox3D22" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1354077339 groups=["level", "navmesh"]]
+transform = Transform3D(-3.0908623e-08, -0.9999999, -5.9604645e-08, -3.0908627e-08, -5.9604645e-08, 0.9999999, -1, 3.0908627e-08, -3.0908623e-08, -29.060368, 18.690176, 5.505249)
+use_collision = true
+size = Vector3(125, 1, 43)
+material = SubResource("StandardMaterial3D_cuqiy")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1398262141 groups=["level", "navmesh"]]
+transform = Transform3D(-4.3384553e-08, -0.7881289, 0.6155101, -5.3354077e-09, 0.6155101, 0.7881289, -1, 3.0908623e-08, -3.0908623e-08, 80.330475, 7.201704, -20.882973)
+use_collision = true
+size = Vector3(8, 1, 30)
+material = ExtResource("6_pfl74")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=932142737 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 647.0642, 57, 501.21613)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 52.338
+radial_segments = 32
+rings = 32
+
+[node name="CSGSphere3D6" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1461209488 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 776.0642, 57, 636.2161)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 25.0
+radial_segments = 32
+rings = 32
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="LEVEL_PIECES" unique_id=2046392576 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.61154, 474.9444, 1547.5013)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 100.0
+height = 402.81137
+sides = 64
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1576201854 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.612, 273.192, 1547.501)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 100.0
+radial_segments = 64
+rings = 32
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1181883512 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.611526, 676.31635, 1547.5013)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 100.0
+radial_segments = 64
+rings = 32
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="LEVEL_PIECES" unique_id=248218297 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.61154, 474.9444, 1924.5013)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 100.0
+height = 402.81137
+sides = 64
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=5828057 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.612, 273.192, 1924.501)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 100.0
+radial_segments = 64
+rings = 32
+
+[node name="CSGSphere3D5" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1458377156 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.611526, 676.31635, 1924.5013)
+material_override = ExtResource("6_pfl74")
+use_collision = true
+radius = 100.0
+radial_segments = 64
+rings = 32
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=925911908 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=264348820 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D17" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1527071619 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=327824920 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=778644031 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D24" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=834422851 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D25" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=452541307 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D26" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1475715307 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D27" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2007590034 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D28" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1943627132 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D29" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1557763909 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D30" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=308727294 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D31" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1216610100 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -119.805, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D32" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1664318435 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 273, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D33" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1531351330 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D34" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=268658367 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D35" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=623013607 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D36" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=811089360 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D37" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1676544246 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D38" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=502321156 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D39" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=987066620 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D40" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1070819583 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D41" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1634950653 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D42" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=718098110 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D43" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=500302600 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D44" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1907002360 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D45" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=678914619 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -911.805, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D46" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1772537092 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D47" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=675448098 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D48" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=643911216 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D49" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1562550260 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D50" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=951561730 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D51" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=100648543 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D52" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1595121183 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D53" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=152807540 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D54" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1168346267 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D55" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=303103732 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D56" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1716123885 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D57" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=679223493 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D58" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=621179429 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D59" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=656848887 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 672.195, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D60" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=346729915 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1065, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D84" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=798094465 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D85" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=223679918 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D86" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2019620197 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D87" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1373361891 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D88" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1614471649 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D89" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=896227022 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D90" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1559232371 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1465, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D91" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=623233055 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D92" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1992709970 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D93" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=417333080 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 1131)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D94" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=49402646 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 1531)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D95" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=107218472 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 1931)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D96" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1176967398 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 2331)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D97" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=163267732 groups=["level", "navmesh"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1865, -33.692, 2731)
+use_collision = true
+size = Vector3(400, 64.031, 400)
+material = ExtResource("6_pfl74")
+
+[node name="TestCircle_1" parent="LEVEL_PIECES" unique_id=2114367077 groups=["level", "navmesh"] instance=ExtResource("10_0vtvo")]
+transform = Transform3D(28.241602, 0, 0, 0, 28.241602, 0, 0, 0, 28.241602, 580.8162, 26.43241, 441.15735)
+
+[node name="TestCircle_2" parent="LEVEL_PIECES" unique_id=680785295 groups=["level", "navmesh"] instance=ExtResource("10_0vtvo")]
+transform = Transform3D(-1.7484556e-06, 0, 40, 0, 40, 0, -40, 0, -1.7484556e-06, 791.4796, 34.43241, 482.4983)
+
+[node name="TestCircle_3" parent="LEVEL_PIECES" unique_id=1593681951 groups=["level", "navmesh"] instance=ExtResource("10_0vtvo")]
+transform = Transform3D(-100, 0, -1.509958e-05, 0, 100, 0, 1.509958e-05, 0, -100, -240.54358, 151.63315, 1025.0787)
+
+[node name="BumperDirectional" parent="LEVEL_PIECES" unique_id=156230985 instance=ExtResource("13_ega4b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 247.42148, 0.8235092, 279.88995)
+
+[node name="BumperOvercharged" parent="LEVEL_PIECES" unique_id=75417694 instance=ExtResource("14_iwaxd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 281.69275, 0.82349396, 278.9406)
+
+[node name="BumperRadialClassic" parent="LEVEL_PIECES" unique_id=1495345011 instance=ExtResource("15_pmxsj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 216.47943, 0.82349396, 279.11758)
+
+[node name="BumperSurfaceNormal" parent="LEVEL_PIECES" unique_id=1335093663 instance=ExtResource("16_ak7f8")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 333.6958, 8.402753, 278.68878)
+
+[node name="BumperSurfaceNormal2" parent="LEVEL_PIECES" unique_id=1869424327 instance=ExtResource("17_iwaxd")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 395.8119, 20.498743, 282.37823)
+mirrored_bounce_ratio = 2.0
+minimum_impulse = 20.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1619171753]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326.92322, 0, 765.5156)
+
+[node name="HomingTarget" parent="." unique_id=371080745 instance=ExtResource("2_7graj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.102226, 7.9234977, 238.19597)
+pop_up_speed_override = -4.0
+
+[node name="HomingTarget2" parent="." unique_id=1871670944 instance=ExtResource("2_7graj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.102226, 7.9234977, 253.19597)
+
+[node name="JumpPanelRamp2" parent="." unique_id=1081510509 instance=ExtResource("4_18sbj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.754448, -1.6400023, 142.02415)
+up_speed = 90.0
+hold_forward_time = 2.0
+movement_lock_time = 2.0
+action_lock_time = 2.0
+
+[node name="JumpPanelRamp3" parent="." unique_id=1006219033 instance=ExtResource("4_18sbj")]
+transform = Transform3D(0.21073575, 0, 0.97754306, 0, 1, 0, -0.97754306, 0, 0.21073575, 308.27136, 191.82214, 631.7782)
+forward_speed = 137.0
+up_speed = 79.0
+movement_lock_time = 0.3
+
+[node name="BlitzSonicTest" parent="." unique_id=223504575 instance=ExtResource("5_65k7s")]
+transform = Transform3D(-3.4969112e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.4969112e-08, -169.6991, 4.513918, -387.1801)
+
+[node name="TestScaled" parent="." unique_id=1244966325 instance=ExtResource("7_b56cm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.212, 38.87439, -723.372)
+
+[node name="DashPanel" parent="." unique_id=1940687985 instance=ExtResource("9_g2p7k")]
+transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 81.198105, -0.35893446, 376.583)
+strength = 190.0
+movement_lock_time = 1.0
+action_lock_time = 1.0
+
+[node name="DashPanel4" parent="." unique_id=1418350663 instance=ExtResource("9_g2p7k")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 282.08206, 357.02145, 570.38074)
+strength = 120.0
+additive_mode = 1
+min_additive_launch_speed = 120.0
+movement_lock_time = 1.0
+action_lock_time = 1.0
+
+[node name="AutomationSpline" parent="." unique_id=858870673 instance=ExtResource("13_ijfms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 235.34773, -1.676506, 411.77374)
+enabled = false
+tangent_lookahead = 1.0
+
+[node name="Path3D" parent="AutomationSpline" index="0" unique_id=716481439]
+curve = SubResource("Curve3D_dpt8e")
+
+[node name="CollisionShape3D" parent="AutomationSpline/Area3D" parent_id_path=PackedInt32Array(858870673, 1793801836) index="0" unique_id=775713540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.400375, 11.068848, 18.640625)
+
+[node name="DashPanel3" parent="." unique_id=1918780304 instance=ExtResource("9_g2p7k")]
+transform = Transform3D(1, 0, -1.4702742e-07, 0, 1, 0, 1.4702742e-07, 0, 1, 64.13512, -1.6655765, 362.30524)
+strength = 190.0
+lock_speed_enabled = true
+lock_speed_value = 190.0
+lock_speed_duration = 3.0
+
+[node name="DashPanel2" parent="." unique_id=2044725918 instance=ExtResource("9_g2p7k")]
+transform = Transform3D(0.47544587, -0.9373666, 2.8098574, 0.008227184, -2.8453948, -0.9506138, 2.962074, 0.15836106, -0.4483729, 92.12919, 38.90052, 538.0077)
+strength = 400.0
+movement_lock_time = 2.0
+action_lock_time = 2.0
+lock_speed_enabled = true
+lock_speed_value = 400.0
+lock_speed_duration = 1.2
+
+[node name="Node3D" type="Node3D" parent="." unique_id=2089609842]
+
+[node name="CSGBox3D20" type="CSGBox3D" parent="." unique_id=1427899174]
+transform = Transform3D(1, 0, 0, 0, -4.371138e-08, 0.9999998, 0, -0.9999998, -4.371138e-08, 98.922844, -2226.5352, -133.51414)
+visible = false
+use_collision = true
+size = Vector3(24, 1, 3976.187)
+material = ExtResource("6_pfl74")
+
+[node name="Water" type="MeshInstance3D" parent="." unique_id=299599083]
+transform = Transform3D(1500, 0, 0, 0, 900, 0, 0, 0, 3125.839, 71.31945, -80.123665, 977.17505)
+visible = false
+mesh = SubResource("PlaneMesh_oiola")
+skeleton = NodePath("../../GREEN_HILL_CANYON")
+surface_material_override/0 = SubResource("ShaderMaterial_cuqiy")
+
+[node name="DeathPlane2" parent="." unique_id=1185883697 instance=ExtResource("18_u5mvm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 293.36133, -492.9195, -60.150146)
+
+[node name="CollisionShape3D" parent="DeathPlane2" index="0" unique_id=172183619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -369.5078, 0, 181.06201)
+shape = SubResource("BoxShape3D_v7st7")
+
+[node name="Checkpoint" parent="." unique_id=1628728212 instance=ExtResource("19_s3xwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 469.9839, 55.25297, 655.3355)
+
+[node name="CollisionShape3D" parent="Checkpoint" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1107178, 15.116215, 9.485352)
+shape = SubResource("BoxShape3D_4rehq")
+
+[node name="MeshInstance3D" parent="Checkpoint" index="2" unique_id=613359843]
+mesh = SubResource("CylinderMesh_jfrcj")
+
+[node name="Checkpoint2" parent="." unique_id=1208036193 instance=ExtResource("19_s3xwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 323.20865, 356.87448, 575.29486)
+
+[node name="CollisionShape3D" parent="Checkpoint2" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1107178, 23.504883, 2.8881836)
+shape = SubResource("BoxShape3D_ebmlk")
+
+[node name="Checkpoint3" parent="." unique_id=2093643137 instance=ExtResource("19_s3xwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -864.7914, 623.7991, 488.29486)
+
+[node name="CollisionShape3D" parent="Checkpoint3" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1107178, 44.217773, -3.5810547)
+shape = SubResource("BoxShape3D_1i28t")
+
+[node name="Checkpoint5" parent="." unique_id=1520107622 instance=ExtResource("19_s3xwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1011.7914, 952.90967, 488.29486)
+
+[node name="CollisionShape3D" parent="Checkpoint5" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1107178, 65.2177

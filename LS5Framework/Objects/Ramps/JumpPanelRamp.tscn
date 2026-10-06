@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://c12m0rampjump"]
+
+[ext_resource type="Script" uid="uid://ds22ocguoi27m" path="res://LS5Framework/Objects/Ramps/JumpPanelRamp.gd" id="1_ramp"]
+[ext_resource type="AudioStream" uid="uid://v53dxrkdnign" path="res://LS5Framework/Sounds/Objects/DashPanel.wav" id="2_5s581"]
+[ext_resource type="PackedScene" uid="uid://cmnkl1bbu72v7" path="res://LS5Framework/Objects/Ramps/Mesh-Heroes/ramp_mesh.tscn" id="3_77081"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
+size = Vector3(3.9537964, 2.3579102, 5.0271606)
+
+[sub_resource type="PrismMesh" id="PrismMesh_5s581"]
+left_to_right = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ramp"]
+albedo_color = Color(0.95, 0.55, 0.15, 1)
+
+[node name="JumpPanelRamp" type="Area3D" unique_id=1006219033 node_paths=PackedStringArray("sfx_player")]
+collision_layer = 32
+collision_mask = 6
+script = ExtResource("1_ramp")
+sfx_player = NodePath("AudioStreamPlayer3D")
+launch_sounds = Array[AudioStream]([ExtResource("2_5s581")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=641640871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059417725, 0.879, -0.008331299)
+shape = SubResource("BoxShape3D_ramp")
+
+[node name="TempMesh" type="MeshInstance3D" parent="." unique_id=1872819520]
+transform = Transform3D(-2.1855695e-07, 0, 4, 0, 2, 0, -5, 0, -1.7484555e-07, 0, 1, 0)
+visible = false
+mesh = SubResource("PrismMesh_5s581")
+surface_material_override/0 = SubResource("StandardMaterial3D_ramp")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1661056335]
+max_distance = 60.0
+attenuation_filter_cutoff_hz = 10000.0
+
+[node name="RampMesh" parent="." unique_id=1615587704 instance=ExtResource("3_77081")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.6520113e-08, -0.32655555, -0.37793612)

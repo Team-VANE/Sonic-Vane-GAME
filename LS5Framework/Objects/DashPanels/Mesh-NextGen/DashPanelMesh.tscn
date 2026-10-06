@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cq7gyi4vlbgh1"]
+
+[ext_resource type="PackedScene" uid="uid://b0hpqrccwga3v" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/DashPanel.blend" id="1_ow085"]
+[ext_resource type="Script" uid="uid://dxspannni8m53" path="res://LS5Framework/Scripts/TextureEffects.gd" id="2_nvxqd"]
+[ext_resource type="Material" uid="uid://bthoh5rfp45qn" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/Materials/Frame.tres" id="3_cr547"]
+[ext_resource type="Material" uid="uid://cie4bnd6j805s" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/Materials/Panel.tres" id="4_nevwp"]
+
+[node name="DashPanelMesh" type="Node3D" unique_id=1210066314]
+script = ExtResource("2_nvxqd")
+target_node_path = NodePath("DashPanel/Object02")
+surface_index = 0
+target_paths = Array[NodePath]([NodePath("DashPanel/Object02")])
+surface_indices = Array[int]([0])
+scroll_directions = Array[Vector2]([Vector2(0, 1)])
+scroll_speeds = Array[float]([9.0])
+autoplays = Array[bool]([true])
+wrap_offsets = Array[bool]([true])
+
+[node name="DashPanel" parent="." unique_id=1308146711 instance=ExtResource("1_ow085")]
+
+[node name="Object01" parent="DashPanel" index="0" unique_id=597445725]
+surface_material_override/0 = ExtResource("3_cr547")
+
+[node name="Object02" parent="DashPanel" index="1" unique_id=1779589040]
+surface_material_override/0 = ExtResource("4_nevwp")
+
+[editable path="DashPanel"]

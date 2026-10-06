@@ -1,0 +1,581 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://c468twl740k4x"
+path="res://.godot/imported/GHO.glb-e31cfe24a58dd07ee19b917d754cf1b6.scn"
+
+[deps]
+
+source_file="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO.glb"
+dest_files=["res://.godot/imported/GHO.glb-e31cfe24a58dd07ee19b917d754cf1b6.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"01___Default.001_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/01___Default.001_GRS.tres",
+"use_external/path": "uid://6cao5ig0hg1s"
+},
+"01___Default_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/01___Default_GRS.tres",
+"use_external/path": "uid://dtevedgi0e74j"
+},
+"08___Default.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/08___Default.001_STN.tres",
+"use_external/path": "uid://j68xgc3hw8uu"
+},
+"08___Default_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/08___Default_STN.tres",
+"use_external/path": "uid://celasve34a7ip"
+},
+"09___Default.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/09___Default.001_STN.tres",
+"use_external/path": "uid://c57xhmdl5y2c0"
+},
+"09___Default_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/09___Default_STN.tres",
+"use_external/path": "uid://dekubj60gs0ge"
+},
+"10___Default.001_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/10___Default.001_DRT.tres",
+"use_external/path": "uid://blypwn4mhdmlk"
+},
+"10___Default_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/10___Default_DRT.tres",
+"use_external/path": "uid://0awe8ix6uiij"
+},
+"11___Default.001_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/11___Default.001_GRS.tres",
+"use_external/path": "uid://c6m1giw6qywov"
+},
+"11___Default_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/11___Default_GRS.tres",
+"use_external/path": "uid://bihibrgoax6cp"
+},
+"13___Default.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/13___Default.001_STN.tres",
+"use_external/path": "uid://ccq77ovyfxd21"
+},
+"13___Default_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/13___Default_STN.tres",
+"use_external/path": "uid://c00o86nl1wt7y"
+},
+"14___Default.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/14___Default.001_STN.tres",
+"use_external/path": "uid://cnwfu4id3rb1h"
+},
+"14___Default_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/14___Default_STN.tres",
+"use_external/path": "uid://boglw26pg2tet"
+},
+"Bark_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Bark_WOD.tres",
+"use_external/path": "uid://dyh4bgvqimv4x"
+},
+"ConcreteWoodCrnr_FLR": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/ConcreteWoodCrnr_FLR.tres",
+"use_external/path": "uid://cso3e5e4jmhkh"
+},
+"Holz.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Holz.001_STN.tres",
+"use_external/path": "uid://c3aw3vhd7771a"
+},
+"Holz1.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Holz1.001_STN.tres",
+"use_external/path": "uid://5qfa7vrs83x1"
+},
+"Holz1_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Holz1_WOD.tres",
+"use_external/path": "uid://bqj5ty1x4offv"
+},
+"Holz_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Holz_WOD.tres",
+"use_external/path": "uid://dtg7ov5xwhxf5"
+},
+"Material05": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material05.tres",
+"use_external/path": "uid://d2mb8u8prsxnf"
+},
+"Material06": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material06.tres",
+"use_external/path": "uid://dt8a2yr33jc0b"
+},
+"Material__102.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__102.001_STN.tres",
+"use_external/path": "uid://cbigj5ypsxte"
+},
+"Material__102_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__102_STN.tres",
+"use_external/path": "uid://4itvfmva4i5l"
+},
+"Material__114.001_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__114.001_DRT.tres",
+"use_external/path": "uid://bsylsxuojbgq8"
+},
+"Material__114.002_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__114.002_DRT.tres",
+"use_external/path": "uid://0lapsf5yhc5k"
+},
+"Material__114_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__114_DRT.tres",
+"use_external/path": "uid://d4f2p3p13qj4u"
+},
+"Material__115.001_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__115.001_GRS.tres",
+"use_external/path": "uid://b83fi1pqbduy"
+},
+"Material__115.002_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__115.002_GRS.tres",
+"use_external/path": "uid://drjheeq2f4c3v"
+},
+"Material__115_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__115_GRS.tres",
+"use_external/path": "uid://bsxjpsnwol37"
+},
+"Material__117.001_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__117.001_GRS.tres",
+"use_external/path": "uid://bc2dljl5faeeq"
+},
+"Material__117_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__117_GRS.tres",
+"use_external/path": "uid://di75wjpqopwgr"
+},
+"Material__1429.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1429.001_STN.tres",
+"use_external/path": "uid://cj48v74t4jtgn"
+},
+"Material__1429_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1429_STN.tres",
+"use_external/path": "uid://t77xxesm0fpc"
+},
+"Material__1430.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1430.001_STN.tres",
+"use_external/path": "uid://b1i8wyr2swdik"
+},
+"Material__1430_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1430_STN.tres",
+"use_external/path": "uid://nblngvuhpvim"
+},
+"Material__1431.001_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1431.001_TIL.tres",
+"use_external/path": "uid://c2pk6ndul358d"
+},
+"Material__1431_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1431_TIL.tres",
+"use_external/path": "uid://b5a8aekld2dih"
+},
+"Material__1473_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__1473_WOD.tres",
+"use_external/path": "uid://b5la8r4fwxly4"
+},
+"Material__2465.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2465.001_STN.tres",
+"use_external/path": "uid://bd0qfvj71kc8"
+},
+"Material__2465_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2465_STN.tres",
+"use_external/path": "uid://yd1sovggi730"
+},
+"Material__2467.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2467.001_STN.tres",
+"use_external/path": "uid://8iya8nepnd07"
+},
+"Material__2467_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2467_STN.tres",
+"use_external/path": "uid://csakkdwb4kkmd"
+},
+"Material__2468.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2468.001_STN.tres",
+"use_external/path": "uid://bbmmvfs8d84fy"
+},
+"Material__2468_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2468_STN.tres",
+"use_external/path": "uid://bi52405lau600"
+},
+"Material__2469.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2469.001_STN.tres",
+"use_external/path": "uid://do4jrcyiopt6c"
+},
+"Material__2469_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2469_STN.tres",
+"use_external/path": "uid://b5rnsvh0eecb6"
+},
+"Material__2470.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2470.001_STN.tres",
+"use_external/path": "uid://qyd76nsis2v8"
+},
+"Material__2470_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2470_STN.tres",
+"use_external/path": "uid://d1byqknbsyo1j"
+},
+"Material__2471.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2471.001_STN.tres",
+"use_external/path": "uid://ctq6341xqv28v"
+},
+"Material__2471_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2471_STN.tres",
+"use_external/path": "uid://bytebjgycvu7"
+},
+"Material__2472.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2472.001_STN.tres",
+"use_external/path": "uid://t3qlenj4ksqg"
+},
+"Material__2472_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2472_STN.tres",
+"use_external/path": "uid://drfghhr47alvp"
+},
+"Material__2473.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2473.001_STN.tres",
+"use_external/path": "uid://u4dqtar1efxr"
+},
+"Material__2473_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2473_STN.tres",
+"use_external/path": "uid://bkav4dv3cjstr"
+},
+"Material__2474.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2474.001_STN.tres",
+"use_external/path": "uid://bfgli1dmgj1lw"
+},
+"Material__2474_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2474_STN.tres",
+"use_external/path": "uid://d2y1wewg22msv"
+},
+"Material__26.001_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__26.001_DRT.tres",
+"use_external/path": "uid://der5vni8vgp6q"
+},
+"Material__26_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__26_DRT.tres",
+"use_external/path": "uid://bsomu6wokn5d4"
+},
+"Material__27.001_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__27.001_DRT.tres",
+"use_external/path": "uid://43rqxuihgwtn"
+},
+"Material__27_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__27_DRT.tres",
+"use_external/path": "uid://n0pyn1i3v4x7"
+},
+"Material__2869": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__2869.tres",
+"use_external/path": "uid://b4pshora3wkge"
+},
+"Material__28_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__28_GRS.tres",
+"use_external/path": "uid://cojdlm5pvpwum"
+},
+"Material__29.001_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__29.001_DRT.tres",
+"use_external/path": "uid://ckaw7doadbo6x"
+},
+"Material__29_DRT": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__29_DRT.tres",
+"use_external/path": "uid://x1r7c5173ars"
+},
+"Material__30.001_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__30.001_SND.tres",
+"use_external/path": "uid://doott0p6gau8m"
+},
+"Material__30.002_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__30.002_SND.tres",
+"use_external/path": "uid://d2t55tq3lnhar"
+},
+"Material__30_SND": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__30_SND.tres",
+"use_external/path": "uid://dcooujdlfrwp5"
+},
+"Material__3697": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__3697.tres",
+"use_external/path": "uid://eua0qu4re21n"
+},
+"Material__3957.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__3957.001_STN.tres",
+"use_external/path": "uid://e0ivreq23j83"
+},
+"Material__3957_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__3957_STN.tres",
+"use_external/path": "uid://b7ce13n7wsrhw"
+},
+"Material__4471": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__4471.tres",
+"use_external/path": "uid://dyw7sg52ofnto"
+},
+"Material__4472": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__4472.tres",
+"use_external/path": "uid://d175tc4hxg5bq"
+},
+"Material__4780_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__4780_STN.tres",
+"use_external/path": "uid://v5svqd7rgabt"
+},
+"Material__6001_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__6001_GRS.tres",
+"use_external/path": "uid://cbfg00a1os5cl"
+},
+"Material__6312": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__6312.tres",
+"use_external/path": "uid://x52j48lhrj16"
+},
+"Material__6520_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__6520_GRS.tres",
+"use_external/path": "uid://fy2co15slulk"
+},
+"Material__6588": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__6588.tres",
+"use_external/path": "uid://c1dmovjhiv0eh"
+},
+"Material__928.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__928.001_STN.tres",
+"use_external/path": "uid://ccfffk1mkbkiv"
+},
+"Material__928_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__928_STN.tres",
+"use_external/path": "uid://cypylu6wcama0"
+},
+"Material__929.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__929.001_STN.tres",
+"use_external/path": "uid://v0sy5n8i66b6"
+},
+"Material__929_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__929_STN.tres",
+"use_external/path": "uid://dfk2e7wn075do"
+},
+"Material__930.001_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__930.001_TIL.tres",
+"use_external/path": "uid://dm2slkor247nr"
+},
+"Material__930_TIL": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__930_TIL.tres",
+"use_external/path": "uid://isr7dx6cdr0e"
+},
+"Material__932.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__932.001_STN.tres",
+"use_external/path": "uid://u4bd182k3fpo"
+},
+"Material__932_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__932_STN.tres",
+"use_external/path": "uid://bdasddupimylj"
+},
+"Material__933.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__933.001_STN.tres",
+"use_external/path": "uid://cn67bpjr2igyj"
+},
+"Material__933_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Material__933_STN.tres",
+"use_external/path": "uid://d2mgnbyki0l8x"
+},
+"Texture10.001_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture10.001_WOD.tres",
+"use_external/path": "uid://l0ojiw8wel3g"
+},
+"Texture10_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture10_WOD.tres",
+"use_external/path": "uid://cys5ffcq5mxlf"
+},
+"Texture4": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture4.tres",
+"use_external/path": "uid://e8towlmmj5dn"
+},
+"Texture5": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture5.tres",
+"use_external/path": "uid://ct7dfwcns2x4a"
+},
+"Texture7.001_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture7.001_WOD.tres",
+"use_external/path": "uid://bqkwda1q2vnx7"
+},
+"Texture7.002_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture7.002_WOD.tres",
+"use_external/path": "uid://crldl0mrfbjwg"
+},
+"Texture7_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture7_WOD.tres",
+"use_external/path": "uid://d0r3opiitak0p"
+},
+"Texture8": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture8.tres",
+"use_external/path": "uid://b8rjge5jf8qc7"
+},
+"Texture9.001_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture9.001_STN.tres",
+"use_external/path": "uid://dyx5shewjq1qo"
+},
+"Texture9.002_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture9.002_STN.tres",
+"use_external/path": "uid://n46xoqvhxg2h"
+},
+"Texture9_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Texture9_STN.tres",
+"use_external/path": "uid://c6vmq00acs3la"
+},
+"Transparent": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/Transparent.tres",
+"use_external/path": "uid://dom1i6whn6ocs"
+},
+"grash.001_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/grash.001_GRS.tres",
+"use_external/path": "uid://dveqoxy14i6pn"
+},
+"grash.002_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/grash.002_GRS.tres",
+"use_external/path": "uid://btpafwbuj0iu1"
+},
+"grash_GRS": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/grash_GRS.tres",
+"use_external/path": "uid://cm2ndd78lq7er"
+},
+"kopie_von_thatch_WOD": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/kopie_von_thatch_WOD.tres",
+"use_external/path": "uid://73hxrttx5lg"
+},
+"stein_x_gras_STN": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://LS5Framework/Scenes/Levels/Green Hill Ocean/Materials/stein_x_gras_STN.tres",
+"use_external/path": "uid://bft7bos1p0y1o"
+}
+},
+"nodes": {
+"PATH:Skeleton": {
+"generate/physics": true
+},
+"PATH:Skeleton_001": {
+"generate/physics": true
+},
+"PATH:Skeleton_002": {
+"generate/physics": true
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1

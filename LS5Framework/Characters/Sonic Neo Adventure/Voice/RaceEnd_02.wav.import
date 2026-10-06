@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ca68f42mjkd8m"
+path="res://.godot/imported/RaceEnd_02.wav-169c92ad7344e3f93a476b3474c7179e.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/RaceEnd_02.wav"
+dest_files=["res://.godot/imported/RaceEnd_02.wav-169c92ad7344e3f93a476b3474c7179e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

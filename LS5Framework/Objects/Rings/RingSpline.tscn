@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b2jkv0kca2k6q"]
+
+[ext_resource type="Script" uid="uid://f48wvh7gn425" path="res://LS5Framework/Objects/Rings/RingSpline.gd" id="1_ringspline"]
+
+[node name="RingSpline" type="Node3D" unique_id=2125630419]
+script = ExtResource("1_ringspline")
+terrain_warp_collision_mask = 1
+
+[node name="Path3D" type="Path3D" parent="." unique_id=1617861900]
+debug_custom_color = Color(0.32621408, 1.8247957, 1.7160814, 1)

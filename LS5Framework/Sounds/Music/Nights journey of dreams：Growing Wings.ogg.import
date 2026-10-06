@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://3e65l5w7j2vu"
+path="res://.godot/imported/Nights journey of dreams：Growing Wings.ogg-3d9613cdea01780b827ea0187b4a123e.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Nights journey of dreams：Growing Wings.ogg"
+dest_files=["res://.godot/imported/Nights journey of dreams：Growing Wings.ogg-3d9613cdea01780b827ea0187b4a123e.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=3.124
+bpm=135.0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/HUDStatContainer.gd" id="1_script"]
+[ext_resource type="Shader" path="res://LS5Framework/Shaders/UI/UIBackgroundCRT.gdshader" id="2_crt"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="3_orbitron_900"]
+[ext_resource type="FontFile" uid="uid://nly3y4dxp42m" path="res://LS5Framework/Resources/Fonts/7segment.ttf" id="4_seven_segment"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt"]
+shader = ExtResource("2_crt")
+shader_parameter/generate_panel = true
+shader_parameter/panel_size = Vector2(280, 80)
+shader_parameter/panel_color = Color(0.01, 0.025, 0.065, 0.9)
+shader_parameter/frame_color = Color(0.18, 0.52, 1, 1)
+shader_parameter/frame_highlight_color = Color(0.48, 0.78, 1, 1)
+shader_parameter/scanline_color = Color(0.3, 0.7, 1, 1)
+shader_parameter/corner_radius_px = 16.0
+shader_parameter/frame_width_px = 6.0
+shader_parameter/edge_feather_px = 10.0
+shader_parameter/scanline_spacing_px = 4.0
+shader_parameter/scanline_width_px = 1.0
+shader_parameter/scanline_strength = 0.14
+
+[node name="HUDStatContainer" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(280, 80)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 280.0
+offset_bottom = 80.0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="ContentMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 12
+
+[node name="StatText" type="HBoxContainer" parent="ContentMargin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="StatName" type="Label" parent="ContentMargin/StatText"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.025, 0.015, 0.18, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("3_orbitron_900")
+theme_override_font_sizes/font_size = 24
+text = "Stat"
+vertical_alignment = 1
+clip_text = true
+
+[node name="StatValue" type="HBoxContainer" parent="ContentMargin/StatText"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="ValueTemplate" type="Label" parent="ContentMargin/StatText/StatValue"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.025, 0.015, 0.18, 1)
+theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("4_seven_segment")
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = false

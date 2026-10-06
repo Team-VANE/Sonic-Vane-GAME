@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cd6i81iwgfvyx"
+path="res://.godot/imported/Insult_Suitcase_02.ogg-f0aaf51fe6755a97d97d9c2d18d7e6fd.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Suitcase_02.ogg"
+dest_files=["res://.godot/imported/Insult_Suitcase_02.ogg-f0aaf51fe6755a97d97d9c2d18d7e6fd.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

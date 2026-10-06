@@ -1,0 +1,176 @@
+[gd_scene load_steps=20 format=3 uid="uid://bnqag1mdwxy4j"]
+
+[ext_resource type="Script" uid="uid://dnsfns6ucd7k3" path="res://LS5Framework/Scripts/Player/SonicPlayer.gd" id="1_64fmr"]
+[ext_resource type="Script" uid="uid://bi121jf2e3xdl" path="res://LS5Framework/Scripts/Camera/SonicCameraRig.gd" id="1_tm2rn"]
+[ext_resource type="PackedScene" uid="uid://dyytsuvntmox5" path="res://LS5Framework/Scenes/Levels/NikoTest/NikoTest.tscn" id="3_64fmr"]
+[ext_resource type="PackedScene" uid="uid://cz5cy1vg2lfyi" path="res://LS5Framework/Objects/Music/MusicController.tscn" id="4_gyrth"]
+[ext_resource type="PackedScene" uid="uid://dcow1cl6vd0n3" path="res://LS5Framework/Objects/Music/MusicTrigger.tscn" id="5_y6ba4"]
+[ext_resource type="AudioStream" uid="uid://cqgry215h5plv" path="res://LS5Framework/Scenes/Levels/Minecraft/Minecraft.ogg" id="6_qc5yu"]
+[ext_resource type="PackedScene" uid="uid://dph8b0op2olul" path="res://LS5Framework/Scenes/Pause/PauseMenu.tscn" id="7_fx0oc"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Settings/GraphicsSettingsBinder.gd" id="8_sv1du"]
+[ext_resource type="PackedScene" uid="uid://dg6y3z4tie4qj" path="res://LS5Framework/Scenes/HUD/HUD.tscn" id="9_13m6i"]
+
+[sub_resource type="Curve" id="Curve_64fmr"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 35), 0.0, 0.0, 0, 0, Vector2(1, 0.2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_sllkf"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 20), 0.0, 0.0, 0, 0, Vector2(0.7, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_gdgd5"]
+_limits = [0.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0, 500), 0.0, 0.0, 0, 0, Vector2(1, 300), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_6alud"]
+_limits = [0.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(1, 700), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_64fmr"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_64fmr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jxvy"]
+albedo_color = Color(0.14731085, 0, 0.9034348, 1)
+
+[sub_resource type="Environment" id="Environment_64fmr"]
+ssr_enabled = true
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+volumetric_fog_density = 0.0191
+volumetric_fog_albedo = Color(0.74623877, 0.8646485, 0.96975154, 1)
+volumetric_fog_gi_inject = 1.22
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_8jxvy"]
+
+[sub_resource type="Compositor" id="Compositor_gdgd5"]
+
+[node name="Scene" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154.22447, -31.692043, 10.94668)
+use_collision = true
+size = Vector3(155.32507, 64.03131, 26.54834)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 99.02793, -32.474693, -34.44571)
+use_collision = true
+size = Vector3(24, 1, 92)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.371139e-08, -0.70710677, 0.70710677, 0, 0.70710677, 0.70710677, -1, 3.090862e-08, -3.090862e-08, 94.97636, 17.47229, 26.615517)
+use_collision = true
+size = Vector3(24, 1, 92)
+
+[node name="SonicPlayer" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera", "camera_rig", "model_root", "ground_ray", "respawn_point")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4.9242234, -2.742569)
+floor_stop_on_slope = true
+floor_constant_speed = true
+floor_max_angle = 1.4835298
+floor_snap_length = 0.0
+script = ExtResource("1_64fmr")
+camera = NodePath("../SonicCameraPivot/SonicCamera")
+camera_rig = NodePath("../SonicCameraPivot")
+model_root = NodePath("ModelRoot")
+ground_ray = NodePath("GroundRay")
+respawn_point = NodePath("../PlayerSpawn")
+landing_momentum_scale = -1.0
+landing_max_slope_deg = 90.0
+run_top_speed = 80.0
+max_speed = 180.0
+ground_accel_curve = SubResource("Curve_64fmr")
+air_accel_curve = SubResource("Curve_sllkf")
+jump_speed = 28.0
+ground_turn_angle_curve = SubResource("Curve_gdgd5")
+ground_turn_free_angle_deg = 100.0
+ground_turn_max_penalty_angle_deg = 540.0
+air_turn_angle_curve = SubResource("Curve_6alud")
+air_turn_free_angle_deg = 90.0
+air_turn_max_penalty_angle_deg = 240.0
+ground_ray_length = 3.0
+landing_floor_max_angle_deg = 15.0
+radial_landing_min_angle_deg = 20.0
+slope_flat_angle_threshold_deg = 35.0
+slope_downhill_accel = 140.0
+slope_uphill_decel = 85.0
+slope_slide_accel = 80.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SonicPlayer"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_64fmr")
+
+[node name="ModelRoot" type="Node3D" parent="SonicPlayer"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicPlayer/ModelRoot"]
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SonicPlayer/ModelRoot"]
+transform = Transform3D(0.2793731, 0, 0, 0, -2.2690667e-08, -0.27937308, 0, 0.519102, -1.2211785e-08, 0, 0.36798668, -0.74790287)
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
+
+[node name="GroundRay" type="RayCast3D" parent="SonicPlayer"]
+visibility_parent = NodePath("../ModelRoot/MeshInstance3D")
+target_position = Vector3(0, -1.5, 0)
+debug_shape_custom_color = Color(0, 0.82129085, 0.6667499, 1)
+debug_shape_thickness = 4
+
+[node name="LandingRay" type="RayCast3D" parent="SonicPlayer"]
+target_position = Vector3(0, -1.5, 0)
+
+[node name="Test2" parent="." instance=ExtResource("3_64fmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.038145, -21.906828, -353.7473)
+
+[node name="SonicCameraPivot" type="Node3D" parent="." node_paths=PackedStringArray("target", "camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+script = ExtResource("1_tm2rn")
+target = NodePath("../SonicPlayer")
+camera = NodePath("SonicCamera")
+min_pitch_deg = -85.0
+max_pitch_deg = 85.0
+
+[node name="SonicCamera" type="Camera3D" parent="SonicCameraPivot"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_64fmr")
+camera_attributes = SubResource("CameraAttributesPhysical_8jxvy")
+compositor = SubResource("Compositor_gdgd5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.42871445, 0.90343994, 0, -0.90343994, -0.42871445, 0, 25.784826, 0)
+shadow_enabled = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.883847, 10.503914, 22.476479)
+light_energy = 4.794
+shadow_enabled = true
+omni_range = 50.637
+
+[node name="MusicController" parent="." instance=ExtResource("4_gyrth")]
+
+[node name="MusicStartTrigger" parent="." instance=ExtResource("5_y6ba4")]
+transform = Transform3D(5, 0, 0, 0, 2, 0, 0, 0, 5, -2.949, 3.0, -2.5)
+controller = NodePath("../MusicController")
+music_stream = ExtResource("6_qc5yu")
+one_shot = true
+
+[node name="GraphicsSettingsBinder" type="Node" parent="."]
+script = ExtResource("8_sv1du")
+world_environment_path = NodePath("WorldEnvironment")
+directional_light_path = NodePath("DirectionalLight3D")
+camera_path = NodePath("SonicCameraPivot/SonicCamera")
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_fx0oc")]
+
+[node name="HUD" parent="." instance=ExtResource("9_13m6i")]
+
+[node name="PlayerSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.69886, 3.2386804, 51.528324)

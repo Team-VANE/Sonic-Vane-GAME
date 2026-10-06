@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b7jm0chn73khn"
+path="res://.godot/imported/Death_No_01.ogg-e4aa6f724e9a9984f1a8bcf8a36d8cae.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Death_No_01.ogg"
+dest_files=["res://.godot/imported/Death_No_01.ogg-e4aa6f724e9a9984f1a8bcf8a36d8cae.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

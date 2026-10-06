@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CharacterDoc" load_steps=4 format=3 uid="uid://b6xe5ian8t4w6"]
+
+[ext_resource type="Script" uid="uid://4t80bsikfbss" path="res://LS5Framework/Scripts/World/CharacterDoc.gd" id="1_doc"]
+[ext_resource type="Resource" uid="uid://vmwfoh52r2oe" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvCharacterSettingsProfile.tres" id="2_profile"]
+[ext_resource type="Resource" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvUIVoiceProfile.tres" id="3_ui_voice"]
+
+[resource]
+script = ExtResource("1_doc")
+character_name = "Sonic"
+character_id = "sonic_neo_adventure"
+scene = "res://LS5Framework/Characters/Sonic Neo Adventure/sonic_neo_adventure_player.tscn"
+settings_profile = ExtResource("2_profile")
+ui_voice_profile = ExtResource("3_ui_voice")

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="DynamicWeatherPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/WeatherSystem/DynamicWeatherPreset.gd" id="1_preset"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/DayNightCycle/Weather/Storm.tres" id="2_weather"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/Rain/Profiles/WindDrivenRain.tres" id="3_rain"]
+
+[resource]
+script = ExtResource("1_preset")
+preset_id = &"wind_driven_rain"
+display_name = "Wind-Driven Rain"
+feature_tags = Array[StringName]([&"clouds", &"rain", &"storm", &"strong_wind"])
+sky_weather = ExtResource("2_weather")
+rain_profile = ExtResource("3_rain")
+selection_weight = 0.32
+severity = 0.9
+duration_range_seconds = Vector2(70, 180)
+transition_range_seconds = Vector2(10, 22)

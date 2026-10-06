@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://behueoig0sph5"
+path="res://.godot/imported/Sonic Adventure - Windy Valley Remix.ogg-d11cb5dd60ba4581b98c5003ba3e50dc.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Sonic Adventure - Windy Valley Remix.ogg"
+dest_files=["res://.godot/imported/Sonic Adventure - Windy Valley Remix.ogg-d11cb5dd60ba4581b98c5003ba3e50dc.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=28.47
+bpm=132.0
+beat_count=0
+bar_beats=4

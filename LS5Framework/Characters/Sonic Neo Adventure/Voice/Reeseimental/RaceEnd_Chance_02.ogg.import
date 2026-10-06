@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d0ipguuovo04y"
+path="res://.godot/imported/RaceEnd_Chance_02.ogg-5ae4eb96134eb9c5a5d7608c95d17c68.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceEnd_Chance_02.ogg"
+dest_files=["res://.godot/imported/RaceEnd_Chance_02.ogg-5ae4eb96134eb9c5a5d7608c95d17c68.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

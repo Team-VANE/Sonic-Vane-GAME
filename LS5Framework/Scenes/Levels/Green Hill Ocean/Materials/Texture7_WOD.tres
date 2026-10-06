@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d0r3opiitak0p"]
+
+[ext_resource type="Texture2D" uid="uid://dffxdgf3x6bkx" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_totem.png" id="1_3x74r"]
+
+[resource]
+resource_name = "Texture7_WOD"
+cull_mode = 2
+albedo_texture = ExtResource("1_3x74r")

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://5cy2jwban8n3"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_g8f0m"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_kol01"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_7qwfu"]
+
+[sub_resource type="Resource" id="Resource_wc1ny"]
+script = ExtResource("1_g8f0m")
+type = "volume"
+style = "solid"
+alpha = "0.3"
+bindings = {
+"color": "fill_color"
+}
+
+[resource]
+script = ExtResource("3_7qwfu")
+entity_name = "test_gizmo_volume"
+description = "Test: volume gizmo filling the entity mesh with a solid translucent color"
+identifier = "Area3D"
+gizmos = Array[ExtResource("1_g8f0m")]([SubResource("Resource_wc1ny")])
+has_volume = true
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

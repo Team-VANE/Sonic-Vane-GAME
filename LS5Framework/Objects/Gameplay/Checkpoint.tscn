@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://c1g10s7pyb8t3"]
+
+[ext_resource type="Script" uid="uid://b8ueekslolhqd" path="res://LS5Framework/Objects/Gameplay/Checkpoint.gd" id="1_checkpoint"]
+[ext_resource type="AudioStream" uid="uid://fq1xu1h7aijn" path="res://LS5Framework/Sounds/Objects/SA_Checkpoint_Sound.ogg" id="2_t7qt2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qulj2"]
+size = Vector3(70, 60, 70)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_checkpoint"]
+top_radius = 0.75
+bottom_radius = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_checkpoint"]
+albedo_color = Color(0.9, 0.9, 0.2, 1)
+
+[node name="Checkpoint" type="Area3D" unique_id=1208036193 node_paths=PackedStringArray("sfx_player")]
+collision_layer = 32
+collision_mask = 4
+audio_bus_name = &"SFX"
+script = ExtResource("1_checkpoint")
+sfx_player = NodePath("AudioStreamPlayer3D")
+activate_sounds = Array[AudioStream]([ExtResource("2_t7qt2")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 4.5, 0)
+shape = SubResource("BoxShape3D_qulj2")
+debug_color = Color(0, 0.812646, 0.95280397, 0.41960785)
+
+[node name="RespawnPoint" type="Node3D" parent="." unique_id=991891143]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.3286277, 2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=613359843]
+transform = Transform3D(0.5, 0, 0, 0, 2, 0, 0, 0, 0.5, 0, 2, 0)
+mesh = SubResource("CylinderMesh_checkpoint")
+surface_material_override/0 = SubResource("StandardMaterial3D_checkpoint")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=212996871]
+volume_db = 5.0
+max_distance = 100.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0

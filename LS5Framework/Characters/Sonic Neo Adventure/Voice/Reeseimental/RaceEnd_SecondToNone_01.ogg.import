@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://nshfu0ekqdms"
+path="res://.godot/imported/RaceEnd_SecondToNone_01.ogg-4bc98fe106fae13d3422f637c309bb8b.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceEnd_SecondToNone_01.ogg"
+dest_files=["res://.godot/imported/RaceEnd_SecondToNone_01.ogg-4bc98fe106fae13d3422f637c309bb8b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

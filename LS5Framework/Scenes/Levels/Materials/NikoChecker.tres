@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cdrd75vn4rhn5"]
+
+[ext_resource type="Texture2D" uid="uid://bdqotcscdk0pd" path="res://LS5Framework/Scenes/Levels/NikoTest/Test_Diffuse.png" id="1_p5b4k"]
+
+[resource]
+albedo_texture = ExtResource("1_p5b4k")
+metallic = 0.45
+roughness = 0.8
+backlight = Color(0.7204674, 0.7204675, 0.7204674, 1)
+uv1_scale = Vector3(50, 50, 50)

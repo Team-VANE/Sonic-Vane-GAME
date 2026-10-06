@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://d2owxp028dhac"]
+
+[ext_resource type="AudioStream" uid="uid://blil34n0xsjq1" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Bump_05.ogg" id="1_aorfc"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_df4j4"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_lhlkd"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_6ahqq"]
+
+[sub_resource type="Resource" id="Resource_lkdrp"]
+script = ExtResource("2_df4j4")
+pose_id = &"EXP_BROWS_UP"
+end_time = 0.19999999999999996
+row = 1
+blend_in = 0.09999999999999998
+blend_out = 0.09999999999999998
+
+[sub_resource type="Resource" id="Resource_v834x"]
+script = ExtResource("2_df4j4")
+pose_id = &"EXP_ANGRY"
+end_time = 0.59
+blend_in = 0.27
+blend_out = 0.295
+
+[sub_resource type="Resource" id="Resource_fuc8k"]
+script = ExtResource("2_df4j4")
+pose_id = &"EXP_BROWS_DOWN"
+start_time = 0.1
+end_time = 0.36999999999999994
+row = 2
+blend_in = 0.13499999999999995
+blend_out = 0.13499999999999995
+strength = 0.6
+
+[sub_resource type="Resource" id="Resource_fptdo"]
+script = ExtResource("2_df4j4")
+pose_id = &"VIS_Ah"
+end_time = 0.2300000000000001
+blend_in = 0.08500000000000003
+blend_out = 0.08500000000000003
+
+[sub_resource type="Resource" id="Resource_simp6"]
+script = ExtResource("2_df4j4")
+pose_id = &"VIS_EE"
+start_time = 0.08
+end_time = 0.37
+row = 1
+blend_in = 0.145
+blend_out = 0.145
+
+[resource]
+script = ExtResource("4_6ahqq")
+profile = ExtResource("3_lhlkd")
+audio = ExtResource("1_aorfc")
+audible_end = 0.3851875
+viseme_cues = Array[ExtResource("2_df4j4")]([SubResource("Resource_fptdo"), SubResource("Resource_simp6")])
+expression_cues = Array[ExtResource("2_df4j4")]([SubResource("Resource_lkdrp"), SubResource("Resource_v834x"), SubResource("Resource_fuc8k")])

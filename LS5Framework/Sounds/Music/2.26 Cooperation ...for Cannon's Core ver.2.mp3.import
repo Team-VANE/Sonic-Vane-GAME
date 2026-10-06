@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cpcp4ddifrcns"
+path="res://.godot/imported/2.26 Cooperation ...for Cannon's Core ver.2.mp3-f1c8968ac9ff9f5eaf95ba8b8fce44d8.mp3str"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/2.26 Cooperation ...for Cannon's Core ver.2.mp3"
+dest_files=["res://.godot/imported/2.26 Cooperation ...for Cannon's Core ver.2.mp3-f1c8968ac9ff9f5eaf95ba8b8fce44d8.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

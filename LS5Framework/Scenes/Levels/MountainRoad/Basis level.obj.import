@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cfvdjki785sye"
+path="res://.godot/imported/Basis level.obj-3efa7a294c6dfd15cce5512bf2da0bf2.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Basis level.obj-3efa7a294c6dfd15cce5512bf2da0bf2.mesh"]
+
+source_file="res://LS5Framework/Scenes/Levels/MountainRoad/Basis level.obj"
+dest_files=["res://.godot/imported/Basis level.obj-3efa7a294c6dfd15cce5512bf2da0bf2.mesh", "res://.godot/imported/Basis level.obj-3efa7a294c6dfd15cce5512bf2da0bf2.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

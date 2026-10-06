@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CharacterDoc" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/CharacterDoc.gd" id="1_doc"]
+[ext_resource type="Resource" path="res://LS5Framework/Characters/Tails/TailsCharacterSettingsProfile.tres" id="2_profile"]
+
+[resource]
+script = ExtResource("1_doc")
+character_name = "Tails"
+character_id = "tails"
+order = 10
+scene = "res://LS5Framework/Characters/Tails/tails_player.tscn"
+settings_profile = ExtResource("2_profile")

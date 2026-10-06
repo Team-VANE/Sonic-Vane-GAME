@@ -1,0 +1,114 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/HUDAbilityMeter.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/UI/HUD_Metre_Container.png" id="2_frame"]
+[ext_resource type="Shader" path="res://LS5Framework/Shaders/UI/HUDColorize.gdshader" id="3_colorize"]
+[ext_resource type="Shader" path="res://LS5Framework/Shaders/UI/UIBackgroundCRT.gdshader" id="4_crt"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="5_orbitron_900"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_colorize"]
+shader = ExtResource("3_colorize")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt"]
+shader = ExtResource("4_crt")
+shader_parameter/generate_panel = true
+shader_parameter/panel_size = Vector2(315, 90)
+shader_parameter/panel_color = Color(0.01, 0.025, 0.065, 0.88)
+shader_parameter/frame_color = Color(0, 0, 0, 0)
+shader_parameter/frame_highlight_color = Color(0, 0, 0, 0)
+shader_parameter/scanline_color = Color(0.3, 0.7, 1, 1)
+shader_parameter/corner_radius_px = 12.0
+shader_parameter/frame_width_px = 0.0
+shader_parameter/edge_feather_px = 12.0
+shader_parameter/scanline_spacing_px = 4.0
+shader_parameter/scanline_width_px = 1.0
+shader_parameter/scanline_strength = 0.14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_background"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(0.05, 0.45, 1, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[node name="HUDAbilityMeter" type="Control"]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(315, 90)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 315.0
+offset_bottom = 90.0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="ContentMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="MeterProgress" type="ProgressBar" parent="ContentMargin"]
+custom_minimum_size = Vector2(0, 66)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+value = 100.0
+show_percentage = false
+
+[node name="AbilityName" type="Label" parent="ContentMargin/MeterProgress"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.015, 0.02, 0.12, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("5_orbitron_900")
+theme_override_font_sizes/font_size = 22
+text = "Ability"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Frame" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_colorize")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_frame")
+expand_mode = 1

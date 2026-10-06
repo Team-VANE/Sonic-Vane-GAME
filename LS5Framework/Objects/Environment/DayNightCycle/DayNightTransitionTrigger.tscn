@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightTransitionTrigger.gd" id="1_trigger"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trigger"]
+size = Vector3(8, 8, 8)
+
+[node name="DayNightTransitionTrigger" type="Area3D"]
+script = ExtResource("1_trigger")
+one_shot = false
+enabled = true
+require_group = &"player"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_trigger")

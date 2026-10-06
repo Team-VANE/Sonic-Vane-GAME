@@ -1,0 +1,11 @@
+[gd_resource type="FontVariation" format=3 uid="uid://cbojhxrvs8exq"]
+
+[ext_resource type="FontFile" uid="uid://cseu27hysdrg3" path="res://LS5Framework/Resources/Fonts/Orbitron-VariableFont_wght.ttf" id="1_orbitron"]
+
+[resource]
+base_font = ExtResource("1_orbitron")
+variation_opentype = {
+"wght": 900.0
+}
+variation_embolden = 1.5
+spacing_glyph = 5

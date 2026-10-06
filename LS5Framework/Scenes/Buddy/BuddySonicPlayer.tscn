@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnnbbawcte0nf"]
+
+[ext_resource type="Script" uid="uid://cq3do5k1tf6dr" path="res://LS5Framework/Scripts/AI/BuddySonicPlayer.gd" id="2_script"]
+
+[node name="BuddySonicPlayer" type="CharacterBody3D"]
+script = ExtResource("2_script")
+follow_sweet_spot_distance = 6.0
+follow_sweet_spot_deadzone = 0.75
+follow_turn_max_deg_per_sec = 0.0
+follow_dir_smoothing_time = 0.08
+follow_speed_gain = 8.0
+follow_speed_min = 0.0
+follow_speed_max_bonus = 80.0
+follow_ahead_speed_multiplier = 0.75
+follow_speed_ramp_up = 500.0
+follow_speed_ramp_down = 800.0
+follow_velocity_dir_threshold = 3.0
+buddy_rail_follow_enabled = true
+buddy_rail_sweet_spot_distance = 4.0
+buddy_rail_offset_correction_speed = 3.0
+buddy_rail_homing_enabled = true
+buddy_rail_homing_speed = 100.0
+buddy_rail_homing_snap_distance = 2.0
+buddy_rail_homing_disable_collision = true
+buddy_teleport_enabled = true
+buddy_teleport_distance = 250.0
+buddy_teleport_height = 2.2
+buddy_teleport_scale_from = 0.2
+buddy_teleport_scale_time = 0.18
+buddy_post_teleport_keepup_time = 0.6
+buddy_jump_enabled = true
+obstacle_check_distance = 1.35
+obstacle_check_height = 0.85
+buddy_jump_cooldown = 0.25
+obstacle_jump_leader_range = 0.0
+buddy_use_target_up_vector = true
+buddy_disable_abilities = true
+buddy_disable_name_tag = true
+buddy_copy_leader_movement_settings = true
+mimic_leader_jump_enabled = true
+mimic_leader_jump_range = 12.0
+mimic_leader_jump_delay = 0.1
+mimic_leader_roll_enabled = true
+mimic_leader_roll_range = 12.0
+spawn_sync_enabled = true
+spawn_sync_copy_rotation = true
+spawn_sync_copy_velocity = true
+buddy_enable = false
+lock_cursor_to_game = false
+network_replication_enabled = false
+name_tag_enabled = false
+chat_bubble_enabled = false

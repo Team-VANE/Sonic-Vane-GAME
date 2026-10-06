@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="RivalProfile" format=3 uid="uid://bajtk36iesq4w"]
+
+[ext_resource type="Script" uid="uid://cbbpkaqmp72m1" path="res://LS5Framework/Scripts/AI/RivalProfile.gd" id="1_2fi4g"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Enraged_01.wav" id="1_m8atd"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Enraged_02.wav" id="2_urxvl"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Enraged_03.wav" id="3_hloaa"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Enraged_04.wav" id="4_nygbd"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Enraged_05.wav" id="5_s7y6d"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Enraged_06.wav" id="6_cptpa"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/SelfPreserve_01.wav" id="7_e3vup"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/SelfPreserve_02.wav" id="8_ykl1y"]
+
+[resource]
+script = ExtResource("1_2fi4g")
+rival_display_name = "SCOURGE THE HEDGEHOG"
+rival_character_id = "sonic_neo_adventure"
+rival_apply_character_colors = true
+rival_primary_color = Color(0.14372677, 0.35287476, 0, 1)
+rival_secondary_color = Color(0.080783375, 0.08078333, 0.080783345, 1)
+rival_trail_color = Color(0.12866923, 0.7504379, 0, 1)
+rival_max_health = 5
+rival_chase_range = 250.0
+rival_self_preserve_voice_clips = Array[AudioStream]([ExtResource("7_e3vup"), ExtResource("8_ykl1y")])
+rival_enraged_voice_clips = Array[AudioStream]([ExtResource("1_m8atd"), ExtResource("2_urxvl"), ExtResource("3_hloaa"), ExtResource("4_nygbd"), ExtResource("5_s7y6d"), ExtResource("6_cptpa")])

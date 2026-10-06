@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://b731oj5gy4xo4"]
+
+[ext_resource type="PackedScene" uid="uid://c31eqcn7dsxvg" path="res://LS5Framework/Effects/SonicBoom/SonicBoomFX.glb" id="1_gtsw0"]
+[ext_resource type="Script" uid="uid://dsl6septea1sm" path="res://LS5Framework/Scripts/Effects/SonicBoomFXController.gd" id="2_lu554"]
+
+[node name="SonicBoomFX" instance=ExtResource("1_gtsw0")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+script = ExtResource("2_lu554")
+
+[node name="BoomLight" type="OmniLight3D" parent="."]
+shadow_enabled = false
+omni_range = 4.5
+light_energy = 0.0
+visible = false

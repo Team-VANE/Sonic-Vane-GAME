@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bswvitj3v4stb"]
+
+[ext_resource type="Script" uid="uid://k36xlqdhdsfc" path="res://LS5Framework/Objects/Rail/RailBooster.gd" id="1_rail_booster"]
+[ext_resource type="AudioStream" uid="uid://v53dxrkdnign" path="res://LS5Framework/Sounds/Objects/DashPanel.wav" id="2_dashpanel"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rail_booster"]
+size = Vector3(7, 3, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_csn4q"]
+top_radius = 0.8
+bottom_radius = 0.8
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csn4q"]
+albedo_color = Color(0.22310278, 0.22310293, 0.22310284, 1)
+metallic = 0.88
+metallic_specular = 0.89
+roughness = 0.32
+
+[node name="RailBooster" type="PathFollow3D" unique_id=2079203673 node_paths=PackedStringArray("sfx_player")]
+script = ExtResource("1_rail_booster")
+sfx_player = NodePath("AudioStreamPlayer3D")
+boost_sounds = Array[AudioStream]([ExtResource("2_dashpanel")])
+
+[node name="Area3D" type="Area3D" parent="." unique_id=167804202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8293544, 0)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=366440044]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.099999905, 0.100000024, 0)
+shape = SubResource("BoxShape3D_rail_booster")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=351871584]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.829, -0.8)
+mesh = SubResource("CylinderMesh_csn4q")
+surface_material_override/0 = SubResource("StandardMaterial3D_csn4q")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=609164213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.829, 0.8)
+mesh = SubResource("CylinderMesh_csn4q")
+surface_material_override/0 = SubResource("StandardMaterial3D_csn4q")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=313648013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.829, -0.8)
+mesh = SubResource("CylinderMesh_csn4q")
+surface_material_override/0 = SubResource("StandardMaterial3D_csn4q")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=558902080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.829, 0.8)
+mesh = SubResource("CylinderMesh_csn4q")
+surface_material_override/0 = SubResource("StandardMaterial3D_csn4q")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=503894119]
+max_db = 0.2
+max_distance = 60.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0

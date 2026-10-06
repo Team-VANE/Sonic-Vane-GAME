@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://br4iu3hqd2he4"
+path="res://.godot/imported/Insult_Really_04.ogg-44102c3c923bb053667a030557afba73.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Really_04.ogg"
+dest_files=["res://.godot/imported/Insult_Really_04.ogg-44102c3c923bb053667a030557afba73.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

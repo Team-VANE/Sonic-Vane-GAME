@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LMChoicesStatic" format=3 uid="uid://j8fqamugaiwk"]
+
+[ext_resource type="Script" uid="uid://c3822myfeybtx" path="res://addons/liminal_editor/src/lm_choices_static.gd" id="1_1hvfg"]
+
+[resource]
+script = ExtResource("1_1hvfg")
+items = {
+"one": 1,
+"two": 2,
+"zero": 0
+}
+type_key = "IntEnum"
+metadata/_custom_type_script = "uid://c3822myfeybtx"

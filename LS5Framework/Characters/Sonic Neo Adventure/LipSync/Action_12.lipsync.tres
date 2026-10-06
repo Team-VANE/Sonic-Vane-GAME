@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://dnqoncle8nan"]
+
+[ext_resource type="AudioStream" uid="uid://cle7wj62re13x" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Action_12.ogg" id="1_c40xt"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_vgeds"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_54icq"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_6kwpr"]
+
+[sub_resource type="Resource" id="Resource_yumvw"]
+script = ExtResource("2_vgeds")
+pose_id = &"EXP_BROWS_UP"
+end_time = 0.1299999999999999
+blend_in = 0.06499999999999995
+blend_out = 0.06499999999999995
+
+[sub_resource type="Resource" id="Resource_jfpgh"]
+script = ExtResource("2_vgeds")
+pose_id = &"EXP_SMUG"
+start_time = 0.06
+end_time = 0.51
+row = 1
+blend_in = 0.15
+blend_out = 0.15
+
+[sub_resource type="Resource" id="Resource_6vqgl"]
+script = ExtResource("2_vgeds")
+pose_id = &"VIS_Ch_J"
+end_time = 0.2490563969365099
+blend_in = 0.09
+blend_out = 0.10452819846825497
+
+[sub_resource type="Resource" id="Resource_0y2pd"]
+script = ExtResource("2_vgeds")
+pose_id = &"VIS_EE"
+start_time = 0.07
+end_time = 0.40971664502182864
+row = 1
+blend_in = 0.10485832251091431
+blend_out = 0.11485832251091432
+
+[sub_resource type="Resource" id="Resource_ec8hp"]
+script = ExtResource("2_vgeds")
+pose_id = &"VIS_Ah"
+start_time = 0.15
+end_time = 0.52
+row = 2
+blend_in = 0.09000000000000001
+blend_out = 0.17500000000000002
+
+[resource]
+script = ExtResource("4_6kwpr")
+profile = ExtResource("3_54icq")
+audio = ExtResource("1_c40xt")
+audible_start = 0.01
+audible_end = 0.4876699722080957
+viseme_cues = Array[ExtResource("2_vgeds")]([SubResource("Resource_6vqgl"), SubResource("Resource_0y2pd"), SubResource("Resource_ec8hp")])
+expression_cues = Array[ExtResource("2_vgeds")]([SubResource("Resource_yumvw"), SubResource("Resource_jfpgh")])

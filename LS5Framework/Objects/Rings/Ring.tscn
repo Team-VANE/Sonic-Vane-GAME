@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://bdltank6nne8b"]
+
+[ext_resource type="Script" uid="uid://chpoxg8o1yju4" path="res://LS5Framework/Objects/Rings/Ring.gd" id="1_ring"]
+[ext_resource type="AudioStream" uid="uid://bmhaqd7y6ksp" path="res://LS5Framework/Sounds/General/ring.wav" id="2_4i2pr"]
+[ext_resource type="Script" uid="uid://c651jlfd10uuu" path="res://LS5Framework/Scripts/World/DistanceMeshLOD.gd" id="3_lod"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(1, 0.85, 0, 1)
+metallic = 0.85
+metallic_specular = 0.85
+roughness = 0.13
+rim = 0.68
+rim_tint = 0.71
+clearcoat_roughness = 0.64
+
+[sub_resource type="TorusMesh" id="TorusMesh_1"]
+inner_radius = 0.75
+outer_radius = 1.2
+rings = 18
+ring_segments = 6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1"]
+radius = 0.9
+
+[node name="Ring" type="Area3D" unique_id=319496740]
+collision_mask = 4
+audio_bus_name = &"SFX"
+script = ExtResource("1_ring")
+pickup_particle_radial_offset = 0.445
+pickup_particle_radial_drift_distance = 0.255
+pickup_particle_start_scale_variation = 0.925
+pickup_particle_start_scale = 1.08
+pickup_particle_end_scale = 0.0
+pickup_light_start_energy = 7.0
+pickup_light_lifetime = 0.3
+pickup_light_fade_out_time = 0.3
+pickup_light_range = 9.0
+pickup_light_color = Color(1, 0.96127516, 0.77254975, 1)
+pickup_sound = ExtResource("2_4i2pr")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=611727614]
+transform = Transform3D(-3.4969112e-08, -0.8, 0, 0.8, -3.4969112e-08, 0, 0, 0, 0.8, -4.371139e-08, 0, 0)
+material_override = SubResource("StandardMaterial3D_1")
+mesh = SubResource("TorusMesh_1")
+metadata/_uniform_size_base_position = Vector3(-4.371139e-08, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(0.8, 0.8, 0.8)
+
+[node name="DistanceMeshLOD" type="Node" parent="." unique_id=674741346]
+script = ExtResource("3_lod")
+target_mesh_path = NodePath("../Mesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=197112720]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+shape = SubResource("SphereShape3D_1")
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(2.5, 2.5, 2.5)

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cfa3b4fkpc4wa"]
+
+[ext_resource type="Texture2D" uid="uid://c6x24q84am88y" path="res://LS5Framework/Scenes/Levels/Final Egg/FEPt1_EXPORT_d256sc1f.png" id="1_r8mex"]
+
+[resource]
+resource_name = "material_84"
+cull_mode = 2
+albedo_texture = ExtResource("1_r8mex")

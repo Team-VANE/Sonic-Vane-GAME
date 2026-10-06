@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ywwy5rc32gqn"
+path="res://.godot/imported/RaceStart_Pace_01.ogg-7deb688d82622ae67b91be37ccbf8388.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_Pace_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_Pace_01.ogg-7deb688d82622ae67b91be37ccbf8388.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

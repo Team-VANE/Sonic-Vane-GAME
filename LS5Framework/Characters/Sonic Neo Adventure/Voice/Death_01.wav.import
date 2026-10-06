@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dsti2xwxcoaa6"
+path="res://.godot/imported/Death_01.wav-6ad280ea083ab2c699c8f93cdfd2315b.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Death_01.wav"
+dest_files=["res://.godot/imported/Death_01.wav-6ad280ea083ab2c699c8f93cdfd2315b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

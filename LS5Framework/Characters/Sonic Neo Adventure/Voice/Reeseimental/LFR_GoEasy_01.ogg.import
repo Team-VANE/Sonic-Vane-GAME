@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cx6lilakmdgw4"
+path="res://.godot/imported/LFR_GoEasy_01.ogg-5d669fa8cbb307896d0b6bf837adc198.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_GoEasy_01.ogg"
+dest_files=["res://.godot/imported/LFR_GoEasy_01.ogg-5d669fa8cbb307896d0b6bf837adc198.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

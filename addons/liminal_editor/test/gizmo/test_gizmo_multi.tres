@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="LMEntityDefinition" format=3 uid="uid://b6d03kwwppao4"]
+
+[ext_resource type="Script" uid="uid://pnlwg2mxkos3" path="res://addons/liminal_editor/src/entity_gizmo_def.gd" id="1_cs4ef"]
+[ext_resource type="Script" uid="uid://d0a8mhotog12w" path="res://addons/liminal_editor/src/entity_definition_prop.gd" id="2_t02e7"]
+[ext_resource type="Script" uid="uid://bcbksy5pl4538" path="res://addons/liminal_editor/src/entity_definition.gd" id="3_nrvi4"]
+
+[sub_resource type="Resource" id="Resource_mtg01"]
+script = ExtResource("1_cs4ef")
+type = "arrow"
+bindings = {
+"color": "indicator_color",
+"length": "arrow_length"
+}
+
+[sub_resource type="Resource" id="Resource_mtg02"]
+script = ExtResource("1_cs4ef")
+type = "sphere"
+style = "solid"
+alpha = "0.15"
+bindings = {
+"color": "indicator_color",
+"radius": "influence_radius"
+}
+
+[sub_resource type="Resource" id="Resource_mtg03"]
+script = ExtResource("1_cs4ef")
+type = "text"
+size = "12"
+text = "{{entity_label}}"
+
+[sub_resource type="Resource" id="Resource_mtp01"]
+script = ExtResource("2_t02e7")
+name = "arrow_length"
+type = "float"
+default_value = 1.5
+
+[sub_resource type="Resource" id="Resource_mtp02"]
+script = ExtResource("2_t02e7")
+name = "influence_radius"
+type = "float"
+default_value = 5.0
+
+[sub_resource type="Resource" id="Resource_mtp03"]
+script = ExtResource("2_t02e7")
+name = "indicator_color"
+type = "Color"
+default_value = [1.0, 0.4, 0.1, 1.0]
+
+[sub_resource type="Resource" id="Resource_mtp04"]
+script = ExtResource("2_t02e7")
+name = "entity_label"
+type = "String"
+default_value = "Multi Gizmo"
+
+[resource]
+script = ExtResource("3_nrvi4")
+entity_name = "test_gizmo_multi"
+description = "Test: multiple gizmos on one entity — arrow + sphere (solid) sharing a color binding, plus a text label"
+properties = Array[ExtResource("2_t02e7")]([SubResource("Resource_mtp01"), SubResource("Resource_mtp02"), SubResource("Resource_mtp03"), SubResource("Resource_mtp04")])
+gizmos = Array[ExtResource("1_cs4ef")]([SubResource("Resource_mtg01"), SubResource("Resource_mtg02"), SubResource("Resource_mtg03")])
+metadata/_custom_type_script = "uid://bcbksy5pl4538"

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="RainProfile" format=3 uid="uid://fln7qge8inbs"]
+
+[ext_resource type="Script" uid="uid://vwat6fv6vngw" path="res://LS5Framework/Objects/Environment/Rain/RainProfile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+intensity = 1.0
+tint = Color(0.68, 0.78, 0.9, 0.72)
+fall_speed = 48.0
+wind_velocity = Vector2(4.5, 1.8)
+velocity_randomness = 0.25
+direction_spread_degrees = 2.6
+audio_volume_db = -2.0
+thunder_enabled = true
+thunder_interval_min_seconds = 9.0
+thunder_interval_max_seconds = 24.0
+thunder_loud_probability = 0.62
+thunder_volume_db = 0.0
+thunder_pitch_min = 0.9
+thunder_pitch_max = 1.07
+spawn_height = 35.0
+near_radius = 18.0
+far_radius = 58.0
+lifetime_margin = 0.36
+near_scale_min = 0.75
+near_scale_max = 1.55
+near_fade_out_start = 18.0
+near_fade_out_end = 38.0
+far_scale_min = 0.85
+far_scale_max = 1.5

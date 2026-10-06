@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cx5yhmp6pnth3"
+path="res://.godot/imported/Hello_Shakin_02.ogg-1ccfef1a0fed3682d8b580675f9e1259.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hello_Shakin_02.ogg"
+dest_files=["res://.godot/imported/Hello_Shakin_02.ogg-1ccfef1a0fed3682d8b580675f9e1259.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

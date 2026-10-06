@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ca3do5hx04xtd"
+path="res://.godot/imported/Thanks_Owe_01.ogg-48dbc2a7348e50ed6eaafdc96b211943.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Thanks_Owe_01.ogg"
+dest_files=["res://.godot/imported/Thanks_Owe_01.ogg-48dbc2a7348e50ed6eaafdc96b211943.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

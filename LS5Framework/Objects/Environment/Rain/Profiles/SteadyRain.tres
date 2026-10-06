@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="RainProfile" format=3 uid="uid://dfh5rrly1j0r4"]
+
+[ext_resource type="Script" uid="uid://vwat6fv6vngw" path="res://LS5Framework/Objects/Environment/Rain/RainProfile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+wind_velocity = Vector2(1.5, 0.5)

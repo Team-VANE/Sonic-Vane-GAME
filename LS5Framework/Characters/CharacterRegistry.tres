@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CharacterPackManifest" format=3 uid="uid://g1d25rx5ug5x"]
+
+[ext_resource type="Script" uid="uid://baky28imi03rn" path="res://LS5Framework/Scripts/World/CharacterPackManifest.gd" id="1_character_pack_manifest"]
+
+[resource]
+script = ExtResource("1_character_pack_manifest")
+pack_id = "characters"
+character_docs = Array[String](["res://LS5Framework/Characters/Tails/CHAR_Tails.tres", "res://LS5Framework/Characters/Adventure Sonic/CHAR_AdventureSonic.tres", "res://LS5Framework/Characters/Sonic Neo Adventure/CHAR_SonicNeoAdventure.tres"])

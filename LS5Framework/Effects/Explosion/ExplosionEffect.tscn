@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://du58elexijmqe"]
+
+[ext_resource type="Script" uid="uid://bk51kf4h6om8g" path="res://LS5Framework/Effects/Explosion/ExplosionEffect.gd" id="1_explosion"]
+[ext_resource type="Shader" uid="uid://ckws67m5o0efm" path="res://LS5Framework/Effects/Explosion/ExplosionCloud.gdshader" id="2_cloud_shader"]
+[ext_resource type="Shader" uid="uid://cffh4nmdc6mwx" path="res://LS5Framework/Effects/Explosion/ExplosionBlast.gdshader" id="3_blast_shader"]
+[ext_resource type="Texture2D" uid="uid://c60ky78yha38p" path="res://LS5Framework/Effects/Explosion/Textures/explosion_cloud_surface.png" id="4_cloud_surface"]
+[ext_resource type="Texture2D" uid="uid://rca5jy5eia23" path="res://LS5Framework/Effects/Explosion/Textures/explosion_cloud_secondary.png" id="5_cloud_secondary"]
+[ext_resource type="Texture2D" uid="uid://c7qb7slda5wny" path="res://LS5Framework/Effects/Explosion/Textures/explosion_fire_ratio.png" id="6_fire_ratio"]
+[ext_resource type="Texture2D" uid="uid://bh4axld7ke71o" path="res://LS5Framework/Effects/Explosion/Textures/explosion_smoke_ratio.png" id="7_smoke_ratio"]
+[ext_resource type="Texture2D" uid="uid://b7minrliqkp7s" path="res://LS5Framework/Effects/Explosion/Textures/explosion_dissolve.png" id="8_dissolve"]
+[ext_resource type="Texture2D" uid="uid://buta1qygtgopo" path="res://LS5Framework/Effects/Explosion/Textures/explosion_breakup_1.png" id="9_5fyg8"]
+[ext_resource type="Texture2D" uid="uid://bvbb7x738e2f" path="res://LS5Framework/Effects/Explosion/Textures/explosion_streaks_1.png" id="10_5fyg8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_cloud"]
+radial_segments = 32
+rings = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cloud"]
+render_priority = 2
+shader = ExtResource("2_cloud_shader")
+shader_parameter/fade_power = 1.4
+shader_parameter/surface_noise_texture = ExtResource("4_cloud_surface")
+shader_parameter/secondary_noise_texture = ExtResource("5_cloud_secondary")
+shader_parameter/surface_noise_scale = 3.0
+shader_parameter/secondary_noise_scale = 7.0
+shader_parameter/surface_distortion = 0.42
+shader_parameter/surface_motion = 0.65
+shader_parameter/fire_ratio_texture = ExtResource("6_fire_ratio")
+shader_parameter/smoke_ratio_texture = ExtResource("7_smoke_ratio")
+shader_parameter/fire_start_color = Color(1, 0.86, 0.15, 1)
+shader_parameter/fire_end_color = Color(1, 0.33, 0.04, 1)
+shader_parameter/smoke_color = Color(0.16, 0.15, 0.14, 1)
+shader_parameter/fire_emission_start = 6.0
+shader_parameter/fire_emission_end = 2.4
+shader_parameter/smoke_emission = 0.15
+shader_parameter/smoke_takeover = 0.55
+shader_parameter/dissolve_texture = ExtResource("8_dissolve")
+shader_parameter/alpha_multiplier = 1.0
+shader_parameter/edge_softness = 0.28
+shader_parameter/rim_strength = 0.35
+
+[sub_resource type="Curve" id="Curve_cloud_expand"]
+_data = [Vector2(0, 0), 0.0, 2.8, 0, 0, Vector2(0.55, 0.86), 0.9, 0.9, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_blast"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_blast"]
+render_priority = 4
+shader = ExtResource("3_blast_shader")
+shader_parameter/fade_power = 2.2
+shader_parameter/streak_texture = ExtResource("10_5fyg8")
+shader_parameter/breakup_texture = ExtResource("9_5fyg8")
+shader_parameter/streak_tiling = 1.0000000149012
+shader_parameter/streak_sharpness = 2.4
+shader_parameter/streak_floor = 0.2
+shader_parameter/center_opacity = 0.999999977648
+shader_parameter/edge_cutout = 0.4499999899416
+shader_parameter/alpha_multiplier = 1.65
+shader_parameter/core_color = Color(1, 0.92, 0.22, 1)
+shader_parameter/edge_color = Color(1, 0.28, 0.04, 1)
+shader_parameter/emission_strength = 8.5
+
+[sub_resource type="Curve" id="Curve_blast_expand"]
+_data = [Vector2(0, 0), 0.0, 8.0, 0, 0, Vector2(0.16, 0.88), 1.1, 1.1, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="ExplosionEffect" type="Node3D" unique_id=908695850]
+script = ExtResource("1_explosion")
+duration = 1.6
+explosion_light_color = Color(0.9999997, 0.6748209, 0.40980425, 1)
+explosion_light_max_energy = 26.0
+explosion_light_range = 15.0
+explosion_light_end_progress = 0.38
+cloud_mesh = SubResource("SphereMesh_cloud")
+cloud_material = SubResource("ShaderMaterial_cloud")
+cloud_start_scale = Vector2(0.5, 0.9)
+cloud_end_scale = Vector2(3.4, 5.2)
+cloud_outward_distance = 4.16
+cloud_upward_distance = 0.85
+cloud_expand_curve = SubResource("Curve_cloud_expand")
+blast_mesh = SubResource("QuadMesh_blast")
+blast_material = SubResource("ShaderMaterial_blast")
+blast_start_scale = Vector2(0.5, 1)
+blast_end_length = Vector2(7, 11)
+blast_end_width = Vector2(0.7, 1.7)
+blast_outward_distance = 0.0
+blast_expand_curve = SubResource("Curve_blast_expand")
+
+[node name="ExplosionLight" type="OmniLight3D" parent="." unique_id=1372508956]
+visible = false
+light_color = Color(1, 0.57, 0.12, 1)
+light_energy = 0.0
+omni_range = 15.0

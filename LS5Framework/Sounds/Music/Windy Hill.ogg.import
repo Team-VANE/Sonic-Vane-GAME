@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://brvxqk3mstw5m"
+path="res://.godot/imported/Windy Hill.ogg-f324af2d3813940ef302d14eaf4d1da5.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Windy Hill.ogg"
+dest_files=["res://.godot/imported/Windy Hill.ogg-f324af2d3813940ef302d14eaf4d1da5.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=1.83
+bpm=132.0
+beat_count=0
+bar_beats=4

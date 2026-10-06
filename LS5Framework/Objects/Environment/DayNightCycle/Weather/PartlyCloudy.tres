@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DayNightWeather" format=3 uid="uid://bvht57dywhdt6"]
+
+[ext_resource type="Script" uid="uid://bjqfip2tur0i0" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightWeather.gd" id="1_weather"]
+
+[resource]
+script = ExtResource("1_weather")
+lower_layer_height = null
+upper_layer_amount = null
+upper_layer_height = null
+upper_layer_scale = null
+upper_layer_wind_multiplier = null
+distance_fade_start = null
+distance_fade_end = null
+distance_haze_strength = null

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://38fqb0232ttv"
+path="res://.godot/imported/RaceStart_08.wav-7d1480e3ebd3126a2a98b9af9b542256.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/RaceStart_08.wav"
+dest_files=["res://.godot/imported/RaceStart_08.wav-7d1480e3ebd3126a2a98b9af9b542256.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://cqw6ysgvayksf"]
+
+[ext_resource type="Script" uid="uid://bi121jf2e3xdl" path="res://LS5Framework/Scripts/Camera/SonicCameraRig.gd" id="1_camrig"]
+[ext_resource type="PackedScene" uid="uid://b4cilrh6qetj3" path="res://LS5Framework/Scenes/Camera/UnderwaterEffect.tscn" id="2_bqv21"]
+[ext_resource type="AudioStream" uid="uid://cr8b4chs1aqys" path="res://LS5Framework/Sounds/General/Water_Camera_Enter.wav" id="3_enter"]
+[ext_resource type="AudioStream" uid="uid://hu7bv0dvfb3k" path="res://LS5Framework/Sounds/General/Water_Camera_Exit.wav" id="4_exit"]
+[ext_resource type="AudioStream" uid="uid://e0exs6dqbo8" path="res://LS5Framework/Sounds/General/Water_Under_Loop.wav" id="5_loop"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Camera/SpeedRadialBlurEffect.tscn" id="6_blurfx"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_pnx1i"]
+auto_exposure_enabled = true
+auto_exposure_speed = 0.89
+dof_blur_far_enabled = true
+dof_blur_far_distance = 1200.0
+dof_blur_far_transition = 900.0
+dof_blur_near_enabled = true
+dof_blur_near_distance = 2.5
+dof_blur_amount = 0.08
+auto_exposure_min_sensitivity = 115.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_camwater"]
+radius = 0.05
+
+[node name="CameraRig" type="Node3D" unique_id=1182724916 node_paths=PackedStringArray("yaw_node", "pitch_node", "camera")]
+script = ExtResource("1_camrig")
+yaw_node = NodePath("CameraYawRig")
+pitch_node = NodePath("CameraYawRig/CameraPitchRig")
+camera = NodePath("CameraYawRig/CameraPitchRig/SonicCamera")
+min_vertical_offset = 1.15
+max_vertical_offset = 3.0
+min_pitch_deg = -85.0
+max_pitch_deg = 85.0
+smooth_follow = true
+follow_smooth = 20.0
+dolly_max_lag_distance = 1.0
+dolly_max_lateral_distance = 0.25
+dolly_catchup_multiplier = 1.0
+target_lookahead_max_distance = 3.0
+target_lookahead_vertical_scale = 0.3
+target_lookahead_lateral_engage_smoothing = 16.0
+target_lookahead_lateral_release_smoothing = 24.0
+target_lookahead_min_speed = 16.0
+target_lookahead_full_speed = 120.0
+drift_follow_smooth = 35.0
+drift_camera_blend_speed = 18.0
+drift_turn_yaw_offset_max_deg = 10.0
+drift_turn_yaw_offset_per_turn_speed = 0.05
+drift_turn_yaw_offset_slerp_speed = 12.0
+min_distance = 3.5
+max_distance = 135.0
+zoom_speed = 1.0
+zoom_smooth = 7.5
+camera_collision_mask = 17
+speed_fov_max_offset = 38.0
+speed_fov_min_speed = 0.0
+speed_fov_max_speed = 190.0
+speed_fov_smooth = 1.0
+speed_distance_max_offset = 4.0
+speed_distance_smooth = 1.0
+speed_vertical_offset_max_offset = 0.3
+speed_vertical_offset_smooth = 3.0
+speed_radial_blur_effect_scene = ExtResource("6_blurfx")
+speed_radial_blur_max_radius = 0.075
+speed_radial_blur_vignette_inner_radius = 0.22
+speed_radial_blur_vignette_outer_radius = 0.56
+speed_radial_blur_max_opacity = 0.92
+speed_radial_blur_pulse_amount = 0.14
+speed_radial_blur_pulse_frequency = 1.75
+speed_radial_blur_chromatic_separation = 0.0003
+speed_radial_blur_line_opacity = 0.08
+speed_radial_blur_line_width = 0.009
+speed_radial_blur_line_length = 0.3
+speed_radial_blur_smooth = 4.0
+underwater_effect_scene = ExtResource("2_bqv21")
+camera_water_entry_stream = ExtResource("3_enter")
+camera_water_exit_stream = ExtResource("4_exit")
+camera_water_loop_stream = ExtResource("5_loop")
+camera_water_loop_volume_db = -12.0
+camera_water_loop_silent_db = -100.0
+camera_water_loop_fade_in_speed = 400.0
+camera_water_loop_fade_out_speed = 500.0
+barrier_blast_fov_multiplier = 1.25
+barrier_blast_distance_multiplier = 1.25
+barrier_blast_vertical_offset_multiplier = 1.15
+barrier_blast_radial_blur_multiplier = 1.6
+player_up_slerp_speed = 10.0
+inverted_transition_slerp_speed = 30.0
+inverted_attachment_min_surface_angle_deg = 100.0
+inverted_detachment_min_surface_angle_deg = 100.0
+
+[node name="CameraYawRig" type="Node3D" parent="." unique_id=1043857000]
+
+[node name="CameraPitchRig" type="Node3D" parent="CameraYawRig" unique_id=1422688879]
+
+[node name="SonicCamera" type="Camera3D" parent="CameraYawRig/CameraPitchRig" unique_id=783209937]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+attributes = SubResource("CameraAttributesPractical_pnx1i")
+
+[node name="AudioListener3D" type="AudioListener3D" parent="CameraYawRig/CameraPitchRig/SonicCamera" unique_id=704357399]
+doppler_tracking = 1
+current = true
+
+[node name="CameraWaterOneShotPlayer" type="AudioStreamPlayer" parent="CameraYawRig/CameraPitchRig/SonicCamera" unique_id=600112235]
+volume_db = -3.0
+bus = &"SFX"
+
+[node name="CameraWaterLoopPlayer" type="AudioStreamPlayer" parent="CameraYawRig/CameraPitchRig/SonicCamera" unique_id=600112236]
+stream = ExtResource("5_loop")
+bus = &"SFX"
+
+[node name="CameraWaterDetector" type="Area3D" parent="CameraYawRig/CameraPitchRig/SonicCamera" unique_id=600112233]
+collision_layer = 0
+collision_mask = 15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraYawRig/CameraPitchRig/SonicCamera/CameraWaterDetector" unique_id=600112234]
+shape = SubResource("SphereShape3D_camwater")

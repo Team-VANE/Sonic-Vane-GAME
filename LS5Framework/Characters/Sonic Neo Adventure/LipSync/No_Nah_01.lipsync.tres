@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://by16il3w4ufpj"]
+
+[ext_resource type="AudioStream" uid="uid://7twq824ulcks" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_Nah_01.ogg" id="1_kyam7"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_biox8"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_xtekb"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_mpyet"]
+
+[sub_resource type="Resource" id="Resource_r8b15"]
+script = ExtResource("2_biox8")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.16
+end_time = 0.8599999999999999
+blend_in = 0.3499999999999999
+blend_out = 0.3499999999999999
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_3bn1o"]
+script = ExtResource("2_biox8")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.1
+end_time = 0.49000000000000005
+blend_in = 0.195
+blend_out = 0.195
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_umxyn"]
+script = ExtResource("2_biox8")
+pose_id = &"VIS_Ah"
+start_time = 0.22
+end_time = 0.74
+row = 1
+blend_in = 0.26
+blend_out = 0.26
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_ywb52"]
+script = ExtResource("2_biox8")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.5
+end_time = 0.8200000000000001
+row = 2
+blend_in = 0.16000000000000003
+blend_out = 0.16000000000000003
+lock_max_blend = true
+
+[resource]
+script = ExtResource("4_mpyet")
+profile = ExtResource("3_xtekb")
+audio = ExtResource("1_kyam7")
+audible_start = 0.13561108760768548
+audible_end = 0.7580173542373814
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_biox8")]([SubResource("Resource_3bn1o"), SubResource("Resource_umxyn"), SubResource("Resource_ywb52")])
+expression_cues = Array[ExtResource("2_biox8")]([SubResource("Resource_r8b15")])

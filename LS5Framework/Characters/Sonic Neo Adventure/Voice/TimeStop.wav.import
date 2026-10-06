@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dfuccouhcwqfj"
+path="res://.godot/imported/TimeStop.wav-690d7d0a770785ce2ba376349d799c3d.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/TimeStop.wav"
+dest_files=["res://.godot/imported/TimeStop.wav-690d7d0a770785ce2ba376349d799c3d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

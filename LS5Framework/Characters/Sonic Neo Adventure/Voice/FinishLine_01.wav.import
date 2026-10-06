@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cha734070li7y"
+path="res://.godot/imported/FinishLine_01.wav-002dac9936f10772c15a84cfedb45383.sample"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/FinishLine_01.wav"
+dest_files=["res://.godot/imported/FinishLine_01.wav-002dac9936f10772c15a84cfedb45383.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

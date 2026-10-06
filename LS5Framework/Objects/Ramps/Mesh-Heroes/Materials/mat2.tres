@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ynlfdcngng7s"]
+
+[ext_resource type="Texture2D" uid="uid://vk0mc02fto4l" path="res://LS5Framework/Objects/Ramps/Mesh-Heroes/obj_dshr.png" id="1_65plj"]
+
+[resource]
+resource_name = "mat2"
+cull_mode = 2
+albedo_texture = ExtResource("1_65plj")
+roughness = 0.92928934

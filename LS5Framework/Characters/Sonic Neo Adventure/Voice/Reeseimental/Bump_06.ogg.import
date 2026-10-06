@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d046633787jdg"
+path="res://.godot/imported/Bump_06.ogg-8362a3b62ec031af7967aded9373d79d.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Bump_06.ogg"
+dest_files=["res://.godot/imported/Bump_06.ogg-8362a3b62ec031af7967aded9373d79d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

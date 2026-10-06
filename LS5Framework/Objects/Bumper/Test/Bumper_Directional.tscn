@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://vypkwgl0dpr8"]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Bumper/Bumper.tscn" id="1_bumper"]
+
+[node name="BumperDirectional" unique_id=857941453 instance=ExtResource("1_bumper")]
+launch_mode = 2
+minimum_impulse = 45.0
+maximum_impulse = 90.0
+
+[node name="AudioStreamPlayer3D" parent="." index="3"]
+volume_db = 50.0
+unit_size = 60.0

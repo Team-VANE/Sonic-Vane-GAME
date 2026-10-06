@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b35mxcc3d74di"]
+
+[ext_resource type="Material" uid="uid://c3mh5p2w5s8g7" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.tres" id="1_ij8tq"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_p1x3s"]
+subdivide_width = 400
+subdivide_depth = 400
+orientation = 1
+
+[node name="Water" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00229871, 0.00877783, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_p1x3s")
+surface_material_override/0 = ExtResource("1_ij8tq")

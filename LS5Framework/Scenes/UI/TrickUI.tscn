@@ -1,0 +1,205 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxcmnxs5ftl1j"]
+
+[ext_resource type="Script" uid="uid://vadldmpydq66" path="res://LS5Framework/Scripts/UI/TrickUI.gd" id="1_trick_ui"]
+[ext_resource type="Font" uid="uid://cbojhxrvs8exq" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="2_orbitron_bold"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_timer_warning"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.025, 0.025, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(1, 0, 0, 0.72)
+shadow_size = 5
+
+[node name="TrickUI" type="Control" unique_id=2039062263]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_trick_ui")
+
+[node name="ActiveContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -410.0
+offset_top = -194.0
+offset_right = 410.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="ScoreLabel" type="Label" parent="ActiveContainer"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.12, 0.72, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_colors/font_outline_color = Color(0, 0.01, 0.04, 1)
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 5
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerBar" type="Control" parent="ActiveContainer"]
+custom_minimum_size = Vector2(460, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="Track" type="ColorRect" parent="ActiveContainer/TimerBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.015, 0.035, 0.085, 0.72)
+
+[node name="Glow" type="ColorRect" parent="ActiveContainer/TimerBar"]
+layout_mode = 0
+offset_top = 1.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.08, 0.62, 1, 0.25)
+
+[node name="Fill" type="ColorRect" parent="ActiveContainer/TimerBar"]
+layout_mode = 0
+offset_top = 3.0
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(0.12, 0.78, 1, 1)
+
+[node name="WarningBorder" type="Panel" parent="ActiveContainer/TimerBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+modulate = Color(1, 1, 1, 0)
+theme_override_styles/panel = SubResource("StyleBox_timer_warning")
+
+[node name="TrickHistory" type="VBoxContainer" parent="ActiveContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -4
+
+[node name="OldestLabel" type="Label" parent="ActiveContainer/TrickHistory"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.18)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_colors/font_outline_color = Color(0.01, 0.02, 0.05, 0.7)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="MiddleLabel" type="Label" parent="ActiveContainer/TrickHistory"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.5)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_colors/font_outline_color = Color(0.01, 0.02, 0.05, 0.8)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="NewestLabel" type="Label" parent="ActiveContainer/TrickHistory"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.01, 0.02, 0.05, 0.95)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="ResultContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -410.0
+offset_top = -174.0
+offset_right = 410.0
+offset_bottom = -62.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="RatingLabel" type="Label" parent="ResultContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.1, 0.82, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0.01, 0.04, 1)
+theme_override_constants/outline_size = 10
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 7
+theme_override_font_sizes/font_size = 62
+theme_override_fonts/font = ExtResource("2_orbitron_bold")
+text = "Awesome!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FinalScoreLabel" type="Label" parent="ResultContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0.01, 0.04, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 6
+theme_override_font_sizes/font_size = 50
+theme_override_fonts/font = ExtResource("2_orbitron_bold")
+text = "SCORE: 0"
+horizontal_alignment = 1
+vertical_alignment = 1

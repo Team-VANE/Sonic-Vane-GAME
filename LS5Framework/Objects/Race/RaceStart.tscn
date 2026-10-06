@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://bucbdoyievjwl"]
+
+[ext_resource type="Script" uid="uid://dm7v5gmfgdkid" path="res://LS5Framework/Objects/Race/RaceStart.gd" id="1_rs"]
+[ext_resource type="Shader" uid="uid://b65baaf58y3nr" path="res://LS5Framework/Objects/Race/race_start_boundary.gdshader" id="2_boundary_shader"]
+[ext_resource type="Texture2D" uid="uid://0e062n2dxigl" path="res://LS5Framework/Images/Checkered_Flag.png" id="3_checkered_flag"]
+[ext_resource type="Script" uid="uid://ljupmyqqahi8" path="res://LS5Framework/Objects/Race/RaceBoundaryVisual.gd" id="4_boundary_visual"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jcr3i"]
+height = 8.0
+radius = 8.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_boundary"]
+render_priority = 1
+shader = ExtResource("2_boundary_shader")
+shader_parameter/checkered_texture = ExtResource("3_checkered_flag")
+shader_parameter/tint = Color(1, 1, 1, 1)
+shader_parameter/base_opacity = 0.0
+shader_parameter/interaction_opacity = 0.82
+shader_parameter/emission_strength = 0.35
+shader_parameter/texture_scale = 0.1999999955296
+shader_parameter/triplanar_sharpness = 8.0
+shader_parameter/scroll_direction = Vector2(0.035, 0)
+shader_parameter/update_rate = 60.0
+shader_parameter/proximity_distance = 119.99999731776
+shader_parameter/proximity_falloff = 79.99999821184001
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jcr3i"]
+top_radius = 8.0
+bottom_radius = 8.0
+height = 8.0
+
+[node name="RaceStart" type="Area3D" unique_id=1344341188]
+audio_bus_name = &"SFX"
+script = ExtResource("1_rs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1655613209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+shape = SubResource("CylinderShape3D_jcr3i")
+
+[node name="BoundaryVisual" type="MeshInstance3D" parent="." unique_id=950711976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+material_override = SubResource("ShaderMaterial_boundary")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_jcr3i")
+script = ExtResource("4_boundary_visual")
+
+[node name="StartingLine" type="Node3D" parent="." unique_id=96905968]
+
+[node name="CameraFacingDirection" type="Marker3D" parent="."]

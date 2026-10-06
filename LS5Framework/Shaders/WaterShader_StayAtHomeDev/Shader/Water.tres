@@ -1,0 +1,34 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c3mh5p2w5s8g7"]
+
+[ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="1_cdq08"]
+[ext_resource type="Texture2D" uid="uid://de3vl6sny8hc2" path="res://LS5Framework/Shaders/LesusX/WaterShader/Textures/95d0cfb2406ee5a65491bbaba429713684b5b089.jpeg" id="2_pvo1w"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cdq08")
+shader_parameter/albedo = Color(0.05, 0.2, 0.28, 1)
+shader_parameter/albedo2 = Color(0.02, 0.1, 0.14, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.04
+shader_parameter/alpha = 0.85
+shader_parameter/wave = ExtResource("2_pvo1w")
+shader_parameter/wave_uv_scale = 1.0
+shader_parameter/normal_uv_scale = 1.0
+shader_parameter/normal2_uv_scale = 1.0
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 0.15
+shader_parameter/color_deep = Color(0.02, 0.06, 0.1, 1)
+shader_parameter/color_shallow = Color(0.1, 0.35, 0.4, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 6.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(1, 1, 1, 1)
+shader_parameter/edge_start = 0.02
+shader_parameter/edge_width = 0.2
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.03
+shader_parameter/refraction_mip_scale = 2.5

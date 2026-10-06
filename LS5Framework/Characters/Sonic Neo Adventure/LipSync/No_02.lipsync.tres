@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://bc4kjx2awuac8"]
+
+[ext_resource type="AudioStream" uid="uid://bgnaeerrojmfg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_02.ogg" id="1_ktt46"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_rqjno"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_8g4ga"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_hil6f"]
+
+[sub_resource type="Resource" id="Resource_eix86"]
+script = ExtResource("2_rqjno")
+pose_id = &"EXP_ANGRY"
+start_time = 0.05
+end_time = 0.91
+blend_in = 0.15
+blend_out = 0.15
+strength = 0.3235294117647059
+
+[sub_resource type="Resource" id="Resource_n1vhn"]
+script = ExtResource("2_rqjno")
+pose_id = &"EXP_BROWS_SKEW_L"
+start_time = 0.24
+end_time = 0.9199999999999998
+row = 1
+blend_in = 0.33999999999999986
+blend_out = 0.33999999999999986
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_njab1"]
+script = ExtResource("2_rqjno")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.08
+end_time = 0.33999999999999997
+blend_in = 0.13
+blend_out = 0.13
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_moyfx"]
+script = ExtResource("2_rqjno")
+pose_id = &"VIS_Ah"
+start_time = 0.16999999999999998
+end_time = 0.49000000000000005
+row = 1
+blend_in = 0.16000000000000003
+blend_out = 0.16000000000000003
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_n4amv"]
+script = ExtResource("2_rqjno")
+pose_id = &"VIS_Oh"
+start_time = 0.26
+end_time = 0.5700000000000001
+row = 2
+blend_in = 0.155
+blend_out = 0.155
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_k6xfa"]
+script = ExtResource("2_rqjno")
+pose_id = &"VIS_W_OO"
+start_time = 0.27
+end_time = 0.7800000000000001
+row = 3
+blend_in = 0.255
+blend_out = 0.255
+lock_max_blend = true
+strength = 0.7058823529411764
+
+[resource]
+script = ExtResource("4_hil6f")
+profile = ExtResource("3_8g4ga")
+audio = ExtResource("1_ktt46")
+audible_start = 0.08600016590207815
+audible_end = 0.6381603219779208
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_rqjno")]([SubResource("Resource_njab1"), SubResource("Resource_moyfx"), SubResource("Resource_n4amv"), SubResource("Resource_k6xfa")])
+expression_cues = Array[ExtResource("2_rqjno")]([SubResource("Resource_eix86"), SubResource("Resource_n1vhn")])

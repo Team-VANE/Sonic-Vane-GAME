@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://deiipuk7tdlun"
+path="res://.godot/imported/SelfPreserve_02.ogg-255ad3372d23a84f1bf52014de921e6a.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/SelfPreserve_02.ogg"
+dest_files=["res://.godot/imported/SelfPreserve_02.ogg-255ad3372d23a84f1bf52014de921e6a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

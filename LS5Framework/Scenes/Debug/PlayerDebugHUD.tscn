@@ -1,0 +1,200 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/Debug/PlayerDebugHUD.gd" id="1_script"]
+[ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_theme"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="3_title_font"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron600.tres" id="4_heading_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_category"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.012, 0.03, 0.075, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.1, 0.34, 0.7, 0.82)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="PlayerDebugHUD" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 888.0
+offset_bottom = 738.0
+mouse_filter = 2
+
+[node name="MainFrame" type="PanelContainer" parent="SafeArea"]
+custom_minimum_size = Vector2(850, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/MainFrame"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="SafeArea/MainFrame/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/MainFrame/Content/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.84, 1, 1)
+theme_override_fonts/font = ExtResource("3_title_font")
+theme_override_font_sizes/font_size = 22
+text = "PLAYER DIAGNOSTICS"
+
+[node name="Subtitle" type="Label" parent="SafeArea/MainFrame/Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.48, 0.62, 0.78, 1)
+theme_override_font_sizes/font_size = 13
+text = "Runtime overview"
+vertical_alignment = 1
+
+[node name="Status" type="Label" parent="SafeArea/MainFrame/Content/Header"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_heading_font")
+theme_override_font_sizes/font_size = 15
+text = "IDLE"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Rule" type="HSeparator" parent="SafeArea/MainFrame/Content"]
+layout_mode = 2
+
+[node name="Categories" type="GridContainer" parent="SafeArea/MainFrame/Content"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="Overview" type="PanelContainer" parent="SafeArea/MainFrame/Content/Categories"]
+custom_minimum_size = Vector2(405, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_category")
+
+[node name="CardContent" type="VBoxContainer" parent="SafeArea/MainFrame/Content/Categories/Overview"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Heading" type="Label" parent="SafeArea/MainFrame/Content/Categories/Overview/CardContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("4_heading_font")
+theme_override_font_sizes/font_size = 16
+text = "OVERVIEW"
+
+[node name="Values" type="Label" parent="SafeArea/MainFrame/Content/Categories/Overview/CardContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "State\nAction\nSpeed"
+
+[node name="Movement" type="PanelContainer" parent="SafeArea/MainFrame/Content/Categories"]
+custom_minimum_size = Vector2(405, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_category")
+
+[node name="CardContent" type="VBoxContainer" parent="SafeArea/MainFrame/Content/Categories/Movement"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Heading" type="Label" parent="SafeArea/MainFrame/Content/Categories/Movement/CardContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("4_heading_font")
+theme_override_font_sizes/font_size = 16
+text = "MOVEMENT"
+
+[node name="Values" type="Label" parent="SafeArea/MainFrame/Content/Categories/Movement/CardContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Velocity\nInput\nGravity"
+
+[node name="Surface" type="PanelContainer" parent="SafeArea/MainFrame/Content/Categories"]
+custom_minimum_size = Vector2(405, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_category")
+
+[node name="CardContent" type="VBoxContainer" parent="SafeArea/MainFrame/Content/Categories/Surface"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Heading" type="Label" parent="SafeArea/MainFrame/Content/Categories/Surface/CardContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("4_heading_font")
+theme_override_font_sizes/font_size = 16
+text = "SURFACE"
+
+[node name="Values" type="Label" parent="SafeArea/MainFrame/Content/Categories/Surface/CardContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Attachment\nAngle\nAdhesion"
+
+[node name="LedgeGrab" type="PanelContainer" parent="SafeArea/MainFrame/Content/Categories"]
+custom_minimum_size = Vector2(405, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_category")
+
+[node name="CardContent" type="VBoxContainer" parent="SafeArea/MainFrame/Content/Categories/LedgeGrab"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Heading" type="Label" parent="SafeArea/MainFrame/Content/Categories/LedgeGrab/CardContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 1, 0.62, 1)
+theme_override_fonts/font = ExtResource("4_heading_font")
+theme_override_font_sizes/font_size = 16
+text = "LEDGE GRAB"
+
+[node name="Values" type="Label" parent="SafeArea/MainFrame/Content/Categories/LedgeGrab/CardContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Status\nWall\nUpper surface\nClearance"
+
+[node name="Extended" type="PanelContainer" parent="SafeArea/MainFrame/Content"]
+visible = false
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_category")
+
+[node name="ExtendedContent" type="VBoxContainer" parent="SafeArea/MainFrame/Content/Extended"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Heading" type="Label" parent="SafeArea/MainFrame/Content/Extended/ExtendedContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.72, 0.84, 1)
+theme_override_fonts/font = ExtResource("4_heading_font")
+theme_override_font_sizes/font_size = 15
+text = "EXTENDED DETAILS (TEMPORARY)"
+
+[node name="LegacyScroll" type="ScrollContainer" parent="SafeArea/MainFrame/Content/Extended/ExtendedContent"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="LegacyText" type="Label" parent="SafeArea/MainFrame/Content/Extended/ExtendedContent/LegacyScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.68, 0.76, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 2

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemAudioAssociation" format=3 uid="uid://rmbldig3pcmt"]
+
+[ext_resource type="Script" uid="uid://n3my6ganc7qh" path="res://LS5Framework/Resources/Items/ItemAudioAssociation.gd" id="1_association"]
+[ext_resource type="AudioStream" uid="uid://y2wfbgsx716v" path="res://LS5Framework/Sounds/Objects/CollectionItem_Grab.wav" id="2_speed_shoes_sound"]
+
+[resource]
+script = ExtResource("1_association")
+item_id = &"speed_shoes"
+collection_sound = ExtResource("2_speed_shoes_sound")
+volume_db = -50.0

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dfcwfjbry7oti"
+path="res://.godot/imported/Hup_09.ogg-45586ec86560eee78b7af735c45c3fab.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hup_09.ogg"
+dest_files=["res://.godot/imported/Hup_09.ogg-45586ec86560eee78b7af735c45c3fab.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

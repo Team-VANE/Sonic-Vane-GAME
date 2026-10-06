@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bsmmoqncwg54p"
+path="res://.godot/imported/Surprise_Oh_01.ogg-548f2f7fea12e5cadbd06d277f8963de.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Surprise_Oh_01.ogg"
+dest_files=["res://.godot/imported/Surprise_Oh_01.ogg-548f2f7fea12e5cadbd06d277f8963de.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

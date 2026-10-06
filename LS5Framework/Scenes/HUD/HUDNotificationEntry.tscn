@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/HUDNotificationEntry.gd" id="1_entry"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_notification"]
+bg_color = Color(0.025, 0.04, 0.075, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.55, 1, 0.9)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 8
+
+[node name="HUDNotificationEntry" type="Control"]
+custom_minimum_size = Vector2(0, 112)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 112.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("1_entry")
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(340, 104)
+layout_mode = 0
+offset_left = 380.0
+offset_right = 720.0
+offset_bottom = 104.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_notification")
+
+[node name="ContentMargin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="Content" type="HBoxContainer" parent="Panel/ContentMargin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 2
+
+[node name="Text" type="VBoxContainer" parent="Panel/ContentMargin/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/ContentMargin/Content/Text"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 27
+text = "Notification"
+horizontal_alignment = 2
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Detail" type="Label" parent="Panel/ContentMargin/Content/Text"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "Details"
+horizontal_alignment = 2
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Icon" type="TextureRect" parent="Panel/ContentMargin/Content"]
+custom_minimum_size = Vector2(78, 78)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5

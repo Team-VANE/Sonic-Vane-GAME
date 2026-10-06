@@ -1,0 +1,205 @@
+[gd_scene format=3 uid="uid://c6xyvqm8rq2k2"]
+
+[ext_resource type="Script" uid="uid://ccq5yu8651pfv" path="res://LS5Framework/Objects/Enemies/Core/Enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://cdwnvk0ci23ar" path="res://LS5Framework/Scripts/Actors/ActorHealth.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://cldhg7femsy4x" path="res://LS5Framework/Scripts/Actors/ActorGravityReceiver3D.gd" id="3_gravity"]
+[ext_resource type="Script" uid="uid://bhj8tanhuo7hv" path="res://LS5Framework/Objects/Enemies/Core/EnemyPerception.gd" id="4_perception"]
+[ext_resource type="Script" uid="uid://dt6i0muc6ubs" path="res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd" id="5_brain"]
+[ext_resource type="Script" uid="uid://dx8vv7jx1ohnb" path="res://LS5Framework/Scripts/Actors/ActorCollisionController3D.gd" id="6_collision"]
+[ext_resource type="Script" uid="uid://dl2l8jyue7aei" path="res://LS5Framework/Objects/Enemies/Core/EnemyAnimationDriver.gd" id="7_animation"]
+[ext_resource type="Script" uid="uid://bqgf2x8djxral" path="res://LS5Framework/Scripts/Actors/ActorAudioCues3D.gd" id="8_audio"]
+[ext_resource type="Script" uid="uid://ceq8k61ipwtmu" path="res://LS5Framework/Scripts/Actors/ActorDefeatEffects3D.gd" id="9_effects"]
+[ext_resource type="Script" uid="uid://8phnf15chfjg" path="res://LS5Framework/Scripts/Actors/ActorRespawnComponent3D.gd" id="10_respawn"]
+[ext_resource type="Script" uid="uid://cmhwrx1uie7ks" path="res://LS5Framework/Objects/Enemies/Core/Locomotion/GroundedEnemyLocomotion.gd" id="11_grounded"]
+[ext_resource type="Script" uid="uid://j2u1k48dpnht" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttackController.gd" id="12_attacks"]
+[ext_resource type="Script" uid="uid://bd5bey6xd11sb" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyMeleeAttack.gd" id="13_melee"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Enemies/Core/EnemyProjectile.tscn" id="13_projectile"]
+[ext_resource type="Script" uid="uid://wqhw3ja216wm" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyProjectileAttack.gd" id="13_projectile_attack"]
+[ext_resource type="Script" uid="uid://rnxcpdi1i6m5" path="res://LS5Framework/Scripts/Actors/ActorTargetable3D.gd" id="14_targetable"]
+[ext_resource type="Script" uid="uid://btwll4rjg6ko" path="res://LS5Framework/Scripts/Actors/ActorHurtbox3D.gd" id="15_hurtbox"]
+[ext_resource type="Script" uid="uid://cn17erwd7t2dh" path="res://LS5Framework/Objects/Gameplay/ScoreAward.gd" id="16_score"]
+[ext_resource type="PackedScene" uid="uid://du58elexijmqe" path="res://LS5Framework/Effects/Explosion/ExplosionEffect.tscn" id="17_explosion"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 0.58
+
+[sub_resource type="StandardMaterial3D" id="BodyMaterial"]
+albedo_color = Color(0.68, 0.12, 0.08, 1)
+metallic = 0.35
+roughness = 0.42
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+material = SubResource("BodyMaterial")
+radius = 0.58
+height = 1.7
+
+[sub_resource type="StandardMaterial3D" id="HeadMaterial"]
+albedo_color = Color(0.9, 0.32, 0.08, 1)
+metallic = 0.2
+roughness = 0.38
+
+[sub_resource type="SphereMesh" id="HeadMesh"]
+material = SubResource("HeadMaterial")
+radius = 0.52
+height = 1.04
+
+[sub_resource type="StandardMaterial3D" id="WeaponMaterial"]
+albedo_color = Color(0.12, 0.14, 0.17, 1)
+metallic = 0.8
+roughness = 0.2
+
+[sub_resource type="BoxMesh" id="WeaponMesh"]
+material = SubResource("WeaponMaterial")
+size = Vector3(0.18, 0.18, 1.7)
+
+[sub_resource type="SphereShape3D" id="HurtboxShape"]
+radius = 1.2
+
+[sub_resource type="BoxShape3D" id="MeleeShape"]
+size = Vector3(1.5, 1.4, 1.6)
+
+[node name="GroundedEnemyBlockout" type="CharacterBody3D" unique_id=1271190946]
+collision_layer = 128
+script = ExtResource("1_enemy")
+size_target_paths = Array[NodePath]([NodePath("CollisionShape3D"), NodePath("Visual"), NodePath("Targetable"), NodePath("Hurtbox/CollisionShape3D"), NodePath("MeleeHitbox"), NodePath("Muzzle")])
+fall_damage_enabled = true
+fall_damage_surface_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1610283124]
+shape = SubResource("BodyShape")
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Visual" type="Node3D" parent="." unique_id=839957182]
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Body" type="MeshInstance3D" parent="Visual" unique_id=1157502361]
+mesh = SubResource("BodyMesh")
+
+[node name="Head" type="MeshInstance3D" parent="Visual" unique_id=1438775333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, -0.05)
+mesh = SubResource("HeadMesh")
+
+[node name="Weapon" type="MeshInstance3D" parent="Visual" unique_id=1306703069]
+transform = Transform3D(1, 0, 0, 0, 0.90044713, 0.43496552, 0, -0.43496552, 0.90044713, 0.63, 0.1, -0.82)
+mesh = SubResource("WeaponMesh")
+
+[node name="Targetable" type="Marker3D" parent="." unique_id=1282226743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+script = ExtResource("14_targetable")
+attack_magnetism_range = 28.0
+metadata/_enemy_size_base_position = Vector3(0, 0.45, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=439966296]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.63, 0.1, -1.7)
+metadata/_enemy_size_base_position = Vector3(0.63, 0.1, -1.7)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=1353592142]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("15_hurtbox")
+contact_damage_enabled = false
+bounce_airborne_players = false
+bounce_player_speed = 14.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=783921092]
+shape = SubResource("HurtboxShape")
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="MeleeHitbox" type="Area3D" parent="." unique_id=1162357894]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.05)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+metadata/_enemy_size_base_position = Vector3(0, 0, -1.05)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeHitbox" unique_id=1753318071]
+shape = SubResource("MeleeShape")
+
+[node name="Components" type="Node3D" parent="." unique_id=715420252]
+
+[node name="Health" type="Node" parent="Components" unique_id=1564675113]
+script = ExtResource("2_health")
+max_health = 3
+
+[node name="Gravity" type="Node" parent="Components" unique_id=381255056]
+script = ExtResource("3_gravity")
+
+[node name="Perception" type="Node" parent="Components" unique_id=822557550]
+script = ExtResource("4_perception")
+detection_radius = 60.0
+loss_radius = 70.0
+field_of_view_deg = 240.0
+vertical_tolerance = 10.0
+
+[node name="Brain" type="Node" parent="Components" unique_id=754502331]
+script = ExtResource("5_brain")
+alert_duration_sec = 0.4
+maximum_leash_distance = 0.0
+return_speed_ratio = 0.5
+jump_to_reach_target = true
+jump_target_height_threshold = 7.0
+jump_request_cooldown_sec = 2.0
+
+[node name="Collision" type="Node" parent="Components" unique_id=1423469935]
+script = ExtResource("6_collision")
+managed_collision_paths = Array[NodePath]([NodePath("Hurtbox")])
+
+[node name="Animation" type="Node" parent="Components" unique_id=747098729]
+script = ExtResource("7_animation")
+
+[node name="Audio" type="Node3D" parent="Components" unique_id=2052999565]
+script = ExtResource("8_audio")
+
+[node name="DefeatEffects" type="Node3D" parent="Components" unique_id=1285522253]
+script = ExtResource("9_effects")
+defeat_effect_scene = ExtResource("17_explosion")
+
+[node name="Respawn" type="Node" parent="Components" unique_id=763301568]
+script = ExtResource("10_respawn")
+respawn_enabled = true
+respawn_delay_sec = 4.0
+
+[node name="Optional" type="Node" parent="Components"]
+
+[node name="Locomotion" type="Node" parent="." unique_id=1237843529]
+script = ExtResource("11_grounded")
+airborne_attach_max_angle_deg = 65.0
+auto_jump_gaps = true
+jump_speed = 24.0
+
+[node name="Attacks" type="Node" parent="." unique_id=139398359]
+script = ExtResource("12_attacks")
+
+[node name="PrimaryMelee" type="Node" parent="Attacks" unique_id=1027821427]
+script = ExtResource("13_melee")
+priority = 10
+maximum_range = 2.8
+windup_duration_sec = 0.32
+active_duration_sec = 0.18
+recovery_duration_sec = 0.5
+cooldown_duration_sec = 1.15
+
+[node name="SecondaryProjectile" type="Node" parent="Attacks" unique_id=1634550972]
+script = ExtResource("13_projectile_attack")
+projectile_scene = ExtResource("13_projectile")
+projectile_speed = 24.0
+projectile_homing_turn_speed_deg = 55.0
+priority = 5
+minimum_range = 4.0
+maximum_range = 14.0
+windup_duration_sec = 0.45
+active_duration_sec = 0.0
+recovery_duration_sec = 0.35
+cooldown_duration_sec = 1.6
+animation_tag = &"attack_secondary"
+
+[node name="ScoreAward" type="Node" parent="." unique_id=2104794843]
+script = ExtResource("16_score")
+score_amount = 250

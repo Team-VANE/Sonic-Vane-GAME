@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cc3qtuuc8u6f"
+path="res://.godot/imported/RaceStart_BringItOn_01.ogg-be97d3a8e261774e65b9b834cc6a6e7d.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/RaceStart_BringItOn_01.ogg"
+dest_files=["res://.godot/imported/RaceStart_BringItOn_01.ogg-be97d3a8e261774e65b9b834cc6a6e7d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

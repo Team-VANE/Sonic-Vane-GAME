@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://qacq0ajwmt4h"
+path="res://.godot/imported/Insult_Rare_02.ogg-eccea720782845591902bc1d4c6fb0ca.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_02.ogg"
+dest_files=["res://.godot/imported/Insult_Rare_02.ogg-eccea720782845591902bc1d4c6fb0ca.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

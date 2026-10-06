@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="PlayerCharacterVisualProfile" format=3 uid="uid://cw2075fhn8aql"]
+
+[ext_resource type="Script" uid="uid://bptw4vdcfuiih" path="res://LS5Framework/Scripts/Player/PlayerCharacterVisualProfile.gd" id="1_profile"]
+[ext_resource type="Script" uid="uid://c3dpxgqxiu1up" path="res://LS5Framework/Scripts/Player/CharacterColorMaterialEntry.gd" id="2_entry"]
+[ext_resource type="Material" uid="uid://bxhspx5dlv7hl" path="res://LS5Framework/Characters/Tails/Materials/ORANGE.tres" id="3_orange"]
+[ext_resource type="Material" uid="uid://blnfiilxvlb65" path="res://LS5Framework/Characters/Tails/Materials/Red.tres" id="4_red"]
+
+[sub_resource type="Resource" id="CharacterColorMaterialEntry_fur"]
+script = ExtResource("2_entry")
+material = ExtResource("3_orange")
+
+[sub_resource type="Resource" id="CharacterColorMaterialEntry_shoes"]
+script = ExtResource("2_entry")
+material = ExtResource("4_red")
+color_slot = 1
+
+[resource]
+script = ExtResource("1_profile")
+default_primary_color = Color(1, 0.52, 0.08, 1)
+default_secondary_color = Color(0.7896393, 0.14339721, 0.12696168, 1)
+trick_name_backflip = "Kulbit"
+trick_name_frontflip = "Bunt"
+trick_name_left_spin = "Tailspin"
+trick_name_right_spin = "Flatspin"
+trick_name_frontflip_left_spin = "Barrel Roll"
+trick_name_backflip_left_spin = "Cyclone"
+trick_name_backflip_right_spin = "Tornado"
+trick_name_frontflip_right_spin = "X-Tornado"
+trick_name_rail_forward = "FS 5-0"
+trick_name_rail_backward = "BS 5-0"
+trick_name_rail_forward_crouch = "FS Crooked"
+trick_name_rail_backward_crouch = "BS Crooked"
+trick_name_bounce_pogo = "POGO!"
+trick_name_stomp_darehog = "DAREHOG!"
+color_materials = Array[ExtResource("2_entry")]([SubResource("CharacterColorMaterialEntry_fur"), SubResource("CharacterColorMaterialEntry_shoes")])

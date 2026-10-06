@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cctgmv0uj0he0"
+path="res://.godot/imported/EmeraldCoast_1.obj-46ecfbb0dec3835c17caf8202d2b2430.mesh"
+
+[deps]
+
+files=["res://.godot/imported/EmeraldCoast_1.obj-46ecfbb0dec3835c17caf8202d2b2430.mesh"]
+
+source_file="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EmeraldCoast_1.obj"
+dest_files=["res://.godot/imported/EmeraldCoast_1.obj-46ecfbb0dec3835c17caf8202d2b2430.mesh", "res://.godot/imported/EmeraldCoast_1.obj-46ecfbb0dec3835c17caf8202d2b2430.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

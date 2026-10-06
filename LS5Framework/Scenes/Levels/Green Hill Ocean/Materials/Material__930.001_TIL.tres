@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dm2slkor247nr"]
+
+[ext_resource type="Texture2D" uid="uid://cxil3qwfy700w" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/GHO_Stone_Masonry_Multi.jpg" id="1_f1ng1"]
+
+[resource]
+resource_name = "Material__930.001_TIL"
+cull_mode = 2
+albedo_texture = ExtResource("1_f1ng1")

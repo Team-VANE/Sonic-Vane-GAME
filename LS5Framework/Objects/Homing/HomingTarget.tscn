@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dab7ow5oahfhc"]
+
+[ext_resource type="Script" uid="uid://bi4l74uchdrb8" path="res://LS5Framework/Objects/Homing/HomingTarget.gd" id="1_ht"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iuohy"]
+albedo_color = Color(1, 0.37046835, 0.64279974, 1)
+metallic = 0.85
+roughness = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_1"]
+material = SubResource("StandardMaterial3D_iuohy")
+radius = 0.6
+height = 1.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1"]
+radius = 0.75
+
+[node name="HomingTarget" type="Area3D" groups=["HomingTarget"]]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_ht")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_1")

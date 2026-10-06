@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemAudioAssociation" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Resources/Items/ItemAudioAssociation.gd" id="1_association"]
+[ext_resource type="AudioStream" uid="uid://bmhaqd7y6ksp" path="res://LS5Framework/Sounds/General/ring.wav" id="2_ring_sound"]
+
+[resource]
+script = ExtResource("1_association")
+item_id = &"rings"
+collection_sound = ExtResource("2_ring_sound")

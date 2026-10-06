@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RainProfile" format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/Rain/RainProfile.gd" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+intensity = 0.0
+wind_velocity = Vector2(0, 0)
+near_drop_size = Vector2(0.02, 1.25)
+far_drop_size = Vector2(0.027, 2)
+far_fade_in_start = 12.0
+far_fade_in_end = 20.0
+far_fade_out_start = 200.0
+far_fade_out_end = 240.0

@@ -1,0 +1,227 @@
+{
+	"entities": [
+		{
+			"classname": "light_directional",
+			"description": "",
+			"metadata": {
+				"gizmos": [
+					{
+						"bindings": {
+							"color": "light_color"
+						},
+						"euler": "90.000003,-0.000000,-0.000000",
+						"length": "0.5",
+						"type": "arrow"
+					}
+				],
+				"volume": false
+			},
+			"props": [
+				{
+					"default_value": [
+						1.0,
+						1.0,
+						1.0,
+						1.0
+					],
+					"description": "",
+					"name": "light_color",
+					"type": "Color"
+				},
+				{
+					"default_value": 1.0,
+					"description": "",
+					"name": "light_energy",
+					"type": "float"
+				},
+				{
+					"default_value": false,
+					"description": "",
+					"name": "shadow_enabled",
+					"type": "bool"
+				},
+				{
+					"default_value": 2,
+					"description": "",
+					"name": "directional_shadow_mode",
+					"type": "$DirectionalLight3D.ShadowMode"
+				}
+			],
+			"uid": "DirectionalLight3D"
+		},
+		{
+			"classname": "light_omni",
+			"description": "",
+			"metadata": {
+				"gizmos": [
+					{
+						"bindings": {
+							"color": "light_color",
+							"radius": "omni_range"
+						},
+						"style": "solid",
+						"type": "sphere"
+					}
+				],
+				"volume": false
+			},
+			"props": [
+				{
+					"default_value": [
+						1.0,
+						1.0,
+						1.0,
+						1.0
+					],
+					"description": "",
+					"name": "light_color",
+					"type": "Color"
+				},
+				{
+					"default_value": 1.0,
+					"description": "",
+					"name": "light_energy",
+					"type": "float"
+				},
+				{
+					"default_value": 0.0,
+					"description": "",
+					"name": "light_size",
+					"type": "float"
+				},
+				{
+					"default_value": 2,
+					"description": "",
+					"name": "light_bake_mode",
+					"type": "$Light3D.BakeMode"
+				},
+				{
+					"default_value": false,
+					"description": "",
+					"name": "shadow_enabled",
+					"type": "bool"
+				},
+				{
+					"default_value": 5.0,
+					"description": "",
+					"name": "omni_range",
+					"type": "float"
+				},
+				{
+					"default_value": 1.0,
+					"description": "",
+					"name": "omni_attenuation",
+					"type": "float"
+				},
+				{
+					"default_value": 1,
+					"description": "",
+					"name": "omni_shadow_mode",
+					"type": "$OmniLight3D.ShadowMode"
+				}
+			],
+			"uid": "OmniLight3D"
+		},
+		{
+			"classname": "light_probe",
+			"description": "",
+			"metadata": {
+				"volume": false
+			},
+			"props": [],
+			"uid": "LightmapProbe"
+		},
+		{
+			"classname": "light_spot",
+			"description": "",
+			"metadata": {
+				"gizmos": [
+					{
+						"bindings": {
+							"angle": "spot_angle",
+							"color": "light_color",
+							"length": "spot_range"
+						},
+						"euler": "90.000003,-0.000000,-0.000000",
+						"type": "cone"
+					}
+				],
+				"volume": false
+			},
+			"props": [
+				{
+					"default_value": [
+						1.0,
+						1.0,
+						1.0,
+						1.0
+					],
+					"description": "",
+					"name": "light_color",
+					"type": "Color"
+				},
+				{
+					"default_value": 1.0,
+					"description": "",
+					"name": "light_energy",
+					"type": "float"
+				},
+				{
+					"default_value": 2,
+					"description": "",
+					"name": "light_bake_mode",
+					"type": "$Light3D.BakeMode"
+				},
+				{
+					"default_value": false,
+					"description": "",
+					"name": "shadow_enabled",
+					"type": "bool"
+				},
+				{
+					"default_value": 5.0,
+					"description": "",
+					"name": "spot_range",
+					"type": "float"
+				},
+				{
+					"default_value": 1.0,
+					"description": "",
+					"name": "spot_attenuation",
+					"type": "float"
+				},
+				{
+					"default_value": 45.0,
+					"description": "",
+					"name": "spot_angle",
+					"type": "float"
+				},
+				{
+					"default_value": 1.0,
+					"description": "",
+					"name": "spot_angle_attenuation",
+					"type": "float"
+				}
+			],
+			"uid": "SpotLight3D"
+		}
+	],
+	"geo_tags": [],
+	"revision": 1,
+	"types": {
+		"DirectionalLight3D.ShadowMode": {
+			"Orthogonal": 0,
+			"Parallel 2 Splits": 1,
+			"Parallel 4 Splits": 2
+		},
+		"Light3D.BakeMode": {
+			"Disabled": 0,
+			"Dynamic": 2,
+			"Static": 1
+		},
+		"OmniLight3D.ShadowMode": {
+			"Cube": 1,
+			"Dual Paraboloid": 0
+		}
+	}
+}

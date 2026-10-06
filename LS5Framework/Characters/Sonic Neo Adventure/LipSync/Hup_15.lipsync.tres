@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://ba18dym021tva"]
+
+[ext_resource type="AudioStream" uid="uid://d4c7yp81ju3c5" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hup_15.ogg" id="1_r8de5"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_fexak"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_pkdh6"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_fduxk"]
+
+[sub_resource type="Resource" id="Resource_7jh50"]
+script = ExtResource("2_fexak")
+pose_id = &"EXP_BROWS_DOWN"
+end_time = 0.14
+blend_in = 0.07
+blend_out = 0.07
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_spbee"]
+script = ExtResource("2_fexak")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.06
+end_time = 0.1999999999999999
+row = 1
+blend_in = 0.06999999999999995
+blend_out = 0.06999999999999995
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_stbpc"]
+script = ExtResource("2_fexak")
+pose_id = &"VIS_EE"
+end_time = 0.11
+blend_in = 0.055
+blend_out = 0.055
+lock_max_blend = true
+strength = 0.6470588235294117
+
+[sub_resource type="Resource" id="Resource_6lxen"]
+script = ExtResource("2_fexak")
+pose_id = &"VIS_Ah"
+start_time = 0.05
+end_time = 0.15
+row = 1
+blend_in = 0.049999999999999996
+blend_out = 0.049999999999999996
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_kropr"]
+script = ExtResource("2_fexak")
+pose_id = &"VIS_R"
+start_time = 0.1
+end_time = 0.20000000000000004
+row = 2
+blend_in = 0.05000000000000002
+blend_out = 0.05000000000000002
+lock_max_blend = true
+
+[resource]
+script = ExtResource("4_fduxk")
+profile = ExtResource("3_pkdh6")
+audio = ExtResource("1_r8de5")
+audible_start = 0.01816666647209786
+audible_end = 0.08483333242475055
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_fexak")]([SubResource("Resource_stbpc"), SubResource("Resource_6lxen"), SubResource("Resource_kropr")])
+expression_cues = Array[ExtResource("2_fexak")]([SubResource("Resource_7jh50"), SubResource("Resource_spbee")])

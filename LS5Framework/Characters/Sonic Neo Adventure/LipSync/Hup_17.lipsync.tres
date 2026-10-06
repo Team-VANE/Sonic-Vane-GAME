@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://dkaj122tlw2r6"]
+
+[ext_resource type="AudioStream" uid="uid://d0hu0uqv5lms2" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hup_17.ogg" id="1_ixruf"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_rcrj6"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_lkwd5"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_uhw2c"]
+
+[sub_resource type="Resource" id="Resource_a5uin"]
+script = ExtResource("2_rcrj6")
+pose_id = &"EXP_BROWS_DOWN"
+end_time = 0.15000000000000002
+blend_in = 0.07500000000000001
+blend_out = 0.07500000000000001
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_gnpsp"]
+script = ExtResource("2_rcrj6")
+pose_id = &"EXP_BROWS_UP"
+start_time = 0.06
+end_time = 0.2699999999999999
+row = 1
+blend_in = 0.10499999999999995
+blend_out = 0.10499999999999995
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_wyw8f"]
+script = ExtResource("2_rcrj6")
+pose_id = &"VIS_EE"
+end_time = 0.13
+blend_in = 0.065
+blend_out = 0.065
+lock_max_blend = true
+strength = 0.6470588235294117
+
+[sub_resource type="Resource" id="Resource_fs57l"]
+script = ExtResource("2_rcrj6")
+pose_id = &"VIS_Ah"
+start_time = 0.05
+end_time = 0.16999999999999998
+row = 1
+blend_in = 0.05999999999999999
+blend_out = 0.05999999999999999
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_1beos"]
+script = ExtResource("2_rcrj6")
+pose_id = &"VIS_R"
+start_time = 0.12
+end_time = 0.27
+row = 2
+blend_in = 0.07500000000000001
+blend_out = 0.07500000000000001
+lock_max_blend = true
+
+[resource]
+script = ExtResource("4_uhw2c")
+profile = ExtResource("3_lkwd5")
+audio = ExtResource("1_ixruf")
+audible_start = 0.014249999847379513
+audible_end = 0.13033333193743601
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_rcrj6")]([SubResource("Resource_wyw8f"), SubResource("Resource_fs57l"), SubResource("Resource_1beos")])
+expression_cues = Array[ExtResource("2_rcrj6")]([SubResource("Resource_a5uin"), SubResource("Resource_gnpsp")])

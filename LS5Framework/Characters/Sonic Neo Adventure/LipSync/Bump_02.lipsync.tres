@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://bgx7o8juknw58"]
+
+[ext_resource type="AudioStream" uid="uid://chx7q6kqkkqd" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Bump_02.ogg" id="1_c18ea"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_3oiis"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_6g2et"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_rn5jq"]
+
+[sub_resource type="Resource" id="Resource_ihhat"]
+script = ExtResource("2_3oiis")
+pose_id = &"EXP_ANGRY"
+end_time = 0.78
+blend_in = 0.39
+blend_out = 0.39
+
+[sub_resource type="Resource" id="Resource_4klgg"]
+script = ExtResource("2_3oiis")
+pose_id = &"EXP_BROWS_UP"
+end_time = 0.30999999999999994
+row = 1
+blend_in = 0.15499999999999997
+blend_out = 0.15499999999999997
+
+[sub_resource type="Resource" id="Resource_o0w88"]
+script = ExtResource("2_3oiis")
+pose_id = &"EXP_BROWS_DOWN"
+start_time = 0.1
+end_time = 0.5499999999999999
+row = 2
+blend_in = 0.22499999999999995
+blend_out = 0.22499999999999998
+strength = 0.6
+
+[sub_resource type="Resource" id="Resource_duywr"]
+script = ExtResource("2_3oiis")
+pose_id = &"VIS_Ah"
+end_time = 0.4100000000000001
+blend_in = 0.20500000000000004
+blend_out = 0.20500000000000002
+
+[sub_resource type="Resource" id="Resource_p3e2y"]
+script = ExtResource("2_3oiis")
+pose_id = &"VIS_EE"
+start_time = 0.08
+end_time = 0.63
+row = 1
+blend_in = 0.275
+blend_out = 0.275
+
+[resource]
+script = ExtResource("4_rn5jq")
+profile = ExtResource("3_6g2et")
+audio = ExtResource("1_c18ea")
+audible_start = 0.0077097571338526905
+audible_end = 0.5325663004769012
+viseme_cues = Array[ExtResource("2_3oiis")]([SubResource("Resource_duywr"), SubResource("Resource_p3e2y")])
+expression_cues = Array[ExtResource("2_3oiis")]([SubResource("Resource_ihhat"), SubResource("Resource_4klgg"), SubResource("Resource_o0w88")])

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://88t6takj441o"
+path="res://.godot/imported/Anger_Growl_06.ogg-4ab4d5f22bca7168b65546048a0000c0.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_Growl_06.ogg"
+dest_files=["res://.godot/imported/Anger_Growl_06.ogg-4ab4d5f22bca7168b65546048a0000c0.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

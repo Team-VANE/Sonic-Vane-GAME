@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://mwuirjn62mhb"]
+
+[ext_resource type="Script" uid="uid://dywam11x6kphm" path="res://LS5Framework/Scripts/Effects/InvincibilityVisual.gd" id="1_visual"]
+[ext_resource type="Shader" uid="uid://dqxjqm431aewf" path="res://LS5Framework/Scripts/Effects/InvincibilityVisual.gdshader" id="2_shell_shader"]
+[ext_resource type="Shader" uid="uid://cpwubl0usfwg5" path="res://LS5Framework/Scripts/Effects/InvincibilityRibbon.gdshader" id="3_ribbon_shader"]
+[ext_resource type="Texture2D" uid="uid://1q0erh3v27nd" path="res://LS5Framework/Resources/Items/InvincibilityColorRamp.tres" id="4_ramp"]
+
+[sub_resource type="ShaderMaterial" id="Material_shell"]
+render_priority = 0
+shader = ExtResource("2_shell_shader")
+shader_parameter/color_ramp = ExtResource("4_ramp")
+shader_parameter/scroll_speed = 0.2
+shader_parameter/alpha = 0.18
+
+[sub_resource type="QuadMesh" id="Mesh_circle"]
+size = Vector2(3, 3)
+
+[sub_resource type="ShaderMaterial" id="Material_ribbon"]
+render_priority = 0
+shader = ExtResource("3_ribbon_shader")
+shader_parameter/color_ramp = ExtResource("4_ramp")
+shader_parameter/scroll_speed = 1.55
+
+[sub_resource type="CylinderMesh" id="Mesh_ribbon"]
+top_radius = 0.13
+bottom_radius = 0.003
+height = 3.0
+radial_segments = 4
+rings = 1
+cap_top = false
+cap_bottom = false
+
+[node name="InvincibilityVisual" type="Node3D" unique_id=709396451]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+script = ExtResource("1_visual")
+
+[node name="CenterCircle" type="MeshInstance3D" parent="." unique_id=1444275972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = SubResource("Material_shell")
+mesh = SubResource("Mesh_circle")
+
+[node name="Ribbon01" type="MeshInstance3D" parent="." unique_id=1001811417]
+transform = Transform3D(0, 0.347985, 0.9375, 0, 0.9375, -0.347985, -1, 0, 0, 0.521978, 2.40625, 0)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.13
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon02" type="MeshInstance3D" parent="." unique_id=505761092]
+transform = Transform3D(0.67549, -0.429857, -0.599112, 0, 0.8125, -0.582961, 0.737369, 0.393785, 0.548836, -0.644786, 2.21875, 0.590677)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.71
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon03" type="MeshInstance3D" parent="." unique_id=1719932080]
+transform = Transform3D(-0.996171, 0.063487, 0.060105, 0, 0.6875, -0.726184, -0.087426, -0.723404, -0.684868, 0.095231, 2.03125, -1.085106)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.38
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon04" type="MeshInstance3D" parent="." unique_id=1262401717]
+transform = Transform3D(0.793601, 0.503056, 0.342247, 0, 0.5625, -0.826797, -0.608439, 0.656147, 0.4464, 0.754583, 1.84375, 0.98422)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.92
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon05" type="MeshInstance3D" parent="." unique_id=1454947246]
+transform = Transform3D(-0.174182, -0.885472, -0.430812, 0, 0.4375, -0.899218, 0.984713, -0.156628, -0.076205, -1.328209, 1.65625, -0.234941)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.24
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon06" type="MeshInstance3D" parent="." unique_id=933541828]
+transform = Transform3D(-0.536728, 0.801498, 0.263674, 0, 0.3125, -0.949918, -0.843755, -0.509848, -0.167728, 1.202247, 1.46875, -0.764771)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.56
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon07" type="MeshInstance3D" parent="." unique_id=1460076523]
+transform = Transform3D(0.965715, -0.255, -0.048676, 0, 0.1875, -0.982265, 0.259604, 0.948588, 0.181072, -0.3825, 1.28125, 1.422882)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.05
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon08" type="MeshInstance3D" parent="." unique_id=749875466]
+transform = Transform3D(-0.887448, -0.460006, -0.028807, 0, 0.0625, -0.998045, 0.460907, -0.885713, -0.055466, -0.690009, 1.09375, -1.32857)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.81
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon09" type="MeshInstance3D" parent="." unique_id=1535612395]
+transform = Transform3D(0.343039, 0.937485, -0.058708, 0, -0.0625, -0.998045, -0.939321, 0.342368, -0.02144, 1.406227, 0.90625, 0.513552)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.44
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon10" type="MeshInstance3D" parent="." unique_id=104518124]
+transform = Transform3D(0.381556, -0.907952, 0.173315, 0, -0.1875, -0.982265, 0.924346, 0.374789, -0.071542, -1.361928, 0.71875, 0.562184)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.67
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon11" type="MeshInstance3D" parent="." unique_id=1022966303]
+transform = Transform3D(-0.905734, 0.402619, -0.132452, 0, -0.3125, -0.949918, -0.423846, -0.860373, 0.283042, 0.603928, 0.53125, -1.29056)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.17
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon12" type="MeshInstance3D" parent="." unique_id=834703649]
+transform = Transform3D(0.954164, 0.269122, -0.130937, 0, -0.4375, -0.899218, -0.299284, 0.858002, -0.417447, 0.403682, 0.34375, 1.287003)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.99
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon13" type="MeshInstance3D" parent="." unique_id=1467581459]
+transform = Transform3D(-0.501408, -0.715354, 0.486681, 0, -0.5625, -0.826797, 0.865211, -0.414562, 0.282042, -1.073031, 0.15625, -0.621844)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.32
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon14" type="MeshInstance3D" parent="." unique_id=1091601490]
+transform = Transform3D(-0.214719, 0.709247, -0.671465, 0, -0.6875, -0.726184, -0.976676, -0.155926, 0.14762, 1.06387, -0.03125, -0.233889)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.76
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon15" type="MeshInstance3D" parent="." unique_id=1996578623]
+transform = Transform3D(0.818062, -0.335278, 0.467293, 0, -0.8125, -0.582961, 0.575129, 0.476899, -0.664676, -0.502917, -0.21875, 0.715348)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.08
+mesh = SubResource("Mesh_ribbon")
+
+[node name="Ribbon16" type="MeshInstance3D" parent="." unique_id=1063400353]
+transform = Transform3D(-0.991708, -0.04472, 0.120479, 0, -0.9375, -0.347985, 0.128511, -0.3451, 0.929726, -0.06708, -0.40625, -0.51765)
+material_override = SubResource("Material_ribbon")
+instance_shader_parameters/phase = 0.53
+mesh = SubResource("Mesh_ribbon")

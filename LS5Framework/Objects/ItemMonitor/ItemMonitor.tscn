@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://cwsdj34dkp0dx"]
+
+[ext_resource type="Script" uid="uid://ce456hqvquy66" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd" id="1_monitor"]
+[ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="2_reward"]
+[ext_resource type="PackedScene" uid="uid://bkms2say5itus" path="res://LS5Framework/Objects/ItemMonitor/TempModel/Item_Monitor.glb" id="3_model"]
+[ext_resource type="Shader" uid="uid://b5pd6rcdgc0qa" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorIcon.gdshader" id="4_icon_shader"]
+[ext_resource type="Texture2D" uid="uid://c1si7gq603id1" path="res://LS5Framework/Images/Icons/ItemMonitor_Icon_Background.png" id="5_icon_background"]
+[ext_resource type="Texture2D" uid="uid://bmd2wk8tm213i" path="res://LS5Framework/Images/Icons/ItemMonitor_Icon_Ring.png" id="6_ring_icon"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gameplay/ScoreAward.gd" id="7_score_award"]
+
+[sub_resource type="Resource" id="Resource_default_reward"]
+resource_local_to_scene = true
+script = ExtResource("2_reward")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mu1lr"]
+radius = 1.5595703
+height = 4.294922
+
+[sub_resource type="BoxShape3D" id="BoxShape_solid"]
+size = Vector3(3.15, 3.65, 3.15)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_icon"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_icon_shader")
+shader_parameter/background_texture = ExtResource("5_icon_background")
+shader_parameter/item_texture = ExtResource("6_ring_icon")
+
+[sub_resource type="QuadMesh" id="QuadMesh_icon"]
+size = Vector2(2.15, 2.15)
+
+[node name="ItemMonitor" type="Area3D" unique_id=1395552001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16053212, 0)
+collision_mask = 4
+script = ExtResource("1_monitor")
+rewards = Array[ExtResource("2_reward")]([SubResource("Resource_default_reward")])
+icon_rotation_speed_degrees = 250.0
+
+[node name="ScoreAward" type="Node" parent="."]
+script = ExtResource("7_score_award")
+
+[node name="TouchShape" type="CollisionShape3D" parent="." unique_id=1773444945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6453125, 0)
+shape = SubResource("CapsuleShape3D_mu1lr")
+
+[node name="SolidBody" type="StaticBody3D" parent="." unique_id=815330750]
+collision_layer = 128
+collision_mask = 6
+
+[node name="SolidShape" type="CollisionShape3D" parent="SolidBody" unique_id=140600646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+shape = SubResource("BoxShape_solid")
+
+[node name="VisualRoot" type="Node3D" parent="." unique_id=130870535]
+
+[node name="DisplayVisibility" type="VisibleOnScreenNotifier3D" parent="VisualRoot"]
+aabb = AABB(-3, -2, -3, 6, 7, 6)
+
+[node name="MonitorModel" parent="VisualRoot" unique_id=1966865560 instance=ExtResource("3_model")]
+
+[node name="ItemDisplays" type="Node3D" parent="VisualRoot" unique_id=345054975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="IconDisplay" type="MeshInstance3D" parent="VisualRoot/ItemDisplays" unique_id=1063930104]
+material_override = SubResource("ShaderMaterial_icon")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_icon")
+
+[node name="QuantityLabelFront" type="Label3D" parent="VisualRoot/ItemDisplays/IconDisplay"]
+position = Vector3(-0.65, -0.68, 0.06)
+visible = false
+modulate = Color(1, 0.9, 0.05, 1)
+outline_modulate = Color(0.02, 0.02, 0.02, 1)
+pixel_size = 0.02
+font_size = 34
+outline_size = 8
+outline_render_priority = 1
+render_priority = 2
+double_sided = false
+no_depth_test = false
+
+[node name="QuantityLabelBack" type="Label3D" parent="VisualRoot/ItemDisplays/IconDisplay"]
+position = Vector3(0.65, -0.68, -0.06)
+rotation = Vector3(0, 3.14159, 0)
+visible = false
+modulate = Color(1, 0.9, 0.05, 1)
+outline_modulate = Color(0.02, 0.02, 0.02, 1)
+pixel_size = 0.02
+font_size = 34
+outline_size = 8
+outline_render_priority = 1
+render_priority = 2
+double_sided = false
+no_depth_test = false
+
+[node name="IdleAudio" type="AudioStreamPlayer3D" parent="." unique_id=1616662536]
+unit_size = 60.0
+max_distance = 65.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+
+[node name="BreakAudio" type="AudioStreamPlayer3D" parent="." unique_id=1254436901]
+unit_size = 60.0
+max_distance = 65.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0

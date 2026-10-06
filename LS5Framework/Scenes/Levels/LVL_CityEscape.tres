@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://cn7nxt3k1p7h"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_level_doc"]
+
+[resource]
+script = ExtResource("1_level_doc")
+level_name = "City Escape"
+order = 50
+selection_category = "Work In Progress"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/City Escape/city_escape.tscn"

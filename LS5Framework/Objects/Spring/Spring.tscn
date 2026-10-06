@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://dpqdt82o1f57x"]
+
+[ext_resource type="Script" uid="uid://cr7fu80oepmw6" path="res://LS5Framework/Objects/Spring/Spring.gd" id="1_wa56o"]
+[ext_resource type="AudioStream" uid="uid://b60nnl17j0200" path="res://LS5Framework/Sounds/Objects/Spring.wav" id="2_eykro"]
+[ext_resource type="PackedScene" uid="uid://cicuogv2laafy" path="res://LS5Framework/Objects/Spring/Spring_NextGen/spring_mesh.tscn" id="3_vbxi4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ql8kk"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_default"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eykro"]
+albedo_color = Color(1, 0, 0, 1)
+metallic = 0.5
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ql8kk"]
+material = SubResource("StandardMaterial3D_eykro")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vbxi4"]
+albedo_color = Color(0.63226223, 0.62709224, 0.64045024, 1)
+metallic = 0.5
+roughness = 0.55
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6pmed"]
+material = SubResource("StandardMaterial3D_vbxi4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_solver"]
+transparency = 1
+shading_mode = 0
+no_depth_test = true
+albedo_color = Color(0.1, 0.8, 1, 0.55)
+
+[sub_resource type="SphereMesh" id="SphereMesh_solver"]
+material = SubResource("StandardMaterial3D_solver")
+radius = 0.6
+height = 1.2
+
+[node name="Spring" type="Area3D" unique_id=1538883451 node_paths=PackedStringArray("sfx_player")]
+collision_layer = 32
+collision_mask = 6
+audio_bus_name = &"SFX"
+script = ExtResource("1_wa56o")
+sfx_player = NodePath("AudioStreamPlayer3D")
+spring_sounds = Array[AudioStream]([ExtResource("2_eykro")])
+mesh_bounce_enabled = true
+mesh_bounce_peak_scale = 1.95
+mesh_bounce_duration = 0.8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=594366491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_ql8kk")
+
+[node name="TrajectorySolver" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+visible = false
+gizmo_extents = 1.0
+
+[node name="SolverShape" type="MeshInstance3D" parent="TrajectorySolver"]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_solver")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=636684357]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=860910282]
+unit_size = 60.0
+max_db = 0.2
+max_distance = 60.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 10000.0
+
+[node name="SplinePath" type="Path3D" parent="." unique_id=1818114504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+curve = SubResource("Curve3D_default")
+
+[node name="Mesh" type="Node3D" parent="." unique_id=1922896033]
+
+[node name="Spring" parent="Mesh" unique_id=1426791645 instance=ExtResource("3_vbxi4")]
+transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, -0.83038616, 0)
+
+[node name="TempMesh" type="MeshInstance3D" parent="Mesh" unique_id=1862970004]
+transform = Transform3D(2.5, 0, 0, 0, 0.333, 0, 0, 0, 2.5, 0, 0.13, 0)
+visible = false
+mesh = SubResource("CylinderMesh_ql8kk")
+skeleton = NodePath("../..")
+
+[node name="TempMesh2" type="MeshInstance3D" parent="Mesh" unique_id=183295118]
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, -0.5, 0)
+visible = false
+mesh = SubResource("CylinderMesh_6pmed")
+skeleton = NodePath("../..")

@@ -1,0 +1,86 @@
+[gd_scene load_steps=17 format=3 uid="uid://bxcjbd1g1is6q"]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Camera/SonicCameraRig.tscn" id="3_camrig"]
+[ext_resource type="PackedScene" uid="uid://d1lkixedl3gbr" path="res://LS5Framework/Scenes/Levels/Green Hill Canyon/green_hill_canyon.tscn" id="10_t6ccg"]
+[ext_resource type="PackedScene" uid="uid://cbjpdfu34lnb2" path="res://LS5Framework/Scenes/Levels/Green Hill Ocean/green_hill_ocean.tscn" id="11_ng563"]
+[ext_resource type="PackedScene" uid="uid://cxbwl0rw14q3b" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/emerald_coast.tscn" id="12_f233n"]
+[ext_resource type="PackedScene" uid="uid://c2xshst362q5m" path="res://LS5Framework/Scenes/Levels/Minecraft/mine_craft.tscn" id="13_kf3vq"]
+[ext_resource type="PackedScene" uid="uid://dn565ekblu308" path="res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn" id="14_4cdr7"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Music/MusicController.tscn" id="66_oe6uy"]
+[ext_resource type="AudioStream" uid="uid://bhr1hmgim63vb" path="res://LS5Framework/Sounds/Music/1-20 Letz Get This Party Started.mp3" id="67_mcfhj"]
+[ext_resource type="PackedScene" uid="uid://dph8b0op2olul" path="res://LS5Framework/Scenes/Pause/PauseMenu.tscn" id="68_mcfhj"]
+[ext_resource type="PackedScene" uid="uid://dg6y304tie4qj" path="res://LS5Framework/Scenes/HUD/HUD.tscn" id="69_hud"]
+[ext_resource type="Script" uid="uid://dvcol30s2dqbm" path="res://LS5Framework/Scripts/Settings/GraphicsSettingsBinder.gd" id="69_ts4d6"]
+[ext_resource type="Script" uid="uid://dnilj75i7lmy3" path="res://LS5Framework/Scripts/Net/NetworkSession.gd" id="71_net"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Net/ChatUI.tscn" id="72_chat"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Characters/Sonic Neo Adventure/sonic_neo_adventure_player.tscn" id="73_player"]
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="74_spawn"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rxoxf"]
+viewport_path = NodePath("NIKO_TEST/TP Sub")
+
+[node name="Scene" type="Node3D"]
+
+[node name="Soooo you managed to decrypt me--- Good job have fun  !!" type="Node3D" parent="."]
+
+[node name="Characters" type="Node3D" parent="." groups=["player"]]
+
+[node name="PlayerSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.522278, 6.527438, 171.36539)
+script = ExtResource("74_spawn")
+
+[node name="NetworkSession" type="Node" parent="."]
+script = ExtResource("71_net")
+player_scene = ExtResource("73_player")
+players_root_name = "Characters"
+
+[node name="CameraRig" parent="." instance=ExtResource("3_camrig")]
+vertical_offset = 2.5
+min_vertical_offset = 0.8
+max_vertical_offset = 2.7
+max_distance = 30.0
+
+[node name="MusicController" parent="." instance=ExtResource("66_oe6uy")]
+autoplay = false
+autoplay_stream = ExtResource("67_mcfhj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("68_mcfhj")]
+
+[node name="HUD" parent="." instance=ExtResource("69_hud")]
+
+[node name="ChatUI" parent="." instance=ExtResource("72_chat")]
+
+[node name="GraphicsSettingsBinder" type="Node" parent="."]
+script = ExtResource("69_ts4d6")
+world_environment_path = NodePath("Lights/WorldEnvironment")
+directional_light_path = NodePath("Lights/DirectionalLight3D")
+camera_path = NodePath("CameraRig/CameraYawRig/CameraPitchRig/SonicCamera")
+
+[node name="GREEN_HILL_CANYON" parent="." instance=ExtResource("10_t6ccg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9000)
+
+[node name="GREEN_HILL_OCEAN" parent="." instance=ExtResource("11_ng563")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9000, 0, 0)
+
+[node name="EMERALD_COAST" parent="." instance=ExtResource("12_f233n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1776.1771, 0, 7499.2695)
+
+[node name="MINE_CRAFT" parent="." instance=ExtResource("13_kf3vq")]
+
+[node name="NIKO_TEST" parent="." instance=ExtResource("14_4cdr7")]
+
+[editable path="MusicController"]
+[editable path="NIKO_TEST"]
+[editable path="NIKO_TEST/AutomationSpline"]
+[editable path="NIKO_TEST/Spring26"]
+[editable path="NIKO_TEST/DeathPlane2"]
+[editable path="NIKO_TEST/DeathPlane3"]
+[editable path="NIKO_TEST/Spring_Spline"]
+[editable path="NIKO_TEST/Teleporter_GHO"]
+[editable path="NIKO_TEST/Teleporter_GHC"]
+[editable path="NIKO_TEST/Teleporter_EMERALDCOAST"]
+[editable path="NIKO_TEST/Rail"]
+[editable path="NIKO_TEST/Rail2"]

@@ -1,0 +1,91 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://d1sur0s7ncch"
+path="res://.godot/imported/SF3.glb-ec517d3cce111f85fe5c44158d513389.scn"
+
+[deps]
+
+source_file="res://LS5Framework/Scenes/Levels/Sky Fleet 3/SF3.glb"
+dest_files=["res://.godot/imported/SF3.glb-ec517d3cce111f85fe5c44158d513389.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"nodes": {
+"PATH:Skeleton": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_001": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_002": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_004": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_005": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_006": {
+"physics/shape_type": 2
+},
+"PATH:Skeleton_007": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_008": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_009": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_010": {
+"generate/physics": true,
+"physics/shape_type": 2
+},
+"PATH:Skeleton_011": {
+"generate/physics": true,
+"physics/shape_type": 2
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=1

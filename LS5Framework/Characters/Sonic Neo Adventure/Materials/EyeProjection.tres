@@ -1,0 +1,44 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c31git1oddo0g"]
+
+[ext_resource type="Shader" uid="uid://c4ssbpk0hvqh8" path="res://LS5Framework/Shaders/CharacterEyeProjection.gdshader" id="1_shader"]
+[ext_resource type="Texture2D" uid="uid://dch11al5cfok7" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_t_sonicpupil_diff.png" id="2_pupil"]
+[ext_resource type="Shader" uid="uid://br1hly0kubha7" path="res://LS5Framework/Shaders/CharacterSurfaceOutline.gdshader" id="3_outline"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
+resource_name = "Character Surface Outline"
+render_priority = 1
+shader = ExtResource("3_outline")
+shader_parameter/outline_width = 0.035
+shader_parameter/darkness = 0.72
+shader_parameter/alpha_threshold = 0.1
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/tint_enabled = false
+shader_parameter/primary_color = Color(1, 1, 1, 1)
+shader_parameter/secondary_color = Color(1, 1, 1, 1)
+shader_parameter/primary_strength = 1.0
+shader_parameter/secondary_strength = 0.0
+shader_parameter/saturation_threshold = 0.25
+shader_parameter/saturation_softness = 0.2
+shader_parameter/saturation_exponent = 1.0
+shader_parameter/overlay_strength = 1.0
+
+[resource]
+resource_name = "EyeProjection"
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_outline")
+shader = ExtResource("1_shader")
+shader_parameter/pupil_texture = ExtResource("2_pupil")
+shader_parameter/sclera_color = Color(1, 1, 1, 1)
+shader_parameter/metallic = 0.186
+shader_parameter/roughness = 0.6550000311125
+shader_parameter/specular = 0.0800000038
+shader_parameter/horizontal_axis = Vector3(1, 0, 0)
+shader_parameter/vertical_axis = Vector3(0, 0, -1)
+shader_parameter/left_scale = Vector2(-3, 3)
+shader_parameter/right_scale = Vector2(3, 3)
+shader_parameter/left_offset = Vector2(0.5, 0.5)
+shader_parameter/right_offset = Vector2(0.5, 0.5)
+shader_parameter/flip_vertical = true
+shader_parameter/world_to_left = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/world_to_right = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/projector_enabled = Vector2(0, 0)

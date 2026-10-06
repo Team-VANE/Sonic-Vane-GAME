@@ -1,0 +1,141 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://bjl635uffnxaj"]
+
+[ext_resource type="AudioStream" uid="uid://7r3lelutcqfk" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_WayPast_02.ogg" id="1_63xhx"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_iesgw"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_ck3ep"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_5hkd0"]
+
+[sub_resource type="Resource" id="Resource_tqj6d"]
+script = ExtResource("2_iesgw")
+pose_id = &"EXP_ANGRY"
+end_time = 2.49
+blend_in = 0.41
+blend_out = 0.47
+strength = 0.4411764705882353
+
+[sub_resource type="Resource" id="Resource_ij8t8"]
+script = ExtResource("2_iesgw")
+pose_id = &"EXP_BROWS_SKEW_R"
+start_time = 0.16000000000000003
+end_time = 1.6600000000000004
+row = 1
+blend_in = 0.4400000000000001
+blend_out = 0.40000000000000013
+
+[sub_resource type="Resource" id="Resource_gpuge"]
+script = ExtResource("2_iesgw")
+pose_id = &"EXP_BROWS_DOWN"
+start_time = 0.78
+end_time = 1.58
+row = 2
+blend_in = 0.4
+blend_out = 0.4
+lock_max_blend = true
+strength = 0.6176470588235294
+
+[sub_resource type="Resource" id="Resource_fyiss"]
+script = ExtResource("2_iesgw")
+pose_id = &"EXP_BROWS_UP"
+start_time = 1.38
+end_time = 2.29
+row = 3
+blend_in = 0.45500000000000007
+blend_out = 0.45500000000000007
+lock_max_blend = true
+strength = 0.5588235294117647
+
+[sub_resource type="Resource" id="Resource_68rw8"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_W_OO"
+start_time = 0.06
+end_time = 0.73
+blend_in = 0.33499999999999996
+blend_out = 0.33499999999999996
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_1wjb1"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_Ah"
+start_time = 0.22000000000000003
+end_time = 1.06
+row = 1
+blend_in = 0.42000000000000004
+blend_out = 0.42000000000000004
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_tewm8"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_B_M_P"
+start_time = 0.75
+end_time = 1.16
+row = 2
+blend_in = 0.18499999999999991
+blend_out = 0.08
+
+[sub_resource type="Resource" id="Resource_3reym"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_Ah"
+start_time = 0.99
+end_time = 1.4
+blend_in = 0.20499999999999996
+blend_out = 0.10499999999999995
+
+[sub_resource type="Resource" id="Resource_tapdr"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_S_Z"
+start_time = 1.28
+end_time = 1.51
+row = 1
+blend_in = 0.11499999999999999
+blend_out = 0.11499999999999999
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_w6xe2"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_Uh"
+start_time = 1.38
+end_time = 1.77
+row = 2
+blend_in = 0.19500000000000006
+blend_out = 0.19500000000000006
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_uyrjx"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_Ah"
+start_time = 1.44
+end_time = 1.81
+blend_in = 0.18500000000000005
+blend_out = 0.18500000000000005
+lock_max_blend = true
+strength = 0.5882352941176471
+
+[sub_resource type="Resource" id="Resource_x86ej"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 1.69
+end_time = 1.96
+row = 1
+blend_in = 0.135
+blend_out = 0.135
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_hlu5y"]
+script = ExtResource("2_iesgw")
+pose_id = &"VIS_W_OO"
+start_time = 1.8
+end_time = 2.23
+row = 2
+blend_in = 0.21499999999999997
+blend_out = 0.21499999999999997
+lock_max_blend = true
+
+[resource]
+script = ExtResource("4_5hkd0")
+profile = ExtResource("3_ck3ep")
+audio = ExtResource("1_63xhx")
+audible_start = 0.12317321542650461
+audible_end = 2.066572836600244
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_iesgw")]([SubResource("Resource_68rw8"), SubResource("Resource_1wjb1"), SubResource("Resource_tewm8"), SubResource("Resource_3reym"), SubResource("Resource_tapdr"), SubResource("Resource_w6xe2"), SubResource("Resource_uyrjx"), SubResource("Resource_x86ej"), SubResource("Resource_hlu5y")])
+expression_cues = Array[ExtResource("2_iesgw")]([SubResource("Resource_tqj6d"), SubResource("Resource_ij8t8"), SubResource("Resource_gpuge"), SubResource("Resource_fyiss")])

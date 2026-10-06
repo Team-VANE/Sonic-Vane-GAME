@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c1pmwfyxihwy4"
+path="res://.godot/imported/LFR_Wanna_01.ogg-2de604577fe7e96da46773a0fdc36246.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/LFR_Wanna_01.ogg"
+dest_files=["res://.godot/imported/LFR_Wanna_01.ogg-2de604577fe7e96da46773a0fdc36246.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

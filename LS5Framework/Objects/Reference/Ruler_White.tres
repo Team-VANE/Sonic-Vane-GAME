@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dso0bbnryxmk5"]
+
+[ext_resource type="Texture2D" uid="uid://duk7g8maguy3f" path="res://LS5Framework/Images/Ruler.png" id="1_jcwip"]
+
+[resource]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_jcwip")
+uv1_scale = Vector3(1, -1, 1)
+uv1_offset = Vector3(0, -0.035, 0)

@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://dn13sa5ec4wya"]
+
+[ext_resource type="AudioStream" uid="uid://byqhmbkjg407r" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/PowerUp_03.ogg" id="1_cgv0n"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_f307y"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_f5gtn"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_e0w25"]
+
+[sub_resource type="Resource" id="Resource_hu36a"]
+script = ExtResource("2_f307y")
+pose_id = &"EXP_HAPPY"
+end_time = 0.6999999999999998
+blend_in = 0.3499999999999999
+blend_out = 0.3499999999999999
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_03max"]
+script = ExtResource("2_f307y")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.01
+end_time = 0.11
+blend_in = 0.05
+blend_out = 0.05
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_okr1w"]
+script = ExtResource("2_f307y")
+pose_id = &"VIS_R"
+start_time = 0.06
+end_time = 0.15
+row = 1
+blend_in = 0.045
+blend_out = 0.045
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_wbv42"]
+script = ExtResource("2_f307y")
+pose_id = &"VIS_EE"
+start_time = 0.1
+end_time = 0.27
+row = 2
+blend_in = 0.085
+blend_out = 0.085
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_d80m6"]
+script = ExtResource("2_f307y")
+pose_id = &"VIS_K_G_H_NG"
+start_time = 0.2
+end_time = 0.28
+row = 3
+blend_in = 0.04000000000000001
+blend_out = 0.04000000000000001
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_62f7a"]
+script = ExtResource("2_f307y")
+pose_id = &"VIS_Ah"
+start_time = 0.20999999999999996
+end_time = 0.41999999999999993
+blend_in = 0.10499999999999998
+blend_out = 0.10499999999999998
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_0uh6f"]
+script = ExtResource("2_f307y")
+pose_id = &"VIS_W_OO"
+start_time = 0.31
+end_time = 0.58
+row = 1
+blend_in = 0.13499999999999998
+blend_out = 0.13499999999999998
+lock_max_blend = true
+
+[resource]
+script = ExtResource("4_e0w25")
+profile = ExtResource("3_f5gtn")
+audio = ExtResource("1_cgv0n")
+audible_start = 0.014783203136175871
+audible_end = 0.6215104985167272
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_f307y")]([SubResource("Resource_03max"), SubResource("Resource_okr1w"), SubResource("Resource_wbv42"), SubResource("Resource_d80m6"), SubResource("Resource_62f7a"), SubResource("Resource_0uh6f")])
+expression_cues = Array[ExtResource("2_f307y")]([SubResource("Resource_hu36a")])

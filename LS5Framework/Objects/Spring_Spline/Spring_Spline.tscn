@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsdgv6gswcdel"]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="1_isohl"]
+
+[node name="Spring_Spline" instance=ExtResource("1_isohl")]
+spline_enabled = true
+spline_speed = 100.0

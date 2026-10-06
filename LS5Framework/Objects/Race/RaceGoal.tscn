@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bktxefyel8i42"]
+
+[ext_resource type="Script" uid="uid://cl4or7p4837fx" path="res://LS5Framework/Objects/Race/RaceGoal.gd" id="1_rg"]
+[ext_resource type="PackedScene" uid="uid://crry8l805lrqc" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring.tscn" id="2_5wjdx"]
+[ext_resource type="AudioStream" uid="uid://dsernf6yla4oj" path="res://LS5Framework/Sounds/Music/SA2-RoundClear.ogg" id="2_eads8"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="4_oqkmk"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="5_wm1k7"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="6_kkook"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(20, 20, 20)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_niabq"]
+render_priority = 0
+shader = ExtResource("4_oqkmk")
+shader_parameter/tex_flat = ExtResource("5_wm1k7")
+shader_parameter/tex_glow = ExtResource("6_kkook")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 5552.947
+
+[node name="RaceGoal" type="Area3D" unique_id=767008932]
+script = ExtResource("1_rg")
+lineup_front_offset = 15.0
+lineup_side_offset = 15.0
+lineup_back_step = 15.0
+visual_root_path = NodePath("GoalModel")
+animation_player_path = NodePath("GoalModel/GoalRing2/AnimationPlayer")
+anim_idle = &"GoalRing_Idle"
+anim_touched = &"GoalRing_Touched"
+results_music_stream = ExtResource("2_eads8")
+results_music_fade_in = 0.0
+results_music_fade_out = 0.1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=377308896]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+shape = SubResource("BoxShape3D_1")
+
+[node name="GoalPose" type="Node3D" parent="." unique_id=279916230]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="GoalCamera" type="Node3D" parent="." unique_id=1169733806]
+
+[node name="GoalModel" parent="." unique_id=456851143 instance=ExtResource("2_5wjdx")]
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 10, 0)
+
+[node name="Circle" parent="GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
+material_override = SubResource("ShaderMaterial_niabq")
+
+[node name="SwapLight" parent="GoalModel/GoalRing2" index="2" unique_id=1016145482]
+light_color = Color(0.6104771, 0.5345298, 1, 1)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=118658822]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0286498, 0)
+visible = false
+light_color = Color(0.9999537, 0.8079268, 3.85046e-07, 1)
+light_energy = 35.0
+light_indirect_energy = 3.5
+omni_range = 11.054
+
+[editable path="GoalModel"]
+[editable path="GoalModel/GoalRing2"]

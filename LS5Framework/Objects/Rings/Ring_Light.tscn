@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dtn6httf1tv5o"]
+
+[ext_resource type="Script" uid="uid://cwak0nfc3mk06" path="res://LS5Framework/Objects/Rings/Ring_Light.gd" id="1_ring_light"]
+
+[node name="RingLight" type="OmniLight3D" unique_id=1072526522]
+script = ExtResource("1_ring_light")

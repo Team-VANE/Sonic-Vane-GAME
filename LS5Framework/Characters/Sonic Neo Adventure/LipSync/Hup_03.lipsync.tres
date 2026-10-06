@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://c03voswdg4x7b"]
+
+[ext_resource type="AudioStream" uid="uid://qglo63ugs1x3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hup_03.ogg" id="1_5m284"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_flant"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_fgwa1"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_n0gph"]
+
+[sub_resource type="Resource" id="Resource_mncrp"]
+script = ExtResource("2_flant")
+pose_id = &"VIS_K_G_H_NG"
+end_time = 0.09
+blend_in = 0.045
+blend_out = 0.045
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_xpws5"]
+script = ExtResource("2_flant")
+pose_id = &"VIS_Uh"
+end_time = 0.11
+row = 2
+blend_in = 0.055
+blend_out = 0.055
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_b0dgy"]
+script = ExtResource("2_flant")
+pose_id = &"VIS_Ah"
+start_time = 0.05
+end_time = 0.19
+row = 1
+blend_in = 0.07
+blend_out = 0.07
+lock_max_blend = true
+
+[resource]
+script = ExtResource("4_n0gph")
+profile = ExtResource("3_fgwa1")
+audio = ExtResource("1_5m284")
+audible_start = 0.02738559058343526
+audible_end = 0.12852853855292778
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_flant")]([SubResource("Resource_mncrp"), SubResource("Resource_xpws5"), SubResource("Resource_b0dgy")])

@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://bnqag1mdwxy4j"]
+
+[ext_resource type="Script" uid="uid://dnsfns6ucd7k3" path="res://LS5Framework/Scripts/Player/SonicPlayer.gd" id="1_64fmr"]
+[ext_resource type="Script" uid="uid://bi121jf2e3xdl" path="res://LS5Framework/Scripts/Camera/SonicCameraRig.gd" id="1_tm2rn"]
+[ext_resource type="PackedScene" uid="uid://dyytsuvntmox5" path="res://LS5Framework/Scenes/Levels/NikoTest/NikoTest.tscn" id="3_64fmr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4dj2c"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_64fmr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jxvy"]
+albedo_color = Color(0.14731085, 0, 0.9034348, 1)
+
+[sub_resource type="Environment" id="Environment_64fmr"]
+ssr_enabled = true
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+volumetric_fog_density = 0.0191
+volumetric_fog_albedo = Color(0.74623877, 0.8646485, 0.96975154, 1)
+volumetric_fog_gi_inject = 1.22
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_8jxvy"]
+
+[sub_resource type="Compositor" id="Compositor_gdgd5"]
+
+[node name="Scene" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(17, 1, 17)
+
+[node name="SonicPlayer" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera", "model_root")]
+script = ExtResource("1_64fmr")
+camera = NodePath("../SonicCameraPivot/SonicCamera")
+model_root = NodePath("ModelRoot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SonicPlayer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("CapsuleShape3D_4dj2c")
+
+[node name="ModelRoot" type="Node3D" parent="SonicPlayer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicPlayer/ModelRoot"]
+mesh = SubResource("CapsuleMesh_64fmr")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
+
+[node name="Test2" parent="." instance=ExtResource("3_64fmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.906828, 0)
+
+[node name="SonicCameraPivot" type="Node3D" parent="." node_paths=PackedStringArray("target", "camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+script = ExtResource("1_tm2rn")
+target = NodePath("../SonicPlayer")
+camera = NodePath("SonicCamera")
+
+[node name="SonicCamera" type="Camera3D" parent="SonicCameraPivot"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_64fmr")
+camera_attributes = SubResource("CameraAttributesPhysical_8jxvy")
+compositor = SubResource("Compositor_gdgd5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.42871445, 0.90343994, 0, -0.90343994, -0.42871445, 0, 25.784826, 0)
+shadow_enabled = true

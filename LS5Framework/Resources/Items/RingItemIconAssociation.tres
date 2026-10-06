@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemIconAssociation" format=3 uid="uid://cqhrp6gvjcuxu"]
+
+[ext_resource type="Script" uid="uid://c4tarss6rnwwn" path="res://LS5Framework/Resources/Items/ItemIconAssociation.gd" id="1_association"]
+[ext_resource type="Texture2D" uid="uid://bmd2wk8tm213i" path="res://LS5Framework/Images/Icons/ItemMonitor_Icon_Ring.png" id="2_ring_icon"]
+
+[resource]
+script = ExtResource("1_association")
+item_id = &"rings"
+icon_texture = ExtResource("2_ring_icon")

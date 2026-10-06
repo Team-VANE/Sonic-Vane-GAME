@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DayNightWeather" format=3 uid="uid://bl57vsiuo3cjy"]
+
+[ext_resource type="Script" uid="uid://bjqfip2tur0i0" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightWeather.gd" id="1_weather"]
+
+[resource]
+script = ExtResource("1_weather")
+cloud_coverage = 0.0
+cloud_density = 0.0
+upper_layer_amount = 0.0
+wind_direction = Vector2(0, 0)
+wind_speed = 0.0
+overcast_light_multiplier = 1.0
+overcast_ambient_multiplier = 1.0
+fog_density_multiplier = 0.0

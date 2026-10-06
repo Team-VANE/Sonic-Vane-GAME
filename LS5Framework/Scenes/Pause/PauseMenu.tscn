@@ -1,0 +1,1483 @@
+[gd_scene load_steps=9 format=3 uid="uid://dph8b0op2olul"]
+
+[ext_resource type="Script" uid="uid://03kmdiowumon" path="res://LS5Framework/Scenes/Pause/PauseMenu.gd" id="1_11leo"]
+[ext_resource type="Script" uid="uid://d1i4c5ruedr0k" path="res://LS5Framework/Scripts/UI/ControlsRebindTab.gd" id="2_controls"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/BindingsTab.gd" id="4_bindings"]
+[ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="3_menu_theme"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="5_crt_effect"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="6_orbitron_900"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron600.tres" id="7_orbitron_600"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_reset_defaults_warning"]
+bg_color = Color(0.16, 0.018, 0.025, 0.98)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.12, 0.16, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 12
+
+[node name="PauseMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_11leo")
+theme = ExtResource("3_menu_theme")
+
+[node name="CRTUIBackgroundEffect" type="Node" parent="."]
+script = ExtResource("5_crt_effect")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.015, 0.04, 0.72)
+
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OnlinePanel" type="Panel" parent="Overlay"]
+visible = false
+custom_minimum_size = Vector2(360, 520)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -470.0
+offset_top = -260.0
+offset_right = -110.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxOnline" type="VBoxContainer" parent="Overlay/OnlinePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="LabelPlayers" type="Label" parent="Overlay/OnlinePanel/VBoxOnline"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Players Online"
+horizontal_alignment = 1
+
+[node name="LabelConnection" type="Label" parent="Overlay/OnlinePanel/VBoxOnline"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelDiagnostics" type="Label" parent="Overlay/OnlinePanel/VBoxOnline"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HBoxInvite" type="HBoxContainer" parent="Overlay/OnlinePanel/VBoxOnline"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LineEditInvite" type="LineEdit" parent="Overlay/OnlinePanel/VBoxOnline/HBoxInvite"]
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+placeholder_text = "Invite code"
+tooltip_text = "Share this code with players joining the internet session."
+
+[node name="ButtonCopyInvite" type="Button" parent="Overlay/OnlinePanel/VBoxOnline/HBoxInvite"]
+layout_mode = 2
+text = "Copy"
+tooltip_text = "Copy the invite code to the clipboard."
+
+[node name="LabelRaceQueue" type="Label" parent="Overlay/OnlinePanel/VBoxOnline"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="ButtonLeaveQueue" type="Button" parent="Overlay/OnlinePanel/VBoxOnline"]
+visible = false
+layout_mode = 2
+text = "Leave Queue"
+
+[node name="ScrollPlayers" type="ScrollContainer" parent="Overlay/OnlinePanel/VBoxOnline"]
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerList" type="VBoxContainer" parent="Overlay/OnlinePanel/VBoxOnline/ScrollPlayers"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PausePanel" type="Panel" parent="Overlay"]
+custom_minimum_size = Vector2(560, 440)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxPause" type="VBoxContainer" parent="Overlay/PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = -22.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="LabelPause" type="Label" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("6_orbitron_900")
+theme_override_font_sizes/font_size = 28
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="ButtonResume" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Resume"
+
+[node name="ButtonOptions" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Options"
+
+[node name="ButtonRestart" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Reload Level"
+
+[node name="ButtonQuickRestart" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Restart Race"
+
+[node name="ButtonLeaveRace" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Leave Race"
+
+[node name="ButtonReturnHub" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Return to Hub"
+
+[node name="ButtonMenu" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Return to Menu"
+
+[node name="OnlinePlayers" type="VBoxContainer" parent="Overlay/PausePanel/VBoxPause"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LabelPlayers" type="Label" parent="Overlay/PausePanel/VBoxPause/OnlinePlayers"]
+layout_mode = 2
+text = "Players Online"
+horizontal_alignment = 1
+
+[node name="LabelRaceQueue" type="Label" parent="Overlay/PausePanel/VBoxPause/OnlinePlayers"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="ScrollPlayers" type="ScrollContainer" parent="Overlay/PausePanel/VBoxPause/OnlinePlayers"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerList" type="VBoxContainer" parent="Overlay/PausePanel/VBoxPause/OnlinePlayers/ScrollPlayers"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxRespawn" type="HBoxContainer" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ButtonRespawnStart" type="Button" parent="Overlay/PausePanel/VBoxPause/HBoxRespawn"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Respawn at Beginning"
+
+[node name="ButtonRespawnCheckpoint" type="Button" parent="Overlay/PausePanel/VBoxPause/HBoxRespawn"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Respawn at Checkpoint"
+
+[node name="OptionsPanel" type="Control" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -450.0
+offset_top = 32.0
+offset_right = 450.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Overlay/OptionsPanel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxOptions" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = -22.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="LabelOptions" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "Options"
+horizontal_alignment = 1
+
+[node name="LabelTabHint" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 0.7, 0.86, 1)
+theme_override_font_sizes/font_size = 12
+text = "Shoulder buttons or Page Up / Page Down switch tabs"
+horizontal_alignment = 1
+
+[node name="TabsOptions" type="TabContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="TabControls" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions"]
+layout_mode = 2
+title = "Controls"
+theme_override_constants/separation = 8
+script = ExtResource("2_controls")
+metadata/_tab_index = 0
+
+[node name="LabelBindHelp" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls"]
+layout_mode = 2
+text = "Press a key to bind to this action.  Press DEL to clear keybind.  Press ESC to cancel."
+autowrap_mode = 2
+visible = false
+
+[node name="ScrollControls" type="ScrollContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabBindings" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("4_bindings")
+title = "Bindings"
+metadata/_tab_index = 1
+
+[node name="LabelBindHelp" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabBindings"]
+layout_mode = 2
+text = "Press a key or mouse button for Keyboard, or a button or stick direction for Gamepad. Press DEL to clear the current keyboard binding, or ESC to cancel."
+autowrap_mode = 2
+
+[node name="ScrollControls" type="ScrollContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabBindings"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ControlsList" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabBindings/ScrollControls"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ControlsList" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls/ScrollControls"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="HBoxMouseInvertY" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelMouseInvertY" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls/HBoxMouseInvertY"]
+layout_mode = 2
+text = "Invert Mouse Y"
+
+[node name="CheckInvertMouseY" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls/HBoxMouseInvertY"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxMouseSensitivity" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelMouseSensitivity" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls/HBoxMouseSensitivity"]
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="SliderMouseSensitivity" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls/HBoxMouseSensitivity"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="TabGraphics" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions"]
+visible = false
+layout_mode = 2
+title = "Graphics"
+theme_override_constants/separation = 8
+metadata/_tab_index = 2
+
+[node name="ScrollGraphics" type="ScrollContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GraphicsContent" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="HBoxResolution" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxResolution"]
+layout_mode = 2
+text = "Resolution"
+
+[node name="OptionResolution" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxResolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxRenderScaleMode" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelRenderScaleMode" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleMode"]
+layout_mode = 2
+text = "Scaling Type"
+
+[node name="OptionRenderScaleMode" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleMode" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select direct bilinear scaling or AMD FidelityFX Super Resolution 1.0."
+
+[node name="HBoxRenderScaleRatio" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelRenderScaleRatio" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleRatio"]
+layout_mode = 2
+text = "Rendering Ratio"
+
+[node name="OptionRenderScaleRatio" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleRatio" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Scale only the 3D scene while keeping menus and HUD at native resolution."
+
+[node name="ButtonApplyResolution" type="Button" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Apply the selected window resolution."
+text = "Apply"
+
+[node name="HBoxFullscreen" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxFullscreen"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="CheckFullscreen" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxFullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxVsync" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxVsync"]
+layout_mode = 2
+text = "VSync"
+
+[node name="CheckVsync" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxVsync"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxShadowResolution" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelShadowResolution" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowResolution"]
+layout_mode = 2
+text = "Shadow Resolution"
+
+[node name="OptionShadowResolution" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowResolution" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Controls directional and positional shadow atlas resolution."
+
+[node name="HBoxParticleQuality" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelParticleQuality" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxParticleQuality"]
+layout_mode = 2
+text = "Particle Quality"
+
+[node name="OptionParticleQuality" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxParticleQuality" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Controls the density of 3D particle effects without changing HUD effects."
+
+[node name="GridGraphics" type="GridContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+columns = 2
+
+[node name="CheckSSR" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "SSR"
+
+[node name="CheckSSAO" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "SSAO"
+
+[node name="CheckSSIL" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "SSIL"
+
+[node name="CheckSDFGI" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "SDFGI"
+
+[node name="CheckShadows" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "Shadows"
+
+[node name="CheckGlow" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "Glow"
+
+[node name="CheckDepthOfField" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+tooltip_text = "Disables near and far camera blur while preserving the scene's depth-of-field setup."
+text = "Depth of Field"
+
+[node name="CheckVolumetricFog" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics" groups=["MenuButtons"]]
+layout_mode = 2
+tooltip_text = "Disable volumetric fog while preserving each level's configured fog settings."
+text = "Volumetric Fog"
+
+[node name="CheckWeatherOcclusion" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics" groups=["MenuButtons"]]
+layout_mode = 2
+tooltip_text = "Use cover probes and particle collision heightfields to keep rain out of sheltered areas."
+text = "Weather Occlusion"
+
+[node name="CheckWaterDisplacement" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "Water Displacement"
+tooltip_text = "Disable to keep the water mesh flat (saves vertex texture sampling)."
+
+[node name="CheckWaterRefraction" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "Water Refraction"
+tooltip_text = "Disable to skip screen-space refraction (requires depth effects)."
+
+[node name="CheckWaterNormals" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "Water Normal Maps"
+tooltip_text = "Disable to use flat normals (saves normal map sampling)."
+
+[node name="CheckWaterDepthFx" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics"]
+layout_mode = 2
+text = "Water Depth Effects"
+tooltip_text = "Disable depth-based tint/foam/absorption (uses deep color, saves depth sampling)."
+
+[node name="HBoxLOD" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelLOD" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxLOD"]
+layout_mode = 2
+text = "Level of Detail Distance"
+
+[node name="OptionLOD" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxLOD" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Controls how far away objects retain higher-detail geometry."
+
+[node name="TabAudio" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions"]
+visible = false
+layout_mode = 2
+title = "Audio"
+theme_override_constants/separation = 8
+metadata/_tab_index = 3
+
+[node name="ScrollAudio" type="ScrollContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AudioContent" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="HBoxMaster" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxMaster"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="SliderMaster" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxMaster"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxMusic" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxMusic"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="SliderMusic" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxMusic"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxSfx" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxSfx"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SliderSfx" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxSfx"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxUi" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent"]
+layout_mode = 2
+
+[node name="LabelUi" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxUi"]
+layout_mode = 2
+text = "UI Volume"
+
+[node name="SliderUi" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxUi"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxVoice" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent"]
+layout_mode = 2
+
+[node name="LabelVoice" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxVoice"]
+layout_mode = 2
+text = "Voice Volume"
+
+[node name="SliderVoice" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxVoice"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabGameplay" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions"]
+visible = false
+layout_mode = 2
+title = "Gameplay"
+theme_override_constants/separation = 8
+metadata/_tab_index = 4
+
+[node name="ScrollGameplay" type="ScrollContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GameplayContent" type="VBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="TargetingHeading" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "TARGETING"
+
+[node name="HBoxHomingTargetMode" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelHomingTargetMode" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxHomingTargetMode"]
+layout_mode = 2
+text = "Homing Targeting"
+
+[node name="OptionHomingTargetMode" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxHomingTargetMode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HomingTargetingHint" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Camera targeting is recommended for mouse. Hybrid targeting is recommended for controllers."
+autowrap_mode = 3
+
+[node name="HBoxSeparateHomingTargeting" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelSeparateHomingTargeting" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxSeparateHomingTargeting"]
+layout_mode = 2
+text = "Separate By Input Device"
+
+[node name="CheckSeparateHomingTargeting" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxSeparateHomingTargeting"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxMouseHomingTargetMode" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelMouseHomingTargetMode" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxMouseHomingTargetMode"]
+layout_mode = 2
+text = "Mouse Homing Targeting"
+
+[node name="OptionMouseHomingTargetMode" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxMouseHomingTargetMode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxLightspeedDashTargetMode" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelLightspeedDashTargetMode" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxLightspeedDashTargetMode"]
+layout_mode = 2
+text = "Lightspeed Dash Targeting"
+
+[node name="OptionLightspeedDashTargetMode" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxLightspeedDashTargetMode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxHomingCameraRadius" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelHomingRadius" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxHomingCameraRadius"]
+layout_mode = 2
+text = "Homing Radius"
+
+[node name="SliderHomingRadius" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxHomingCameraRadius"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 40.0
+max_value = 600.0
+step = 5.0
+value = 160.0
+
+[node name="CameraHeading" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "CAMERA"
+
+[node name="HBoxCameraFollowSmoothing" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCameraFollowSmoothing" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraFollowSmoothing"]
+layout_mode = 2
+text = "Camera Follow Responsiveness"
+
+[node name="SliderCameraFollowSmoothing" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraFollowSmoothing"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 40.0
+step = 0.5
+value = 20.0
+
+[node name="HBoxCameraDolly" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCameraDolly" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraDolly"]
+layout_mode = 2
+text = "Camera Dolly Follow"
+
+[node name="CheckCameraDolly" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraDolly"]
+layout_mode = 2
+size_flags_horizontal = 3
+button_pressed = true
+
+[node name="HBoxCameraTargetLookahead" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCameraTargetLookahead" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraTargetLookahead"]
+layout_mode = 2
+text = "Target Lookahead"
+
+[node name="CheckCameraTargetLookahead" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraTargetLookahead"]
+layout_mode = 2
+size_flags_horizontal = 3
+button_pressed = true
+
+[node name="HBoxCameraTargetLookaheadAmount" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCameraTargetLookaheadAmount" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraTargetLookaheadAmount"]
+layout_mode = 2
+text = "Lookahead Amount"
+
+[node name="SliderCameraTargetLookaheadAmount" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraTargetLookaheadAmount"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 100.0
+step = 5.0
+value = 100.0
+
+[node name="HBoxAutoFollowCamera" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelAutoFollowCamera" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowCamera"]
+layout_mode = 2
+text = "Auto Follow Camera"
+
+[node name="CheckAutoFollowCamera" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowCamera"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxAutoFollowControllerOnly" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelAutoFollowControllerOnly" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowControllerOnly"]
+layout_mode = 2
+text = "Auto Follow Controller Only"
+
+[node name="CheckAutoFollowControllerOnly" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowControllerOnly"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxAutoFollowSensitivity" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelAutoFollowSensitivity" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowSensitivity"]
+layout_mode = 2
+text = "Auto Follow Sensitivity"
+
+[node name="SliderAutoFollowSensitivity" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowSensitivity"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 40.0
+step = 0.5
+value = 12.0
+
+[node name="HBoxAutoFollowInterruptDelay" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelAutoFollowInterruptDelay" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowInterruptDelay"]
+layout_mode = 2
+text = "Auto Follow Interrupt Delay"
+
+[node name="SliderAutoFollowInterruptDelay" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowInterruptDelay"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 5.0
+step = 0.1
+value = 2.0
+
+[node name="ReticleHeading" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "RETICLE"
+
+[node name="HBoxCenterReticle" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCenterReticle" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticle"]
+layout_mode = 2
+text = "Center Reticle"
+
+[node name="CheckCenterReticle" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticle"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxCenterReticleScale" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCenterReticleScale" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleScale"]
+layout_mode = 2
+text = "Reticle Scale"
+
+[node name="SliderCenterReticleScale" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleScale"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.25
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="HBoxCenterReticleOpacity" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCenterReticleOpacity" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleOpacity"]
+layout_mode = 2
+text = "Reticle Opacity"
+
+[node name="SliderCenterReticleOpacity" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleOpacity"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+value = 0.6
+
+[node name="HBoxCenterReticleColor" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelCenterReticleColor" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleColor"]
+layout_mode = 2
+text = "Reticle Color"
+
+[node name="ColorCenterReticle" type="ColorPickerButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+edit_alpha = false
+color = Color(1, 1, 1, 1)
+
+[node name="HBoxRememberEmotePage" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelRememberEmotePage" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxRememberEmotePage"]
+layout_mode = 2
+text = "Remember Emote Wheel Page"
+
+[node name="CheckRememberEmotePage" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxRememberEmotePage" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Reopen the emote wheel on the last used category/page, including after restarting the game. Disable to start on Communication."
+
+[node name="HBoxComboSystem" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelComboSystem" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxComboSystem"]
+layout_mode = 2
+text = "Combo System"
+
+[node name="CheckComboSystem" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxComboSystem"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxReticleVerticalOffset" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelReticleVerticalOffset" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxReticleVerticalOffset"]
+layout_mode = 2
+text = "Reticle Vertical Offset"
+
+[node name="SliderReticleVerticalOffset" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxReticleVerticalOffset"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 0.0
+
+[node name="GhostReplayHeading" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "RACE & GHOST REPLAYS"
+
+[node name="HBoxRecordRaceGhosts" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxRecordRaceGhosts"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Record race ghosts"
+
+[node name="CheckRecordRaceGhosts" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxRecordRaceGhosts"]
+layout_mode = 2
+tooltip_text = "Captures eligible single-player race runs in memory for an optional post-race save."
+text = "Enabled"
+
+[node name="HBoxGhostRecordingRate" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxGhostRecordingRate"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Recording quality"
+
+[node name="OptionGhostRecordingRate" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxGhostRecordingRate"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Higher rates preserve more motion detail and create larger ghost files."
+
+[node name="HBoxGhostPlaybackRate" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxGhostPlaybackRate"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Maximum playback quality"
+
+[node name="OptionGhostPlaybackRate" type="OptionButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxGhostPlaybackRate"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Caps ghost pose updates even when the recording contains higher-rate data."
+
+[node name="GhostRecordingHint" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Runs are captured temporarily and can be saved after finishing."
+autowrap_mode = 3
+
+[node name="AppearanceHeading" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "CHARACTER APPEARANCE"
+
+[node name="HBoxUseCharacterColorsOffline" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelUseCharacterColorsOffline" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxUseCharacterColorsOffline"]
+layout_mode = 2
+text = "Use Character colors"
+
+[node name="CheckUseCharacterColorsOffline" type="CheckBox" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxUseCharacterColorsOffline"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxOfflinePrimaryColor" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelOfflinePrimaryColor" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflinePrimaryColor"]
+layout_mode = 2
+text = "Primary color"
+
+[node name="ColorOfflinePrimary" type="ColorPickerButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflinePrimaryColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+edit_alpha = false
+color = Color(0.18, 0.52, 1.0, 1)
+
+[node name="HBoxOfflineSecondaryColor" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelOfflineSecondaryColor" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflineSecondaryColor"]
+layout_mode = 2
+text = "Secondary color"
+
+[node name="ColorOfflineSecondary" type="ColorPickerButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflineSecondaryColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+edit_alpha = false
+color = Color(1, 1, 1, 1)
+
+[node name="HBoxOfflineTrailColor" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelOfflineTrailColor" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflineTrailColor"]
+layout_mode = 2
+text = "Trail / Blast color"
+
+[node name="ColorOfflineTrail" type="ColorPickerButton" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflineTrailColor"]
+layout_mode = 2
+size_flags_horizontal = 3
+edit_alpha = false
+color = Color(0.2, 0.8, 1.0, 1)
+
+[node name="HBoxCameraFar" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+
+[node name="LabelCameraFar" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxCameraFar"]
+layout_mode = 2
+text = "Draw Distance"
+
+[node name="SliderCameraFar" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxCameraFar"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 10.0
+max_value = 10000.0
+step = 10.0
+value = 10.0
+
+[node name="HBoxCameraFov" type="HBoxContainer" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+
+[node name="LabelCameraFov" type="Label" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxCameraFov"]
+layout_mode = 2
+text = "Camera FOV"
+
+[node name="SliderCameraFov" type="HSlider" parent="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxCameraFov"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 40.0
+max_value = 120.0
+step = 1.0
+value = 70.0
+
+[node name="ButtonResetDefaults" type="Button" parent="Overlay/OptionsPanel/Panel/VBoxOptions" groups=["MenuButtons"]]
+layout_mode = 2
+tooltip_text = "Restore all game, display, audio, camera, control, and binding settings to their packaged defaults."
+text = "Reset To Defaults"
+
+[node name="ButtonOptionsBack" type="Button" parent="Overlay/OptionsPanel/Panel/VBoxOptions"]
+layout_mode = 2
+text = "Back to Pause"
+
+[node name="ResetDefaultsDialog" type="Control" parent="Overlay"]
+visible = false
+z_index = 30
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="Overlay/ResetDefaultsDialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.002, 0.004, 0.72)
+
+[node name="WarningFrame" type="PanelContainer" parent="Overlay/ResetDefaultsDialog"]
+custom_minimum_size = Vector2(580, 260)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -130.0
+offset_right = 290.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_reset_defaults_warning")
+
+[node name="Margin" type="MarginContainer" parent="Overlay/ResetDefaultsDialog/WarningFrame"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Overlay/ResetDefaultsDialog/WarningFrame/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("6_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "RESET ALL SETTINGS?"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.83, 1)
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+theme_override_font_sizes/font_size = 16
+text = "This will restore all game settings and controls to their default values."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ButtonReset" type="Button" parent="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../ButtonCancel")
+focus_neighbor_top = NodePath("../ButtonCancel")
+focus_neighbor_right = NodePath("../ButtonCancel")
+focus_neighbor_bottom = NodePath("../ButtonCancel")
+focus_next = NodePath("../ButtonCancel")
+focus_previous = NodePath("../ButtonCancel")
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Reset"
+tooltip_text = "Restore every setting and control binding to its default value."
+
+[node name="ButtonCancel" type="Button" parent="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../ButtonReset")
+focus_neighbor_top = NodePath("../ButtonReset")
+focus_neighbor_right = NodePath("../ButtonReset")
+focus_neighbor_bottom = NodePath("../ButtonReset")
+focus_next = NodePath("../ButtonReset")
+focus_previous = NodePath("../ButtonReset")
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Cancel"
+tooltip_text = "Keep the current settings."
+
+[node name="UnsavedGraphicsDialog" type="Control" parent="Overlay"]
+visible = false
+z_index = 35
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="Overlay/UnsavedGraphicsDialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.002, 0.004, 0.72)
+
+[node name="WarningFrame" type="PanelContainer" parent="Overlay/UnsavedGraphicsDialog"]
+custom_minimum_size = Vector2(680, 260)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -130.0
+offset_right = 340.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_reset_defaults_warning")
+
+[node name="Margin" type="MarginContainer" parent="Overlay/UnsavedGraphicsDialog/WarningFrame"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("6_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "UNSAVED GRAPHICS SETTINGS"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.83, 1)
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+theme_override_font_sizes/font_size = 16
+text = "Your graphics settings have changed. Save or discard them before leaving this page."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ButtonSave" type="Button" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Apply and save the changed graphics settings."
+focus_neighbor_left = NodePath("../ButtonGoBack")
+focus_neighbor_top = NodePath("../ButtonGoBack")
+focus_neighbor_right = NodePath("../ButtonDiscard")
+focus_neighbor_bottom = NodePath("../ButtonDiscard")
+focus_next = NodePath("../ButtonDiscard")
+focus_previous = NodePath("../ButtonGoBack")
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Save"
+
+[node name="ButtonDiscard" type="Button" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Discard the changed graphics settings and continue."
+focus_neighbor_left = NodePath("../ButtonSave")
+focus_neighbor_top = NodePath("../ButtonSave")
+focus_neighbor_right = NodePath("../ButtonGoBack")
+focus_neighbor_bottom = NodePath("../ButtonGoBack")
+focus_next = NodePath("../ButtonGoBack")
+focus_previous = NodePath("../ButtonSave")
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Discard"
+
+[node name="ButtonGoBack" type="Button" parent="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Return to the graphics settings without saving or discarding changes."
+focus_neighbor_left = NodePath("../ButtonDiscard")
+focus_neighbor_top = NodePath("../ButtonDiscard")
+focus_neighbor_right = NodePath("../ButtonSave")
+focus_neighbor_bottom = NodePath("../ButtonSave")
+focus_next = NodePath("../ButtonSave")
+focus_previous = NodePath("../ButtonDiscard")
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Go Back"
+
+[node name="GraphicsConfirmDialog" type="Control" parent="Overlay"]
+visible = false
+z_index = 40
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="Overlay/GraphicsConfirmDialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.002, 0.004, 0.72)
+
+[node name="WarningFrame" type="PanelContainer" parent="Overlay/GraphicsConfirmDialog"]
+custom_minimum_size = Vector2(580, 260)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -130.0
+offset_right = 290.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_reset_defaults_warning")
+
+[node name="Margin" type="MarginContainer" parent="Overlay/GraphicsConfirmDialog/WarningFrame"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Overlay/GraphicsConfirmDialog/WarningFrame/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("6_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "KEEP GRAPHICS SETTINGS?"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.83, 1)
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+theme_override_font_sizes/font_size = 16
+text = "Keep these graphics settings?\nReverting in 15 seconds."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ButtonYes" type="Button" parent="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../ButtonNo")
+focus_neighbor_top = NodePath("../ButtonNo")
+focus_neighbor_right = NodePath("../ButtonNo")
+focus_neighbor_bottom = NodePath("../ButtonNo")
+focus_next = NodePath("../ButtonNo")
+focus_previous = NodePath("../ButtonNo")
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Yes"
+tooltip_text = "Keep the newly applied graphics settings."
+
+[node name="ButtonNo" type="Button" parent="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content/Buttons" groups=["MenuButtons"]]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../ButtonYes")
+focus_neighbor_top = NodePath("../ButtonYes")
+focus_neighbor_right = NodePath("../ButtonYes")
+focus_neighbor_bottom = NodePath("../ButtonYes")
+focus_next = NodePath("../ButtonYes")
+focus_previous = NodePath("../ButtonYes")
+theme_override_colors/font_color = Color(1, 0.28, 0.31, 1)
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "No"
+tooltip_text = "Restore the previous graphics settings."
+
+[connection signal="pressed" from="Overlay/OnlinePanel/VBoxOnline/ButtonLeaveQueue" to="." method="_on_ButtonLeaveQueue_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonResume" to="." method="_on_ButtonResume_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonRestart" to="." method="_on_ButtonRestart_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonQuickRestart" to="." method="_on_ButtonQuickRestart_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonLeaveRace" to="." method="_on_ButtonLeaveRace_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonReturnHub" to="." method="_on_ButtonReturnHub_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonMenu" to="." method="_on_ButtonMenu_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/HBoxRespawn/ButtonRespawnStart" to="." method="_on_ButtonRespawnStart_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/HBoxRespawn/ButtonRespawnCheckpoint" to="." method="_on_ButtonRespawnCheckpoint_pressed"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxResolution/OptionResolution" to="." method="_on_OptionResolution_item_selected"]
+[connection signal="pressed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/ButtonApplyResolution" to="." method="_on_ButtonApplyResolution_pressed"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxFullscreen/CheckFullscreen" to="." method="_on_CheckFullscreen_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxVsync/CheckVsync" to="." method="_on_CheckVsync_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckSSR" to="." method="_on_CheckSSR_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckSSAO" to="." method="_on_CheckSSAO_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckSSIL" to="." method="_on_CheckSSIL_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckSDFGI" to="." method="_on_CheckSDFGI_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckShadows" to="." method="_on_CheckShadows_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckGlow" to="." method="_on_CheckGlow_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckDepthOfField" to="." method="_on_CheckDepthOfField_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckWaterDisplacement" to="." method="_on_CheckWaterDisplacement_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckWaterRefraction" to="." method="_on_CheckWaterRefraction_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckWaterNormals" to="." method="_on_CheckWaterNormals_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckWaterDepthFx" to="." method="_on_CheckWaterDepthFx_toggled"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxLOD/OptionLOD" to="." method="_on_OptionLOD_item_selected"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxCameraFar/SliderCameraFar" to="." method="_on_SliderCameraFar_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxCameraFov/SliderCameraFov" to="." method="_on_SliderCameraFov_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxMaster/SliderMaster" to="." method="_on_SliderMaster_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxMusic/SliderMusic" to="." method="_on_SliderMusic_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxSfx/SliderSfx" to="." method="_on_SliderSfx_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxUi/SliderUi" to="." method="_on_SliderUi_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabAudio/ScrollAudio/AudioContent/HBoxVoice/SliderVoice" to="." method="_on_SliderVoice_value_changed"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxHomingTargetMode/OptionHomingTargetMode" to="." method="_on_OptionHomingTargetMode_item_selected"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxSeparateHomingTargeting/CheckSeparateHomingTargeting" to="." method="_on_CheckSeparateHomingTargeting_toggled"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxMouseHomingTargetMode/OptionMouseHomingTargetMode" to="." method="_on_OptionMouseHomingTargetMode_item_selected"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxLightspeedDashTargetMode/OptionLightspeedDashTargetMode" to="." method="_on_OptionLightspeedDashTargetMode_item_selected"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxHomingCameraRadius/SliderHomingRadius" to="." method="_on_SliderHomingRadius_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraFollowSmoothing/SliderCameraFollowSmoothing" to="." method="_on_SliderCameraFollowSmoothing_value_changed"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraDolly/CheckCameraDolly" to="." method="_on_CheckCameraDolly_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraTargetLookahead/CheckCameraTargetLookahead" to="." method="_on_CheckCameraTargetLookahead_toggled"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCameraTargetLookaheadAmount/SliderCameraTargetLookaheadAmount" to="." method="_on_SliderCameraTargetLookaheadAmount_value_changed"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowCamera/CheckAutoFollowCamera" to="." method="_on_CheckAutoFollowCamera_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowControllerOnly/CheckAutoFollowControllerOnly" to="." method="_on_CheckAutoFollowControllerOnly_toggled"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowSensitivity/SliderAutoFollowSensitivity" to="." method="_on_SliderAutoFollowSensitivity_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxAutoFollowInterruptDelay/SliderAutoFollowInterruptDelay" to="." method="_on_SliderAutoFollowInterruptDelay_value_changed"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticle/CheckCenterReticle" to="." method="_on_CheckCenterReticle_toggled"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleScale/SliderCenterReticleScale" to="." method="_on_SliderCenterReticleScale_value_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleOpacity/SliderCenterReticleOpacity" to="." method="_on_SliderCenterReticleOpacity_value_changed"]
+[connection signal="color_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxCenterReticleColor/ColorCenterReticle" to="." method="_on_ColorCenterReticle_color_changed"]
+[connection signal="value_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxReticleVerticalOffset/SliderReticleVerticalOffset" to="." method="_on_SliderReticleVerticalOffset_value_changed"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxComboSystem/CheckComboSystem" to="." method="_on_CheckComboSystem_toggled"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxRecordRaceGhosts/CheckRecordRaceGhosts" to="." method="_on_CheckRecordRaceGhosts_toggled"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxGhostRecordingRate/OptionGhostRecordingRate" to="." method="_on_OptionGhostRecordingRate_item_selected"]
+[connection signal="item_selected" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxGhostPlaybackRate/OptionGhostPlaybackRate" to="." method="_on_OptionGhostPlaybackRate_item_selected"]
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxUseCharacterColorsOffline/CheckUseCharacterColorsOffline" to="." method="_on_CheckUseCharacterColorsOffline_toggled"]
+[connection signal="color_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflinePrimaryColor/ColorOfflinePrimary" to="." method="_on_ColorOfflinePrimary_color_changed"]
+[connection signal="color_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflineSecondaryColor/ColorOfflineSecondary" to="." method="_on_ColorOfflineSecondary_color_changed"]
+[connection signal="color_changed" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxOfflineTrailColor/ColorOfflineTrail" to="." method="_on_ColorOfflineTrail_color_changed"]
+[connection signal="pressed" from="Overlay/OptionsPanel/Panel/VBoxOptions/ButtonResetDefaults" to="." method="_on_ButtonResetDefaults_pressed"]
+[connection signal="pressed" from="Overlay/OptionsPanel/Panel/VBoxOptions/ButtonOptionsBack" to="." method="_on_ButtonOptionsBack_pressed"]
+[connection signal="pressed" from="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content/Buttons/ButtonReset" to="." method="_on_reset_defaults_confirmed"]
+[connection signal="pressed" from="Overlay/ResetDefaultsDialog/WarningFrame/Margin/Content/Buttons/ButtonCancel" to="." method="_on_reset_defaults_canceled"]
+[connection signal="pressed" from="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons/ButtonSave" to="." method="_on_unsaved_graphics_save_pressed"]
+[connection signal="pressed" from="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons/ButtonDiscard" to="." method="_on_unsaved_graphics_discard_pressed"]
+[connection signal="pressed" from="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons/ButtonGoBack" to="." method="_on_unsaved_graphics_go_back_pressed"]
+[connection signal="pressed" from="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content/Buttons/ButtonYes" to="." method="_on_graphics_settings_confirmed"]
+[connection signal="pressed" from="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content/Buttons/ButtonNo" to="." method="_on_graphics_settings_reverted"]
+
+[connection signal="toggled" from="Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGameplay/ScrollGameplay/GameplayContent/HBoxRememberEmotePage/CheckRememberEmotePage" to="." method="_on_CheckRememberEmotePage_toggled"]

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cnautj8pk13co"]
+
+[ext_resource type="PackedScene" uid="uid://dqu3j1eftl2sr" path="res://LS5Framework/Objects/Actors/Chao/Chao.glb" id="1_g164a"]
+
+[node name="Chao" unique_id=127034042 instance=ExtResource("1_g164a")]
+
+[node name="Skeleton3D" parent="chd_b_M" parent_id_path=PackedInt32Array(1474645413) index="0" unique_id=456089029]
+bones/7/rotation = Quaternion(0.56912565, 0.77784353, -0.16827604, -0.20673336)
+bones/9/rotation = Quaternion(0.00436866, -0.0024322106, -0.8684978, 0.49566793)
+bones/11/rotation = Quaternion(0.00436866, 0.0024322106, 0.8684978, 0.49566793)
+bones/12/rotation = Quaternion(-0.0050529307, 0.9999747, -0.0049993484, -7.779808e-05)

@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Automation/AutomationSpline2_5DDepthProfile.gd" id="1_profile"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_profile"]
+size = Vector3(8, 8, 8)
+
+[node name="AutomationSpline2_5DDepthProfile" type="Node3D"]
+script = ExtResource("1_profile")
+
+[node name="Path3D" type="Path3D" parent="."]
+debug_custom_color = Color(1, 0.45, 0.15, 1)
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_profile")
+
+[node name="Entrance" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entrance"]
+shape = SubResource("BoxShape3D_profile")
+
+[node name="Exit" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit"]
+shape = SubResource("BoxShape3D_profile")

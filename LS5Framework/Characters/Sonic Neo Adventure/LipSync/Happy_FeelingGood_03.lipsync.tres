@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://kbsm1y7y6pil"]
+
+[ext_resource type="AudioStream" uid="uid://b5cj0w4pseb7x" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Happy_FeelingGood_03.ogg" id="1_m5t4s"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_8fyhx"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_t6hv7"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_7lund"]
+
+[sub_resource type="Resource" id="Resource_cmbm5"]
+script = ExtResource("2_8fyhx")
+pose_id = &"EXP_HAPPY"
+end_time = 1.35
+blend_in = 0.48
+blend_out = 0.515
+
+[sub_resource type="Resource" id="Resource_7nppo"]
+script = ExtResource("2_8fyhx")
+pose_id = &"EXP_SMUG"
+start_time = 0.44
+end_time = 1.3499999999999999
+row = 1
+blend_in = 0.45499999999999996
+blend_out = 0.37
+
+[sub_resource type="Resource" id="Resource_huxky"]
+script = ExtResource("2_8fyhx")
+pose_id = &"VIS_F_V"
+start_time = 0.03
+end_time = 0.29999999999999993
+blend_in = 0.11499999999999999
+blend_out = 0.11499999999999999
+
+[sub_resource type="Resource" id="Resource_ghrml"]
+script = ExtResource("2_8fyhx")
+pose_id = &"VIS_EE"
+start_time = 0.21
+end_time = 0.48999999999999994
+row = 1
+blend_in = 0.13999999999999996
+blend_out = 0.13999999999999996
+
+[sub_resource type="Resource" id="Resource_to58u"]
+script = ExtResource("2_8fyhx")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.34
+end_time = 0.52
+row = 3
+blend_in = 0.08
+blend_out = 0.09
+
+[sub_resource type="Resource" id="Resource_ucmm3"]
+script = ExtResource("2_8fyhx")
+pose_id = &"VIS_Ih"
+start_time = 0.4
+end_time = 0.6599999999999999
+row = 2
+blend_in = 0.13
+blend_out = 0.13
+
+[sub_resource type="Resource" id="Resource_f4vpy"]
+script = ExtResource("2_8fyhx")
+pose_id = &"VIS_W_OO"
+start_time = 0.51
+end_time = 0.73
+blend_in = 0.10999999999999999
+blend_out = 0.10999999999999999
+
+[sub_resource type="Resource" id="Resource_qehuo"]
+script = ExtResource("2_8fyhx")
+pose_id = &"VIS_Uh"
+start_time = 0.58
+end_time = 0.8900000000000001
+row = 1
+blend_in = 0.13
+blend_out = 0.13
+strength = 0.8
+
+[resource]
+script = ExtResource("4_7lund")
+profile = ExtResource("3_t6hv7")
+audio = ExtResource("1_m5t4s")
+audible_start = 0.11892509204335511
+audible_end = 0.8719150880933739
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_8fyhx")]([SubResource("Resource_huxky"), SubResource("Resource_ghrml"), SubResource("Resource_to58u"), SubResource("Resource_ucmm3"), SubResource("Resource_f4vpy"), SubResource("Resource_qehuo")])
+expression_cues = Array[ExtResource("2_8fyhx")]([SubResource("Resource_cmbm5"), SubResource("Resource_7nppo")])

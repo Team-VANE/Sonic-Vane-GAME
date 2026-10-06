@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://hlgooqx7uwdi"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_xphwv"]
+
+[resource]
+script = ExtResource("1_xphwv")
+level_name = "White Jungle"
+order = 5
+selection_category = "Work In Progress"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/White Jungle/white_jungle.tscn"

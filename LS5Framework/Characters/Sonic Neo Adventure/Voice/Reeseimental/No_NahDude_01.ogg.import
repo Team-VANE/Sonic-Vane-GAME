@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://su6s0yp2w7ic"
+path="res://.godot/imported/No_NahDude_01.ogg-71b3eb2be7f27f62cc7edc6c9f87f1ec.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_NahDude_01.ogg"
+dest_files=["res://.godot/imported/No_NahDude_01.ogg-71b3eb2be7f27f62cc7edc6c9f87f1ec.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

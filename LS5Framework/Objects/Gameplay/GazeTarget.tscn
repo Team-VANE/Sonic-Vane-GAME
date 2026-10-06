@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cl7c1iu4xvpq7"]
+
+[ext_resource type="Script" uid="uid://c8t75yhaf5r4e" path="res://LS5Framework/Scripts/Animation/GazeTarget3D.gd" id="1_gaze_target"]
+
+[node name="GazeTarget" type="Marker3D" unique_id=1519721248 groups=["gaze_targets"]]
+script = ExtResource("1_gaze_target")

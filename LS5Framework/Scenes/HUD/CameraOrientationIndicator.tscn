@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/HUD/CameraOrientationIndicator.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/UI/HUD_Camera_GravityUp_New.png" id="2_gravity"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/UI/HUD_Camera_PlayerUp_New.png" id="3_player"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/Camera_Toggle_GravityUp.wav" id="4_gravity_sound"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/Camera_Toggle_PlayerUp.wav" id="5_player_sound"]
+[ext_resource type="Shader" path="res://LS5Framework/Shaders/UI/HUDColorize.gdshader" id="6_colorize"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_colorize"]
+shader = ExtResource("6_colorize")
+
+[node name="CameraOrientationIndicator" type="Control"]
+custom_minimum_size = Vector2(300, 180)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 180.0
+mouse_filter = 2
+script = ExtResource("1_script")
+gravity_up_texture = ExtResource("2_gravity")
+player_up_texture = ExtResource("3_player")
+
+[node name="ModeTexture" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_colorize")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_gravity")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GravityUpAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_gravity_sound")
+bus = &"UI"
+
+[node name="PlayerUpAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_player_sound")
+bus = &"UI"

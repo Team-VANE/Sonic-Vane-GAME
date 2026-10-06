@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="DynamicWeatherPreset" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/WeatherSystem/DynamicWeatherPreset.gd" id="1_preset"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/DayNightCycle/Weather/Overcast.tres" id="2_weather"]
+[ext_resource type="Resource" path="res://LS5Framework/Objects/Environment/Rain/Profiles/LightRain.tres" id="3_rain"]
+
+[resource]
+script = ExtResource("1_preset")
+preset_id = &"light_rain"
+display_name = "Light Rain"
+feature_tags = Array[StringName]([&"clouds", &"rain"])
+sky_weather = ExtResource("2_weather")
+rain_profile = ExtResource("3_rain")
+selection_weight = 0.85
+severity = 0.62
+duration_range_seconds = Vector2(100, 240)
+transition_range_seconds = Vector2(14, 30)

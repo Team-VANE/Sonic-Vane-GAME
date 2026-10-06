@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://bamxh23iv80q4"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_pcmnh"]
+
+[resource]
+script = ExtResource("1_pcmnh")
+level_name = "custom"
+order = 999
+selection_category = "Misc"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Custom/Custom_Level.tscn"
