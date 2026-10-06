@@ -472,6 +472,8 @@ var _drift_turn_yaw_offset_current: float = 0.0
 
 # Camera constraints (volumes)
 var _constraint_driver: CameraConstraintController = CameraConstraintController.new()
+var _influence_free_pivot: Vector3 = Vector3.ZERO
+var _influence_free_pivot_valid: bool = false
 var _default_fov: float = 70.0
 var _speed_fov_current: float = 0.0
 var _landing_feedback_remaining: float = 0.0
@@ -909,7 +911,7 @@ func _apply_rear_view_transform(delta: float) -> void:
 	var desired_position: Vector3 = global_position + rear_rotation * (camera.global_position - global_position)
 	var collision_enabled: bool = camera_collision_enabled
 	var constraint: CameraConstraint = _constraint_driver.selected if is_instance_valid(_constraint_driver.selected) else null
-	if constraint and constraint.collision_mode != CameraConstraint.CollisionMode.INHERIT:
+	if constraint and _constraint_driver.selected_has_effect() and constraint.collision_mode != CameraConstraint.CollisionMode.INHERIT:
 		collision_enabled = constraint.collision_mode == CameraConstraint.CollisionMode.ENABLED
 	camera.global_position = _resolve_camera_collision(desired_position, collision_enabled, delta)
 	camera.global_basis = _normalize_basis(rear_rotation * camera.global_basis)
@@ -1130,7 +1132,7 @@ func _get_use_player_up_effective() -> bool:
 
 func _get_player_up_requested() -> bool:
 	var constraint: CameraConstraint = _constraint_driver.selected if is_instance_valid(_constraint_driver.selected) else null
-	if is_instance_valid(constraint) and not constraint.alignment_override_dismissed and constraint.up_mode != CameraConstraint.UpMode.INHERIT:
+	if is_instance_valid(constraint) and _constraint_driver.selected_has_effect() and not constraint.alignment_override_dismissed and constraint.up_mode != CameraConstraint.UpMode.INHERIT:
 		return constraint.up_mode == CameraConstraint.UpMode.PLAYER
 	return _player_up_toggle_enabled
 
@@ -2347,7 +2349,7 @@ func _update_auto_follow(delta: float, up: Vector3, constraint_active: bool) -> 
 	var controls_available: bool = (
 		has_motion_source
 		and not constraint_active
-		and (not _camera_controls_disabled() or _manual_input_lock_allows_auto_follow)
+		and (not _camera_follow_disabled() or _manual_input_lock_allows_auto_follow)
 		and (_auto_follow_interrupt_timer <= 0.0 or wall_kick_bypass_available)
 		and not _inverted_up_transition_active
 	)
@@ -2607,7 +2609,7 @@ func _update_parkour_wall_kick_assist(delta: float, constraint_active: bool) -> 
 		or not parkour_wall_kick_assist_enabled
 		or not SettingsManager.is_controller_input_active()
 		or constraint_active
-		or _camera_controls_disabled()
+		or _camera_follow_disabled()
 	):
 		_parkour_wall_kick_assist_active = false
 		return
@@ -2854,7 +2856,14 @@ func _ease_in_out_sine(t: float) -> float:
 	return 0.5 - 0.5 * cos(PI * t_clamped)
 
 func _camera_controls_disabled() -> bool:
-	return manual_input_locked or (is_instance_valid(_constraint_driver.selected) and _constraint_driver.selected.disable_camera_controls)
+	return manual_input_locked or (_constraint_driver.selected_has_effect() and _constraint_driver.selected.disable_camera_controls)
+
+
+func _camera_follow_disabled() -> bool:
+	if manual_input_locked:
+		return true
+	var constraint: CameraConstraint = _constraint_driver.selected
+	return _camera_controls_disabled() and not (is_instance_valid(constraint) and constraint.has_influence_trait(1))
 
 
 func set_manual_input_lock(active: bool, allow_auto_follow: bool = false) -> void:
@@ -2944,8 +2953,10 @@ func _update_transform(delta: float) -> void:
 	_restore_camera_local_basis()
 	var constraint: CameraConstraint = _constraint_driver.selected
 	var presenting: bool = _constraint_driver.is_presenting()
-	var suppress_speed: bool = is_instance_valid(constraint) and constraint.suppress_speed_effects
+	var proximity_blend: bool = is_instance_valid(constraint) and constraint.has_influence_trait()
+	var suppress_speed: bool = _constraint_driver.selected_has_effect() and constraint.suppress_speed_effects
 	var orientation_owned: bool = _constraint_driver.owns_orientation()
+	var suppress_free_orientation: bool = _constraint_driver.suppresses_free_orientation()
 	var up: Vector3 = _get_camera_up()
 	var speed_fov_value: float = _update_speed_fov(delta, suppress_speed)
 	if suppress_speed:
@@ -2958,8 +2969,8 @@ func _update_transform(delta: float) -> void:
 	if speed_distance_offset < 0.0:
 		min_distance_effective = maxf(min_distance + speed_distance_offset, 0.01)
 	var effective_distance: float = clampf(distance + speed_distance_offset, min_distance_effective, max_distance)
-	_update_auto_follow(delta, up, orientation_owned)
-	_update_parkour_camera(delta, up, orientation_owned)
+	_update_auto_follow(delta, up, suppress_free_orientation)
+	_update_parkour_camera(delta, up, suppress_free_orientation)
 	var zoom_t: float = 0.0
 	if max_distance > min_distance:
 		zoom_t = clampf((effective_distance - min_distance) / (max_distance - min_distance), 0.0, 1.0)
@@ -2967,16 +2978,20 @@ func _update_transform(delta: float) -> void:
 	current_vertical_offset += speed_vertical_offset + _get_aspect_ratio_height_offset()
 	var dolly_position: Vector3 = _update_dolly_follow(delta, _get_dolly_tracking_up())
 	var desired_target_pos: Vector3 = dolly_position + up * current_vertical_offset
-	if not orientation_owned:
+	if not suppress_free_orientation:
 		desired_target_pos += _parkour_wall_run_pan_current
 	var rig_pos: Vector3 = global_position
-	if presenting or _teleport_snap_timer > 0.0 or dolly_follow_enabled:
+	if proximity_blend and _influence_free_pivot_valid:
+		rig_pos = _influence_free_pivot
+	if (presenting and not proximity_blend) or _teleport_snap_timer > 0.0 or dolly_follow_enabled:
 		rig_pos = desired_target_pos
 	elif smooth_follow:
 		var follow_speed: float = _get_dolly_response(0.0)
 		rig_pos = rig_pos.lerp(desired_target_pos, 1.0 - exp(-follow_speed * delta)) if follow_speed > 0.0 else desired_target_pos
 	else:
 		rig_pos = desired_target_pos
+	_influence_free_pivot = rig_pos
+	_influence_free_pivot_valid = proximity_blend
 	global_position = rig_pos
 	var base_forward: Vector3 = _get_base_forward_ref(up)
 	var flat_forward: Vector3 = base_forward.rotated(up, _yaw).normalized()
@@ -3330,7 +3345,8 @@ func _get_angles_from_forward(forward: Vector3, up: Vector3, fallback: Vector2) 
 	return Vector2(yaw, pitch)
 
 
-func _set_control_angles_from_forward(forward: Vector3, up: Vector3) -> void:
+## Preserves the free-camera heading reference during proximity presentation.
+func _set_control_angles_from_forward(forward: Vector3, up: Vector3, preserve_heading_reference: bool = false) -> void:
 	var u := up.normalized()
 	if u.length() < 0.001:
 		u = _get_target_gravity_up()
@@ -3341,7 +3357,8 @@ func _set_control_angles_from_forward(forward: Vector3, up: Vector3) -> void:
 	if flat.length() < 0.001:
 		return
 	flat = flat.normalized()
-	_reset_base_forward_ref(u)
+	if not preserve_heading_reference:
+		_reset_base_forward_ref(u)
 	_control_yaw = _get_yaw_from_forward(flat, u, _control_yaw)
 	var pitch: float = -asin(clamp(f.dot(u), -1.0, 1.0))
 	var min_pitch := deg_to_rad(min_pitch_deg)

@@ -53,6 +53,7 @@
 [ext_resource type="Script" uid="uid://c1rk71fl0lh8s" path="res://LS5Framework/Objects/Carry/CarryableObject.gd" id="51_a6a28"]
 [ext_resource type="PackedScene" uid="uid://ddj7d3ue1la8i" path="res://LS5Framework/Objects/Carry/CarryableCrate.tscn" id="52_ak7f8"]
 [ext_resource type="PackedScene" uid="uid://cwsdj34dkp0dx" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn" id="52_mu1lr"]
+[ext_resource type="Script" uid="uid://bgccl8q6bo21v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraInfluenceTrait.gd" id="52_syfp7"]
 [ext_resource type="PackedScene" uid="uid://c3gu5qijp7yb3" path="res://LS5Framework/Objects/Enemies/SpikeBall/SpikeBall.tscn" id="53_mu1lr"]
 [ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="53_tg66e"]
 [ext_resource type="PackedScene" uid="uid://crpqw8jeu0oih" path="res://LS5Framework/Objects/Testing/Sphere_parameters.glb" id="54_tg66e"]
@@ -69,7 +70,7 @@
 [ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
 [ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbb5r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r8jnm"]
 resource_local_to_scene = true
 shader = ExtResource("10_e4tho")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -127,16 +128,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_syfp7"]
+[sub_resource type="Sky" id="Sky_ncnqb"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_mbb5r")
+sky_material = SubResource("ShaderMaterial_r8jnm")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_r8jnm"]
+[sub_resource type="Environment" id="Environment_c1j06"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_syfp7")
+sky = SubResource("Sky_ncnqb")
 ambient_light_source = 3
 ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
 ambient_light_sky_contribution = 0.82
@@ -214,11 +215,11 @@ _data = {
 }
 point_count = 3
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_c1j06"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ak61p"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_ak61p"]
+[sub_resource type="Curve3D" id="Curve3D_0c4yb"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -226,11 +227,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_jtfey"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_g2vd7"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_0c4yb"]
+[sub_resource type="Curve3D" id="Curve3D_ykvil"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, -55.915, 106.51, 0.295, 0, 0, 0, 0, -98.39, -19.43, 0, 0, 0, 7.03, 71.747, 14.025),
@@ -411,27 +412,27 @@ duration = 2.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_x6a63"]
 size = Vector3(97.3692, 157.25708, 238.4136)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2vd7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3adtc"]
 render_priority = 0
 shader = ExtResource("41_1i28t")
 shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 27150.247
+shader_parameter/swap_time = 499.76800000000003
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
 height = 8.0
 radius = 18.006348
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykvil"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q6jdw"]
 render_priority = 0
 shader = ExtResource("41_1i28t")
 shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 27150.247
+shader_parameter/swap_time = 499.76800000000003
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
 bounce = 1.0
@@ -448,32 +449,16 @@ _data = {
 }
 point_count = 17
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_3adtc"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_luhu6"]
 size = Vector2(20000, 20000)
 subdivide_width = 32
 subdivide_depth = 32
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_q6jdw"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_l23he"]
 noise_type = 3
 fractal_type = 2
 domain_warp_enabled = true
 domain_warp_fractal_type = 0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_luhu6"]
-width = 1024
-height = 1024
-noise = SubResource("FastNoiseLite_q6jdw")
-seamless = true
-as_normal_map = true
-bump_strength = 9.3
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_l23he"]
-noise_type = 3
-offset = Vector3(12, 0, 0)
-fractal_type = 2
-fractal_octaves = 6
-fractal_lacunarity = 1.855
-domain_warp_enabled = true
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_anuua"]
 width = 1024
@@ -481,12 +466,28 @@ height = 1024
 noise = SubResource("FastNoiseLite_l23he")
 seamless = true
 as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2pldv"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_muffe"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_2pldv")
+seamless = true
+as_normal_map = true
 bump_strength = 8.2
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2pldv"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5l7yj"]
 load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_muffe"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3yimx"]
 render_priority = 0
 shader = ExtResource("16_phgj3")
 shader_parameter/albedo = Color(0, 0.7316994, 0.88269347, 1)
@@ -494,9 +495,9 @@ shader_parameter/albedo2 = Color(0.8127987, 0.86050355, 0.97439605, 1)
 shader_parameter/metallic = 0.0
 shader_parameter/roughness = 0.02
 shader_parameter/alpha = 0.85
-shader_parameter/wave = SubResource("CompressedTexture2D_2pldv")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_luhu6")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_anuua")
+shader_parameter/wave = SubResource("CompressedTexture2D_5l7yj")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_anuua")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_muffe")
 shader_parameter/wave_uv_scale = 0.455
 shader_parameter/normal_uv_scale = 0.01
 shader_parameter/normal2_uv_scale = 0.01
@@ -663,6 +664,13 @@ phase = 1
 mode = 1
 duration = 0.8
 
+[sub_resource type="Resource" id="Resource_4n6d6"]
+script = ExtResource("52_syfp7")
+reference_path = NodePath("ConstraintPoint")
+full_influence_distance = 15.0
+zero_influence_distance = 120.0
+metadata/_custom_type_script = "uid://bgccl8q6bo21v"
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_l23he"]
 size = Vector3(114.02046, 48.711006, 92.953896)
 
@@ -756,23 +764,23 @@ roughness = 0.17
 [sub_resource type="SphereShape3D" id="SphereShape3D_736jh"]
 radius = 10.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_5l7yj"]
-resource_local_to_scene = true
-radius = 40.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_3yimx"]
-resource_local_to_scene = true
-radius = 40.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_4n6d6"]
-resource_local_to_scene = true
-radius = 40.0
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_tt4we"]
 resource_local_to_scene = true
 radius = 40.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_jvpi5"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pkwk4"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ydo33"]
+resource_local_to_scene = true
+radius = 40.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_344ll"]
 resource_local_to_scene = true
 radius = 40.0
 
@@ -788,54 +796,54 @@ height = 35.984375
 radius = 4.0
 height = 36.0
 
-[sub_resource type="Resource" id="Resource_pkwk4"]
-resource_local_to_scene = true
-script = ExtResource("53_tg66e")
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_ydo33"]
-resource_local_to_scene = true
-script = ExtResource("53_tg66e")
-reward_type = 1
-amount = 69.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_344ll"]
-resource_local_to_scene = true
-script = ExtResource("53_tg66e")
-reward_type = 1
-amount = 420.0
-random_ring_pool = null
-
 [sub_resource type="Resource" id="Resource_jsxg6"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
-reward_type = 1
-amount = 666.6
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_ww8qt"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
-amount = 10.0
+amount = 69.0
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_0gvoy"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
-amount = 10.0
+amount = 420.0
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_lraxv"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 666.6
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_a6b6k"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_bch57"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_i48ms"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 6
 amount = 1.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_a6b6k"]
+[sub_resource type="Resource" id="Resource_svhyb"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 8
@@ -1128,7 +1136,7 @@ initial_time_of_day_hours = 8.0
 day_length_minutes = 14.0
 
 [node name="WorldEnvironment" parent="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_r8jnm")
+environment = SubResource("Environment_c1j06")
 
 [node name="OBJECTS" type="Node3D" parent="." unique_id=1812384607]
 
@@ -1287,7 +1295,6 @@ process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1065445, 11.320175, 161.2479)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring17" parent="OBJECTS/SPRINGS" unique_id=1538883451 instance=ExtResource("8_y46bu")]
@@ -1296,7 +1303,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1065445, -0.6798248, 161.
 strength = 5.0
 stop_momentum = false
 min_additive_launch_speed = 5.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring5" parent="OBJECTS/SPRINGS" unique_id=780955347 instance=ExtResource("8_y46bu")]
@@ -1305,14 +1311,12 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 143.22954, 0.32017517, 285.20
 snap_to_center = false
 strength = 50.0
 stop_momentum = false
-override_previous_lock_timers = null
 
 [node name="Spring16" parent="OBJECTS/SPRINGS" unique_id=1555220974 instance=ExtResource("8_y46bu")]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.705124, -0.8765023, 139.80655)
 snap_to_center = false
 strength = 90.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring18" parent="OBJECTS/SPRINGS" unique_id=1179249979 instance=ExtResource("8_y46bu")]
@@ -1323,11 +1327,10 @@ strength = 62.0
 use_trajectory_solver = true
 trajectory_arc_enabled = true
 trajectory_arc_height = 20.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring18" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_c1j06")
+shape = SubResource("CylinderShape3D_ak61p")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
@@ -1336,7 +1339,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.910889, -14.737915)
 visible = true
 
 [node name="SplinePath" parent="OBJECTS/SPRINGS/Spring18" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_ak61p")
+curve = SubResource("Curve3D_0c4yb")
 
 [node name="Mesh" parent="OBJECTS/SPRINGS/Spring18" index="5" unique_id=1922896033]
 transform = Transform3D(1, 0, 0, 0, 0.98990047, 0.14176409, 0, -0.14176409, 0.98990047, 0, 0, 0)
@@ -1351,7 +1354,6 @@ strength = 75.0
 stop_momentum = false
 additive_mode = 1
 min_additive_launch_speed = 25.0
-override_previous_lock_timers = null
 
 [node name="Spring13" parent="OBJECTS/SPRINGS" unique_id=1961058098 instance=ExtResource("8_y46bu")]
 process_mode = 3
@@ -1361,7 +1363,6 @@ strength = 75.0
 stop_momentum = false
 additive_mode = 1
 min_additive_launch_speed = 25.0
-override_previous_lock_timers = null
 
 [node name="Spring14" parent="OBJECTS/SPRINGS" unique_id=1504300508 instance=ExtResource("8_y46bu")]
 process_mode = 3
@@ -1371,7 +1372,6 @@ strength = 75.0
 stop_momentum = false
 additive_mode = 1
 min_additive_launch_speed = 25.0
-override_previous_lock_timers = null
 
 [node name="Spring15" parent="OBJECTS/SPRINGS" unique_id=1519697236 instance=ExtResource("8_y46bu")]
 process_mode = 3
@@ -1381,13 +1381,11 @@ strength = 75.0
 stop_momentum = false
 additive_mode = 1
 min_additive_launch_speed = 25.0
-override_previous_lock_timers = null
 
 [node name="Spring2" parent="OBJECTS/SPRINGS" unique_id=50423352 instance=ExtResource("8_y46bu")]
 process_mode = 3
 transform = Transform3D(-1, 0, 8.742278e-08, 6.181724e-08, 0.7071069, 0.70710677, -6.181724e-08, 0.7071069, -0.70710677, -26.106544, 27.320175, 161.2479)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 2.0
@@ -1397,7 +1395,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(1.3113416e-07, 1.1920929e-07, -1, -1, 5.2108035e-15, -1.3113416e-07, -1.0421607e-14, 1, 1.1920929e-07, -26.106544, 34.320175, 190.2479)
 strength = 150.0
-override_previous_lock_timers = null
 movement_lock_time = 3.0
 action_lock_time = 3.0
 align_time = 3.0
@@ -1407,7 +1404,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(1.3113416e-07, 1.1920929e-07, -1, -0.70710677, 0.70710677, -8.432153e-09, 0.70710677, 0.70710677, 1.7701954e-07, -26.106544, 34.320175, 276.2479)
 strength = 200.0
-override_previous_lock_timers = null
 movement_lock_time = 3.0
 action_lock_time = 3.0
 align_time = 3.0
@@ -1417,7 +1413,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(-1.1920927e-07, 1.3113413e-07, -1, -0.25881892, -0.9659258, -9.5812226e-08, -0.9659258, 0.25881892, 1.4908733e-07, -26.106535, 87.35318, 329.2809)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 3.0
 action_lock_time = 3.0
 align_time = 3.0
@@ -1427,7 +1422,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(-4.369187e-08, 0.9999943, -0.0033491482, 1.3059034e-09, -0.0033491482, -0.9999943, -0.9999999, -4.3696e-08, -1.1595659e-09, -26.10653, 39.25508, 342.67792)
 strength = 175.0
-override_previous_lock_timers = null
 movement_lock_time = 0.55
 action_lock_time = 0.55
 align_time = 0.42
@@ -1442,7 +1436,6 @@ visible = false
 active = false
 snap_to_center = false
 strength = 175.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 clear_movement_lock_on_ground = false
@@ -1459,7 +1452,6 @@ visible = false
 active = false
 snap_to_center = false
 strength = 190.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 clear_movement_lock_on_ground = false
@@ -1473,7 +1465,6 @@ detach_from_ground = false
 process_mode = 3
 transform = Transform3D(-1, 0, -8.742277e-08, 0, -0.99999994, 0, -8.742278e-08, 0, 0.99999994, -26.106544, 54.24194, 191.12749)
 strength = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_time = 2.0
@@ -1483,7 +1474,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.106544, -0.6798248, 161.2479)
 strength = 150.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 2.0
@@ -1493,7 +1483,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, -26.106544, -0.6798248, 214.2479)
 strength = 150.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 2.0
@@ -1502,12 +1491,12 @@ spline_enabled = true
 spline_speed = 120.0
 
 [node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring26" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_jtfey")
+shape = SubResource("CylinderShape3D_g2vd7")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="SplinePath" parent="OBJECTS/SPRINGS/Spring26" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_0c4yb")
+curve = SubResource("Curve3D_ykvil")
 
 [node name="Mesh" parent="OBJECTS/SPRINGS/Spring26" index="5" unique_id=1922896033]
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
@@ -1582,7 +1571,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar2" parent="OBJECTS/VaultBarCollection1" unique_id=1519436337 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
@@ -1592,7 +1580,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar3" parent="OBJECTS/VaultBarCollection1" unique_id=132280594 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
@@ -1602,7 +1589,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar4" parent="OBJECTS/VaultBarCollection1" unique_id=193698557 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
@@ -1612,7 +1598,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar5" parent="OBJECTS/VaultBarCollection1" unique_id=1449709637 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
@@ -1622,7 +1607,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar6" parent="OBJECTS/VaultBarCollection1" unique_id=586240385 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
@@ -1632,7 +1616,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar7" parent="OBJECTS/VaultBarCollection1" unique_id=1187231111 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
@@ -1642,7 +1625,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar8" parent="OBJECTS/VaultBarCollection1" unique_id=766090389 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
@@ -1652,7 +1634,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar9" parent="OBJECTS/VaultBarCollection1" unique_id=1125827524 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
@@ -1662,7 +1643,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar10" parent="OBJECTS/VaultBarCollection1" unique_id=1714068132 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
@@ -1672,7 +1652,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar11" parent="OBJECTS/VaultBarCollection1" unique_id=248239333 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
@@ -1682,7 +1661,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBarCollection2" type="Node3D" parent="OBJECTS" unique_id=787661337]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1538.4457, 1643.1544)
@@ -1695,7 +1673,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar2" parent="OBJECTS/VaultBarCollection2" unique_id=1231291626 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
@@ -1705,7 +1682,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar3" parent="OBJECTS/VaultBarCollection2" unique_id=903644258 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
@@ -1715,7 +1691,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar4" parent="OBJECTS/VaultBarCollection2" unique_id=223800162 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
@@ -1725,7 +1700,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar5" parent="OBJECTS/VaultBarCollection2" unique_id=268222967 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
@@ -1735,7 +1709,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar6" parent="OBJECTS/VaultBarCollection2" unique_id=463120356 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
@@ -1745,7 +1718,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar7" parent="OBJECTS/VaultBarCollection2" unique_id=967704345 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
@@ -1755,7 +1727,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar8" parent="OBJECTS/VaultBarCollection2" unique_id=864591914 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
@@ -1765,7 +1736,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar9" parent="OBJECTS/VaultBarCollection2" unique_id=196687430 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
@@ -1775,7 +1745,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar10" parent="OBJECTS/VaultBarCollection2" unique_id=1325626928 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
@@ -1785,7 +1754,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar11" parent="OBJECTS/VaultBarCollection2" unique_id=1240984226 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
@@ -1795,7 +1763,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBarCollection5" type="Node3D" parent="OBJECTS" unique_id=756014170]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 2208.2776, 1643.1544)
@@ -1808,7 +1775,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar2" parent="OBJECTS/VaultBarCollection5" unique_id=1785013601 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
@@ -1818,7 +1784,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar3" parent="OBJECTS/VaultBarCollection5" unique_id=2138442416 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
@@ -1828,7 +1793,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar4" parent="OBJECTS/VaultBarCollection5" unique_id=1601872496 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
@@ -1838,7 +1802,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar5" parent="OBJECTS/VaultBarCollection5" unique_id=1808420274 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
@@ -1848,7 +1811,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar6" parent="OBJECTS/VaultBarCollection5" unique_id=1206238871 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
@@ -1858,7 +1820,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar7" parent="OBJECTS/VaultBarCollection5" unique_id=1214830476 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
@@ -1868,7 +1829,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar8" parent="OBJECTS/VaultBarCollection5" unique_id=1855883776 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
@@ -1878,7 +1838,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar9" parent="OBJECTS/VaultBarCollection5" unique_id=212137978 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
@@ -1888,7 +1847,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar10" parent="OBJECTS/VaultBarCollection5" unique_id=1681561158 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
@@ -1898,7 +1856,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar11" parent="OBJECTS/VaultBarCollection5" unique_id=443155482 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
@@ -1908,7 +1865,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBarCollection3" type="Node3D" parent="OBJECTS" unique_id=1321788286]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1469.4457, 2252.1543)
@@ -1921,7 +1877,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar2" parent="OBJECTS/VaultBarCollection3" unique_id=1385882928 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
@@ -1931,7 +1886,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar3" parent="OBJECTS/VaultBarCollection3" unique_id=444631548 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
@@ -1941,7 +1895,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar4" parent="OBJECTS/VaultBarCollection3" unique_id=770094503 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
@@ -1951,7 +1904,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar5" parent="OBJECTS/VaultBarCollection3" unique_id=42573792 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
@@ -1961,7 +1913,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar6" parent="OBJECTS/VaultBarCollection3" unique_id=1371226321 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
@@ -1971,7 +1922,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar7" parent="OBJECTS/VaultBarCollection3" unique_id=570318979 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
@@ -1981,7 +1931,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar8" parent="OBJECTS/VaultBarCollection3" unique_id=966334578 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
@@ -1991,7 +1940,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar9" parent="OBJECTS/VaultBarCollection3" unique_id=639818090 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
@@ -2001,7 +1949,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar10" parent="OBJECTS/VaultBarCollection3" unique_id=579379698 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
@@ -2011,7 +1958,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar11" parent="OBJECTS/VaultBarCollection3" unique_id=1919736694 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
@@ -2021,7 +1967,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBarCollection6" type="Node3D" parent="OBJECTS" unique_id=1953366146]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 1469.4457, 2749.1543)
@@ -2034,7 +1979,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar2" parent="OBJECTS/VaultBarCollection6" unique_id=1238071117 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
@@ -2044,7 +1988,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar3" parent="OBJECTS/VaultBarCollection6" unique_id=1376059688 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
@@ -2054,7 +1997,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar4" parent="OBJECTS/VaultBarCollection6" unique_id=632393420 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
@@ -2064,7 +2006,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar5" parent="OBJECTS/VaultBarCollection6" unique_id=548675508 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
@@ -2074,7 +2015,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar6" parent="OBJECTS/VaultBarCollection6" unique_id=1609698207 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
@@ -2084,7 +2024,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar7" parent="OBJECTS/VaultBarCollection6" unique_id=1833048204 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
@@ -2094,7 +2033,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar8" parent="OBJECTS/VaultBarCollection6" unique_id=30093731 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
@@ -2104,7 +2042,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar9" parent="OBJECTS/VaultBarCollection6" unique_id=688884129 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
@@ -2114,7 +2051,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar10" parent="OBJECTS/VaultBarCollection6" unique_id=1628283840 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
@@ -2124,7 +2060,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar11" parent="OBJECTS/VaultBarCollection6" unique_id=561464383 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
@@ -2134,7 +2069,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBarCollection4" type="Node3D" parent="OBJECTS" unique_id=1655179228]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1054.5219, 2137.4583, 2252.1543)
@@ -2147,7 +2081,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar2" parent="OBJECTS/VaultBarCollection4" unique_id=335004881 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.50415, 0)
@@ -2157,7 +2090,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar3" parent="OBJECTS/VaultBarCollection4" unique_id=1932641256 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -78.50415, 0)
@@ -2167,7 +2099,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar4" parent="OBJECTS/VaultBarCollection4" unique_id=198149492 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -141.50415, 0)
@@ -2177,7 +2108,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar5" parent="OBJECTS/VaultBarCollection4" unique_id=1705642041 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -204.50415, 0)
@@ -2187,7 +2117,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar6" parent="OBJECTS/VaultBarCollection4" unique_id=376024939 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -279.50415, 0)
@@ -2197,7 +2126,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar7" parent="OBJECTS/VaultBarCollection4" unique_id=1756769247 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -350.50415, 0)
@@ -2207,7 +2135,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar8" parent="OBJECTS/VaultBarCollection4" unique_id=1875421169 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -415.50415, 0)
@@ -2217,7 +2144,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar9" parent="OBJECTS/VaultBarCollection4" unique_id=1117244267 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -477.50415, 0)
@@ -2227,7 +2153,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar10" parent="OBJECTS/VaultBarCollection4" unique_id=531808442 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -530.50415, 0)
@@ -2237,7 +2162,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="VaultBar11" parent="OBJECTS/VaultBarCollection4" unique_id=1547756431 instance=ExtResource("13_07blk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -596.50415, 0)
@@ -2247,7 +2171,6 @@ minimum_launch_impulse = 110.0
 maximum_launch_impulse = 250.0
 launch_aim_origin = 1
 opposite_entry_uses_separate_launch_direction = true
-override_previous_lock_timers = null
 
 [node name="RaceObjectLayout_Parkour1" parent="OBJECTS" unique_id=265609367 instance=ExtResource("14_ax8r5")]
 race_id = "NKOPRK1"
@@ -2270,7 +2193,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.102226, 7.9234977, 253.19
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.754448, -1.6400023, 142.02415)
 up_speed = 90.0
 hold_forward_time = 2.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 
@@ -2279,7 +2201,6 @@ transform = Transform3D(0.33518085, 0, 0.94215375, 0, 1, 0, -0.94215375, 0, 0.33
 size = 2.0
 forward_speed = 137.0
 up_speed = 79.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 
 [node name="JumpPanelRamp4" parent="OBJECTS" unique_id=1796734974 instance=ExtResource("4_18sbj")]
@@ -2287,7 +2208,6 @@ transform = Transform3D(0.40947452, 0, 0.9123215, 0, 1, 0, -0.9123215, 0, 0.4094
 size = 2.0
 forward_speed = 137.0
 up_speed = 79.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 
 [node name="JumpPanelRamp5" parent="OBJECTS" unique_id=585493264 instance=ExtResource("4_18sbj")]
@@ -2295,7 +2215,6 @@ transform = Transform3D(0.45125973, 0, 0.89239264, 0, 1, 0, -0.89239264, 0, 0.45
 size = 2.0
 forward_speed = 137.0
 up_speed = 79.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 
 [node name="LEVEL_PIECES" type="Node3D" parent="." unique_id=1763729794 groups=["level", "navmesh"]]
@@ -3744,7 +3663,6 @@ metadata/_edit_lock_ = true
 [node name="DashPanel" parent="." unique_id=1940687985 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 81.198105, -0.35893446, 376.583)
 strength = 190.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 
@@ -3752,92 +3670,77 @@ action_lock_time = 1.0
 transform = Transform3D(6.7657496e-08, -1, 2.9763438e-08, -0.84541744, -4.1301995e-08, 0.5341062, -0.5341062, -6.129882e-08, -0.84541744, 531.8398, 15.913658, 728.27386)
 size = 3.0
 strength = 120.0
-override_previous_lock_timers = null
 
 [node name="DashPanel6" parent="." unique_id=625916903 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(6.765751e-08, -1, 2.976343e-08, -0.8604248, -4.3047418e-08, 0.50957733, -0.50957733, -6.008594e-08, -0.8604248, 531.8398, 30.913658, 728.27386)
 size = 3.0
 strength = 120.0
-override_previous_lock_timers = null
 
 [node name="DashPanel7" parent="." unique_id=1797380866 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(6.76575e-08, -1, 2.9763436e-08, -0.9544941, -5.570233e-08, 0.2982302, -0.2982302, -4.8586532e-08, -0.9544941, 531.8398, 45.91366, 728.27386)
 size = 3.0
 strength = 110.0
-override_previous_lock_timers = null
 
 [node name="DashPanel10" parent="." unique_id=611988594 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-2.6274716e-08, 1, 6.261505e-08, 0.9359402, 2.5411087e-09, 0.35215947, 0.35215947, 6.785681e-08, -0.9359402, 155.22661, 117.1602, 663.7255)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel11" parent="." unique_id=1166668572 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-2.6274716e-08, 1, 6.261505e-08, 0.9359402, 2.5411087e-09, 0.35215947, 0.35215947, 6.785681e-08, -0.9359402, 155.22661, 130.1602, 663.7255)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel12" parent="." unique_id=934854605 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-2.6274716e-08, 1, 6.261505e-08, 0.9359402, 2.5411087e-09, 0.35215947, 0.35215947, 6.785681e-08, -0.9359402, 155.22661, 143.1602, 663.7255)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel13" parent="." unique_id=2004289209 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-1.9796651e-08, 1, 6.4954584e-08, 0.92470545, -6.421048e-09, 0.38068378, 0.38068378, 6.7600105e-08, -0.92470545, 155.22661, 156.1602, 663.7255)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel14" parent="." unique_id=220725918 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-2.5015341e-08, 1, 6.312874e-08, 0.8894127, -6.6074897e-09, 0.45710537, 0.45710537, 6.758213e-08, -0.8894127, 155.22661, 169.1602, 663.7255)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel16" parent="." unique_id=1223581800 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1.0000001, 0, -0.8660254, 3.7855177e-08, 0.5, -0.50000006, 2.1855698e-08, -0.8660253, 423.23102, 220.16756, 599.7316)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel17" parent="." unique_id=2044826395 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1.0000001, 0, -0.92959315, 4.063381e-08, 0.36858737, -0.3685874, 1.611147e-08, -0.9295931, 423.23102, 240.16756, 599.7316)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel18" parent="." unique_id=736608329 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1.0000001, 0, -0.9332817, 4.0795047e-08, 0.35914505, -0.3591451, 1.5698733e-08, -0.93328166, 423.23102, 260.16754, 599.7316)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel15" parent="." unique_id=634949176 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-2.566784e-08, 1, 6.286627e-08, 0.87922096, -7.3826607e-09, 0.47641438, 0.47641438, 6.750185e-08, -0.87922096, 155.22661, 182.1602, 663.7255)
 size = 4.0
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel8" parent="." unique_id=2083308396 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(6.76575e-08, -1, 2.9763434e-08, -0.9968999, -6.510592e-08, 0.07868138, -0.07868138, -3.499455e-08, -0.9968999, 531.8398, 60.91366, 728.27386)
 size = 3.0
 strength = 110.0
-override_previous_lock_timers = null
 
 [node name="DashPanel9" parent="." unique_id=112856148 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(6.76575e-08, -1, 2.9763436e-08, -0.9999471, -6.7347415e-08, 0.010298021, -0.010298021, -3.0458594e-08, -0.9999471, 531.8398, 74.91366, 728.27386)
 size = 3.0
 strength = 110.0
-override_previous_lock_timers = null
 
 [node name="DashPanel4" parent="." unique_id=766806937 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 282.08206, 357.02145, 570.38074)
 strength = 120.0
 additive_mode = 1
 min_additive_launch_speed = 120.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 
@@ -3855,7 +3758,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.400375, 11.068848, 18.6406
 [node name="DashPanel3" parent="." unique_id=1918780304 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(1, 0, -1.4702742e-07, 0, 1, 0, 1.4702742e-07, 0, 1, 64.13512, -1.6655765, 362.30524)
 strength = 190.0
-override_previous_lock_timers = null
 lock_speed_enabled = true
 lock_speed_value = 190.0
 lock_speed_duration = 3.0
@@ -3863,7 +3765,6 @@ lock_speed_duration = 3.0
 [node name="DashPanel2" parent="." unique_id=2044725918 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(0.47544587, -0.9373666, 2.8098574, 0.008227184, -2.8453948, -0.9506138, 2.962074, 0.15836106, -0.4483729, 92.12919, 38.90052, 538.0077)
 strength = 400.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 lock_speed_enabled = true
@@ -3917,7 +3818,6 @@ shape = SubResource("BoxShape3D_ax8r5")
 
 [node name="Rail" parent="." unique_id=623013720 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.72516, 13.417376, 168.66081)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail" index="0" unique_id=1934614080]
@@ -3929,7 +3829,6 @@ material = SubResource("StandardMaterial3D_nydfv")
 
 [node name="Rail8" parent="." unique_id=1578957534 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 390.27484, 1054.4174, 430.69965)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail8" index="0" unique_id=1934614080]
@@ -3941,7 +3840,6 @@ material = SubResource("StandardMaterial3D_nydfv")
 
 [node name="Rail2" parent="." unique_id=350981784 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -85.72516, 3.4882069, 168.66081)
-override_previous_lock_timers = null
 
 [node name="Path3D" parent="Rail2" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_d0abt")
@@ -3953,7 +3851,6 @@ collision_mask = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -211.90747, -13.013254, 78.66081)
 reverse_speed_threshold = 0.0
 reverse_boost_speed = 0.0
-override_previous_lock_timers = null
 
 [node name="Path3D" parent="Rail3" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_x6a63")
@@ -3963,7 +3860,6 @@ collision_mask = 1
 
 [node name="Rail6" parent="." unique_id=2010043276 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 268.7485, 356.74142, 570.1906)
-override_previous_lock_timers = null
 
 [node name="Path3D" parent="Rail6" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_g6lj7")
@@ -3973,7 +3869,6 @@ collision_mask = 1
 
 [node name="Rail7" parent="." unique_id=1019583305 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.33742, 455.74142, 558.1906)
-override_previous_lock_timers = null
 
 [node name="Path3D" parent="Rail7" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_g6lj7")
@@ -3989,7 +3884,6 @@ collision_mask = 1
 
 [node name="Rail4" parent="." unique_id=2023218017 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -115.72516, -12.511793, 168.66081)
-override_previous_lock_timers = null
 
 [node name="Path3D" parent="Rail4" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_334di")
@@ -4004,7 +3898,6 @@ collision_mask = 1
 
 [node name="Rail5" parent="." unique_id=874455630 instance=ExtResource("22_p0x6m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -130.72516, -12.511793, 168.66081)
-override_previous_lock_timers = null
 
 [node name="Path3D" parent="Rail5" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_mbb5r")
@@ -4109,7 +4002,10 @@ race_start_path = NodePath("../RaceStart")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7411804, 0, 0)
 
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_g2vd7")
+material_override = SubResource("ShaderMaterial_3adtc")
+
+[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
+light_energy = 40.0
 
 [node name="RaceStart_Ring" parent="." unique_id=1344341188 instance=ExtResource("35_ftftv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125.36255, -1.373987, 163.94717)
@@ -4158,7 +4054,10 @@ race_start_path = NodePath("../RaceStart_PARKOUR")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4013672, 1.3179932, 0)
 
 [node name="Circle" parent="RaceGoal_PARKOUR/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_ykvil")
+material_override = SubResource("ShaderMaterial_q6jdw")
+
+[node name="SwapLight" parent="RaceGoal_PARKOUR/GoalModel/GoalRing2" index="2" unique_id=1016145482]
+light_energy = 40.0
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1781754792]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -686.3259, 109.0742, 569.9366)
@@ -4197,12 +4096,11 @@ instance_shader_parameters/clipmap_inner_radius = 0.0
 instance_shader_parameters/clipmap_lod_scale = 0.0
 instance_shader_parameters/clipmap_outer_radius = 0.0
 instance_shader_parameters/height_scale = 5.0
-mesh = SubResource("PlaneMesh_3adtc")
-surface_material_override/0 = SubResource("ShaderMaterial_muffe")
+mesh = SubResource("PlaneMesh_luhu6")
+surface_material_override/0 = SubResource("ShaderMaterial_3yimx")
 
 [node name="CameraConstraint2" parent="." unique_id=1899731411 instance=ExtResource("28_nydfv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8945465, -1.8752289, -366.73056)
-controller_only = null
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("Resource_mbb5r")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0010")])
 orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("Resource_r8jnm")])
@@ -4234,6 +4132,7 @@ activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("Res
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("Resource_ykvil")])
 orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("Resource_3adtc")])
 transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("Resource_q6jdw"), SubResource("Resource_luhu6")])
+influence_traits = Array[ExtResource("52_syfp7")]([SubResource("Resource_4n6d6")])
 collision_mode = 2
 
 [node name="CollisionShape3D" parent="CameraConstraint_ParkourBox2" index="0" unique_id=1384128833]
@@ -4251,7 +4150,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0, 2757)
 [node name="DashPanel" parent="References/DashPanelTestSet" unique_id=2143641709 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 6.237793)
 strength = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4259,7 +4157,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel2" parent="References/DashPanelTestSet" unique_id=1499849372 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 16.237793)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4267,7 +4164,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel3" parent="References/DashPanelTestSet" unique_id=1386257 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 26.237793)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4275,7 +4171,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel4" parent="References/DashPanelTestSet" unique_id=1366462951 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 26.237793)
 strength = 120.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4283,7 +4178,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel5" parent="References/DashPanelTestSet" unique_id=1169407704 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 36.237793)
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4291,7 +4185,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel6" parent="References/DashPanelTestSet" unique_id=1308570617 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 46.237793)
 strength = 160.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4299,7 +4192,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel7" parent="References/DashPanelTestSet" unique_id=1032605288 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 56.237793)
 strength = 180.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4307,7 +4199,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel8" parent="References/DashPanelTestSet" unique_id=787796379 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 66.23779)
 strength = 200.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4315,7 +4206,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel9" parent="References/DashPanelTestSet" unique_id=1917326282 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 76.23779)
 strength = 210.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4323,7 +4213,6 @@ align_camera_yaw_roll = false
 [node name="DashPanel10" parent="References/DashPanelTestSet" unique_id=537276065 instance=ExtResource("9_g2p7k")]
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 17.517159, 40.46157, 86.23779)
 strength = 230.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_camera_yaw_roll = false
@@ -4786,7 +4675,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.56812, 214.32352, 322.7893
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity" index="0"]
-shape = SubResource("SphereShape3D_5l7yj")
+shape = SubResource("SphereShape3D_tt4we")
 
 [node name="GravitySurface" parent="PlanetaryGravity" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4796,7 +4685,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -264.4319, 214.32352, 322.789
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity2" index="0"]
-shape = SubResource("SphereShape3D_3yimx")
+shape = SubResource("SphereShape3D_jvpi5")
 
 [node name="GravitySurface" parent="PlanetaryGravity2" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4806,7 +4695,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -344.75397, 301.76288, 322.78
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity3" index="0"]
-shape = SubResource("SphereShape3D_4n6d6")
+shape = SubResource("SphereShape3D_pkwk4")
 
 [node name="GravitySurface" parent="PlanetaryGravity3" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4816,7 +4705,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -102.9805, 794.6751, -55.2106
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity4" index="0"]
-shape = SubResource("SphereShape3D_tt4we")
+shape = SubResource("SphereShape3D_ydo33")
 
 [node name="GravitySurface" parent="PlanetaryGravity4" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4827,7 +4716,7 @@ gravity_multiplier = 1.5
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity5" index="0"]
-shape = SubResource("SphereShape3D_jvpi5")
+shape = SubResource("SphereShape3D_344ll")
 
 [node name="GravitySurface" parent="PlanetaryGravity5" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4854,48 +4743,48 @@ mesh = SubResource("CapsuleMesh_ysjdg")
 
 [node name="ItemMonitor" parent="." unique_id=69009204 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_pkwk4")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_jsxg6")])
 leave_base_after_break = true
 
 [node name="ItemMonitor3" parent="." unique_id=946307726 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_ydo33")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_ww8qt")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor4" parent="." unique_id=1395552001 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 142.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_344ll")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_0gvoy")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor5" parent="." unique_id=1689799997 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 146.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_jsxg6")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_lraxv")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor6" parent="." unique_id=1850172790 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 150.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_ww8qt")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_a6b6k")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor35" parent="." unique_id=1024913527 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -330.95615, -1.511947, 138.5572)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_0gvoy")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_bch57")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor7" parent="." unique_id=517832208 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_lraxv")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_i48ms")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor36" parent="." unique_id=2133404527 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_a6b6k")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_svhyb")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 

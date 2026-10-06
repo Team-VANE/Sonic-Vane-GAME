@@ -35,6 +35,8 @@ enum UpMode { INHERIT, GRAVITY, PLAYER }
 @export var lens_traits: Array[CameraLensTrait] = []
 ## Entry and exit transitions. Unassigned channels cut immediately.
 @export var transition_traits: Array[CameraTransitionTrait] = []
+## Proximity weights for position, orientation, and FOV. Unassigned channels retain full influence.
+@export var influence_traits: Array[CameraInfluenceTrait] = []
 
 @export_group("Modifiers")
 ## Blocks manual orbit and zoom while selected.
@@ -276,6 +278,28 @@ func get_locked_transform() -> Transform3D:
 	return _locked_transform if _has_locked_transform else global_transform
 
 
+func has_influence_trait(channel: int = -1) -> bool:
+	for component: CameraInfluenceTrait in influence_traits:
+		if component and ((channel < 0 and (component.position or component.orientation or component.lens)) or component.affects_channel(channel)):
+			return true
+	return false
+
+
+func get_influence_weights(player_position: Vector3) -> Vector3:
+	var weights: Vector3 = Vector3.ONE
+	var assigned: int = 0
+	for component: CameraInfluenceTrait in influence_traits:
+		if not component:
+			continue
+		var weight: float = component.get_weight(self, player_position)
+		for channel: int in 3:
+			var mask: int = 1 << channel
+			if not assigned & mask and component.affects_channel(channel):
+				weights[channel] = weight
+				assigned |= mask
+	return weights
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	if position_traits.size() > 1:
@@ -311,4 +335,20 @@ func _get_configuration_warnings() -> PackedStringArray:
 	for component: CameraActivationTrait in activation_traits:
 		if component and component.event < CameraActivationTrait.Event.DURATION and not (resolve_trait_node(component.area_path) is Area3D):
 			warnings.append("Activation component requires an Area3D: %s" % component.area_path)
+	var influence_channels: int = 0
+	for component: CameraInfluenceTrait in influence_traits:
+		if not component:
+			continue
+		var mask: int = int(component.position) | (int(component.orientation) << 1) | (int(component.lens) << 2)
+		if influence_channels & mask:
+			warnings.append("Influence channels overlap; the first component for each channel takes precedence.")
+		influence_channels |= mask
+		if not mask:
+			warnings.append("Influence component requires at least one affected channel.")
+		if component.full_influence_distance < 0.0 or component.zero_influence_distance <= component.full_influence_distance:
+			warnings.append("Zero Influence Distance must exceed the nonnegative Full Influence Distance.")
+		if component.power <= 0.0:
+			warnings.append("Influence power must be positive.")
+		if not (resolve_trait_node(component.reference_path) is Node3D):
+			warnings.append("Influence component requires a Node3D reference: %s" % component.reference_path)
 	return warnings

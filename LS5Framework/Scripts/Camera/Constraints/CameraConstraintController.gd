@@ -23,6 +23,7 @@ var _orientation_channel: bool = false
 var _lens_channel: bool = false
 var _selected_id: int = 0
 var _filtered_roll: float = 0.0
+var _influencing: bool = false
 
 
 func register(constraint: CameraConstraint) -> void:
@@ -59,6 +60,7 @@ func clear(except_constraint: CameraConstraint = null, suppress_transition: bool
 		_position_channel = false
 		_orientation_channel = false
 		_lens_channel = false
+		_influencing = false
 
 
 func advance(delta: float) -> void:
@@ -82,7 +84,13 @@ func advance(delta: float) -> void:
 	if next_id != _selected_id:
 		_begin_transition(next)
 	_elapsed += maxf(delta, 0.0)
-	if selected and selected.cancel_on_manual_look:
+	var influencing: bool = selected_has_effect()
+	if not _influencing or not influencing:
+		_first_frame = true
+	if influencing != _influencing:
+		rig.call("_sync_camera_orientation_hud", true)
+	_influencing = influencing
+	if influencing and selected.cancel_on_manual_look:
 		var look: Vector2 = Input.get_vector("camera_left", "camera_right", "camera_down", "camera_up")
 		var mouse_delta: Vector2 = rig.get("_mouse_delta") as Vector2
 		var mouse_strength: float = maxf(mouse_delta.length(), float(rig.get("_camera_mouse_strength")))
@@ -116,7 +124,7 @@ func _begin_transition(next: CameraConstraint) -> void:
 	var previous_position: bool = _position_channel
 	var previous_orientation: bool = _orientation_channel
 	var previous_lens: bool = _lens_channel
-	if selected and (selected.retain_heading_on_release or not selected.position_traits.is_empty()):
+	if selected and (selected.retain_heading_on_release or (not selected.has_influence_trait() and not selected.position_traits.is_empty())):
 		rig.call("_sync_camera_angles_from_forward", -_from_transform.basis.z, rig.call("_get_camera_up"))
 		rig.set("_control_yaw", rig.get("_yaw"))
 		rig.set("_control_pitch", rig.get("_pitch"))
@@ -165,11 +173,51 @@ func is_transitioning() -> bool:
 
 
 func owns_orientation() -> bool:
-	return (is_instance_valid(selected) and not selected.orientation_traits.is_empty()) or (is_transitioning() and _orientation_channel)
+	return (is_instance_valid(selected) and not selected.orientation_traits.is_empty() and get_influence_weights().y > 0.000001) or (is_transitioning() and _orientation_channel)
+
+
+func suppresses_free_orientation() -> bool:
+	if is_instance_valid(selected) and selected.has_influence_trait(1):
+		return false
+	return owns_orientation()
+
+
+func get_influence_weights() -> Vector3:
+	if not is_instance_valid(selected):
+		return Vector3.ONE
+	var target: Node3D = rig.get("target") as Node3D
+	return selected.get_influence_weights(target.global_position) if is_instance_valid(target) else Vector3.ZERO
+
+
+func selected_has_effect() -> bool:
+	if not is_instance_valid(selected):
+		return false
+	if not selected.has_influence_trait():
+		return true
+	var channels: int = 0
+	if not selected.position_traits.is_empty():
+		channels |= 1
+	if not selected.orientation_traits.is_empty():
+		channels |= 2
+	for component: CameraOrientationTrait in selected.orientation_traits:
+		if component and component.orbit_rig:
+			channels |= 1
+	for component: CameraLensTrait in selected.lens_traits:
+		if component:
+			channels |= 1 if component.mode == CameraLensTrait.Mode.ORBIT_DISTANCE else 4
+	if not channels:
+		for channel: int in 3:
+			if selected.has_influence_trait(channel):
+				channels |= 1 << channel
+	var weights: Vector3 = get_influence_weights()
+	for channel: int in 3:
+		if channels & (1 << channel) and weights[channel] > 0.000001:
+			return true
+	return false
 
 
 func is_presenting() -> bool:
-	return is_instance_valid(selected) or is_transitioning()
+	return selected_has_effect() or is_transitioning()
 
 
 func _channel_weight(channel: int) -> float:
@@ -222,8 +270,9 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 	var fov_trait: CameraLensTrait = null
 	var collision_enabled: bool = bool(rig.get("camera_collision_enabled"))
 	var rear_view: bool = bool(rig.get("_rear_view_active"))
+	var proximity_blend: bool = is_instance_valid(selected) and selected.has_influence_trait()
 	if selected:
-		if selected.collision_mode != CameraConstraint.CollisionMode.INHERIT:
+		if selected_has_effect() and selected.collision_mode != CameraConstraint.CollisionMode.INHERIT:
 			collision_enabled = selected.collision_mode == CameraConstraint.CollisionMode.ENABLED
 		for component: CameraLensTrait in selected.lens_traits:
 			if not component:
@@ -272,7 +321,7 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 			basis = orbit_basis
 		if position_response > 0.0 and not _first_frame:
 			position = _filtered_position.lerp(position, 1.0 - exp(-position_response * maxf(delta, 0.0)))
-		if not rear_view:
+		if not rear_view and not proximity_blend:
 			position = rig.call("_resolve_camera_collision", position, collision_enabled, delta) as Vector3
 		_filtered_position = position
 		if aim:
@@ -309,6 +358,12 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 			if fov_trait.tracking_response > 0.0 and not _first_frame:
 				fov = lerpf(_filtered_fov, fov, 1.0 - exp(-fov_trait.tracking_response * maxf(delta, 0.0)))
 			_filtered_fov = fov
+		if proximity_blend:
+			var influence: Vector3 = get_influence_weights()
+			position = free_transform.origin.lerp(position, influence.x)
+			pivot = free_pivot.lerp(pivot, influence.x)
+			basis = free_transform.basis.orthonormalized().slerp(basis, influence.y).orthonormalized()
+			fov = lerpf(free_fov, fov, influence.z)
 	if _position_channel:
 		var position_weight: float = _channel_weight(0)
 		position = _from_transform.origin.lerp(position, position_weight)
@@ -317,8 +372,8 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 		basis = _from_transform.basis.slerp(basis, _channel_weight(1)).orthonormalized()
 	if _lens_channel:
 		fov = lerpf(_from_fov, fov, _channel_weight(2))
-	if is_transitioning() and not rear_view:
-		position = rig.call("_resolve_camera_collision", position, collision_enabled, 0.0) as Vector3
+	if (proximity_blend or is_transitioning()) and not rear_view:
+		position = rig.call("_resolve_camera_collision", position, collision_enabled, delta if proximity_blend else 0.0) as Vector3
 	rig.global_position = pivot
 	if aim and aim.orbit_rig:
 		var yaw: Node3D = rig.get("yaw_node") as Node3D
@@ -329,7 +384,7 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 	camera.global_transform = Transform3D(basis, position)
 	camera.fov = clampf(fov, 1.0, 179.0)
 	if owns_orientation():
-		rig.call("_set_control_angles_from_forward", -basis.z, rig.call("_get_camera_up"))
+		rig.call("_set_control_angles_from_forward", -basis.z, rig.call("_get_camera_up"), proximity_blend)
 	_first_frame = false
 	if not is_transitioning():
 		_transitions.clear()
