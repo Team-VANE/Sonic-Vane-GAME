@@ -57,7 +57,7 @@ func _get_hud_node() -> Node:
 	p = _owner
 	if p == null or not is_instance_valid(p):
 		return null
-	if not p._network_is_local_authority():
+	if p._is_buddy_actor() or not p._network_is_local_authority():
 		return null
 	if not p.is_in_group("Player"):
 		return null

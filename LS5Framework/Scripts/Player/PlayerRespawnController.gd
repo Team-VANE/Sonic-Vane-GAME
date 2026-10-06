@@ -508,7 +508,7 @@ func stop_all_momentum_and_special_movement() -> void:
 
 func _notify_camera_teleport() -> void:
 	var p = _owner
-	if not p._network_is_local_authority():
+	if p._is_buddy_actor() or not p._network_is_local_authority():
 		return
 	var rig = p.camera_rig
 	if rig == null and p.camera != null:

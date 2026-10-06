@@ -242,7 +242,7 @@ func notify_landing_roll_speedometer_effect(
 	result: StringName,
 	strength: float
 ) -> void:
-	if not _network_is_local_authority():
+	if _is_buddy_actor() or not _network_is_local_authority():
 		return
 	var rig: Node = _resolve_camera_rig()
 	if rig != null and rig.has_method("play_landing_feedback"):
@@ -1171,7 +1171,7 @@ func _update_drift_camera_rig(
 	turn_speed_deg_per_sec: float,
 	influence: float = 1.0
 ) -> void:
-	if not _network_is_local_authority():
+	if _is_buddy_actor() or not _network_is_local_authority():
 		return
 	var rig = camera_rig
 	if rig == null and camera != null:
@@ -1794,6 +1794,8 @@ func _restore_autoplay_music() -> void:
 
 
 func _resolve_camera_rig() -> Node:
+	if _is_buddy_actor():
+		return null
 	var rig: Node = null
 	if camera_rig != null and is_instance_valid(camera_rig):
 		rig = camera_rig
@@ -1807,7 +1809,7 @@ func _resolve_camera_rig() -> Node:
 
 
 func _set_manual_camera_lock(active: bool) -> void:
-	if not _network_is_local_authority():
+	if _is_buddy_actor() or not _network_is_local_authority():
 		return
 	var rig = _resolve_camera_rig()
 	if rig == null:
@@ -1824,7 +1826,7 @@ func _set_manual_camera_lock(active: bool) -> void:
 		rig.manual_input_locked = lock_manual_input
 	
 func _unlock_local_camera_constraints() -> void:
-	if not _network_is_local_authority():
+	if _is_buddy_actor() or not _network_is_local_authority():
 		return
 	var rig = _resolve_camera_rig()
 	if rig != null:
@@ -2047,7 +2049,7 @@ func request_parkour_wall_kick_camera_assist(
 	outward_speed: float,
 	kick_strength: float
 ) -> void:
-	if not _network_is_local_authority():
+	if _is_buddy_actor() or not _network_is_local_authority():
 		return
 	var rig: Node = _resolve_camera_rig()
 	if rig != null and rig.has_method("request_parkour_wall_kick_assist"):
