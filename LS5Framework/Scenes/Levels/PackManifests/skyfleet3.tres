@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="LevelPackManifest" format=3 uid="uid://cqr6i11fvx0fp"]
-
-[ext_resource type="Script" uid="uid://c2mrixwgjjkff" path="res://LS5Framework/Scripts/World/LevelPackManifest.gd" id="1_c6rom"]
-
-[resource]
-script = ExtResource("1_c6rom")
-pack_id = "skyfleet3"
-level_docs = Array[String](["res://LS5Framework/Scenes/Levels/LVL_SkyFleet3.tres"])

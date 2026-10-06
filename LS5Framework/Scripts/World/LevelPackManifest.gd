@@ -1,13 +1,7 @@
 extends Resource
 class_name LevelPackManifest
 
-# =========================================================
-# LEVEL PACK MANIFEST
-# =========================================================
-# Lists LevelDoc resource paths that belong to a single PCK.
-# LevelCatalog scans levels_dir/PackManifests for these manifests, so
-# each pack can ship its own manifest without editing a master list.
-# =========================================================
+# Level document list used by LevelRegistry.tres.
 
 @export_group("Pack")
 ## Optional identifier for debugging or tooling.

@@ -374,7 +374,7 @@ shader_parameter/tex_flat = ExtResource("23_i5omx")
 shader_parameter/tex_glow = ExtResource("24_isflb")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = false
-shader_parameter/swap_time = 132.978
+shader_parameter/swap_time = 49.213
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l51wo"]
 size = Vector3(36.186234, 40.35939, 58.338074)
@@ -2485,7 +2485,7 @@ visible = true
 curve = SubResource("Curve3D_ahtbt")
 
 [node name="Mesh" parent="Spring11" index="5" unique_id=1922896033]
-transform = Transform3D(0.9998273, -0.0030719815, 0.0004319319, 0.0030724972, 0.961223, -0.27575517, 0.0004320044, 0.27575517, 0.96122783, 0, 0, 0)
+transform = Transform3D(0.9998972, -0.0030721962, 0.00043196205, 0.0030724972, 0.961223, -0.27575517, 0.0004320044, 0.27575517, 0.96122783, 0, 0, 0)
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
@@ -2671,6 +2671,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.022949, 0, 0)
 
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_rnh56")
+
+[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
+light_energy = 40.0
 
 [node name="Checkpoint" parent="RaceGoal" unique_id=1068812376 instance=ExtResource("18_dup37")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1633.8037, 162.24062, 388.91992)

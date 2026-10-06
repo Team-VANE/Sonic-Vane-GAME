@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="LevelPackManifest" load_steps=2 format=3 uid="uid://c0gkaiaw8pmjd"]
-
-[ext_resource type="Script" uid="uid://c2mrixwgjjkff" path="res://LS5Framework/Scripts/World/LevelPackManifest.gd" id="1_level_pack_manifest"]
-
-[resource]
-script = ExtResource("1_level_pack_manifest")
-pack_id = "greenhillocean"
-level_docs = Array[String](["res://LS5Framework/Scenes/Levels/LVL_GreenHillOcean.tres"])

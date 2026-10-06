@@ -5,15 +5,10 @@ const DEBUG_LEVEL_DOCS: bool = true
 const LEVEL_DOC_PREFIX: String = "LVL_"
 const LEVEL_TEST_RESOURCE_NAME: String = "LVLTEST.tres"
 const LEVEL_REGISTRY_PATH: String = "res://LS5Framework/Scenes/Levels/LevelRegistry.tres"
-const PACK_MANIFEST_DIR_NAME: String = "PackManifests"
 
 
 static func load_level_entries(levels_dir: String) -> Array:
-	# SUMMARY: Load level entries from LevelDoc resources only.
-	# STEPS:
-	# - Step 1: Gather LevelDoc resources (LVL_*.tres / LVLTEST.tres).
-	# - Step 2: Include pack manifests found under levels_dir/PackManifests.
-	# - Step 3: Sort entries by order, then name.
+	# Loads registered and directly discovered level documents.
 	_log_debug("load_level_entries: levels_dir=%s" % levels_dir)
 	var entries: Array = []
 	var seen: Dictionary = {}
@@ -23,11 +18,6 @@ static func load_level_entries(levels_dir: String) -> Array:
 	if not registry_paths.is_empty():
 		resource_paths.append_array(registry_paths)
 	_log_debug("load_level_entries: registry_paths=%d" % registry_paths.size())
-
-	var manifest_paths: Array = _load_level_docs_from_pack_manifests(levels_dir)
-	if not manifest_paths.is_empty():
-		resource_paths.append_array(manifest_paths)
-	_log_debug("load_level_entries: manifest_paths=%d" % manifest_paths.size())
 
 	var dir_paths: Array = _find_level_doc_resources(levels_dir)
 	if not dir_paths.is_empty():
@@ -83,48 +73,6 @@ static func _find_level_doc_resources(levels_dir: String) -> Array:
 
 static func _load_level_docs_from_registry(levels_dir: String) -> Array:
 	return _load_level_docs_from_manifest(LEVEL_REGISTRY_PATH, levels_dir)
-
-
-static func _load_level_docs_from_pack_manifests(levels_dir: String) -> Array:
-	var result: Array = []
-	if levels_dir.strip_edges() == "":
-		_log_debug("_load_level_docs_from_pack_manifests: empty levels_dir")
-		return result
-	var manifests_dir: String = levels_dir.path_join(PACK_MANIFEST_DIR_NAME)
-	var manifest_paths: Array = _find_pack_manifest_resources(manifests_dir)
-	if manifest_paths.is_empty():
-		return result
-	for manifest_path in manifest_paths:
-		var manifest_entries: Array = _load_level_docs_from_manifest(manifest_path, levels_dir)
-		if not manifest_entries.is_empty():
-			result.append_array(manifest_entries)
-	return result
-
-
-static func _find_pack_manifest_resources(manifests_dir: String) -> Array:
-	var result: Array = []
-	if manifests_dir.strip_edges() == "":
-		_log_debug("_find_pack_manifest_resources: empty manifests_dir")
-		return result
-	var dir := DirAccess.open(manifests_dir)
-	if dir == null:
-		_log_debug("_find_pack_manifest_resources: cannot open dir %s" % manifests_dir)
-		return result
-
-	dir.list_dir_begin()
-	var name: String = dir.get_next()
-	while name != "":
-		if not dir.current_is_dir():
-			var resource_name: String = _logical_resource_name(name)
-			var ext: String = resource_name.get_extension().to_lower()
-			if ext == "tres" or ext == "res":
-				var resource_path: String = manifests_dir.path_join(resource_name)
-				if not result.has(resource_path):
-					result.append(resource_path)
-		name = dir.get_next()
-	dir.list_dir_end()
-	_log_debug("_find_pack_manifest_resources: found=%d in %s" % [result.size(), manifests_dir])
-	return result
 
 
 static func _logical_resource_name(entry_name: String) -> String:

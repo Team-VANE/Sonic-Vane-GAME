@@ -3,9 +3,7 @@
 Level Select is populated by `LevelCatalog` from level doc files stored under:
 `res://LS5Framework/Scenes/Levels/`
 
-`LevelCatalog` also scans `res://LS5Framework/Scenes/Levels/PackManifests/`
-for `LevelPackManifest` resources, which list `LVL_*.tres` entries that
-live inside mounted PCKs.
+`LevelCatalog` reads `LVL_*.tres` files directly from this directory, including mounted PCKs. Exported `.tres.remap` entries are resolved to their original resource paths. `LevelRegistry.tres` supplies the built-in list, and `LVLTEST.tres` is included separately.
 
 This project uses `LevelDoc` resources (`LVL_*.tres`) so level metadata is
 exported with Selected Resources presets.
@@ -38,6 +36,4 @@ Each `LVL_*.tres` sets these properties:
 When exporting level packs, ensure the matching `LVL_*.tres` is included in the
 selected resources list so Level Select can find it at runtime.
 
-Each level pack should also include a `LevelPackManifest` resource under
-`res://LS5Framework/Scenes/Levels/PackManifests/` that lists its `LVL_*.tres`
-entries. This allows packs to be discovered without editing a master list.
+No per-pack level manifest is required. New packs and mods can add `LVL_*.tres` files directly under the level document directory without editing a master list.

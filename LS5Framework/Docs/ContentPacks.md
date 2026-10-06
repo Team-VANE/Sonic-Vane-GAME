@@ -73,12 +73,8 @@ Dependency packs should expose assets at stable `res://` paths. A dependent leve
 - Shared assets used by many packs should live in `shared.pck` to avoid duplication.
 - Level packs should include level-specific textures/meshes/audio that are not reused elsewhere.
 - Level packs should include the matching `LVL_*.tres` doc so Level Select can list the level.
-- Each level pack and mod pack should include a `LevelPackManifest` inside the pack:
-  - Path: `res://LS5Framework/Scenes/Levels/PackManifests/<pack_id>.tres`
-  - `<pack_id>` should be unique, but does not need to match the PCK filename
-  - The manifest lists the `LVL_*.tres` docs inside the pack
-  - `LevelCatalog` scans the PackManifests directory at runtime, so no master list is required
+- Level and mod packs expose their `LVL_*.tres` docs directly under `res://LS5Framework/Scenes/Levels/`. `LevelCatalog` discovers them after mounting, including exported `.tres.remap` entries. No per-pack level manifest is required.
 - The base game uses `res://LS5Framework/Scenes/Levels/LevelRegistry.tres` to list built-in LevelDoc entries.
 - Mods can override any resource path by shipping a PCK with the same path, since they load last.
 - `ContentPackManager` emits `packs_loaded` after mounting packs so menus can wait before building lists.
-- `LevelPackManifest` registers level documents after mounting. It is separate from the external JSON dependency manifest, which controls mount order before loading.
+- External JSON dependency manifests still control mount order before loading. They are separate from level document discovery.
