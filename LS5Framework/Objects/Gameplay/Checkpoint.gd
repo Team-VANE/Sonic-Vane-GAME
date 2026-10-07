@@ -10,7 +10,6 @@ extends Area3D
 var _body_cooldowns: Dictionary = {}
 
 @export_group("Respawn")
-@export var respawn_point_path: NodePath = NodePath("RespawnPoint")
 @export var respawn_speed: float = 0.0
 @export_enum("PositiveX", "NegativeX", "PositiveZ", "NegativeZ")
 var respawn_axis: int = 2
@@ -85,12 +84,12 @@ func _on_body_entered(body: Node) -> void:
 	_play_activate_sfx()
 
 
+## Uses only this checkpoint instance's direct RespawnPoint child.
 func _get_respawn_transform() -> Transform3D:
-	var n = get_node_or_null(respawn_point_path)
-	if n is Node3D:
-		return (n as Node3D).global_transform
+	var respawn_point: Node3D = get_node_or_null("RespawnPoint") as Node3D
+	if respawn_point:
+		return respawn_point.global_transform
 	return global_transform
-
 
 func _get_respawn_direction(basis: Basis) -> Vector3:
 	var dir: Vector3 = basis.z

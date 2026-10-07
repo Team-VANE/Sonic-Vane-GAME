@@ -374,7 +374,7 @@ shader_parameter/tex_flat = ExtResource("23_i5omx")
 shader_parameter/tex_glow = ExtResource("24_isflb")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = false
-shader_parameter/swap_time = 49.213
+shader_parameter/swap_time = 29857.396
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l51wo"]
 size = Vector3(36.186234, 40.35939, 58.338074)
@@ -1663,7 +1663,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.25867, 25.923428, -57.035
 
 [node name="EmeraldCoastPt1" parent="." unique_id=1511839976 instance=ExtResource("1_q4gbu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.63513, 20.015244, -85.08374)
-metadata/_edit_lock_ = true
 
 [node name="Emerald_CockBlock" type="CSGBox3D" parent="." unique_id=427102537]
 transform = Transform3D(1.525807, 0, 1.0253048, 0, 2.6329322, 0, -1.525807, 0, 1.0253048, 83.88485, 89.71177, -23.525597)
@@ -2485,7 +2484,7 @@ visible = true
 curve = SubResource("Curve3D_ahtbt")
 
 [node name="Mesh" parent="Spring11" index="5" unique_id=1922896033]
-transform = Transform3D(0.9998972, -0.0030721962, 0.00043196205, 0.0030724972, 0.961223, -0.27575517, 0.0004320044, 0.27575517, 0.96122783, 0, 0, 0)
+transform = Transform3D(0.9998273, -0.0030719815, 0.0004319319, 0.0030724972, 0.961223, -0.27575517, 0.0004320044, 0.27575517, 0.96122783, 0, 0, 0)
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
@@ -2673,7 +2672,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.022949, 0, 0)
 material_override = SubResource("ShaderMaterial_rnh56")
 
 [node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
+visible = false
+light_energy = 0.0
 
 [node name="Checkpoint" parent="RaceGoal" unique_id=1068812376 instance=ExtResource("18_dup37")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1633.8037, 162.24062, 388.91992)

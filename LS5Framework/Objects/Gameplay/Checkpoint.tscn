@@ -27,6 +27,7 @@ shape = SubResource("BoxShape3D_qulj2")
 debug_color = Color(0, 0.812646, 0.95280397, 0.41960785)
 
 [node name="RespawnPoint" type="Node3D" parent="." unique_id=991891143]
+editor_description = "Respawn position and facing for this checkpoint instance."
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.3286277, 2)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=613359843]

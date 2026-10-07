@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhq2gwoxmm447"]
+[gd_scene format=3 uid="uid://dlplw7jg8r7kv"]
 
-[ext_resource type="PackedScene" uid="uid://fdsthov5xw4u" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/BACKDROP_ISLAND.blend" id="1_amkd8"]
 [ext_resource type="Texture2D" uid="uid://xkhvw20bvma6" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/m256_ext02.png" id="2_etgww"]
 [ext_resource type="Texture2D" uid="uid://c8qlowv3w7dw7" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/m64_cos001.png" id="2_ian5e"]
 [ext_resource type="Texture2D" uid="uid://di8irx3g5jv5m" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/m128_cos020.png" id="3_bvd42"]
@@ -14,7 +13,7 @@ albedo_texture = ExtResource("3_bvd42")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etgww"]
 albedo_texture = ExtResource("2_ian5e")
 
-[node name="BACKDROP_ISLAND" instance=ExtResource("1_amkd8")]
+[node name="BACKDROP_ISLAND" unique_id=1009366699]
 
 [node name="EmeraldCoast_2_006" parent="." index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_odffk")

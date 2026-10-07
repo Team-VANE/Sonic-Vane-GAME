@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://ce32jl2wm15fj"]
 
-[ext_resource type="PackedScene" uid="uid://cauj0ic5q6kw3" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EC_18_EXPORT.blend" id="1_kodfe"]
 [ext_resource type="Texture2D" uid="uid://b1o7y46t0vilg" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/m128_sand001.png" id="2_wpr1d"]
-[ext_resource type="PackedScene" uid="uid://kxliwerurin4" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/Pt2_EXPORT.blend" id="3_wpr1d"]
-[ext_resource type="PackedScene" uid="uid://bhq2gwoxmm447" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/backdrop_island.tscn" id="4_l8tsd"]
+[ext_resource type="PackedScene" uid="uid://c8m2ul44df2cl" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EC.glb" id="3_l8tsd"]
+[ext_resource type="PackedScene" uid="uid://cldcbpow4a6sd" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/EC_Pt2.glb" id="4_i1spn"]
+[ext_resource type="PackedScene" uid="uid://b0ubwvm1a5e1j" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/BACKDROP_ISLAND.glb" id="4_l8tsd"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_m7aqq"]
 size = Vector2(24000, 24000)
@@ -15,16 +15,10 @@ uv1_scale = Vector3(74.915, 34.823, 50.925)
 
 [node name="EmeraldCoastPt1" type="Node3D" unique_id=1511839976]
 
-[node name="EC_18_EXPORT" parent="." unique_id=666295997 instance=ExtResource("1_kodfe")]
-transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, -0.14828026, 0, -0.37375617)
-
 [node name="SeaFloor" type="MeshInstance3D" parent="." unique_id=1710120118]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2307.5264, -723.14905, 175.45895)
 mesh = SubResource("PlaneMesh_m7aqq")
 surface_material_override/0 = SubResource("StandardMaterial3D_pbse2")
-
-[node name="Pt2_EXPORT" parent="." unique_id=2133274632 instance=ExtResource("3_wpr1d")]
-transform = Transform3D(3, 0, -4.8280947e-07, 0, 3, 0, 4.8280947e-07, 0, 3, 2770.5342, 0.3386078, 870.8379)
 
 [node name="Backdrop" type="Node3D" parent="." unique_id=1126775474]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3397064, 0)
@@ -464,5 +458,8 @@ transform = Transform3D(0.002709508, 0, -0.67499447, 0, 0.67499983, 0, 0.6749944
 [node name="BACKDROP_ISLAND16" parent="Backdrop" unique_id=1351742913 instance=ExtResource("4_l8tsd")]
 transform = Transform3D(0.5349465, 0, -0.41165185, 0, 0.675, 0, 0.41165185, 0, 0.5349465, 6181.76, -2.1226692, 828.1453)
 
-[editable path="EC_18_EXPORT"]
-[editable path="Pt2_EXPORT"]
+[node name="EC" parent="." unique_id=411019064 instance=ExtResource("3_l8tsd")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, 0, 0)
+
+[node name="EC_Pt2" parent="." unique_id=1681150783 instance=ExtResource("4_i1spn")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 2770.534, 0.339, 870.838)

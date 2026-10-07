@@ -66,6 +66,8 @@ bus = &"SFX"
 attenuation_filter_cutoff_hz = 10000.0
 
 [node name="Mesh" type="Node3D" parent="." unique_id=107706107]
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="DashPanelMesh" parent="Mesh" unique_id=1210066314 instance=ExtResource("3_minmf")]
 transform = Transform3D(-3.059797e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, -3.059797e-08, 0, 0.021169916, 0)
@@ -85,3 +87,6 @@ script = ExtResource("4_4tnew")
 target_paths = Array[NodePath]([NodePath("../LeftCap"), NodePath("../RightCap")])
 emission_color = Color(0.99999934, 0.796872, 0.7649625, 1)
 cycle_duration = 0.5
+
+[editable path="Mesh/DashPanelMesh"]
+[editable path="Mesh/DashPanelMesh/DashPanel"]

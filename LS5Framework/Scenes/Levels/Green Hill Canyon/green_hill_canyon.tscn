@@ -1134,7 +1134,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="Checkpoint3" parent="." unique_id=1052155355 instance=ExtResource("8_5nk7t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1626.7302, 88.63237, -1511.8743)
-respawn_point_path = NodePath("../Checkpoint2/RespawnPoint")
 
 [node name="CollisionShape3D" parent="Checkpoint3" index="0" unique_id=371043241]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4312744, 4.5, -18.337524)
