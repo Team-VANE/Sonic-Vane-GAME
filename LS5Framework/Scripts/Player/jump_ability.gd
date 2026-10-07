@@ -126,9 +126,22 @@ func on_action_exit(_next_action: CharacterAction) -> void:
 	owner_player._jump_time = 0.0
 
 
+func _wall_kick_prompt_available() -> bool:
+	if not owner_player:
+		return false
+	var parkour: ParkourAbility = owner_player._get_action_by_id(&"parkour") as ParkourAbility
+	return parkour and parkour.is_wall_kick_prompt_available()
+
+
+func get_input_prompt_stage() -> int:
+	return InputPromptStage.PRIORITY if _wall_kick_prompt_available() else InputPromptStage.NORMAL
+
+
 func get_input_prompt(_context: Dictionary = {}) -> Dictionary:
 	if not input_prompt_enabled or not enabled or not owner_player:
 		return {}
+	if _wall_kick_prompt_available():
+		return {"label": "Wall Kick", "gesture": &"press", "display_priority": 100, "contextual": true}
 	if owner_player.attached and owner_player.can_queue_jump():
 		return {"label": input_prompt_name}
 	if owner_player.can_consume_coyote_jump() and owner_player.can_queue_coyote_jump():

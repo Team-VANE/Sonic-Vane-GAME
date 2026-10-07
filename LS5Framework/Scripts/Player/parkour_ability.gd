@@ -178,7 +178,7 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Time spent using only the main collision sphere after a successful landing roll.
 @export var landing_roll_compact_collision_duration: float = 0.7
 ## Minimum radial approach angle required for rough-landing feedback.
-@export_range(0.0, 90.0, 0.1, "suffix:°") var rough_landing_min_approach_angle: float = 35.0
+@export_range(0.0, 90.0, 0.1, "suffix:Â°") var rough_landing_min_approach_angle: float = 35.0
 ## Minimum ground collision strength required for rough-landing feedback.
 @export_range(0.0, 1.0, 0.01) var rough_landing_min_ground_hit_strength: float = 0.2
 ## Animation command used for a successful landing roll.
@@ -369,6 +369,7 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 @export var wall_cling_slide_speed_for_max_volume: float = 60.0
 
 var _in_contact: bool = false
+var _surface_force_cling: bool = false
 var _mode: WallMode = WallMode.CLING
 var _normal: Vector3 = Vector3.ZERO
 var _elapsed: float = 0.0
@@ -627,7 +628,7 @@ func can_execute(context: Dictionary = {}) -> bool:
 	var grounded_wall_transition: bool = bool(context.get("grounded_wall_transition", false))
 	return (
 		super.can_execute(context)
-		and _can_catch(grounded_wall_transition)
+		and _can_catch(grounded_wall_transition, bool(context.get("force_cling", false)))
 		and context.has("wall_normal")
 	)
 
@@ -636,7 +637,7 @@ func process_input_event(_input_name: StringName, _trigger: ActionTrigger) -> bo
 	return false
 
 
-func _can_catch(allow_attached_wall: bool = false) -> bool:
+func _can_catch(allow_attached_wall: bool = false, force_cling: bool = false) -> bool:
 	if not owner_player or not enabled or not owner_player._network_is_local_authority():
 		return false
 	if owner_player.has_method("is_insta_shield_input_consumed") and owner_player.is_insta_shield_input_consumed():
@@ -655,9 +656,9 @@ func _can_catch(allow_attached_wall: bool = false) -> bool:
 		return false
 	if owner_player._spring_align_timer > 0.0 or owner_player._spring_action_lock_timer > 0.0 or owner_player._spring_movement_lock_timer > 0.0:
 		return false
-	if owner_player.rolling or owner_player._spindash_charging or owner_player.is_carrying_object():
+	if (owner_player.rolling and not force_cling) or owner_player._spindash_charging or owner_player.is_carrying_object():
 		return false
-	if allow_attached_wall:
+	if allow_attached_wall or force_cling:
 		return true
 	var source_action: StringName = owner_player.get_current_action_id()
 	var valid_cling_only_source: bool = (
@@ -757,12 +758,20 @@ func prepare_priority_input(delta: float) -> bool:
 		_landing_roll_input_buffer = 0.0
 	if _try_begin_grounded_wall_parkour():
 		return true
-	if not _can_catch():
+	if not _can_catch(false, true):
 		_jump_buffer = 0.0
 		if _in_contact:
 			_leave_wall(false, false)
 		return false
-	if not owner_player.is_ability_binding_pressed(action_id, slot_id):
+	var parkour_held: bool = owner_player.is_ability_binding_pressed(action_id, slot_id)
+	var hit: Dictionary = _find_wall(max(contact_reach, 0.0), false, delta, not parkour_held)
+	var force_cling: bool = _wall_hit_forces_cling(hit) or (_in_contact and _surface_force_cling)
+	if not _can_catch(false, force_cling):
+		_jump_buffer = 0.0
+		if _in_contact:
+			_leave_wall(false, false)
+		return false
+	if not force_cling and not owner_player.is_ability_binding_pressed(action_id, slot_id):
 		_jump_buffer = 0.0
 		if _in_contact:
 			_leave_wall()
@@ -772,11 +781,16 @@ func prepare_priority_input(delta: float) -> bool:
 		if _in_contact:
 			_enter_grounded_from_floor_contact()
 		return false
-	var hit: Dictionary = _find_wall(max(contact_reach, 0.0), false, delta)
+	if not hit.is_empty():
+		_surface_force_cling = _wall_hit_forces_cling(hit)
+		if not _surface_force_cling and not owner_player.is_ability_binding_pressed(action_id, slot_id):
+			if _in_contact:
+				_leave_wall()
+			return false
 	_contact_confirmed = not hit.is_empty()
 	if _contact_confirmed:
 		if not _in_contact:
-			execute({"wall_normal": hit["normal"], "source_action": owner_player.get_current_action_id()})
+			execute({"wall_normal": hit["normal"], "source_action": owner_player.get_current_action_id(), "force_cling": _wall_hit_forces_cling(hit)})
 		else:
 			_normal = hit["normal"]
 		_missing_time = 0.0
@@ -795,9 +809,9 @@ func prepare_priority_input(delta: float) -> bool:
 func _try_begin_grounded_wall_parkour() -> bool:
 	if not owner_player.attached:
 		return false
-	if not owner_player.is_ability_binding_just_pressed(action_id, slot_id):
+	if not owner_player.is_surface_cling_forced() and not owner_player.is_ability_binding_just_pressed(action_id, slot_id):
 		return false
-	if not _can_catch(true):
+	if not _can_catch(true, owner_player.is_surface_cling_forced()):
 		return false
 	var up: Vector3 = get_owner_gravity_up()
 	var wall_normal: Vector3 = owner_player.surface_normal.normalized()
@@ -815,6 +829,7 @@ func _try_begin_grounded_wall_parkour() -> bool:
 		"wall_normal": hit["normal"],
 		"source_action": owner_player.get_current_action_id(),
 		"grounded_wall_transition": true,
+		"force_cling": owner_player.is_surface_cling_forced(),
 	}):
 		return false
 	_contact_confirmed = true
@@ -836,16 +851,16 @@ func resolve_movement_contact(entry_velocity: Vector3) -> void:
 	if _in_contact and _touching_floor():
 		_enter_grounded_from_floor_contact()
 		return
-	if _in_contact or not _can_catch() or _touching_floor():
+	if _in_contact or not _can_catch(false, true) or _touching_floor():
 		return
-	if not owner_player.is_ability_binding_pressed(action_id, slot_id):
+	var hit: Dictionary = _find_wall(max(contact_reach, 0.0), false, 0.0, not owner_player.is_ability_binding_pressed(action_id, slot_id))
+	if not _can_catch(false, _wall_hit_forces_cling(hit)):
 		return
-	var hit: Dictionary = _find_wall(max(contact_reach, 0.0))
 	if hit.is_empty():
 		return
 	var previous_velocity: Vector3 = owner_player.velocity
 	owner_player.velocity = entry_velocity
-	if not execute({"wall_normal": hit["normal"], "source_action": owner_player.get_current_action_id()}):
+	if not execute({"wall_normal": hit["normal"], "source_action": owner_player.get_current_action_id(), "force_cling": _wall_hit_forces_cling(hit)}):
 		owner_player.velocity = previous_velocity
 		return
 	_contact_confirmed = true
@@ -1066,7 +1081,18 @@ func _notify_landing_roll_speedometer_effect(
 		)
 
 
-func _find_wall(reach: float, approaching_only: bool = false, prediction_time: float = 0.0) -> Dictionary:
+func _wall_hit_forces_cling(hit: Dictionary) -> bool:
+	return not hit.is_empty() and (
+		owner_player._active_surface_area_has_behavior(SurfaceBehaviorMetadata.FORCE_CLING)
+		or owner_player._surface_metadata_bool(hit.get("collider"), SurfaceBehaviorMetadata.FORCE_CLING, int(hit.get("shape", -1)))
+	)
+
+
+func is_wall_kick_prompt_available() -> bool:
+	return _in_contact and _contact_confirmed and _mode == WallMode.CLING
+
+
+func _find_wall(reach: float, approaching_only: bool = false, prediction_time: float = 0.0, forced_only: bool = false) -> Dictionary:
 	var up: Vector3 = get_owner_gravity_up()
 	var reference: Vector3 = up.cross(Vector3.RIGHT)
 	if reference.length_squared() < 0.001:
@@ -1074,7 +1100,7 @@ func _find_wall(reach: float, approaching_only: bool = false, prediction_time: f
 	reference = reference.normalized()
 	var mask: int = collision_mask_override if collision_mask_override else owner_player.collision_mask
 	var space: PhysicsDirectSpaceState3D = owner_player.get_world_3d().direct_space_state
-	if _in_contact and _mode == WallMode.RUN and not approaching_only:
+	if _in_contact and _mode == WallMode.RUN and not approaching_only and not forced_only:
 		var ahead_hit: Dictionary = _find_wall_run_ahead(space, up, reach, mask, prediction_time)
 		if not ahead_hit.is_empty():
 			return ahead_hit
@@ -1091,7 +1117,7 @@ func _find_wall(reach: float, approaching_only: bool = false, prediction_time: f
 			"collider": collision.get_collider(),
 			"shape": collision.get_collider_shape_index(),
 		}
-		if _wall_hit_is_eligible(collision_hit, -collision_normal, up, approaching_only):
+		if (not forced_only or _wall_hit_forces_cling(collision_hit)) and _wall_hit_is_eligible(collision_hit, -collision_normal, up, approaching_only):
 			var collision_score: float = owner_player.global_position.distance_to(collision.get_position()) - 0.25
 			if collision_score < best_score:
 				best = collision_hit
@@ -1107,6 +1133,8 @@ func _find_wall(reach: float, approaching_only: bool = false, prediction_time: f
 			if hit.is_empty() and height_index == 0 and contact_probe_radius > 0.0:
 				hit = _sweep_wall(space, origin, direction, reach, mask)
 			if hit.is_empty():
+				continue
+			if forced_only and not _wall_hit_forces_cling(hit):
 				continue
 			if not _wall_hit_is_eligible(hit, direction, up, approaching_only):
 				continue
@@ -1220,7 +1248,10 @@ func on_action_enter(context: Dictionary = {}) -> void:
 	owner_player._reset_drift_state()
 	_normal = context["wall_normal"]
 	var source_action: StringName = StringName(context.get("source_action", &""))
-	var force_cling: bool = cling_only_source_actions.has(source_action)
+	var force_cling: bool = bool(context.get("force_cling", false)) or cling_only_source_actions.has(source_action)
+	_surface_force_cling = bool(context.get("force_cling", false))
+	if _surface_force_cling:
+		owner_player._end_surface_roll()
 	if owner_player._bounce_state != owner_player.BounceState.NONE or owner_player._bounce_rebound_attack_active:
 		owner_player._bounce_state = owner_player.BounceState.NONE
 		owner_player._bounce_rebound_attack_active = false
@@ -1366,7 +1397,7 @@ func physics_update_action(delta: float) -> void:
 			animation_speed_blend
 		)
 		_slow_time = _slow_time + delta if _dash_panel_run_mode_hold_remaining <= 0.0 and observed_horizontal_speed < max(run_exit_speed, 0.0) else 0.0
-		if _slow_time >= max(run_exit_delay, 0.001):
+		if _surface_force_cling or _slow_time >= max(run_exit_delay, 0.001):
 			_mode = WallMode.CLING
 			_wall_lift_phase = WallLiftPhase.NONE
 			_dash_panel_run_lock_remaining = 0.0
@@ -2281,6 +2312,7 @@ func _clear_wall_kick_coyote() -> void:
 
 
 func on_action_exit(_next_action: CharacterAction) -> void:
+	_surface_force_cling = false
 	_wall_exit_visual_offset = Vector3.ZERO
 	_wall_exit_visual_elapsed = 0.0
 	if (

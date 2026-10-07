@@ -8,6 +8,8 @@ const INTANGIBLE: StringName = &"surface_intangible"
 const NO_SLOPE_GRAVITY: StringName = &"surface_no_slope_gravity"
 const NO_DETACH: StringName = &"surface_no_detach"
 const STICKY: StringName = &"surface_sticky"
+const FORCE_CLING: StringName = &"surface_force_cling"
+const INVISIBLE: StringName = &"surface_invisible"
 const FORCE_ROLL: StringName = &"surface_force_roll"
 const NO_JUMP: StringName = &"surface_no_jump"
 const NO_COYOTE_JUMP: StringName = &"surface_no_coyote_jump"
@@ -26,6 +28,8 @@ static func get_all_keys() -> Array[StringName]:
 		NO_DETACH,
 		STICKY,
 		FORCE_ROLL,
+		FORCE_CLING,
+		INVISIBLE,
 		NO_JUMP,
 		NO_COYOTE_JUMP,
 		NO_ROLL,

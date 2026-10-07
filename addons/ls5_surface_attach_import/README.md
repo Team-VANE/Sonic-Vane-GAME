@@ -23,6 +23,8 @@ Tags are case-insensitive and may be combined with underscores, hyphens, spaces,
 | `noslopegravity` or `noslopegrav` | Disables tangential slope gravity on the surface. |
 | `nodetach` | Ignores ordinary angle, outward-speed, and minimum-speed adhesion detach rules and preserves normal braking at every angle. |
 | `sticky` | Prevents geometry-driven surface launches and preserves normal braking at every angle. |
+| `forcecling` | Automatically enters wall cling on an eligible wall without holding Parkour. Jump displays a contextual Wall Kick glyph. Requires a Parkour ability. |
+| `invisible` | Hides the tagged mesh and descendant meshes while preserving collisions and triggers. |
 | `forceroll` | Keeps characters with a roll action in the roll state. |
 | `nojump` | Blocks ground jumps and coyote jumps. |
 | `nocoyotejump` or `nocoyote` | Blocks coyote jumps while preserving ground jumps. |
@@ -38,5 +40,7 @@ Combine `sticky_nodetach` when a surface should block both geometry-driven launc
 An imported mesh object whose name contains `_GENCOL` has its per-node `Generate Physics` import option enabled automatically. Other per-node physics settings retain their configured values.
 
 The stock Sonic-style damage handler treats any positive damage amount as one damage event. Numeric amounts remain available to alternate damage handlers.
+
+Combine `intangible` with movement tags such as `forceroll`, `noroll`, `nodrift`, `nojump`, `sticky`, or `forcecling` to apply them while overlapping the trigger. `forcecling` still requires a nearby solid wall; trigger volumes do not provide a wall normal. For example: `RollZone_invisible_intangible_forceroll_GENCOL`. Overlapping `forceroll` takes precedence over `noroll`.
 
 Use a closed collider volume for reliable `intangible` triggers. Zero-thickness or concave trigger meshes can miss fast-moving bodies.

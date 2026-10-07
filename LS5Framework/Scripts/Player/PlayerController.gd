@@ -5632,8 +5632,12 @@ func is_surface_roll_forced() -> bool:
 	return _current_surface_has_behavior(SURFACE_FORCE_ROLL_META)
 
 
+func is_surface_cling_forced() -> bool:
+	return _current_surface_has_behavior(SURFACE_METADATA.FORCE_CLING)
+
+
 func is_surface_roll_blocked() -> bool:
-	return _current_surface_has_behavior(SURFACE_NO_ROLL_META)
+	return not is_surface_roll_forced() and _current_surface_has_behavior(SURFACE_NO_ROLL_META)
 
 
 func is_surface_drift_blocked() -> bool:
@@ -5725,13 +5729,19 @@ func _process_surface_contact_behavior(
 		_clear_coyote_jump_window()
 	if _surface_metadata_bool(collider, SURFACE_FORCE_ROLL_META, collider_shape_index):
 		_force_surface_roll()
-	if _surface_metadata_bool(collider, SURFACE_NO_ROLL_META, collider_shape_index):
+	if not is_surface_roll_forced() and _surface_metadata_bool(collider, SURFACE_NO_ROLL_META, collider_shape_index):
 		_end_surface_roll()
 	if _surface_metadata_bool(collider, SURFACE_NO_DRIFT_META, collider_shape_index):
 		_reset_drift_state()
 
 
 func _process_slide_collision_surface_behaviors() -> void:
+	if is_surface_roll_forced():
+		_force_surface_roll()
+	elif _active_surface_area_has_behavior(SURFACE_NO_ROLL_META):
+		_end_surface_roll()
+	if _active_surface_area_has_behavior(SURFACE_NO_DRIFT_META):
+		_reset_drift_state()
 	if not _movement_sphere_contact.is_empty():
 		_process_surface_contact_behavior(
 			instance_from_id(int(_movement_sphere_contact.collider_id)),

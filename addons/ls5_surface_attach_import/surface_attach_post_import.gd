@@ -38,6 +38,8 @@ func _init() -> void:
 		"nodetach": SURFACE_METADATA.NO_DETACH,
 		"sticky": SURFACE_METADATA.STICKY,
 		"forceroll": SURFACE_METADATA.FORCE_ROLL,
+		"forcecling": SURFACE_METADATA.FORCE_CLING,
+		"invisible": SURFACE_METADATA.INVISIBLE,
 		"nojump": SURFACE_METADATA.NO_JUMP,
 		"nocoyotejump": SURFACE_METADATA.NO_COYOTE_JUMP,
 		"nocoyote": SURFACE_METADATA.NO_COYOTE_JUMP,
@@ -114,11 +116,20 @@ func _apply_name_rules(node: Node) -> void:
 	var metadata: Dictionary = _get_name_metadata(node)
 	if not metadata.is_empty():
 		_apply_surface_metadata(node, metadata)
+		if bool(metadata.get(SURFACE_METADATA.INVISIBLE, false)):
+			_hide_meshes(node)
 		if bool(metadata.get(SURFACE_METADATA.INTANGIBLE, false)):
 			_queue_intangible_targets(node, metadata)
 
 	for child: Node in node.get_children():
 		_apply_name_rules(child)
+
+
+func _hide_meshes(node: Node) -> void:
+	if node is MeshInstance3D or node is ImporterMeshInstance3D:
+		node.set("visible", false)
+	for child: Node in node.get_children():
+		_hide_meshes(child)
 
 
 func _get_name_metadata(node: Node) -> Dictionary:
