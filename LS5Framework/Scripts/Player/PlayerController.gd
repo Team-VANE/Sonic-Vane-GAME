@@ -2221,6 +2221,7 @@ func _move_with_movement_time_scale() -> void:
 	velocity /= _movement_tick_scale
 	_recover_missed_sphere_contact(movement_start)
 	_process_object_collision_contacts()
+	_refresh_surface_behavior_areas(movement_start.origin, true)
 
 
 func _process_object_collision_contacts() -> void:
@@ -2825,6 +2826,7 @@ func _movement_physics_process(delta: float) -> void:
 		_sync_online_debug_puppet(delta)
 		return
 
+	_refresh_surface_behavior_areas(global_position)
 	var was_attached: bool = attached
 	_refresh_moving_collision_support()
 	if not attached:
@@ -5527,9 +5529,16 @@ func _get_surface_attach_max_angle_deg(
 		SURFACE_ATTACH_MAX_ANGLE_META,
 		collider_shape_index
 	)
-	if value is int or value is float:
-		return clamp(float(value), 0.0, 180.0)
-	return -1.0
+	var limit: float = clampf(float(value), 0.0, 180.0) if value is int or value is float else -1.0
+	for area_reference: WeakRef in _active_surface_behavior_areas.values():
+		var area: Object = area_reference.get_ref()
+		if not is_instance_valid(area):
+			continue
+		var area_limit: Variant = _get_surface_metadata_value(area, SURFACE_ATTACH_MAX_ANGLE_META)
+		if area_limit is int or area_limit is float:
+			var angle: float = clampf(float(area_limit), 0.0, 180.0)
+			limit = angle if limit < 0.0 else minf(limit, angle)
+	return limit
 
 
 func _get_surface_metadata_value(
@@ -5537,28 +5546,26 @@ func _get_surface_metadata_value(
 	metadata_key: StringName,
 	collider_shape_index: int = -1
 ) -> Variant:
-	if collider == null:
+	if not is_instance_valid(collider):
 		return null
-
 	if collider is CollisionObject3D and collider_shape_index >= 0:
 		var collision_object: CollisionObject3D = collider as CollisionObject3D
-		var owner_id: int = collision_object.shape_find_owner(collider_shape_index)
-		if owner_id >= 0:
-			var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
-			if shape_owner != null and shape_owner.has_meta(metadata_key):
-				return shape_owner.get_meta(metadata_key)
-
-			var owner_shape_count: int = collision_object.shape_owner_get_shape_count(owner_id)
-			for shape_id: int in range(owner_shape_count):
+		for owner_id: int in collision_object.get_shape_owners():
+			for shape_id: int in range(collision_object.shape_owner_get_shape_count(owner_id)):
 				if collision_object.shape_owner_get_shape_index(owner_id, shape_id) != collider_shape_index:
 					continue
+				var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
+				if is_instance_valid(shape_owner) and shape_owner.has_meta(metadata_key):
+					return shape_owner.get_meta(metadata_key)
 				var shape: Shape3D = collision_object.shape_owner_get_shape(owner_id, shape_id)
-				if shape != null and shape.has_meta(metadata_key):
+				if shape and shape.has_meta(metadata_key):
 					return shape.get_meta(metadata_key)
 				break
-
-	if collider.has_meta(metadata_key):
-		return collider.get_meta(metadata_key)
+	var source: Object = collider
+	while is_instance_valid(source):
+		if source.has_meta(metadata_key):
+			return source.get_meta(metadata_key)
+		source = (source as Node).get_parent() if source is Node else null
 	return null
 
 
@@ -5588,6 +5595,8 @@ func _active_surface_area_has_behavior(metadata_key: StringName) -> bool:
 
 
 func _current_surface_has_behavior(metadata_key: StringName) -> bool:
+	if bool(_surface_contact_behaviors.get(metadata_key, false)):
+		return true
 	if (
 		_follow_collider_last != null
 		and is_instance_valid(_follow_collider_last)
@@ -5681,6 +5690,8 @@ func enter_surface_behavior_area(area: Area3D) -> void:
 		return
 	if not _network_is_local_authority():
 		return
+	if _active_surface_behavior_areas.has(area.get_instance_id()):
+		return
 	_active_surface_behavior_areas[area.get_instance_id()] = weakref(area)
 	_process_surface_contact_behavior(area)
 
@@ -5735,30 +5746,55 @@ func _process_surface_contact_behavior(
 		_reset_drift_state()
 
 
+func _refresh_surface_behavior_areas(start_position: Vector3, sweep_motion: bool = false) -> void:
+	if not _network_is_local_authority():
+		return
+	var contacts: Dictionary = ImportedSurfaceBehaviorArea.collect_body_contacts(self, start_position, sweep_motion)
+	var overlaps: Dictionary = contacts["overlaps"]
+	var crossed: Dictionary = contacts["crossed"]
+	for area: ImportedSurfaceBehaviorArea in crossed.values():
+		area._on_body_entered(self)
+	for area: ImportedSurfaceBehaviorArea in overlaps.values():
+		area._on_body_entered(self)
+	for area_id: Variant in _active_surface_behavior_areas.keys():
+		var area_reference: WeakRef = _active_surface_behavior_areas[area_id]
+		var area: Area3D = area_reference.get_ref() as Area3D
+		if not is_instance_valid(area):
+			_active_surface_behavior_areas.erase(area_id)
+		elif area is ImportedSurfaceBehaviorArea and not overlaps.has(area_id):
+			area._on_body_exited(self)
+
+
+func _record_surface_contact_behaviors(collider: Object, shape_index: int) -> void:
+	for metadata_key: StringName in SURFACE_METADATA.get_all_keys():
+		if _surface_metadata_bool(collider, metadata_key, shape_index):
+			_surface_contact_behaviors[metadata_key] = true
+
+
 func _process_slide_collision_surface_behaviors() -> void:
-	if is_surface_roll_forced():
-		_force_surface_roll()
-	elif _active_surface_area_has_behavior(SURFACE_NO_ROLL_META):
-		_end_surface_roll()
-	if _active_surface_area_has_behavior(SURFACE_NO_DRIFT_META):
-		_reset_drift_state()
+	_surface_contact_behaviors.clear()
+	var contacts: Array[Dictionary] = []
 	if not _movement_sphere_contact.is_empty():
-		_process_surface_contact_behavior(
-			instance_from_id(int(_movement_sphere_contact.collider_id)),
-			int(_movement_sphere_contact.shape)
-		)
-		if _is_dead:
-			return
+		contacts.append({
+			"collider": instance_from_id(int(_movement_sphere_contact.collider_id)),
+			"shape": int(_movement_sphere_contact.shape),
+		})
 	for collision_index: int in range(get_slide_collision_count()):
 		var collision: KinematicCollision3D = get_slide_collision(collision_index)
-		if collision == null:
-			continue
-		_process_surface_contact_behavior(
-			collision.get_collider(),
-			collision.get_collider_shape_index()
-		)
+		if collision:
+			contacts.append({"collider": collision.get_collider(), "shape": collision.get_collider_shape_index()})
+	for contact: Dictionary in contacts:
+		_record_surface_contact_behaviors(contact["collider"], int(contact["shape"]))
+	for contact: Dictionary in contacts:
+		_process_surface_contact_behavior(contact["collider"], int(contact["shape"]))
 		if _is_dead:
 			return
+	if is_surface_roll_forced():
+		_force_surface_roll()
+	elif is_surface_roll_blocked():
+		_end_surface_roll()
+	if is_surface_drift_blocked():
+		_reset_drift_state()
 
 
 func _force_surface_roll() -> void:

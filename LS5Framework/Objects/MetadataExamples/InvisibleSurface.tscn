@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataSurface.tscn" id="Base"]
+
+[node name="InvisibleSurface" instance=ExtResource("Base")]
+editor_description = "Invisible solid surface. The mesh is hidden explicitly; the collision shape remains enabled."
+metadata/surface_invisible = true
+
+[node name="Mesh" parent="." index="0"]
+visible = false

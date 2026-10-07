@@ -64,13 +64,16 @@
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Automation/AutomationSpline2_5DDepthProfile.tscn" id="61_depth_profile"]
 [ext_resource type="PackedScene" uid="uid://t1db85176ty3" path="res://LS5Framework/Objects/Reference/RULER/Ruler.tscn" id="64_1i28t"]
 [ext_resource type="PackedScene" uid="uid://c5gr2xrmhumi6" path="res://LS5Framework/Objects/Reference/CharacterReference.tscn" id="64_ebmlk"]
+[ext_resource type="PackedScene" uid="uid://mfeo556qvxlx" path="res://LS5Framework/Objects/Testing/Cube_intangible_forceroll.glb" id="70_r8jnm"]
+[ext_resource type="PackedScene" uid="uid://bmyw2thfo3cal" path="res://LS5Framework/Objects/Testing/Cube _forcecling.glb" id="71_ncnqb"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="72_c1j06"]
 [ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
 [ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
 [ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
 [ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
 [ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r8jnm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ncnqb"]
 resource_local_to_scene = true
 shader = ExtResource("10_e4tho")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -128,16 +131,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_ncnqb"]
+[sub_resource type="Sky" id="Sky_c1j06"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_r8jnm")
+sky_material = SubResource("ShaderMaterial_ncnqb")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_c1j06"]
+[sub_resource type="Environment" id="Environment_ak61p"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_ncnqb")
+sky = SubResource("Sky_c1j06")
 ambient_light_source = 3
 ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
 ambient_light_sky_contribution = 0.82
@@ -215,7 +218,7 @@ _data = {
 }
 point_count = 3
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ak61p"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jtfey"]
 resource_local_to_scene = true
 radius = 2.0
 
@@ -419,7 +422,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 499.76800000000003
+shader_parameter/swap_time = 2693.248
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
 height = 8.0
@@ -432,7 +435,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 499.76800000000003
+shader_parameter/swap_time = 2693.248
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
 bounce = 1.0
@@ -764,6 +767,10 @@ roughness = 0.17
 [sub_resource type="SphereShape3D" id="SphereShape3D_736jh"]
 radius = 10.0
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_4n6d6"]
+resource_local_to_scene = true
+radius = 40.0
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_tt4we"]
 resource_local_to_scene = true
 radius = 40.0
@@ -780,10 +787,6 @@ radius = 40.0
 resource_local_to_scene = true
 radius = 40.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_344ll"]
-resource_local_to_scene = true
-radius = 40.0
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4lvf4"]
 radius = 71.0
 height = 400.0
@@ -796,30 +799,37 @@ height = 35.984375
 radius = 4.0
 height = 36.0
 
-[sub_resource type="Resource" id="Resource_jsxg6"]
+[sub_resource type="Resource" id="Resource_344ll"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_ww8qt"]
+[sub_resource type="Resource" id="Resource_jsxg6"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 69.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_0gvoy"]
+[sub_resource type="Resource" id="Resource_ww8qt"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 420.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_lraxv"]
+[sub_resource type="Resource" id="Resource_0gvoy"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 666.6
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_lraxv"]
+resource_local_to_scene = true
+script = ExtResource("53_tg66e")
+reward_type = 1
+amount = 10.0
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_a6b6k"]
@@ -832,18 +842,11 @@ random_ring_pool = null
 [sub_resource type="Resource" id="Resource_bch57"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
-reward_type = 1
-amount = 10.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_i48ms"]
-resource_local_to_scene = true
-script = ExtResource("53_tg66e")
 reward_type = 6
 amount = 1.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_svhyb"]
+[sub_resource type="Resource" id="Resource_i48ms"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 8
@@ -892,6 +895,21 @@ size = Vector3(195.52747, 27.85772, 131.37909)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0c4yb"]
 size = Vector3(195.52747, 27.85772, 131.37909)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c1j06"]
+resource_local_to_scene = true
+size = Vector3(34, 6, 12)
+
+[sub_resource type="StandardMaterial3D" id="Material"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.65, 0.12, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ak61p"]
+resource_local_to_scene = true
+material = SubResource("Material")
+size = Vector3(34, 6, 12)
 
 [node name="NIKO_TEST" type="Node3D" unique_id=794803344]
 
@@ -1136,7 +1154,7 @@ initial_time_of_day_hours = 8.0
 day_length_minutes = 14.0
 
 [node name="WorldEnvironment" parent="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_c1j06")
+environment = SubResource("Environment_ak61p")
 
 [node name="OBJECTS" type="Node3D" parent="." unique_id=1812384607]
 
@@ -1330,7 +1348,7 @@ trajectory_arc_height = 20.0
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring18" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_ak61p")
+shape = SubResource("CylinderShape3D_jtfey")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
@@ -4675,7 +4693,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.56812, 214.32352, 322.7893
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity" index="0"]
-shape = SubResource("SphereShape3D_tt4we")
+shape = SubResource("SphereShape3D_4n6d6")
 
 [node name="GravitySurface" parent="PlanetaryGravity" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4685,7 +4703,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -264.4319, 214.32352, 322.789
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity2" index="0"]
-shape = SubResource("SphereShape3D_jvpi5")
+shape = SubResource("SphereShape3D_tt4we")
 
 [node name="GravitySurface" parent="PlanetaryGravity2" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4695,7 +4713,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -344.75397, 301.76288, 322.78
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity3" index="0"]
-shape = SubResource("SphereShape3D_pkwk4")
+shape = SubResource("SphereShape3D_jvpi5")
 
 [node name="GravitySurface" parent="PlanetaryGravity3" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4705,7 +4723,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -102.9805, 794.6751, -55.2106
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity4" index="0"]
-shape = SubResource("SphereShape3D_ydo33")
+shape = SubResource("SphereShape3D_pkwk4")
 
 [node name="GravitySurface" parent="PlanetaryGravity4" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4716,7 +4734,7 @@ gravity_multiplier = 1.5
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity5" index="0"]
-shape = SubResource("SphereShape3D_344ll")
+shape = SubResource("SphereShape3D_ydo33")
 
 [node name="GravitySurface" parent="PlanetaryGravity5" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4743,48 +4761,48 @@ mesh = SubResource("CapsuleMesh_ysjdg")
 
 [node name="ItemMonitor" parent="." unique_id=69009204 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_jsxg6")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_344ll")])
 leave_base_after_break = true
 
 [node name="ItemMonitor3" parent="." unique_id=946307726 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_ww8qt")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_jsxg6")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor4" parent="." unique_id=1395552001 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 142.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_0gvoy")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_ww8qt")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor5" parent="." unique_id=1689799997 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 146.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_lraxv")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_0gvoy")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor6" parent="." unique_id=1850172790 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 150.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_a6b6k")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_lraxv")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor35" parent="." unique_id=1024913527 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -330.95615, -1.511947, 138.5572)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_bch57")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_a6b6k")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor7" parent="." unique_id=517832208 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_i48ms")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_bch57")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor36" parent="." unique_id=2133404527 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_svhyb")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_i48ms")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
@@ -5346,6 +5364,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 366.59464, 310.04053, 576.822
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.318817, 60.50644, 15.784119)
 shape = SubResource("BoxShape3D_0c4yb")
 
+[node name="Cube_intangible_forceroll2" parent="." unique_id=1794924762 instance=ExtResource("70_r8jnm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8036013, -0.6765022, 299.44324)
+
+[node name="Cube _forcecling2" parent="." unique_id=2109704356 instance=ExtResource("71_ncnqb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.544607, 5.323498, 324.48804)
+
+[node name="MetadataTrigger" parent="." unique_id=2015736034 instance=ExtResource("72_c1j06")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.135004, -1.6765003, 344.6151)
+metadata/surface_force_roll = true
+
+[node name="CollisionShape3D" parent="MetadataTrigger" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 0)
+shape = SubResource("BoxShape3D_c1j06")
+
+[node name="VolumePreview" parent="MetadataTrigger" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 0)
+mesh = SubResource("BoxMesh_ak61p")
+show_in_game = true
+
 [editable path="ENVIRONMENT/EnvironmentWeatherSystem"]
 [editable path="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle"]
 [editable path="OBJECTS/RINGS/RingSpline"]
@@ -5475,3 +5512,4 @@ shape = SubResource("BoxShape3D_0c4yb")
 [editable path="GUNMonoBeetle16/MonoBeetle_Fractures"]
 [editable path="AutomationSpline2_5D"]
 [editable path="AutomationSpline2_5D/LoopDepthProfile"]
+[editable path="MetadataTrigger"]

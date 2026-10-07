@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/ImportedSurfaceBehaviorArea.gd" id="Area"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/MetadataExamples/MetadataVolumePreview.gd" id="Preview"]
+
+[sub_resource type="StandardMaterial3D" id="Material"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.65, 0.12, 0.18)
+cull_mode = 2
+
+[sub_resource type="BoxMesh" id="Mesh"]
+resource_local_to_scene = true
+material = SubResource("Material")
+size = Vector3(12, 6, 12)
+
+[sub_resource type="BoxShape3D" id="Shape"]
+resource_local_to_scene = true
+size = Vector3(12, 6, 12)
+
+[node name="MetadataTrigger" type="Area3D"]
+editor_description = "Intangible behavior volume. Edit root metadata and CollisionShape3D; the preview follows the box size and remains hidden during gameplay."
+collision_layer = 2147483648
+collision_mask = 4294967295
+monitorable = false
+script = ExtResource("Area")
+metadata/surface_intangible = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 3, 0)
+shape = SubResource("Shape")
+
+[node name="VolumePreview" type="MeshInstance3D" parent="." node_paths=PackedStringArray("collision_shape")]
+position = Vector3(0, 3, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh")
+script = ExtResource("Preview")
+collision_shape = NodePath("../CollisionShape3D")

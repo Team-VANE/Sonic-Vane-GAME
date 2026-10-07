@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataSurface.tscn" id="Base"]
+
+[node name="NoAttachSurface" instance=ExtResource("Base")]
+editor_description = "Remains solid while preventing player surface alignment."
+metadata/surface_attach_max_angle_deg = 0.0

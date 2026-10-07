@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataSurface.tscn" id="Base"]
+
+[node name="NoCoyoteJumpSurface" instance=ExtResource("Base")]
+editor_description = "Allows ground jumps while blocking coyote jumps after leaving the surface."
+metadata/surface_no_coyote_jump = true

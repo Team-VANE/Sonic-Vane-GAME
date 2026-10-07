@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+
+[node name="StickyTrigger" instance=ExtResource("Base")]
+editor_description = "Applies surface adhesion and disables slope gravity while inside the volume. Intentional jumps remain available."
+metadata/surface_sticky = true
+metadata/surface_no_detach = true
+metadata/surface_no_slope_gravity = true

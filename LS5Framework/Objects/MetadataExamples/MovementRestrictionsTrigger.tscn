@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+
+[node name="MovementRestrictionsTrigger" instance=ExtResource("Base")]
+editor_description = "Blocks rolling, drifting, ground jumps, and coyote jumps while inside the volume."
+metadata/surface_no_roll = true
+metadata/surface_no_drift = true
+metadata/surface_no_jump = true

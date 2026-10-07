@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+
+[node name="AttachLimitTrigger" instance=ExtResource("Base")]
+editor_description = "Limits surface alignment to 60 degrees from gravity-up while inside the volume."
+metadata/surface_attach_max_angle_deg = 60.0

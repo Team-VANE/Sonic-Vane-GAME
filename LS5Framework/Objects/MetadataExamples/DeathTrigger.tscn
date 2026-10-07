@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+
+[node name="DeathTrigger" instance=ExtResource("Base")]
+editor_description = "Applies pit-death behavior when entering the volume."
+metadata/surface_death = true

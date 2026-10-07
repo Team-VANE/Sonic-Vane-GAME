@@ -3312,6 +3312,7 @@ var _follow_collider_prev: Node3D
 var _follow_collider_shape_last: int = -1
 var _follow_collider_shape_prev: int = -1
 var _active_surface_behavior_areas: Dictionary = {}
+var _surface_contact_behaviors: Dictionary = {}
 
 # Debug HUD
 var _debug_hud: Control = null

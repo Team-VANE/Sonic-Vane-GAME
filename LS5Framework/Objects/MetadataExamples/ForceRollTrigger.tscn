@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+
+[node name="ForceRollTrigger" instance=ExtResource("Base")]
+editor_description = "Forces rolling while inside the volume. Roll input is not required."
+metadata/surface_force_roll = true

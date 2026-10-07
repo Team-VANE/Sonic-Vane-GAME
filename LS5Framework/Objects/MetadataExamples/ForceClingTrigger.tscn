@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+
+[node name="ForceClingTrigger" instance=ExtResource("Base")]
+editor_description = "Forces a wall cling when an eligible solid wall is nearby. Requires a Parkour ability."
+metadata/surface_force_cling = true

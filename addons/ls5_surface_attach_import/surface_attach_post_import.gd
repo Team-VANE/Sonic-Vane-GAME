@@ -81,48 +81,110 @@ func _post_process(scene: Node) -> void:
 	if scene == null:
 		return
 	_intangible_requests.clear()
-	_clear_imported_metadata(scene)
 	_apply_name_rules(scene)
 	_create_intangible_triggers(scene)
 
 
 func _compile_boolean_tag_pattern(tag: String) -> RegEx:
 	var pattern: RegEx = RegEx.new()
-	pattern.compile("(?i)(?:^|[^a-z0-9])%s(?=$|[^a-z0-9])" % tag)
+	pattern.compile("(?i)(?:^|[^a-z0-9])%s(?:[0-9]+)?(?=$|[^a-z0-9])" % tag)
 	return pattern
 
 
-func _clear_imported_metadata(node: Node) -> void:
-	_clear_metadata(node)
-	if node is CollisionShape3D:
-		var collision_shape: CollisionShape3D = node as CollisionShape3D
-		if collision_shape.shape:
-			_clear_metadata(collision_shape.shape)
-	elif node is CollisionObject3D:
-		_clear_collision_object_metadata(node as CollisionObject3D)
-
-	for child: Node in node.get_children():
-		_clear_imported_metadata(child)
-
-
-func _clear_metadata(source: Object) -> void:
-	if source == null:
+func _apply_name_rules(node: Node, inherited_metadata: Dictionary = {}) -> void:
+	if node.get_script() == SURFACE_BEHAVIOR_AREA_SCRIPT:
 		return
+	var metadata: Dictionary = inherited_metadata.duplicate()
+	if node is CollisionShape3D and (node as CollisionShape3D).shape:
+		var shape: Shape3D = (node as CollisionShape3D).shape
+		for metadata_key: StringName in SURFACE_METADATA.get_all_keys():
+			if shape.has_meta(metadata_key):
+				metadata[metadata_key] = shape.get_meta(metadata_key)
 	for metadata_key: StringName in SURFACE_METADATA.get_all_keys():
-		source.remove_meta(metadata_key)
-
-
-func _apply_name_rules(node: Node) -> void:
-	var metadata: Dictionary = _get_name_metadata(node)
-	if not metadata.is_empty():
-		_apply_surface_metadata(node, metadata)
-		if bool(metadata.get(SURFACE_METADATA.INVISIBLE, false)):
-			_hide_meshes(node)
-		if bool(metadata.get(SURFACE_METADATA.INTANGIBLE, false)):
-			_queue_intangible_targets(node, metadata)
+		if node.has_meta(metadata_key):
+			metadata[metadata_key] = node.get_meta(metadata_key)
+	metadata.merge(_get_name_metadata(node), true)
+	_normalize_metadata(metadata)
+	_set_metadata(node, metadata)
+	if bool(metadata.get(SURFACE_METADATA.INVISIBLE, false)):
+		_hide_meshes(node)
+	_ensure_mesh_collision(node, metadata)
+	if node is MeshInstance3D:
+		var collision_ancestor: CollisionObject3D = _find_collision_ancestor(node)
+		if collision_ancestor and collision_ancestor.get_shape_owners().size() == 1:
+			var shape_owner: Object = collision_ancestor.shape_owner_get_owner(collision_ancestor.get_shape_owners()[0])
+			if shape_owner:
+				for metadata_key: Variant in metadata:
+					if not shape_owner.has_meta(metadata_key):
+						shape_owner.set_meta(metadata_key, metadata[metadata_key])
 
 	for child: Node in node.get_children():
-		_apply_name_rules(child)
+		_apply_name_rules(child, metadata)
+
+	if node is CollisionObject3D:
+		var collision_object: CollisionObject3D = node as CollisionObject3D
+		for owner_id: int in collision_object.get_shape_owners():
+			var owner_metadata: Dictionary = metadata.duplicate()
+			var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
+			if shape_owner:
+				for metadata_key: StringName in SURFACE_METADATA.get_all_keys():
+					if shape_owner.has_meta(metadata_key):
+						owner_metadata[metadata_key] = shape_owner.get_meta(metadata_key)
+			_normalize_metadata(owner_metadata)
+			_set_metadata(shape_owner, owner_metadata)
+			if bool(owner_metadata.get(SURFACE_METADATA.INTANGIBLE, false)):
+				_queue_intangible_request(collision_object, owner_id, owner_metadata)
+
+
+func _normalize_metadata(metadata: Dictionary) -> void:
+	if bool(metadata.get(SURFACE_METADATA.FORCE_ROLL, false)):
+		metadata[SURFACE_METADATA.NO_ROLL] = false
+	var attach_limit: Variant = metadata.get(SURFACE_METADATA.ATTACH_LIMIT)
+	if (attach_limit is int or attach_limit is float) and float(attach_limit) <= 0.0:
+		metadata[SURFACE_METADATA.NO_DETACH] = false
+
+
+func _ensure_mesh_collision(node: Node, metadata: Dictionary) -> void:
+	if not (node is MeshInstance3D):
+		return
+	var mesh_instance: MeshInstance3D = node as MeshInstance3D
+	if not mesh_instance.mesh or _has_collision_shapes(node):
+		return
+	var collision_ancestor: CollisionObject3D = _find_collision_ancestor(node)
+	if collision_ancestor and not collision_ancestor.get_shape_owners().is_empty():
+		return
+	var requires_collision: bool = String(node.name).to_upper().contains(GENERATE_COLLISION_KEYWORD)
+	for metadata_key: Variant in metadata:
+		if metadata_key != SURFACE_METADATA.INVISIBLE:
+			requires_collision = true
+	if not requires_collision:
+		return
+	var shape: Shape3D = (
+		mesh_instance.mesh.create_convex_shape()
+		if bool(metadata.get(SURFACE_METADATA.INTANGIBLE, false))
+		else mesh_instance.mesh.create_trimesh_shape()
+	)
+	if not shape:
+		push_warning("Surface behavior import: '%s' has no usable collision geometry." % node.name)
+		return
+	var body: StaticBody3D = StaticBody3D.new()
+	body.name = "SurfaceBehaviorBody"
+	node.add_child(body, true)
+	body.owner = node.owner if node.owner else node
+	var collision_shape: CollisionShape3D = CollisionShape3D.new()
+	collision_shape.name = "SurfaceBehaviorShape"
+	collision_shape.shape = shape
+	body.add_child(collision_shape)
+	collision_shape.owner = body.owner
+
+
+func _has_collision_shapes(node: Node) -> bool:
+	if node is CollisionShape3D or node is CollisionPolygon3D:
+		return true
+	for child: Node in node.get_children():
+		if _has_collision_shapes(child):
+			return true
+	return false
 
 
 func _hide_meshes(node: Node) -> void:
@@ -235,30 +297,6 @@ func _get_name_attach_limit(node: Node) -> float:
 	return limit
 
 
-func _apply_surface_metadata(node: Node, metadata: Dictionary) -> void:
-	_set_metadata(node, metadata)
-
-	if node is CollisionShape3D:
-		_set_collision_shape_metadata(node as CollisionShape3D, metadata)
-		return
-	elif node is CollisionPolygon3D:
-		var collision_object: CollisionObject3D = _find_collision_ancestor(node)
-		if collision_object:
-			var owner_id: int = _find_shape_owner_id(collision_object, node)
-			if owner_id >= 0:
-				_set_shape_owner_metadata(collision_object, owner_id, metadata)
-		return
-	elif node is CollisionObject3D:
-		_set_collision_object_metadata(node as CollisionObject3D, metadata)
-		return
-
-	var collision_ancestor: CollisionObject3D = _find_collision_ancestor(node)
-	if collision_ancestor:
-		_set_collision_object_metadata(collision_ancestor, metadata)
-
-	_apply_metadata_to_collision_descendants(node, metadata)
-
-
 func _set_metadata(source: Object, metadata: Dictionary) -> void:
 	if source == null:
 		return
@@ -275,76 +313,6 @@ func _find_collision_ancestor(node: Node) -> CollisionObject3D:
 	return null
 
 
-func _apply_metadata_to_collision_descendants(node: Node, metadata: Dictionary) -> void:
-	for child: Node in node.get_children():
-		if child is CollisionObject3D:
-			_set_collision_object_metadata(child as CollisionObject3D, metadata)
-		elif child is CollisionShape3D:
-			_set_collision_shape_metadata(child as CollisionShape3D, metadata)
-		_apply_metadata_to_collision_descendants(child, metadata)
-
-
-func _set_collision_object_metadata(collision_object: CollisionObject3D, metadata: Dictionary) -> void:
-	_set_metadata(collision_object, metadata)
-	for owner_id: int in collision_object.get_shape_owners():
-		_set_shape_owner_metadata(collision_object, owner_id, metadata)
-
-
-func _set_shape_owner_metadata(
-	collision_object: CollisionObject3D,
-	owner_id: int,
-	metadata: Dictionary
-) -> void:
-	var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
-	_set_metadata(shape_owner, metadata)
-
-
-func _set_collision_shape_metadata(collision_shape: CollisionShape3D, metadata: Dictionary) -> void:
-	_set_metadata(collision_shape, metadata)
-
-
-func _clear_collision_object_metadata(collision_object: CollisionObject3D) -> void:
-	_clear_metadata(collision_object)
-	for owner_id: int in collision_object.get_shape_owners():
-		var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
-		_clear_metadata(shape_owner)
-		for shape_id: int in range(collision_object.shape_owner_get_shape_count(owner_id)):
-			var shape: Shape3D = collision_object.shape_owner_get_shape(owner_id, shape_id)
-			_clear_metadata(shape)
-
-
-func _queue_intangible_targets(node: Node, metadata: Dictionary) -> void:
-	if node is CollisionShape3D or node is CollisionPolygon3D:
-		var collision_object: CollisionObject3D = _find_collision_ancestor(node)
-		if collision_object:
-			var owner_id: int = _find_shape_owner_id(collision_object, node)
-			_queue_intangible_request(collision_object, owner_id, metadata)
-		return
-	if node is CollisionObject3D:
-		_queue_intangible_request(node as CollisionObject3D, -1, metadata)
-		return
-
-	var collision_ancestor: CollisionObject3D = _find_collision_ancestor(node)
-	if collision_ancestor:
-		_queue_intangible_request(collision_ancestor, -1, metadata)
-	_queue_intangible_descendants(node, metadata)
-
-
-func _queue_intangible_descendants(node: Node, metadata: Dictionary) -> void:
-	for child: Node in node.get_children():
-		if child is CollisionObject3D:
-			_queue_intangible_request(child as CollisionObject3D, -1, metadata)
-		else:
-			_queue_intangible_descendants(child, metadata)
-
-
-func _find_shape_owner_id(collision_object: CollisionObject3D, owner_node: Node) -> int:
-	for owner_id: int in collision_object.get_shape_owners():
-		if collision_object.shape_owner_get_owner(owner_id) == owner_node:
-			return owner_id
-	return -1
-
-
 func _queue_intangible_request(
 	collision_object: CollisionObject3D,
 	owner_id: int,
@@ -352,24 +320,14 @@ func _queue_intangible_request(
 ) -> void:
 	if collision_object == null:
 		return
-	var object_prefix: String = "%d:" % collision_object.get_instance_id()
-	var whole_object_key: String = object_prefix + "all"
-	if owner_id >= 0 and _intangible_requests.has(whole_object_key):
-		return
-	if owner_id < 0:
-		for request_key: Variant in _intangible_requests.keys():
-			if String(request_key).begins_with(object_prefix):
-				_intangible_requests.erase(request_key)
-	var key: String = whole_object_key if owner_id < 0 else object_prefix + str(owner_id)
-	var merged_metadata: Dictionary = metadata.duplicate()
-	if _intangible_requests.has(key):
-		var existing_request: Dictionary = _intangible_requests[key]
-		merged_metadata = existing_request.get("metadata", {}).duplicate()
-		merged_metadata.merge(metadata, true)
+	for child: Node in collision_object.get_children():
+		if child.get_script() == SURFACE_BEHAVIOR_AREA_SCRIPT and int(child.get_meta(&"surface_trigger_owner_id", -1)) == owner_id:
+			return
+	var key: String = "%d:%d" % [collision_object.get_instance_id(), owner_id]
 	_intangible_requests[key] = {
 		"collision_object": collision_object,
 		"owner_id": owner_id,
-		"metadata": merged_metadata,
+		"metadata": metadata.duplicate(),
 	}
 
 
@@ -392,7 +350,7 @@ func _create_intangible_trigger(
 ) -> void:
 	var trigger: Area3D = Area3D.new()
 	trigger.name = "%s_SurfaceBehaviorTrigger" % collision_object.name
-	trigger.collision_layer = 0
+	trigger.collision_layer = SURFACE_BEHAVIOR_AREA_SCRIPT.DETECTION_LAYER
 	trigger.collision_mask = 0xFFFFFFFF
 	trigger.monitoring = true
 	trigger.monitorable = false
@@ -400,6 +358,7 @@ func _create_intangible_trigger(
 	collision_object.add_child(trigger, true)
 	trigger.owner = scene
 	_set_metadata(trigger, metadata)
+	trigger.set_meta(&"surface_trigger_owner_id", owner_id)
 
 	var shape_count: int = 0
 	if owner_id >= 0:
@@ -423,6 +382,11 @@ func _create_intangible_trigger(
 		return
 
 	if owner_id >= 0:
+		var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
+		if shape_owner is CollisionShape3D:
+			(shape_owner as CollisionShape3D).disabled = true
+		elif shape_owner is CollisionPolygon3D:
+			(shape_owner as CollisionPolygon3D).disabled = true
 		collision_object.shape_owner_set_disabled(owner_id, true)
 	else:
 		collision_object.collision_layer = 0
@@ -445,7 +409,12 @@ func _add_trigger_owner_shapes(
 		var trigger_shape: CollisionShape3D = CollisionShape3D.new()
 		trigger_shape.name = "SurfaceBehaviorShape%d" % shape_id
 		trigger_shape.transform = owner_transform
-		trigger_shape.shape = shape
+		if shape is ConcavePolygonShape3D:
+			var convex_shape: ConvexPolygonShape3D = ConvexPolygonShape3D.new()
+			convex_shape.points = (shape as ConcavePolygonShape3D).get_faces()
+			trigger_shape.shape = convex_shape
+		else:
+			trigger_shape.shape = shape
 		trigger.add_child(trigger_shape, true)
 		trigger_shape.owner = scene
 		added_count += 1

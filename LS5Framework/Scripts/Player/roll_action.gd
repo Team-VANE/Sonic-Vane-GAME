@@ -121,7 +121,7 @@ func can_execute(context: Dictionary = {}) -> bool:
 		return false
 	if owner_player.has_method("is_surface_roll_blocked") and owner_player.is_surface_roll_blocked():
 		return false
-	if not _route_policy_allows(context):
+	if not owner_player.is_surface_roll_forced() and not _route_policy_allows(context):
 		return false
 	return _can_start_roll()
 
@@ -254,9 +254,11 @@ func continuous_physics_update(_delta: float) -> void:
 
 
 func _can_start_roll() -> bool:
+	if owner_player._is_dead or owner_player._hurt_active or owner_player._local_pause_enabled or owner_player._ui_input_blocked or owner_player._debug_mode:
+		return false
 	if owner_player.has_method("is_surface_roll_blocked") and owner_player.is_surface_roll_blocked():
 		return false
-	if not _route_policy_allows({"source_action": _get_current_source_action()}):
+	if not owner_player.is_surface_roll_forced() and not _route_policy_allows({"source_action": _get_current_source_action()}):
 		return false
 	if owner_player._spring_action_lock_timer > 0.0 or owner_player._spring_movement_lock_timer > 0.0:
 		return false

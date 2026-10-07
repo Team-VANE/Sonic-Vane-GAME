@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataSurface.tscn" id="Base"]
+
+[node name="AttachLimitSurface" instance=ExtResource("Base")]
+editor_description = "Allows surface alignment up to 60 degrees from gravity-up. Rotate the surface to test the limit."
+metadata/surface_attach_max_angle_deg = 60.0

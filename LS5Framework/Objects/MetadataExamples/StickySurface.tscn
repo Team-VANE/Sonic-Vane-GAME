@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataSurface.tscn" id="Base"]
+
+[node name="StickySurface" instance=ExtResource("Base")]
+editor_description = "Preserves surface adhesion and disables slope gravity on the solid surface."
+metadata/surface_sticky = true
+metadata/surface_no_detach = true
+metadata/surface_no_slope_gravity = true

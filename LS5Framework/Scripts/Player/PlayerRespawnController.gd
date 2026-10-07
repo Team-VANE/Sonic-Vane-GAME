@@ -72,6 +72,12 @@ func _apply_respawn_transform(
 	p.refresh_traversal_actions()
 	p.cancel_rail_grind()
 	p.cancel_spline_spring()
+	p._active_surface_behavior_areas.clear()
+	p._surface_contact_behaviors.clear()
+	p._follow_collider_last = null
+	p._follow_collider_prev = null
+	p._follow_collider_shape_last = -1
+	p._follow_collider_shape_prev = -1
 	p.global_transform = target_transform
 
 	p._clear_enemy_hurt_boundary_exceptions()

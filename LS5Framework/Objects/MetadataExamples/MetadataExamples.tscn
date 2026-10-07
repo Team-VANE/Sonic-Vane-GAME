@@ -1,0 +1,159 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/ForceRollTrigger.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MovementRestrictionsTrigger.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/ForceClingTrigger.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/StickyTrigger.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/AttachLimitTrigger.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/DamageTrigger.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/DeathTrigger.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/ForceRollSurface.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/StickySurface.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/AttachLimitSurface.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/NoAttachSurface.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/NoCoyoteJumpSurface.tscn" id="12"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/InvisibleSurface.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/ForceClingWall.tscn" id="14"]
+
+[node name="MetadataExamples" type="Node3D"]
+editor_description = "Metadata example collection. Includes damage and death volumes; use individual scenes for isolated tests."
+
+[node name="ForceRollTrigger" parent="." instance=ExtResource("1")]
+position = Vector3(0, 0, 0)
+
+[node name="Label" type="Label3D" parent="ForceRollTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "ForceRollTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="MovementRestrictionsTrigger" parent="." instance=ExtResource("2")]
+position = Vector3(18, 0, 0)
+
+[node name="Label" type="Label3D" parent="MovementRestrictionsTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "MovementRestrictionsTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="ForceClingTrigger" parent="." instance=ExtResource("3")]
+position = Vector3(36, 0, 0)
+
+[node name="Label" type="Label3D" parent="ForceClingTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "ForceClingTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="StickyTrigger" parent="." instance=ExtResource("4")]
+position = Vector3(54, 0, 0)
+
+[node name="Label" type="Label3D" parent="StickyTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "StickyTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="AttachLimitTrigger" parent="." instance=ExtResource("5")]
+position = Vector3(0, 0, 18)
+
+[node name="Label" type="Label3D" parent="AttachLimitTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "AttachLimitTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="DamageTrigger" parent="." instance=ExtResource("6")]
+position = Vector3(18, 0, 18)
+
+[node name="Label" type="Label3D" parent="DamageTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "DamageTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="DeathTrigger" parent="." instance=ExtResource("7")]
+position = Vector3(36, 0, 18)
+
+[node name="Label" type="Label3D" parent="DeathTrigger"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "DeathTrigger"
+font_size = 36
+outline_size = 6
+
+[node name="ForceRollSurface" parent="." instance=ExtResource("8")]
+position = Vector3(54, 0, 18)
+
+[node name="Label" type="Label3D" parent="ForceRollSurface"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "ForceRollSurface"
+font_size = 36
+outline_size = 6
+
+[node name="StickySurface" parent="." instance=ExtResource("9")]
+position = Vector3(0, 0, 36)
+
+[node name="Label" type="Label3D" parent="StickySurface"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "StickySurface"
+font_size = 36
+outline_size = 6
+
+[node name="AttachLimitSurface" parent="." instance=ExtResource("10")]
+position = Vector3(18, 0, 36)
+
+[node name="Label" type="Label3D" parent="AttachLimitSurface"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "AttachLimitSurface"
+font_size = 36
+outline_size = 6
+
+[node name="NoAttachSurface" parent="." instance=ExtResource("11")]
+position = Vector3(36, 0, 36)
+
+[node name="Label" type="Label3D" parent="NoAttachSurface"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "NoAttachSurface"
+font_size = 36
+outline_size = 6
+
+[node name="NoCoyoteJumpSurface" parent="." instance=ExtResource("12")]
+position = Vector3(54, 0, 36)
+
+[node name="Label" type="Label3D" parent="NoCoyoteJumpSurface"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "NoCoyoteJumpSurface"
+font_size = 36
+outline_size = 6
+
+[node name="InvisibleSurface" parent="." instance=ExtResource("13")]
+position = Vector3(0, 0, 54)
+
+[node name="Label" type="Label3D" parent="InvisibleSurface"]
+position = Vector3(0, 8, 0)
+billboard = 1
+text = "InvisibleSurface"
+font_size = 36
+outline_size = 6
+
+[node name="ForceClingWall" parent="." instance=ExtResource("14")]
+position = Vector3(18, 0, 54)
+
+[node name="Label" type="Label3D" parent="ForceClingWall"]
+position = Vector3(0, 14, 0)
+billboard = 1
+text = "ForceClingWall"
+font_size = 36
+outline_size = 6

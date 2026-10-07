@@ -10,7 +10,7 @@ Place behavior tags before Godot's collision suffix. For example:
 
 `Loop_noslopegravity_nodetach_forceroll_nojump-colonly`
 
-Tags are case-insensitive and may be combined with underscores, hyphens, spaces, or brackets.
+Tags are case-insensitive and may be combined with underscores, hyphens, spaces, or brackets. Numeric duplicate suffixes, such as `forceroll2`, are accepted. Parent tags are inherited by descendants; explicit shape metadata may override inherited values.
 
 | Tag | Behavior |
 | --- | --- |
@@ -43,4 +43,10 @@ The stock Sonic-style damage handler treats any positive damage amount as one da
 
 Combine `intangible` with movement tags such as `forceroll`, `noroll`, `nodrift`, `nojump`, `sticky`, or `forcecling` to apply them while overlapping the trigger. `forcecling` still requires a nearby solid wall; trigger volumes do not provide a wall normal. For example: `RollZone_invisible_intangible_forceroll_GENCOL`. Overlapping `forceroll` takes precedence over `noroll`.
 
-Use a closed collider volume for reliable `intangible` triggers. Zero-thickness or concave trigger meshes can miss fast-moving bodies.
+A tagged mesh without collision geometry receives generated geometry during import. Solid behavior meshes use triangle collision; `intangible` meshes use a convex trigger volume. Existing collision settings and shapes are retained when usable. `_invisible` alone does not generate collision.
+
+Existing concave collision shapes tagged `intangible` are converted into convex trigger hulls, and the original solid shapes are disabled persistently. A convex hull fills openings and recesses; use several authored primitive or convex shapes when those spaces should remain empty.
+
+Scene-authored Area3D volumes attach `ImportedSurfaceBehaviorArea.gd` and store behavior metadata on the area root. Runtime detection uses layer 32 and the area's mask. Movement flags are shared with solid contacts, and trigger registration is idempotent so damage does not repeat on every overlap refresh. Teleports, volume deletion, and respawn release active contributions.
+
+Editable scene examples and setup instructions are in `LS5Framework/Objects/MetadataExamples/README.md`.
