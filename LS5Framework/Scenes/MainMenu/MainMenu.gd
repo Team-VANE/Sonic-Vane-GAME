@@ -294,6 +294,7 @@ var _startup_data_check_complete: bool = false
 var _test_level_skip_requested: bool = false
 
 func _ready() -> void:
+	tab_bindings.loadout_mapping_requested.connect(_on_loadout_mapping_requested)
 	menu_overlay.hide()
 	title_backdrop.entrance_music_requested.connect(_play_title_music)
 	title_backdrop.departure_finished.connect(_finish_title_departure)
@@ -739,7 +740,15 @@ func _on_character_settings_pressed(entry: Dictionary) -> void:
 
 func _on_character_settings_closed() -> void:
 	_character_settings_menu = null
+	if panel_options.visible and tab_bindings.is_visible_in_tree():
+		tab_bindings.loadout_mapping_button.call_deferred("grab_focus")
+		return
 	call_deferred("_focus_visible_panel")
+
+
+func _on_loadout_mapping_requested() -> void:
+	var entry: Dictionary = CharacterCatalog.get_selected_or_default_entry(character_data_dir, SettingsManager.chosen_character_id)
+	_on_character_settings_pressed(entry)
 
 
 # --- Options panel buttons (hook via editor) ---

@@ -88,6 +88,10 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if _modal_ui_active():
+		if _open:
+			close_wheel()
+		return
 	if not _open:
 		if is_camera_input_blocked() and _event_is_reserved(event):
 			_track_guard_event(event)
@@ -391,6 +395,8 @@ func _modal_ui_active() -> bool:
 		return true
 	for group: StringName in [&"ModalMenu", &"PauseMenu"]:
 		for menu: Node in get_tree().get_nodes_in_group(group):
+			if menu is CanvasLayer and (menu as CanvasLayer).visible:
+				return true
 			if menu is CanvasItem and (menu as CanvasItem).is_visible_in_tree():
 				return true
 	return false

@@ -1556,8 +1556,6 @@ func _rpc_race_prepare_results(payload: Dictionary, generation: int) -> void:
 	_race_results_local_pending = true
 	_race_session_start_scene = String(payload.get("start_scene", ""))
 	_race_session_start_path = String(payload.get("start_path", ""))
-	player.call("set_ui_input_blocked", true)
-	player.call("stop_all_momentum_and_special_movement")
 	player.set("race_active", false)
 	player.set("race_finished", true)
 	var hud: Node = player.get("hud")
@@ -1582,6 +1580,8 @@ func _rpc_race_prepare_results(payload: Dictionary, generation: int) -> void:
 		await _race_results_fader.call("fade_out", fade_out_time)
 	if token != _race_results_token or not is_instance_valid(player):
 		return
+	player.call("set_ui_input_blocked", true)
+	player.call("stop_all_momentum_and_special_movement")
 	if fade_hold_time > 0.0:
 		await get_tree().create_timer(fade_hold_time).timeout
 	if token != _race_results_token or not is_instance_valid(player):

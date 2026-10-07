@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal loadout_mapping_requested
+
 const CONTROL_CATEGORIES: Array[Dictionary] = [
 	{"label": "Movement", "actions": [
 		{"action": "move_forward", "label": "Move Forward"},
@@ -84,6 +86,8 @@ var _pending_binding_kind: StringName = &""
 var _pending_button: Button = null
 var _ui_interaction_locked: bool = false
 var _ui_interaction_cache: Dictionary = {}
+## Opens the selected character's ability loadout mapping.
+var loadout_mapping_button: Button = null
 
 
 func _ready() -> void:
@@ -175,6 +179,16 @@ func _build_bindings_list() -> void:
 		return
 	_clear_children(controls_list)
 	_action_buttons.clear()
+	var loadout_hint: Label = Label.new()
+	loadout_hint.text = "Looking for per-ability bindings?  Check out your per-character loadout mapping."
+	loadout_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	loadout_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	controls_list.add_child(loadout_hint)
+	loadout_mapping_button = Button.new()
+	loadout_mapping_button.text = "Open Character Loadout Mapping"
+	loadout_mapping_button.add_to_group("MenuButtons")
+	loadout_mapping_button.pressed.connect(func() -> void: loadout_mapping_requested.emit())
+	controls_list.add_child(loadout_mapping_button)
 
 	var header_row: HBoxContainer = HBoxContainer.new()
 	header_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL

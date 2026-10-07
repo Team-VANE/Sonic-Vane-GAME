@@ -3,6 +3,10 @@ extends Control
 const DeathPlane = preload("res://LS5Framework/Objects/Gameplay/DeathPlane.gd")
 const ONLINE_TELEPORT_STATE_WAIT_FRAMES: int = 180
 const PAUSE_PREVIEW_ACTION: StringName = &"hide_pause_menu"
+const CHARACTER_SETTINGS_MENU_SCENE: PackedScene = preload("res://LS5Framework/Scenes/UI/CharacterSettingsMenu.tscn")
+
+## Character loadout menu displayed over the keybind options.
+var _character_settings_menu: CharacterSettingsMenu = null
 
 @export_file("*.tscn") var main_menu_scene: String = "res://LS5Framework/Scenes/MainMenu/MainMenu.tscn"
 @export var hud: Node = null
@@ -241,6 +245,7 @@ func _set_hud_visible(value: bool) -> void:
 
 
 func _ready() -> void:
+	tab_bindings.loadout_mapping_requested.connect(_on_loadout_mapping_requested)
 	add_to_group("PauseMenu")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(true)
@@ -288,6 +293,8 @@ func _wire_online_signals() -> void:
 
 
 func _process(delta: float) -> void:
+	if is_instance_valid(_character_settings_menu):
+		return
 	if graphics_confirm_dialog.visible:
 		_update_graphics_confirmation(delta)
 		return
@@ -358,6 +365,8 @@ func _set_pause_preview_hidden(hidden: bool) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(_character_settings_menu):
+		return
 	if _is_input_binding_active():
 		return
 	if not _is_open:
@@ -386,6 +395,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_instance_valid(_character_settings_menu):
+		return
 	if event == null or _is_input_binding_active():
 		return
 	if graphics_confirm_dialog.visible:
@@ -427,6 +438,21 @@ func _has_active_modal_menu() -> bool:
 		if menu is CanvasItem and is_instance_valid(menu) and menu.is_visible_in_tree():
 			return true
 	return false
+
+
+func _on_loadout_mapping_requested() -> void:
+	if is_instance_valid(_character_settings_menu):
+		return
+	var entry: Dictionary = CharacterCatalog.get_selected_or_default_entry("res://LS5Framework/Characters", SettingsManager.chosen_character_id)
+	_character_settings_menu = CHARACTER_SETTINGS_MENU_SCENE.instantiate() as CharacterSettingsMenu
+	overlay.add_child(_character_settings_menu)
+	_character_settings_menu.closed.connect(_on_character_settings_closed)
+	_character_settings_menu.open_for_character(entry)
+
+
+func _on_character_settings_closed() -> void:
+	_character_settings_menu = null
+	tab_bindings.loadout_mapping_button.call_deferred("grab_focus")
 
 
 func _can_open_pause() -> bool:
