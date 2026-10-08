@@ -869,8 +869,7 @@ func _launch_mantle_jump() -> void:
 	owner_player._is_skidding = false
 	owner_player._jumped_from_ground = true
 	owner_player._falling_without_jump = false
-	owner_player._jump_dash_used_this_air = false
-	owner_player._tornado_kick_used_this_air = false
+	owner_player.refresh_airborne_abilities()
 	owner_player._just_jumped = true
 	owner_player._begin_jump_hold_state(false)
 	_regrab_cooldown_timer = max(regrab_cooldown, 0.0)

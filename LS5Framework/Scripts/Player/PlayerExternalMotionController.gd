@@ -174,8 +174,7 @@ func begin_vault_bar(
 	p._jump_variable = false
 	p._jump_hang_allowed = false
 	p._jump_time = 0.0
-	p._jump_dash_used_this_air = false
-	p._tornado_kick_used_this_air = false
+	p.refresh_airborne_abilities()
 	p._jump_dash_requested = false
 	p._jump_dash_recent_timer = 0.0
 	p._spring_align_timer = 0.0
@@ -275,6 +274,7 @@ func launch_from_vault_bar(
 	p._spring_clear_move_on_ground = true
 	p._spring_clear_action_on_ground = true
 	p.reset_trick_staleness()
+	p.refresh_airborne_abilities()
 	p.reset_flight_eligibility()
 	p.end_active_flight_for_external_impulse({"reason": &"vault_bar_launch"})
 
@@ -675,9 +675,7 @@ func apply_spring_impulse(
 	p._jump_variable = false
 	p._jump_hang_allowed = false
 	p._jump_time = 0.0
-	# Springs should refresh jump-dash availability (treat as a new airborne "segment").
-	p._jump_dash_used_this_air = false
-	p._tornado_kick_used_this_air = false
+	p.refresh_airborne_abilities()
 	p._jump_dash_requested = false
 	p._jump_dash_recent_timer = 0.0
 	
@@ -1276,6 +1274,7 @@ func apply_ramp_impulse(
 	p._ramp_hold_up_speed = up_speed_used
 	p._ramp_hold_forward_dir = fwd
 	p._ramp_hold_up_dir = up
+	p.refresh_airborne_abilities()
 	p.reset_flight_eligibility()
 	if not p._spindash_charging:
 		p._force_neutral_air_action({"reason": &"ramp_impulse"})
@@ -1323,8 +1322,7 @@ func start_spline_spring(
 	p._jump_hang_allowed = false
 	p._jump_time = 0.0
 	# Treat spline springs like normal springs for jump-dash/anim resets.
-	p._jump_dash_used_this_air = false
-	p._tornado_kick_used_this_air = false
+	p.refresh_airborne_abilities()
 	p._jump_dash_requested = false
 	p._jump_dash_recent_timer = 0.0
 

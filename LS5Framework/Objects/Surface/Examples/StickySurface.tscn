@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Surface.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Trait"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+sticky = 1
+prevent_detach = 1
+
+[node name="StickySurface" instance=ExtResource("Base")]
+editor_description = "Prevents surface launches and ordinary detachment."
+attachment_traits = Array[ExtResource("Trait")]([SubResource("Trait")])

@@ -169,6 +169,18 @@ func reset_traversal_history() -> void:
 	pass
 
 
+func refresh_airborne_abilities() -> void:
+	pass
+
+
+func refresh_airborne_availability() -> void:
+	pass
+
+
+func notify_wall_kick(_normal: Vector3) -> void:
+	pass
+
+
 func resolve_movement_contact(_entry_velocity: Vector3) -> void:
 	pass
 

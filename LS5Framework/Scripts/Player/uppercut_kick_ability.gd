@@ -25,7 +25,17 @@ extends CharacterAbility
 ## Sound played when the kick launches.
 @export var activation_sound: AudioStream = preload("res://LS5Framework/Sounds/Abilities/Spin_Kick.ogg")
 
+@export_subgroup("Wall Fatigue")
+## Reduces Uppercut launch strength after repeated parkour kicks from similarly oriented walls.
+@export var wall_fatigue_enabled: bool = true
+## Uppercut launch strength after kicking the same wall again without a replenishing interaction.
+@export_range(0.0, 1.0, 0.01) var same_wall_minimum_strength: float = 0.25
+## Wall-normal angle that restores full Uppercut strength relative to the previous kicked wall.
+@export_range(1.0, 180.0, 1.0, "suffix:deg") var wall_fatigue_full_strength_angle: float = 90.0
+
 var airborne_use_available: bool = true
+var _last_kicked_wall_normal: Vector3 = Vector3.ZERO
+var _wall_kick_strength: float = 1.0
 var _active: bool = false
 var _elapsed: float = 0.0
 var _input_latched: bool = false
@@ -167,6 +177,8 @@ func execute(context: Dictionary = {}) -> bool:
 	if up.length_squared() < 0.0001:
 		up = get_owner_gravity_up()
 	up = up.normalized()
+	if ground_launch and up.dot(get_owner_gravity_up()) > 0.7:
+		refresh_airborne_abilities()
 	var entry_velocity: Vector3 = context.get("entry_velocity", _get_entry_velocity())
 	if not activate(context):
 		return false
@@ -202,6 +214,8 @@ func execute(context: Dictionary = {}) -> bool:
 	var lateral: Vector3 = entry_velocity - up * vertical
 	var multiplier: float = ground_jump_speed_multiplier if ground_launch else air_jump_speed_multiplier
 	var launch_speed: float = max(owner_player.jump_speed * multiplier, 0.0)
+	if wall_fatigue_enabled:
+		launch_speed *= _wall_kick_strength
 	owner_player.velocity = lateral * clamp(horizontal_speed_retention, 0.0, 1.0) + up * max(vertical, launch_speed)
 	if kick_contacts:
 		kick_contacts.begin_kick(&"uppercut", up)
@@ -243,13 +257,49 @@ func on_action_exit(next_action: CharacterAction) -> void:
 			owner_player._trigger_anim_command(&"FallBlend")
 
 
-func reset_traversal_history() -> void:
+func notify_wall_kick(normal: Vector3) -> void:
+	if not normal or not normal.is_finite():
+		return
+	normal = normal.normalized()
+	_wall_kick_strength = 1.0
+	if wall_fatigue_enabled and _last_kicked_wall_normal:
+		var angle: float = rad_to_deg(acos(clampf(normal.dot(_last_kicked_wall_normal), -1.0, 1.0)))
+		var recovery: float = clampf(angle / maxf(wall_fatigue_full_strength_angle, 1.0), 0.0, 1.0)
+		_wall_kick_strength = lerpf(clampf(same_wall_minimum_strength, 0.0, 1.0), 1.0, recovery)
+	_last_kicked_wall_normal = normal
+
+
+func refresh_airborne_availability() -> void:
 	airborne_use_available = true
 	_first_press_age = INF
 
 
+func refresh_airborne_abilities() -> void:
+	refresh_airborne_availability()
+	_reset_wall_fatigue()
+
+
+func _reset_wall_fatigue() -> void:
+	_last_kicked_wall_normal = Vector3.ZERO
+	_wall_kick_strength = 1.0
+
+
+func reset_traversal_history() -> void:
+	refresh_airborne_abilities()
+
+
+func continuous_physics_update(_delta: float) -> void:
+	if not owner_player:
+		return
+	if owner_player._is_dead or (owner_player.attached and owner_player.surface_normal.normalized().dot(get_owner_gravity_up()) > 0.7):
+		airborne_use_available = true
+		_reset_wall_fatigue()
+
+
 func resolve_landing_momentum(_landing_normal: Vector3, _incoming_velocity: Vector3) -> bool:
-	airborne_use_available = true
+	refresh_airborne_availability()
+	if _landing_normal.normalized().dot(get_owner_gravity_up()) > 0.7:
+		refresh_airborne_abilities()
 	return false
 
 

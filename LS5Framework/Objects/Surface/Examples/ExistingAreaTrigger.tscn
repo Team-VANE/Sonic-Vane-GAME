@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Surface/Examples/ExistingAreaScript.gd" id="Area"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.tscn" id="Component"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Movement"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+rolling = 1
+
+[node name="ExistingAreaTrigger" instance=ExtResource("Base")]
+editor_description = "An Area3D with its own script and a separate surface component. Existing signals and script remain active."
+collision_layer = 0
+script = ExtResource("Area")
+
+[node name="SurfaceBehavior" parent="." instance=ExtResource("Component")]
+movement_traits = Array[ExtResource("Trait")]([SubResource("Movement")])

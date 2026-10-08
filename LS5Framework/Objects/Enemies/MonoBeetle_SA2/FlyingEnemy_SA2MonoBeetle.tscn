@@ -132,9 +132,6 @@ idle_volume_db = 3.0
 idle_max_distance = 130.0
 idle_pitch_variation = 0.03
 idle_voice_group = &"gun_beetle"
-idle_full_voice_count = 4
-idle_max_voice_count = 6
-idle_reduced_volume_db = -12.0
 
 [node name="DefeatEffects" type="Node3D" parent="Components" unique_id=661783885]
 script = ExtResource("18_effects")
@@ -193,6 +190,26 @@ transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, -
 visible = false
 metadata/_enemy_size_base_position = Vector3(0, -1.3, 0)
 metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="GUN_Fracture1" parent="MonoBeetle_Fractures" index="0" unique_id=781219701]
+mass = 1.5
+gravity_scale = 1.5
+
+[node name="GUN_Fracture2" parent="MonoBeetle_Fractures" index="1" unique_id=1093275939]
+mass = 1.5
+gravity_scale = 1.5
+
+[node name="GUN_Fracture3" parent="MonoBeetle_Fractures" index="2" unique_id=748828145]
+mass = 1.5
+gravity_scale = 1.5
+
+[node name="GUN_Fracture4" parent="MonoBeetle_Fractures" index="3" unique_id=2043037558]
+mass = 1.5
+gravity_scale = 1.5
+
+[node name="GUN_Fracture5" parent="MonoBeetle_Fractures" index="4" unique_id=2070327886]
+mass = 1.5
+gravity_scale = 1.5
 
 [node name="GazeTarget3D" type="Marker3D" parent="." unique_id=352293017 groups=["gaze_targets"]]
 script = ExtResource("9_gaze")

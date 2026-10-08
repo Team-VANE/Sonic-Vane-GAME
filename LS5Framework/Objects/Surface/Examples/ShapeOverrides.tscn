@@ -1,0 +1,59 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.tscn" id="Component"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd" id="Movement"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+resource_local_to_scene = true
+size = Vector3(6, 1, 12)
+
+[sub_resource type="StandardMaterial3D" id="RollMaterial"]
+albedo_color = Color(0.18, 0.65, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="BlockMaterial"]
+albedo_color = Color(0.85, 0.35, 0.25, 1)
+
+[sub_resource type="BoxMesh" id="LeftMesh"]
+size = Vector3(6, 1, 12)
+material = SubResource("RollMaterial")
+
+[sub_resource type="BoxMesh" id="RightMesh"]
+size = Vector3(6, 1, 12)
+material = SubResource("BlockMaterial")
+
+[sub_resource type="Resource" id="ForceRoll"]
+resource_local_to_scene = true
+script = ExtResource("Movement")
+rolling = 1
+
+[sub_resource type="Resource" id="BlockRoll"]
+resource_local_to_scene = true
+script = ExtResource("Movement")
+rolling = 2
+
+[node name="ShapeOverrides" type="StaticBody3D"]
+editor_description = "Two shapes on one body. The teal left shape forces rolling; the red right shape blocks rolling."
+
+[node name="LeftShape" type="CollisionShape3D" parent="."]
+position = Vector3(-3, -0.5, 0)
+shape = SubResource("Shape")
+
+[node name="RightShape" type="CollisionShape3D" parent="."]
+position = Vector3(3, -0.5, 0)
+shape = SubResource("Shape")
+
+[node name="LeftMesh" type="MeshInstance3D" parent="."]
+position = Vector3(-3, -0.5, 0)
+mesh = SubResource("LeftMesh")
+
+[node name="RightMesh" type="MeshInstance3D" parent="."]
+position = Vector3(3, -0.5, 0)
+mesh = SubResource("RightMesh")
+
+[node name="LeftBehavior" parent="." instance=ExtResource("Component")]
+target_paths = Array[NodePath]([NodePath("../LeftShape")])
+movement_traits = Array[ExtResource("Movement")]([SubResource("ForceRoll")])
+
+[node name="RightBehavior" parent="." instance=ExtResource("Component")]
+target_paths = Array[NodePath]([NodePath("../RightShape")])
+movement_traits = Array[ExtResource("Movement")]([SubResource("BlockRoll")])

@@ -3275,8 +3275,7 @@ func _movement_physics_process(delta: float) -> void:
 		_jump_time = 0.0
 		_jump_hang_allowed = false
 		_just_jumped = true
-		_jump_dash_used_this_air = false
-		refresh_tornado_kick_availability()
+		refresh_airborne_abilities(surface_normal.normalized().dot(world_up) > 0.7)
 		_jumped_from_ground = false
 		_falling_without_jump = false
 
@@ -5546,27 +5545,7 @@ func _get_surface_metadata_value(
 	metadata_key: StringName,
 	collider_shape_index: int = -1
 ) -> Variant:
-	if not is_instance_valid(collider):
-		return null
-	if collider is CollisionObject3D and collider_shape_index >= 0:
-		var collision_object: CollisionObject3D = collider as CollisionObject3D
-		for owner_id: int in collision_object.get_shape_owners():
-			for shape_id: int in range(collision_object.shape_owner_get_shape_count(owner_id)):
-				if collision_object.shape_owner_get_shape_index(owner_id, shape_id) != collider_shape_index:
-					continue
-				var shape_owner: Object = collision_object.shape_owner_get_owner(owner_id)
-				if is_instance_valid(shape_owner) and shape_owner.has_meta(metadata_key):
-					return shape_owner.get_meta(metadata_key)
-				var shape: Shape3D = collision_object.shape_owner_get_shape(owner_id, shape_id)
-				if shape and shape.has_meta(metadata_key):
-					return shape.get_meta(metadata_key)
-				break
-	var source: Object = collider
-	while is_instance_valid(source):
-		if source.has_meta(metadata_key):
-			return source.get_meta(metadata_key)
-		source = (source as Node).get_parent() if source is Node else null
-	return null
+	return SURFACE_METADATA.get_value(collider, metadata_key, collider_shape_index)
 
 
 func _surface_metadata_bool(
@@ -5752,17 +5731,17 @@ func _refresh_surface_behavior_areas(start_position: Vector3, sweep_motion: bool
 	var contacts: Dictionary = ImportedSurfaceBehaviorArea.collect_body_contacts(self, start_position, sweep_motion)
 	var overlaps: Dictionary = contacts["overlaps"]
 	var crossed: Dictionary = contacts["crossed"]
-	for area: ImportedSurfaceBehaviorArea in crossed.values():
-		area._on_body_entered(self)
-	for area: ImportedSurfaceBehaviorArea in overlaps.values():
-		area._on_body_entered(self)
+	for area: Area3D in crossed.values():
+		ImportedSurfaceBehaviorArea.notify_entered(area, self)
+	for area: Area3D in overlaps.values():
+		ImportedSurfaceBehaviorArea.notify_entered(area, self)
 	for area_id: Variant in _active_surface_behavior_areas.keys():
 		var area_reference: WeakRef = _active_surface_behavior_areas[area_id]
 		var area: Area3D = area_reference.get_ref() as Area3D
 		if not is_instance_valid(area):
 			_active_surface_behavior_areas.erase(area_id)
-		elif area is ImportedSurfaceBehaviorArea and not overlaps.has(area_id):
-			area._on_body_exited(self)
+		elif ImportedSurfaceBehaviorArea.is_behavior_area(area) and not overlaps.has(area_id):
+			ImportedSurfaceBehaviorArea.notify_exited(area, self)
 
 
 func _record_surface_contact_behaviors(collider: Object, shape_index: int) -> void:
@@ -7370,8 +7349,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		_jump_requested = false
 		_activate_jump_action_for_launch(&"hurt_air_jump")
 		_begin_jump_hold_state(true)
-		_jump_dash_used_this_air = false
-		refresh_tornado_kick_availability()
+		refresh_airborne_abilities()
 		_jumped_from_ground = false
 		_falling_without_jump = false
 		play_jump_sfx()
@@ -8517,7 +8495,7 @@ func refresh_tornado_kick_availability() -> void:
 	_tornado_kick_used_this_air = false
 	var uppercut: CharacterAction = _get_action_by_id(&"uppercut_kick")
 	if uppercut:
-		uppercut.reset_traversal_history()
+		uppercut.refresh_airborne_availability()
 
 
 func _is_simple_coyote_detach_state() -> bool:
@@ -9344,6 +9322,7 @@ func _update_air_landing_prediction(delta: float, world_up: Vector3) -> void:
 		lightspeed.update_input_prompt_availability()
 	var parkour: ParkourAbility = _get_action_by_id(&"parkour") as ParkourAbility
 	if parkour:
+		parkour.update_wall_prompt_prediction(delta)
 		parkour.update_landing_roll_prompt_prediction()
 	# SUMMARY: Predict an upcoming landable surface and cache its normal for visual alignment.
 	# NOTES:
@@ -10695,6 +10674,22 @@ func refresh_traversal_actions() -> void:
 			action.reset_traversal_history()
 
 
+func notify_wall_kick(normal: Vector3) -> void:
+	for action in _actions:
+		if action and is_instance_valid(action):
+			action.notify_wall_kick(normal)
+
+
+func refresh_airborne_abilities(refresh_wall_lift: bool = true) -> void:
+	_jump_dash_used_this_air = false
+	refresh_tornado_kick_availability()
+	if not refresh_wall_lift:
+		return
+	for action in _actions:
+		if action and is_instance_valid(action):
+			action.refresh_airborne_abilities()
+
+
 func reset_flight_timer_to_max() -> void:
 	for action in _actions:
 		if action != null and is_instance_valid(action) and action.has_method("reset_flight_timer_to_max"):
@@ -11290,7 +11285,7 @@ func _do_bounce_landing(v_before: Vector3, landing_normal: Vector3) -> void:
 	# We are airborne after the bounce.
 	attached = false
 	refresh_traversal_actions()
-	_jump_dash_used_this_air = false
+	refresh_airborne_abilities()
 	_airborne_time = 0.0
 
 	# Kill "falling" flag so other logic knows we've just pushed off
@@ -11309,7 +11304,6 @@ func _do_bounce_landing(v_before: Vector3, landing_normal: Vector3) -> void:
 	var rebound_action: CharacterAction = _get_action_by_id(&"bounce_rebound")
 	if rebound_action != null:
 		rebound_action.execute({"reason": &"bounce_landing", "source_action": &"bounce"})
-	refresh_tornado_kick_availability()
 	reset_flight_eligibility()
 	end_active_flight_for_external_impulse({"reason": &"bounce_landing"})
 

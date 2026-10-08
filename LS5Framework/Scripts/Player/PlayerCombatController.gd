@@ -221,7 +221,7 @@ func apply_enemy_bounce(origin: Vector3, speed: float, source: Node = null) -> v
 	p._jumped_from_ground = false
 	p._falling_without_jump = true
 	p._enemy_bounce_cooldown_timer = p.ENEMY_BOUNCE_COOLDOWN_SEC
-	p.refresh_tornado_kick_availability()
+	p.refresh_airborne_abilities()
 	if was_homing_contact:
 		_complete_homing_from_enemy_contact(source, homing_contact_velocity, homing_contact_lateral, up, origin)
 	_interrupt_skydive_for_enemy_bounce(&"enemy_bounce")
@@ -264,7 +264,7 @@ func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = nu
 	p._jump_time = 0.0
 	p._is_jumping = false
 	p._enemy_attack_chain_active = true
-	p.refresh_tornado_kick_availability()
+	p.refresh_airborne_abilities()
 	if end_bounce_stomp and p._bounce_state != p.BounceState.NONE:
 		p._bounce_state = p.BounceState.NONE
 	if was_homing_contact:
@@ -396,8 +396,7 @@ func _complete_homing_from_enemy_contact(source: Node, contact_velocity: Vector3
 	p._homing_saved_speed_mag = 0.0
 	p._homing_elapsed = 0.0
 	p._homing_post_attack_timer = max(p.homing_post_attack_time, 0.0)
-	p._jump_dash_used_this_air = false
-	p.refresh_tornado_kick_availability()
+	p.refresh_airborne_abilities()
 
 
 func apply_damage(_amount: int = 1, _source: Node = null) -> void:

@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Testing/Cube _forcecling.glb" id="Asset"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.tscn" id="Component"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd" id="Attachment"]
+
+[sub_resource type="Resource" id="Cling"]
+resource_local_to_scene = true
+script = ExtResource("Attachment")
+force_cling = 1
+
+[node name="ImportedAssetWrapper" type="Node3D"]
+editor_description = "Surface configuration stored outside an imported asset. Replace the asset with an FBX or GLB containing collision bodies."
+
+[node name="ImportedAsset" parent="." instance=ExtResource("Asset")]
+
+[node name="SurfaceBehavior" parent="." instance=ExtResource("Component")]
+target_paths = Array[NodePath]([NodePath("../ImportedAsset")])
+attachment_traits = Array[ExtResource("Attachment")]([SubResource("Cling")])

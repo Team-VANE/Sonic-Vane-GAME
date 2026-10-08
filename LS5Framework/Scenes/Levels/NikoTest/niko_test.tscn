@@ -67,13 +67,22 @@
 [ext_resource type="PackedScene" uid="uid://mfeo556qvxlx" path="res://LS5Framework/Objects/Testing/Cube_intangible_forceroll.glb" id="70_r8jnm"]
 [ext_resource type="PackedScene" uid="uid://bmyw2thfo3cal" path="res://LS5Framework/Objects/Testing/Cube _forcecling.glb" id="71_ncnqb"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="72_c1j06"]
+[ext_resource type="PackedScene" uid="uid://c15vrcyi6ollv" path="res://LS5Framework/Objects/Surface/Examples/DamageTrigger.tscn" id="73_l23he"]
+[ext_resource type="Script" uid="uid://b5g1878ghq72j" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceHazardTrait.gd" id="74_anuua"]
+[ext_resource type="PackedScene" uid="uid://dw238kqstk7l0" path="res://LS5Framework/Objects/Surface/Examples/DeathTrigger.tscn" id="75_2pldv"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceRollTrigger.tscn" id="76_muffe"]
+[ext_resource type="Script" uid="uid://ct0qqxifr786k" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd" id="77_5l7yj"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceRollSurface.tscn" id="78_3yimx"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ShapeOverrides.tscn" id="79_4n6d6"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceClingTrigger.tscn" id="80_tt4we"]
+[ext_resource type="Script" uid="uid://e0l7hayvgaxs" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd" id="81_jvpi5"]
 [ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
 [ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
 [ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
 [ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
 [ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ncnqb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l23he"]
 resource_local_to_scene = true
 shader = ExtResource("10_e4tho")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -131,16 +140,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_c1j06"]
+[sub_resource type="Sky" id="Sky_anuua"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_ncnqb")
+sky_material = SubResource("ShaderMaterial_l23he")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_ak61p"]
+[sub_resource type="Environment" id="Environment_2pldv"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_c1j06")
+sky = SubResource("Sky_anuua")
 ambient_light_source = 3
 ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
 ambient_light_sky_contribution = 0.82
@@ -218,11 +227,11 @@ _data = {
 }
 point_count = 3
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_jtfey"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_muffe"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_0c4yb"]
+[sub_resource type="Curve3D" id="Curve3D_5l7yj"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -230,11 +239,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_g2vd7"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3yimx"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_ykvil"]
+[sub_resource type="Curve3D" id="Curve3D_4n6d6"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, -55.915, 106.51, 0.295, 0, 0, 0, 0, -98.39, -19.43, 0, 0, 0, 7.03, 71.747, 14.025),
@@ -415,27 +424,27 @@ duration = 2.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_x6a63"]
 size = Vector3(97.3692, 157.25708, 238.4136)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3adtc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tt4we"]
 render_priority = 0
 shader = ExtResource("41_1i28t")
 shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 2693.248
+shader_parameter/swap_time = 743.441
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
 height = 8.0
 radius = 18.006348
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q6jdw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jvpi5"]
 render_priority = 0
 shader = ExtResource("41_1i28t")
 shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 2693.248
+shader_parameter/swap_time = 743.441
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
 bounce = 1.0
@@ -452,26 +461,26 @@ _data = {
 }
 point_count = 17
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_luhu6"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_pkwk4"]
 size = Vector2(20000, 20000)
 subdivide_width = 32
 subdivide_depth = 32
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_l23he"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ydo33"]
 noise_type = 3
 fractal_type = 2
 domain_warp_enabled = true
 domain_warp_fractal_type = 0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_anuua"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_344ll"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_l23he")
+noise = SubResource("FastNoiseLite_ydo33")
 seamless = true
 as_normal_map = true
 bump_strength = 9.3
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_2pldv"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jsxg6"]
 noise_type = 3
 offset = Vector3(12, 0, 0)
 fractal_type = 2
@@ -479,18 +488,18 @@ fractal_octaves = 6
 fractal_lacunarity = 1.855
 domain_warp_enabled = true
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_muffe"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ww8qt"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_2pldv")
+noise = SubResource("FastNoiseLite_jsxg6")
 seamless = true
 as_normal_map = true
 bump_strength = 8.2
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5l7yj"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0gvoy"]
 load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3yimx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lraxv"]
 render_priority = 0
 shader = ExtResource("16_phgj3")
 shader_parameter/albedo = Color(0, 0.7316994, 0.88269347, 1)
@@ -498,9 +507,9 @@ shader_parameter/albedo2 = Color(0.8127987, 0.86050355, 0.97439605, 1)
 shader_parameter/metallic = 0.0
 shader_parameter/roughness = 0.02
 shader_parameter/alpha = 0.85
-shader_parameter/wave = SubResource("CompressedTexture2D_5l7yj")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_anuua")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_muffe")
+shader_parameter/wave = SubResource("CompressedTexture2D_0gvoy")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_344ll")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_ww8qt")
 shader_parameter/wave_uv_scale = 0.455
 shader_parameter/normal_uv_scale = 0.01
 shader_parameter/normal2_uv_scale = 0.01
@@ -767,23 +776,23 @@ roughness = 0.17
 [sub_resource type="SphereShape3D" id="SphereShape3D_736jh"]
 radius = 10.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_4n6d6"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_a6b6k"]
 resource_local_to_scene = true
 radius = 40.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_tt4we"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_bch57"]
 resource_local_to_scene = true
 radius = 40.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_jvpi5"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_i48ms"]
 resource_local_to_scene = true
 radius = 40.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_pkwk4"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_svhyb"]
 resource_local_to_scene = true
 radius = 40.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_ydo33"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_e8hu0"]
 resource_local_to_scene = true
 radius = 40.0
 
@@ -799,54 +808,54 @@ height = 35.984375
 radius = 4.0
 height = 36.0
 
-[sub_resource type="Resource" id="Resource_344ll"]
+[sub_resource type="Resource" id="Resource_16jt8"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_jsxg6"]
+[sub_resource type="Resource" id="Resource_2c72k"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 69.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_ww8qt"]
+[sub_resource type="Resource" id="Resource_mwm1o"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 420.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_0gvoy"]
+[sub_resource type="Resource" id="Resource_qqhw5"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 666.6
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_lraxv"]
+[sub_resource type="Resource" id="Resource_205et"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 10.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_a6b6k"]
+[sub_resource type="Resource" id="Resource_mgnou"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 1
 amount = 10.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_bch57"]
+[sub_resource type="Resource" id="Resource_1dotr"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 6
 amount = 1.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_i48ms"]
+[sub_resource type="Resource" id="Resource_avsee"]
 resource_local_to_scene = true
 script = ExtResource("53_tg66e")
 reward_type = 8
@@ -896,7 +905,7 @@ size = Vector3(195.52747, 27.85772, 131.37909)
 [sub_resource type="BoxShape3D" id="BoxShape3D_0c4yb"]
 size = Vector3(195.52747, 27.85772, 131.37909)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_c1j06"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_uwgg4"]
 resource_local_to_scene = true
 size = Vector3(34, 6, 12)
 
@@ -906,10 +915,89 @@ cull_mode = 2
 shading_mode = 0
 albedo_color = Color(1, 0.65, 0.12, 0.18)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ak61p"]
+[sub_resource type="BoxMesh" id="BoxMesh_t7kbn"]
 resource_local_to_scene = true
 material = SubResource("Material")
 size = Vector3(34, 6, 12)
+
+[sub_resource type="Resource" id="Resource_us0iu"]
+resource_local_to_scene = true
+script = ExtResource("74_anuua")
+override_damage = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0igho"]
+resource_local_to_scene = true
+size = Vector3(12, 6, 12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_te7fm"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.123482876, 0.25281653, 0.18039216)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cq5cr"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_te7fm")
+size = Vector3(12, 6, 12)
+
+[sub_resource type="Resource" id="Resource_6xdjo"]
+resource_local_to_scene = true
+script = ExtResource("77_5l7yj")
+rolling = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e6gbj"]
+resource_local_to_scene = true
+size = Vector3(12, 6, 12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w658v"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.65, 0.12, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_d0k5m"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_w658v")
+size = Vector3(12, 6, 12)
+
+[sub_resource type="Resource" id="Resource_mvlsq"]
+resource_local_to_scene = true
+script = ExtResource("77_5l7yj")
+rolling = 1
+
+[sub_resource type="Resource" id="Resource_rqnmg"]
+resource_local_to_scene = true
+script = ExtResource("81_jvpi5")
+force_cling = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6a74y"]
+resource_local_to_scene = true
+size = Vector3(16, 49.39502, 13.51416)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w8lr4"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_w658v")
+size = Vector3(16, 49.39502, 13.51416)
+
+[sub_resource type="Resource" id="Resource_2nq5r"]
+resource_local_to_scene = true
+script = ExtResource("74_anuua")
+death = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_subo7"]
+resource_local_to_scene = true
+size = Vector3(12, 6, 12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y1fnd"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.2842292, 0.6170419, 0.18039216)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fr6h1"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_y1fnd")
+size = Vector3(12, 6, 12)
 
 [node name="NIKO_TEST" type="Node3D" unique_id=794803344]
 
@@ -1154,7 +1242,7 @@ initial_time_of_day_hours = 8.0
 day_length_minutes = 14.0
 
 [node name="WorldEnvironment" parent="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_ak61p")
+environment = SubResource("Environment_2pldv")
 
 [node name="OBJECTS" type="Node3D" parent="." unique_id=1812384607]
 
@@ -1348,7 +1436,7 @@ trajectory_arc_height = 20.0
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring18" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_jtfey")
+shape = SubResource("CylinderShape3D_muffe")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
@@ -1357,7 +1445,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.910889, -14.737915)
 visible = true
 
 [node name="SplinePath" parent="OBJECTS/SPRINGS/Spring18" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_0c4yb")
+curve = SubResource("Curve3D_5l7yj")
 
 [node name="Mesh" parent="OBJECTS/SPRINGS/Spring18" index="5" unique_id=1922896033]
 transform = Transform3D(1, 0, 0, 0, 0.98990047, 0.14176409, 0, -0.14176409, 0.98990047, 0, 0, 0)
@@ -1509,12 +1597,12 @@ spline_enabled = true
 spline_speed = 120.0
 
 [node name="CollisionShape3D" parent="OBJECTS/SPRINGS/Spring26" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_g2vd7")
+shape = SubResource("CylinderShape3D_3yimx")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="SplinePath" parent="OBJECTS/SPRINGS/Spring26" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_ykvil")
+curve = SubResource("Curve3D_4n6d6")
 
 [node name="Mesh" parent="OBJECTS/SPRINGS/Spring26" index="5" unique_id=1922896033]
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
@@ -3031,6 +3119,18 @@ use_collision = true
 size = Vector3(8, 1, 30)
 material = ExtResource("6_pfl74")
 
+[node name="CSGBox3D8" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1917216610 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, -1, 4.3711385e-08, 1.9106853e-15, 14.006621, 22.463966, 444.24286)
+use_collision = true
+size = Vector3(8, 1, 49)
+material = ExtResource("6_pfl74")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=338799135 groups=["level", "navmesh"]]
+transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, -1, 4.3711385e-08, 1.9106853e-15, 2.0066214, 22.463966, 444.24286)
+use_collision = true
+size = Vector3(8, 1, 49)
+material = ExtResource("6_pfl74")
+
 [node name="CSGBox3D61" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1702789167 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -65.92688, 227.96304, 2805.656)
 use_collision = true
@@ -4020,7 +4120,7 @@ race_start_path = NodePath("../RaceStart")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7411804, 0, 0)
 
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_3adtc")
+material_override = SubResource("ShaderMaterial_tt4we")
 
 [node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
 light_energy = 40.0
@@ -4072,7 +4172,7 @@ race_start_path = NodePath("../RaceStart_PARKOUR")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4013672, 1.3179932, 0)
 
 [node name="Circle" parent="RaceGoal_PARKOUR/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_q6jdw")
+material_override = SubResource("ShaderMaterial_jvpi5")
 
 [node name="SwapLight" parent="RaceGoal_PARKOUR/GoalModel/GoalRing2" index="2" unique_id=1016145482]
 light_energy = 40.0
@@ -4114,8 +4214,8 @@ instance_shader_parameters/clipmap_inner_radius = 0.0
 instance_shader_parameters/clipmap_lod_scale = 0.0
 instance_shader_parameters/clipmap_outer_radius = 0.0
 instance_shader_parameters/height_scale = 5.0
-mesh = SubResource("PlaneMesh_luhu6")
-surface_material_override/0 = SubResource("ShaderMaterial_3yimx")
+mesh = SubResource("PlaneMesh_pkwk4")
+surface_material_override/0 = SubResource("ShaderMaterial_lraxv")
 
 [node name="CameraConstraint2" parent="." unique_id=1899731411 instance=ExtResource("28_nydfv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8945465, -1.8752289, -366.73056)
@@ -4655,14 +4755,14 @@ metadata/surface_no_slope_gravity = true
 [node name="Sphere_Inverted" parent="." unique_id=1565305456 instance=ExtResource("50_736jh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.009243, 43.628082, 238.89226)
 
-[node name="Sphere_sticky_noslopegravity" parent="Sphere_Inverted" index="0" unique_id=1531075365]
+[node name="Sphere_sticky_noslopegravity" parent="Sphere_Inverted" index="0" unique_id=2117309968]
 script = ExtResource("51_a6a28")
 
-[node name="Sphere_sticky_noslopegravity" parent="Sphere_Inverted/Sphere_sticky_noslopegravity" index="0" unique_id=854908301]
+[node name="Sphere_sticky_noslopegravity" parent="Sphere_Inverted/Sphere_sticky_noslopegravity" index="0" unique_id=2123879614]
 transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 0, 0, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_blvjp")
 
-[node name="CollisionShape3D" parent="Sphere_Inverted/Sphere_sticky_noslopegravity" index="1" unique_id=1464076913]
+[node name="CollisionShape3D" parent="Sphere_Inverted/Sphere_sticky_noslopegravity" index="1" unique_id=1147508911]
 transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 0, 0, 0)
 
 [node name="CarryableCrate4" parent="." unique_id=1259519534 instance=ExtResource("52_ak7f8")]
@@ -4693,7 +4793,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.56812, 214.32352, 322.7893
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity" index="0"]
-shape = SubResource("SphereShape3D_4n6d6")
+shape = SubResource("SphereShape3D_a6b6k")
 
 [node name="GravitySurface" parent="PlanetaryGravity" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4703,7 +4803,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -264.4319, 214.32352, 322.789
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity2" index="0"]
-shape = SubResource("SphereShape3D_tt4we")
+shape = SubResource("SphereShape3D_bch57")
 
 [node name="GravitySurface" parent="PlanetaryGravity2" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4713,7 +4813,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -344.75397, 301.76288, 322.78
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity3" index="0"]
-shape = SubResource("SphereShape3D_jvpi5")
+shape = SubResource("SphereShape3D_i48ms")
 
 [node name="GravitySurface" parent="PlanetaryGravity3" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4723,7 +4823,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -102.9805, 794.6751, -55.2106
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity4" index="0"]
-shape = SubResource("SphereShape3D_pkwk4")
+shape = SubResource("SphereShape3D_svhyb")
 
 [node name="GravitySurface" parent="PlanetaryGravity4" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4734,7 +4834,7 @@ gravity_multiplier = 1.5
 influence_radius = 100.0
 
 [node name="InfluenceShape" parent="PlanetaryGravity5" index="0"]
-shape = SubResource("SphereShape3D_ydo33")
+shape = SubResource("SphereShape3D_e8hu0")
 
 [node name="GravitySurface" parent="PlanetaryGravity5" index="2"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
@@ -4761,48 +4861,48 @@ mesh = SubResource("CapsuleMesh_ysjdg")
 
 [node name="ItemMonitor" parent="." unique_id=69009204 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_344ll")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_16jt8")])
 leave_base_after_break = true
 
 [node name="ItemMonitor3" parent="." unique_id=946307726 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_jsxg6")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_2c72k")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor4" parent="." unique_id=1395552001 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 142.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_ww8qt")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_mwm1o")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor5" parent="." unique_id=1689799997 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 146.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_0gvoy")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_qqhw5")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor6" parent="." unique_id=1850172790 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.043854, -1.511947, 150.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_lraxv")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_205et")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor35" parent="." unique_id=1024913527 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -330.95615, -1.511947, 138.5572)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_a6b6k")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_mgnou")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor7" parent="." unique_id=517832208 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_bch57")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_1dotr")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
 [node name="ItemMonitor36" parent="." unique_id=2133404527 instance=ExtResource("52_mu1lr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.043854, -1.511947, 138.42613)
-rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_i48ms")])
+rewards = Array[ExtResource("53_tg66e")]([SubResource("Resource_avsee")])
 leave_base_after_break = true
 respawn_delay_sec = 10.0
 
@@ -5376,11 +5476,80 @@ metadata/surface_force_roll = true
 
 [node name="CollisionShape3D" parent="MetadataTrigger" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 0)
-shape = SubResource("BoxShape3D_c1j06")
+shape = SubResource("BoxShape3D_uwgg4")
 
 [node name="VolumePreview" parent="MetadataTrigger" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 0)
-mesh = SubResource("BoxMesh_ak61p")
+mesh = SubResource("BoxMesh_t7kbn")
+show_in_game = true
+
+[node name="DamageTrigger" parent="." unique_id=58650469 instance=ExtResource("73_l23he")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.835854, -1.6765003, 363.31744)
+hazard_traits = Array[ExtResource("74_anuua")]([SubResource("Resource_us0iu")])
+
+[node name="CollisionShape3D" parent="DamageTrigger" index="0"]
+shape = SubResource("BoxShape3D_0igho")
+
+[node name="VolumePreview" parent="DamageTrigger" index="1"]
+mesh = SubResource("BoxMesh_cq5cr")
+show_in_game = true
+
+[node name="ForceRollTrigger" parent="." unique_id=638672991 instance=ExtResource("76_muffe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.236151, -1.676506, 392.38254)
+enabled = true
+target_paths = Array[NodePath]([])
+behavior_priority = 0
+movement_traits = Array[ExtResource("77_5l7yj")]([SubResource("Resource_6xdjo")])
+attachment_traits = Array[NodePath]([])
+hazard_traits = Array[NodePath]([])
+visibility_traits = Array[NodePath]([])
+custom_traits = Array[NodePath]([])
+
+[node name="CollisionShape3D" parent="ForceRollTrigger" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("BoxShape3D_e6gbj")
+
+[node name="VolumePreview" parent="ForceRollTrigger" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("BoxMesh_d0k5m")
+show_in_game = true
+
+[node name="ForceRollSurface" parent="." unique_id=1854474205 instance=ExtResource("78_3yimx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.251204, -0.6765022, 406.53348)
+movement_traits = Array[ExtResource("77_5l7yj")]([SubResource("Resource_mvlsq")])
+
+[node name="ShapeOverrides" parent="." unique_id=1929031563 instance=ExtResource("79_4n6d6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.29936, -0.6765022, 423.23154)
+
+[node name="ForceClingTrigger" parent="." unique_id=2035070072 instance=ExtResource("80_tt4we")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5862045, 17.613003, 443.4592)
+enabled = true
+target_paths = Array[NodePath]([])
+behavior_priority = 0
+movement_traits = Array[NodePath]([])
+attachment_traits = Array[ExtResource("81_jvpi5")]([SubResource("Resource_rqnmg")])
+hazard_traits = Array[NodePath]([])
+visibility_traits = Array[NodePath]([])
+custom_traits = Array[NodePath]([])
+
+[node name="CollisionShape3D" parent="ForceClingTrigger" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.30249, 0.7570801)
+shape = SubResource("BoxShape3D_6a74y")
+
+[node name="VolumePreview" parent="ForceClingTrigger" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.30249, 0.7570801)
+mesh = SubResource("BoxMesh_w8lr4")
+show_in_game = true
+
+[node name="DeathTrigger" parent="." unique_id=1923896090 instance=ExtResource("75_2pldv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.67688, -1.6765022, 377.62598)
+hazard_traits = Array[ExtResource("74_anuua")]([SubResource("Resource_2nq5r")])
+
+[node name="CollisionShape3D" parent="DeathTrigger" index="0"]
+shape = SubResource("BoxShape3D_subo7")
+
+[node name="VolumePreview" parent="DeathTrigger" index="1"]
+mesh = SubResource("BoxMesh_fr6h1")
 show_in_game = true
 
 [editable path="ENVIRONMENT/EnvironmentWeatherSystem"]
@@ -5513,3 +5682,7 @@ show_in_game = true
 [editable path="AutomationSpline2_5D"]
 [editable path="AutomationSpline2_5D/LoopDepthProfile"]
 [editable path="MetadataTrigger"]
+[editable path="DamageTrigger"]
+[editable path="ForceRollTrigger"]
+[editable path="ForceClingTrigger"]
+[editable path="DeathTrigger"]

@@ -3,6 +3,10 @@ extends CharacterAbility
 
 @export_group("Jump")
 
+@export_subgroup("Presentation")
+## Displays the contextual Wall Kick prompt during wall run or cling, independently of normal jump prompts.
+@export var wall_kick_prompt_enabled: bool = true
+
 @export_subgroup("Movement/Launch")
 ## Launch speed applied along the current surface normal.
 @export var jump_speed: float = 33.0
@@ -127,10 +131,10 @@ func on_action_exit(_next_action: CharacterAction) -> void:
 
 
 func _wall_kick_prompt_available() -> bool:
-	if not owner_player:
+	if not wall_kick_prompt_enabled or not owner_player:
 		return false
 	var parkour: ParkourAbility = owner_player._get_action_by_id(&"parkour") as ParkourAbility
-	return parkour and parkour.is_wall_kick_prompt_available()
+	return parkour and parkour.enabled and parkour.is_wall_kick_prompt_available()
 
 
 func get_input_prompt_stage() -> int:
@@ -138,10 +142,12 @@ func get_input_prompt_stage() -> int:
 
 
 func get_input_prompt(_context: Dictionary = {}) -> Dictionary:
-	if not input_prompt_enabled or not enabled or not owner_player:
+	if not enabled or not owner_player:
 		return {}
 	if _wall_kick_prompt_available():
 		return {"label": "Wall Kick", "gesture": &"press", "display_priority": 100, "contextual": true}
+	if not input_prompt_enabled:
+		return {}
 	if owner_player.attached and owner_player.can_queue_jump():
 		return {"label": input_prompt_name}
 	if owner_player.can_consume_coyote_jump() and owner_player.can_queue_coyote_jump():

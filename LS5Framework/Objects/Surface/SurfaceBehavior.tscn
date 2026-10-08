@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.gd" id="Behavior"]
+
+[node name="SurfaceBehavior" type="Node3D"]
+editor_description = "Surface trait component. Empty target paths use the parent collision subtree when this node has no collision children."
+script = ExtResource("Behavior")

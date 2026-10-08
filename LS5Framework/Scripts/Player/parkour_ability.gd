@@ -50,6 +50,18 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Collision layers used by wall probes. Zero uses the character collision mask.
 @export_flags_3d_physics var collision_mask_override: int = 0
 
+@export_subgroup("Contextual Prompts")
+## Displays the eligible wall-run or wall-cling action near a suitable wall.
+@export var wall_proximity_prompt_enabled: bool = true
+## Maximum wall distance for contextual prompts. Does not alter wall-catch reach.
+@export_range(0.1, 10.0, 0.05, "suffix:m") var wall_prompt_reach: float = 2.65
+## Minimum interval between supplemental wall proximity probes.
+@export_range(0.05, 1.0, 0.01, "suffix:s") var wall_prompt_probe_interval: float = 0.1
+## Contextual label when the wall-run entry decision is eligible.
+@export var wall_run_prompt_name: String = "Wall Run"
+## Contextual label when the wall-cling entry decision is eligible.
+@export var wall_cling_prompt_name: String = "Wall Cling"
+
 @export_subgroup("Wall Run")
 ## Center speed of the input-biased wall-run entry decision band.
 @export var run_entry_speed: float = 30.0
@@ -441,6 +453,11 @@ var _wall_exit_visual_elapsed: float = 0.0
 var _wall_cling_slide_player: AudioStreamPlayer3D = null
 var _landing_roll_input_buffer: float = 0.0
 var _landing_roll_prompt_prediction: Dictionary = {}
+var _wall_prompt_hit: Dictionary = {}
+var _wall_prompt_contact_hit: Dictionary = {}
+var _wall_prompt_contact_frame: int = -1
+var _wall_prompt_probe_remaining: float = 0.0
+var _wall_prompt_up: Vector3 = Vector3.UP
 var _landing_roll_memory_remaining: float = 0.0
 var _landing_roll_memory_normal: Vector3 = Vector3.ZERO
 var _landing_roll_memory_velocity: Vector3 = Vector3.ZERO
@@ -587,6 +604,9 @@ func get_input_prompt(_context: Dictionary = {}) -> Dictionary:
 		return {}
 	if not owner_player.can_offer_action_prompts() or owner_player.is_insta_shield_input_consumed():
 		return {}
+	var wall_prompt: Dictionary = _get_wall_proximity_prompt()
+	if not wall_prompt.is_empty():
+		return wall_prompt
 	if owner_player.attached:
 		if _landing_roll_memory_remaining <= 0.0:
 			return {}
@@ -616,6 +636,105 @@ func update_landing_roll_prompt_prediction() -> void:
 	if not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible:
 		return
 	_landing_roll_prompt_prediction = owner_player.get_landing_prompt_prediction(landing_roll_input_window)
+
+
+func _wall_prompt_state_available() -> bool:
+	if not wall_proximity_prompt_enabled or not input_prompt_enabled or _in_contact or not owner_player or not owner_player.is_inside_tree():
+		return false
+	if not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible:
+		return false
+	if owner_player._local_pause_enabled or owner_player.get_tree().paused or not owner_player.can_offer_action_prompts():
+		return false
+	if not _can_catch(owner_player.attached, true):
+		return false
+	if owner_player.attached:
+		return absf(owner_player.surface_normal.normalized().dot(get_owner_gravity_up())) <= sin(deg_to_rad(maximum_wall_tilt_degrees))
+	return not _touching_floor()
+
+
+func _get_wall_proximity_prompt() -> Dictionary:
+	if not _wall_prompt_state_available() or _wall_prompt_hit.is_empty():
+		return {}
+	var up: Vector3 = get_owner_gravity_up()
+	if not _wall_prompt_up.is_equal_approx(up):
+		return {}
+	var hit: Dictionary = _wall_prompt_hit.duplicate()
+	var normal: Vector3 = hit.get("normal", Vector3.ZERO)
+	var position: Vector3 = hit.get("position", owner_player.global_position)
+	if owner_player.global_position.distance_squared_to(position) > maxf(wall_prompt_reach, contact_reach) ** 2:
+		return {}
+	if hit.has("collider") and not is_instance_valid(hit["collider"]):
+		return {}
+	if not _wall_hit_is_eligible(hit, -normal, up, false):
+		return {}
+	normal = hit["normal"]
+	var source: StringName = owner_player.get_current_action_id()
+	var force_cling: bool = _wall_hit_forces_cling(hit) or cling_only_source_actions.has(source)
+	if not _can_catch(owner_player.attached, _wall_hit_forces_cling(hit)):
+		return {}
+	var tangent: Vector3 = up.cross(normal).normalized()
+	var mode: WallMode = _choose_entry_wall_mode(force_cling, up, tangent, owner_player.velocity.dot(tangent), normal)
+	return {"label": wall_run_prompt_name if mode == WallMode.RUN else wall_cling_prompt_name, "gesture": &"hold", "display_priority": 100, "contextual": true}
+
+
+func update_wall_prompt_prediction(delta: float) -> void:
+	_wall_prompt_probe_remaining = maxf(_wall_prompt_probe_remaining - maxf(delta, 0.0), 0.0)
+	if not _wall_prompt_state_available():
+		_wall_prompt_hit = {}
+		_wall_prompt_probe_remaining = 0.0
+		return
+	var up: Vector3 = get_owner_gravity_up()
+	if not _wall_prompt_up.is_equal_approx(up):
+		_wall_prompt_hit = {}
+		_wall_prompt_probe_remaining = 0.0
+	_wall_prompt_up = up
+	if owner_player.attached:
+		_wall_prompt_hit = {"normal": owner_player.surface_normal, "position": owner_player.surface_point}
+		return
+	if _wall_prompt_contact_frame == Engine.get_physics_frames() and not _wall_prompt_contact_hit.is_empty():
+		_wall_prompt_hit = _wall_prompt_contact_hit.duplicate()
+		_wall_prompt_probe_remaining = maxf(wall_prompt_probe_interval, 0.05)
+		return
+	if _wall_prompt_probe_remaining > 0.0:
+		return
+	_wall_prompt_probe_remaining = maxf(wall_prompt_probe_interval, 0.05)
+	_wall_prompt_hit = _probe_wall_prompt(up)
+
+
+func _probe_wall_prompt(up: Vector3) -> Dictionary:
+	var reference: Vector3 = up.cross(Vector3.RIGHT)
+	if reference.length_squared() < 0.001:
+		reference = up.cross(Vector3.FORWARD)
+	reference = reference.normalized()
+	var reach: float = maxf(wall_prompt_reach, contact_reach)
+	var mask: int = collision_mask_override if collision_mask_override else owner_player.collision_mask
+	var space: PhysicsDirectSpaceState3D = owner_player.get_world_3d().direct_space_state
+	var best: Dictionary = {}
+	var best_distance: float = INF
+	for index: int in range(8):
+		var direction: Vector3 = reference.rotated(up, TAU * float(index) / 8.0)
+		var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(owner_player.global_position, owner_player.global_position + direction * reach, mask, [owner_player.get_rid()])
+		query.hit_back_faces = true
+		var hit: Dictionary = space.intersect_ray(query)
+		if hit.is_empty() or not _wall_hit_is_eligible(hit, direction, up, false):
+			continue
+		if not _can_catch(false, _wall_hit_forces_cling(hit)):
+			continue
+		var position: Vector3 = hit["position"]
+		var distance: float = owner_player.global_position.distance_squared_to(position)
+		if distance < best_distance:
+			best = hit
+			best_distance = distance
+	return best
+
+
+func _record_wall_prompt_contact(hit: Dictionary) -> void:
+	if not wall_proximity_prompt_enabled or not input_prompt_enabled or _in_contact or not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible:
+		return
+	var position: Vector3 = hit["position"]
+	var previous_position: Vector3 = _wall_prompt_contact_hit.get("position", Vector3.INF)
+	if owner_player.global_position.distance_squared_to(position) < owner_player.global_position.distance_squared_to(previous_position):
+		_wall_prompt_contact_hit = hit.duplicate()
 
 
 func execute(context: Dictionary = {}) -> bool:
@@ -1089,10 +1208,13 @@ func _wall_hit_forces_cling(hit: Dictionary) -> bool:
 
 
 func is_wall_kick_prompt_available() -> bool:
-	return _in_contact and _contact_confirmed and _mode == WallMode.CLING
+	return _in_contact and _contact_confirmed
 
 
 func _find_wall(reach: float, approaching_only: bool = false, prediction_time: float = 0.0, forced_only: bool = false) -> Dictionary:
+	if _wall_prompt_contact_frame != Engine.get_physics_frames():
+		_wall_prompt_contact_frame = Engine.get_physics_frames()
+		_wall_prompt_contact_hit = {}
 	var up: Vector3 = get_owner_gravity_up()
 	var reference: Vector3 = up.cross(Vector3.RIGHT)
 	if reference.length_squared() < 0.001:
@@ -1117,7 +1239,10 @@ func _find_wall(reach: float, approaching_only: bool = false, prediction_time: f
 			"collider": collision.get_collider(),
 			"shape": collision.get_collider_shape_index(),
 		}
-		if (not forced_only or _wall_hit_forces_cling(collision_hit)) and _wall_hit_is_eligible(collision_hit, -collision_normal, up, approaching_only):
+		if _wall_hit_is_eligible(collision_hit, -collision_normal, up, approaching_only):
+			_record_wall_prompt_contact(collision_hit)
+			if forced_only and not _wall_hit_forces_cling(collision_hit):
+				continue
 			var collision_score: float = owner_player.global_position.distance_to(collision.get_position()) - 0.25
 			if collision_score < best_score:
 				best = collision_hit
@@ -1134,9 +1259,10 @@ func _find_wall(reach: float, approaching_only: bool = false, prediction_time: f
 				hit = _sweep_wall(space, origin, direction, reach, mask)
 			if hit.is_empty():
 				continue
-			if forced_only and not _wall_hit_forces_cling(hit):
-				continue
 			if not _wall_hit_is_eligible(hit, direction, up, approaching_only):
+				continue
+			_record_wall_prompt_contact(hit)
+			if forced_only and not _wall_hit_forces_cling(hit):
 				continue
 			var position: Vector3 = hit["position"]
 			var score: float = origin.distance_to(position)
@@ -1275,7 +1401,7 @@ func on_action_enter(context: Dictionary = {}) -> void:
 	var inward_entry_speed: float = max(-horizontal_entry.dot(_normal), 0.0)
 	var parallel: float = owner_player.velocity.dot(tangent)
 	var vertical: float = owner_player.velocity.dot(up)
-	_mode = _choose_entry_wall_mode(force_cling, up, tangent, parallel)
+	_mode = _choose_entry_wall_mode(force_cling, up, tangent, parallel, _normal)
 	_cling_started_from_floor_attach = (
 		_mode == WallMode.CLING
 		and bool(context.get("grounded_wall_transition", false))
@@ -1344,10 +1470,8 @@ func on_action_enter(context: Dictionary = {}) -> void:
 	owner_player.attached = false
 	owner_player._attachment_immunity = max(owner_player._attachment_immunity, 0.1)
 	owner_player.remove_coyote_jump_eligibility()
-	owner_player._jump_dash_used_this_air = false
+	owner_player.refresh_airborne_abilities(false)
 	owner_player._jump_dash_recent_timer = 0.0
-	if owner_player.has_method("refresh_tornado_kick_availability"):
-		owner_player.refresh_tornado_kick_availability()
 	owner_player._jumped_from_ground = false
 	owner_player._falling_without_jump = true
 	owner_player._begin_jump_hold_state(false)
@@ -2067,9 +2191,9 @@ func _kick(vertical_speed_override: float = NAN) -> void:
 	owner_player._jump_dash_requested = false
 	_leave_wall(false, false)
 	owner_player._activate_jump_action_for_launch(&"wall_kick")
-	owner_player._jump_dash_used_this_air = false
+	owner_player.notify_wall_kick(_normal)
+	owner_player.refresh_airborne_abilities(false)
 	owner_player._jump_dash_recent_timer = 0.0
-	owner_player.refresh_tornado_kick_availability()
 	owner_player._jumped_from_ground = true
 	owner_player._falling_without_jump = false
 	owner_player._begin_jump_hold_state(false)
@@ -2092,7 +2216,8 @@ func _choose_entry_wall_mode(
 	force_cling: bool,
 	up: Vector3,
 	tangent: Vector3,
-	parallel_speed: float
+	parallel_speed: float,
+	wall_normal: Vector3
 ) -> WallMode:
 	if force_cling:
 		return WallMode.CLING
@@ -2109,7 +2234,7 @@ func _choose_entry_wall_mode(
 		return WallMode.CLING
 	input_direction = input_direction.normalized()
 	var parallel_amount: float = abs(input_direction.dot(tangent))
-	var normal_amount: float = abs(input_direction.dot(_normal))
+	var normal_amount: float = abs(input_direction.dot(wall_normal))
 	var wall_relative_total: float = parallel_amount + normal_amount
 	if wall_relative_total <= 0.001:
 		return WallMode.CLING
@@ -2363,7 +2488,19 @@ func _update_history(delta: float) -> void:
 			_catch_history.remove_at(index)
 
 
+func refresh_airborne_abilities() -> void:
+	_wall_lift_last_grant_normal = Vector3.ZERO
+	_wall_lift_strength = 1.0
+	_wall_lift_inward_turn = 0.0
+	_wall_lift_inward_distance = 0.0
+	_wall_lift_last_refresh_reason = &"airborne_refresh"
+
+
 func reset_traversal_history() -> void:
+	_wall_prompt_hit = {}
+	_wall_prompt_contact_hit = {}
+	_wall_prompt_contact_frame = -1
+	_wall_prompt_probe_remaining = 0.0
 	_wall_exit_visual_offset = Vector3.ZERO
 	_clear_wall_collision_visual_offset()
 	_last_kick_normal = Vector3.ZERO

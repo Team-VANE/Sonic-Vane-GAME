@@ -7,6 +7,28 @@ const DETECTION_GROUP: StringName = &"surface_behavior_triggers"
 var _registered_bodies: Dictionary = {}
 
 
+func is_imported_surface_behavior_area() -> bool:
+	return true
+
+
+static func is_behavior_area(area: Area3D) -> bool:
+	return area is ImportedSurfaceBehaviorArea or SurfaceBehaviorRegistry.is_behavior_area(area)
+
+
+static func notify_entered(area: Area3D, body: Node3D) -> void:
+	if area is ImportedSurfaceBehaviorArea:
+		(area as ImportedSurfaceBehaviorArea)._on_body_entered(body)
+	else:
+		SurfaceBehaviorRegistry.notify_entered(area, body)
+
+
+static func notify_exited(area: Area3D, body: Node3D) -> void:
+	if area is ImportedSurfaceBehaviorArea:
+		(area as ImportedSurfaceBehaviorArea)._on_body_exited(body)
+	else:
+		SurfaceBehaviorRegistry.notify_exited(area, body)
+
+
 func _ready() -> void:
 	collision_layer = DETECTION_LAYER
 	add_to_group(DETECTION_GROUP)
@@ -117,7 +139,7 @@ static func _collect_motion_contacts(
 					if area and not excluded.has(area.get_rid()):
 						excluded.append(area.get_rid())
 						found_hit = true
-						if area is ImportedSurfaceBehaviorArea and (area.collision_mask & body.collision_layer):
+						if is_behavior_area(area) and (area.collision_mask & body.collision_layer):
 							contacts[area.get_instance_id()] = area
 				if found_hit:
 					break
@@ -135,5 +157,5 @@ static func _collect_query_contacts(
 ) -> void:
 	for hit: Dictionary in space.intersect_shape(query, 64):
 		var area: Area3D = hit.get("collider") as Area3D
-		if area is ImportedSurfaceBehaviorArea and (area.collision_mask & body.collision_layer):
+		if is_behavior_area(area) and (area.collision_mask & body.collision_layer):
 			contacts[area.get_instance_id()] = area

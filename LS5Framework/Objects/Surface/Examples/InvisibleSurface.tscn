@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Surface.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceVisibilityTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Trait"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+visibility = 2
+
+[node name="InvisibleSurface" instance=ExtResource("Base")]
+editor_description = "Hides the mesh at runtime while preserving solid collision."
+visibility_traits = Array[ExtResource("Trait")]([SubResource("Trait")])

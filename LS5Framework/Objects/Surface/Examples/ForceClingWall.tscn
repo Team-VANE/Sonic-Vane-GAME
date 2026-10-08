@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Surface.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Trait"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+force_cling = 1
+
+[sub_resource type="BoxMesh" id="WallMesh"]
+resource_local_to_scene = true
+size = Vector3(2, 12, 12)
+
+[sub_resource type="BoxShape3D" id="WallShape"]
+resource_local_to_scene = true
+size = Vector3(2, 12, 12)
+
+[node name="ForceClingWall" instance=ExtResource("Base")]
+editor_description = "Automatic wall cling with a contextual Wall Kick jump glyph."
+attachment_traits = Array[ExtResource("Trait")]([SubResource("Trait")])
+
+[node name="Mesh" parent="." index="0"]
+position = Vector3(0, 6, 0)
+mesh = SubResource("WallMesh")
+
+[node name="CollisionShape3D" parent="." index="1"]
+position = Vector3(0, 6, 0)
+shape = SubResource("WallShape")

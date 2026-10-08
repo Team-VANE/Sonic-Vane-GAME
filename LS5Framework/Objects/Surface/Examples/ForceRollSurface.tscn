@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Surface.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Trait"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+rolling = 1
+
+[node name="ForceRollSurface" instance=ExtResource("Base")]
+editor_description = "Forces rolling on contact."
+movement_traits = Array[ExtResource("Trait")]([SubResource("Trait")])

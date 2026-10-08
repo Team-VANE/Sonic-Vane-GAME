@@ -1158,8 +1158,7 @@ func start_rail_grind(params: Dictionary) -> void:
 	p.remove_coyote_jump_eligibility()
 	_clear_attack_state_for_rail_landing()
 	p.refresh_traversal_actions()
-	p.refresh_tornado_kick_availability()
-	p._jump_dash_used_this_air = false
+	p.refresh_airborne_abilities()
 	p.reset_flight_eligibility()
 	p._jump_dash_requested = false
 	p._spline_active = false
@@ -1477,8 +1476,7 @@ func _end_rail(jumped: bool, world_up: Vector3) -> void:
 		p._jump_time = 0.0
 		p._jump_hang_allowed = true
 		p._just_jumped = true
-		p._jump_dash_used_this_air = false
-		p._tornado_kick_used_this_air = false
+		p.refresh_airborne_abilities()
 		p._jumped_from_ground = true
 		p._falling_without_jump = false
 		p.play_jump_sfx()
@@ -1487,8 +1485,7 @@ func _end_rail(jumped: bool, world_up: Vector3) -> void:
 		p._is_jumping = false
 		p._jump_variable = false
 		p._jump_time = 0.0
-		p._jump_dash_used_this_air = false
-		p._tornado_kick_used_this_air = false
+		p.refresh_airborne_abilities()
 		p._jumped_from_ground = false
 		p._falling_without_jump = true
 		if not p._rail_switch_active:

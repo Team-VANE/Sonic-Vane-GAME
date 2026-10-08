@@ -123,8 +123,7 @@ func apply_impulse(
 	owner_player._jump_variable = false
 	owner_player._jump_hang_allowed = false
 	owner_player._jump_time = 0.0
-	owner_player._jump_dash_used_this_air = false
-	owner_player._tornado_kick_used_this_air = false
+	owner_player.refresh_airborne_abilities()
 	owner_player._jump_dash_requested = false
 	owner_player._jump_dash_recent_timer = 0.0
 

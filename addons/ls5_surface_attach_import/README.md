@@ -50,3 +50,7 @@ Existing concave collision shapes tagged `intangible` are converted into convex 
 Scene-authored Area3D volumes attach `ImportedSurfaceBehaviorArea.gd` and store behavior metadata on the area root. Runtime detection uses layer 32 and the area's mask. Movement flags are shared with solid contacts, and trigger registration is idempotent so damage does not repeat on every overlap refresh. Teleports, volume deletion, and respawn release active contributions.
 
 Editable scene examples and setup instructions are in `LS5Framework/Objects/MetadataExamples/README.md`.
+
+## Script-driven alternative
+
+`LS5Framework/Objects/Surface/SurfaceBehavior.gd` configures existing collision bodies, shapes, and Area3D volumes through reusable Inspector trait resources. Imported assets can be targeted from a wrapper scene without name tags. Setup and examples are in `LS5Framework/Objects/Surface/Examples/README.md`.

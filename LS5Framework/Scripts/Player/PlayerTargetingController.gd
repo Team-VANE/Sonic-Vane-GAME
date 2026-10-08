@@ -1154,8 +1154,7 @@ func _end_homing(up: Vector3, jump_held: bool) -> void:
 		retained = p._homing_saved_velocity
 	p.velocity = retained + up.normalized() * p.homing_pop_up_speed
 	p.attached = false
-	p._jump_dash_used_this_air = false
-	p._tornado_kick_used_this_air = false
+	p.refresh_airborne_abilities()
 
 
 func _update_homing(delta: float, up_for_physics: Vector3, is_attached: bool) -> void:
@@ -1210,8 +1209,7 @@ func _update_homing(delta: float, up_for_physics: Vector3, is_attached: bool) ->
 		if _try_handle_homing_hit(p._homing_target, jump_held):
 			if is_pass_through:
 				p.velocity = homing_dir * homing_spd
-				p._jump_dash_used_this_air = false
-				p._tornado_kick_used_this_air = false
+				p.refresh_airborne_abilities()
 			p._homing_active = false
 			p._homing_target = null
 			p._homing_target_position = Vector3.ZERO
@@ -1240,8 +1238,7 @@ func _update_homing(delta: float, up_for_physics: Vector3, is_attached: bool) ->
 		var bounce_velocity: Vector3 = retained + up * pop_speed
 		p.velocity = limit_homing_bounce_from_below(bounce_velocity, target_position, up)
 		p.attached = false
-		p._jump_dash_used_this_air = false
-		p._tornado_kick_used_this_air = false
+		p.refresh_airborne_abilities()
 		p._homing_post_attack_timer = max(p.homing_post_attack_time, 0.0)
 		p._homing_target = null
 		p._homing_target_position = Vector3.ZERO

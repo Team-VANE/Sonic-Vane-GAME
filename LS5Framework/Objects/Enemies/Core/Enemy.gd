@@ -441,6 +441,9 @@ func _refresh_source_traversal_actions(source: Node) -> void:
 		if visited.has(instance_id):
 			return
 		visited[instance_id] = true
+		if current.has_method("refresh_airborne_abilities"):
+			current.call("refresh_airborne_abilities")
+			return
 		if current.has_method("refresh_traversal_actions"):
 			current.call("refresh_traversal_actions")
 			return

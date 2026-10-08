@@ -1,0 +1,150 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceRollSurface.tscn" id="E0"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceClingWall.tscn" id="E1"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/StickySurface.tscn" id="E2"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/InvisibleSurface.tscn" id="E3"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceRollTrigger.tscn" id="E4"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/MovementRestrictionsTrigger.tscn" id="E5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ForceClingTrigger.tscn" id="E6"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/AttachLimitTrigger.tscn" id="E7"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/DamageTrigger.tscn" id="E8"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/DeathTrigger.tscn" id="E9"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ExistingAreaTrigger.tscn" id="E10"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ShapeOverrides.tscn" id="E11"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/Examples/ImportedAssetWrapper.tscn" id="E12"]
+
+[sub_resource type="BoxShape3D" id="ClingWallShape"]
+size = Vector3(2, 12, 12)
+
+[sub_resource type="BoxMesh" id="ClingWallMesh"]
+size = Vector3(2, 12, 12)
+
+[node name="SurfaceExamples" type="Node3D"]
+editor_description = "Script-driven surface examples. Includes damage and death volumes."
+
+[node name="ForceRollSurface" parent="." instance=ExtResource("E0")]
+position = Vector3(0, 0, 0)
+
+[node name="ForceRollSurfaceLabel" type="Label3D" parent="."]
+position = Vector3(0, 9, 0)
+billboard = 1
+text = "ForceRollSurface"
+font_size = 42
+
+[node name="ForceClingWall" parent="." instance=ExtResource("E1")]
+position = Vector3(20, 0, 0)
+
+[node name="ForceClingWallLabel" type="Label3D" parent="."]
+position = Vector3(20, 9, 0)
+billboard = 1
+text = "ForceClingWall"
+font_size = 42
+
+[node name="StickySurface" parent="." instance=ExtResource("E2")]
+position = Vector3(40, 0, 0)
+
+[node name="StickySurfaceLabel" type="Label3D" parent="."]
+position = Vector3(40, 9, 0)
+billboard = 1
+text = "StickySurface"
+font_size = 42
+
+[node name="InvisibleSurface" parent="." instance=ExtResource("E3")]
+position = Vector3(60, 0, 0)
+
+[node name="InvisibleSurfaceLabel" type="Label3D" parent="."]
+position = Vector3(60, 9, 0)
+billboard = 1
+text = "InvisibleSurface"
+font_size = 42
+
+[node name="ForceRollTrigger" parent="." instance=ExtResource("E4")]
+position = Vector3(0, 0, 20)
+
+[node name="ForceRollTriggerLabel" type="Label3D" parent="."]
+position = Vector3(0, 9, 20)
+billboard = 1
+text = "ForceRollTrigger"
+font_size = 42
+
+[node name="MovementRestrictionsTrigger" parent="." instance=ExtResource("E5")]
+position = Vector3(20, 0, 20)
+
+[node name="MovementRestrictionsTriggerLabel" type="Label3D" parent="."]
+position = Vector3(20, 9, 20)
+billboard = 1
+text = "MovementRestrictionsTrigger"
+font_size = 42
+
+[node name="ForceClingTrigger" parent="." instance=ExtResource("E6")]
+position = Vector3(40, 0, 20)
+
+[node name="ForceClingTriggerLabel" type="Label3D" parent="."]
+position = Vector3(40, 9, 20)
+billboard = 1
+text = "ForceClingTrigger"
+font_size = 42
+
+[node name="AttachLimitTrigger" parent="." instance=ExtResource("E7")]
+position = Vector3(60, 0, 20)
+
+[node name="AttachLimitTriggerLabel" type="Label3D" parent="."]
+position = Vector3(60, 9, 20)
+billboard = 1
+text = "AttachLimitTrigger"
+font_size = 42
+
+[node name="DamageTrigger" parent="." instance=ExtResource("E8")]
+position = Vector3(0, 0, 40)
+
+[node name="DamageTriggerLabel" type="Label3D" parent="."]
+position = Vector3(0, 9, 40)
+billboard = 1
+text = "DamageTrigger"
+font_size = 42
+
+[node name="DeathTrigger" parent="." instance=ExtResource("E9")]
+position = Vector3(20, 0, 40)
+
+[node name="DeathTriggerLabel" type="Label3D" parent="."]
+position = Vector3(20, 9, 40)
+billboard = 1
+text = "DeathTrigger"
+font_size = 42
+
+[node name="ExistingAreaTrigger" parent="." instance=ExtResource("E10")]
+position = Vector3(40, 0, 40)
+
+[node name="ExistingAreaTriggerLabel" type="Label3D" parent="."]
+position = Vector3(40, 9, 40)
+billboard = 1
+text = "ExistingAreaTrigger"
+font_size = 42
+
+[node name="ShapeOverrides" parent="." instance=ExtResource("E11")]
+position = Vector3(60, 0, 40)
+
+[node name="ShapeOverridesLabel" type="Label3D" parent="."]
+position = Vector3(60, 9, 40)
+billboard = 1
+text = "ShapeOverrides"
+font_size = 42
+
+[node name="ImportedAssetWrapper" parent="." instance=ExtResource("E12")]
+position = Vector3(0, 0, 60)
+
+[node name="ImportedAssetWrapperLabel" type="Label3D" parent="."]
+position = Vector3(0, 9, 60)
+billboard = 1
+text = "ImportedAssetWrapper"
+font_size = 42
+
+[node name="TriggerWall" type="StaticBody3D" parent="."]
+position = Vector3(45, 6, 20)
+
+[node name="Shape" type="CollisionShape3D" parent="TriggerWall"]
+shape = SubResource("ClingWallShape")
+
+[node name="Mesh" type="MeshInstance3D" parent="TriggerWall"]
+mesh = SubResource("ClingWallMesh")

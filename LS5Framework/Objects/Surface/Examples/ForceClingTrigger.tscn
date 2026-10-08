@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceTrigger.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Trait"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+force_cling = 1
+
+[node name="ForceClingTrigger" instance=ExtResource("Base")]
+editor_description = "Forces wall cling when an eligible solid wall is nearby."
+attachment_traits = Array[ExtResource("Trait")]([SubResource("Trait")])

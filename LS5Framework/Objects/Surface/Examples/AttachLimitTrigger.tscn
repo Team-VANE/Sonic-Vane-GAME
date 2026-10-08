@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceTrigger.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd" id="Trait"]
+
+[sub_resource type="Resource" id="Trait"]
+resource_local_to_scene = true
+script = ExtResource("Trait")
+alignment = 1
+maximum_angle = 60.0
+
+[node name="AttachLimitTrigger" instance=ExtResource("Base")]
+editor_description = "Limits surface alignment to 60 degrees from gravity-up."
+attachment_traits = Array[ExtResource("Trait")]([SubResource("Trait")])

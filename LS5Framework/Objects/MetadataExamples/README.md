@@ -1,5 +1,7 @@
 # Metadata examples
 
+For Inspector trait resources and components that work with existing scene scripts, see `../Surface/Examples/README.md`. Both systems use the same player behavior resolver.
+
 Instance an individual example into a level, or use `MetadataExamples.tscn` to place the full collection. The collection contains damage and death volumes.
 
 | Scene | Behavior |

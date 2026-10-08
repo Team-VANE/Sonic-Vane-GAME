@@ -667,7 +667,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
 [node name="Sonic_NeoAdv_Root" parent="ModelRoot" unique_id=1917975666 instance=ExtResource("87_b5wbc")]
 transform = Transform3D(-0.4, 0, 3.4969112e-08, 0, 0.4, 0, -3.4969112e-08, 0, -0.4, 0, -1, 0)
 
-[node name="Eyeglobe" parent="ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D" parent_id_path=PackedInt32Array(1917975666, 1589855836) index="3" unique_id=45421979]
+[node name="Eyeglobe" parent="ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D" parent_id_path=PackedInt32Array(1917975666, 1699943996) index="3" unique_id=1123952847]
 surface_material_override/0 = SubResource("ShaderMaterial_rkfin")
 
 [node name="JumpDashTrail" type="MeshInstance3D" parent="." unique_id=1503759778]
@@ -710,6 +710,8 @@ script = ExtResource("91_h8d1i")
 contact_grace_time = 0.05
 wall_kick_coyote_time = 0.15
 jump_buffer_reach = 3.0
+run_entry_speed = 35.0
+run_entry_input_bias_speed_range = 17.0
 entry_upward_boost = 0.2
 entry_upward_boost_limit = 3.0
 wall_lift_settle_max_time = 1.75

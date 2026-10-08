@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/MetadataExamples/MetadataTrigger.tscn" id="Base"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.gd" id="Behavior"]
+
+[node name="SurfaceTrigger" instance=ExtResource("Base")]
+editor_description = "Script-driven surface template. Configure trait resources on the root and edit the collision geometry."
+script = ExtResource("Behavior")
