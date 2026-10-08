@@ -6092,6 +6092,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	# HOMING OVERRIDE / START (triggered via jump-dash)
 	# --------------------------------------------------
 	if _homing_active:
+		_jump_dash_requested = false
+		_clear_homing_target_request_buffer()
 		_reset_drift_state()
 		_update_homing(delta, physics_up, is_attached)
 		_last_air_velocity = velocity
@@ -11473,6 +11475,8 @@ func queue_coyote_jump() -> bool:
 	return true
 	
 func can_queue_jump_dash() -> bool:
+	if _homing_active:
+		return false
 	if _action_input_locked():
 		return false
 	if is_combat_homing_locked():
@@ -11506,6 +11510,8 @@ func queue_jump_dash() -> bool:
 
 
 func can_queue_homing_attack() -> bool:
+	if _homing_active:
+		return false
 	if _action_input_locked():
 		return false
 	if is_combat_homing_locked():
