@@ -191,6 +191,19 @@ func get_playback_progress() -> float:
 	return clamp(_playback_time / _duration, 0.0, 1.0)
 
 
+func is_locator_visible() -> bool:
+	if not is_visible_in_tree() or not is_instance_valid(_visual_root) or not _visual_root.is_visible_in_tree() or _last_applied_opacity <= 0.001:
+		return false
+	for geometry: GeometryInstance3D in _geometry_instances:
+		if is_instance_valid(geometry) and geometry.is_visible_in_tree():
+			return true
+	return false
+
+
+func get_up_vector() -> Vector3:
+	return global_basis.y.normalized()
+
+
 func seek_playback(time_seconds: float) -> void:
 	if _samples.is_empty():
 		return

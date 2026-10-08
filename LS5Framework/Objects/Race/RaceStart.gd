@@ -6,6 +6,7 @@ const MIN_RACE_GHOST_COUNT: int = 2
 const MAX_RACE_GHOST_COUNT: int = 20
 const DEFAULT_RACE_GHOST_COUNT: int = 3
 const RACE_GHOST_PLAYBACK_GROUP: StringName = &"RaceGhostPlayback"
+const LEADING_RACE_GHOST_GROUP: StringName = &"LeadingRaceGhost"
 const WORLD_TEXT_MODEL_SCRIPT: Script = preload("res://LS5Framework/Scripts/UI/YawBillboardTextModel.gd")
 
 enum RaceType {
@@ -597,6 +598,7 @@ func _prepare_ghost_runtime(player: Node) -> void:
 						actor.call("set_visual_opacity", lineup_opacity)
 					actor.call("set_ghost_data", ghost_data)
 					if _ghost_active_path == "":
+						_register_leading_ghost(actor)
 						_ghost_active_path = ghost_path
 						_ghost_active_finish_time = float(ghost_data.get("finish_time", 0.0))
 	if _pending_record_ghost_enabled and player != null and is_instance_valid(player):
@@ -607,6 +609,18 @@ func _prepare_ghost_runtime(player: Node) -> void:
 		_ghost_recording_capped = false
 		_ghost_recording_invalidated_by_debug = false
 		_ghost_samples.clear()
+
+
+func _register_leading_ghost(actor: Node) -> void:
+	actor.add_to_group(LEADING_RACE_GHOST_GROUP)
+	if actor.has_signal("playback_finished"):
+		actor.connect("playback_finished", _on_leading_ghost_finished.bind(actor), CONNECT_ONE_SHOT)
+
+
+func _on_leading_ghost_finished(actor: Node) -> void:
+	if not is_instance_valid(actor) or not actor.is_inside_tree() or actor.is_queued_for_deletion() or not _ghost_actors.has(actor):
+		return
+	HUDMusicTrackDisplay.post_notification(get_tree(), "Ghost Finished", "The chosen ghost has reached the goal.")
 
 
 func _start_ghost_runtime() -> void:

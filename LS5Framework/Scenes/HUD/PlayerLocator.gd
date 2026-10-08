@@ -8,6 +8,7 @@ const DIRECTION_EPSILON: float = 0.001
 const TRACKING_MODE_FULL: int = 0
 const TRACKING_MODE_MINIMAL: int = 1
 const TRACKING_MODE_OFF: int = 2
+const LEADING_GHOST_GROUP: StringName = &"LeadingRaceGhost"
 
 ## Screen clearance used by off-screen player markers.
 @export var edge_margin: Vector2 = Vector2(72.0, 64.0)
@@ -28,6 +29,7 @@ var _markers: Dictionary = {}
 var _network_session: Node = null
 var _full_tracking_remaining: float = 0.0
 var _tracking_was_pressed: bool = false
+var _ghost_marker: Dictionary = {}
 
 
 func _ready() -> void:
@@ -38,6 +40,49 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_update_tracking_override(delta)
 	_update_markers()
+	_update_ghost_marker()
+
+
+func _update_ghost_marker() -> void:
+	if not is_visible_in_tree() or not SettingsManager.hud_visible:
+		_hide_ghost_marker()
+		return
+	var ghost: Node3D = get_tree().get_first_node_in_group(LEADING_GHOST_GROUP) as Node3D
+	if ghost == null or ghost.is_queued_for_deletion() or not ghost.is_visible_in_tree():
+		_hide_ghost_marker()
+		return
+	if not ghost.has_method("is_locator_visible") or not ghost.call("is_locator_visible"):
+		_hide_ghost_marker()
+		return
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	var local_player: Node3D = _get_ghost_reference_player()
+	if camera == null or local_player == null:
+		_hide_ghost_marker()
+		return
+	if _ghost_marker.is_empty():
+		_ghost_marker = _create_marker("Ghost")
+	_update_marker(_ghost_marker, {"name": "Ghost", "color": Color.WHITE}, local_player, ghost, camera, TRACKING_MODE_FULL)
+
+
+func _get_ghost_reference_player() -> Node3D:
+	var session: Node = _get_network_session()
+	if session != null and session.has_method("get_local_player"):
+		var local_player: Node3D = session.call("get_local_player") as Node3D
+		if is_instance_valid(local_player) and local_player.is_inside_tree():
+			return local_player
+	for player: Node in get_tree().get_nodes_in_group("Player"):
+		if not (player is Node3D) or player.is_queued_for_deletion() or player.get_meta(&"is_buddy", false):
+			continue
+		if player.has_method("_network_is_local_authority") and not player.call("_network_is_local_authority"):
+			continue
+		return player as Node3D
+	return null
+
+
+func _hide_ghost_marker() -> void:
+	var root: Control = _ghost_marker.get("root") as Control
+	if root != null:
+		root.visible = false
 
 
 func _update_tracking_override(delta: float) -> void:
@@ -106,9 +151,15 @@ func _update_markers() -> void:
 func _get_or_create_marker(peer_id: int) -> Dictionary:
 	if _markers.has(peer_id):
 		return _markers[peer_id]
+	var marker: Dictionary = _create_marker("Player_%d" % peer_id)
+	_markers[peer_id] = marker
+	return marker
+
+
+func _create_marker(marker_name: String) -> Dictionary:
 
 	var root: Control = Control.new()
-	root.name = "Player_%d" % peer_id
+	root.name = marker_name
 	root.custom_minimum_size = MARKER_SIZE
 	root.size = MARKER_SIZE
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -157,7 +208,6 @@ func _get_or_create_marker(peer_id: int) -> Dictionary:
 		"arrow": arrow,
 		"label": label,
 	}
-	_markers[peer_id] = marker
 	return marker
 
 
