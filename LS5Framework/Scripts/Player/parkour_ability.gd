@@ -1476,9 +1476,19 @@ func on_action_enter(context: Dictionary = {}) -> void:
 	owner_player._falling_without_jump = true
 	owner_player._begin_jump_hold_state(false)
 	owner_player._gracefully_end_airborne_torque()
+	if not bool(context.get("defer_air_trick_boost", false)):
+		_cash_out_wall_run_air_trick_boost()
 	_play_mode_animation()
 	if _mode == WallMode.CLING:
 		_play_parkour_sound(wall_cling_enter_sound)
+
+
+func _cash_out_wall_run_air_trick_boost() -> void:
+	if _mode != WallMode.RUN:
+		return
+	var tangent: Vector3 = get_owner_gravity_up().cross(_normal).normalized()
+	owner_player.cash_out_air_trick_boost(tangent * sign(_run_parallel_speed), &"wall_run")
+	_run_parallel_speed = owner_player.velocity.dot(tangent)
 
 
 func physics_update_action(delta: float) -> void:
@@ -1781,6 +1791,7 @@ func try_begin_from_dash_panel(
 		"wall_normal": wall_normal,
 		"source_action": owner_player.get_current_action_id(),
 		"grounded_wall_transition": owner_player.attached,
+		"defer_air_trick_boost": true,
 	}):
 		owner_player.velocity = previous_velocity
 		return {}
@@ -1875,6 +1886,7 @@ func apply_dash_panel_parkour(
 		+ wall_up * (vertical / max(wall_up.dot(up), 0.1))
 		- pressure_normal * max(contact_pressure_speed, 0.0)
 	)
+	_cash_out_wall_run_air_trick_boost()
 	return {"direction": wall_direction, "up": up}
 
 

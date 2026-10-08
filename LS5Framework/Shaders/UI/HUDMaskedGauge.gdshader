@@ -4,7 +4,7 @@ uniform vec4 background_color : source_color = vec4(0.02, 0.06, 0.15, 1.0);
 uniform vec4 fill_color : source_color = vec4(0.1, 0.5, 1.0, 1.0);
 uniform vec4 feedback_color : source_color = vec4(1.0);
 uniform float feedback_strength : hint_range(0.0, 1.0) = 0.0;
-uniform float feedback_glow : hint_range(0.0, 1.0) = 0.0;
+uniform float feedback_glow : hint_range(0.0, 3.0) = 0.0;
 uniform float progress : hint_range(0.0, 1.0) = 0.0;
 uniform int gauge_type = 0;
 

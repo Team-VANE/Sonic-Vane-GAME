@@ -4,8 +4,12 @@ extends Control
 @export_range(0.0, 1.0, 0.01) var background_darkening: float = 0.78
 ## Time taken to blend the gauges to their new values.
 @export_range(0.0, 2.0, 0.01, "suffix:s") var gauge_response: float = 0.12
-## Duration of the landing feedback flash.
+## Fade duration after the landing feedback hold.
 @export_range(0.05, 2.0, 0.01, "suffix:s") var landing_effect_duration: float = 0.35
+## Time the landing-roll and rough-landing bar flashes remain at full strength before fading.
+@export_range(0.0, 1.0, 0.01, "suffix:s") var landing_effect_hold_duration: float = 0.12
+## Additive glow intensity for landing-roll and rough-landing bar feedback.
+@export_range(0.0, 3.0, 0.05) var landing_effect_glow: float = 1.1
 ## Duration of each half of the full-charge text flash.
 @export_range(0.05, 2.0, 0.01, "suffix:s") var barrier_flash_duration: float = 0.4
 
@@ -90,12 +94,14 @@ func play_landing_roll_effect(result: StringName, strength: float) -> void:
 	if result == &"rejected":
 		flash = Color(0.16, 0.16, 0.18)
 	material.set_shader_parameter("feedback_color", flash)
-	var glow: float = 0.0 if result == &"rejected" else 0.55
+	var glow: float = 0.0 if result == &"rejected" else landing_effect_glow
 	if result == &"hard_landing":
 		glow *= lerpf(0.55, 1.0, clampf(strength, 0.0, 1.0))
 	material.set_shader_parameter("feedback_glow", glow)
 	material.set_shader_parameter("feedback_strength", 1.0)
 	_landing_tween = create_tween()
+	if result == &"accepted" or result == &"hard_landing":
+		_landing_tween.tween_interval(landing_effect_hold_duration)
 	_landing_tween.tween_property(material, "shader_parameter/feedback_strength", 0.0, landing_effect_duration)
 
 

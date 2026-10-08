@@ -106,6 +106,16 @@ enum TrickAxis {
 ## Minimum score multiplier for repeatedly performing the same feat.
 @export_range(0.0, 1.0, 0.05) var feat_min_score_multiplier: float = 0.35
 
+@export_group("Air Trick Speed Boost")
+## Banks airborne rotation score for a one-time landing or wall-run speed bonus.
+@export var air_trick_boost_enabled: bool = true
+## Airborne rotation score required for the maximum speed bonus.
+@export_range(1.0, 10000.0, 50.0, "or_greater") var air_trick_boost_score_target: float = 3500.0
+## Maximum additive speed in the pawn's unscaled movement units.
+@export_range(0.0, 100.0, 0.5, "or_greater") var air_trick_boost_max_speed: float = 25.0
+## Maximum bonus as a fraction of resolved ground or wall-parallel speed. Stationary landings receive no bonus.
+@export_range(0.0, 1.0, 0.01) var air_trick_boost_retained_speed_limit: float = 0.25
+
 var _trick_audio_player: AudioStreamPlayer = null
 var _perfect_landing_audio_player: AudioStreamPlayer = null
 
@@ -199,6 +209,13 @@ var combo_time_remaining: float = 0.0
 
 var combo_system_enabled: bool = true
 
+var air_trick_score: float = 0.0
+var _air_trick_base_score: float = 0.0
+var _air_trick_unique_types: Dictionary = {}
+var _air_trick_staleness_counts: Dictionary = {}
+
+signal air_trick_bank_updated(score: float, charge_ratio: float)
+
 signal trick_performed(trick_type: TrickType, count: int)
 signal combo_updated(multiplier: float, score: float)
 signal trick_sequence_updated(trick_list: Array)
@@ -259,6 +276,7 @@ func cancel_combo(failed: bool = false) -> void:
 	combo_timer_updated.emit(combo_time_remaining, combo_timer_max_seconds)
 
 func register_trick(trick_type: TrickType, current_time: float, timer_add_seconds: float = -1.0) -> void:
+	_register_air_trick_score(trick_type)
 	if not combo_system_enabled:
 		return
 	if trick_type == TrickType.NONE:
@@ -375,8 +393,7 @@ func _update_combo() -> void:
 			unique_types[trick.action_id] = true
 		base_score += trick.score
 
-	combo_multiplier = 1.0 + (float(unique_types.size()) * maxf(unique_action_multiplier_step, 0.0))
-	combo_multiplier = minf(combo_multiplier, maxf(combo_multiplier_max, 1.0))
+	combo_multiplier = _get_variety_multiplier(unique_types.size())
 	
 	total_score = base_score * combo_multiplier
 
@@ -454,11 +471,54 @@ func reset_staleness() -> void:
 	action_staleness_counts.clear()
 
 func _refresh_other_action_staleness(performed_action_id: StringName) -> void:
-	for tracked_action_id: StringName in action_staleness_counts:
+	_refresh_staleness_counts(action_staleness_counts, performed_action_id)
+
+func _refresh_staleness_counts(counts: Dictionary, performed_action_id: StringName) -> void:
+	for tracked_action_id: StringName in counts:
 		if tracked_action_id == performed_action_id:
 			continue
-		var stale_count: int = int(action_staleness_counts[tracked_action_id])
-		action_staleness_counts[tracked_action_id] = maxi(stale_count - 1, 0)
+		var stale_count: int = int(counts[tracked_action_id])
+		counts[tracked_action_id] = maxi(stale_count - 1, 0)
+
+func _get_variety_multiplier(unique_count: int) -> float:
+	return minf(1.0 + float(unique_count) * maxf(unique_action_multiplier_step, 0.0), maxf(combo_multiplier_max, 1.0))
+
+func _register_air_trick_score(trick_type: TrickType) -> void:
+	if not air_trick_boost_enabled:
+		clear_air_trick_bank()
+		return
+	if trick_type < TrickType.BACKFLIP or trick_type > TrickType.FRONTFLIP_RIGHT_SPIN:
+		return
+	if not trick_stats.has(trick_type):
+		return
+	var action_id: StringName = _get_trick_action_id(trick_type)
+	_refresh_staleness_counts(_air_trick_staleness_counts, action_id)
+	var repeat_count: int = int(_air_trick_staleness_counts.get(action_id, 0))
+	var stats: TrickStats = trick_stats[trick_type]
+	var entry_score: float = maxf(stats.base_value, 0.0) * _get_staleness_multiplier(repeat_count, trick_repeat_score_decay, trick_min_score_multiplier)
+	_air_trick_staleness_counts[action_id] = repeat_count + 1
+	if entry_score > 0.0:
+		_air_trick_unique_types[action_id] = true
+	_air_trick_base_score += entry_score
+	air_trick_score = _air_trick_base_score * _get_variety_multiplier(_air_trick_unique_types.size())
+	air_trick_bank_updated.emit(air_trick_score, get_air_trick_charge_ratio())
+
+func get_air_trick_charge_ratio() -> float:
+	if not air_trick_boost_enabled:
+		return 0.0
+	return clampf(air_trick_score / maxf(air_trick_boost_score_target, 1.0), 0.0, 1.0)
+
+func get_air_trick_speed_bonus() -> float:
+	return maxf(air_trick_boost_max_speed, 0.0) * get_air_trick_charge_ratio()
+
+func clear_air_trick_bank() -> void:
+	var had_score: bool = air_trick_score > 0.0
+	air_trick_score = 0.0
+	_air_trick_base_score = 0.0
+	_air_trick_unique_types.clear()
+	_air_trick_staleness_counts.clear()
+	if had_score:
+		air_trick_bank_updated.emit(0.0, 0.0)
 
 func _get_staleness_multiplier(repeat_count: int, score_decay: float, minimum_multiplier: float) -> float:
 	return maxf(

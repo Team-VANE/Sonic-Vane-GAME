@@ -26,6 +26,46 @@ const INVINCIBILITY_VISUAL_SCENE: PackedScene = preload(
 
 var _landing_prompt_sphere: SphereShape3D = SphereShape3D.new()
 
+signal air_trick_boost_applied(score: float, speed_bonus: float, direction: Vector3, reason: StringName)
+
+func clear_air_trick_bank() -> void:
+	if _trick_system != null:
+		_trick_system.clear_air_trick_bank()
+
+func cash_out_air_trick_boost(direction: Vector3, reason: StringName) -> float:
+	if _trick_system == null:
+		return 0.0
+	var score: float = _trick_system.air_trick_score
+	var bonus: float = _trick_system.get_air_trick_speed_bonus()
+	clear_air_trick_bank()
+	if _is_dead or _hurt_active or _level_load_suspended or _is_buddy_actor():
+		return 0.0
+	if bonus <= 0.0 or direction.length_squared() < 0.000001:
+		return 0.0
+	var boost_direction: Vector3 = direction.normalized()
+	var retained_speed: float = maxf(velocity.dot(boost_direction), 0.0)
+	bonus = minf(bonus, retained_speed * clampf(_trick_system.air_trick_boost_retained_speed_limit, 0.0, 1.0))
+	if bonus <= 0.0:
+		return 0.0
+	velocity += boost_direction * bonus
+	air_trick_boost_applied.emit(score, bonus, boost_direction, reason)
+	return bonus
+
+func _cash_out_ground_air_trick_boost(normal: Vector3) -> float:
+	var ground_normal: Vector3 = normal.normalized()
+	if ground_normal.length_squared() < 0.000001:
+		clear_air_trick_bank()
+		return 0.0
+	var direction: Vector3 = velocity.slide(ground_normal)
+	var bonus: float = cash_out_air_trick_boost(direction, &"landing")
+	if bonus > 0.0:
+		_landing_animation_moving = true
+	return bonus
+
+func _resolve_air_trick_landing_boost(was_attached: bool) -> void:
+	if attached and not was_attached and not _rail_active and not _spline_active:
+		_cash_out_ground_air_trick_boost(surface_normal)
+
 func _ensure_modules() -> void:
 	if _audio_module == null:
 		_audio_module = PlayerAudio.new(self)
@@ -79,7 +119,7 @@ func _clear_buddy_runtime_state() -> void:
 	_buddy_module._clear_buddy_runtime_state()
 
 func _on_trick_detected(trick_type: int, timer_add_seconds: float = -1.0) -> void:
-	if _is_dead or _is_buddy_actor():
+	if _is_dead or _hurt_active or _level_load_suspended or _is_buddy_actor():
 		return
 	if is_parkour_active():
 		return
@@ -1581,6 +1621,7 @@ func set_level_load_suspended(value: bool) -> void:
 		return
 	_level_load_suspended = value
 	if value:
+		clear_air_trick_bank()
 		_level_load_saved_collision_layer = collision_layer
 		_level_load_saved_collision_mask = collision_mask
 		_level_load_saved_process_enabled = is_processing()
@@ -3319,6 +3360,7 @@ func _movement_physics_process(delta: float) -> void:
 	_ground_follow_probe(delta)
 	_update_attachment_state_after_move(delta)
 	_reconcile_grounded_state_after_move(world_up)
+	_resolve_air_trick_landing_boost(was_attached)
 	if was_attached and not attached:
 		_ensure_directional_influence_lock_for_detach(detach_fallback_normal, world_up)
 	_update_manual_airborne_torque(motion_delta)

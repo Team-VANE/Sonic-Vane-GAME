@@ -522,6 +522,7 @@ func apply_death_plane_damage(_source: Node = null) -> void:
 
 func _on_player_hurt() -> void:
 	var p = _owner
+	p.clear_air_trick_bank()
 	if p._trick_system != null:
 		if not p._trick_system.current_air_tricks.is_empty():
 			p._trick_system.cancel_combo(true)
@@ -541,6 +542,7 @@ func set_death_state(dead: bool) -> void:
 		_on_player_hurt()
 	else:
 		p._active_death_type = &""
+		p.clear_air_trick_bank()
 		# If we were dead and are now being resurrected (e.g. race restart),
 		# make sure we clear the input block if it was set by the death sequence.
 		if p._ui_input_blocked:

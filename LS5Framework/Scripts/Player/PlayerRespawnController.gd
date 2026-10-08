@@ -66,6 +66,7 @@ func _apply_respawn_transform(
 	grounded_normal: Vector3 = Vector3.ZERO
 ) -> void:
 	var p = _owner
+	p.clear_air_trick_bank()
 	p.cancel_homing_attack(false)
 	p.cancel_vault_bar()
 	p.clear_max_speed_overrides()
@@ -458,6 +459,7 @@ func _perform_unstuck_nudge() -> void:
 
 func stop_all_momentum_and_special_movement() -> void:
 	var p = _owner
+	p.clear_air_trick_bank()
 	# Used by cutscenes (goal, race start, etc.) to ensure no leftover impulses/states.
 	p._stop_lightspeed_dash_if_active(false)
 	p.velocity = Vector3.ZERO
