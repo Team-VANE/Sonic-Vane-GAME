@@ -4,6 +4,106 @@ const DeathPlane = preload("res://LS5Framework/Objects/Gameplay/DeathPlane.gd")
 const ONLINE_TELEPORT_STATE_WAIT_FRAMES: int = 180
 const PAUSE_PREVIEW_ACTION: StringName = &"hide_pause_menu"
 const CHARACTER_SETTINGS_MENU_SCENE: PackedScene = preload("res://LS5Framework/Scenes/UI/CharacterSettingsMenu.tscn")
+const HELD_BUTTON_PROMPT_SCENE: PackedScene = preload("res://LS5Framework/Scenes/UI/HeldButtonPrompt.tscn")
+
+## Controller checkpoint shortcut hold time required to restart an available race.
+@export_range(0.1, 3.0, 0.05, "suffix:s") var race_restart_hold_duration: float = 0.7
+
+## Arranges compact shortcuts beneath the pause frame.
+var _shortcut_prompts: HBoxContainer
+## Displays device-aware shortcut glyphs and hold progress.
+var _shortcut_cards: Array[HeldButtonPrompt] = []
+var _shortcut_pending: StringName = &""
+var _shortcut_hold_time: float = 0.0
+var _shortcut_hold_consumed: bool = false
+var _shortcut_signature: String = ""
+
+func _create_pause_shortcut_prompts() -> void:
+	_shortcut_prompts = HBoxContainer.new()
+	_shortcut_prompts.name = "ShortcutPrompts"
+	_shortcut_prompts.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_shortcut_prompts.add_theme_constant_override("separation", 8)
+	panel_pause.add_child(_shortcut_prompts)
+	_shortcut_prompts.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_shortcut_prompts.offset_top = 8.0
+	_shortcut_prompts.offset_bottom = 80.0
+	for index: int in range(3):
+		var card: HeldButtonPrompt = HELD_BUTTON_PROMPT_SCENE.instantiate()
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_shortcut_prompts.add_child(card)
+		_shortcut_cards.append(card)
+
+func _can_use_pause_shortcuts() -> bool:
+	return _is_open and panel_pause.visible and not panel_options.visible and not _pause_preview_hidden and not _is_input_binding_active() and not is_instance_valid(_character_settings_menu) and not graphics_confirm_dialog.visible and not unsaved_graphics_dialog.visible and not reset_defaults_dialog.visible and not _is_text_input_focused()
+
+func _cancel_pause_shortcut_hold() -> void:
+	_shortcut_pending = &""
+	_shortcut_hold_time = 0.0
+	_shortcut_hold_consumed = false
+	if _shortcut_cards.size() == 3:
+		_shortcut_cards[2].set_hold_progress(0.0)
+
+func _update_pause_shortcuts(delta: float) -> void:
+	if _shortcut_prompts == null:
+		return
+	_shortcut_prompts.visible = _can_use_pause_shortcuts()
+	if not _shortcut_prompts.visible:
+		_cancel_pause_shortcut_hold()
+		return
+	var controller: bool = SettingsManager.is_controller_input_active()
+	var restart_available: bool = _can_quick_restart()
+	var device: int = SettingsManager.get_preferred_joypad_device() if controller else -1
+	var signature: String = "%s:%s:%s:%s" % [controller, restart_available, device, race_restart_hold_duration]
+	if signature != _shortcut_signature:
+		_shortcut_signature = signature
+		_shortcut_cards[0].configure(InputBindingGlyphs.get_slot_glyph(&"shortcut_respawn" if controller else &"respawn", controller), "Respawn")
+		_shortcut_cards[1].configure(InputBindingGlyphs.get_slot_glyph(&"shortcut_checkpoint" if controller else &"respawn_checkpoint", controller), "Checkpoint")
+		_shortcut_cards[2].configure(InputBindingGlyphs.get_slot_glyph(&"shortcut_checkpoint" if controller else quick_restart_action, controller), "Hold %.1fs\nRestart Race" % race_restart_hold_duration if controller else "Restart Race", controller)
+		_shortcut_cards[2].visible = restart_available
+	if _shortcut_pending == &"shortcut_checkpoint" and not _shortcut_hold_consumed and restart_available:
+		_shortcut_hold_time += maxf(delta, 0.0)
+		_shortcut_cards[2].set_hold_progress(_shortcut_hold_time / race_restart_hold_duration)
+		if _shortcut_hold_time >= race_restart_hold_duration:
+			_shortcut_hold_consumed = true
+			_do_quick_restart()
+	var scale_factor: float = minf(1.0, minf(maxf(size.y - 40.0, 1.0) / (panel_pause.size.y + 96.0), maxf(size.x - 32.0, 1.0) / (1000.0 if online_panel.visible else 560.0)))
+	panel_pause.pivot_offset = panel_pause.size * 0.5
+	panel_pause.scale = Vector2.ONE * scale_factor
+	panel_pause.offset_top = -panel_pause.size.y * 0.5 - 44.0 * scale_factor
+	panel_pause.offset_bottom = panel_pause.offset_top + panel_pause.size.y
+	if online_panel.visible:
+		panel_pause.offset_left = -280.0 + 190.0 * scale_factor
+		panel_pause.offset_right = panel_pause.offset_left + 560.0
+		online_panel.pivot_offset = online_panel.size * 0.5
+		online_panel.scale = Vector2.ONE * scale_factor
+		online_panel.offset_left = -180.0 - 290.0 * scale_factor
+		online_panel.offset_right = online_panel.offset_left + 360.0
+
+func _handle_pause_shortcut(event: InputEvent) -> bool:
+	if event is InputEventKey and event.echo:
+		return false
+	if event is InputEventJoypadButton:
+		for action: StringName in [&"shortcut_respawn", &"shortcut_checkpoint"]:
+			if event.is_action_pressed(action):
+				_cancel_pause_shortcut_hold()
+				_shortcut_pending = action
+				return true
+			if event.is_action_released(action):
+				var execute: bool = _shortcut_pending == action and not _shortcut_hold_consumed
+				_cancel_pause_shortcut_hold()
+				if execute:
+					if action == &"shortcut_respawn":
+						_on_ButtonRespawnStart_pressed()
+					else:
+						_on_ButtonRespawnCheckpoint_pressed()
+				return true
+	elif event.is_action_pressed("respawn"):
+		_on_ButtonRespawnStart_pressed()
+		return true
+	elif event.is_action_pressed("respawn_checkpoint"):
+		_on_ButtonRespawnCheckpoint_pressed()
+		return true
+	return false
 
 ## Character loadout menu displayed over the keybind options.
 var _character_settings_menu: CharacterSettingsMenu = null
@@ -245,6 +345,12 @@ func _set_hud_visible(value: bool) -> void:
 
 
 func _ready() -> void:
+	_create_pause_shortcut_prompts()
+	SettingsManager.input_bindings_changed.connect(func() -> void: _shortcut_signature = "")
+	Input.joy_connection_changed.connect(func(_device: int, connected: bool) -> void:
+		if not connected:
+			_cancel_pause_shortcut_hold()
+	)
 	tab_bindings.loadout_mapping_requested.connect(_on_loadout_mapping_requested)
 	add_to_group("PauseMenu")
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -293,6 +399,7 @@ func _wire_online_signals() -> void:
 
 
 func _process(delta: float) -> void:
+	_update_pause_shortcuts(delta)
 	if is_instance_valid(_character_settings_menu):
 		return
 	if graphics_confirm_dialog.visible:
@@ -312,7 +419,7 @@ func _process(delta: float) -> void:
 		return
 	if _pause_preview_hidden:
 		return
-	if quick_restart_action != &"" and SettingsManager.is_gameplay_action_just_pressed(quick_restart_action):
+	if quick_restart_action != &"" and SettingsManager.is_gameplay_action_just_pressed(quick_restart_action) and not (_is_open and SettingsManager.is_controller_input_active()):
 		if not _is_text_input_focused() and _can_quick_restart():
 			_do_quick_restart()
 			return
@@ -384,12 +491,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if not panel_pause.visible or panel_options.visible:
 		return
-	if event.is_action_pressed("shortcut_respawn"):
-		_on_ButtonRespawnStart_pressed()
-		get_viewport().set_input_as_handled()
-		return
-	if event.is_action_pressed("shortcut_checkpoint"):
-		_on_ButtonRespawnCheckpoint_pressed()
+	if _can_use_pause_shortcuts() and _handle_pause_shortcut(event):
 		get_viewport().set_input_as_handled()
 		return
 
