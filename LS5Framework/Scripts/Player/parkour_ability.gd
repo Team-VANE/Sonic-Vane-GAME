@@ -36,13 +36,13 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Maximum concave change in wall normal permitted during a wall run.
 @export_range(0.0, 90.0, 1.0) var maximum_inward_curve_degrees: float = 75.0
 ## Contact-loss window in which a wall kick remains available.
-@export var contact_grace_time: float = 0.075
+@export var contact_grace_time: float = 0.05
 ## Time after leaving a wall during which Jump may still perform the remembered wall kick.
-@export var wall_kick_coyote_time: float = 0.12
+@export var wall_kick_coyote_time: float = 0.15
 ## Jump buffer duration while approaching a nearby wall with Parkour held.
 @export var jump_buffer_time: float = 0.1
 ## Additional wall reach used only to buffer an approaching jump input.
-@export var jump_buffer_reach: float = 1.5
+@export var jump_buffer_reach: float = 3.0
 ## Maximum outward velocity allowed when catching a wall.
 @export var maximum_outward_catch_speed: float = 2.0
 ## Inward contact velocity while a wall is detected.
@@ -64,9 +64,9 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 
 @export_subgroup("Wall Run")
 ## Center speed of the input-biased wall-run entry decision band.
-@export var run_entry_speed: float = 30.0
+@export var run_entry_speed: float = 35.0
 ## Speed range below and above the center where movement input may change the entry mode.
-@export var run_entry_input_bias_speed_range: float = 6.0
+@export var run_entry_input_bias_speed_range: float = 17.0
 ## Movement-input strength below which entry receives the full cling bias.
 @export_range(0.0, 1.0, 0.01) var run_entry_input_deadzone: float = 0.15
 ## Parallel share of wall-relative input where the wall-run bias begins.
@@ -86,9 +86,9 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Maximum additional wall-parallel speed granted on fresh wall-run entry.
 @export var entry_forward_boost_limit: float = 5.0
 ## Fractional upward entry velocity boost.
-@export_range(0.0, 1.0, 0.01) var entry_upward_boost: float = 0.1
+@export_range(0.0, 1.0, 0.01) var entry_upward_boost: float = 0.2
 ## Maximum additional upward speed granted on entry.
-@export var entry_upward_boost_limit: float = 2.0
+@export var entry_upward_boost_limit: float = 3.0
 ## Fraction of downward entry speed removed on a fresh catch.
 @export_range(0.0, 1.0, 0.01) var entry_downward_damping: float = 0.25
 ## Gravity multiplier while wall-run lift settles vertical entry speed.
@@ -103,29 +103,29 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Enables settling, sustained height, and eased gravity return during wall runs.
 @export var wall_lift_enabled: bool = true
 ## Maximum time allowed to settle into a horizontal wall run.
-@export_range(0.0, 2.0, 0.01) var wall_lift_settle_max_time: float = 0.75
+@export_range(0.0, 2.0, 0.01) var wall_lift_settle_max_time: float = 1.75
 ## Maximum settle time for a fast upward wall-run entry.
-@export_range(0.0, 5.0, 0.01) var wall_lift_upward_settle_max_time: float = 2.5
+@export_range(0.0, 5.0, 0.01) var wall_lift_upward_settle_max_time: float = 0.3
 ## Downward speed removed per second while settling into a horizontal run.
-@export_range(0.0, 300.0, 1.0) var wall_lift_downward_funnel_acceleration: float = 110.0
+@export_range(0.0, 300.0, 1.0) var wall_lift_downward_funnel_acceleration: float = 120.0
 ## Upward speed removed per second while settling into a horizontal run.
-@export_range(0.0, 300.0, 1.0) var wall_lift_upward_funnel_acceleration: float = 32.0
+@export_range(0.0, 300.0, 1.0) var wall_lift_upward_funnel_acceleration: float = 85.0
 ## Fraction of vertical entry speed counted toward the lift hold duration.
-@export_range(0.0, 1.0, 0.01) var wall_lift_vertical_entry_speed_weight: float = 0.25
+@export_range(0.0, 1.0, 0.01) var wall_lift_vertical_entry_speed_weight: float = 0.4
 ## Maximum vertical-speed contribution as a fraction of wall-parallel entry speed.
-@export_range(0.0, 1.0, 0.01) var wall_lift_vertical_entry_parallel_limit: float = 0.35
+@export_range(0.0, 1.0, 0.01) var wall_lift_vertical_entry_parallel_limit: float = 0.5
 ## Upward entry speed component redirected into wall-parallel speed when lift begins.
-@export_range(0.0, 1.0, 0.01) var wall_lift_upward_entry_parallel_carry: float = 0.3
+@export_range(0.0, 1.0, 0.01) var wall_lift_upward_entry_parallel_carry: float = 0.8
 ## Downward entry speed component redirected into wall-parallel speed when lift begins.
-@export_range(0.0, 1.0, 0.01) var wall_lift_downward_entry_parallel_carry: float = 0.4
+@export_range(0.0, 1.0, 0.01) var wall_lift_downward_entry_parallel_carry: float = 0.8
 ## Maximum wall-parallel speed gained from vertical entry when lift begins.
-@export_range(0.0, 100.0, 0.1) var wall_lift_entry_parallel_gain_limit: float = 12.0
+@export_range(0.0, 100.0, 0.1) var wall_lift_entry_parallel_gain_limit: float = 20.0
 ## Gravity-relative vertical speed accepted as a settled horizontal run.
 @export_range(0.0, 10.0, 0.05) var wall_lift_settled_speed: float = 1.0
 ## Vertical speed correction per second during the lift hold.
 @export_range(0.0, 100.0, 1.0) var wall_lift_hold_correction: float = 20.0
 ## Time used to ease from lift support into full gravity.
-@export_range(0.01, 2.0, 0.01) var wall_lift_release_time: float = 0.6
+@export_range(0.01, 2.0, 0.01) var wall_lift_release_time: float = 0.3
 ## Minimum lift strength on a previously used same-facing wall until traversal refresh.
 @export_range(0.0, 1.0, 0.01) var wall_lift_same_surface_minimum_strength: float = 0.25
 ## Inward wall-normal turn needed to replenish lift during a continuous fast run.
@@ -150,13 +150,13 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Maximum horizontal wall-parallel speed requested by full stick input.
 @export var cling_control_speed: float = 3.0
 ## Half-life of upward velocity while clinging. Lower values stop upward sliding sooner.
-@export var cling_upward_velocity_half_life: float = 0.35
+@export var cling_upward_velocity_half_life: float = 0.85
 ## Initial downward gravity multiplier during a cling.
 @export var cling_initial_gravity_scale: float = 0.2
 ## Minimum gravity multiplier while rising in a cling entered from regular surface attachment.
-@export var grounded_cling_upward_gravity_scale: float = 4.0
+@export var grounded_cling_upward_gravity_scale: float = 1.45
 ## Delay before cling gravity starts increasing.
-@export var cling_slide_delay: float = 0.35
+@export var cling_slide_delay: float = 0.5
 ## Time taken to reach the final cling gravity strength after the delay.
 @export var cling_slide_ramp_time: float = 1.0
 ## Final gravity multiplier during a sustained cling.
@@ -164,11 +164,11 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 
 @export_subgroup("Landing Roll")
 ## Time before landing during which a Parkour press may trigger a landing roll.
-@export var landing_roll_input_window: float = 0.5
+@export var landing_roll_input_window: float = 0.9
 ## Time after landing during which a Parkour press may trigger a landing roll from captured impact momentum.
 @export var landing_roll_post_landing_window: float = 0.2
 ## Maximum gravity-relative floor angle accepted by a landing roll.
-@export_range(0.0, 90.0, 1.0) var landing_roll_max_surface_angle_degrees: float = 15.0
+@export_range(0.0, 90.0, 1.0) var landing_roll_max_surface_angle_degrees: float = 60.0
 ## Minimum into-floor impact speed required for a landing roll.
 @export var landing_roll_min_impact_speed: float = 35.0
 ## Minimum into-floor impact speed for a landing roll after a passive ledge drop.
@@ -176,17 +176,17 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Minimum incoming tangential speed required for a landing roll.
 @export var landing_roll_min_tangential_speed: float = 8.0
 ## Fraction of incoming tangential speed added back by a successful landing roll.
-@export_range(0.0, 1.0, 0.01) var landing_roll_tangential_recovery: float = 0.25
+@export_range(0.0, 1.0, 0.01) var landing_roll_tangential_recovery: float = 0.6
 ## Maximum additional tangential speed recovered by a landing roll.
-@export var landing_roll_recovery_limit: float = 20.0
+@export var landing_roll_recovery_limit: float = 23.0
 ## Fraction of incoming tangential speed added back during Barrier Blast.
 @export_range(0.0, 1.0, 0.01) var landing_roll_barrier_blast_tangential_recovery: float = 0.5
 ## Maximum additional tangential speed recovered during Barrier Blast.
-@export var landing_roll_barrier_blast_recovery_limit: float = 40.0
+@export var landing_roll_barrier_blast_recovery_limit: float = 28.0
 ## Cooldown after receiving landing-roll speed recovery before it can be granted again.
-@export var landing_roll_speed_benefit_cooldown: float = 1.0
+@export var landing_roll_speed_benefit_cooldown: float = 0.7
 ## Minimum uninterrupted airborne time after a jump or other action required for landing-roll speed recovery.
-@export var landing_roll_speed_benefit_min_airborne_time: float = 1.0
+@export var landing_roll_speed_benefit_min_airborne_time: float = 0.7
 ## Time spent using only the main collision sphere after a successful landing roll.
 @export var landing_roll_compact_collision_duration: float = 0.7
 ## Minimum radial approach angle required for rough-landing feedback.
@@ -208,27 +208,27 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 
 @export_subgroup("Wall Kick/Wall Run")
 ## Outward launch speed for a wall-run kick before surface and chain penalties.
-@export var wall_run_kick_outward_speed: float = 60.0
+@export var wall_run_kick_outward_speed: float = 85.0
 ## Upward launch target for a wall-run kick before vertical speed carry.
-@export var wall_run_kick_upward_speed: float = 35.0
+@export var wall_run_kick_upward_speed: float = 38.0
 ## Entry speed where wall-run kick mirroring begins.
 @export var wall_run_kick_entry_mirror_min_speed: float = 30.0
 ## Entry speed that reaches the maximum wall-run kick mirror multipliers.
-@export var wall_run_kick_entry_mirror_max_speed: float = 100.0
+@export var wall_run_kick_entry_mirror_max_speed: float = 175.0
 ## Maximum outward wall-run kick multiplier produced by entry speed.
-@export_range(1.0, 10.0, 0.01) var wall_run_kick_entry_outward_multiplier: float = 1.5
+@export_range(1.0, 10.0, 0.01) var wall_run_kick_entry_outward_multiplier: float = 1.25
 ## Maximum upward wall-run kick multiplier produced by entry speed.
-@export_range(1.0, 10.0, 0.01) var wall_run_kick_entry_upward_multiplier: float = 1.25
+@export_range(1.0, 10.0, 0.01) var wall_run_kick_entry_upward_multiplier: float = 1.0
 ## Fraction of captured vertical entry speed added to the wall-run kick's upward target.
-@export_range(0.0, 1.0, 0.01) var wall_run_kick_vertical_entry_boost: float = 0.25
+@export_range(0.0, 1.0, 0.01) var wall_run_kick_vertical_entry_boost: float = 0.06
 ## Maximum upward speed added from wall-run vertical entry speed.
-@export var wall_run_kick_vertical_entry_boost_limit: float = 20.0
+@export var wall_run_kick_vertical_entry_boost_limit: float = 8.0
 ## Fraction of current upward wall-run speed retained when it exceeds the kick's upward target.
-@export_range(0.0, 3.0, 0.01) var wall_run_kick_upward_speed_carry: float = 1.0
+@export_range(0.0, 3.0, 0.01) var wall_run_kick_upward_speed_carry: float = 0.8
 ## Fraction of current downward wall-run speed subtracted from the kick's upward speed.
 @export_range(0.0, 3.0, 0.01) var wall_run_kick_downward_speed_carry: float = 0.2
 ## Minimum outward speed for a wall-run kick when strength is depleted.
-@export var wall_run_kick_minimum_outward_speed: float = 6.0
+@export var wall_run_kick_minimum_outward_speed: float = 1.0
 ## Optional wall-parallel speed top-up for a wall-run kick. Zero disables it.
 @export var wall_run_kick_parallel_speed_target: float = 0.0
 ## Maximum stick-directed steering angle for a wall-run kick.
@@ -242,7 +242,7 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Inward input retained at the start of wall-run kick influence.
 @export_range(0.0, 1.0, 0.01) var wall_run_kick_input_initial_inward_ratio: float = 0.0
 ## Outward-speed sustain duration after a wall-run kick.
-@export var wall_run_kick_outward_sustain_time: float = 0.18
+@export var wall_run_kick_outward_sustain_time: float = 0.07
 ## Upward-speed sustain duration after a wall-run kick.
 @export var wall_run_kick_upward_sustain_time: float = 0.08
 ## Minimum time before the wall-run kick surface can be caught again.
@@ -254,39 +254,39 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Outward launch speed for a wall-cling kick before surface and chain penalties.
 @export var wall_cling_kick_outward_speed: float = 60.0
 ## Upward launch target for a wall-cling kick. Faster upward momentum is preserved.
-@export var wall_cling_kick_upward_speed: float = 35.0
+@export var wall_cling_kick_upward_speed: float = 40.0
 ## Entry speed where wall-cling kick mirroring begins.
 @export var wall_cling_kick_entry_mirror_min_speed: float = 30.0
 ## Entry speed that reaches the maximum wall-cling kick mirror multipliers.
-@export var wall_cling_kick_entry_mirror_max_speed: float = 100.0
+@export var wall_cling_kick_entry_mirror_max_speed: float = 175.0
 ## Maximum outward wall-cling kick multiplier produced by entry speed.
-@export_range(1.0, 10.0, 0.01) var wall_cling_kick_entry_outward_multiplier: float = 1.5
+@export_range(1.0, 10.0, 0.01) var wall_cling_kick_entry_outward_multiplier: float = 1.8
 ## Maximum upward wall-cling kick multiplier produced by entry speed.
-@export_range(1.0, 10.0, 0.01) var wall_cling_kick_entry_upward_multiplier: float = 1.25
+@export_range(1.0, 10.0, 0.01) var wall_cling_kick_entry_upward_multiplier: float = 1.3
 ## Fraction of captured vertical entry speed added to the wall-cling kick's upward target.
-@export_range(0.0, 1.0, 0.01) var wall_cling_kick_vertical_entry_boost: float = 0.25
+@export_range(0.0, 1.0, 0.01) var wall_cling_kick_vertical_entry_boost: float = 0.35
 ## Maximum upward speed added from wall-cling vertical entry speed.
-@export var wall_cling_kick_vertical_entry_boost_limit: float = 20.0
+@export var wall_cling_kick_vertical_entry_boost_limit: float = 12.0
 ## Outward kick speed gained per unit of current upward cling slide speed.
-@export_range(0.0, 3.0, 0.01) var wall_cling_kick_upward_slide_outward_multiplier: float = 0.25
+@export_range(0.0, 3.0, 0.01) var wall_cling_kick_upward_slide_outward_multiplier: float = 0.02
 ## Outward kick speed gained per unit of current downward cling slide speed.
-@export_range(0.0, 3.0, 0.01) var wall_cling_kick_downward_slide_outward_multiplier: float = 0.1
+@export_range(0.0, 3.0, 0.01) var wall_cling_kick_downward_slide_outward_multiplier: float = 0.02
 ## Minimum outward speed for a wall-cling kick when strength is depleted.
 @export var wall_cling_kick_minimum_outward_speed: float = 6.0
 ## Optional wall-parallel speed top-up for a wall-cling kick. Zero disables it.
 @export var wall_cling_kick_parallel_speed_target: float = 0.0
 ## Maximum stick-directed steering angle for a wall-cling kick.
-@export_range(0.0, 30.0, 1.0) var wall_cling_kick_steering_degrees: float = 10.0
+@export_range(0.0, 30.0, 1.0) var wall_cling_kick_steering_degrees: float = 7.0
 ## Movement-input lock duration after a wall-cling kick.
-@export var wall_cling_kick_movement_input_lock_time: float = 0.35
+@export var wall_cling_kick_movement_input_lock_time: float = 0.45
 ## Input-influence duration after the weakest wall-cling kick.
-@export var wall_cling_kick_input_influence_min_time: float = 0.12
+@export var wall_cling_kick_input_influence_min_time: float = 0.18
 ## Input-influence duration after a full-strength wall-cling kick.
-@export var wall_cling_kick_input_influence_max_time: float = 0.32
+@export var wall_cling_kick_input_influence_max_time: float = 0.5
 ## Inward input retained at the start of wall-cling kick influence.
 @export_range(0.0, 1.0, 0.01) var wall_cling_kick_input_initial_inward_ratio: float = 0.0
 ## Outward-speed sustain duration after a wall-cling kick.
-@export var wall_cling_kick_outward_sustain_time: float = 0.18
+@export var wall_cling_kick_outward_sustain_time: float = 0.22
 ## Upward-speed sustain duration after a wall-cling kick.
 @export var wall_cling_kick_upward_sustain_time: float = 0.08
 ## Minimum time before the wall-cling kick surface can be caught again.
@@ -296,11 +296,11 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 
 @export_subgroup("Surface History")
 ## Granted strength when returning to the most recently kicked wall orientation.
-@export_range(0.0, 1.0, 0.01) var same_wall_minimum_strength: float = 0.02
+@export_range(0.0, 1.0, 0.01) var same_wall_minimum_strength: float = 0.05
 ## Time over which the most recent kick's similarity penalty fades away.
 @export var kicked_surface_memory_time: float = 3.5
 ## Travel distance from the kick over which its similarity penalty fades away.
-@export var kicked_surface_memory_distance: float = 175.0
+@export var kicked_surface_memory_distance: float = 600.0
 ## Time without a catch before the same contact may grant fresh entry assistance.
 @export var catch_memory_time: float = 2.0
 ## Maximum distance between catches considered part of the same entry.
