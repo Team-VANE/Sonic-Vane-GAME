@@ -28,7 +28,6 @@ jobs:
       - name: Pull Git LFS Assets
         run: |
           git lfs pull
-          git lfs checkout
           git fetch --tags --force 2>/dev/null || true
 
       - name: Install System Dependencies

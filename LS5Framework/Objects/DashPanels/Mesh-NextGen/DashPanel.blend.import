@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/DashPanel.blend-89877b52fa8c421a09c3543c3fb19
 nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
-mesh_library/use_node_names_as_mesh_names=false
-array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -51,8 +49,7 @@ _subresources={
 "use_external/fallback_path": "res://LS5Framework/Objects/DashPanels/Mesh-NextGen/Materials/Panel.tres",
 "use_external/path": "uid://cie4bnd6j805s"
 }
-},
-"nodes": {}
+}
 }
 blender/nodes/visible=0
 blender/nodes/active_collection_only=false
@@ -60,7 +57,7 @@ blender/nodes/punctual_lights=true
 blender/nodes/cameras=true
 blender/nodes/custom_properties=true
 blender/nodes/modifiers=1
-blender/meshes/vertex_colors=2
+blender/meshes/colors=false
 blender/meshes/uvs=true
 blender/meshes/normals=true
 blender/meshes/export_geometry_nodes_instances=false
@@ -74,4 +71,3 @@ blender/animation/limit_playback=true
 blender/animation/always_sample=true
 blender/animation/group_tracks=true
 gltf/naming_version=2
-gltf/texture_map_mode=0

@@ -321,7 +321,7 @@ func _rollback() -> void:
 	var from := _resim_from
 
 	# to = Current tick
-	var to: int = NetworkTime.tick
+	var to := NetworkTime.tick
 
 	# Limit number of rollback ticks
 	if to - from > history_limit:
