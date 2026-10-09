@@ -139,10 +139,10 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 @export var run_curve_lookahead_time_scale: float = 1.5
 ## Maximum forward distance used to find the next face of a curved wall.
 @export var run_curve_lookahead_max_distance: float = 3.0
-## Fraction of inward horizontal entry speed redirected into a fresh wall run.
-@export_range(0.0, 1.0, 0.01) var entry_angle_speed_conversion: float = 0.15
-## Maximum wall-parallel speed granted by angled-entry conversion.
-@export var entry_angle_speed_conversion_limit: float = 5.0
+## Fraction of inward gravity-horizontal speed added along the existing run direction on a fresh catch. Zero disables conversion.
+@export_range(0.0, 1.0, 0.01) var entry_angle_speed_conversion: float = 0.65
+## Maximum added wall-parallel speed from angled-entry conversion, before surface strength. Zero disables conversion.
+@export var entry_angle_speed_conversion_limit: float = 40.0
 
 @export_subgroup("Wall Cling")
 ## Half-life of horizontal wall-parallel velocity settling toward stick input.
@@ -1470,6 +1470,8 @@ func on_action_enter(context: Dictionary = {}) -> void:
 		if not wall_lift_enabled or _mode != WallMode.RUN:
 			_assistance_duration = 0.0
 	_run_parallel_speed = parallel if _mode == WallMode.RUN else 0.0
+	# Entry assistance supersedes the pre-catch velocity for this contact pass.
+	_run_collision_speed_sampled = _mode == WallMode.RUN
 	_dash_panel_run_lock_remaining = 0.0
 	_dash_panel_run_mode_hold_remaining = 0.0
 	_dash_panel_impulse_applied_this_frame = false
