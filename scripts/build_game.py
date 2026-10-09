@@ -141,6 +141,27 @@ def make_zip(source_dir: Path, zip_dest: Path, dry_run=False):
                 zf.writestr(zinfo, full_path.read_bytes())
 
 
+def verify_no_lfs_pointers(project_dir: Path):
+    """Checks if any critical asset files are still Git LFS text pointers."""
+    pointers = []
+    for ext in ("*.wav", "*.WAV", "*.ogg", "*.mp3", "*.blend", "*.fbx", "*.glb"):
+        for p in project_dir.rglob(ext):
+            try:
+                if p.is_file() and p.stat().st_size < 300:
+                    header = p.read_bytes()[:30]
+                    if b"version https://git-lfs" in header:
+                        pointers.append(p)
+            except Exception:
+                pass
+    if pointers:
+        print("\n[ERROR] Found Git LFS pointer files that were not checked out as binaries:")
+        for p in pointers[:10]:
+            print(f"  - {p.relative_to(project_dir)}")
+        if len(pointers) > 10:
+            print(f"  ... and {len(pointers) - 10} more.")
+        raise RuntimeError(f"Build aborted: {len(pointers)} Git LFS assets are still pointer files. Run 'git lfs pull && git lfs checkout'.")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Sonic VANE Godot Build Automation")
     parser.add_argument("--godot", default="godot", help="Path to godot executable")
@@ -163,6 +184,9 @@ def main():
 
     presets = parse_export_presets(presets_file)
     print(f"Loaded {len(presets)} presets from {presets_file}")
+
+    if not args.dry_run:
+        verify_no_lfs_pointers(project_dir)
 
     # Identify primary presets
     preset_win = next((p for p in presets if p["id"] == 0 or p["name"] == "Windows Desktop"), None)

@@ -44,8 +44,6 @@ EmoteWheel="*res://LS5Framework/Scenes/UI/EmoteWheel.tscn"
 
 [display]
 
-window/size/viewport_width=3400
-window/size/viewport_height=1300
 window/hdr/request_hdr_output=true
 window/vsync/vsync_mode=0
 
