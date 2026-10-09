@@ -140,9 +140,9 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 ## Maximum forward distance used to find the next face of a curved wall.
 @export var run_curve_lookahead_max_distance: float = 3.0
 ## Fraction of inward gravity-horizontal speed added along the existing run direction on a fresh catch. Zero disables conversion.
-@export_range(0.0, 1.0, 0.01) var entry_angle_speed_conversion: float = 0.65
+@export_range(0.0, 1.0, 0.01) var entry_angle_speed_conversion: float = 0.5
 ## Maximum added wall-parallel speed from angled-entry conversion, before surface strength. Zero disables conversion.
-@export var entry_angle_speed_conversion_limit: float = 40.0
+@export var entry_angle_speed_conversion_limit: float = 30.0
 
 @export_subgroup("Wall Cling")
 ## Half-life of horizontal wall-parallel velocity settling toward stick input.
