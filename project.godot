@@ -55,7 +55,7 @@ project/assembly_name="New Game Project"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ls5_lipsync/plugin.cfg", "res://addons/ls5_surface_attach_import/plugin.cfg", "res://addons/netfox.internals/plugin.cfg", "res://addons/netfox.noray/plugin.cfg", "res://addons/netfox/plugin.cfg")
+enabled=PackedStringArray("res://addons/ls5_lipsync/plugin.cfg", "res://addons/ls5_surface_attach_import/plugin.cfg", "res://addons/netfox.internals/plugin.cfg", "res://addons/netfox.noray/plugin.cfg", "res://addons/netfox/plugin.cfg", "res://addons/ls5_camera_live_edit/plugin.cfg")
 
 [global_group]
 

@@ -3,12 +3,19 @@ extends Resource
 class_name CameraTransitionTrait
 
 enum Phase { ENTRY, EXIT }
-enum Mode { INSTANT, TIMED }
+enum Mode {
+	## Cuts the selected channels immediately to the new pose.
+	INSTANT,
+	## Blends the selected channels from the displayed pose over Duration, using Easing.
+	TIMED,
+}
 enum Easing { LINEAR, SMOOTHSTEP, SINE }
 
 ## Entry or exit phase affected by this transition.
 @export var phase: Phase = Phase.ENTRY
-## Immediate cut or timed transition from the displayed camera pose.
+## Transition from the displayed camera pose for the selected phase and channels.
+## [br][b]Instant:[/b] Cuts the selected channels immediately to the new pose.
+## [br][b]Timed:[/b] Blends the selected channels over Duration, using Easing.
 @export var mode: Mode = Mode.INSTANT:
 	set(value):
 		mode = value

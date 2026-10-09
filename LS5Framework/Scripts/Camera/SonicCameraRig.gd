@@ -18,6 +18,10 @@ extends Node3D
 		if is_inside_tree():
 			_apply_update_timing()
 
+## Displays constraint look feedback outside the player's debug view. Debug view always enables it.
+@export var constraint_mouse_debug_enabled: bool = false
+var _constraint_mouse_debug: Control = null
+
 @export_group("Post Process Exempt 3D")
 ## Enables a secondary 3D pass for floating text that should not be affected by camera post processing.
 @export var post_process_exempt_3d_enabled: bool = true
@@ -567,6 +571,12 @@ var _camera_interpolation_mode_before_render_updates: int = Node.PHYSICS_INTERPO
 
 func _ready() -> void:
 	_constraint_driver.rig = self
+	var debug_layer: CanvasLayer = CanvasLayer.new()
+	debug_layer.layer = 90
+	add_child(debug_layer)
+	_constraint_mouse_debug = preload("res://LS5Framework/Scripts/Camera/Constraints/CameraMouseOffsetDebug.gd").new()
+	_constraint_mouse_debug.set("rig", self)
+	debug_layer.add_child(_constraint_mouse_debug)
 	_player_up_toggle_enabled = use_player_up
 	if not is_in_group("CameraRig"):
 		add_to_group("CameraRig")
@@ -777,7 +787,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if get_tree() != null and get_tree().paused:
 		return
-	if _camera_controls_disabled():
+	if manual_input_locked:
 		return
 	if target != null and is_instance_valid(target):
 		if target.has_method("is_ui_input_blocked"):
@@ -789,6 +799,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			if s is bool and bool(s):
 				return
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
+		return
+
+	if event is InputEventMouseMotion and not _constraint_driver.uses_mouse_offset():
+		_constraint_driver.handle_manual_look(0.0, event.relative.length())
+	if _camera_controls_disabled() and not (event is InputEventMouseMotion and _constraint_driver.uses_mouse_offset()):
 		return
 
 	if event is InputEventMouseMotion:
@@ -860,16 +875,55 @@ func _update_camera_input(delta: float) -> void:
 		_rear_view_active = false
 		_mouse_delta = Vector2.ZERO
 		return
+	if is_instance_valid(_constraint_driver.selected):
+		_constraint_driver.handle_manual_look(_get_immediate_manual_look_strength(), 0.0 if _constraint_driver.uses_mouse_offset() else _mouse_delta.length())
+	var offset_consumed: bool = _constraint_driver.handle_mouse_motion(_mouse_delta)
+	var offset_strength: float = _mouse_delta.length() if offset_consumed else 0.0
+	if offset_consumed:
+		_mouse_delta = Vector2.ZERO
+	var gamepad_look: Vector2 = _get_gamepad_look_input()
+	var controller_consumed: bool = _constraint_driver.handle_controller_look(gamepad_look, delta)
 	_update_alignment_input()
 	_process_zoom(delta)
 	if not _camera_controls_disabled():
-		_update_angles(delta)
-		if render_rate_camera_updates:
-			_render_look_strength_pending = max(_render_look_strength_pending, _camera_look_strength)
-			_render_mouse_strength_pending = max(_render_mouse_strength_pending, _camera_mouse_strength)
-			if _camera_look_strength > 0.001 or _camera_mouse_strength > 0.001:
-				_render_input_orientation_dirty = true
+		_update_angles(delta, controller_consumed)
+	if controller_consumed:
+		_camera_look_strength = maxf(_camera_look_strength, gamepad_look.length())
+	_camera_mouse_strength = maxf(_camera_mouse_strength, offset_strength)
+	if render_rate_camera_updates:
+		_render_look_strength_pending = max(_render_look_strength_pending, _camera_look_strength)
+		_render_mouse_strength_pending = max(_render_mouse_strength_pending, _camera_mouse_strength)
+		if _camera_look_strength > 0.001 or _camera_mouse_strength > 0.001:
+			_render_input_orientation_dirty = true
 	_mouse_delta = Vector2.ZERO
+
+
+func _get_manual_look_strength() -> float:
+	var keyboard: Vector2 = Vector2(
+		SettingsManager.get_signed_action_axis(&"camera_left", &"camera_right", 0.0, &"keyboard"),
+		SettingsManager.get_signed_action_axis(&"camera_down", &"camera_up", 0.0, &"keyboard")
+	)
+	var gamepad: Vector2 = Vector2(
+		SettingsManager.get_signed_action_axis(&"camera_left", &"camera_right", SettingsManager.get_right_stick_deadzone(), &"gamepad"),
+		SettingsManager.get_signed_action_axis(&"camera_down", &"camera_up", SettingsManager.get_right_stick_deadzone(), &"gamepad")
+	)
+	return maxf(keyboard.length(), gamepad.length())
+
+
+func _get_gamepad_look_input() -> Vector2:
+	return Vector2(
+		SettingsManager.get_signed_action_axis(&"camera_left", &"camera_right", SettingsManager.get_right_stick_deadzone(), &"gamepad"),
+		SettingsManager.get_signed_action_axis(&"camera_down", &"camera_up", SettingsManager.get_right_stick_deadzone(), &"gamepad")
+	)
+
+
+func _get_immediate_manual_look_strength() -> float:
+	if not _constraint_driver.uses_controller_offset():
+		return _get_manual_look_strength()
+	return Vector2(
+		SettingsManager.get_signed_action_axis(&"camera_left", &"camera_right", 0.0, &"keyboard"),
+		SettingsManager.get_signed_action_axis(&"camera_down", &"camera_up", 0.0, &"keyboard")
+	).length()
 
 
 func _update_alignment_input() -> void:
@@ -940,7 +994,14 @@ func _apply_render_input_orientation() -> void:
 	if camera == null or target == null or yaw_node == null or pitch_node == null:
 		return
 	if _constraint_driver.is_presenting():
+		_constraint_driver.refresh_mouse_orientation()
 		return
+	camera.global_basis = _get_free_input_basis()
+	if _rear_view_transform_applied:
+		camera.global_basis = _normalize_basis(Basis(_get_camera_up(), PI) * camera.global_basis)
+
+
+func _get_free_input_basis() -> Basis:
 	var up: Vector3 = _get_camera_up()
 	var base_forward: Vector3 = _get_base_forward_ref(up)
 	var flat_forward: Vector3 = base_forward.rotated(up, _yaw).normalized()
@@ -951,9 +1012,7 @@ func _apply_render_input_orientation() -> void:
 		yaw_basis = yaw_basis.rotated(forward, _roll_offset)
 	var pitch_basis: Basis = Basis(Vector3.RIGHT, _pitch)
 	var local_camera_basis: Basis = _camera_base_local_transform.basis if _has_camera_base_local_transform else Basis.IDENTITY
-	camera.global_basis = _normalize_basis(yaw_basis * pitch_basis * local_camera_basis)
-	if _rear_view_transform_applied:
-		camera.global_basis = _normalize_basis(Basis(up, PI) * camera.global_basis)
+	return _normalize_basis(yaw_basis * pitch_basis * local_camera_basis)
 
 
 func _apply_update_timing() -> void:
@@ -2892,7 +2951,7 @@ func _process_zoom(delta: float) -> void:
 		distance = lerp(distance, _distance_target, t)
 
 
-func _update_angles(delta: float) -> void:
+func _update_angles(delta: float, skip_gamepad: bool = false) -> void:
 	# Mouse
 	var mouse_invert: bool = invert_y_mouse
 	var mouse_sens: float = 1.0
@@ -2910,7 +2969,7 @@ func _update_angles(delta: float) -> void:
 	var gamepad_look_h: float = SettingsManager.get_signed_action_axis(&"camera_left", &"camera_right", SettingsManager.get_right_stick_deadzone(), &"gamepad")
 	var gamepad_look_v: float = SettingsManager.get_signed_action_axis(&"camera_down", &"camera_up", SettingsManager.get_right_stick_deadzone(), &"gamepad")
 	var keyboard_look: Vector2 = Vector2(keyboard_look_h, keyboard_look_v)
-	var gamepad_look: Vector2 = Vector2(gamepad_look_h, gamepad_look_v)
+	var gamepad_look: Vector2 = Vector2.ZERO if skip_gamepad else Vector2(gamepad_look_h, gamepad_look_v)
 	var keyboard_look_strength: float = keyboard_look.length()
 	var gamepad_look_strength: float = gamepad_look.length()
 	var look_input: Vector2 = keyboard_look
@@ -2953,7 +3012,7 @@ func _update_transform(delta: float) -> void:
 	_restore_camera_local_basis()
 	var constraint: CameraConstraint = _constraint_driver.selected
 	var presenting: bool = _constraint_driver.is_presenting()
-	var proximity_blend: bool = is_instance_valid(constraint) and constraint.has_influence_trait()
+	var proximity_blend: bool = is_instance_valid(constraint) and _constraint_driver.selected_has_effect() and constraint.has_influence_trait()
 	var suppress_speed: bool = _constraint_driver.selected_has_effect() and constraint.suppress_speed_effects
 	var orientation_owned: bool = _constraint_driver.owns_orientation()
 	var suppress_free_orientation: bool = _constraint_driver.suppresses_free_orientation()
@@ -3323,7 +3382,7 @@ func _reset_base_forward_ref(up: Vector3) -> void:
 
 
 func is_constraint_active() -> bool:
-	return is_instance_valid(_constraint_driver.selected) or not _constraint_driver.constraints.is_empty()
+	return not _constraint_driver.is_manually_suppressed() and (is_instance_valid(_constraint_driver.selected) or not _constraint_driver.constraints.is_empty())
 
 
 func _get_angles_from_forward(forward: Vector3, up: Vector3, fallback: Vector2) -> Vector2:
@@ -3345,24 +3404,22 @@ func _get_angles_from_forward(forward: Vector3, up: Vector3, fallback: Vector2) 
 	return Vector2(yaw, pitch)
 
 
-## Preserves the free-camera heading reference during proximity presentation.
-func _set_control_angles_from_forward(forward: Vector3, up: Vector3, preserve_heading_reference: bool = false) -> void:
-	var u := up.normalized()
+## Updates control angles in the current heading frame without resetting free-camera orientation.
+func _set_control_angles_from_forward(forward: Vector3, up: Vector3) -> void:
+	var u: Vector3 = up.normalized()
 	if u.length() < 0.001:
 		u = _get_target_gravity_up()
-	var f := forward.normalized()
+	var f: Vector3 = forward.normalized()
 	if f.length() < 0.001:
 		return
-	var flat := f - u * f.dot(u)
+	var flat: Vector3 = f - u * f.dot(u)
 	if flat.length() < 0.001:
 		return
 	flat = flat.normalized()
-	if not preserve_heading_reference:
-		_reset_base_forward_ref(u)
 	_control_yaw = _get_yaw_from_forward(flat, u, _control_yaw)
 	var pitch: float = -asin(clamp(f.dot(u), -1.0, 1.0))
-	var min_pitch := deg_to_rad(min_pitch_deg)
-	var max_pitch := deg_to_rad(max_pitch_deg)
+	var min_pitch: float = deg_to_rad(min_pitch_deg)
+	var max_pitch: float = deg_to_rad(max_pitch_deg)
 	_control_pitch = clamp(pitch, min_pitch, max_pitch)
 
 

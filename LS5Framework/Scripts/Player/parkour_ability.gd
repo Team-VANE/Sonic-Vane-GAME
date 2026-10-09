@@ -600,9 +600,13 @@ func get_parkour_debug_snapshot() -> Dictionary:
 
 
 func get_input_prompt(_context: Dictionary = {}) -> Dictionary:
-	if not input_prompt_enabled or not enabled or not owner_player or _in_contact:
+	if not input_prompt_enabled or not enabled or not owner_player:
 		return {}
 	if not owner_player.can_offer_action_prompts() or owner_player.is_insta_shield_input_consumed():
+		return {}
+	if _in_contact:
+		if _mode == WallMode.RUN and _can_catch(false, true):
+			return {"label": "Wall Cling", "input_action": &"interact", "gesture": &"press", "contextual": false}
 		return {}
 	var wall_prompt: Dictionary = _get_wall_proximity_prompt()
 	if not wall_prompt.is_empty():
@@ -754,6 +758,28 @@ func can_execute(context: Dictionary = {}) -> bool:
 
 func process_input_event(_input_name: StringName, _trigger: ActionTrigger) -> bool:
 	return false
+
+
+func force_wall_cling() -> bool:
+	if not _in_contact or _mode != WallMode.RUN or not _can_catch(false, true):
+		return false
+	_enter_wall_cling(get_owner_gravity_up())
+	return true
+
+
+func _enter_wall_cling(up: Vector3) -> void:
+	_mode = WallMode.CLING
+	_wall_lift_phase = WallLiftPhase.NONE
+	_dash_panel_run_lock_remaining = 0.0
+	_dash_panel_run_mode_hold_remaining = 0.0
+	_cling_started_from_floor_attach = false
+	_wall_carve_distance_accum = 0.0
+	_run_parallel_speed = 0.0
+	_wall_entry_speed = owner_player.velocity.length()
+	_wall_entry_vertical_speed = owner_player.velocity.dot(up)
+	_cling_elapsed = max(_cling_elapsed, _elapsed)
+	_play_mode_animation()
+	_play_parkour_sound(wall_cling_enter_sound)
 
 
 func _can_catch(allow_attached_wall: bool = false, force_cling: bool = false) -> bool:
@@ -1532,18 +1558,7 @@ func physics_update_action(delta: float) -> void:
 		)
 		_slow_time = _slow_time + delta if _dash_panel_run_mode_hold_remaining <= 0.0 and observed_horizontal_speed < max(run_exit_speed, 0.0) else 0.0
 		if _surface_force_cling or _slow_time >= max(run_exit_delay, 0.001):
-			_mode = WallMode.CLING
-			_wall_lift_phase = WallLiftPhase.NONE
-			_dash_panel_run_lock_remaining = 0.0
-			_dash_panel_run_mode_hold_remaining = 0.0
-			_cling_started_from_floor_attach = false
-			_wall_carve_distance_accum = 0.0
-			_run_parallel_speed = 0.0
-			_wall_entry_speed = owner_player.velocity.length()
-			_wall_entry_vertical_speed = owner_player.velocity.dot(up)
-			_cling_elapsed = max(_cling_elapsed, _elapsed)
-			_play_mode_animation()
-			_play_parkour_sound(wall_cling_enter_sound)
+			_enter_wall_cling(up)
 	if _mode == WallMode.RUN:
 		_update_wall_carve(delta, abs(parallel))
 		_track_wall_lift_curve(abs(parallel))

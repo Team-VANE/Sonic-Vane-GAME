@@ -735,6 +735,8 @@ func _debug_inputs(physics_up: Vector3) -> void:
 
 func _debug_draw() -> void:
 	var p = _owner
+	if is_instance_valid(p._debug_label) and (not p._debug_visible or not p.debug_show_extended_details):
+		p._debug_label.text = ""
 	var up: Vector3 = p.visual_up.normalized()
 	if up.length() < 0.001:
 		up = p._get_gravity_up()
@@ -805,154 +807,154 @@ func _debug_draw() -> void:
 		var coyote_eligible_str: String = "YES" if p._dbg_last_detach_coyote_eligible else "no"
 		var surf_kind_str: String = "FLOOR" if p._dbg_surface_is_floor_like else "NON-FLOOR"
 
-		p._debug_label.text = ""
-		p._debug_label.text += "STATE: %s\n" % state_str
+		var legacy_text: String = ""
+		legacy_text += "STATE: %s\n" % state_str
 		var ability_str: String = "none"
 		if p._current_action_id != &"":
 			ability_str = String(p._current_action_id)
 		var attacking_str: String = "YES" if p.is_attack_active() else "no"
-		p._debug_label.text += "ABILITY: %s  ATTACKING: %s\n" % [ability_str, attacking_str]
-		p._debug_label.text += "SPD:   %.1f\n" % spd
-		p._debug_label.text += "NΔ:    %.1f°\n" % p._normal_delta_angle_deg
-		p._debug_label.text += "\n"
+		legacy_text += "ABILITY: %s  ATTACKING: %s\n" % [ability_str, attacking_str]
+		legacy_text += "SPD:   %.1f\n" % spd
+		legacy_text += "NΔ:    %.1f°\n" % p._normal_delta_angle_deg
+		legacy_text += "\n"
 
-		p._debug_label.text += "SURF ANGLE: %.1f°  (%s)\n" % [
+		legacy_text += "SURF ANGLE: %.1f°  (%s)\n" % [
 			p._dbg_surface_angle_deg,
 			surf_kind_str
 		]
 		
-		p._debug_label.text += "\n"
+		legacy_text += "\n"
 
-		p._debug_label.text += "--- RADIAL ---\n"
-		p._debug_label.text += "Hit:   %s\n" % radial_str
-		p._debug_label.text += "Result: %s\n" % p._dbg_radial_result
-		p._debug_label.text += "Impact: %.1f°\n" % p._dbg_radial_angle
-		p._debug_label.text += "Approach: %.1f°\n" % (90.0 - p._dbg_radial_angle)
-		p._debug_label.text += "Into:  %.1f\n" % p._dbg_radial_into_speed
-		p._debug_label.text += "Tang:  %.1f\n" % p._dbg_radial_tangent_speed
+		legacy_text += "--- RADIAL ---\n"
+		legacy_text += "Hit:   %s\n" % radial_str
+		legacy_text += "Result: %s\n" % p._dbg_radial_result
+		legacy_text += "Impact: %.1f°\n" % p._dbg_radial_angle
+		legacy_text += "Approach: %.1f°\n" % (90.0 - p._dbg_radial_angle)
+		legacy_text += "Into:  %.1f\n" % p._dbg_radial_into_speed
+		legacy_text += "Tang:  %.1f\n" % p._dbg_radial_tangent_speed
 		if p._dbg_surface_preview_timer > 0.0:
 			var preview_state: String = "PASS" if p._dbg_surface_preview_accepted else "FAIL"
-			p._debug_label.text += "Preview: %s  cov=%.0f%%\n" % [
+			legacy_text += "Preview: %s  cov=%.0f%%\n" % [
 				preview_state,
 				p._dbg_surface_preview_coverage * 100.0
 			]
-			p._debug_label.text += "Radius: %.2f  look=%.2f\n" % [
+			legacy_text += "Radius: %.2f  look=%.2f\n" % [
 				p._dbg_surface_preview_radius,
 				p._dbg_surface_preview_lookahead
 			]
-			p._debug_label.text += "Turn: +%.1f / -%.1f  step=%.1f\n" % [
+			legacy_text += "Turn: +%.1f / -%.1f  step=%.1f\n" % [
 				p._dbg_surface_preview_total_turn_deg,
 				p._dbg_surface_preview_reverse_turn_deg,
 				p._dbg_surface_preview_max_step_deg
 			]
-			p._debug_label.text += "CurveR: %.2f  k=%.4f  force=%.2f\n" % [
+			legacy_text += "CurveR: %.2f  k=%.4f  force=%.2f\n" % [
 				p._dbg_surface_preview_min_radius,
 				p._dbg_surface_preview_curvature,
 				p._dbg_surface_preview_reaction_accel
 			]
-			p._debug_label.text += "Collider seams: %d\n" % p._dbg_surface_preview_collider_transitions
+			legacy_text += "Collider seams: %d\n" % p._dbg_surface_preview_collider_transitions
 		if p._dbg_surface_seam_timer > 0.0:
-			p._debug_label.text += "Seam recovery: ACTIVE\n"
-		p._debug_label.text += "\n"
+			legacy_text += "Seam recovery: ACTIVE\n"
+		legacy_text += "\n"
 		
-		p._debug_label.text += "Adhesion: tan=%.1f  req=%.1f\n" % [
+		legacy_text += "Adhesion: tan=%.1f  req=%.1f\n" % [
 			p._dbg_current_adhesion_speed,
 			p._dbg_required_adhesion_speed
 		]
-		p._debug_label.text += "Contact: k=%.4f  force=%.2f  grace=%.3f\n" % [
+		legacy_text += "Contact: k=%.4f  force=%.2f  grace=%.3f\n" % [
 			p._surface_support_curvature,
 			p._surface_support_reaction_accel,
 			p._surface_support_timer
 		]
 
-		p._debug_label.text += "\n"
+		legacy_text += "\n"
 
-		p._debug_label.text += "--- DETACH ---\n"
-		p._debug_label.text += "Recent:   %s\n" % detach_str
-		p._debug_label.text += "FromFloor:%s\n" % from_floor_str
-		p._debug_label.text += "Coyote:   %s\n" % coyote_eligible_str
-		p._debug_label.text += "WorldAng: %.1f°\n" % p._dbg_last_detach_world_angle
-		p._debug_label.text += "StepAng:  %.1f°\n" % p._dbg_last_detach_step_angle
-		p._debug_label.text += "Filtered: %s\n" % filtered_str
+		legacy_text += "--- DETACH ---\n"
+		legacy_text += "Recent:   %s\n" % detach_str
+		legacy_text += "FromFloor:%s\n" % from_floor_str
+		legacy_text += "Coyote:   %s\n" % coyote_eligible_str
+		legacy_text += "WorldAng: %.1f°\n" % p._dbg_last_detach_world_angle
+		legacy_text += "StepAng:  %.1f°\n" % p._dbg_last_detach_step_angle
+		legacy_text += "Filtered: %s\n" % filtered_str
 
-		p._debug_label.text += "\n"
-		p._debug_label.text += "--- DETACH CTRL ---\n"
+		legacy_text += "\n"
+		legacy_text += "--- DETACH CTRL ---\n"
 		var lock_str: String = "YES" if p._directional_influence_lock_strength > 0.0 else "no"
-		p._debug_label.text += "Active: %s  SpdT: %.2f\n" % [
+		legacy_text += "Active: %s  SpdT: %.2f\n" % [
 			lock_str,
 			p._directional_influence_lock_speed_t
 		]
-		p._debug_label.text += "Str: A %.2f  T %.2f  P %.2f\n" % [
+		legacy_text += "Str: A %.2f  T %.2f  P %.2f\n" % [
 			p._directional_influence_lock_accel_strength,
 			p._directional_influence_lock_turn_strength,
 			p._directional_influence_lock_air_turn_penalty_strength
 		]
-		p._debug_label.text += "Mul: A %.2f  T %.2f  P %.2f\n" % [
+		legacy_text += "Mul: A %.2f  T %.2f  P %.2f\n" % [
 			p._directional_influence_lock_accel_multiplier,
 			p._directional_influence_lock_turn_multiplier,
 			p._directional_influence_lock_air_turn_penalty_multiplier
 		]
-		p._debug_label.text += "Delay: A %.2f  T %.2f  P %.2f\n" % [
+		legacy_text += "Delay: A %.2f  T %.2f  P %.2f\n" % [
 			p._directional_influence_lock_accel_delay_timer,
 			p._directional_influence_lock_turn_delay_timer,
 			p._directional_influence_lock_air_turn_penalty_delay_timer
 		]
 
-		p._debug_label.text += "\n"
+		legacy_text += "\n"
 
-		p._debug_label.text += "--- VISUAL ROT ---\n"
+		legacy_text += "--- VISUAL ROT ---\n"
 		var vis_up: Vector3 = p.visual_up.normalized()
 		if vis_up.length() < 0.001:
 			vis_up = p._get_gravity_up()
-		p._debug_label.text += "VisUp:   (%.2f, %.2f, %.2f)\n" % [vis_up.x, vis_up.y, vis_up.z]
+		legacy_text += "VisUp:   (%.2f, %.2f, %.2f)\n" % [vis_up.x, vis_up.y, vis_up.z]
 
 		var model_fwd: Vector3 = p._model_forward
-		p._debug_label.text += "ModelF:  (%.2f, %.2f, %.2f)\n" % [model_fwd.x, model_fwd.y, model_fwd.z]
+		legacy_text += "ModelF:  (%.2f, %.2f, %.2f)\n" % [model_fwd.x, model_fwd.y, model_fwd.z]
 
 		var yaw_ref: Vector3 = p._air_torque_yaw_forward
-		p._debug_label.text += "YawRef:  (%.2f, %.2f, %.2f)\n" % [yaw_ref.x, yaw_ref.y, yaw_ref.z]
+		legacy_text += "YawRef:  (%.2f, %.2f, %.2f)\n" % [yaw_ref.x, yaw_ref.y, yaw_ref.z]
 
 		var yaw_vis: Vector3 = p._air_torque_visual_forward
-		p._debug_label.text += "YawVis:  (%.2f, %.2f, %.2f)\n" % [yaw_vis.x, yaw_vis.y, yaw_vis.z]
+		legacy_text += "YawVis:  (%.2f, %.2f, %.2f)\n" % [yaw_vis.x, yaw_vis.y, yaw_vis.z]
 
 		var land_align_str: String = "no"
 		if p._air_landing_align_active:
 			land_align_str = "YES"
-		p._debug_label.text += "LandAlign: %s  ramp=%.2f  t=%.2f\n" % [
+		legacy_text += "LandAlign: %s  ramp=%.2f  t=%.2f\n" % [
 			land_align_str,
 			p._air_landing_align_ramp,
 			p._air_landing_align_time_to_impact
 		]
 		if p._air_landing_align_active:
 			var land_n: Vector3 = p._air_landing_align_normal
-			p._debug_label.text += "LandN:  (%.2f, %.2f, %.2f)\n" % [
+			legacy_text += "LandN:  (%.2f, %.2f, %.2f)\n" % [
 				land_n.x,
 				land_n.y,
 				land_n.z
 			]
 
-		p._debug_label.text += "\n"
-		p._debug_label.text += "--- AIR TORQUE ---\n"
-		p._debug_label.text += "NΔ: %.2f°  Mem: %.3f\n" % [
+		legacy_text += "\n"
+		legacy_text += "--- AIR TORQUE ---\n"
+		legacy_text += "NΔ: %.2f°  Mem: %.3f\n" % [
 			p._dbg_air_torque_normal_angle_deg,
 			p._airborne_torque_yaw_turn_speed_memory_timer
 		]
-		p._debug_label.text += "Axis: (%.2f, %.2f, %.2f)\n" % [
+		legacy_text += "Axis: (%.2f, %.2f, %.2f)\n" % [
 			p._dbg_air_torque_axis.x,
 			p._dbg_air_torque_axis.y,
 			p._dbg_air_torque_axis.z
 		]
-		p._debug_label.text += "Move: (%.2f, %.2f, %.2f)\n" % [
+		legacy_text += "Move: (%.2f, %.2f, %.2f)\n" % [
 			p._dbg_air_torque_move_dir.x,
 			p._dbg_air_torque_move_dir.y,
 			p._dbg_air_torque_move_dir.z
 		]
-		p._debug_label.text += "SurfΩ: %.1f  YawΩ: %.1f  AvgΩ: %.1f\n" % [
+		legacy_text += "SurfΩ: %.1f  YawΩ: %.1f  AvgΩ: %.1f\n" % [
 			rad_to_deg(p._dbg_air_torque_surface_omega.length()),
 			rad_to_deg(p._dbg_air_torque_yaw_omega.length()),
 			rad_to_deg(p._dbg_air_torque_avg_omega.length())
 		]
-		p._debug_label.text += "SeedΩ: %.1f  LiveΩ: %.1f\n" % [
+		legacy_text += "SeedΩ: %.1f  LiveΩ: %.1f\n" % [
 			rad_to_deg(p._dbg_air_torque_seed_omega.length()),
 			rad_to_deg(p._air_torque_angular_velocity.length())
 		]
@@ -964,20 +966,20 @@ func _debug_draw() -> void:
 			var model_pitch_deg: float = rad_to_deg(model_euler.x)
 			var model_yaw_deg: float = rad_to_deg(model_euler.y)
 			var model_roll_deg: float = rad_to_deg(model_euler.z)
-			p._debug_label.text += "ModelUp: (%.2f, %.2f, %.2f)\n" % [
+			legacy_text += "ModelUp: (%.2f, %.2f, %.2f)\n" % [
 				model_up.x,
 				model_up.y,
 				model_up.z
 			]
-			p._debug_label.text += "Euler(P/Y/R): %.1f / %.1f / %.1f\n" % [
+			legacy_text += "Euler(P/Y/R): %.1f / %.1f / %.1f\n" % [
 				model_pitch_deg,
 				model_yaw_deg,
 				model_roll_deg
 			]
 		
-		p._debug_label.text += "Attached: " + str(p.attached)
+		legacy_text += "Attached: " + str(p.attached)
 
-		p._debug_label.text += "\n--- WATER ---\n"
+		legacy_text += "\n--- WATER ---\n"
 		var water_state_str: String = "none"
 		if p._running_on_water_surface:
 			water_state_str = "SURFACE"
@@ -985,36 +987,52 @@ func _debug_draw() -> void:
 			water_state_str = "SUBMERGED"
 		elif p._in_water_volume:
 			water_state_str = "PARTIAL"
-		p._debug_label.text += "State:  %s (body:%s head:%s)\n" % [water_state_str, p._in_water_volume, p._head_in_water_volume]
-		p._debug_label.text += "FullSub: %s  Cooldown: %.2f\n" % [p._fully_submerged, p._water_reattach_cooldown_timer]
-		p._debug_label.text += "FootstepTimer: %.2f / %.2f\n" % [p._water_footstep_timer, p.water_footstep_max_time]
-		p._debug_label.text += "Enabled: %s\n" % p.water_physics_enabled
+		legacy_text += "State:  %s (body:%s head:%s)\n" % [water_state_str, p._in_water_volume, p._head_in_water_volume]
+		legacy_text += "FullSub: %s  Cooldown: %.2f\n" % [p._fully_submerged, p._water_reattach_cooldown_timer]
+		legacy_text += "FootstepTimer: %.2f / %.2f\n" % [p._water_footstep_timer, p.water_footstep_max_time]
+		legacy_text += "Enabled: %s\n" % p.water_physics_enabled
 
-		p._debug_label.text += "\n--- FOOTSTEP ---\n"
+		legacy_text += "\n--- FOOTSTEP ---\n"
 		if p._audio_module != null:
 			p._debug_surface_probe_timer = max(p._debug_surface_probe_timer - p.get_process_delta_time(), 0.0)
 			if p._debug_surface_probe_timer <= 0.0:
 				p._audio_module.debug_update_surface_probe(p.ground_ray)
 				p._debug_surface_probe_timer = 0.2
-			p._debug_label.text += "Surface: %s\n" % p._audio_module._dbg_last_surface_type
-			p._debug_label.text += "Name:    %s\n" % (p._audio_module._dbg_last_surface_name if p._audio_module._dbg_last_surface_name != "" else "(none)")
-			p._debug_label.text += "Checked: %s\n" % (p._audio_module._dbg_last_surface_candidates if p._audio_module._dbg_last_surface_candidates != "" else "(none)")
+			legacy_text += "Surface: %s\n" % p._audio_module._dbg_last_surface_type
+			legacy_text += "Name:    %s\n" % (p._audio_module._dbg_last_surface_name if p._audio_module._dbg_last_surface_name != "" else "(none)")
+			legacy_text += "Checked: %s\n" % (p._audio_module._dbg_last_surface_candidates if p._audio_module._dbg_last_surface_candidates != "" else "(none)")
 		else:
-			p._debug_label.text += "Audio module missing\n"
+			legacy_text += "Audio module missing\n"
 
 		if p.anim_state != null:
-			p._debug_label.text += "\nANIM STATE: %s\n" % str(p.anim_state.get_current_node())
-			p._debug_label.text += "ANIM POS:   %.3f / %.3f\n" % [
+			legacy_text += "\nANIM STATE: %s\n" % str(p.anim_state.get_current_node())
+			legacy_text += "ANIM POS:   %.3f / %.3f\n" % [
 				p.anim_state.get_current_play_position(),
 				p.anim_state.get_current_length()
 			]
 			if p.anim_tree != null:
-				p._debug_label.text += "ANIM SCALE:%s\n" % str(p.anim_tree.get("parameters/MoveTimeScale/scale"))
+				legacy_text += "ANIM SCALE:%s\n" % str(p.anim_tree.get("parameters/MoveTimeScale/scale"))
 				if p._rail_active and p._anim_param_exists("parameters/StateMachine/RAIL/blend_position"):
-					p._debug_label.text += "RAIL BLEND:%s\n" % str(
+					legacy_text += "RAIL BLEND:%s\n" % str(
 						p.anim_tree.get("parameters/StateMachine/RAIL/blend_position")
 					)
-		p._debug_label.text = _format_debug_columns(p._debug_label.text)
+		p._debug_label.text = _format_debug_columns(legacy_text + _build_online_debug_text())
+
+
+func _build_online_debug_text() -> String:
+	var p: Node = _owner
+	var session_active: bool = p.multiplayer != null and p.multiplayer.has_multiplayer_peer()
+	var session_id: int = p.multiplayer.get_unique_id() if session_active else 0
+	var lines: PackedStringArray = PackedStringArray([
+		"", "[ONLINE / UI]",
+		"Session Active: %s (ID: %d)" % [session_active, session_id],
+		"Local Auth: %s" % p._network_is_local_authority(),
+		"UI Blocked: %s" % p._ui_input_blocked,
+		"Camera Rig: %s" % (p.camera_rig != null),
+	])
+	if is_instance_valid(p.camera_rig) and p.camera_rig.has_method("is_constraint_active"):
+		lines.append("Cam Constraint: %s" % p.camera_rig.is_constraint_active())
+	return "\n".join(lines) + "\n"
 
 
 func _update_debug_hud(gravity_up: Vector3) -> void:

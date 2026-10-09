@@ -1050,24 +1050,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			_toggle_buddy()
 			return
 
-	# --- ONLINE / UI DEBUG ---
-	if _debug_visible:
-		var session_active: bool = false
-		var session_id: int = 0
-		if multiplayer != null and multiplayer.has_multiplayer_peer():
-			session_active = true
-			session_id = multiplayer.get_unique_id()
-		
-		_debug_label.text += "\n[ONLINE / UI]\n"
-		_debug_label.text += "Session Active: %s (ID: %d)\n" % [session_active, session_id]
-		_debug_label.text += "Local Auth: %s\n" % [_network_is_local_authority()]
-		_debug_label.text += "UI Blocked: %s\n" % [_ui_input_blocked]
-		_debug_label.text += "Camera Rig: %s\n" % [camera_rig != null]
-		if camera_rig != null and camera_rig.has_method("is_constraint_active"):
-			_debug_label.text += "Cam Constraint: %s\n" % [camera_rig.is_constraint_active()]
-
 	# --- RACE INTERACT ---
 	if event.is_action_pressed("interact"):
+		if _active_action is ParkourAbility and (_active_action as ParkourAbility).force_wall_cling():
+			get_viewport().set_input_as_handled()
+			return
 		_gracefully_end_airborne_torque()
 		if _has_carried_object() and _try_handle_carry_interact():
 			return

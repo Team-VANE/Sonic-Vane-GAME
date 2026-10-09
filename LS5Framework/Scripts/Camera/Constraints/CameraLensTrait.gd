@@ -2,10 +2,23 @@
 extends Resource
 class_name CameraLensTrait
 
-enum Mode { FIXED_FOV, DISTANCE_FOV, ORBIT_DISTANCE, SOURCE_FOV }
+enum Mode {
+	## Applies the specified FOV.
+	FIXED_FOV,
+	## Blends Near FOV to Far FOV over the configured distance range.
+	DISTANCE_FOV,
+	## Sets the distance behind the orbit pivot. Direct camera-position modes ignore this distance.
+	ORBIT_DISTANCE,
+	## Copies FOV from a source Camera3D. Uses the specified FOV if the source is not a Camera3D.
+	SOURCE_FOV,
+}
 enum DistanceSource { CAMERA_TO_PLAYER, MARKER_TO_PLAYER }
 
-## Field of view or orbit-distance behavior.
+## Field of view or orbit-distance behavior. One FOV trait and one orbit-distance trait can be combined.
+## [br][b]Fixed FOV:[/b] Applies the specified FOV.
+## [br][b]Distance FOV:[/b] Blends Near FOV to Far FOV over the configured distance range.
+## [br][b]Orbit Distance:[/b] Sets the distance behind the orbit pivot. Direct camera-position modes ignore this distance.
+## [br][b]Source FOV:[/b] Copies FOV from a source Camera3D; other sources use the specified FOV as fallback.
 @export var mode: Mode = Mode.FIXED_FOV:
 	set(value):
 		mode = value

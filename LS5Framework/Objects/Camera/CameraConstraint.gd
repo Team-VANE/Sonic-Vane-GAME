@@ -8,6 +8,8 @@ signal deactivated(reason: StringName)
 enum CollisionMode { INHERIT, ENABLED, DISABLED }
 enum UpMode { INHERIT, GRAVITY, PLAYER }
 
+const LiveEdit = preload("res://LS5Framework/Scripts/Camera/Constraints/CameraConstraintLiveEdit.gd")
+
 @export_group("Constraint")
 ## Enables activation and camera evaluation.
 @export var enabled: bool = true
@@ -27,9 +29,9 @@ enum UpMode { INHERIT, GRAVITY, PLAYER }
 @export_group("Traits")
 ## Volume, lifetime, and distance rules. Empty permits scripted activation only.
 @export var activation_traits: Array[CameraActivationTrait] = []
-## Camera placement or orbit-pivot traits. Empty preserves normal player tracking.
+## Camera placement or orbit-pivot traits. Earlier entries override later entries on their selected axes. Empty preserves normal player tracking.
 @export var position_traits: Array[CameraPositionTrait] = []
-## Aim and roll traits. Empty preserves normal camera orientation.
+## Aim and roll traits. Earlier entries override later entries on their selected axes. Unrestricted aim preserves additive roll. Empty preserves normal camera orientation.
 @export var orientation_traits: Array[CameraOrientationTrait] = []
 ## Field of view and orbit-distance traits. Empty preserves the normal lens.
 @export var lens_traits: Array[CameraLensTrait] = []
@@ -39,7 +41,7 @@ enum UpMode { INHERIT, GRAVITY, PLAYER }
 @export var influence_traits: Array[CameraInfluenceTrait] = []
 
 @export_group("Modifiers")
-## Blocks manual orbit and zoom while selected.
+## Blocks manual orbit and zoom while selected. Manual suppression can temporarily release this lock.
 @export var disable_camera_controls: bool = true
 ## Collision policy applied to the final camera position.
 @export var collision_mode: CollisionMode = CollisionMode.INHERIT
@@ -47,10 +49,28 @@ enum UpMode { INHERIT, GRAVITY, PLAYER }
 @export var up_mode: UpMode = UpMode.INHERIT
 ## Suppresses speed distance, height, FOV, and radial blur while selected.
 @export var suppress_speed_effects: bool = false
-## Releases this constraint when manual look exceeds the rig's cancel thresholds.
+## Temporarily releases camera control on manual look while keeping activation and lifetime rules active.
+@export var suppress_on_manual_look: bool = true
+## Delay after the last manual camera movement before movement or action input can restore this constraint.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:s") var manual_suppression_duration: float = 1.5
+## Smooth release and return duration for manual suppression, independently of normal entry and exit transitions.
+@export_range(0.01, 10.0, 0.05, "or_greater", "suffix:s") var manual_suppression_blend_duration: float = 0.35
+## Accumulates mouse look as an offset from constraint aim instead of suppressing on slight movement. Requires Suppress on Manual Look.
+@export var mouse_offset_enabled: bool = true
+## Accumulates controller look using the offset falloff and break thresholds. Disabled uses immediate manual suppression.
+@export var controller_offset_enabled: bool = true
+## Angular offset where mouse or controller look starts reducing constraint influence.
+@export_range(0.0, 90.0, 0.5, "suffix:deg") var mouse_offset_falloff_start_deg: float = 20.0
+## Angular offset that fully releases the constraint until the normal suppression return conditions are met.
+@export_range(1.0, 120.0, 0.5, "suffix:deg") var mouse_offset_break_deg: float = 80.0
+## Idle period after mouse or controller movement before the offset starts returning toward the intended aim.
+@export_range(0.0, 5.0, 0.05, "or_greater", "suffix:s") var mouse_offset_grace_duration: float = 0.6
+## Critically damped centering time. Larger values return more slowly without oscillation.
+@export_range(0.05, 5.0, 0.05, "or_greater", "suffix:s") var mouse_offset_return_time: float = 0.45
+## Permanently releases this constraint when manual look exceeds the rig's cancel thresholds. Takes precedence over temporary suppression.
 @export var cancel_on_manual_look: bool = false
 ## Retains the displayed heading when a temporary orientation effect ends.
-@export var retain_heading_on_release: bool = false
+@export var retain_heading_on_release: bool = true
 
 ## Rig receiving this constraint's runtime registration.
 var _camera_rig: Node3D = null
@@ -66,6 +86,7 @@ var _entry_areas: Array[Area3D] = []
 ## Entry volumes requiring an observed crossing after spawn or teleport.
 var _crossing_areas: Array[Area3D] = []
 var _entry_states: Dictionary = {}
+var _activation_connections: Array[Dictionary] = []
 var _occupancy_areas: Array[Area3D] = []
 var _rearm_areas: Array[Area3D] = []
 var _locked_transform: Transform3D = Transform3D.IDENTITY
@@ -75,6 +96,31 @@ var _has_locked_transform: bool = false
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	if OS.has_feature("editor") and EngineDebugger.is_active():
+		add_to_group(&"LiveCameraConstraints")
+		if not EngineDebugger.has_capture(LiveEdit.PREFIX):
+			EngineDebugger.register_message_capture(LiveEdit.PREFIX, LiveEdit.capture)
+		EngineDebugger.send_message("ls5_camera_edit:request", [])
+	_refresh_activation_connections()
+
+
+func _connect_activation_signal(source: Signal, callback: Callable) -> void:
+	if not source.is_connected(callback):
+		source.connect(callback)
+	_activation_connections.append({"signal": source, "callback": callback})
+
+
+func _refresh_activation_connections() -> void:
+	for connection: Dictionary in _activation_connections:
+		var source: Signal = connection.signal
+		if not source.is_null() and source.is_connected(connection.callback):
+			source.disconnect(connection.callback)
+	_activation_connections.clear()
+	_entry_areas.clear()
+	_crossing_areas.clear()
+	_occupancy_areas.clear()
+	_rearm_areas.clear()
+	_entry_states.clear()
 	var host_area: Area3D = (self as Node) as Area3D
 	for component: CameraActivationTrait in activation_traits:
 		if not component or component.event in [CameraActivationTrait.Event.DURATION, CameraActivationTrait.Event.DISTANCE_EXIT]:
@@ -90,17 +136,26 @@ func _ready() -> void:
 			CameraActivationTrait.Event.OCCUPANCY:
 				_occupancy_areas.append(area)
 				_entry_areas.append(area)
-				area.body_entered.connect(_on_entry)
-				area.body_exited.connect(_on_occupancy_exit)
+				_connect_activation_signal(area.body_entered, _on_entry)
+				_connect_activation_signal(area.body_exited, _on_occupancy_exit)
 			CameraActivationTrait.Event.ENTER:
 				_entry_areas.append(area)
 				_crossing_areas.append(area)
-				area.body_entered.connect(_on_crossing_entry.bind(area))
+				_connect_activation_signal(area.body_entered, _on_crossing_entry.bind(area))
 			CameraActivationTrait.Event.EXIT:
-				area.body_entered.connect(_on_exit)
+				_connect_activation_signal(area.body_entered, _on_exit)
 			CameraActivationTrait.Event.REARM:
 				_rearm_areas.append(area)
-				area.body_exited.connect(_on_rearm)
+				_connect_activation_signal(area.body_exited, _on_rearm)
+
+
+func refresh_live_configuration(activation_changed: bool = true) -> void:
+	if activation_changed:
+		_refresh_activation_connections()
+	if is_instance_valid(_camera_rig):
+		var driver: CameraConstraintController = _camera_rig.get("_constraint_driver") as CameraConstraintController
+		if driver:
+			driver.refresh_configuration(self)
 
 
 func _physics_process(_delta: float) -> void:
@@ -130,6 +185,9 @@ func _physics_process(_delta: float) -> void:
 
 func _exit_tree() -> void:
 	if not Engine.is_editor_hint():
+		if is_in_group(&"LiveCameraConstraints") and EngineDebugger.is_active() and EngineDebugger.has_capture(LiveEdit.PREFIX) and get_tree().get_nodes_in_group(&"LiveCameraConstraints").size() <= 1:
+			EngineDebugger.send_message("ls5_camera_edit:suspend", [])
+			EngineDebugger.unregister_message_capture(LiveEdit.PREFIX)
 		deactivate(&"removed")
 
 
@@ -302,18 +360,14 @@ func get_influence_weights(player_position: Vector3) -> Vector3:
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
-	if position_traits.size() > 1:
-		warnings.append("Only one position component may be assigned.")
-	var aim_count: int = 0
-	var roll_count: int = 0
-	for component: CameraOrientationTrait in orientation_traits:
-		if component:
-			if component.mode in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL]:
-				roll_count += 1
-			else:
-				aim_count += 1
-	if aim_count > 1 or roll_count > 1:
-		warnings.append("Only one aim component and one roll component may be assigned.")
+	for components: Array in [position_traits, orientation_traits]:
+		for component: Resource in components:
+			if not component or not component.limit_axes:
+				continue
+			if not component.axis_mask:
+				warnings.append("Axis-limited traits require at least one selected axis.")
+			if not component.axis_reference_path.is_empty() and not (resolve_trait_node(component.axis_reference_path) is Node3D):
+				warnings.append("Axis reference requires a Node3D: %s" % component.axis_reference_path)
 	var lens_count: int = 0
 	var distance_count: int = 0
 	for component: CameraLensTrait in lens_traits:
@@ -345,6 +399,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 		influence_channels |= mask
 		if not mask:
 			warnings.append("Influence component requires at least one affected channel.")
+		if not component.effective_axes & 7:
+			warnings.append("Influence component requires at least one effective axis.")
 		if component.full_influence_distance < 0.0 or component.zero_influence_distance <= component.full_influence_distance:
 			warnings.append("Zero Influence Distance must exceed the nonnegative Full Influence Distance.")
 		if component.power <= 0.0:

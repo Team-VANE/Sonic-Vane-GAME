@@ -107,6 +107,11 @@ func _append_direct_prompts(prompts: Array[Dictionary], claimed: Dictionary, con
 func _append_prompt(prompts: Array[Dictionary], claimed: Dictionary, action: CharacterAction, binding: Dictionary, context: Dictionary, consume: bool = true) -> void:
 	if not action.enabled or not _owner._can_execute_action_while_carrying(action):
 		return
+	var presentation: Dictionary = action.get_input_prompt(context)
+	if presentation.is_empty():
+		return
+	if presentation.has("input_action"):
+		binding = {"slot": presentation["input_action"], "gesture": presentation.get("gesture", &"press")}
 	var slots: Array[StringName] = []
 	var primary: StringName = StringName(binding.get("slot", &""))
 	if primary != &"":
@@ -120,9 +125,6 @@ func _append_prompt(prompts: Array[Dictionary], claimed: Dictionary, action: Cha
 	var gesture: StringName = StringName(binding.get("gesture", &"press"))
 	var ability_id: StringName = StringName(binding.get("ability_id", &""))
 	if not _owner._ability_input_router.are_prompt_slots_available(slots, ability_id, gesture):
-		return
-	var presentation: Dictionary = action.get_input_prompt(context)
-	if presentation.is_empty():
 		return
 	gesture = StringName(presentation.get("gesture", gesture))
 	var sorted_slots: Array[StringName] = slots.duplicate()

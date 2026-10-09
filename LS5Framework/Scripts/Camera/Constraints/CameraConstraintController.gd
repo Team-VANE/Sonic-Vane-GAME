@@ -24,6 +24,18 @@ var _lens_channel: bool = false
 var _selected_id: int = 0
 var _filtered_roll: float = 0.0
 var _influencing: bool = false
+var _manually_suppressed: bool = false
+var _suppression_remaining: float = 0.0
+var _mouse_offset: Vector2 = Vector2.ZERO
+var _mouse_return_velocity: Vector2 = Vector2.ZERO
+var _mouse_grace_remaining: float = 0.0
+var _mouse_anchor_active: bool = false
+var _mouse_intent_basis: Basis = Basis.IDENTITY
+var _mouse_intent_valid: bool = false
+var _mouse_free_basis: Basis = Basis.IDENTITY
+var _mouse_base_influence: float = 1.0
+var _mouse_anchor_basis: Basis = Basis.IDENTITY
+var _offset_input_device: StringName = &"mouse"
 
 
 func register(constraint: CameraConstraint) -> void:
@@ -61,6 +73,9 @@ func clear(except_constraint: CameraConstraint = null, suppress_transition: bool
 		_orientation_channel = false
 		_lens_channel = false
 		_influencing = false
+		_manually_suppressed = false
+		_suppression_remaining = 0.0
+		_reset_mouse_offset()
 
 
 func advance(delta: float) -> void:
@@ -84,6 +99,8 @@ func advance(delta: float) -> void:
 	if next_id != _selected_id:
 		_begin_transition(next)
 	_elapsed += maxf(delta, 0.0)
+	_advance_manual_suppression(delta)
+	_advance_mouse_offset(delta)
 	var influencing: bool = selected_has_effect()
 	if not _influencing or not influencing:
 		_first_frame = true
@@ -107,6 +124,234 @@ func _prune_constraints() -> void:
 			constraints.remove_at(index)
 
 
+func is_manually_suppressed() -> bool:
+	return _manually_suppressed and is_instance_valid(selected)
+
+
+func _reset_mouse_offset() -> void:
+	_mouse_offset = Vector2.ZERO
+	_mouse_return_velocity = Vector2.ZERO
+	_mouse_grace_remaining = 0.0
+	_mouse_anchor_active = false
+	_mouse_intent_valid = false
+
+
+func uses_mouse_offset() -> bool:
+	return _can_offset() and selected.mouse_offset_enabled
+
+
+func uses_controller_offset() -> bool:
+	return _can_offset() and selected.controller_offset_enabled
+
+
+func _can_offset() -> bool:
+	if not is_instance_valid(selected) or not selected.suppress_on_manual_look or selected.cancel_on_manual_look or _manually_suppressed:
+		return false
+	var target: Node3D = rig.get("target") as Node3D
+	return is_instance_valid(target) and _weights_have_effect(selected.get_influence_weights(target.global_position))
+
+
+func get_mouse_influence() -> float:
+	if not (uses_mouse_offset() or uses_controller_offset()):
+		return 0.0 if _manually_suppressed else 1.0
+	var outer: float = maxf(deg_to_rad(selected.mouse_offset_break_deg), 0.001)
+	var inner: float = clampf(deg_to_rad(selected.mouse_offset_falloff_start_deg), 0.0, outer - 0.0001)
+	var weight: float = clampf((_mouse_offset.length() - inner) / (outer - inner), 0.0, 1.0)
+	return 1.0 - weight * weight * (3.0 - 2.0 * weight)
+
+
+func _offset_basis(basis: Basis) -> Basis:
+	var result: Basis = basis.rotated(basis.y, _mouse_offset.x)
+	return result.rotated(result.x, -_mouse_offset.y).orthonormalized()
+
+
+func handle_mouse_motion(relative: Vector2) -> bool:
+	if not uses_mouse_offset():
+		return false
+	var sensitivity: float = maxf(SettingsManager.mouse_look_sensitivity, 0.01)
+	var vertical_sign: float = -1.0 if SettingsManager.mouse_invert_y else 1.0
+	return _handle_offset_motion(Vector2(-relative.x * float(rig.get("yaw_sensitivity")), relative.y * float(rig.get("pitch_sensitivity")) * vertical_sign) * sensitivity, &"mouse")
+
+
+func handle_controller_look(look: Vector2, delta: float) -> bool:
+	if not uses_controller_offset() or look.length_squared() <= 0.000001 or delta <= 0.0:
+		return false
+	var vertical_sign: float = 1.0 if SettingsManager.right_stick_invert_y or bool(rig.get("invert_y_input")) else -1.0
+	var rate: float = 40.0 * SettingsManager.get_right_stick_sensitivity() * delta
+	return _handle_offset_motion(Vector2(-look.x * float(rig.get("yaw_sensitivity")), look.y * float(rig.get("pitch_sensitivity")) * vertical_sign) * rate, &"controller")
+
+
+func _handle_offset_motion(angular: Vector2, device: StringName) -> bool:
+	if angular.length_squared() < 0.000000000001 or bool(rig.get("manual_input_locked")) or bool(rig.call("_is_camera_input_blocked_by_ui")):
+		return false
+	if not _mouse_anchor_active:
+		var camera: Camera3D = rig.get("camera") as Camera3D
+		var anchor: Basis = _mouse_intent_basis if _mouse_intent_valid else camera.global_basis.orthonormalized()
+		_mouse_anchor_basis = anchor
+		_mouse_anchor_active = true
+	_offset_input_device = device
+	_mouse_offset += angular
+	_mouse_return_velocity = Vector2.ZERO
+	_mouse_grace_remaining = maxf(selected.mouse_offset_grace_duration, 0.0)
+	_sync_mouse_free_heading()
+	var threshold: float = maxf(deg_to_rad(selected.mouse_offset_break_deg), 0.001)
+	if _mouse_offset.length() >= threshold:
+		var camera: Camera3D = rig.get("camera") as Camera3D
+		camera.global_basis = _mouse_free_basis
+		_suppress_manual(true)
+		return true
+	return true
+
+
+func _sync_mouse_free_heading() -> void:
+	var desired: Basis = _offset_basis(_mouse_anchor_basis)
+	rig.call("_sync_camera_angles_from_forward", -desired.z, rig.call("_get_camera_up"))
+	_mouse_free_basis = rig.call("_get_free_input_basis") as Basis
+
+
+func refresh_mouse_orientation() -> void:
+	if not (uses_mouse_offset() or uses_controller_offset()) or not _mouse_anchor_active or not _mouse_intent_valid:
+		return
+	var camera: Camera3D = rig.get("camera") as Camera3D
+	var desired: Basis = _mouse_free_basis.slerp(_offset_basis(_mouse_intent_basis), _mouse_base_influence * get_mouse_influence()).orthonormalized()
+	if _orientation_channel:
+		desired = _from_transform.basis.slerp(desired, _channel_weight(1)).orthonormalized()
+	camera.global_basis = desired
+	rig.call("_set_control_angles_from_forward", -desired.z, rig.call("_get_camera_up"))
+
+
+func _advance_mouse_offset(delta: float) -> void:
+	if _manually_suppressed or not _mouse_anchor_active or not is_instance_valid(selected):
+		return
+	if bool(rig.get("manual_input_locked")) or bool(rig.call("_is_camera_input_blocked_by_ui")):
+		return
+	if not selected.suppress_on_manual_look or (not selected.mouse_offset_enabled if _offset_input_device == &"mouse" else not selected.controller_offset_enabled):
+		_reset_mouse_offset()
+		return
+	var pending: Vector2 = rig.get("_mouse_delta") as Vector2
+	var controller_look: Vector2 = rig.call("_get_gamepad_look_input") as Vector2
+	if pending.length_squared() > 0.000001 or float(rig.get("_camera_mouse_strength")) > 0.001 or (uses_controller_offset() and controller_look.length_squared() > 0.000001):
+		_mouse_grace_remaining = maxf(selected.mouse_offset_grace_duration, 0.0)
+		return
+	var step: float = maxf(delta, 0.0)
+	var grace: float = _mouse_grace_remaining
+	_mouse_grace_remaining = maxf(grace - step, 0.0)
+	step = maxf(step - grace, 0.0)
+	if step <= 0.0:
+		return
+	var omega: float = 2.0 / maxf(selected.mouse_offset_return_time, 0.05)
+	var change: Vector2 = (_mouse_return_velocity + _mouse_offset * omega) * step
+	var decay: float = exp(-omega * step)
+	_mouse_return_velocity = (_mouse_return_velocity - change * omega) * decay
+	_mouse_offset = (_mouse_offset + change) * decay
+	_sync_mouse_free_heading()
+	if _mouse_offset.length_squared() < 0.00000001 and _mouse_return_velocity.length_squared() < 0.00000001:
+		_mouse_offset = Vector2.ZERO
+		_mouse_return_velocity = Vector2.ZERO
+		_mouse_anchor_active = false
+
+
+func get_mouse_debug_state() -> Dictionary:
+	var enabled: bool = is_instance_valid(selected) and selected.suppress_on_manual_look and (selected.mouse_offset_enabled or selected.controller_offset_enabled) and not selected.cancel_on_manual_look
+	return {
+		"visible": enabled,
+		"name": String(selected.name) if is_instance_valid(selected) else "",
+		"offset": _mouse_offset,
+		"input_device": _offset_input_device,
+		"falloff_start": deg_to_rad(selected.mouse_offset_falloff_start_deg) if enabled else 0.0,
+		"threshold": deg_to_rad(selected.mouse_offset_break_deg) if enabled else 1.0,
+		"influence": get_mouse_influence(),
+		"grace": _mouse_grace_remaining,
+		"suppressed": _manually_suppressed,
+		"suppression_remaining": _suppression_remaining,
+		"returning": not _manually_suppressed and is_transitioning(),
+	}
+
+
+func handle_manual_look(look_strength: float, mouse_strength: float) -> void:
+	if not is_instance_valid(selected) or bool(rig.get("manual_input_locked")) or bool(rig.call("_is_camera_input_blocked_by_ui")):
+		return
+	if selected.cancel_on_manual_look:
+		var stick_threshold: float = float(rig.get("override_cancel_stick_threshold"))
+		var mouse_threshold: float = float(rig.get("override_cancel_mouse_threshold"))
+		if (stick_threshold > 0.0 and look_strength >= stick_threshold) or (mouse_threshold > 0.0 and mouse_strength >= mouse_threshold):
+			unregister(selected, &"manual_look")
+			advance(0.0)
+		return
+	if not selected.suppress_on_manual_look or (look_strength <= 0.001 and mouse_strength <= 0.001):
+		return
+	_suppress_manual()
+
+
+func _suppress_manual(force_release: bool = false) -> void:
+	if not _manually_suppressed:
+		if not force_release and not selected_has_effect():
+			return
+		rig.call("_restore_rear_view_transform")
+		var camera: Camera3D = rig.get("camera") as Camera3D
+		_from_transform = camera.global_transform
+		_from_transform.basis = _from_transform.basis.orthonormalized()
+		_from_pivot = rig.global_position
+		_from_fov = camera.fov
+		rig.call("_sync_camera_angles_from_forward", -_from_transform.basis.z, rig.call("_get_camera_up"))
+		rig.set("_control_yaw", rig.get("_yaw"))
+		rig.set("_control_pitch", rig.get("_pitch"))
+		rig.call("_reset_auto_follow_state")
+		_manually_suppressed = true
+		_position_channel = true
+		_orientation_channel = false
+		_lens_channel = true
+		_set_suppression_transition(false)
+		rig.call("_sync_camera_orientation_hud", true)
+	_suppression_remaining = maxf(selected.manual_suppression_duration, 0.0)
+
+
+func _set_suppression_transition(include_orientation: bool) -> void:
+	var transition: CameraTransitionTrait = CameraTransitionTrait.new()
+	transition.mode = CameraTransitionTrait.Mode.TIMED
+	transition.duration = maxf(selected.manual_suppression_blend_duration, 0.01)
+	transition.orientation = include_orientation
+	_transitions.assign([transition])
+	_elapsed = 0.0
+	_first_frame = true
+
+
+func _has_resume_input() -> bool:
+	var keyboard: Vector2 = Vector2(
+		SettingsManager.get_signed_action_axis(&"move_left", &"move_right", 0.0, &"keyboard"),
+		SettingsManager.get_signed_action_axis(&"move_back", &"move_forward", 0.0, &"keyboard")
+	)
+	var gamepad: Vector2 = SettingsManager.get_radial_action_vector(&"move_left", &"move_right", &"move_back", &"move_forward", SettingsManager.get_left_stick_deadzone(), SettingsManager.get_left_stick_max(), &"gamepad")
+	if keyboard.length_squared() > 0.000001 or gamepad.length_squared() > 0.000001:
+		return true
+	if SettingsManager.is_gameplay_action_pressed(&"interact"):
+		return true
+	for slot: int in range(1, 17):
+		var action: StringName = StringName("ability_slot_%02d" % slot)
+		if InputMap.has_action(action) and SettingsManager.is_gameplay_action_pressed(action):
+			return true
+	return false
+
+
+func _advance_manual_suppression(delta: float) -> void:
+	if not is_instance_valid(selected) or bool(rig.get("manual_input_locked")) or bool(rig.call("_is_camera_input_blocked_by_ui")):
+		return
+	var look_strength: float = float(rig.call("_get_immediate_manual_look_strength"))
+	var mouse_delta: Vector2 = rig.get("_mouse_delta") as Vector2
+	var mouse_strength: float = maxf(mouse_delta.length(), float(rig.get("_camera_mouse_strength")))
+	if uses_mouse_offset():
+		mouse_strength = 0.0
+	if look_strength > 0.001 or mouse_strength > 0.001:
+		handle_manual_look(look_strength, mouse_strength)
+		return
+	if not _manually_suppressed:
+		return
+	_suppression_remaining = maxf(_suppression_remaining - maxf(delta, 0.0), 0.0)
+	if not selected.suppress_on_manual_look or (_suppression_remaining <= 0.000001 and _has_resume_input()):
+		_begin_transition(selected)
+		_set_suppression_transition(true)
+
+
 func _begin_transition(next: CameraConstraint) -> void:
 	var camera: Camera3D = rig.get("camera") as Camera3D
 	if not camera:
@@ -124,11 +369,16 @@ func _begin_transition(next: CameraConstraint) -> void:
 	var previous_position: bool = _position_channel
 	var previous_orientation: bool = _orientation_channel
 	var previous_lens: bool = _lens_channel
-	if selected and (selected.retain_heading_on_release or (not selected.has_influence_trait() and not selected.position_traits.is_empty())):
+	if selected and not _manually_suppressed and (selected.retain_heading_on_release or (not selected.has_influence_trait() and not selected.position_traits.is_empty())):
 		rig.call("_sync_camera_angles_from_forward", -_from_transform.basis.z, rig.call("_get_camera_up"))
 		rig.set("_control_yaw", rig.get("_yaw"))
 		rig.set("_control_pitch", rig.get("_pitch"))
 		rig.call("_reset_auto_follow_state")
+	if _manually_suppressed:
+		_exit_traits.clear()
+	_manually_suppressed = false
+	_suppression_remaining = 0.0
+	_reset_mouse_offset()
 	selected = next
 	_selected_id = next.get_instance_id() if next else 0
 	_transitions.clear()
@@ -172,7 +422,39 @@ func is_transitioning() -> bool:
 	return false
 
 
+func refresh_configuration(constraint: CameraConstraint) -> void:
+	if constraint != selected:
+		return
+	if _manually_suppressed:
+		return
+	var transitioning: bool = is_transitioning()
+	_exit_traits.clear()
+	if transitioning:
+		_transitions.clear()
+	for component: CameraTransitionTrait in selected.transition_traits:
+		if not component:
+			continue
+		if component.phase == CameraTransitionTrait.Phase.EXIT:
+			_exit_traits.append(component)
+		elif transitioning:
+			_transitions.append(component)
+	_position_channel = not selected.position_traits.is_empty()
+	_orientation_channel = not selected.orientation_traits.is_empty()
+	_lens_channel = false
+	for component: CameraOrientationTrait in selected.orientation_traits:
+		if component and component.orbit_rig:
+			_position_channel = true
+	for component: CameraLensTrait in selected.lens_traits:
+		if component:
+			if component.mode == CameraLensTrait.Mode.ORBIT_DISTANCE:
+				_position_channel = true
+			else:
+				_lens_channel = true
+
+
 func owns_orientation() -> bool:
+	if _manually_suppressed:
+		return false
 	return (is_instance_valid(selected) and not selected.orientation_traits.is_empty() and get_influence_weights().y > 0.000001) or (is_transitioning() and _orientation_channel)
 
 
@@ -186,14 +468,19 @@ func get_influence_weights() -> Vector3:
 	if not is_instance_valid(selected):
 		return Vector3.ONE
 	var target: Node3D = rig.get("target") as Node3D
-	return selected.get_influence_weights(target.global_position) if is_instance_valid(target) else Vector3.ZERO
+	var weights: Vector3 = selected.get_influence_weights(target.global_position) if is_instance_valid(target) else Vector3.ZERO
+	return weights * get_mouse_influence()
 
 
 func selected_has_effect() -> bool:
-	if not is_instance_valid(selected):
+	if not is_instance_valid(selected) or _manually_suppressed:
 		return false
 	if not selected.has_influence_trait():
 		return true
+	return _weights_have_effect(get_influence_weights())
+
+
+func _weights_have_effect(weights: Vector3) -> bool:
 	var channels: int = 0
 	if not selected.position_traits.is_empty():
 		channels |= 1
@@ -209,7 +496,6 @@ func selected_has_effect() -> bool:
 		for channel: int in 3:
 			if selected.has_influence_trait(channel):
 				channels |= 1 << channel
-	var weights: Vector3 = get_influence_weights()
 	for channel: int in 3:
 		if channels & (1 << channel) and weights[channel] > 0.000001:
 			return true
@@ -255,6 +541,56 @@ func _aim_basis(component: CameraOrientationTrait, origin: Vector3, fallback: Ba
 	return _look_basis(point - origin, component.get_up(selected, rig), fallback)
 
 
+func _merge_position(current: Vector3, desired: Vector3, component: CameraPositionTrait) -> Vector3:
+	if not component.limit_axes or component.axis_mask == 7:
+		return desired
+	if not component.axis_mask:
+		return current
+	var reference: Basis = component.get_axis_basis(selected)
+	var difference: Vector3 = reference.inverse() * (desired - current)
+	for axis: int in 3:
+		if not component.axis_mask & (1 << axis):
+			difference[axis] = 0.0
+	return current + reference * difference
+
+
+func _merge_orientation(current: Basis, desired: Basis, component: CameraOrientationTrait) -> Basis:
+	if not component.limit_axes or component.axis_mask == 7:
+		return desired
+	if not component.axis_mask:
+		return current
+	var reference: Basis = component.get_axis_basis(selected)
+	var angles: Vector3 = (reference.inverse() * current).get_euler()
+	var desired_angles: Vector3 = (reference.inverse() * desired).get_euler()
+	for axis: int in 3:
+		if component.axis_mask & (1 << axis):
+			angles[axis] = desired_angles[axis]
+	return (reference * Basis.from_euler(angles)).orthonormalized()
+
+
+func _position_anchor(component: CameraPositionTrait) -> Vector3:
+	var xform: Transform3D = component.get_transform(selected)
+	var anchor: Vector3 = xform.origin
+	var target: Node3D = rig.get("target") as Node3D
+	if component.mode in [CameraPositionTrait.Mode.PLAYER_CAMERA, CameraPositionTrait.Mode.PLAYER_PIVOT]:
+		anchor = target.global_position
+	elif component.mode == CameraPositionTrait.Mode.PATH_CAMERA:
+		var path: Path3D = component.get_source(selected) as Path3D
+		if path and path.curve and path.curve.point_count > 1:
+			anchor = path.to_global(path.curve.get_closest_point(path.to_local(target.global_position)))
+	return anchor + component.get_offset(rig, xform.basis)
+
+
+func _tracked_aim(component: CameraOrientationTrait, origin: Vector3, current: Basis, delta: float) -> Basis:
+	if component.limit_axes and not component.axis_mask:
+		return current
+	var desired: Basis = _merge_orientation(current, _aim_basis(component, origin, current), component)
+	desired = current.slerp(desired, component.strength).orthonormalized()
+	if not _first_frame and component.tracking_response > 0.0:
+		desired = _filtered_basis.slerp(desired, 1.0 - exp(-component.tracking_response * maxf(delta, 0.0))).orthonormalized()
+	return _merge_orientation(current, desired, component)
+
+
 func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_distance: float, free_fov: float) -> void:
 	var camera: Camera3D = rig.get("camera") as Camera3D
 	var pivot: Vector3 = free_pivot
@@ -263,15 +599,15 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 	var fov: float = free_fov
 	var orbit_distance: float = free_distance
 	var orbit_distance_assigned: bool = false
-	var fixed_camera: bool = false
-	var position_response: float = 0.0
 	var aim: CameraOrientationTrait = null
-	var roll: CameraOrientationTrait = null
+	var has_orbit_aim: bool = false
 	var fov_trait: CameraLensTrait = null
 	var collision_enabled: bool = bool(rig.get("camera_collision_enabled"))
 	var rear_view: bool = bool(rig.get("_rear_view_active"))
-	var proximity_blend: bool = is_instance_valid(selected) and selected.has_influence_trait()
-	if selected:
+	var proximity_blend: bool = is_instance_valid(selected) and not _manually_suppressed and (selected.has_influence_trait() or _mouse_anchor_active)
+	if selected and not _manually_suppressed:
+		if _mouse_anchor_active:
+			basis = _mouse_anchor_basis
 		if selected_has_effect() and selected.collision_mode != CameraConstraint.CollisionMode.INHERIT:
 			collision_enabled = selected.collision_mode == CameraConstraint.CollisionMode.ENABLED
 		for component: CameraLensTrait in selected.lens_traits:
@@ -283,55 +619,52 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 					orbit_distance_assigned = true
 			elif not fov_trait:
 				fov_trait = component
-		for component: CameraPositionTrait in selected.position_traits:
-			if not component:
-				continue
-			var xform: Transform3D = component.get_transform(selected)
-			var anchor: Vector3 = xform.origin
-			if component.mode in [CameraPositionTrait.Mode.PLAYER_CAMERA, CameraPositionTrait.Mode.PLAYER_PIVOT]:
-				anchor = (rig.get("target") as Node3D).global_position
-			elif component.mode == CameraPositionTrait.Mode.PATH_CAMERA:
-				var path: Path3D = component.get_source(selected) as Path3D
-				if path and path.curve and path.curve.point_count > 1:
-					anchor = path.to_global(path.curve.get_closest_point(path.to_local((rig.get("target") as Node3D).global_position)))
-			anchor += component.get_offset(rig, xform.basis)
-			fixed_camera = component.mode in [CameraPositionTrait.Mode.FIXED_CAMERA, CameraPositionTrait.Mode.PLAYER_CAMERA, CameraPositionTrait.Mode.NODE_CAMERA, CameraPositionTrait.Mode.PATH_CAMERA]
-			if fixed_camera:
-				position = anchor
-				pivot = anchor
-			else:
-				pivot = anchor
-			position_response = component.tracking_response
-			break
+		var anchors: Array[Vector3] = []
+		anchors.resize(selected.position_traits.size())
+		for index: int in range(selected.position_traits.size() - 1, -1, -1):
+			var component: CameraPositionTrait = selected.position_traits[index]
+			if component:
+				anchors[index] = _position_anchor(component)
+				pivot = _merge_position(pivot, anchors[index], component)
 		for component: CameraOrientationTrait in selected.orientation_traits:
+			if not component or (component.limit_axes and not component.axis_mask):
+				continue
+			if component.mode not in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL]:
+				if not aim:
+					aim = component
+				has_orbit_aim = has_orbit_aim or component.orbit_rig
+		var orbit_basis: Basis = _orbit_basis if aim and not aim.orbit_rig and not selected.position_traits.is_empty() else basis
+		for index: int in range(selected.orientation_traits.size() - 1, -1, -1):
+			var component: CameraOrientationTrait = selected.orientation_traits[index]
+			if component and component.orbit_rig and component.mode not in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL]:
+				orbit_basis = _tracked_aim(component, pivot, orbit_basis, delta)
+		position = free_pivot + orbit_basis.z * orbit_distance if has_orbit_aim else free_transform.origin
+		if orbit_distance_assigned and not has_orbit_aim:
+			position = free_pivot + free_transform.basis.orthonormalized().z * orbit_distance
+		for index: int in range(selected.position_traits.size() - 1, -1, -1):
+			var component: CameraPositionTrait = selected.position_traits[index]
 			if not component:
 				continue
-			if component.mode in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL]:
-				if not roll:
-					roll = component
-			elif not aim:
-				aim = component
-		if not fixed_camera:
-			var orbit_basis: Basis = _orbit_basis if aim and not aim.orbit_rig and not selected.position_traits.is_empty() else basis
-			if aim and aim.orbit_rig:
-				orbit_basis = orbit_basis.slerp(_aim_basis(aim, pivot, orbit_basis), aim.strength).orthonormalized()
-				if not _first_frame and aim.tracking_response > 0.0:
-					orbit_basis = _filtered_basis.slerp(orbit_basis, 1.0 - exp(-aim.tracking_response * maxf(delta, 0.0)))
-			position = pivot + orbit_basis.z * orbit_distance
-			basis = orbit_basis
-		if position_response > 0.0 and not _first_frame:
-			position = _filtered_position.lerp(position, 1.0 - exp(-position_response * maxf(delta, 0.0)))
+			var desired: Vector3 = anchors[index]
+			if component.mode in [CameraPositionTrait.Mode.FIXED_PIVOT, CameraPositionTrait.Mode.PLAYER_PIVOT, CameraPositionTrait.Mode.NODE_PIVOT]:
+				desired += orbit_basis.z * orbit_distance
+			if component.tracking_response > 0.0 and not _first_frame:
+				desired = _filtered_position.lerp(desired, 1.0 - exp(-component.tracking_response * maxf(delta, 0.0)))
+			position = _merge_position(position, desired, component)
 		if not rear_view and not proximity_blend:
 			position = rig.call("_resolve_camera_collision", position, collision_enabled, delta) as Vector3
 		_filtered_position = position
-		if aim:
-			if not aim.orbit_rig:
-				var desired_basis: Basis = _aim_basis(aim, position, basis)
-				basis = basis.slerp(desired_basis, aim.strength).orthonormalized()
-			if not aim.orbit_rig and not _first_frame and aim.tracking_response > 0.0:
-				basis = _filtered_basis.slerp(basis, 1.0 - exp(-aim.tracking_response * maxf(delta, 0.0))).orthonormalized()
+		for index: int in range(selected.orientation_traits.size() - 1, -1, -1):
+			var component: CameraOrientationTrait = selected.orientation_traits[index]
+			if component and component.mode not in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL]:
+				basis = _tracked_aim(component, pivot if component.orbit_rig else position, basis, delta)
 		_filtered_basis = basis
-		if roll:
+		var aim_basis: Basis = basis
+		var highest_roll_angle: float = _filtered_roll
+		for index: int in range(selected.orientation_traits.size() - 1, -1, -1):
+			var roll: CameraOrientationTrait = selected.orientation_traits[index]
+			if not roll or roll.mode not in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL] or (roll.limit_axes and not roll.axis_mask):
+				continue
 			var roll_angle: float = deg_to_rad(roll.roll_degrees)
 			if roll.mode == CameraOrientationTrait.Mode.MARKER_ROLL:
 				var marker_basis: Basis = roll.get_transform(selected).basis.orthonormalized()
@@ -340,8 +673,13 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 				roll_angle = float(rig.call("_compute_roll_from_basis", marker_basis, rig.call("_get_camera_up")))
 			if not _first_frame and roll.tracking_response > 0.0:
 				roll_angle = lerp_angle(_filtered_roll, roll_angle, 1.0 - exp(-roll.tracking_response * maxf(delta, 0.0)))
-			_filtered_roll = roll_angle
-			basis = basis.rotated(-basis.z, roll_angle)
+			highest_roll_angle = roll_angle
+			basis = _merge_orientation(basis, aim_basis.rotated(-aim_basis.z, roll_angle), roll)
+			for aim_index: int in range(index - 1, -1, -1):
+				var preceding: CameraOrientationTrait = selected.orientation_traits[aim_index]
+				if preceding and preceding.limit_axes and preceding.mode not in [CameraOrientationTrait.Mode.ROLL, CameraOrientationTrait.Mode.MARKER_ROLL]:
+					basis = _merge_orientation(basis, aim_basis, preceding)
+		_filtered_roll = highest_roll_angle
 		if fov_trait:
 			fov = fov_trait.fov
 			var source: Node3D = fov_trait.get_source(selected)
@@ -358,6 +696,12 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 			if fov_trait.tracking_response > 0.0 and not _first_frame:
 				fov = lerpf(_filtered_fov, fov, 1.0 - exp(-fov_trait.tracking_response * maxf(delta, 0.0)))
 			_filtered_fov = fov
+		_mouse_intent_basis = basis
+		_mouse_intent_valid = true
+		var target: Node3D = rig.get("target") as Node3D
+		_mouse_base_influence = selected.get_influence_weights(target.global_position).y if is_instance_valid(target) else 0.0
+		if (uses_mouse_offset() or uses_controller_offset()) and _mouse_anchor_active:
+			basis = _offset_basis(basis)
 		if proximity_blend:
 			var influence: Vector3 = get_influence_weights()
 			position = free_transform.origin.lerp(position, influence.x)
@@ -375,7 +719,7 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 	if (proximity_blend or is_transitioning()) and not rear_view:
 		position = rig.call("_resolve_camera_collision", position, collision_enabled, delta if proximity_blend else 0.0) as Vector3
 	rig.global_position = pivot
-	if aim and aim.orbit_rig:
+	if has_orbit_aim:
 		var yaw: Node3D = rig.get("yaw_node") as Node3D
 		var pitch: Node3D = rig.get("pitch_node") as Node3D
 		var local_basis: Basis = (rig.get("_camera_base_local_transform") as Transform3D).basis
@@ -384,14 +728,14 @@ func apply(delta: float, free_transform: Transform3D, free_pivot: Vector3, free_
 	camera.global_transform = Transform3D(basis, position)
 	camera.fov = clampf(fov, 1.0, 179.0)
 	if owns_orientation():
-		rig.call("_set_control_angles_from_forward", -basis.z, rig.call("_get_camera_up"), proximity_blend)
+		rig.call("_set_control_angles_from_forward", -basis.z, rig.call("_get_camera_up"))
 	_first_frame = false
 	if not is_transitioning():
 		_transitions.clear()
-		_position_channel = selected and not selected.position_traits.is_empty()
-		_orientation_channel = selected and not selected.orientation_traits.is_empty()
+		_position_channel = selected and not _manually_suppressed and not selected.position_traits.is_empty()
+		_orientation_channel = selected and not _manually_suppressed and not selected.orientation_traits.is_empty()
 		_lens_channel = false
-		if selected:
+		if selected and not _manually_suppressed:
 			for component: CameraOrientationTrait in selected.orientation_traits:
 				if component and component.orbit_rig:
 					_position_channel = true

@@ -2,65 +2,45 @@
 
 [ext_resource type="Script" uid="uid://dn284c4forypk" path="res://LS5Framework/Objects/Camera/CameraConstraint.gd" id="1_cc"]
 [ext_resource type="Script" uid="uid://d2a1vxijjeict" path="res://LS5Framework/Objects/Camera/ConstraintPointGuide.gd" id="2_cp_guide"]
-
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
-size = Vector3(137, 96, 104)
+[ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
+[ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
+[ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
+[ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
 [sub_resource type="Resource" id="CameraTrait_0001"]
 resource_name = "Occupancy Volume"
 script = ExtResource("cam_trait_activation")
-event = 0
-area_path = NodePath("")
 
 [sub_resource type="Resource" id="CameraTrait_0002"]
 resource_name = "Stationary Camera"
 script = ExtResource("cam_trait_position")
-mode = 0
-source_path = NodePath("ConstraintPoint")
-tracking_response = 0.0
 
 [sub_resource type="Resource" id="CameraTrait_0003"]
 resource_name = "Face Player"
 script = ExtResource("cam_trait_orientation")
-mode = 0
-target_path = NodePath("ConstraintPoint")
-orbit_rig = false
-tracking_response = 14.0
-target_offset = Vector3(0.0, 1.5, 0.0)
-offset_uses_player_up = false
-up_source = 2
-strength = 1.0
 
 [sub_resource type="Resource" id="CameraTrait_0004"]
 resource_name = "Instant Entry"
 script = ExtResource("cam_trait_transition")
-phase = 0
-mode = 0
 duration = 0.25
 
 [sub_resource type="Resource" id="CameraTrait_0005"]
 resource_name = "Instant Exit"
 script = ExtResource("cam_trait_transition")
 phase = 1
-mode = 0
-duration = 0.35
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(137, 96, 104)
 
 [node name="CameraConstraint" type="Area3D" unique_id=1501740697]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_cc")
-suppress_speed_effects = true
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0001")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0002")])
 orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("CameraTrait_0003")])
-lens_traits = Array[ExtResource("cam_trait_lens")]([])
 transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("CameraTrait_0004"), SubResource("CameraTrait_0005")])
+suppress_speed_effects = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1384128833]
 shape = SubResource("BoxShape3D_1")
