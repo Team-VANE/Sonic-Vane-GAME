@@ -63,6 +63,12 @@ enum CarryState {
 @export var carry_rest_angular_speed: float = 0.75
 ## Time stable support must be maintained before a rigid carryable sleeps.
 @export var carry_rest_settle_time: float = 0.15
+## Interval between shape-support checks while sleeping on unchanged static geometry. Zero checks every tick.
+@export_range(0.0, 1.0, 0.01, "seconds") var carry_rest_support_refresh_time: float = 0.1
+## Maximum accumulated displacement allowed during the rest settling period.
+@export_range(0.0, 0.25, 0.001) var carry_rest_position_tolerance: float = 0.015
+## Maximum accumulated rotation allowed during the rest settling period.
+@export_range(0.0, 10.0, 0.1, "degrees") var carry_rest_rotation_tolerance_degrees: float = 1.0
 ## Extra fixed distance used by rigid-body support checks.
 @export var carry_rest_support_extra_distance: float = 0.1
 ## Maximum number of shape contacts considered by rigid-body support checks.
@@ -195,6 +201,16 @@ var _rigid_rest_linear_limit: float = 0.0
 var _rigid_support_normal: Vector3 = Vector3.ZERO
 var _rigid_rest_gravity_up: Vector3 = Vector3.ZERO
 var _rigid_rest_gravity_multiplier: float = 0.0
+var _rigid_rest_transform: Transform3D = Transform3D.IDENTITY
+var _rigid_support_body: Node3D = null
+var _rigid_support_transform: Transform3D = Transform3D.IDENTITY
+var _rigid_support_shape: int = -1
+var _rigid_support_shape_transform: Transform3D = Transform3D.IDENTITY
+var _rigid_support_refresh_timer: float = 0.0
+var _rigid_rest_parameters: PhysicsTestMotionParameters3D = PhysicsTestMotionParameters3D.new()
+var _rigid_rest_result: PhysicsTestMotionResult3D = PhysicsTestMotionResult3D.new()
+var _simplified_ray_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
+var _surface_ray_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
 var _gravity_modifiers: Dictionary = {}
 var _gravity_modifier_sequence: int = 0
 var _planetary_gravity_sources: Dictionary = {}
@@ -254,6 +270,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 		return
 	if is_carried():
 		return
+	if _rigid_resting and not state.sleeping:
+		_clear_rigid_rest_state()
 	if follow_gravity_pull and not _rigid_resting:
 		var gravity_up: Vector3 = get_gravity_up()
 		var gravity_strength: float = _get_resolved_gravity_strength(_get_rigid_base_gravity_strength())
@@ -804,7 +822,9 @@ func _apply_simplified_upright(up: Vector3) -> void:
 		forward = Vector3.RIGHT
 		forward -= up * forward.dot(up)
 	forward = forward.normalized()
-	global_transform = Transform3D(Basis().looking_at(forward, up), global_position)
+	var upright_basis: Basis = Basis().looking_at(forward, up)
+	if not global_basis.is_equal_approx(upright_basis):
+		global_basis = upright_basis
 
 
 func _move_simplified_step(motion: Vector3, up: Vector3) -> bool:
@@ -827,7 +847,7 @@ func _move_simplified_step(motion: Vector3, up: Vector3) -> bool:
 	if bounce_speed < simplified_sleep_speed:
 		bounce_speed = 0.0
 	var damped_tangent_velocity: Vector3 = tangent_velocity * (1.0 - simplified_friction)
-	var should_rest: bool = bounce_speed <= 0.0 and damped_tangent_velocity.length() <= max(simplified_sleep_speed, 0.0)
+	var should_rest: bool = bounce_speed <= 0.0 and damped_tangent_velocity.length() <= max(simplified_sleep_speed, 0.0) and _simplified_support_can_rest(normal, up) and _rigid_support_body_can_rest(hit.get("collider") as Node3D)
 	if not should_rest:
 		_process_surface_effect_contact(global_position, normal, _manual_velocity)
 		_manual_velocity = damped_tangent_velocity + normal * bounce_speed
@@ -851,11 +871,21 @@ func _simplified_should_remain_at_rest(up: Vector3) -> bool:
 	var support_hit: Dictionary = _cast_simplified_ray(global_position, global_position - up * support_distance)
 	if support_hit.is_empty():
 		return false
+	if not _rigid_support_body_can_rest(support_hit.get("collider") as Node3D):
+		return false
+	var contact_distance: float = global_position.distance_to(support_hit.get("position", global_position) as Vector3)
+	if contact_distance > max(simplified_collision_radius, 0.0) + max(simplified_collision_skin, 0.0) * 2.0 + 0.001:
+		return false
 	var normal: Vector3 = support_hit.get("normal", up)
 	if normal.length() < 0.001:
 		normal = up
 	normal = normal.normalized()
-	return normal.dot(up) > 0.35
+	return _simplified_support_can_rest(normal, up)
+
+
+func _simplified_support_can_rest(normal: Vector3, up: Vector3) -> bool:
+	var friction: float = max(simplified_friction, 0.0)
+	return normal.dot(up) >= max(carry_rest_min_support_dot, 1.0 / sqrt(1.0 + friction * friction))
 
 
 func _update_rigid_rest_state(delta: float) -> void:
@@ -863,16 +893,26 @@ func _update_rigid_rest_state(delta: float) -> void:
 		_clear_rigid_rest_state()
 		return
 	var up: Vector3 = get_gravity_up() if follow_gravity_pull else _get_base_gravity_up()
-	var linear_speed: float = linear_velocity.length()
 	var angular_speed: float = angular_velocity.length()
 	var linear_limit: float = _get_rigid_rest_linear_limit(delta)
-	var motion_is_quiet: bool = linear_speed <= linear_limit and angular_speed <= max(carry_rest_angular_speed, 0.0)
+	var normal_speed: float = linear_velocity.dot(up)
+	var tangent_speed: float = (linear_velocity - up * normal_speed).length()
+	var motion_is_quiet: bool = tangent_speed <= max(carry_rest_linear_speed, 0.0) and normal_speed >= -linear_limit and normal_speed <= max(carry_rest_linear_speed, 0.0) and angular_speed <= max(carry_rest_angular_speed, 0.0)
 	if not motion_is_quiet:
 		var was_resting: bool = _rigid_resting
 		_clear_rigid_rest_state()
 		if was_resting:
 			sleeping = false
 		return
+	if _rigid_resting:
+		if not sleeping or global_transform != _rigid_rest_transform or not _rigid_cached_support_is_valid():
+			_clear_rigid_rest_state()
+			sleeping = false
+			return
+		_rigid_support_refresh_timer -= max(delta, 0.0)
+		if _rigid_support_refresh_timer > 0.0:
+			_mark_surface_contact_without_effects(_rigid_support_normal)
+			return
 	var support_hit: Dictionary = _get_rigid_rest_support_hit(up)
 	var supported: bool = _is_rigid_rest_support_valid(support_hit, up)
 	_rigid_support_valid = supported
@@ -888,16 +928,28 @@ func _update_rigid_rest_state(delta: float) -> void:
 		_rigid_rest_gravity_up = up
 		_rigid_rest_gravity_multiplier = _resolved_gravity_multiplier
 	if _rigid_resting:
-		var resting_support_normal: Vector3 = support_hit.get("normal", up)
-		_mark_surface_contact_without_effects(resting_support_normal)
-		linear_velocity = Vector3.ZERO
-		angular_velocity = Vector3.ZERO
-		sleeping = true
+		_rigid_support_refresh_timer = max(carry_rest_support_refresh_time, 0.0)
+		_mark_surface_contact_without_effects(_rigid_support_normal)
 		return
+	var support_body: Node3D = support_hit.get("collider") as Node3D
+	var support_changed: bool = support_body != _rigid_support_body or not _rigid_cached_support_is_valid()
+	var position_changed: bool = global_position.distance_to(_rigid_rest_transform.origin) > max(carry_rest_position_tolerance, 0.0)
+	var rotation_changed: bool = global_basis.get_rotation_quaternion().angle_to(_rigid_rest_transform.basis.get_rotation_quaternion()) > deg_to_rad(max(carry_rest_rotation_tolerance_degrees, 0.0))
+	if _rigid_rest_timer <= 0.0 or support_changed or position_changed or rotation_changed:
+		_rigid_rest_timer = 0.0
+		_rigid_rest_transform = global_transform
+		_rigid_support_body = support_body
+		_rigid_support_transform = support_body.global_transform
+		_rigid_support_shape = int(support_hit.get("shape", -1))
+		if support_body is StaticBody3D and _rigid_support_shape >= 0:
+			var owner_id: int = (support_body as StaticBody3D).shape_find_owner(_rigid_support_shape)
+			_rigid_support_shape_transform = (support_body as StaticBody3D).shape_owner_get_transform(owner_id)
 	_rigid_rest_timer += max(delta, 0.0)
 	if _rigid_rest_timer < max(carry_rest_settle_time, 0.0):
 		return
 	_rigid_resting = true
+	_rigid_rest_transform = global_transform
+	_rigid_support_refresh_timer = max(carry_rest_support_refresh_time, 0.0)
 	var settled_support_normal: Vector3 = support_hit.get("normal", up)
 	_mark_surface_contact_without_effects(settled_support_normal)
 	linear_velocity = Vector3.ZERO
@@ -910,7 +962,7 @@ func _get_rigid_rest_support_hit(up: Vector3) -> Dictionary:
 	var support_distance: float = max(carry_rest_support_extra_distance, 0.0)
 	if support_distance <= 0.001:
 		return {}
-	var parameters: PhysicsTestMotionParameters3D = PhysicsTestMotionParameters3D.new()
+	var parameters: PhysicsTestMotionParameters3D = _rigid_rest_parameters
 	parameters.from = global_transform
 	parameters.motion = -up * support_distance
 	parameters.margin = max(simplified_collision_skin, 0.0)
@@ -918,11 +970,16 @@ func _get_rigid_rest_support_hit(up: Vector3) -> Dictionary:
 	parameters.recovery_as_collision = true
 	if _collision_exception_body and is_instance_valid(_collision_exception_body):
 		parameters.exclude_bodies = [_collision_exception_body.get_rid()]
-	var result: PhysicsTestMotionResult3D = PhysicsTestMotionResult3D.new()
+	else:
+		parameters.exclude_bodies = []
+	var result: PhysicsTestMotionResult3D = _rigid_rest_result
 	if not PhysicsServer3D.body_test_motion(get_rid(), parameters, result):
+		return {}
+	if result.get_travel().dot(-up) > max(simplified_collision_skin, 0.0) + 0.001:
 		return {}
 	var best_normal: Vector3 = Vector3.ZERO
 	var best_alignment: float = -INF
+	var best_index: int = -1
 	var collision_count: int = result.get_collision_count()
 	for collision_index: int in range(collision_count):
 		var collision_normal: Vector3 = result.get_collision_normal(collision_index)
@@ -933,13 +990,17 @@ func _get_rigid_rest_support_hit(up: Vector3) -> Dictionary:
 		if alignment > best_alignment:
 			best_alignment = alignment
 			best_normal = collision_normal
+			best_index = collision_index
 	if best_normal.length() < 0.001:
 		return {}
-	return {"normal": best_normal}
+	return {"normal": best_normal, "collider": result.get_collider(best_index), "shape": result.get_collider_shape(best_index)}
 
 
 func _is_rigid_rest_support_valid(support_hit: Dictionary, up: Vector3) -> bool:
 	if support_hit.is_empty():
+		return false
+	var support_body: Node3D = support_hit.get("collider") as Node3D
+	if not _rigid_support_body_can_rest(support_body):
 		return false
 	var normal: Vector3 = support_hit.get("normal", up)
 	if normal.length() < 0.001:
@@ -952,6 +1013,31 @@ func _is_rigid_rest_support_valid(support_hit: Dictionary, up: Vector3) -> bool:
 		var hysteresis_angle: float = deg_to_rad(max(carry_rest_support_hysteresis_degrees, 0.0))
 		minimum_dot = cos(min(support_angle + hysteresis_angle, PI))
 	return normal.normalized().dot(up) >= minimum_dot
+
+
+func _rigid_support_body_can_rest(body: Node3D) -> bool:
+	if not is_instance_valid(body) or not body.is_inside_tree() or body.is_queued_for_deletion():
+		return false
+	if body is CSGShape3D:
+		return (body as CSGShape3D).is_root_shape() and (body as CSGShape3D).use_collision
+	if not body is StaticBody3D or body is AnimatableBody3D:
+		return false
+	var static_body: StaticBody3D = body as StaticBody3D
+	return static_body.constant_linear_velocity.is_zero_approx() and static_body.constant_angular_velocity.is_zero_approx()
+
+
+func _rigid_cached_support_is_valid() -> bool:
+	if not is_instance_valid(_rigid_support_body) or not _rigid_support_body_can_rest(_rigid_support_body):
+		return false
+	if _rigid_support_body.global_transform != _rigid_support_transform:
+		return false
+	if _rigid_support_body is CSGShape3D:
+		return ((_rigid_support_body as CSGShape3D).collision_layer & collision_mask) != 0
+	var static_body: StaticBody3D = _rigid_support_body as StaticBody3D
+	if not (static_body.collision_layer & collision_mask) or _rigid_support_shape < 0 or _rigid_support_shape >= PhysicsServer3D.body_get_shape_count(static_body.get_rid()):
+		return false
+	var owner_id: int = static_body.shape_find_owner(_rigid_support_shape)
+	return not static_body.is_shape_owner_disabled(owner_id) and static_body.shape_owner_get_transform(owner_id) == _rigid_support_shape_transform
 
 
 func _get_rigid_rest_linear_limit(delta: float) -> float:
@@ -968,6 +1054,9 @@ func _clear_rigid_rest_state() -> void:
 	_rigid_support_normal = Vector3.ZERO
 	_rigid_rest_gravity_up = Vector3.ZERO
 	_rigid_rest_gravity_multiplier = 0.0
+	_rigid_support_body = null
+	_rigid_support_shape = -1
+	_rigid_support_refresh_timer = 0.0
 
 
 func _mark_surface_contact_without_effects(contact_normal: Vector3 = Vector3.ZERO) -> void:
@@ -1309,11 +1398,10 @@ func _cast_simplified_motion(start_position: Vector3, motion: Vector3, up: Vecto
 
 
 func _cast_simplified_ray(from_position: Vector3, to_position: Vector3) -> Dictionary:
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
-		from_position,
-		to_position,
-		simplified_ground_collision_mask
-	)
+	var query: PhysicsRayQueryParameters3D = _simplified_ray_query
+	query.from = from_position
+	query.to = to_position
+	query.collision_mask = simplified_ground_collision_mask
 	var excluded_rids: Array[RID] = [get_rid()]
 	if _collision_exception_body and is_instance_valid(_collision_exception_body):
 		excluded_rids.append(_collision_exception_body.get_rid())
@@ -1357,11 +1445,10 @@ func _cast_surface_effect_motion(start_position: Vector3, motion: Vector3, up: V
 
 
 func _cast_surface_effect_ray(from_position: Vector3, to_position: Vector3) -> Dictionary:
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
-		from_position,
-		to_position,
-		surface_effect_collision_mask
-	)
+	var query: PhysicsRayQueryParameters3D = _surface_ray_query
+	query.from = from_position
+	query.to = to_position
+	query.collision_mask = surface_effect_collision_mask
 	var excluded_rids: Array[RID] = [get_rid()]
 	if _collision_exception_body and is_instance_valid(_collision_exception_body):
 		excluded_rids.append(_collision_exception_body.get_rid())

@@ -11,6 +11,8 @@ var _collision_follow_point: Vector3 = Vector3.ZERO
 var _collision_follow_collider: Node3D = null
 var _collision_follow_shape_index: int = -1
 var _preview_ray_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
+var _water_ground_ray_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
+var _forced_follow_ray_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
 
 
 func _init(owner: Node) -> void:
@@ -18,6 +20,11 @@ func _init(owner: Node) -> void:
 	_preview_ray_query.exclude = [(owner as CollisionObject3D).get_rid()]
 	_preview_ray_query.collide_with_areas = false
 	_preview_ray_query.hit_back_faces = false
+	_water_ground_ray_query.exclude = [(owner as CollisionObject3D).get_rid()]
+	_water_ground_ray_query.collide_with_areas = false
+	_forced_follow_ray_query.exclude = [(owner as CollisionObject3D).get_rid()]
+	_forced_follow_ray_query.collide_with_areas = false
+	_forced_follow_ray_query.hit_back_faces = false
 
 
 func _process_collisions_for_attachment(v_before: Vector3, p_before: Vector3, delta: float) -> void:
@@ -638,10 +645,9 @@ func _get_ground_ray_hit_ignoring_water_surface() -> Dictionary:
 		return {}
 	var ray_from: Vector3 = p.ground_ray.global_position
 	var ray_to: Vector3 = p.ground_ray.to_global(p.ground_ray.target_position)
-	var params: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(ray_from, ray_to)
-	params.exclude = [p]
-	params.collide_with_areas = false
-	params.collide_with_bodies = true
+	var params: PhysicsRayQueryParameters3D = _water_ground_ray_query
+	params.from = ray_from
+	params.to = ray_to
 	params.collision_mask = p.ground_ray.collision_mask & ~p.WATER_SURFACE_RAY_LAYER
 	return world.direct_space_state.intersect_ray(params)
 
@@ -1441,9 +1447,7 @@ func _ground_follow_probe(delta: float) -> void:
 	if up_for_ray.length() < 0.001:
 		up_for_ray = world_up
 
-	# NEW:
-	# Start the ray at the character center (not raised upward),
-	# and cast FULL ground_ray_length downward along surface normal.
+	# Cast from the character center along the support normal.
 	var origin_follow: Vector3 = origin_center
 	var target_follow: Vector3 = origin_center - up_for_ray * p.ground_ray_length
 
@@ -1454,10 +1458,9 @@ func _ground_follow_probe(delta: float) -> void:
 	p._follow_ray_origin = origin_follow
 	p._follow_ray_target = target_follow
 	var ray_follow_rejected: bool = false
-	var collision_follow_has_metadata: bool = _collision_follow_has_surface_metadata()
 	if (
-		collision_follow_has_metadata
-		and _collision_follow_is_excluded_by_ray(p.ground_ray)
+		_collision_follow_is_excluded_by_ray(p.ground_ray)
+		and _collision_follow_has_surface_metadata()
 	):
 		_apply_collision_follow_candidate()
 		_clear_collision_follow_candidate()
@@ -1499,7 +1502,7 @@ func _ground_follow_probe(delta: float) -> void:
 
 	if not p._follow_hit:
 		var used_collision_follow: bool = (
-			collision_follow_has_metadata
+			_collision_follow_has_surface_metadata()
 			and _apply_collision_follow_candidate()
 		)
 		if not used_collision_follow and not ray_follow_rejected:
@@ -1537,7 +1540,9 @@ func _try_forced_surface_follow(delta: float) -> bool:
 	var binormal: Vector3 = tangent.cross(normal).normalized()
 	var best_hit: Dictionary = {}
 	var best_score: float = INF
-	var exclusions: Array[RID] = [p.get_rid()]
+	var world_up: Vector3 = p._get_gravity_up()
+	var params: PhysicsRayQueryParameters3D = _forced_follow_ray_query
+	params.collision_mask = p.collision_mask
 	var fan_steps: int = 8
 	var fan_axes: Array[Vector3] = [tangent]
 	if binormal.length() > 0.001:
@@ -1547,16 +1552,8 @@ func _try_forced_surface_follow(delta: float) -> bool:
 		for step: int in range(-fan_steps, fan_steps + 1):
 			var angle: float = deg_to_rad(90.0 * float(step) / float(fan_steps))
 			var direction: Vector3 = (inward * cos(angle) + fan_axis * sin(angle)).normalized()
-			var params: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
-				center,
-				center + direction * ray_length
-			)
-			params.collision_mask = p.collision_mask
-			params.collide_with_areas = false
-			params.collide_with_bodies = true
-			params.exclude = exclusions
-			params.hit_back_faces = false
-			params.hit_from_inside = false
+			params.from = center
+			params.to = center + direction * ray_length
 			var hit: Dictionary = world.direct_space_state.intersect_ray(params)
 			if hit.is_empty():
 				continue
@@ -1571,9 +1568,9 @@ func _try_forced_surface_follow(delta: float) -> bool:
 			if hit_normal.length() < 0.001:
 				continue
 			var shape_index: int = int(hit.get("shape", -1))
-			if p._is_surface_alignment_rejected(collider, hit_normal, p._get_gravity_up(), shape_index):
+			if p._is_surface_alignment_rejected(collider, hit_normal, world_up, shape_index):
 				continue
-			if not _can_stay_attached(hit_normal, p._get_gravity_up(), collider, shape_index):
+			if not _can_stay_attached(hit_normal, world_up, collider, shape_index):
 				continue
 			var hit_point_value: Variant = hit.get("position", Vector3.ZERO)
 			var hit_point: Vector3 = hit_point_value if hit_point_value is Vector3 else Vector3.ZERO

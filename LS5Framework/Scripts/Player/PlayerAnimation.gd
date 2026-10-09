@@ -14,8 +14,14 @@ const NOT_JUMP_FALL_BLEND_CONDITION: String = "conditions/NotUseFallBlendForJump
 const RAIL_SWITCH_ANIM_DURATION: float = 0.5
 
 var _owner: Node = null
-var _anim_param_cache: Dictionary = {}  # Cache for existence checks (path -> bool)
-var _anim_value_cache: Dictionary = {}  # Cache for value changes (path -> any)
+var _anim_param_cache: Dictionary = {}
+var _anim_param_types: Dictionary = {}
+var _anim_value_cache: Dictionary = {}
+var _anim_playback_cache: Dictionary = {}
+var _cached_tree: AnimationTree = null
+var _cached_root: AnimationRootNode = null
+var _anim_properties_cached: bool = false
+var _movement_time_name_cache: Dictionary = {}
 var _anim_turn_raw: float = 0.0
 var _anim_turn_smooth: float = 0.0
 var _anim_turn_prev_lateral_dir: Vector3 = Vector3.ZERO  # Used to measure signed turn rate.
@@ -33,6 +39,50 @@ var _network_authority_tree_root: AnimationRootNode = null
 func _init(owner: Node) -> void:
 	_owner = owner
 	_movement_time_exclusion_pattern.compile("(?i)_movement-time-scale\\s*=\\s*(false|0|no|off)(?=$|[\\s;_])")
+
+
+func dispose() -> void:
+	if is_instance_valid(_cached_tree) and _cached_tree.property_list_changed.is_connected(_invalidate_animation_cache):
+		_cached_tree.property_list_changed.disconnect(_invalidate_animation_cache)
+	if _cached_root and _cached_root.changed.is_connected(_invalidate_animation_cache):
+		_cached_root.changed.disconnect(_invalidate_animation_cache)
+	_cached_tree = null
+	_cached_root = null
+	_owner = null
+	_invalidate_animation_cache()
+	_movement_time_name_cache.clear()
+
+
+func _invalidate_animation_cache() -> void:
+	_anim_param_cache.clear()
+	_anim_param_types.clear()
+	_anim_value_cache.clear()
+	_anim_playback_cache.clear()
+	_anim_properties_cached = false
+	_network_tree_id = 0
+
+
+func _sync_animation_cache(tree: AnimationTree) -> void:
+	if tree == _cached_tree and tree.tree_root == _cached_root:
+		return
+	if is_instance_valid(_cached_tree) and _cached_tree.property_list_changed.is_connected(_invalidate_animation_cache):
+		_cached_tree.property_list_changed.disconnect(_invalidate_animation_cache)
+	if _cached_root and _cached_root.changed.is_connected(_invalidate_animation_cache):
+		_cached_root.changed.disconnect(_invalidate_animation_cache)
+	_cached_tree = tree
+	_cached_root = tree.tree_root
+	tree.property_list_changed.connect(_invalidate_animation_cache)
+	if _cached_root:
+		_cached_root.changed.connect(_invalidate_animation_cache)
+	_invalidate_animation_cache()
+	_refresh_owner_playbacks(tree)
+
+
+func _node_excludes_movement_time(node: AnimationNode) -> bool:
+	var label: String = node.resource_name
+	if not _movement_time_name_cache.has(label):
+		_movement_time_name_cache[label] = _movement_time_exclusion_pattern.search(label) != null
+	return _movement_time_name_cache[label]
 
 
 func capture_network_snapshot() -> Dictionary:
@@ -59,6 +109,8 @@ func apply_network_snapshot(states: Dictionary, values: Array) -> void:
 	if tree == null:
 		return
 	_prepare_network_puppet_tree(tree)
+	_sync_animation_cache(tree)
+	_anim_value_cache.clear()
 	_refresh_network_paths(tree)
 	for index: int in mini(values.size(), _network_value_paths.size()):
 		var path: String = _network_value_paths[index]
@@ -97,7 +149,7 @@ func _prepare_network_puppet_tree(tree: AnimationTree) -> void:
 		_network_authority_tree_root = tree.tree_root
 		tree.tree_root = tree.tree_root.duplicate(true) as AnimationRootNode
 		_disable_network_auto_transitions(tree.tree_root)
-	_anim_param_cache.clear()
+	_invalidate_animation_cache()
 	_network_tree_id = 0
 	_refresh_owner_playbacks(tree)
 
@@ -110,7 +162,7 @@ func restore_authority_tree() -> void:
 	_network_puppet_tree_id = 0
 	_network_tree_id = 0
 	_network_oneshot_states.clear()
-	_anim_param_cache.clear()
+	_invalidate_animation_cache()
 	if tree:
 		_refresh_owner_playbacks(tree)
 
@@ -137,6 +189,7 @@ func _disable_network_auto_transitions(node: AnimationNode) -> void:
 
 
 func _refresh_network_paths(tree: AnimationTree) -> void:
+	_sync_animation_cache(tree)
 	var tree_id: int = tree.get_instance_id()
 	if _network_tree_id == tree_id:
 		return
@@ -172,6 +225,8 @@ func _update_animation(delta: float) -> void:
 		return
 	
 	var anim_tree: AnimationTree = p.anim_tree
+	if anim_tree:
+		_sync_animation_cache(anim_tree)
 	var anim_state: AnimationNodeStateMachinePlayback = p.anim_state
 	if anim_tree == null or anim_state == null:
 		return
@@ -455,12 +510,13 @@ func _get_speed_based_animation_scale() -> float:
 
 func _get_animation_movement_time_scale() -> float:
 	var p = _owner
-	if p.is_movement_time_scale_debuff_active():
-		return p.get_movement_time_scale()
+	var movement_scale: float = p.get_movement_time_scale()
+	if movement_scale == 1.0 or p.is_movement_time_scale_debuff_active():
+		return movement_scale
 	var tree: AnimationTree = p.anim_tree
 	if tree and tree.tree_root:
 		var root: AnimationNode = tree.tree_root
-		if _movement_time_exclusion_pattern.search(root.resource_name):
+		if _node_excludes_movement_time(root):
 			return 1.0
 		# MoveTimeScale controls the main state machine, excluding independent overlays.
 		if root is AnimationNodeBlendTree:
@@ -471,13 +527,13 @@ func _get_animation_movement_time_scale() -> float:
 					return 1.0
 		elif _is_movement_time_excluded(root, "parameters", tree):
 			return 1.0
-	return p.get_movement_time_scale()
+	return movement_scale
 
 
 func _is_movement_time_excluded(node: AnimationNode, parameter_path: String, tree: AnimationTree) -> bool:
 	if not node:
 		return false
-	if _movement_time_exclusion_pattern.search(node.resource_name):
+	if _node_excludes_movement_time(node):
 		return true
 	if node is AnimationNodeStateMachine:
 		var machine: AnimationNodeStateMachine = node as AnimationNodeStateMachine
@@ -509,7 +565,9 @@ func _get_rail_state_playback(anim_tree: AnimationTree) -> AnimationNodeStateMac
 	var rail_playback_path: String = SM_BASE + "/RAIL/playback"
 	if not _anim_param_exists(rail_playback_path):
 		return null
-	return anim_tree.get(rail_playback_path) as AnimationNodeStateMachinePlayback
+	if not _anim_playback_cache.has(rail_playback_path):
+		_anim_playback_cache[rail_playback_path] = anim_tree.get(rail_playback_path)
+	return _anim_playback_cache[rail_playback_path] as AnimationNodeStateMachinePlayback
 
 
 func _update_skydive_animation_latch(delta: float) -> void:
@@ -527,7 +585,7 @@ func _update_skydive_animation_latch(delta: float) -> void:
 
 
 func _safe_set_anim_param(path: String, value) -> void:
-	# SUMMARY: Set an AnimationTree parameter only if it exists and has changed.
+	# Commands remain write-through; persistent parameters use change detection.
 	var p = _owner
 	if p == null or not is_instance_valid(p):
 		return
@@ -539,20 +597,23 @@ func _safe_set_anim_param(path: String, value) -> void:
 	if not full_path.begins_with("parameters/"):
 		full_path = "parameters/" + full_path
 
-	# Check existence.
 	if not _anim_param_exists(full_path):
 		return
 
-	var current_value: Variant = anim_tree.get(full_path)
-	if not _anim_values_compatible(current_value, value):
-		return
+	var is_command: bool = full_path.ends_with("/request")
+	if not is_command and _anim_value_cache.has(full_path) and typeof(_anim_value_cache[full_path]) == typeof(value) and _anim_value_cache[full_path] == value:
+		if full_path != String(p.carry_hold_blend_parameter):
+			return
 
-	# Optimize: Only set if value has changed.
-	if _anim_value_cache.has(full_path) and _anim_value_cache[full_path] == value:
+	var current_type: int = int(_anim_param_types.get(full_path, TYPE_NIL))
+	var new_type: int = typeof(value)
+	var numeric_types: bool = (current_type == TYPE_INT or current_type == TYPE_FLOAT) and (new_type == TYPE_INT or new_type == TYPE_FLOAT)
+	if current_type != TYPE_NIL and current_type != new_type and not numeric_types:
 		return
 
 	anim_tree.set(full_path, value)
-	_anim_value_cache[full_path] = value
+	if not is_command:
+		_anim_value_cache[full_path] = value
 
 
 func _anim_values_compatible(current_value: Variant, new_value: Variant) -> bool:
@@ -598,10 +659,6 @@ func _update_locomotion_anim(delta: float) -> void:
 	var grounded: bool = p.attached
 	_set_anim_bool_param("conditions/Grounded", grounded)
 	_set_anim_bool_param("conditions/Moving", lateral_speed > 0.5)
-
-	var _speed: float = p._get_lateral_speed_for_anim()
-	var _current_state: StringName = anim_state.get_current_node()
-
 
 func _update_turn_amount(delta: float) -> void:
 	# SUMMARY: Compute a signed turn lean target from turn rate, then smooth toward it.
@@ -681,12 +738,7 @@ func _set_anim_bool_param(rel_path: String, value: bool) -> void:
 	
 	var full_path: String = rel_path
 	if not full_path.begins_with("parameters/"):
-		if full_path.begins_with(SM_BASE):
-			full_path = "parameters/" + full_path
-		else:
-			full_path = "%s/%s" % [SM_BASE, rel_path]
-			if not full_path.begins_with("parameters/"):
-				full_path = "parameters/" + full_path
+		full_path = SM_BASE + "/" + rel_path
 
 	_safe_set_anim_param(full_path, value)
 
@@ -768,10 +820,7 @@ func _debug_anim_tree_params() -> void:
 
 
 func _anim_param_exists(prop_path: String) -> bool:
-	# SUMMARY: Cache and check whether a parameter path exists in the AnimationTree.
-	# STEPS:
-	# - Step 1: Return cached value if present.
-	# - Step 2: Scan the property list once and cache the result.
+	# Index all parameters once per tree structure.
 	var p
 	p = _owner
 	if p == null or not is_instance_valid(p):
@@ -780,18 +829,14 @@ func _anim_param_exists(prop_path: String) -> bool:
 	if anim_tree == null:
 		return false
 
-	if _anim_param_cache.has(prop_path):
-		return _anim_param_cache[prop_path]
-
-	var plist: Array = anim_tree.get_property_list()
-	for entry in plist:
-		if typeof(entry) == TYPE_DICTIONARY and entry.has("name"):
-			if String(entry["name"]) == prop_path:
-				_anim_param_cache[prop_path] = true
-				return true
-
-	_anim_param_cache[prop_path] = false
-	return false
+	_sync_animation_cache(anim_tree)
+	if not _anim_properties_cached:
+		for entry: Dictionary in anim_tree.get_property_list():
+			var name: String = String(entry.get("name", ""))
+			_anim_param_cache[name] = true
+			_anim_param_types[name] = int(entry.get("type", TYPE_NIL))
+		_anim_properties_cached = true
+	return _anim_param_cache.has(prop_path)
 
 
 func _dump_animtree_params() -> void:

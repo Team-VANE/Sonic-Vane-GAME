@@ -1752,6 +1752,15 @@ func _has_any_input_bindings() -> bool:
 	return false
 
 
+func _get_runtime_action_bindings(action_name: StringName) -> Array:
+	var bindings: Variant = input_bindings.get(action_name)
+	if bindings is Array and not bindings.is_empty():
+		return bindings
+	if InputMap.has_action(action_name):
+		return _get_bindings_from_action(action_name)
+	return []
+
+
 func is_gameplay_action_pressed(action_name: StringName) -> bool:
 	return not EmoteWheel.is_action_blocked(action_name) and Input.is_action_pressed(action_name)
 
@@ -1769,9 +1778,7 @@ func get_action_input_strength(action_name: StringName, min_output: float = 0.0,
 		return 0.0
 	if action_name == &"":
 		return 0.0
-	var bindings: Array = get_action_bindings(action_name)
-	if bindings.is_empty() and InputMap.has_action(action_name):
-		bindings = _get_bindings_from_action(action_name)
+	var bindings: Array = _get_runtime_action_bindings(action_name)
 	var best_strength: float = 0.0
 	for binding in bindings:
 		if not (binding is Dictionary):
@@ -1796,9 +1803,7 @@ func get_raw_action_input_strength(action_name: StringName, binding_kind: String
 		return 0.0
 	if action_name == &"":
 		return 0.0
-	var bindings: Array = get_action_bindings(action_name)
-	if bindings.is_empty() and InputMap.has_action(action_name):
-		bindings = _get_bindings_from_action(action_name)
+	var bindings: Array = _get_runtime_action_bindings(action_name)
 	var best_strength: float = 0.0
 	for binding in bindings:
 		if not (binding is Dictionary):
@@ -1846,6 +1851,10 @@ func get_radial_action_vector(
 		positive_y_action,
 		binding_kind
 	)
+	return remap_radial_action_vector(raw_vector, deadzone, max_output)
+
+
+func remap_radial_action_vector(raw_vector: Vector2, deadzone: float, max_output: float) -> Vector2:
 	var raw_magnitude: float = raw_vector.length()
 	if raw_magnitude < 0.001:
 		return Vector2.ZERO

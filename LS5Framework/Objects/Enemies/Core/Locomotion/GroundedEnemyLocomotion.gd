@@ -12,6 +12,8 @@ const SURFACE_METADATA = preload("res://LS5Framework/Scripts/World/SurfaceBehavi
 @export var deceleration: float = 34.0
 ## Distance from the actor origin to its support contact.
 @export var ground_contact_offset: float = 1.0
+## Interval between idle movement/support checks on unchanged static geometry. Zero disables idle caching.
+@export_range(0.0, 0.5, 0.01, "seconds") var idle_support_refresh_time: float = 0.1
 
 @export_group("Surface Adhesion")
 ## Enables support following and ground snapping.
@@ -68,6 +70,16 @@ var _grounded: bool = false
 var _support_grace_timer: float = 0.0
 var _jump_cooldown: float = 0.0
 var _moving: bool = false
+var _support_body: Node3D = null
+var _support_body_transform: Transform3D = Transform3D.IDENTITY
+var _support_shape: int = -1
+var _support_shape_transform: Transform3D = Transform3D.IDENTITY
+var _idle_transform: Transform3D = Transform3D.IDENTITY
+var _idle_gravity_up: Vector3 = Vector3.ZERO
+var _idle_refresh_timer: float = 0.0
+var _support_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
+var _ledge_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
+var _obstacle_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
 
 
 func setup(owner_actor: CharacterBody3D) -> void:
@@ -86,15 +98,16 @@ func physics_tick(delta: float, intent: EnemyIntent) -> void:
 	_jump_cooldown = max(_jump_cooldown - delta, 0.0)
 	var gravity_up: Vector3 = _get_gravity_up()
 	var movement_plane_normal: Vector3 = _support_normal if _grounded else gravity_up
-	actor.up_direction = movement_plane_normal
+	if actor.up_direction != movement_plane_normal:
+		actor.up_direction = movement_plane_normal
 	var requested_direction: Vector3 = intent.move_direction
 	var planar_direction: Vector3 = requested_direction - movement_plane_normal * requested_direction.dot(movement_plane_normal)
 	if planar_direction.length() >= 0.001:
 		planar_direction = planar_direction.normalized()
 	var jump_requested: bool = intent.jump_requested
 	if _grounded and planar_direction.length() >= 0.001:
-		var ledge_ahead: bool = not _has_support_ahead(planar_direction)
-		var obstacle_ahead: bool = _has_obstacle_ahead(planar_direction)
+		var ledge_ahead: bool = (stop_at_ledges or auto_jump_gaps) and not _has_support_ahead(planar_direction)
+		var obstacle_ahead: bool = auto_jump_obstacles and _has_obstacle_ahead(planar_direction)
 		if obstacle_ahead and auto_jump_obstacles:
 			jump_requested = true
 		elif ledge_ahead and auto_jump_gaps:
@@ -104,6 +117,14 @@ func physics_tick(delta: float, intent: EnemyIntent) -> void:
 
 	var lateral_velocity: Vector3 = actor.velocity - movement_plane_normal * actor.velocity.dot(movement_plane_normal)
 	var desired_velocity: Vector3 = planar_direction * max(movement_speed, 0.0) * clamp(intent.speed_ratio, 0.0, 1.0)
+	_idle_refresh_timer = max(_idle_refresh_timer - delta, 0.0)
+	if desired_velocity.is_zero_approx() and not jump_requested and _can_reuse_idle_support(gravity_up):
+		_begin_move(Vector3.ZERO)
+		_moving = false
+		var idle_facing: Vector3 = Vector3.ZERO if intent.facing_locked else intent.face_direction
+		_update_orientation(idle_facing, gravity_up, delta)
+		_idle_transform = actor.global_transform
+		return
 	var movement_rate: float = acceleration if desired_velocity.length() > lateral_velocity.length() else deceleration
 	lateral_velocity = lateral_velocity.move_toward(desired_velocity, max(movement_rate, 0.0) * delta)
 	if _grounded:
@@ -125,6 +146,9 @@ func physics_tick(delta: float, intent: EnemyIntent) -> void:
 	_update_support(delta)
 	var facing_direction: Vector3 = Vector3.ZERO if intent.facing_locked else intent.face_direction
 	_update_orientation(facing_direction, gravity_up, delta)
+	_idle_transform = actor.global_transform
+	_idle_gravity_up = gravity_up
+	_idle_refresh_timer = max(idle_support_refresh_time, 0.0)
 
 
 func reset_locomotion() -> void:
@@ -134,6 +158,9 @@ func reset_locomotion() -> void:
 	_support_grace_timer = 0.0
 	_jump_cooldown = 0.0
 	_moving = false
+	_support_body = null
+	_support_shape = -1
+	_idle_refresh_timer = 0.0
 	_probe_support(true)
 
 
@@ -151,6 +178,7 @@ func _update_support(delta: float) -> void:
 	var collision_support: Dictionary = _find_collision_support()
 	if not collision_support.is_empty():
 		if _accept_support(collision_support.get("normal", _support_normal) as Vector3):
+			_remember_support(collision_support)
 			_support_grace_timer = max(support_grace_time, 0.0)
 			return
 	if _probe_support(false):
@@ -159,6 +187,7 @@ func _update_support(delta: float) -> void:
 	_support_grace_timer = max(_support_grace_timer - delta, 0.0)
 	if _support_grace_timer <= 0.0:
 		_grounded = false
+		_support_body = null
 		_support_normal = _get_gravity_up()
 
 
@@ -175,7 +204,7 @@ func _find_collision_support() -> Dictionary:
 		var alignment: float = normal.dot(reference_normal)
 		if alignment > best_dot:
 			best_dot = alignment
-			best = {"normal": normal, "collider": collider}
+			best = {"normal": normal, "collider": collider, "shape": collision.get_collider_shape_index()}
 	return best
 
 
@@ -186,11 +215,10 @@ func _probe_support(initial_probe: bool) -> bool:
 	var offset: float = max(ground_contact_offset, 0.0) * max(float(actor.get("size")), 0.01)
 	var ray_start: Vector3 = actor.global_position + probe_up * max(support_snap_distance, 0.0)
 	var ray_length: float = offset + max(support_snap_distance, 0.0) * 2.0
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
-		ray_start,
-		ray_start - probe_up * ray_length,
-		support_collision_mask
-	)
+	var query: PhysicsRayQueryParameters3D = _support_query
+	query.from = ray_start
+	query.to = ray_start - probe_up * ray_length
+	query.collision_mask = support_collision_mask
 	query.exclude = [actor.get_rid()]
 	var hit: Dictionary = actor.get_world_3d().direct_space_state.intersect_ray(query)
 	if hit.is_empty():
@@ -204,11 +232,47 @@ func _probe_support(initial_probe: bool) -> bool:
 	if initial_probe or snap_distance <= max(support_snap_distance, 0.0) * 2.0 + 0.05:
 		var was_grounded: bool = _grounded
 		if _accept_support(normal):
+			_remember_support(hit)
 			if not initial_probe and not was_grounded:
 				_record_impact_contact(normal, collider)
 			actor.global_position = target_position
 			return true
 	return false
+
+
+func _remember_support(hit: Dictionary) -> void:
+	_support_body = hit.get("collider") as Node3D
+	_support_shape = int(hit.get("shape", -1))
+	if is_instance_valid(_support_body):
+		_support_body_transform = _support_body.global_transform
+		if _support_body is StaticBody3D and _support_shape >= 0:
+			var body: StaticBody3D = _support_body as StaticBody3D
+			_support_shape_transform = body.shape_owner_get_transform(body.shape_find_owner(_support_shape))
+
+
+func _can_reuse_idle_support(gravity_up: Vector3) -> bool:
+	if not adhesion_enabled or not _grounded or _idle_refresh_timer <= 0.0 or not actor.velocity.is_zero_approx():
+		return false
+	if actor.global_transform != _idle_transform or not gravity_up.is_equal_approx(_idle_gravity_up):
+		return false
+	if not is_instance_valid(_support_body) or _support_body is AnimatableBody3D or not _support_body.is_inside_tree() or _support_body.is_queued_for_deletion():
+		return false
+	if _support_body.global_transform != _support_body_transform:
+		return false
+	if not _surface_is_accepted(_support_body, _support_normal, false):
+		return false
+	if _support_body is CSGShape3D:
+		var csg: CSGShape3D = _support_body as CSGShape3D
+		return csg.is_root_shape() and csg.use_collision and (csg.collision_layer & support_collision_mask) != 0
+	if not _support_body is StaticBody3D:
+		return false
+	var body: StaticBody3D = _support_body as StaticBody3D
+	if not body.constant_linear_velocity.is_zero_approx() or not body.constant_angular_velocity.is_zero_approx() or not (body.collision_layer & support_collision_mask):
+		return false
+	if _support_shape < 0 or _support_shape >= PhysicsServer3D.body_get_shape_count(body.get_rid()):
+		return false
+	var owner_id: int = body.shape_find_owner(_support_shape)
+	return not body.is_shape_owner_disabled(owner_id) and body.shape_owner_get_transform(owner_id) == _support_shape_transform
 
 
 func _accept_support(normal_value: Vector3) -> bool:
@@ -246,11 +310,10 @@ func _has_support_ahead(direction: Vector3) -> bool:
 		return true
 	var offset: float = max(ground_contact_offset, 0.0) * max(float(actor.get("size")), 0.01)
 	var origin: Vector3 = actor.global_position + direction * max(ledge_probe_distance, 0.0) + _support_normal * max(support_snap_distance, 0.05)
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
-		origin,
-		origin - _support_normal * (offset + max(support_snap_distance, 0.0) * 2.0),
-		support_collision_mask
-	)
+	var query: PhysicsRayQueryParameters3D = _ledge_query
+	query.from = origin
+	query.to = origin - _support_normal * (offset + max(support_snap_distance, 0.0) * 2.0)
+	query.collision_mask = support_collision_mask
 	query.exclude = [actor.get_rid()]
 	var hit: Dictionary = actor.get_world_3d().direct_space_state.intersect_ray(query)
 	if hit.is_empty():
@@ -262,11 +325,10 @@ func _has_obstacle_ahead(direction: Vector3) -> bool:
 	if actor.get_world_3d() == null:
 		return false
 	var origin: Vector3 = actor.global_position + _support_normal * max(obstacle_probe_height, 0.0)
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
-		origin,
-		origin + direction * max(obstacle_probe_distance, 0.0),
-		support_collision_mask
-	)
+	var query: PhysicsRayQueryParameters3D = _obstacle_query
+	query.from = origin
+	query.to = origin + direction * max(obstacle_probe_distance, 0.0)
+	query.collision_mask = support_collision_mask
 	query.exclude = [actor.get_rid()]
 	return not actor.get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 
@@ -280,11 +342,12 @@ func _update_orientation(face_direction: Vector3, gravity_up: Vector3, delta: fl
 	if forward.length() < 0.001:
 		return
 	var desired_basis: Basis = Basis().looking_at(forward.normalized(), desired_up).orthonormalized()
+	if actor.global_basis.is_equal_approx(desired_basis):
+		return
 	var current_basis: Basis = actor.global_basis.orthonormalized()
 	var rotation_speed: float = min(max(alignment_speed_deg, 0.0), max(facing_speed_deg, 0.0))
 	var angle: float = current_basis.get_rotation_quaternion().angle_to(desired_basis.get_rotation_quaternion())
 	if angle <= 0.000001:
-		actor.global_basis = desired_basis
 		return
 	if rotation_speed <= 0.0:
 		return

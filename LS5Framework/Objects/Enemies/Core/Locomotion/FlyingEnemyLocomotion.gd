@@ -14,6 +14,8 @@ class_name FlyingEnemyLocomotion
 @export var horizontal_deadzone: float = 0.1
 ## Vertical distance from the goal where movement stops.
 @export var vertical_deadzone: float = 0.1
+## Interval between collision-recovery checks during stationary flight. Zero checks every tick.
+@export_range(0.0, 0.5, 0.01, "seconds") var idle_collision_refresh_time: float = 0.1
 
 @export_group("Facing")
 ## Turns the actor toward the requested facing direction.
@@ -24,13 +26,17 @@ class_name FlyingEnemyLocomotion
 @export var facing_speed_deg: float = 360.0
 
 var _moving: bool = false
+var _idle_refresh_timer: float = 0.0
+var _idle_transform: Transform3D = Transform3D.IDENTITY
+var _idle_up: Vector3 = Vector3.ZERO
 
 
 func physics_tick(delta: float, intent: EnemyIntent) -> void:
 	if actor == null:
 		return
 	var up: Vector3 = _get_up()
-	actor.up_direction = up
+	if actor.up_direction != up:
+		actor.up_direction = up
 	var move_direction: Vector3 = intent.move_direction
 	var planar_direction: Vector3 = move_direction - up * move_direction.dot(up)
 	var vertical_amount: float = move_direction.dot(up)
@@ -44,16 +50,23 @@ func physics_tick(delta: float, intent: EnemyIntent) -> void:
 	actor.velocity = actor.velocity.move_toward(desired_velocity, max(rate, 0.0) * delta)
 	var previous_position: Vector3 = actor.global_position
 	_begin_move(actor.velocity)
-	actor.move_and_slide()
-	_capture_slide_impact_contacts()
+	_idle_refresh_timer = max(_idle_refresh_timer - delta, 0.0)
+	var idle_unchanged: bool = actor.velocity.is_zero_approx() and desired_velocity.is_zero_approx() and actor.global_transform == _idle_transform and up.is_equal_approx(_idle_up)
+	if not idle_unchanged or _idle_refresh_timer <= 0.0 or actor.get_slide_collision_count() > 0:
+		actor.move_and_slide()
+		_capture_slide_impact_contacts()
+		_idle_refresh_timer = max(idle_collision_refresh_time, 0.0)
 	_moving = actor.global_position.distance_squared_to(previous_position) > 0.000001
 	if facing_enabled and not intent.facing_locked:
 		_update_facing(intent.face_direction, up, delta)
+	_idle_transform = actor.global_transform
+	_idle_up = up
 
 
 func reset_locomotion() -> void:
 	super.reset_locomotion()
 	_moving = false
+	_idle_refresh_timer = 0.0
 
 
 func get_state_tag() -> StringName:
@@ -71,10 +84,11 @@ func _update_facing(requested_direction: Vector3, up: Vector3, delta: float) -> 
 	if abs(forward.dot(facing_up)) > 0.995:
 		facing_up = actor.global_basis.x
 	var desired_basis: Basis = Basis().looking_at(forward, facing_up).orthonormalized()
+	if actor.global_basis.is_equal_approx(desired_basis) or facing_speed_deg <= 0.0:
+		return
 	var current_basis: Basis = actor.global_basis.orthonormalized()
 	var angle: float = current_basis.get_rotation_quaternion().angle_to(desired_basis.get_rotation_quaternion())
 	if angle <= 0.000001:
-		actor.global_basis = desired_basis
 		return
 	var maximum_step: float = deg_to_rad(max(facing_speed_deg, 0.0)) * delta
 	actor.global_basis = current_basis.slerp(desired_basis, min(maximum_step / angle, 1.0)).orthonormalized()

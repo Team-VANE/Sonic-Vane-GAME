@@ -25,6 +25,7 @@ const INVINCIBILITY_VISUAL_SCENE: PackedScene = preload(
 )
 
 var _landing_prompt_sphere: SphereShape3D = SphereShape3D.new()
+var _actions_by_id: Dictionary = {}
 
 signal air_trick_boost_applied(score: float, speed_bonus: float, direction: Vector3, reason: StringName)
 
@@ -67,6 +68,9 @@ func _resolve_air_trick_landing_boost(was_attached: bool) -> void:
 		_cash_out_ground_air_trick_boost(surface_normal)
 
 func _ensure_modules() -> void:
+	# The router is initialised after all shared modules.
+	if _ability_input_router != null and _anim_module != null:
+		return
 	if _audio_module == null:
 		_audio_module = PlayerAudio.new(self)
 	if _item_effects_module == null:
@@ -582,6 +586,7 @@ func _ready() -> void:
 		footstep_full_volume_speed = run_top_speed
 
 	if ground_ray != null:
+		ground_ray.enabled = false
 		ground_ray.exclude_parent = true
 		ground_ray.collide_with_areas = false
 		ground_ray.collision_mask = (
@@ -2157,6 +2162,9 @@ func _process(delta: float) -> void:
 func _exit_tree() -> void:
 	_release_speed_shoes_music()
 	clear_gravity_state(&"all")
+	if _anim_module != null:
+		_anim_module.dispose()
+		_anim_module = null
 	if _ability_input_router != null:
 		_ability_input_router.dispose()
 		_ability_input_router = null
@@ -3528,14 +3536,10 @@ func _read_input() -> void:
 		&"move_forward",
 		&"gamepad"
 	)
-	var gamepad_input: Vector2 = SettingsManager.get_radial_action_vector(
-		&"move_left",
-		&"move_right",
-		&"move_back",
-		&"move_forward",
+	var gamepad_input: Vector2 = SettingsManager.remap_radial_action_vector(
+		gamepad_raw_input,
 		SettingsManager.get_left_stick_deadzone(),
-		SettingsManager.get_left_stick_max(),
-		&"gamepad"
+		SettingsManager.get_left_stick_max()
 	)
 	var keyboard_strength: float = keyboard_input.length()
 	var gamepad_strength: float = gamepad_input.length()
@@ -6019,7 +6023,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			ground_accel_curve_used = walk_ground_accel_curve
 		if walk_turn_angle_curve != null:
 			ground_turn_angle_curve_used = walk_turn_angle_curve
-	ground_accel_curve_used = _get_active_acceleration_curve(ground_accel_curve_used)
+	if is_attached:
+		ground_accel_curve_used = _get_active_acceleration_curve(ground_accel_curve_used)
 
 	if is_attached:
 		_last_grounded_top_speed = max(run_top_speed_used, 0.0)
@@ -6042,17 +6047,15 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	_automation_expired_this_frame = false
 	if _automation_timer <= 0.0:
 		_automation_expired_this_frame = true
-	var ground_decel_effective: float = max(_sample_curve_by_speed(
-		ground_decel_curve,
-		lateral.length(),
-		decel
-	), 0.0)
-	var gravity_horizontal_velocity: Vector3 = v - world_up * v.dot(world_up)
-	var air_decel_base: float = max(_sample_curve_by_speed(
-		air_decel_curve,
-		gravity_horizontal_velocity.length(),
-		air_decel
-	), 0.0)
+	var shared_motor_active: bool = not _lightspeed_dash_active and not _homing_active and not (in_spring_state and _spring_detached)
+	var ground_decel_effective: float = max(decel, 0.0)
+	var air_decel_base: float = max(air_decel, 0.0)
+	if shared_motor_active:
+		if is_attached:
+			ground_decel_effective = max(_sample_curve_by_speed(ground_decel_curve, lateral.length(), decel), 0.0)
+		else:
+			var gravity_horizontal_velocity: Vector3 = v - world_up * v.dot(world_up)
+			air_decel_base = max(_sample_curve_by_speed(air_decel_curve, gravity_horizontal_velocity.length(), air_decel), 0.0)
 	# Effective air decel (ramps in after walking off a surface).
 	var air_decel_effective: float = _get_fall_off_air_decel(delta, air_decel_base)
 	if _hurt_active:
@@ -6208,19 +6211,24 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var downhill_dir: Vector3 = Vector3.ZERO
 	var slope_gravity: Vector3 = Vector3.ZERO
 	var slope_speed_factor: float = 0.0
+	var support_normal: Vector3 = Vector3.ZERO
+	var support_angle_deg: float = 0.0
+	if (is_attached or attached) and surface_normal.length() > 0.001:
+		support_normal = surface_normal.normalized()
+		support_angle_deg = rad_to_deg(acos(clamp(support_normal.dot(world_up), -1.0, 1.0)))
 
 	if is_attached and surface_normal.length() > 0.001:
-		var surf_n: Vector3 = surface_normal.normalized()
+		var surf_n: Vector3 = support_normal
 
 		# Angle vs gravity-up.
 		# 0°   = floor
 		# 90°  = vertical wall
 		# 180° = ceiling
-		var cos_up: float = clamp(surf_n.dot(world_up), -1.0, 1.0)
-		slope_angle_deg = rad_to_deg(acos(cos_up))
+		slope_angle_deg = support_angle_deg
 
 		# Downhill direction follows resolved gravity projected onto the contact plane.
-		var g: Vector3 = -world_up * get_effective_gravity_strength()
+		var gravity_strength: float = get_effective_gravity_strength()
+		var g: Vector3 = -world_up * gravity_strength
 		var g_tangent: Vector3 = g - surf_n * g.dot(surf_n)
 		var g_len: float = g_tangent.length()
 		if g_len > 0.001:
@@ -6231,7 +6239,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				near_flat_fade = _smoothstep_unit(slope_angle_deg / full_response_angle)
 			slope_gravity = g_tangent * near_flat_fade
 			has_slope = slope_gravity.length() > 0.001
-			var effective_gravity: float = max(get_effective_gravity_strength(), 0.0)
+			var effective_gravity: float = max(gravity_strength, 0.0)
 			if effective_gravity > 0.001:
 				slope_speed_factor = clamp(g_len / effective_gravity, 0.0, 1.0)
 
@@ -6241,9 +6249,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var is_loop_surface: bool = false
 
 	if attached and surface_normal.length() > 0.001:
-		var n: Vector3 = surface_normal.normalized()
-		var dot_w: float = clamp(n.dot(world_up), -1.0, 1.0)
-		var surf_angle: float = rad_to_deg(acos(dot_w))
+		var surf_angle: float = support_angle_deg
 
 		# Enter loop mode at steep angle
 		var enter_deg: float = loop_input_steep_angle_deg        # e.g. 90
@@ -6264,8 +6270,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	# --------------------------------------------------
 	# Update loop forward direction from lateral motion
 	# --------------------------------------------------
+	var lateral_speed_before_motor: float = lateral.length()
 	if is_attached and is_loop_surface:
-		var lat_speed: float = lateral.length()
+		var lat_speed: float = lateral_speed_before_motor
 		if lat_speed > 0.1:
 			_loop_forward_dir = (lateral / lat_speed)
 
@@ -6328,7 +6335,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	# --------------------------------------------------
 	# DRIFT STATE (ground-only, slope uses gravity-up angle)
 	# --------------------------------------------------
-	var lateral_speed_for_drift: float = lateral.length()
+	var lateral_speed_for_drift: float = lateral_speed_before_motor
 	var drift_input_side_for_state: int = _get_drift_input_side(lateral, _move_direction, physics_up)
 	var drift_input_strength_for_state: float = movement_input_strength
 	_update_drift_state(
@@ -6399,7 +6406,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			var skid_allowed: bool = slope_angle_deg <= skid_max_ground_angle_deg
 
 			if skid_allowed:
-				var lateral_speed: float = lateral.length()
+				var lateral_speed: float = lateral_speed_before_motor
 				if lateral_speed >= skid_enter_min_speed or _is_skidding:
 					var vel_dir: Vector3 = lateral.normalized()
 
@@ -6448,7 +6455,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var sticky_brake_input_active: bool = (
 		sticky_surface_active
 		and movement_input_active
-		and lateral.length() > 0.001
+		and lateral_speed_before_motor > 0.001
 		and slope_control_direction.length() > 0.001
 		and slope_control_direction.dot(lateral.normalized()) < 0.0
 	)
@@ -6506,7 +6513,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			0.001
 		)
 		var low_speed_weight: float = 1.0 - _smoothstep_unit(
-			lateral.length() / momentum_preserve_speed
+			lateral_speed_before_motor / momentum_preserve_speed
 		)
 		slope_reversal_guard_control_weight = (
 			clamp(_slope_reversal_debt, 0.0, 1.0)
@@ -6545,7 +6552,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		passive_slope_context
 		and not _slope_passive_sliding
 		and max(slope_idle_hold_speed, 0.0) > 0.0
-		and lateral.length() <= max(slope_idle_hold_speed, 0.0)
+		and lateral_speed_before_motor <= max(slope_idle_hold_speed, 0.0)
 	)
 	var movement_release_decel_bypass: bool = (
 		is_rolling
@@ -6578,7 +6585,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			else:
 				move_dir = Vector3.ZERO
 
-		var lateral_speed: float = lateral.length()
+		var lateral_speed: float = lateral_speed_before_motor
 		var drift_controls_active: bool = _drift_active and not _drift_exit_active and is_attached
 		var bypass_intent_smoothing: bool = (
 			_drift_active
@@ -10083,6 +10090,7 @@ func _init_abilities() -> void:
 	_init_actions()
 
 func _init_actions() -> void:
+	_actions_by_id.clear()
 	_ensure_modules()
 	if _ability_input_router != null:
 		_ability_input_router.reload_profile()
@@ -10362,9 +10370,14 @@ func _execute_character_profile_route(route: Dictionary, context: Dictionary = {
 func _get_action_by_id(action_id: StringName):
 	if action_id == &"":
 		return null
+	var cached_action: Variant = _actions_by_id.get(action_id)
+	if is_instance_valid(cached_action) and StringName(cached_action.action_id) == action_id:
+		return cached_action
 	for action in _actions:
 		if action != null and is_instance_valid(action) and StringName(action.action_id) == action_id:
+			_actions_by_id[action_id] = action
 			return action
+	_actions_by_id.erase(action_id)
 	return null
 
 

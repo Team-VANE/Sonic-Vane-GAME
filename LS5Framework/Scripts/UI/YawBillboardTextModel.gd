@@ -48,6 +48,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if not is_visible_in_tree():
+		_set_canvas_visible(false)
+		return
 	var viewport: Viewport = get_viewport()
 	if viewport == null:
 		_set_canvas_visible(false)
@@ -60,11 +63,15 @@ func _process(_delta: float) -> void:
 	direction.y = 0.0
 	if direction.length_squared() > 0.000001:
 		var yaw: float = atan2(direction.x, direction.z)
-		global_rotation = Vector3(0.0, yaw, 0.0)
+		var billboard_rotation: Vector3 = Vector3(0.0, yaw, 0.0)
+		if not global_rotation.is_equal_approx(billboard_rotation):
+			global_rotation = billboard_rotation
 	_update_canvas_projection(camera, viewport)
 
 
 func set_title_and_info(title: String, info: String) -> void:
+	if not _message_mode and title_text == title and info_text == info:
+		return
 	title_text = title
 	info_text = info
 	message_text = ""
@@ -75,6 +82,8 @@ func set_title_and_info(title: String, info: String) -> void:
 
 
 func set_message(message: String, is_prompt: bool = false) -> void:
+	if _message_mode and message_text == message and _prompt_mode == is_prompt:
+		return
 	message_text = message
 	_message_mode = true
 	_prompt_mode = is_prompt
@@ -83,18 +92,29 @@ func set_message(message: String, is_prompt: bool = false) -> void:
 
 
 func configure(pixel_size: float, tint: Color, _no_depth_test: bool, _render_layers: int = POST_PROCESS_EXEMPT_3D_LAYER, panel_width: float = 0.0) -> void:
-	_pixel_size = max(pixel_size, 0.001)
-	_base_tint = tint
+	var next_pixel_size: float = max(pixel_size, 0.001)
+	var next_width: float = _info_panel_max_width
 	if not _message_mode and panel_width > 0.0:
-		_info_panel_max_width = clamp(panel_width, INFO_PANEL_MIN_WIDTH, INFO_PANEL_MAX_WIDTH)
+		next_width = clamp(panel_width, INFO_PANEL_MIN_WIDTH, INFO_PANEL_MAX_WIDTH)
+	if _panel != null and _pixel_size == next_pixel_size and _base_tint == tint and _info_panel_max_width == next_width:
+		return
+	var layout_changed: bool = _pixel_size != next_pixel_size or _info_panel_max_width != next_width
+	_pixel_size = next_pixel_size
+	_base_tint = tint
+	_info_panel_max_width = next_width
+	if not _message_mode and layout_changed:
 		_update_info_panel_layout()
 	_ensure_model()
 	_apply_content()
 
 
 func set_opacity(value: float) -> void:
-	_opacity = clamp(value, 0.0, 1.0)
-	_apply_colors()
+	var next_opacity: float = clamp(value, 0.0, 1.0)
+	if _opacity == next_opacity:
+		return
+	_opacity = next_opacity
+	if _panel != null:
+		_panel.modulate = Color(1.0, 1.0, 1.0, _opacity)
 
 
 func _ensure_model() -> void:
@@ -122,6 +142,7 @@ func _ensure_model() -> void:
 	_panel = Panel.new()
 	_panel.name = "Panel"
 	_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_panel.modulate = Color(1.0, 1.0, 1.0, _opacity)
 	_panel.add_theme_stylebox_override("panel", _panel_style)
 	_canvas_layer.add_child(_panel)
 	_scanline_effect = CRT_EFFECT_SCRIPT.new()
@@ -267,7 +288,7 @@ func _measure_title_width(text: String, font_size: int) -> float:
 func _apply_colors() -> void:
 	if _panel == null:
 		return
-	var tint_alpha: float = _base_tint.a * _opacity
+	var tint_alpha: float = _base_tint.a
 	var frame_color: Color = PROMPT_COLOR if _prompt_mode else FRAME_COLOR
 	var accent_color: Color = PROMPT_COLOR if _prompt_mode else HIGHLIGHT_COLOR
 	_panel_style.bg_color = Color(PANEL_COLOR.r * _base_tint.r, PANEL_COLOR.g * _base_tint.g, PANEL_COLOR.b * _base_tint.b, PANEL_COLOR.a * tint_alpha)
@@ -296,13 +317,17 @@ func _update_canvas_projection(camera: Camera3D, viewport: Viewport) -> void:
 	var global_scale_value: float = (global_basis.x.length() + global_basis.y.length() + global_basis.z.length()) / 3.0
 	var canvas_scale: float = max((pixels_per_world_unit / PIXELS_PER_WORLD_UNIT) * global_scale_value, 0.001)
 	var screen_position: Vector2 = camera.unproject_position(global_position)
-	_panel.scale = Vector2.ONE * canvas_scale
-	_panel.position = screen_position - _panel.size * 0.5
+	var projected_scale: Vector2 = Vector2.ONE * canvas_scale
+	var projected_position: Vector2 = screen_position - _panel.size * 0.5
+	if _panel.scale != projected_scale:
+		_panel.scale = projected_scale
+	if _panel.position != projected_position:
+		_panel.position = projected_position
 	_set_canvas_visible(is_visible_in_tree())
 
 
 func _set_canvas_visible(value: bool) -> void:
-	if _canvas_layer != null:
+	if _canvas_layer != null and _canvas_layer.visible != value:
 		_canvas_layer.visible = value
 
 

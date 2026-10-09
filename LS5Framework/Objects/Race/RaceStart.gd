@@ -1147,6 +1147,7 @@ func _ensure_race_label() -> void:
 func _update_race_label_text() -> void:
 	if _race_label == null:
 		return
+	_apply_race_label_visuals()
 	var display_level: String = _get_display_level_name()
 	var race_id_text: String = _get_race_id_value()
 	if race_id_text == "" or not GhostDataManager.is_valid_race_id(race_id_text):
@@ -1164,24 +1165,24 @@ func _update_race_label_text() -> void:
 	var info: String = "%s\nRACE ID  %s%s\nHIGH SCORE  %s" % [get_race_type_name(), race_id_text, collection_text, best_text]
 	_race_label.set_title_and_info(display_level, info)
 
-	_apply_race_label_visuals()
-
 
 func _apply_race_label_visuals() -> void:
 	if _race_label == null:
 		return
 	var panel_width: float = race_label_width * race_label_pixel_size * 0.4
 	_race_label.configure(race_label_pixel_size, race_label_color, race_label_no_depth_test, POST_PROCESS_EXEMPT_3D_LAYER, panel_width)
-	_race_label.position = race_label_offset
-	_update_race_label_distance_visibility()
+	if _race_label.position != race_label_offset:
+		_race_label.position = race_label_offset
 
 
 func _update_race_label_distance_visibility() -> void:
 	if _race_label == null:
 		return
 	if not race_label_distance_fade_enabled:
-		_race_label.visible = true
-		_race_label.scale = Vector3.ONE
+		if not _race_label.visible:
+			_race_label.visible = true
+		if _race_label.scale != Vector3.ONE:
+			_race_label.scale = Vector3.ONE
 		_race_label.set_opacity(1.0)
 		return
 
@@ -1202,8 +1203,12 @@ func _update_race_label_distance_visibility() -> void:
 		var fade_span: float = max(1.0 - opacity_start_fraction, 0.001)
 		alpha_factor = 1.0 - clamp((distance_fraction - opacity_start_fraction) / fade_span, 0.0, 1.0)
 
-	_race_label.scale = Vector3.ONE * scale_factor
-	_race_label.visible = scale_factor > 0.001 and alpha_factor > 0.001
+	var label_scale: Vector3 = Vector3.ONE * scale_factor
+	var label_visible: bool = scale_factor > 0.001 and alpha_factor > 0.001
+	if _race_label.scale != label_scale:
+		_race_label.scale = label_scale
+	if _race_label.visible != label_visible:
+		_race_label.visible = label_visible
 	_race_label.set_opacity(alpha_factor)
 
 

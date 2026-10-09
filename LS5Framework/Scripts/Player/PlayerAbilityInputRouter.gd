@@ -9,6 +9,7 @@ var _binding_slots: Dictionary = {}
 var _binding_group_keys: Dictionary = {}
 var _routes: Array[Dictionary] = []
 var _sorted_routes: Array[Dictionary] = []
+var _input_route_index: Dictionary = {}
 var _monitored_groups: Array[Dictionary] = []
 var _monitored_slots: Array[StringName] = []
 var _gesture_held_times: Dictionary = {}
@@ -40,6 +41,7 @@ func dispose() -> void:
 	_binding_group_keys.clear()
 	_routes.clear()
 	_sorted_routes.clear()
+	_input_route_index.clear()
 	_monitored_groups.clear()
 	_monitored_slots.clear()
 	_clear_gesture_state()
@@ -55,6 +57,7 @@ func reload_profile() -> void:
 	_binding_slots.clear()
 	_binding_group_keys.clear()
 	_routes.clear()
+	_input_route_index.clear()
 	_clear_gesture_state()
 	if profile:
 		for binding: Dictionary in CharacterProfileManager.get_effective_loadout(profile):
@@ -69,6 +72,23 @@ func reload_profile() -> void:
 		return int(first.get("priority", 10)) > int(second.get("priority", 10))
 	)
 	_cache_monitored_bindings()
+	_cache_input_routes()
+
+
+func _cache_input_routes() -> void:
+	for route: Dictionary in _routes:
+		var event: StringName = StringName(route.get("event", &""))
+		if event != CharacterProfileManager.ROUTE_EVENT_ABILITY_TRIGGERED and event != CharacterProfileManager.ROUTE_EVENT_INPUT_PRESSED and event != CharacterProfileManager.ROUTE_EVENT_INPUT_HELD and event != CharacterProfileManager.ROUTE_EVENT_INPUT_RELEASED:
+			continue
+		var source: StringName = StringName(route.get("source_action", &""))
+		var target: StringName = StringName(route.get("target_action", &""))
+		if not _input_route_index.has(source):
+			_input_route_index[source] = {}
+		var targets: Dictionary = _input_route_index[source]
+		if not targets.has(target):
+			targets[target] = {}
+		var inputs: Dictionary = targets[target]
+		inputs[resolve_route_input_action(route)] = true
 
 
 func update(delta: float) -> void:
@@ -375,17 +395,9 @@ func has_input_route(source_action: StringName, input_action: StringName) -> boo
 
 
 func is_action_routed_from_input(source_action: StringName, input_action: StringName, target_action: StringName) -> bool:
-	for route: Dictionary in _routes:
-		if StringName(route.get("source_action", &"")) != source_action:
-			continue
-		if StringName(route.get("target_action", &"")) != target_action:
-			continue
-		var event: StringName = StringName(route.get("event", &""))
-		if event != CharacterProfileManager.ROUTE_EVENT_ABILITY_TRIGGERED and event != CharacterProfileManager.ROUTE_EVENT_INPUT_PRESSED and event != CharacterProfileManager.ROUTE_EVENT_INPUT_HELD and event != CharacterProfileManager.ROUTE_EVENT_INPUT_RELEASED:
-			continue
-		if resolve_route_input_action(route) == input_action:
-			return true
-	return false
+	var targets: Dictionary = _input_route_index.get(source_action, {})
+	var inputs: Dictionary = targets.get(target_action, {})
+	return inputs.has(input_action)
 
 
 func resolve_route_input_action(route: Dictionary) -> StringName:
