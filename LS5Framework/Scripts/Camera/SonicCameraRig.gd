@@ -422,6 +422,7 @@ var _distance_target: float                  # internal zoom target
 @export var barrier_blast_radial_blur_multiplier: float = 1.55
 
 @export_group("Up Vector")
+## Legacy scene value; saved camera orientation takes priority.
 @export var use_player_up: bool = false
 @export_range(0.0, 1.0) var player_up_influence: float = 1.0
 ## Slerp speed for blending camera up toward player up (0 = instant).
@@ -577,7 +578,7 @@ func _ready() -> void:
 	_constraint_mouse_debug = preload("res://LS5Framework/Scripts/Camera/Constraints/CameraMouseOffsetDebug.gd").new()
 	_constraint_mouse_debug.set("rig", self)
 	debug_layer.add_child(_constraint_mouse_debug)
-	_player_up_toggle_enabled = use_player_up
+	_player_up_toggle_enabled = SettingsManager.camera_player_up_enabled
 	if not is_in_group("CameraRig"):
 		add_to_group("CameraRig")
 
@@ -3084,8 +3085,16 @@ func get_player_up_toggle() -> bool:
 	return _player_up_toggle_enabled
 
 
+func restore_camera_orientation_preference() -> void:
+	if _player_up_toggle_enabled == SettingsManager.camera_player_up_enabled:
+		return
+	_player_up_toggle_enabled = SettingsManager.camera_player_up_enabled
+	_sync_camera_orientation_hud(false)
+
+
 func set_player_up_toggle(value: bool, animate: bool = false) -> void:
 	_player_up_toggle_enabled = value
+	SettingsManager.set_camera_player_up_enabled(value)
 	if is_instance_valid(_constraint_driver.selected):
 		_constraint_driver.selected.alignment_override_dismissed = true
 	_sync_camera_orientation_hud(animate)

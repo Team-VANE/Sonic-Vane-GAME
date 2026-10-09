@@ -122,6 +122,7 @@ var camera_far_cutoff: float = 4560.0
 var camera_default_fov: float = 66.0
 var camera_follow_smoothing: float = 39.0
 var camera_dolly_enabled: bool = false
+var camera_player_up_enabled: bool = false
 var camera_target_lookahead_enabled: bool = true
 var camera_target_lookahead_amount: float = 100.0
 var camera_auto_follow_enabled: bool = true
@@ -700,6 +701,8 @@ func _apply_camera_to_scene() -> void:
 			rig.call("set_follow_smoothing", camera_follow_smoothing)
 		if rig.has_method("set_dolly_follow_enabled"):
 			rig.call("set_dolly_follow_enabled", camera_dolly_enabled)
+		if rig.has_method("restore_camera_orientation_preference"):
+			rig.call("restore_camera_orientation_preference")
 		if rig.has_method("set_target_lookahead_enabled"):
 			rig.call("set_target_lookahead_enabled", camera_target_lookahead_enabled)
 		if rig.has_method("set_target_lookahead_amount"):
@@ -1249,6 +1252,13 @@ func set_camera_follow_smoothing(value: float) -> void:
 func set_camera_dolly_enabled(value: bool) -> void:
 	camera_dolly_enabled = value
 	_apply_camera_to_scene()
+
+
+func set_camera_player_up_enabled(value: bool) -> void:
+	if camera_player_up_enabled == value:
+		return
+	camera_player_up_enabled = value
+	_save()
 
 
 func set_camera_target_lookahead_enabled(value: bool) -> void:
@@ -2237,6 +2247,7 @@ func _write_settings_config(cfg: ConfigFile) -> void:
 	cfg.set_value("camera", "far_cutoff", camera_far_cutoff)
 	cfg.set_value("camera", "default_fov", camera_default_fov)
 	cfg.set_value("camera", "dolly_enabled", camera_dolly_enabled)
+	cfg.set_value("camera", "player_up_enabled", camera_player_up_enabled)
 	cfg.set_value("camera", "target_lookahead_enabled", camera_target_lookahead_enabled)
 	cfg.set_value("camera", "target_lookahead_amount", camera_target_lookahead_amount)
 	cfg.set_value("camera", "auto_follow_enabled", camera_auto_follow_enabled)
@@ -2501,6 +2512,7 @@ func _load() -> void:
 	camera_far_cutoff = max(camera_far_cutoff, 1.0)
 	camera_default_fov = clamp(float(cfg.get_value("camera", "default_fov", camera_default_fov)), CAMERA_FOV_MIN, CAMERA_FOV_MAX)
 	camera_dolly_enabled = bool(cfg.get_value("camera", "dolly_enabled", camera_dolly_enabled))
+	camera_player_up_enabled = bool(cfg.get_value("camera", "player_up_enabled", camera_player_up_enabled))
 	camera_target_lookahead_enabled = bool(cfg.get_value("camera", "target_lookahead_enabled", camera_target_lookahead_enabled))
 	camera_target_lookahead_amount = float(cfg.get_value("camera", "target_lookahead_amount", camera_target_lookahead_amount))
 	camera_auto_follow_enabled = bool(cfg.get_value("camera", "auto_follow_enabled", camera_auto_follow_enabled))
