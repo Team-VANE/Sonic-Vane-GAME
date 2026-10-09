@@ -2,7 +2,3 @@
 .godot/
 /android/
 LS5Engine3_CodexFiles/
-
-# Build and packaging output
-build/
-dist/
