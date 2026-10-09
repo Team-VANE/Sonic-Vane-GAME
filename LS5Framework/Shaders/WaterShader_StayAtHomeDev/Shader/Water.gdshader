@@ -188,7 +188,7 @@ void vertex() {
 	flat_world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	world_pos = flat_world_pos;
 	
-	if (water_displacement_enabled) {
+	if (water_displacement_enabled && height_scale != 0.0 && displacement_weight > 0.0) {
 		float h = textureLod(wave, (sample_pos / max(noise_scale, 0.0001)) * wave_uv_scale + TIME * time_scale, texture_lod).r;
 		float h_mean = textureLod(wave, vec2(0.5), 10.0).r;
 		VERTEX.y += (h - h_mean) * height_scale * displacement_weight;
@@ -215,6 +215,7 @@ void fragment() {
 	float depth_blend = 1.0;
 	float edge_factor = 0.0;
 	float absorption = 0.0;
+	bool refraction_active = water_refraction_enabled && refraction_strength > 0.0;
 	if (water_depth_effects_enabled) {
 		// Scene depth at this pixel.
 		float raw_depth = texture(depth_tex, SCREEN_UV).r;
@@ -240,7 +241,7 @@ void fragment() {
 		// Edge/foam factor:
 		// Use absolute depth gap so foam appears when objects touch/intersect the water surface,
 		// regardless of whether the object is slightly in front of or behind the water plane.
-		if (!no_scene_hit) {
+		if (!no_scene_hit && edge_strength > 0.0) {
 			float depth_gap = abs(scene_depth - water_depth) + max(depth_offset, 0.0);
 			float a = max(edge_start, 0.0);
 			float b = max(edge_start + edge_width, a + 0.0001);
@@ -249,15 +250,19 @@ void fragment() {
 		}
 
 		// Absorption: more thickness = less of the background scene shows through.
-		if (water_refraction_enabled) {
-			absorption = exp(-beers_law * thickness);
-			absorption = clamp(absorption, 0.0, 1.0);
+		if (refraction_active) {
+			absorption = 1.0;
+			if (beers_law > 0.0) {
+				absorption = clamp(exp(-beers_law * thickness), 0.0, 1.0);
+			}
 		}
 	}
 
 	// Normal maps (world-space UVs, mixed and normalized).
 	vec3 n_mix = vec3(0.0, 0.0, 1.0);
-	if (water_normal_maps_enabled) {
+	float normal_strength = mix(1.0, clamp(distant_normal_strength, 0.0, 1.0), detail_fade);
+	bool normals_active = water_normal_maps_enabled && normal_strength > 0.0;
+	if (normals_active) {
 		vec2 sample_pos = flat_world_pos.xz;
 		vec2 t1 = (TIME * wave_direction) * time_scale;
 		vec2 t2 = (TIME * wave_direction2) * time_scale;
@@ -268,7 +273,6 @@ void fragment() {
 		vec3 n1 = unpack_normal(textureGrad(texture_normal, uv1, dFdx(uv1) * gradient_scale, dFdy(uv1) * gradient_scale).rgb);
 		vec3 n2 = unpack_normal(textureGrad(texture_normal2, uv2, dFdx(uv2) * gradient_scale, dFdy(uv2) * gradient_scale).rgb);
 		n_mix = normalize(mix(n1, n2, 0.5));
-		float normal_strength = mix(1.0, clamp(distant_normal_strength, 0.0, 1.0), detail_fade);
 		n_mix = normalize(mix(vec3(0.0, 0.0, 1.0), n_mix, normal_strength));
 		
 		// Two-sided water: flip tangent-space XY on backfaces so normals don't look inverted underwater.
@@ -280,7 +284,7 @@ void fragment() {
 
 	// View-space normal (tangent-space normal map -> view space).
 	vec3 view_normal = normalize(NORMAL);
-	if (water_normal_maps_enabled) {
+	if (normals_active) {
 		vec3 t = normalize(TANGENT);
 		vec3 b = normalize(BINORMAL);
 		vec3 n = normalize(NORMAL);
@@ -289,17 +293,20 @@ void fragment() {
 	}
 
 	vec3 view_dir = normalize(VIEW);
-	vec3 normal_dx = dFdx(n_mix);
-	vec3 normal_dy = dFdy(n_mix);
-	float normal_variance = max(dot(normal_dx, normal_dx), dot(normal_dy, normal_dy));
-	float filtered_roughness = sqrt(roughness * roughness + normal_variance * max(specular_aa_strength, 0.0));
+	float filtered_roughness = roughness;
+	if (normals_active && specular_aa_strength > 0.0) {
+		vec3 normal_dx = dFdx(n_mix);
+		vec3 normal_dy = dFdy(n_mix);
+		float normal_variance = max(dot(normal_dx, normal_dx), dot(normal_dy, normal_dy));
+		filtered_roughness = sqrt(roughness * roughness + normal_variance * specular_aa_strength);
+	}
 	filtered_roughness = max(filtered_roughness, mix(roughness, distant_roughness, detail_fade));
 	filtered_roughness = clamp(filtered_roughness, 0.0, 1.0);
 
 	// Refraction: distort screen UV by the mixed normal.
 	vec3 scene_col = vec3(1.0);
 	// Skip screen sampling when depth effects are off to avoid unnecessary texture fetches.
-	if (water_refraction_enabled && water_depth_effects_enabled && !no_scene_hit) {
+	if (refraction_active && water_depth_effects_enabled && !no_scene_hit) {
 		vec2 refr_uv = SCREEN_UV + n_mix.xy * refraction_strength;
 		scene_col = textureLod(screen_tex, refr_uv, depth_blend * refraction_mip_scale).rgb;
 	}
@@ -312,10 +319,11 @@ void fragment() {
 	float f = fresnel_term(5.0, view_normal, view_dir);
 	vec3 surface_col = mix(albedo, albedo2, f);
 	vec3 col = mix(base_col, surface_col, f * 0.35);
-	vec3 scatter_col = mix(color_shallow.rgb, color_deep.rgb, clamp(depth_blend * 0.65, 0.0, 1.0));
 
 	// Screen-space reflections (custom SSR, based on depth buffer).
-	if (water_ssr_enabled && ssr_strength > 0.0 && !no_scene_hit) {
+	float ssr_camera_end = max(ssr_camera_fade_end, ssr_camera_fade_start + 0.001);
+	float camera_fade = 1.0 - smoothstep(ssr_camera_fade_start, ssr_camera_end, view_distance);
+	if (water_ssr_enabled && ssr_strength > 0.0 && ssr_max_distance > 0.0 && ssr_max_steps > 0 && camera_fade > 0.0 && !no_scene_hit) {
 		vec2 hit_uv = vec2(0.0);
 		float hit_t = 0.0;
 		vec3 refl_dir = normalize(reflect(-view_dir, view_normal));
@@ -333,8 +341,6 @@ void fragment() {
 
 				float lod = clamp(filtered_roughness * ssr_roughness_mip, 0.0, ssr_roughness_mip);
 				vec3 ssr_col = textureLod(screen_tex, hit_uv, lod).rgb;
-				float ssr_camera_end = max(ssr_camera_fade_end, ssr_camera_fade_start + 0.001);
-				float camera_fade = 1.0 - smoothstep(ssr_camera_fade_start, ssr_camera_end, view_distance);
 				float ssr_mix = clamp(ssr_strength * edge_fade * dist_fade * camera_fade * f, 0.0, 1.0);
 				col = mix(col, ssr_col, ssr_mix);
 			}
@@ -342,14 +348,23 @@ void fragment() {
 	}
 
 	// Foam/edge override.
-	col = mix(col, edge_color, edge_factor);
+	if (edge_factor > 0.0) {
+		col = mix(col, edge_color, edge_factor);
+	}
 
 	ALBEDO = clamp(col, vec3(0.0), vec3(1.0));
-	EMISSION = scatter_col * max(water_scatter_strength, 0.0);
-	float gi_fade_end = max(gi_fallback_fade_end, gi_fallback_fade_start + 0.001);
-	float gi_distance_blend = smoothstep(gi_fallback_fade_start, gi_fade_end, view_distance);
-	float gi_fallback_blend = mix(clamp(gi_fallback_near_blend, 0.0, 1.0), 1.0, gi_distance_blend);
-	IRRADIANCE = vec4(vec3(max(gi_fallback_irradiance, 0.0)), gi_fallback_blend);
+	EMISSION = vec3(0.0);
+	if (water_scatter_strength > 0.0) {
+		vec3 scatter_col = mix(color_shallow.rgb, color_deep.rgb, clamp(depth_blend * 0.65, 0.0, 1.0));
+		EMISSION = scatter_col * water_scatter_strength;
+	}
+	IRRADIANCE = vec4(0.0);
+	if (gi_fallback_irradiance > 0.0) {
+		float gi_fade_end = max(gi_fallback_fade_end, gi_fallback_fade_start + 0.001);
+		float gi_distance_blend = smoothstep(gi_fallback_fade_start, gi_fade_end, view_distance);
+		float gi_fallback_blend = mix(clamp(gi_fallback_near_blend, 0.0, 1.0), 1.0, gi_distance_blend);
+		IRRADIANCE = vec4(vec3(gi_fallback_irradiance), gi_fallback_blend);
+	}
 	METALLIC = metallic;
 	ROUGHNESS = filtered_roughness;
 	ALPHA = alpha;

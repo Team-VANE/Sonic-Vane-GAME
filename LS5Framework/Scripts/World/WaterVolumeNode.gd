@@ -99,17 +99,17 @@ extends Node3D
 	set(v):
 		water_depth_offset = v
 		_push_shader_params()
-## Absorption strength for refracted scene color.
+## Absorption strength for refracted scene color. Zero disables absorption.
 @export_range(0.0, 10.0, 0.05) var water_beers_law: float = 2.0:
 	set(v):
 		water_beers_law = v
 		_push_shader_params()
-## Strength of the edge foam blend.
+## Strength of the edge foam blend. Zero disables foam calculations.
 @export_range(0.0, 2.0, 0.01) var water_edge_strength: float = 1.0:
 	set(v):
 		water_edge_strength = v
 		_push_shader_params()
-## Strength of screen-space refraction.
+## Strength of screen-space refraction. Zero disables refracted scene sampling.
 @export_range(0.0, 0.2, 0.001) var water_refraction_strength: float = 0.058:
 	set(v):
 		water_refraction_strength = v
@@ -153,7 +153,7 @@ extends Node3D
 		_build_lod()
 
 @export_group("Wave")
-## Height of wave displacement in world units.
+## Height of wave displacement in world units. Zero disables wave texture sampling.
 @export var wave_height: float = 5.0:
 	set(v):
 		wave_height = v
@@ -195,12 +195,12 @@ extends Node3D
 	set(v):
 		normal_detail_fade_end = v
 		_push_shader_params()
-## Normal-map strength retained beyond the detail fade distance.
+## Normal-map strength retained beyond the detail fade distance. Zero skips normal sampling there.
 @export_range(0.0, 1.0, 0.01) var distant_normal_strength: float = 0.2:
 	set(v):
 		distant_normal_strength = v
 		_push_shader_params()
-## Roughness added where normal-map variance would cause specular aliasing.
+## Roughness added where normal-map variance would cause specular aliasing. Zero disables variance calculations.
 @export_range(0.0, 2.0, 0.01) var specular_aa_strength: float = 0.35:
 	set(v):
 		specular_aa_strength = v
@@ -220,7 +220,7 @@ extends Node3D
 	set(v):
 		ssr_camera_fade_end = v
 		_push_shader_params()
-## Stable subsurface-scattering approximation used to support the water tint.
+## Stable subsurface-scattering approximation used to support the water tint. Zero disables scattering.
 @export_range(0.0, 0.5, 0.005) var water_scatter_strength: float = 0.06:
 	set(v):
 		water_scatter_strength = v
@@ -235,7 +235,7 @@ extends Node3D
 	set(v):
 		gi_fallback_fade_end = v
 		_push_shader_params()
-## Diffuse irradiance used beyond SDFGI coverage while radiance reflections remain active.
+## Diffuse irradiance used beyond SDFGI coverage while radiance reflections remain active. Zero disables the fallback.
 @export_range(0.0, 2.0, 0.01) var gi_fallback_irradiance: float = 0.45:
 	set(v):
 		gi_fallback_irradiance = v

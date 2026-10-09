@@ -202,6 +202,11 @@ func refresh_submersion_state() -> void:
 		return
 	if p._running_on_water_surface and not p.attached:
 		p._running_on_water_surface = false
+	if p._running_on_water_surface:
+		p._in_water_volume = false
+	elif p._water_volume_count > 0:
+		# Surface exits restore immersion without another detector entry.
+		p._in_water_volume = true
 
 	var was_fully_submerged: bool = p._fully_submerged
 	if p.attached:

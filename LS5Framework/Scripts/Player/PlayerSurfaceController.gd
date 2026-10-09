@@ -408,8 +408,6 @@ func _try_ground_snap_attach(world_up: Vector3, v_before: Vector3 = Vector3.ZERO
 		return
 	if p.ground_ray == null:
 		return
-	if not p.ground_ray.is_colliding():
-		return
 	if p.ground_snap_max_distance <= 0.0:
 		return
 	if p._rail_active or p._spline_active or p._homing_active:
@@ -430,6 +428,15 @@ func _try_ground_snap_attach(world_up: Vector3, v_before: Vector3 = Vector3.ZERO
 	# Only snap if we're close and not moving upward (prevents breaking launches).
 	var vertical: float = p.velocity.dot(up)
 	if vertical > 1.0:
+		return
+
+	# Airborne landing probes use gravity-up rather than the last ground normal.
+	var ray_origin: Vector3 = p.global_position
+	var ray_end: Vector3 = ray_origin - up * p.ground_ray_length
+	p.ground_ray.global_position = ray_origin
+	p.ground_ray.target_position = p.ground_ray.to_local(ray_end)
+	p.ground_ray.force_raycast_update()
+	if not p.ground_ray.is_colliding():
 		return
 
 	var hit_collider = p.ground_ray.get_collider()
