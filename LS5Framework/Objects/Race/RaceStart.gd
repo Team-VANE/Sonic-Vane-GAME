@@ -47,8 +47,10 @@ signal ring_race_completed(player: Node)
 @export var starting_line_path: NodePath = NodePath("StartingLine")
 @export var use_child_slots: bool = true
 @export var starting_line_offset: Vector3 = Vector3.ZERO
-## Marker whose local forward direction sets the camera heading after race placement.
+## Marker whose local -Z direction sets camera yaw and pitch after race placement.
 @export_node_path("Node3D") var camera_facing_direction_path: NodePath = NodePath("CameraFacingDirection")
+## Optional marker whose local -Z direction sets player facing along the starting surface. Empty uses CameraFacingDirection.
+@export_node_path("Node3D") var player_facing_direction_path: NodePath = NodePath("")
 
 @export_group("UI")
 @export var level_name: String = "LEVEL"
@@ -2106,14 +2108,16 @@ func _teleport_player_to_start(player: Node) -> void:
 
 
 func _align_camera_to_start(player: Node) -> void:
-	var direction_node: Node = get_node_or_null(camera_facing_direction_path)
-	if direction_node == null and get_tree() != null and get_tree().current_scene != null:
-		direction_node = get_tree().current_scene.get_node_or_null(camera_facing_direction_path)
+	var direction_node: Node3D = _resolve_start_facing_marker(camera_facing_direction_path)
 	if not (direction_node is Node3D):
 		return
 	var direction_transform: Transform3D = (direction_node as Node3D).global_transform
 	var forward: Vector3 = -direction_transform.basis.z
 	var up: Vector3 = direction_transform.basis.y
+	if player.has_method("get_gravity_up"):
+		up = player.call("get_gravity_up")
+	else:
+		up = _get_start_transform_for_player(player).basis.y
 	if forward.length() < 0.001:
 		return
 	if up.length() < 0.001:
@@ -2121,7 +2125,9 @@ func _align_camera_to_start(player: Node) -> void:
 	var rig: Node = _resolve_camera_rig_for_player(player)
 	if rig == null:
 		return
-	if rig.has_method("align_to_direction"):
+	if rig.has_method("align_to_facing_direction"):
+		rig.call("align_to_facing_direction", forward.normalized(), up.normalized())
+	elif rig.has_method("align_to_direction"):
 		rig.call("align_to_direction", forward.normalized(), up.normalized())
 	elif rig.has_method("set_yaw_from_forward"):
 		rig.call("set_yaw_from_forward", forward.normalized(), up.normalized())
@@ -2203,8 +2209,33 @@ func _get_start_transform_for_player(_player: Node) -> Transform3D:
 					base_t = (c as Node3D).global_transform
 					break
 		base_t.origin += starting_line_offset
-		return base_t
-	return global_transform
+		return _apply_start_facing(base_t)
+	return _apply_start_facing(global_transform)
+
+
+func _resolve_start_facing_marker(path: NodePath) -> Node3D:
+	if path.is_empty():
+		return null
+	var marker: Node3D = get_node_or_null(path) as Node3D
+	if not marker and get_tree() and get_tree().current_scene:
+		marker = get_tree().current_scene.get_node_or_null(path) as Node3D
+	return marker
+
+
+func _apply_start_facing(start_transform: Transform3D) -> Transform3D:
+	var marker: Node3D = _resolve_start_facing_marker(player_facing_direction_path)
+	if not marker:
+		marker = _resolve_start_facing_marker(camera_facing_direction_path)
+	if not marker:
+		return start_transform
+	var up: Vector3 = start_transform.basis.y.normalized()
+	var forward: Vector3 = (-marker.global_basis.z).slide(up)
+	if up.length_squared() < 0.001 or forward.length_squared() < 0.001:
+		return start_transform
+	forward = forward.normalized()
+	var right: Vector3 = forward.cross(up).normalized()
+	start_transform.basis = Basis(right, up, -forward) * Basis.from_scale(start_transform.basis.get_scale())
+	return start_transform
 
 
 func _resolve_hud(player: Node) -> Node:

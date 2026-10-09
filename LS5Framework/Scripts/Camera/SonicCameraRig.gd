@@ -3367,6 +3367,18 @@ func align_to_direction(direction: Vector3, up: Vector3 = Vector3.ZERO) -> void:
 	set_yaw_from_forward(direction, up)
 
 
+## Aligns yaw and pitch to an authored facing direction without changing yaw-only launch alignment.
+func align_to_facing_direction(direction: Vector3, up: Vector3 = Vector3.ZERO) -> void:
+	if _constraint_driver.owns_orientation() or direction.length_squared() < 0.001:
+		return
+	var resolved_up: Vector3 = up.normalized()
+	if resolved_up.length_squared() < 0.001:
+		resolved_up = _get_camera_up()
+	set_yaw_from_forward(direction, resolved_up)
+	_pitch = clampf(-asin(clampf(direction.normalized().dot(resolved_up), -1.0, 1.0)), deg_to_rad(min_pitch_deg), deg_to_rad(max_pitch_deg))
+	_control_pitch = _pitch
+
+
 func _reset_base_forward_ref(up: Vector3) -> void:
 	# Reset _base_forward_ref to world +Z projected onto the given up plane.
 	# atan2(f.x, f.z) yields 0 when facing +Z, so the reference must be +Z (Vector3.BACK in Godot).

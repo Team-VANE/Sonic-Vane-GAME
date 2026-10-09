@@ -1,6 +1,7 @@
 @tool
 extends Node3D
 
+## Length of the editor-only forward direction arrow.
 @export var guide_length: float = 1.5:
 	set(value):
 		guide_length = value
@@ -8,6 +9,7 @@ extends Node3D
 			_ensure_mesh()
 			_rebuild_guide()
 
+## Width and length of the forward arrowhead.
 @export var guide_arrow_size: float = 0.3:
 	set(value):
 		guide_arrow_size = value
@@ -15,6 +17,15 @@ extends Node3D
 			_ensure_mesh()
 			_rebuild_guide()
 
+## Local forward axis displayed by the editor guide.
+@export_enum("+Z", "-Z") var guide_forward_axis: int = 0:
+	set(value):
+		guide_forward_axis = value
+		if Engine.is_editor_hint() and is_inside_tree():
+			_ensure_mesh()
+			_rebuild_guide()
+
+## Length of the editor-only up and right axis markers.
 @export var axis_length: float = 0.6:
 	set(value):
 		axis_length = value
@@ -69,6 +80,7 @@ func _rebuild_guide() -> void:
 	var len: float = max(guide_length, 0.01)
 	var arrow: float = max(guide_arrow_size, 0.0)
 	var axis: float = max(axis_length, 0.0)
+	var forward_sign: float = -1.0 if guide_forward_axis == 1 else 1.0
 
 	_mesh.clear_surfaces()
 	_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
@@ -76,12 +88,12 @@ func _rebuild_guide() -> void:
 	# Forward (cyan)
 	_mesh.surface_set_color(Color(0.2, 0.85, 1.0, 1.0))
 	_mesh.surface_add_vertex(Vector3.ZERO)
-	_mesh.surface_add_vertex(Vector3(0.0, 0.0, len))
-	var tip := Vector3(0.0, 0.0, len)
+	var tip: Vector3 = Vector3(0.0, 0.0, len * forward_sign)
 	_mesh.surface_add_vertex(tip)
-	_mesh.surface_add_vertex(tip + Vector3(arrow, 0.0, -arrow))
 	_mesh.surface_add_vertex(tip)
-	_mesh.surface_add_vertex(tip + Vector3(-arrow, 0.0, -arrow))
+	_mesh.surface_add_vertex(tip + Vector3(arrow, 0.0, -arrow * forward_sign))
+	_mesh.surface_add_vertex(tip)
+	_mesh.surface_add_vertex(tip + Vector3(-arrow, 0.0, -arrow * forward_sign))
 
 	# Up (green)
 	_mesh.surface_set_color(Color(0.2, 1.0, 0.4, 1.0))

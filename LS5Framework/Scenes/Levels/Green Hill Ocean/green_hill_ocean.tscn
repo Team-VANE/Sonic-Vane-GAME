@@ -70,7 +70,7 @@ shader_parameter/tex_flat = ExtResource("8_kmp54")
 shader_parameter/tex_glow = ExtResource("9_5ksmr")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 29423.075
+shader_parameter/swap_time = 42952.019
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_62ca1"]
 size = Vector3(71.62383, 61.625034, 58.338074)
@@ -1098,6 +1098,9 @@ mesh = SubResource("BoxMesh_ta676")
 [node name="StartingLine" parent="RaceStartGHO" index="2" unique_id=96905968]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9063926, 0)
 
+[node name="CameraFacingDirection" parent="RaceStartGHO" index="3"]
+transform = Transform3D(0.23581707, 0, 0.97179747, 0, 1, 0, -0.97179747, 0, 0.23581707, 0, 0, 0)
+
 [node name="RaceGoalGHO" parent="." unique_id=765298263 instance=ExtResource("5_4j52g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3672.5503, -4.600024, -5924.319)
 fov_override_enabled = true
@@ -1116,9 +1119,6 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 68.4
 
 [node name="Circle" parent="RaceGoalGHO/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_hcf2b")
-
-[node name="SwapLight" parent="RaceGoalGHO/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
 
 [node name="Checkpoint3" parent="." unique_id=2068731244 instance=ExtResource("1_qr57n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4774.143, 77.77864, -3276.8608)
@@ -1182,33 +1182,28 @@ shape = SubResource("BoxShape3D_y1j2y")
 transform = Transform3D(-0.59629494, 0, 0.80276555, 0, 1, 0, -0.80276555, 0, -0.59629494, 3326.1377, 126.19917, -1525.1123)
 forward_speed = 70.0
 up_speed = 43.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 
 [node name="JumpPanelRamp4" parent="." unique_id=1975007639 instance=ExtResource("7_s5klr")]
 transform = Transform3D(0.5093052, 0, -1.9340652, 0, 2, 0, 1.9340652, 0, 0.5093052, 3133.7964, 97.80881, -1728.1942)
 up_speed = 43.0
-override_previous_lock_timers = null
 
 [node name="JumpPanelRamp6" parent="." unique_id=244397213 instance=ExtResource("7_s5klr")]
 transform = Transform3D(-0.32592872, 0, -1.9732637, 0, 2, 0, 1.9732637, 0, -0.32592872, 3225.6008, 128.47824, -1702.8832)
 forward_speed = 70.0
 up_speed = 35.0
-override_previous_lock_timers = null
 movement_lock_time = 0.4
 action_lock_time = 0.4
 
 [node name="JumpPanelRamp5" parent="." unique_id=1217136749 instance=ExtResource("7_s5klr")]
 transform = Transform3D(-1.9946522, 0, 0.14616314, 0, 2, 0, -0.14616314, 0, -1.9946522, 3008.549, 86.85978, -1715.5768)
 up_speed = 65.0
-override_previous_lock_timers = null
 
 [node name="JumpPanelRamp7" parent="." unique_id=902613976 instance=ExtResource("7_s5klr")]
 transform = Transform3D(-0.99999464, 0, -0.0032812615, 0, 1, 0, 0.0032812615, 0, -0.99999464, 3150.622, -23.368021, -1514.1125)
 forward_speed = 80.0
 up_speed = 62.0
-override_previous_lock_timers = null
 
 [node name="CollisionShape3D" parent="JumpPanelRamp7" index="0" unique_id=641640871]
 transform = Transform3D(3.5, 0, 0, 0, 1, 0, 0, 0, 5.000042, -0.3408203, 0.70004463, -0.012817383)
@@ -1254,7 +1249,6 @@ pop_up_speed_override = -2.0
 process_mode = 3
 transform = Transform3D(2.0856533, -1.3642858, 0.19691262, 0.29336393, 0.7882801, 2.3542626, -1.3468437, -1.9409633, 0.8177245, 2958.1619, 71.23255, -2633.99)
 strength = 220.0
-override_previous_lock_timers = null
 movement_lock_time = 3.0
 action_lock_time = 3.0
 align_time = 3.0
@@ -1264,7 +1258,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.445289, 0.46504283, -0.23302001, 0.41213974, -1.0489397, 2.2315607, 0.317339, -2.2211394, -1.1026495, 2849.783, 133.85367, -2788.1807)
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 3.0
@@ -1283,7 +1276,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.6941757, 2)
 [node name="Spring30" parent="." unique_id=529245930 node_paths=PackedStringArray("spline_path") instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 2869.83, 21.465351, -3468.7427)
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 spline_enabled = true
 spline_path = NodePath("SplinePath")
@@ -1304,7 +1296,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 [node name="Spring31" parent="." unique_id=2136435985 node_paths=PackedStringArray("spline_path") instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(-0.9713959, -0.20565115, 0.118732855, 8.940697e-08, 0.5000001, 0.8660253, -0.23746553, 0.8412536, -0.48569804, 2869.83, 48.35727, -3498.373)
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 spline_enabled = true
 spline_path = NodePath("SplinePath")
@@ -1329,7 +1320,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 process_mode = 3
 transform = Transform3D(0.75627613, 0.6528807, 0.04234575, -3.706722e-09, -0.064723864, 0.9979033, 0.65425247, -0.7546904, -0.04894913, 2849.3628, 99.34034, -3417.2524)
 strength = 80.0
-override_previous_lock_timers = null
 align_time = 1.0
 downward_trajectory_min_angle_deg = 45.0
 
@@ -1345,73 +1335,59 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 5315.1577, 15.758388, -3335.2
 [node name="DashPanel21" parent="." unique_id=702938996 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-0.69948876, 0, -0.7146436, 0, 1, 0, 0.7146436, 0, -0.69948876, 5359.28, 22.79851, -3417.48)
 strength = 170.0
-override_previous_lock_timers = null
 
 [node name="DashPanel38" parent="." unique_id=1418350663 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-0.69948876, 0, -0.7146436, 0, 1, 0, 0.7146436, 0, -0.69948876, 5362.5693, 22.79851, -3421.2454)
 strength = 170.0
-override_previous_lock_timers = null
 
 [node name="DashPanel39" parent="." unique_id=598187099 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-0.69948876, 0, -0.7146436, 0, 1, 0, 0.7146436, 0, -0.69948876, 5365.859, 22.79851, -3425.0107)
 strength = 170.0
-override_previous_lock_timers = null
 
 [node name="DashPanel37" parent="." unique_id=1028295629 instance=ExtResource("10_ikefc")]
 transform = Transform3D(0.34408587, 0, -0.9389383, 0, 1, 0, 0.9389383, 0, 0.34408587, 5016.2124, 248.83284, -3050.0703)
 strength = 110.0
-override_previous_lock_timers = null
 
 [node name="DashPanel22" parent="." unique_id=1872528490 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4773.796, 77.81514, -3248.1353)
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel23" parent="." unique_id=1472994295 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4769.796, 77.81514, -3248.1353)
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel24" parent="." unique_id=961375860 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4765.796, 77.81514, -3248.1353)
 strength = 150.0
-override_previous_lock_timers = null
 
 [node name="DashPanel25" parent="." unique_id=1880386646 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4776.7104, 59.610306, -3097.1353)
 strength = 165.0
-override_previous_lock_timers = null
 
 [node name="DashPanel26" parent="." unique_id=546572587 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4772.7104, 59.610306, -3097.1353)
 strength = 165.0
-override_previous_lock_timers = null
 
 [node name="DashPanel27" parent="." unique_id=879286951 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4768.7104, 59.610306, -3097.1353)
 strength = 165.0
-override_previous_lock_timers = null
 
 [node name="DashPanel28" parent="." unique_id=1536381445 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 4701.3623, 62.887764, -3019.404)
 strength = 180.0
-override_previous_lock_timers = null
 
 [node name="DashPanel29" parent="." unique_id=1649319903 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 4697.3623, 62.887764, -3019.404)
 strength = 180.0
-override_previous_lock_timers = null
 
 [node name="DashPanel30" parent="." unique_id=2040612218 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 4693.3623, 62.887764, -3019.404)
 strength = 180.0
-override_previous_lock_timers = null
 
 [node name="Spring33" parent="." unique_id=215960191 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(0.48637596, 0.8695901, -0.085156076, -0.8727603, 0.48814908, 0, 0.04156886, 0.074320845, 0.99636763, 4633.5, 135.40984, -2551.612)
 strength = 95.0
-override_previous_lock_timers = null
 movement_lock_time = 1.5
 action_lock_time = 1.5
 align_time = 1.5
@@ -1421,7 +1397,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(0.37949425, -0.9240312, -0.046372116, 0.92452735, 0.38064668, -0.018903473, 0.035118792, -0.035698533, 0.9987454, 4689.3438, 166.74518, -2546.8394)
 strength = 105.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_time = 0.3
@@ -1431,14 +1406,12 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.9910316, -1.357771, -0.7303506, 0, 1.5940652, -2.9634748, 1.5417376, 2.6341295, 1.4169089, 4192.743, 30.800224, -2072.9907)
 strength = 110.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring36" parent="." unique_id=599878979 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(3.365, 0, 0, 0, 3.365, 0, 0, 0, 3.3650002, 4193.806, -106.61583, -2121.7004)
 strength = 187.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="HomingTarget6" parent="." unique_id=1205295729 instance=ExtResource("8_22q8k")]
@@ -1460,21 +1433,18 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 4179.7085, 38.345665, -2167.5
 process_mode = 3
 transform = Transform3D(1.9985577, -0.043470666, -0.062265158, 3.0267984e-08, 1.6398842, -1.1448928, 0.07593852, 1.144067, 1.6387016, 3362.9663, 99.29077, -1547.119)
 strength = 90.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring40" parent="." unique_id=1847470338 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(-1.3242947, -0.6453032, 0.28253692, -0.01213561, -0.5806279, -1.3830127, 0.7043409, -1.223297, 0.5073943, 3362.5227, 140.24884, -1552.8184)
 strength = 90.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring39" parent="." unique_id=1565644398 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(1.9985577, 0.048892573, -0.058104932, 2.2351742e-08, 1.5303147, 1.2876862, 0.07593852, -1.286758, 1.5292113, 3359.2625, 64.59617, -1449.6454)
 strength = 110.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Ring7" parent="." unique_id=1982974594 instance=ExtResource("11_lxs36")]
@@ -1496,7 +1466,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2921.6157, 75.35475, -3536.26
 process_mode = 3
 transform = Transform3D(0.3283718, 0.37705693, -0.8660254, -0.75411385, 0.6567436, -7.450581e-09, 0.5687567, 0.65308183, 0.5, 3045.7888, 42.036148, -1982.4248)
 strength = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 0.2
 action_lock_time = 0.2
 downward_trajectory_min_angle_deg = 45.0
@@ -1505,7 +1474,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(-9.3308444e-08, 1.854812, 0.7481126, -2, -8.742278e-08, -3.2701045e-08, 2.3738949e-09, -0.7481126, 1.854812, 3067.3542, 47.32187, -1920.5498)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 0.15
 action_lock_time = 0.15
 downward_trajectory_min_angle_deg = 45.0
@@ -1515,7 +1483,6 @@ detach_from_ground = false
 process_mode = 3
 transform = Transform3D(-0.23572612, -0.65230423, -0.7203698, -0.8538664, 0.4929777, -0.16698791, 0.4640534, 0.57573605, -0.6731883, 3144.3638, 49.70075, -1983.927)
 strength = 132.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 align_time = 0.8
@@ -1525,7 +1492,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(-1.3580425, 0.66773236, -1.307614, 1.0598321, 1.6785201, -0.24356945, 1.0161086, -0.8583145, -1.4935929, 3050.5417, 100.00859, -1887.6106)
 strength = 145.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 align_time = 0.8
@@ -1536,7 +1502,6 @@ process_mode = 3
 transform = Transform3D(2, 0, 0, 0, 1.9999998, 0, 0, 0, 1.9999999, 3132.6624, 4.425186, -1604.248)
 strength = 55.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring27" parent="." unique_id=1004241124 instance=ExtResource("9_8nn2w")]
@@ -1544,7 +1509,6 @@ process_mode = 3
 transform = Transform3D(2, 0, 0, 0, 1.9999998, 0, 0, 0, 1.9999999, 3166.9614, 4.425186, -1605.4843)
 strength = 55.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring28" parent="." unique_id=1185013689 instance=ExtResource("9_8nn2w")]
@@ -1552,7 +1516,6 @@ process_mode = 3
 transform = Transform3D(2, 0, 0, 0, 1.9999998, 0, 0, 0, 1.9999999, 3105.7485, 7.125551, -1674.9723)
 strength = 65.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring29" parent="." unique_id=1368354726 instance=ExtResource("9_8nn2w")]
@@ -1560,14 +1523,12 @@ process_mode = 3
 transform = Transform3D(2, 0, 0, 0, 1.9999998, 0, 0, 0, 1.9999999, 3072.0166, 7.125551, -1666.6509)
 strength = 65.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring23" parent="." unique_id=1781451223 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(0.7071067, -0.70710677, 5.9604645e-08, 0.7071068, 0.70710677, -4.669986e-08, 2.0677263e-08, 1.4767807e-07, 1, 3070.9363, 17.615007, -1982.4248)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_time = 1.0
@@ -1577,14 +1538,12 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 3838.8416, -12.955156, -1319.5455)
 strength = 85.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring21" parent="." unique_id=1841671030 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(2.659241, 1.3886817, 0, -1.3886817, 2.659241, 0, 0, 0, 3, 3774.021, 30.1957, -1313.9661)
 strength = 190.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 lock_horizontal_during_align = false
@@ -1609,7 +1568,6 @@ process_mode = 3
 transform = Transform3D(0.80342937, 0.47065714, -0.36466855, -0.5898486, 0.54573745, -0.5951884, -0.08111633, 0.6932911, 0.71607804, 4026.439, -18.836864, -1635.5876)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="Spring" index="0" unique_id=594366491]
@@ -1631,7 +1589,6 @@ process_mode = 3
 transform = Transform3D(0.8617302, 0.3527575, -0.36466855, -0.507069, 0.62340343, -0.5951884, 0.017378472, 0.697804, 0.716078, 4034.0957, -23.342264, -1635.4332)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="Spring2" index="0" unique_id=594366491]
@@ -1653,7 +1610,6 @@ process_mode = 3
 transform = Transform3D(0.797854, 0.48004764, -0.36466855, -0.59620863, 0.538782, -0.5951883, -0.08924191, 0.69229203, 0.7160779, 4018.2974, -14.045956, -1635.7518)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="Spring3" index="0" unique_id=594366491]
@@ -1675,7 +1631,6 @@ process_mode = 3
 transform = Transform3D(0.8721121, -0.42395672, 0.2442971, 0.4710071, 0.5921159, -0.65387416, 0.13256223, 0.68531734, 0.71607804, 4146.4556, -18.672983, -1635.5876)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="Spring4" index="0" unique_id=594366491]
@@ -1697,7 +1652,6 @@ process_mode = 3
 transform = Transform3D(0.90750897, -0.3416817, 0.24429709, 0.41436565, 0.6330482, -0.65387416, 0.068765074, 0.69462496, 0.716078, 4154.721, -15.415789, -1635.4332)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="Spring5" index="0" unique_id=594366491]
@@ -1722,7 +1676,6 @@ process_mode = 3
 transform = Transform3D(0.8928808, -0.37826282, 0.24429709, 0.43973812, 0.61569417, -0.65387416, 0.09692403, 0.6912585, 0.71607804, 4137.667, -22.136314, -1635.7518)
 strength = 80.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="CollisionShape3D" parent="Spring6" index="0" unique_id=594366491]
@@ -1745,7 +1698,6 @@ forward_speed = 20.0
 up_speed = 45.0
 additive_launch = true
 additive_min_forward_speed = 180.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 
 [node name="CollisionShape3D" parent="JumpPanelRamp2" index="0" unique_id=641640871]
@@ -1768,7 +1720,6 @@ forward_speed = 20.0
 up_speed = 45.0
 additive_launch = true
 additive_min_forward_speed = 180.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 
 [node name="CollisionShape3D" parent="JumpPanelRamp8" index="0" unique_id=641640871]
@@ -1791,7 +1742,6 @@ forward_speed = 20.0
 up_speed = 45.0
 additive_launch = true
 additive_min_forward_speed = 180.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 
 [node name="CollisionShape3D" parent="JumpPanelRamp9" index="0" unique_id=641640871]
@@ -1816,7 +1766,6 @@ enabled = false
 
 [node name="DashPanel16" parent="." unique_id=747226338 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3822.7996, 71.04395, -1320.5083)
-override_previous_lock_timers = null
 
 [node name="Spring38" parent="." unique_id=2041480205 instance=ExtResource("9_8nn2w")]
 process_mode = 3
@@ -1826,7 +1775,6 @@ active = false
 strength = 120.0
 stop_momentum = false
 min_additive_launch_speed = 25.0
-override_previous_lock_timers = null
 movement_lock_time = 0.5
 action_lock_time = 1.0
 downward_trajectory_min_angle_deg = 45.0
@@ -1963,7 +1911,6 @@ transform = Transform3D(-3, 0, 4.5298742e-07, 0, 3, 0, -4.5298742e-07, 0, -3, 28
 forward_speed = 90.0
 up_speed = 95.0
 hold_forward_time = 2.0
-override_previous_lock_timers = null
 movement_lock_time = 2.2
 action_lock_time = 2.2
 
@@ -1971,28 +1918,24 @@ action_lock_time = 2.2
 transform = Transform3D(-1.9318516, 0, -0.51763827, 0, 2, 0, 0.51763827, 0, -1.9318516, 3062.9275, 50.223213, -2270.8662)
 rehit_cooldown = 0.5
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 0.4
 
 [node name="DashPanel34" parent="." unique_id=1015338304 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-1.6036763, 0, -1.1950825, 0, 2, 0, 1.1950825, 0, -1.6036763, 2934.0928, 68.53733, -2615.445)
 rehit_cooldown = 0.5
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 0.4
 
 [node name="DashPanel32" parent="." unique_id=1583347799 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-1.9318516, 0, -0.51763827, 0, 2, 0, 0.51763827, 0, -1.9318516, 3058.0293, 50.223213, -2269.5537)
 rehit_cooldown = 0.5
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 0.4
 
 [node name="DashPanel33" parent="." unique_id=556587270 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-1.9318516, 0, -0.51763827, 0, 2, 0, 0.51763827, 0, -1.9318516, 3067.9556, 50.223213, -2272.2134)
 rehit_cooldown = 0.5
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 0.4
 
 [node name="WaterPlane" type="MeshInstance3D" parent="." unique_id=1058448139]
@@ -2067,7 +2010,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5539.028, 5.4984865, -2963.65
 [node name="DashPanel17" parent="." unique_id=212978346 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3822.7996, 71.04395, -1314.5083)
 strength = 180.0
-override_previous_lock_timers = null
 movement_lock_time = 1.3
 action_lock_time = 1.3
 lock_speed_value = 150.0
@@ -2076,7 +2018,6 @@ lock_speed_duration = 1.0
 [node name="DashPanel19" parent="." unique_id=199803019 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 3174.271, 78.11612, -1309.5907)
 strength = 140.0
-override_previous_lock_timers = null
 movement_lock_time = 0.5
 action_lock_time = 0.5
 lock_speed_enabled = true
@@ -2085,7 +2026,6 @@ lock_speed_value = 125.0
 [node name="DashPanel20" parent="." unique_id=821769664 instance=ExtResource("10_ikefc")]
 transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 3115.7422, 6.491085, -1980.614)
 strength = 90.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 lock_speed_value = 125.0
@@ -2093,7 +2033,6 @@ lock_speed_value = 125.0
 [node name="DashPanel18" parent="." unique_id=1065127734 instance=ExtResource("10_ikefc")]
 transform = Transform3D(8.742277e-08, -0.8660254, 0.5, -7.5710346e-08, -0.5, -0.8660254, 1, 3.7855173e-08, -1.09278474e-07, 3861.0828, 124.83517, -1320.5083)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 
@@ -2207,7 +2146,6 @@ day_length_minutes = 8.0
 
 [node name="Rail" parent="." unique_id=304400717 instance=ExtResource("20_mmchv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4153.5527, 38.472763, -2242.2986)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail" index="0" unique_id=1934614080]
@@ -2219,7 +2157,6 @@ material = SubResource("StandardMaterial3D_0kjbo")
 
 [node name="Rail2" parent="." unique_id=261005452 instance=ExtResource("20_mmchv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4167.5527, 38.472763, -2242.2986)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail2" index="0" unique_id=1934614080]
@@ -2231,7 +2168,6 @@ material = SubResource("StandardMaterial3D_0kjbo")
 
 [node name="Rail3" parent="." unique_id=1497875214 instance=ExtResource("20_mmchv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4140.5527, 38.472763, -2242.2986)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail3" index="0" unique_id=1934614080]
@@ -2243,7 +2179,6 @@ material = SubResource("StandardMaterial3D_0kjbo")
 
 [node name="Rail4" parent="." unique_id=1188267460 instance=ExtResource("20_mmchv")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5265.747, 8.471345, -3186.1306)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail4" index="0" unique_id=1934614080]
@@ -2255,7 +2190,6 @@ material = SubResource("StandardMaterial3D_0kjbo")
 
 [node name="Rail5" parent="." unique_id=107503496 instance=ExtResource("20_mmchv")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5265.747, 8.471345, -3186.1306)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail5" index="0" unique_id=1934614080]
@@ -2271,21 +2205,18 @@ material = SubResource("StandardMaterial3D_0kjbo")
 transform = Transform3D(0.9158659, 0, -0.4014842, 0, 1, 0, 0.4014842, 0, 0.9158659, 4358.756, 64.92681, -2068.8472)
 strength = 125.0
 min_additive_launch_speed = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 
 [node name="DashPanel2" parent="." unique_id=731129976 instance=ExtResource("10_ikefc")]
 transform = Transform3D(0.9158659, 0, -0.4014842, 0, 1, 0, 0.4014842, 0, 0.9158659, 4361.098, 64.92681, -2066.9727)
 strength = 125.0
 min_additive_launch_speed = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 
 [node name="DashPanel3" parent="." unique_id=1405316541 instance=ExtResource("10_ikefc")]
 transform = Transform3D(0.9158659, 0, -0.4014842, 0, 1, 0, 0.4014842, 0, 0.9158659, 4356.4136, 64.92681, -2070.7217)
 strength = 125.0
 min_additive_launch_speed = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=1910065014]
@@ -2703,7 +2634,6 @@ forward_speed = 15.0
 up_speed = 20.0
 additive_launch = true
 additive_min_forward_speed = 80.0
-override_previous_lock_timers = null
 
 [node name="CollisionShape3D" parent="JumpPanelRamp10" index="0" unique_id=641640871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08251953, 0.8789978, -0.008300781)
@@ -2799,21 +2729,15 @@ curve = SubResource("Curve3D_1433n")
 [node name="DashPanel36" parent="." unique_id=463033670 instance=ExtResource("10_ikefc")]
 transform = Transform3D(0.5, -0.22414388, 0.8365164, 7.450581e-09, 0.9659258, 0.25881904, -0.8660254, -0.1294095, 0.48296285, 5229.488, 78.068855, -2943.1995)
 strength = 180.0
-override_previous_lock_timers = null
 
 [node name="CollisionShape3D" parent="DashPanel36" index="0" unique_id=1646361553]
 transform = Transform3D(1, -2.7567143e-07, -1.1657309e-14, 2.7567143e-07, 1, -7.450586e-09, 1.3711222e-14, 7.450586e-09, 1, 0, 0.2, 0)
 shape = SubResource("BoxShape3D_ta676")
 
-[node name="Mesh" parent="DashPanel36" index="5" unique_id=107706107]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
-
 [node name="DashRing" parent="." unique_id=161984591 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.62300223, -1.1256988, -1.5312315, 1.7977563, 0.8717015, 0.09060213, 0.6163931, -1.4046134, 1.2834021, 5342.6455, 246.81946, -2790.006)
 strength = 190.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_time = 1.0
@@ -2824,7 +2748,6 @@ process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5416.5605, 215.18439, -2812.2961)
 strength = 70.0
 stop_momentum = false
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring8" parent="." unique_id=1108131919 instance=ExtResource("9_8nn2w")]
@@ -2832,7 +2755,6 @@ process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5366.7983, 185.29518, -2838.2056)
 strength = 140.0
 min_additive_launch_speed = 85.0
-override_previous_lock_timers = null
 movement_lock_time = 0.5
 action_lock_time = 0.5
 align_time = 0.5
@@ -2840,7 +2762,6 @@ downward_trajectory_min_angle_deg = 45.0
 
 [node name="Rail6" parent="." unique_id=929304875 instance=ExtResource("20_mmchv")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5013.7217, 281.56873, -2843.9434)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail6" index="0" unique_id=1934614080]
@@ -2857,14 +2778,13 @@ material = SubResource("StandardMaterial3D_0kjbo")
 
 [node name="Rail7" parent="." unique_id=1217446305 instance=ExtResource("20_mmchv")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4925.5313, 281.56873, -2492.023)
-override_previous_lock_timers = null
 rehit_cooldown = 1.0
 
 [node name="Path3D" parent="Rail7" index="0" unique_id=1934614080]
 curve = SubResource("Curve3D_3gtnb")
 
 [node name="RailBooster" parent="Rail7/Path3D" index="0" unique_id=842325973 instance=ExtResource("32_4oltd")]
-transform = Transform3D(0.6022241, -0.07253665, -0.7949691, 0.38145557, 0.9009638, 0.20673124, 0.701297, -0.4277708, 0.570216, 48.34662, -32.12346, 58.90162)
+transform = Transform3D(0.6022241, -0.07253663, -0.7949691, 0.38145557, 0.90096366, 0.20673124, 0.701297, -0.4277707, 0.570216, 48.34662, -32.12346, 58.90162)
 progress = 173.91
 boost_speed = 150.0
 
@@ -2876,41 +2796,34 @@ material = SubResource("StandardMaterial3D_0kjbo")
 transform = Transform3D(0.78584605, 0, -0.61842215, 0, 1, 0, 0.61842215, 0, 0.78584605, 4603.068, 126.82147, -1861.591)
 forward_speed = 190.0
 up_speed = 45.0
-override_previous_lock_timers = null
 
 [node name="JumpPanelRamp12" parent="." unique_id=612265827 instance=ExtResource("7_s5klr")]
 transform = Transform3D(0.78584605, 0, -0.61842215, 0, 1, 0, 0.61842215, 0, 0.78584605, 4599.1387, 126.82147, -1864.6831)
 forward_speed = 190.0
 up_speed = 45.0
-override_previous_lock_timers = null
 
 [node name="JumpPanelRamp13" parent="." unique_id=1005193360 instance=ExtResource("7_s5klr")]
 transform = Transform3D(0.78584605, 0, -0.61842215, 0, 1, 0, 0.61842215, 0, 0.78584605, 4595.2095, 126.82147, -1867.7753)
 forward_speed = 190.0
 up_speed = 45.0
-override_previous_lock_timers = null
 
 [node name="DashPanel4" parent="." unique_id=2007326347 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3120.091, -9.913793, -1841.4248)
 strength = 78.0
-override_previous_lock_timers = null
 
 [node name="DashPanel5" parent="." unique_id=263477742 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3120.091, -9.913793, -1846.4248)
 strength = 78.0
-override_previous_lock_timers = null
 
 [node name="DashPanel6" parent="." unique_id=686526215 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3120.091, -9.913793, -1851.4248)
 strength = 78.0
-override_previous_lock_timers = null
 
 [node name="JumpPanelRamp14" parent="." unique_id=822920850 instance=ExtResource("7_s5klr")]
 transform = Transform3D(-0.9659258, 0, -0.25881913, 0, 1, 0, 0.25881913, 0, -0.9659258, 3109.3345, 141.70924, -2087.2888)
 forward_speed = 90.0
 up_speed = 26.0
 hold_forward_time = 1.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 
@@ -2919,7 +2832,6 @@ transform = Transform3D(-0.9868501, 0, -0.16163835, 0, 1, 0, 0.16163835, 0, -0.9
 forward_speed = 90.0
 up_speed = 26.0
 hold_forward_time = 1.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 
@@ -2928,7 +2840,6 @@ transform = Transform3D(-0.952108, 0, -0.30576184, 0, 1, 0, 0.30576184, 0, -0.95
 forward_speed = 90.0
 up_speed = 26.0
 hold_forward_time = 1.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 
@@ -2936,7 +2847,6 @@ action_lock_time = 1.0
 process_mode = 3
 transform = Transform3D(2.0928082, -2.1308343, 0.282304, -0.05078427, 0.34488493, 2.9796767, -2.1488538, -2.08341, 0.20452172, 3470.0842, 141.40672, -2587.353)
 strength = 175.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 align_time = 0.8
@@ -2946,7 +2856,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.0935574, -2.1264973, 0.30826354, -0.043236714, 0.38861227, 2.974409, -2.14829, -2.0801415, 0.24054639, 3470.0842, 129.40672, -2587.353)
 strength = 175.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 align_time = 0.8
@@ -2956,7 +2865,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.0913305, -2.1393974, 0.22206883, -0.06827529, 0.2435489, 2.989318, -2.1498082, -2.088938, 0.12109106, 3470.0842, 153.40672, -2587.353)
 strength = 175.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 align_time = 0.8
@@ -2966,7 +2874,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.0913305, -2.1393974, 0.22206883, -0.06827529, 0.2435489, 2.989318, -2.1498082, -2.088938, 0.12109106, 3470.0842, 166.40672, -2587.353)
 strength = 175.0
-override_previous_lock_timers = null
 movement_lock_time = 0.8
 action_lock_time = 0.8
 align_time = 0.8
@@ -2976,7 +2883,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.5222955, -1.3714333, 0.8701702, 7.4505806e-08, 1.6072592, 2.533124, -1.6242001, -2.1297622, 1.3513277, 3234.5737, 128.47435, -2822.5603)
 strength = 155.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 action_lock_time = 0.3
 align_time = 0.3
@@ -2986,7 +2892,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.5222955, -1.3714333, 0.8701702, 7.4505806e-08, 1.6072592, 2.533124, -1.6242001, -2.1297622, 1.3513277, 3224.4846, 128.47435, -2816.0635)
 strength = 155.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 action_lock_time = 0.3
 align_time = 0.3
@@ -2996,7 +2901,6 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(2.5222955, -1.3714333, 0.8701702, 7.4505806e-08, 1.6072592, 2.533124, -1.6242001, -2.1297622, 1.3513277, 3214.3955, 128.47435, -2809.5667)
 strength = 155.0
-override_previous_lock_timers = null
 movement_lock_time = 0.3
 action_lock_time = 0.3
 align_time = 0.3
@@ -3006,107 +2910,91 @@ downward_trajectory_min_angle_deg = 45.0
 process_mode = 3
 transform = Transform3D(4.4726057, -2.0708513, 0.84105337, 6.3329935e-08, 1.8814433, 4.632513, -2.2351277, -4.1438813, 1.6829914, 3080.3638, 164.15453, -3026.839)
 strength = 130.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing3" parent="." unique_id=1925623978 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(4.4726057, -2.0708513, 0.84105337, 6.3329935e-08, 1.8814433, 4.632513, -2.2351277, -4.1438813, 1.6829914, 3125.9846, 164.15453, -3049.6375)
 strength = 130.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing4" parent="." unique_id=488961915 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(4.4726057, -2.145452, 0.62676316, 4.9670476e-08, 1.4020747, 4.799394, -2.235128, -4.29316, 1.2541854, 2993.808, 164.15453, -3229.4792)
 strength = 135.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing5" parent="." unique_id=688147331 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(4.4726057, -2.145452, 0.62676316, 4.9670476e-08, 1.4020747, 4.799394, -2.235128, -4.29316, 1.2541854, 3040.3235, 164.15453, -3252.7246)
 strength = 135.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring16" parent="." unique_id=2100824522 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, 3744.5723, -19.646915, -1403.8076)
 strength = 69.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring17" parent="." unique_id=1509403517 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, 3744.5723, -19.646915, -1395.8076)
 strength = 69.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="Spring18" parent="." unique_id=1744529047 instance=ExtResource("9_8nn2w")]
 process_mode = 3
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, 3744.5723, -19.646915, -1411.8076)
 strength = 69.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing7" parent="." unique_id=487160897 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, 3737.8027, 4.465629, -1403.808)
 strength = 58.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing11" parent="." unique_id=1150820710 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, 3737.8027, 4.465629, -1392.808)
 strength = 58.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing8" parent="." unique_id=1056891835 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, 3737.8027, 4.465629, -1414.808)
 strength = 58.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing9" parent="." unique_id=394968482 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 0, 1, 3731.9968, 26.134068, -1392.808)
 strength = 45.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing10" parent="." unique_id=382437107 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 0, 1, 3731.9968, 26.134068, -1403.808)
 strength = 45.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashRing12" parent="." unique_id=1222712883 instance=ExtResource("30_f56n4")]
 process_mode = 3
 transform = Transform3D(0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 0, 1, 3731.9968, 26.134068, -1414.808)
 strength = 45.0
-override_previous_lock_timers = null
 downward_trajectory_min_angle_deg = 45.0
 
 [node name="DashPanel7" parent="." unique_id=1956484053 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3701.8474, 29.37748, -1402.6149)
 strength = 145.0
-override_previous_lock_timers = null
 
 [node name="DashPanel8" parent="." unique_id=2012013936 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3701.8474, 29.37748, -1394.6149)
 strength = 145.0
-override_previous_lock_timers = null
 
 [node name="DashPanel9" parent="." unique_id=372560379 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3701.8474, 29.37748, -1410.6149)
 strength = 145.0
-override_previous_lock_timers = null
 
 [node name="AutomationSpline4" parent="." unique_id=2094852401 instance=ExtResource("6_yhbre")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3293.896, 129.8517, -1707.6565)
@@ -3200,7 +3088,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_nratb")
 [node name="DashPanel10" parent="." unique_id=1017788032 instance=ExtResource("10_ikefc")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 3108.6746, 162.03545, -1951.5703)
 strength = 75.0
-override_previous_lock_timers = null
 
 [node name="VaultBar" parent="." unique_id=1685228124 instance=ExtResource("34_1433n")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3877.0295, 20.16077, -1312.6882)
@@ -3210,7 +3097,6 @@ rotation_speed_deg = 1100.0
 launch_speed_mode = 1
 fixed_launch_speed = 110.0
 launch_aim_origin = 1
-override_previous_lock_timers = null
 
 [node name="CollisionShape3D" parent="VaultBar" index="0" unique_id=789556539]
 shape = SubResource("BoxShape3D_jgml2")
@@ -3304,6 +3190,8 @@ curve = SubResource("Curve3D_aqt1o")
 [editable path="RingSpline3"]
 [editable path="RingSpline4"]
 [editable path="DashPanel36"]
+[editable path="DashPanel36/Mesh/DashPanelMesh"]
+[editable path="DashPanel36/Mesh/DashPanelMesh/DashPanel"]
 [editable path="Rail6"]
 [editable path="Rail7"]
 [editable path="AutomationSpline4"]
