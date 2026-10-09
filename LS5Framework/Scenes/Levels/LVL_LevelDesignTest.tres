@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://dx7ov301kfi88"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_57hdi"]
+
+[resource]
+script = ExtResource("1_57hdi")
+level_name = "Level Design Test"
+order = 9
+selection_category = "Work In Progress"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/MyCoolLevel/sample_level.tscn"

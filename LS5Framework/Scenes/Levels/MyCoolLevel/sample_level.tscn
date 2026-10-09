@@ -1,0 +1,804 @@
+[gd_scene format=3 uid="uid://ysdp8w626ts4"]
+
+[ext_resource type="Script" uid="uid://6wm6odvreiux" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.gd" id="1_dagco"]
+[ext_resource type="PackedScene" uid="uid://bwy4wqw33nk5x" path="res://LS5Framework/Scenes/Levels/MyCoolLevel/myAwesomeLevel.fbx" id="1_vitqo"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="3_bnxrr"]
+[ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="4_0glse"]
+[ext_resource type="AudioStream" uid="uid://dxavnsgfcvjbx" path="res://LS5Framework/Sounds/Music/ChrisSenn-EmeraldClouds.ogg" id="5_jn1ry"]
+[ext_resource type="PackedScene" uid="uid://dayucuvrdtq1v" path="res://LS5Framework/Scenes/Levels/MyCoolLevel/Aidan.tscn" id="6_5n3rl"]
+[ext_resource type="PackedScene" uid="uid://e1tkwisehr5p" path="res://LS5Framework/Objects/DashPanels/DashPanel.tscn" id="6_g784r"]
+[ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="7_7bd6w"]
+[ext_resource type="AudioStream" uid="uid://cpfhlp4dckfnh" path="res://LS5Framework/Sounds/Objects/Terminal_Idle.ogg" id="7_vitqo"]
+[ext_resource type="PackedScene" uid="uid://b2jkv0kca2k6q" path="res://LS5Framework/Objects/Rings/RingSpline.tscn" id="8_uqnmt"]
+[ext_resource type="PackedScene" uid="uid://bdltank6nne8b" path="res://LS5Framework/Objects/Rings/Ring.tscn" id="9_awlsv"]
+[ext_resource type="PackedScene" uid="uid://cyglqqs3uhsy0" path="res://LS5Framework/Objects/Camera/CameraConstraint.tscn" id="11_t0bcq"]
+[ext_resource type="PackedScene" uid="uid://c12m0rampjump" path="res://LS5Framework/Objects/Ramps/JumpPanelRamp.tscn" id="11_wmtsy"]
+[ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="13_cnffq"]
+[ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="14_5a01j"]
+[ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="15_eya2y"]
+[ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="15_kche2"]
+[ext_resource type="Script" uid="uid://bgccl8q6bo21v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraInfluenceTrait.gd" id="16_uhdpv"]
+[ext_resource type="PackedScene" uid="uid://cwsdj34dkp0dx" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn" id="20_ee4q3"]
+[ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="21_3qeqd"]
+[ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="22_3qeqd"]
+[ext_resource type="PackedScene" uid="uid://ie7142myiknm" path="res://LS5Framework/Objects/Water/Water_Volume.tscn" id="23_t1bg2"]
+[ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="24_qqmqe"]
+[ext_resource type="PackedScene" uid="uid://d1okvbdxqc08b" path="res://LS5Framework/Objects/VaultBar/VaultBar.tscn" id="25_qqmqe"]
+
+[sub_resource type="Resource" id="Resource_q03af"]
+resource_local_to_scene = true
+script = ExtResource("21_3qeqd")
+reward_type = 6
+random_ring_pool = null
+
+[sub_resource type="Curve3D" id="Curve3D_df6vv"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 14.54, 30.105, 0, 0, -21.89, 0, 14.4, -46.97, 0, 0, 0, 16.038355, 12.326515, 83.854744),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_wmtsy"]
+_data = {
+"points": PackedVector3Array(-9.8862915, -24.524841, -18.1978, 9.8862915, 24.524841, 18.1978, -2.6237793, -1.2564697, -18.244507, -15.563599, -5.9973145, -37.844543, 15.563599, 5.9973145, 37.844543, 57.43286, 71.21057, 102.81616),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_vitqo"]
+_data = {
+"points": PackedVector3Array(-9.8862915, -24.524841, -18.1978, 9.8862915, 24.524841, 18.1978, -2.6237793, -1.2564697, -18.244507, -12.625549, 38.89087, -35.126404, 12.625549, -38.89087, 35.126404, 28.610107, 12.377686, 72.19653),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_3qeqd"]
+_data = {
+"points": PackedVector3Array(10.190308, -21.097961, -9.302124, -10.190308, 21.097961, 9.302124, 49.42627, 14.796936, -79.578, 38.506897, 41.549988, -24.975586, -38.506897, -41.549988, 24.975586, -111.5058, 27.637451, -17.071533),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_fli2s"]
+_data = {
+"points": PackedVector3Array(-6.154785, 19.687561, -23.00409, 6.154785, -19.687561, 23.00409, 60.681763, 9.704712, -68.77362, 91.62317, -6.100708, -70.58423, -91.62317, 6.100708, 70.58423, -16.425842, -67.77899, 100.92645),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lsl5c"]
+size = Vector3(8.76062, 1, 8.734222)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wrsj4"]
+size = Vector3(18.997849, 1, 8.734222)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_61rmn"]
+size = Vector3(13.918457, 1, 11.587524)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v2l83"]
+size = Vector3(8.968002, 2.3579102, 5.0271606)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wmtsy"]
+size = Vector3(155.47632, 157.25708, 127.88325)
+
+[sub_resource type="Resource" id="Resource_cnffq"]
+script = ExtResource("13_cnffq")
+mode = 4
+metadata/_custom_type_script = "uid://ejxv0c1rj01v"
+
+[sub_resource type="Resource" id="Resource_3qeqd"]
+resource_name = "Face Player"
+script = ExtResource("15_kche2")
+target_offset = Vector3(0, 10.895, 0)
+
+[sub_resource type="Resource" id="Resource_eya2y"]
+resource_name = "Instant Entry"
+script = ExtResource("14_5a01j")
+mode = 1
+duration = 0.89
+
+[sub_resource type="Resource" id="Resource_kche2"]
+resource_name = "Instant Exit"
+script = ExtResource("14_5a01j")
+phase = 1
+mode = 1
+duration = 1.47
+
+[sub_resource type="Resource" id="Resource_04udk"]
+script = ExtResource("16_uhdpv")
+reference_path = NodePath("ConstraintPoint")
+full_influence_distance = 17.0
+zero_influence_distance = 185.8
+power = 1.86
+orientation = false
+metadata/_custom_type_script = "uid://bgccl8q6bo21v"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5a01j"]
+size = Vector3(46.027832, 245.90474, 12.830551)
+
+[sub_resource type="Resource" id="Resource_uhdpv"]
+script = ExtResource("13_cnffq")
+mode = 2
+offset = Vector3(6.165, -0.39, -1.82)
+offset_space = 2
+metadata/_custom_type_script = "uid://ejxv0c1rj01v"
+
+[sub_resource type="Resource" id="Resource_vitqo"]
+resource_name = "Face Player"
+script = ExtResource("15_kche2")
+mode = 1
+target_path = NodePath("../../Springs/Spring3")
+target_offset = Vector3(0, 0, 0)
+offset_uses_player_up = true
+up_source = 1
+
+[sub_resource type="Resource" id="Resource_5n3rl"]
+script = ExtResource("15_eya2y")
+fov = 32.6
+metadata/_custom_type_script = "uid://dyshixousqyx8"
+
+[sub_resource type="Resource" id="Resource_fli2s"]
+resource_name = "Instant Entry"
+script = ExtResource("14_5a01j")
+duration = 1.02
+
+[sub_resource type="Resource" id="Resource_ee4q3"]
+resource_name = "Instant Exit"
+script = ExtResource("14_5a01j")
+phase = 1
+mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qqwui"]
+size = Vector3(44.313354, 95.36997, 15.385551)
+
+[sub_resource type="Resource" id="Resource_t1bg2"]
+resource_name = "Instant Entry"
+script = ExtResource("14_5a01j")
+mode = 1
+duration = 0.51
+
+[sub_resource type="Resource" id="Resource_qqmqe"]
+resource_name = "Instant Exit"
+script = ExtResource("14_5a01j")
+phase = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2h1v7"]
+size = Vector3(111.79465, 68.47925, 63.911514)
+
+[sub_resource type="Resource" id="Resource_otf76"]
+resource_name = "Stationary Camera"
+script = ExtResource("13_cnffq")
+mode = 2
+offset = Vector3(1.205, 5.39, -5.225)
+offset_space = 2
+
+[sub_resource type="Resource" id="Resource_trrjw"]
+resource_name = "Face Player"
+script = ExtResource("15_kche2")
+mode = 3
+rotation_degrees = Vector3(-90, 180, 0)
+
+[sub_resource type="Resource" id="Resource_1jh0t"]
+script = ExtResource("15_eya2y")
+fov = 47.9
+metadata/_custom_type_script = "uid://dyshixousqyx8"
+
+[sub_resource type="Resource" id="Resource_tnrdu"]
+resource_name = "Instant Entry"
+script = ExtResource("14_5a01j")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_htobe"]
+resource_name = "Instant Exit"
+script = ExtResource("14_5a01j")
+phase = 1
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ndgnv"]
+script = ExtResource("16_uhdpv")
+reference_path = NodePath("ConstraintPoint")
+zero_influence_distance = 265.9
+metadata/_custom_type_script = "uid://bgccl8q6bo21v"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uff3j"]
+size = Vector3(155.47632, 510.0293, 156.792)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6nyqt"]
+size = Vector2(5000, 20000)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4ur6j"]
+noise_type = 3
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r1l3q"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_4ur6j")
+seamless = true
+as_normal_map = true
+bump_strength = 9.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pailx"]
+noise_type = 3
+offset = Vector3(12, 0, 0)
+fractal_type = 2
+fractal_octaves = 6
+fractal_lacunarity = 1.855
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rdfrl"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_pailx")
+seamless = true
+as_normal_map = true
+bump_strength = 8.2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ehepn"]
+load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1l1dj"]
+render_priority = 0
+shader = ExtResource("24_qqmqe")
+shader_parameter/albedo = Color(0, 0.7316994, 0.88269347, 1)
+shader_parameter/albedo2 = Color(0.8127987, 0.86050355, 0.97439605, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/alpha = 0.85
+shader_parameter/wave = SubResource("CompressedTexture2D_ehepn")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_r1l3q")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_rdfrl")
+shader_parameter/wave_uv_scale = 0.455
+shader_parameter/normal_uv_scale = 0.01
+shader_parameter/normal2_uv_scale = 0.01
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_offset = 0.0
+shader_parameter/normal_detail_fade_start = 500.0
+shader_parameter/normal_detail_fade_end = 4000.0
+shader_parameter/distant_normal_strength = 0.2
+shader_parameter/specular_aa_strength = 0.35
+shader_parameter/distant_roughness = 0.3
+shader_parameter/ssr_camera_fade_start = 750.0
+shader_parameter/ssr_camera_fade_end = 3000.0
+shader_parameter/water_scatter_strength = 0.06
+shader_parameter/gi_fallback_fade_start = 650.0
+shader_parameter/gi_fallback_fade_end = 1300.0
+shader_parameter/gi_fallback_irradiance = 0.45
+shader_parameter/gi_fallback_near_blend = 0.35
+shader_parameter/color_deep = Color(0.16016582, 0.2380532, 0.36666462, 1)
+shader_parameter/color_shallow = Color(0.41579995, 0.6932566, 0.77, 1)
+shader_parameter/shallow_depth = 0.5
+shader_parameter/deep_depth = 50.0
+shader_parameter/depth_offset = 0.0
+shader_parameter/beers_law = 2.0
+shader_parameter/edge_color = Color(0.91, 1, 0.9925, 1)
+shader_parameter/edge_start = 0.34
+shader_parameter/edge_width = 3.65
+shader_parameter/edge_strength = 1.0
+shader_parameter/refraction_strength = 0.058
+shader_parameter/refraction_mip_scale = 2.5
+shader_parameter/ssr_strength = 0.35
+shader_parameter/ssr_max_distance = 80.0
+shader_parameter/ssr_max_steps = 48
+shader_parameter/ssr_stride = 1.0
+shader_parameter/ssr_thickness = 0.35
+shader_parameter/ssr_start_offset = 0.1
+shader_parameter/ssr_fade_start = 0.6
+shader_parameter/ssr_fade_end = 0.95
+shader_parameter/ssr_edge_fade = 0.05
+shader_parameter/ssr_roughness_mip = 4.0
+
+[node name="Node3D" type="Node3D" unique_id=374029068]
+
+[node name="myAwesomeLevel" parent="." unique_id=1453220111 instance=ExtResource("1_vitqo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.244, 0)
+
+[node name="PlayerSpawn" type="Node3D" parent="." unique_id=2087931526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1537638, 0)
+script = ExtResource("1_dagco")
+downwarp_enabled = true
+
+[node name="LevelMusic" type="Node3D" parent="." unique_id=467135388]
+script = ExtResource("4_0glse")
+autoplay = false
+autoplay_stream = ExtResource("5_jn1ry")
+autoplay_fade_in = 0.1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=111273474]
+transform = Transform3D(1, 0, 0, 0, 0.41831845, 0.9083004, 0, -0.9083004, 0.41831845, -16.347055, 16.454197, 0)
+shadow_enabled = true
+
+[node name="RaceStart" parent="." unique_id=1344341188 instance=ExtResource("7_7bd6w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5341644, -21.864407, 153.3855)
+ring_finish_goal_path = NodePath("../SetDressing/RaceGoal")
+go_music_stream = ExtResource("7_vitqo")
+
+[node name="StartingLine" parent="RaceStart" index="2" unique_id=96905968]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3374414, 23.153576, -152.90294)
+
+[node name="aidan" parent="." unique_id=174097419 instance=ExtResource("6_5n3rl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.790627, -0.6456941, -7.418419)
+
+[node name="SetDressing" type="Node3D" parent="." unique_id=1238293389]
+
+[node name="ItemMonitor" parent="SetDressing" unique_id=1395552001 instance=ExtResource("20_ee4q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -246.97932, -55.652336, 1204.0725)
+rewards = Array[ExtResource("21_3qeqd")]([SubResource("Resource_q03af")])
+
+[node name="RingSplines" type="Node3D" parent="SetDressing" unique_id=1639372671]
+
+[node name="RingSpline1" parent="SetDressing/RingSplines" unique_id=2125630419 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, 57.353146, 0.7548239, 296.08655)
+ring_spacing = 12.0
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/RingSpline1" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_df6vv")
+
+[node name="RingSpline2" parent="SetDressing/RingSplines" unique_id=944660039 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -1126.1289, 53.840134, 865.5028)
+ring_spacing = 12.0
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/RingSpline2" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_wmtsy")
+
+[node name="RingSpline3" parent="SetDressing/RingSplines" unique_id=1560385833 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -376.53137, -94.67109, 1179.1066)
+ring_spacing = 12.0
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/RingSpline3" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_vitqo")
+
+[node name="RingSpline4" parent="SetDressing/RingSplines" unique_id=235239208 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, 222.253, -302.96112, 2159.4075)
+ring_spacing = 12.0
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/RingSpline4" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_3qeqd")
+
+[node name="ringies" type="Node3D" parent="SetDressing/RingSplines" unique_id=1490230839]
+
+[node name="RingSpline4" parent="SetDressing/RingSplines/ringies" unique_id=1541602429 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -292.62595, -253.21744, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline4" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline12" parent="SetDressing/RingSplines/ringies" unique_id=1047649223 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -302.79892, -253.21744, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline12" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline13" parent="SetDressing/RingSplines/ringies" unique_id=1123245736 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -313.6607, -250.63983, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline13" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline14" parent="SetDressing/RingSplines/ringies" unique_id=1194928394 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -324.36728, -249.0044, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline14" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline15" parent="SetDressing/RingSplines/ringies" unique_id=2100204220 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -334.46368, -247.0073, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline15" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline16" parent="SetDressing/RingSplines/ringies" unique_id=1615338472 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -344.67654, -233.8568, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline16" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline17" parent="SetDressing/RingSplines/ringies" unique_id=1906476524 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -355.11548, -219.00642, 1319.5695)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline17" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline5" parent="SetDressing/RingSplines/ringies" unique_id=954327888 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -282.626, -253.217, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline5" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline6" parent="SetDressing/RingSplines/ringies" unique_id=1497077530 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -272.626, -253.217, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline6" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline7" parent="SetDressing/RingSplines/ringies" unique_id=1479040685 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -262.5128, -252.49565, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline7" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline8" parent="SetDressing/RingSplines/ringies" unique_id=1613574798 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -252.18884, -251.46011, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline8" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline9" parent="SetDressing/RingSplines/ringies" unique_id=90472420 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -241.93643, -243.62206, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline9" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline10" parent="SetDressing/RingSplines/ringies" unique_id=1199506446 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -231.68855, -226.66017, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline10" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="RingSpline11" parent="SetDressing/RingSplines/ringies" unique_id=1159157724 instance=ExtResource("8_uqnmt")]
+transform = Transform3D(0.39388263, 0.7439007, 0.5398783, -0.72689736, 0.61158687, -0.312381, -0.5625629, -0.26939452, 0.7816329, -222.99362, -214.41705, 1319.569)
+ring_spacing = 12.0
+terrain_warp_enabled = true
+ring_respawn_delay = 30.0
+
+[node name="Path3D" parent="SetDressing/RingSplines/ringies/RingSpline11" index="0" unique_id=1617861900]
+curve = SubResource("Curve3D_fli2s")
+
+[node name="Rings" type="Node3D" parent="SetDressing" unique_id=1850303363]
+
+[node name="Ring" parent="SetDressing/Rings" unique_id=319496740 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 164.32819, -386.766, 874.58826)
+
+[node name="Ring2" parent="SetDressing/Rings" unique_id=315323274 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168.13904, -386.766, 874.58826)
+
+[node name="Ring3" parent="SetDressing/Rings" unique_id=862727372 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172.54007, -386.90872, 874.58826)
+
+[node name="Ring4" parent="SetDressing/Rings" unique_id=406339520 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 175.69693, -387.73248, 874.58826)
+
+[node name="Ring5" parent="SetDressing/Rings" unique_id=3412899 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179.9078, -388.35388, 874.58826)
+
+[node name="Ring6" parent="SetDressing/Rings" unique_id=882907086 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 182.9078, -389.35388, 874.58826)
+
+[node name="Ring7" parent="SetDressing/Rings" unique_id=19072188 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 187.22205, -390.08035, 874.58826)
+
+[node name="Ring8" parent="SetDressing/Rings" unique_id=238458536 instance=ExtResource("9_awlsv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 191.25085, -390.08035, 874.58826)
+
+[node name="Springs" type="Node3D" parent="SetDressing" unique_id=814509569]
+
+[node name="Spring" parent="SetDressing/Springs" unique_id=1400232972 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(-0.8334628, 0.5162934, 0.19693029, -0.09848315, -0.48947093, 0.86644024, 0.54372936, 0.70275134, 0.45880178, -11.213728, 13.358558, 265.3656)
+strength = 250.0
+
+[node name="Spring13" parent="SetDressing/Springs" unique_id=1538883451 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(-0.999687, 0.024132824, 0.0066264784, 0.0031656246, 0.38460115, -0.9230774, -0.024825014, -0.9227675, -0.38455683, 418.75058, -398.33548, 1099.4998)
+strength = 160.0
+
+[node name="Spring11" parent="SetDressing/Springs" unique_id=588016221 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.016692132, 0.86973804, 0.4932309, -0.09848318, -0.48947096, 0.86644024, 0.99499905, -0.06303787, 0.07748437, -730.00806, -50.547905, 1217.3993)
+strength = 250.0
+
+[node name="Spring3" parent="SetDressing/Springs" unique_id=832322294 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.007929019, -0.9870388, 0.16028553, 0.009783424, 0.16035967, 0.9870097, -0.99992096, -0.0062578465, 0.010928011, -1160.9059, -249.83766, 858.8721)
+strength = 250.0
+
+[node name="Spring6" parent="SetDressing/Springs" unique_id=1232866363 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.0363028, 0.8049684, 0.59220606, -0.009603758, 0.59285027, -0.8052549, -0.999295, 0.023545643, 0.029252741, -1504.346, -228.23766, 898.1687)
+strength = 250.0
+
+[node name="Spring5" parent="SetDressing/Springs" unique_id=1533779598 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(-0.0060981014, 0.9998749, 0.014593564, -0.011018071, 0.01452563, -0.9998334, -0.9999211, -0.0062578474, 0.0109280115, -1158.1156, -118.61973, 858.8721)
+strength = 250.0
+
+[node name="Spring8" parent="SetDressing/Springs" unique_id=1376853397 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.005171877, -0.995298, -0.09672208, 0.011482004, -0.0966578, 0.99525094, -0.999921, -0.006257846, 0.0109280115, -1201.8954, -11.108442, 857.1693)
+strength = 250.0
+
+[node name="Spring4" parent="SetDressing/Springs" unique_id=2000694678 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(-0.035781536, -0.59549963, 0.8025579, 0.01617674, 0.80262196, 0.59626824, -0.99922884, 0.034318242, -0.01908585, -1119.2355, -417.2917, 858.8721)
+strength = 100.0
+
+[node name="Spring2" parent="SetDressing/Springs" unique_id=2082760959 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(-0.5339439, -0.81169426, 0.23676267, 0.7176676, -0.5831303, -0.3806742, 0.447055, -0.033341743, 0.8938848, 473.1637, -168.73189, 864.57666)
+strength = 125.0
+
+[node name="Spring7" parent="SetDressing/Springs" unique_id=1135328888 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.7229173, -0.6482948, 0.23896484, 0.66763747, 0.74448645, 0, -0.17790608, 0.15954188, 0.9710282, -477.97787, -440.81992, 871.6728)
+strength = 100.0
+
+[node name="Spring9" parent="SetDressing/Springs" unique_id=1286590328 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.80561167, -0.5901398, -0.052204825, 0.5913318, 0.80636847, 0.009832209, 0.036293983, -0.03879129, 0.99858814, -809.5119, -332.28568, 875.3369)
+strength = 180.0
+
+[node name="Spring10" parent="SetDressing/Springs" unique_id=1494332605 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(1.0000001, 0, 0, 0, 0.99999994, 0, 0, 0, 1, -1113.6207, -187.35329, 860.7565)
+strength = 100.0
+homing_target_max_distance = 30.4
+
+[node name="Spring12" parent="SetDressing/Springs" unique_id=673496103 instance=ExtResource("3_bnxrr")]
+process_mode = 3
+transform = Transform3D(0.98514366, -0.1700798, 0.023775198, 0.0038430977, -0.11657414, -0.9931744, 0.17169055, 0.9785107, -0.11418865, -282.55936, -110.786385, 1508.3922)
+strength = 190.0
+
+[node name="DashPanel3" parent="SetDressing" unique_id=1418350663 instance=ExtResource("6_g784r")]
+transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, 536.50604, -322.86646, 1150.8296)
+strength = 150.0
+movement_lock_time = 1.0
+action_lock_time = 1.0
+lock_speed_enabled = true
+lock_speed_value = 150.0
+
+[node name="CollisionShape3D" parent="SetDressing/DashPanel3" index="0" unique_id=1646361553]
+shape = SubResource("BoxShape3D_lsl5c")
+
+[node name="DashPanel4" parent="SetDressing" unique_id=1268280533 instance=ExtResource("6_g784r")]
+transform = Transform3D(4.3711392e-08, -1, -4.3711385e-08, -8.940697e-08, -4.371139e-08, 1, -1, -4.371139e-08, -8.940697e-08, 514.13934, -232.50793, 870.6089)
+strength = 190.0
+
+[node name="CollisionShape3D" parent="SetDressing/DashPanel4" index="0" unique_id=1646361553]
+transform = Transform3D(1, 0, 0, 0, 1, -3.5538877e-16, 0, 3.5538877e-16, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_wrsj4")
+
+[node name="TempMesh" parent="SetDressing/DashPanel4" index="1" unique_id=294809374]
+skeleton = NodePath("../../DashPanel3")
+
+[node name="TempMesh2" parent="SetDressing/DashPanel4" index="2" unique_id=955308747]
+skeleton = NodePath("../../DashPanel3")
+
+[node name="AnimationPlayer" parent="SetDressing/DashPanel4" index="3" unique_id=1840417855]
+root_node = NodePath("../../DashPanel3")
+
+[node name="DashPanel" parent="SetDressing" unique_id=893465894 instance=ExtResource("6_g784r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3700714, -1.1880101, 0.578001)
+strength = 200.0
+stop_momentum = false
+
+[node name="DashPanel2" parent="SetDressing" unique_id=1388479263 instance=ExtResource("6_g784r")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 197.00674, -391.26862, 875.4273)
+strength = 200.0
+stop_momentum = false
+
+[node name="DashPanel5" parent="SetDressing" unique_id=375468017 instance=ExtResource("6_g784r")]
+transform = Transform3D(-6.272584e-08, 0, -1.435, 0, 1.435, 0, 1.435, 0, -6.272584e-08, -346.82352, -442.1544, 871.9551)
+strength = 200.0
+stop_momentum = false
+
+[node name="CollisionShape3D" parent="SetDressing/DashPanel5" index="0" unique_id=1646361553]
+shape = SubResource("BoxShape3D_61rmn")
+
+[node name="JumpPanelRamp" parent="SetDressing" unique_id=1006219033 instance=ExtResource("11_wmtsy")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -74.08376, -396.94818, 870.7777)
+size = 2.05
+forward_speed = 100.0
+up_speed = 50.0
+hold_forward_time = 1.0
+hold_up_time = 1.0
+movement_lock_time = 1.5
+action_lock_time = 1.5
+
+[node name="CollisionShape3D" parent="SetDressing/JumpPanelRamp" index="0" unique_id=641640871]
+transform = Transform3D(2.05, 0, 0, 0, 2.05, 0, 0, 0, 2.05, 0.12180633, 1.80195, -0.017079161)
+shape = SubResource("BoxShape3D_v2l83")
+metadata/_uniform_size_base_position = Vector3(0.059417725, 0.879, -0.008331299)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="TempMesh" parent="SetDressing/JumpPanelRamp" index="1" unique_id=1872819520]
+transform = Transform3D(-4.4804173e-07, 0, 8.2, 0, 4.1, 0, -10.25, 0, -3.5843337e-07, 0, 2.05, 0)
+metadata/_uniform_size_base_position = Vector3(0, 1, 0)
+metadata/_uniform_size_base_scale = Vector3(5, 2, 4)
+
+[node name="RampMesh" parent="SetDressing/JumpPanelRamp" index="3" unique_id=1615587704]
+transform = Transform3D(-8.960834e-08, 0, -2.05, 0, 2.05, 0, 2.05, 0, -8.960834e-08, 3.3866232e-08, -0.66943884, -0.774769)
+metadata/_uniform_size_base_position = Vector3(1.6520113e-08, -0.32655555, -0.37793612)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+
+[node name="cameraStuff" type="Node3D" parent="SetDressing" unique_id=277703180]
+
+[node name="CameraConstraint2" parent="SetDressing/cameraStuff" unique_id=571075309 instance=ExtResource("11_t0bcq")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 373.03387, -198.1785, 892.00977)
+
+[node name="CollisionShape3D" parent="SetDressing/cameraStuff/CameraConstraint2" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.373901, -145.89313, -503.0157)
+shape = SubResource("BoxShape3D_wmtsy")
+
+[node name="ConstraintPoint" parent="SetDressing/cameraStuff/CameraConstraint2" index="1" unique_id=495541008]
+transform = Transform3D(-1, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -1, 26.595825, -168.53098, -515.9842)
+
+[node name="CameraConstraint5" parent="SetDressing/cameraStuff" unique_id=1517568718 instance=ExtResource("11_t0bcq")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1119.7139, -198.1785, 842.08777)
+position_traits = Array[ExtResource("13_cnffq")]([SubResource("Resource_cnffq")])
+orientation_traits = Array[ExtResource("15_kche2")]([SubResource("Resource_3qeqd")])
+transition_traits = Array[ExtResource("14_5a01j")]([SubResource("Resource_eya2y"), SubResource("Resource_kche2")])
+influence_traits = Array[ExtResource("16_uhdpv")]([SubResource("Resource_04udk")])
+collision_mode = 2
+up_mode = 2
+
+[node name="CollisionShape3D" parent="SetDressing/cameraStuff/CameraConstraint5" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.108398, -204.4964, -0.6520996)
+shape = SubResource("BoxShape3D_5a01j")
+
+[node name="ConstraintPoint" parent="SetDressing/cameraStuff/CameraConstraint5" index="1" unique_id=495541008]
+transform = Transform3D(0.30190304, 0, -0.9533386, 0, 1, 0, 0.9533386, 0, 0.30190304, 35.925354, -208.87424, -13.488281)
+
+[node name="CameraConstraint6" parent="SetDressing/cameraStuff" unique_id=1501740697 instance=ExtResource("11_t0bcq")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1119.7139, -198.1785, 842.08777)
+constraint_priority = 1
+override_previous_constraints = true
+position_traits = Array[ExtResource("13_cnffq")]([SubResource("Resource_uhdpv")])
+orientation_traits = Array[ExtResource("15_kche2")]([SubResource("Resource_vitqo")])
+lens_traits = Array[ExtResource("15_eya2y")]([SubResource("Resource_5n3rl")])
+transition_traits = Array[ExtResource("14_5a01j")]([SubResource("Resource_fli2s"), SubResource("Resource_ee4q3")])
+collision_mode = 2
+up_mode = 2
+
+[node name="CollisionShape3D" parent="SetDressing/cameraStuff/CameraConstraint6" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.222473, -38.219406, -1.3984375)
+shape = SubResource("BoxShape3D_qqwui")
+
+[node name="ConstraintPoint" parent="SetDressing/cameraStuff/CameraConstraint6" index="1" unique_id=495541008]
+transform = Transform3D(-0.9982595, 0, 0.05897428, 0, 1, 0, -0.05897428, 0, -0.9982595, 3.8423462, -51.0011, 60.447998)
+
+[node name="CameraConstraint3" parent="SetDressing/cameraStuff" unique_id=967240972 instance=ExtResource("11_t0bcq")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 547.3043, -198.1785, 1161.1873)
+transition_traits = Array[ExtResource("14_5a01j")]([SubResource("Resource_t1bg2"), SubResource("Resource_qqmqe")])
+
+[node name="CollisionShape3D" parent="SetDressing/cameraStuff/CameraConstraint3" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 97.06531, -101.50421, 2.7780762)
+shape = SubResource("BoxShape3D_2h1v7")
+
+[node name="ConstraintPoint" parent="SetDressing/cameraStuff/CameraConstraint3" index="1" unique_id=495541008]
+transform = Transform3D(-0.25976887, 0, -0.96567094, 0, 1, 0, 0.96567094, 0, -0.25976887, 115.6803, -124.04883, 8.2612915)
+
+[node name="CameraConstraint4" parent="SetDressing/cameraStuff" unique_id=1769991400 instance=ExtResource("11_t0bcq")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 144.17578, -43.436325, 520.3331)
+position_traits = Array[ExtResource("13_cnffq")]([SubResource("Resource_otf76")])
+orientation_traits = Array[ExtResource("15_kche2")]([SubResource("Resource_trrjw")])
+lens_traits = Array[ExtResource("15_eya2y")]([SubResource("Resource_1jh0t")])
+transition_traits = Array[ExtResource("14_5a01j")]([SubResource("Resource_tnrdu"), SubResource("Resource_htobe")])
+influence_traits = Array[ExtResource("16_uhdpv")]([SubResource("Resource_ndgnv")])
+collision_mode = 2
+up_mode = 2
+suppress_speed_effects = false
+
+[node name="CollisionShape3D" parent="SetDressing/cameraStuff/CameraConstraint4" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.336609, -83.22418, -6.874893)
+shape = SubResource("BoxShape3D_uff3j")
+
+[node name="ConstraintPoint" parent="SetDressing/cameraStuff/CameraConstraint4" index="1" unique_id=495541008]
+transform = Transform3D(-4.371139e-08, -1, -5.9604645e-08, 2.3643439e-07, 5.9604645e-08, -1, 1, -4.3711392e-08, 2.3643439e-07, 12.856079, -193.49146, 11.306061)
+
+[node name="RaceGoal" parent="SetDressing" unique_id=767008932 instance=ExtResource("22_3qeqd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 379.2853, -243.17789, 2507.8096)
+
+[node name="WATERNODE" parent="." unique_id=896649702 instance=ExtResource("23_t1bg2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2568.2566, -590.1953, 673.83466)
+size = Vector3(5000, 800, 20000)
+inner_subdivisions = 1
+
+[node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE" unique_id=2007587390]
+process_mode = 4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 80, 0)
+cast_shadow = 0
+instance_shader_parameters/clipmap_displacement_fade_start = 0.0
+instance_shader_parameters/clipmap_inner_radius = 0.0
+instance_shader_parameters/clipmap_lod_scale = 0.0
+instance_shader_parameters/clipmap_outer_radius = 0.0
+instance_shader_parameters/height_scale = 5.0
+mesh = SubResource("PlaneMesh_6nyqt")
+surface_material_override/0 = SubResource("ShaderMaterial_1l1dj")
+
+[node name="VaultBar" parent="." unique_id=1685228124 instance=ExtResource("25_qqmqe")]
+transform = Transform3D(1.0129586e-07, 0.6350637, 0.77245975, -8.327854e-08, 0.77245975, -0.6350637, -1, 0, 1.3113416e-07, 220.97983, -287.87018, 2232.9556)
+bar_length = 100.0
+bar_radius = 0.5
+launch_speed_mode = 1
+fixed_launch_speed = 125.5
+launch_aim_origin = 1
+
+[node name="LightmapGI" type="LightmapGI" parent="." unique_id=1672230381]
+quality = 0
+shadowmask_mode = 2
+texel_scale = 0.24
+
+[editable path="RaceStart"]
+[editable path="SetDressing/RingSplines/RingSpline1"]
+[editable path="SetDressing/RingSplines/RingSpline2"]
+[editable path="SetDressing/RingSplines/RingSpline3"]
+[editable path="SetDressing/RingSplines/RingSpline4"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline4"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline12"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline13"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline14"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline15"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline16"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline17"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline5"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline6"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline7"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline8"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline9"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline10"]
+[editable path="SetDressing/RingSplines/ringies/RingSpline11"]
+[editable path="SetDressing/DashPanel3"]
+[editable path="SetDressing/DashPanel3/Mesh/DashPanelMesh"]
+[editable path="SetDressing/DashPanel3/Mesh/DashPanelMesh/DashPanel"]
+[editable path="SetDressing/DashPanel4"]
+[editable path="SetDressing/DashPanel4/Mesh/DashPanelMesh"]
+[editable path="SetDressing/DashPanel4/Mesh/DashPanelMesh/DashPanel"]
+[editable path="SetDressing/DashPanel5"]
+[editable path="SetDressing/DashPanel5/Mesh/DashPanelMesh"]
+[editable path="SetDressing/DashPanel5/Mesh/DashPanelMesh/DashPanel"]
+[editable path="SetDressing/JumpPanelRamp"]
+[editable path="SetDressing/cameraStuff/CameraConstraint2"]
+[editable path="SetDressing/cameraStuff/CameraConstraint5"]
+[editable path="SetDressing/cameraStuff/CameraConstraint6"]
+[editable path="SetDressing/cameraStuff/CameraConstraint3"]
+[editable path="SetDressing/cameraStuff/CameraConstraint4"]
