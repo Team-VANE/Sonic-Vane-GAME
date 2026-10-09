@@ -81,10 +81,12 @@ jobs:
       - name: Configure Godot Editor Settings (Blender Path)
         run: |
           mkdir -p "$HOME/.config/godot"
-          echo '[gd_resource type="EditorSettings" format=3]' > "$HOME/.config/godot/editor_settings-4.7.tres"
-          echo '' >> "$HOME/.config/godot/editor_settings-4.7.tres"
-          echo '[resource]' >> "$HOME/.config/godot/editor_settings-4.7.tres"
-          echo 'filesystem/import/blender/blender_path = "/usr/bin/blender"' >> "$HOME/.config/godot/editor_settings-4.7.tres"
+          cat << 'EOF' > "$HOME/.config/godot/editor_settings-4.7.tres"
+[gd_resource type="EditorSettings" format=3]
+
+[resource]
+filesystem/import/blender/blender_path = "/usr/bin/blender"
+EOF
 
       - name: Cache Godot Asset Imports
         uses: actions/cache@v4
