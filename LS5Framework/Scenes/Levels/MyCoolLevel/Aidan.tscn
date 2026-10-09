@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://dayucuvrdtq1v"]
+
+[ext_resource type="Script" uid="uid://c1rk71fl0lh8s" path="res://LS5Framework/Objects/Carry/CarryableObject.gd" id="1_qnbjv"]
+[ext_resource type="PackedScene" uid="uid://cl8cgqg8wxrdn" path="res://LS5Framework/Particles/FootstepDustBurst.tscn" id="2_iibvc"]
+[ext_resource type="AudioStream" uid="uid://l2jpyc1e3he4" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard1.wav" id="3_w6251"]
+[ext_resource type="AudioStream" uid="uid://bvjl441qgfiba" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard2.wav" id="4_wyp80"]
+[ext_resource type="AudioStream" uid="uid://bhrf8vtiiihed" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard3.wav" id="5_qsl5g"]
+[ext_resource type="AudioStream" uid="uid://dbepeulhcl7nm" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard4.wav" id="6_jsepa"]
+[ext_resource type="AudioStream" uid="uid://quy2y0vkeq17" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard5.wav" id="7_a3ip7"]
+[ext_resource type="AudioStream" uid="uid://cdc14esa2m2y4" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard6.wav" id="8_53lff"]
+[ext_resource type="AudioStream" uid="uid://bmrp4pclos1lh" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_impact_hard7.wav" id="9_sddhd"]
+[ext_resource type="AudioStream" uid="uid://b5q2dp8atjawr" path="res://LS5Framework/Sounds/Physics/Cardboard/cardboard_box_scrape_smooth_loop1.wav" id="10_gl2ab"]
+[ext_resource type="PackedScene" uid="uid://cqcwck7tkxn4p" path="res://LS5Framework/Scenes/Levels/MyCoolLevel/aidan.fbx" id="11_soynm"]
+[ext_resource type="Script" uid="uid://c8t75yhaf5r4e" path="res://LS5Framework/Scripts/Animation/GazeTarget3D.gd" id="12_xm2ao"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
+
+[node name="aidan" type="RigidBody3D" unique_id=174097419 node_paths=PackedStringArray("surface_impact_sfx_player", "surface_slide_sfx_player") groups=["carryable_object", "dynamic_physics_object"]]
+collision_layer = 2
+collision_mask = 5
+continuous_cd = true
+script = ExtResource("1_qnbjv")
+carry_friction = 0.2
+surface_dust_scene = ExtResource("2_iibvc")
+surface_impact_min_speed = 0.5
+surface_impact_sounds = Array[AudioStream]([ExtResource("3_w6251"), ExtResource("4_wyp80"), ExtResource("5_qsl5g"), ExtResource("6_jsepa"), ExtResource("7_a3ip7"), ExtResource("8_53lff"), ExtResource("9_sddhd")])
+surface_slide_sounds = Array[AudioStream]([ExtResource("10_gl2ab")])
+surface_impact_sfx_player = NodePath("SFX_Collision")
+surface_slide_sfx_player = NodePath("SFX_Sliding")
+surface_sound_max_volume_db = 10.0
+surface_sound_max_speed = 60.0
+surface_effect_probe_max_skin = 0.5
+surface_effect_probe_max_speed = 100.0
+surface_effect_probe_correction_min_speed = 5.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=879323581]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="SFX_Collision" type="AudioStreamPlayer3D" parent="." unique_id=708789386]
+unit_size = 60.0
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -3.0
+
+[node name="SFX_Sliding" type="AudioStreamPlayer3D" parent="." unique_id=318415026]
+unit_size = 60.0
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -3.0
+
+[node name="aidan" parent="." unique_id=1587677512 instance=ExtResource("11_soynm")]
+
+[node name="GazeTarget3D" type="Marker3D" parent="." unique_id=717908821]
+script = ExtResource("12_xm2ao")
+gaze_max_distance = 30.0
+metadata/_custom_type_script = "uid://c8t75yhaf5r4e"

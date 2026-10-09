@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bnfiv8j85dm58"]
+
+[ext_resource type="Texture2D" uid="uid://cruhq61g72bfe" path="res://LS5Framework/Scenes/Levels/MyCoolLevel/textures/prisonLevel_texture_08.png.png" id="1_b6bma"]
+
+[resource]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.7882353)
+albedo_texture = ExtResource("1_b6bma")
