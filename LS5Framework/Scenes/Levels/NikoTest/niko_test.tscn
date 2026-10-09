@@ -396,9 +396,6 @@ area_path = NodePath("../LoopCamExit")
 [sub_resource type="Resource" id="CameraTrait_0003"]
 resource_name = "Stationary Camera"
 script = ExtResource("cam_trait_position")
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="CameraTrait_0004"]
 resource_name = "Face Player"
@@ -406,9 +403,6 @@ script = ExtResource("cam_trait_orientation")
 target_offset = Vector3(0, 0, 0)
 tracking_response = 0.0
 strength = 0.7
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="CameraTrait_0005"]
 resource_name = "Fixed FOV"
@@ -437,7 +431,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 22246.4
+shader_parameter/swap_time = 54.249
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
 height = 8.0
@@ -450,7 +444,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 22246.4
+shader_parameter/swap_time = 54.249
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
 bounce = 1.0
@@ -566,9 +560,6 @@ script = ExtResource("cam_trait_activation")
 [sub_resource type="Resource" id="CameraTrait_0010"]
 resource_name = "Stationary Camera"
 script = ExtResource("cam_trait_position")
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="Resource_r8jnm"]
 resource_name = "Marker Orientation"
@@ -576,9 +567,6 @@ script = ExtResource("cam_trait_orientation")
 mode = 2
 target_offset = Vector3(0, 0, 0)
 tracking_response = 7.0
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="Resource_c1j06"]
 resource_name = "Timed Entry"
@@ -624,18 +612,12 @@ metadata/_custom_type_script = "uid://cdupr030jgwkv"
 [sub_resource type="Resource" id="Resource_ncnqb"]
 resource_name = "Stationary Camera"
 script = ExtResource("cam_trait_position")
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="CameraTrait_0011"]
 resource_name = "Marker Orientation"
 script = ExtResource("cam_trait_orientation")
 target_offset = Vector3(0, 0, 0)
 tracking_response = 7.0
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="CameraTrait_0012"]
 resource_name = "Timed Entry"
@@ -671,9 +653,6 @@ mode = 3
 offset = Vector3(0, 1.5, 0)
 offset_space = 1
 tracking_response = 9.0
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 metadata/_custom_type_script = "uid://ejxv0c1rj01v"
 
 [sub_resource type="Resource" id="Resource_3adtc"]
@@ -683,9 +662,6 @@ mode = 1
 target_offset = Vector3(0, 0, 0)
 orbit_rig = true
 tracking_response = 7.0
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="Resource_q6jdw"]
 resource_name = "Timed Entry"
@@ -703,8 +679,6 @@ duration = 0.8
 [sub_resource type="Resource" id="Resource_4n6d6"]
 script = ExtResource("52_syfp7")
 reference_path = NodePath("ConstraintPoint")
-effective_axes = null
-axis_space = null
 full_influence_distance = 15.0
 zero_influence_distance = 120.0
 metadata/_custom_type_script = "uid://bgccl8q6bo21v"
@@ -1011,18 +985,12 @@ script = ExtResource("cam_trait_position")
 mode = 6
 source_path = NodePath("Path3D")
 tracking_response = 8.0
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="Resource_anuua"]
 resource_name = "Face Player"
 script = ExtResource("cam_trait_orientation")
 target_path = NodePath("../CameraConstraint/ConstraintPoint")
 tracking_response = 8.0
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="Resource_muffe"]
 resource_name = "Instant Entry"
@@ -1081,9 +1049,6 @@ script = ExtResource("cam_trait_orientation")
 mode = 1
 tracking_response = 8.0
 strength = 0.5
-limit_axes = null
-axis_mask = null
-axis_reference_path = null
 
 [sub_resource type="Resource" id="Resource_jvpi5"]
 resource_name = "Instant Entry"
@@ -1116,26 +1081,26 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="Resource" id="Resource_subo7"]
+[sub_resource type="Resource" id="Resource_2nq5r"]
 resource_local_to_scene = true
 script = ExtResource("81_jvpi5")
 force_cling = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_fr6h1"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_subo7"]
 resource_local_to_scene = true
 size = Vector3(31.128418, 402.48187, 174.13367)
 
-[sub_resource type="BoxMesh" id="BoxMesh_kwuk6"]
+[sub_resource type="BoxMesh" id="BoxMesh_fr6h1"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_w658v")
 size = Vector3(31.128418, 402.48187, 174.13367)
 
-[sub_resource type="Resource" id="Resource_rd0n2"]
+[sub_resource type="Resource" id="Resource_kwuk6"]
 resource_local_to_scene = true
 script = ExtResource("74_anuua")
 death = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_w658v"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_rd0n2"]
 resource_local_to_scene = true
 size = Vector3(12, 6, 12)
 
@@ -1145,7 +1110,7 @@ cull_mode = 2
 shading_mode = 0
 albedo_color = Color(1, 0.2842292, 0.6170419, 0.18039216)
 
-[sub_resource type="BoxMesh" id="BoxMesh_u8ox3"]
+[sub_resource type="BoxMesh" id="BoxMesh_w658v"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_y1fnd")
 size = Vector3(12, 6, 12)
@@ -4424,7 +4389,6 @@ orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("R
 transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("Resource_q6jdw"), SubResource("Resource_luhu6")])
 influence_traits = Array[ExtResource("52_syfp7")]([SubResource("Resource_4n6d6")])
 collision_mode = 2
-controller_offset_enabled = null
 
 [node name="CollisionShape3D" parent="CameraConstraint_ParkourBox2" index="0" unique_id=1384128833]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.03308, -7.586426, 43.572205)
@@ -5763,28 +5727,28 @@ enabled = true
 target_paths = Array[NodePath]([])
 behavior_priority = 0
 movement_traits = Array[NodePath]([])
-attachment_traits = Array[ExtResource("81_jvpi5")]([SubResource("Resource_subo7")])
+attachment_traits = Array[ExtResource("81_jvpi5")]([SubResource("Resource_2nq5r")])
 hazard_traits = Array[NodePath]([])
 visibility_traits = Array[NodePath]([])
 custom_traits = Array[NodePath]([])
 
 [node name="CollisionShape3D" parent="ForceClingTrigger2" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8010254, -132.0268, 42.60309)
-shape = SubResource("BoxShape3D_fr6h1")
+shape = SubResource("BoxShape3D_subo7")
 
 [node name="VolumePreview" parent="ForceClingTrigger2" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8010254, -132.0268, 42.60309)
-mesh = SubResource("BoxMesh_kwuk6")
+mesh = SubResource("BoxMesh_fr6h1")
 
 [node name="DeathTrigger" parent="." unique_id=1923896090 instance=ExtResource("75_2pldv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.67688, -1.6765022, 377.62598)
-hazard_traits = Array[ExtResource("74_anuua")]([SubResource("Resource_rd0n2")])
+hazard_traits = Array[ExtResource("74_anuua")]([SubResource("Resource_kwuk6")])
 
 [node name="CollisionShape3D" parent="DeathTrigger" index="0"]
-shape = SubResource("BoxShape3D_w658v")
+shape = SubResource("BoxShape3D_rd0n2")
 
 [node name="VolumePreview" parent="DeathTrigger" index="1"]
-mesh = SubResource("BoxMesh_u8ox3")
+mesh = SubResource("BoxMesh_w658v")
 show_in_game = true
 
 [editable path="ENVIRONMENT/EnvironmentWeatherSystem"]

@@ -1847,7 +1847,6 @@ shape = SubResource("BoxShape3D_1mnlp")
 
 [node name="CameraConstraint2" parent="." unique_id=1053212905 instance=ExtResource("13_kkqu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2873.5027, 76.708115, -3071.0603)
-controller_only = null
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0001"), SubResource("CameraTrait_0002")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0003")])
 orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("CameraTrait_0004")])
@@ -1877,7 +1876,6 @@ shape = SubResource("BoxShape3D_b5s6o")
 
 [node name="CameraOverrideVolume" parent="." unique_id=1913076650 instance=ExtResource("23_rgv0j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3153.1743, -23.239813, -1411.1732)
-controller_only = null
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0008"), SubResource("CameraTrait_0009"), SubResource("CameraTrait_0010")])
 orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("CameraTrait_0011")])
 transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("CameraTrait_0012"), SubResource("CameraTrait_0013")])
@@ -1896,7 +1894,6 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 5
 
 [node name="CameraConstraint3" parent="." unique_id=835465136 instance=ExtResource("13_kkqu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3114.42, 68.75099, -1337.6903)
-controller_only = null
 override_previous_constraints = true
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0014"), SubResource("CameraTrait_0015"), SubResource("CameraTrait_0016")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0017")])
@@ -1928,7 +1925,6 @@ shape = SubResource("BoxShape3D_45vka")
 
 [node name="CameraOverrideVolume2" parent="." unique_id=1112016174 instance=ExtResource("23_rgv0j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3764.1604, 103.59999, -1307.7212)
-controller_only = null
 constraint_priority = 100
 override_previous_constraints = true
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0022"), SubResource("CameraTrait_0023"), SubResource("CameraTrait_0024")])
@@ -1949,7 +1945,6 @@ transform = Transform3D(-2.1855693e-07, 0, -1, 0, 1, 0, 1, 0, -2.1855693e-07, 0,
 
 [node name="CameraConstraint4" parent="." unique_id=183500433 instance=ExtResource("13_kkqu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3780.42, 68.75099, -1337.6903)
-controller_only = null
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0028"), SubResource("CameraTrait_0029"), SubResource("CameraTrait_0030")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0031")])
 orientation_traits = Array[ExtResource("cam_trait_orientation")]([SubResource("CameraTrait_0032")])
@@ -2040,7 +2035,6 @@ shape = SubResource("BoxShape3D_3gtnb")
 
 [node name="CameraConstraint" parent="." unique_id=1911390276 instance=ExtResource("13_kkqu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4760.1914, 58.62553, -3053.4966)
-controller_only = null
 override_previous_constraints = true
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0036"), SubResource("CameraTrait_0037"), SubResource("CameraTrait_0038")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0039")])
@@ -3138,7 +3132,6 @@ shape = SubResource("BoxShape3D_hcf2b")
 
 [node name="CameraConstraint5" parent="." unique_id=2029838813 instance=ExtResource("13_kkqu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3195.832, 116.883484, -1719.198)
-controller_only = null
 override_previous_constraints = true
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0044"), SubResource("CameraTrait_0045")])
 position_traits = Array[ExtResource("cam_trait_position")]([SubResource("CameraTrait_0046")])
