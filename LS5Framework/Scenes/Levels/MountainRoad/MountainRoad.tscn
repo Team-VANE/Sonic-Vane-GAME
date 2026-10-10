@@ -6,26 +6,22 @@
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="4_wbhhh"]
 [ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="5_vq3sr"]
 [ext_resource type="Material" uid="uid://cdrd75vn4rhn5" path="res://LS5Framework/Scenes/Levels/Materials/NikoChecker.tres" id="7_qvipk"]
-[ext_resource type="PackedScene" uid="uid://cirqf48du5nl7" path="res://LS5Framework/Scenes/Levels/MountainRoad/RoadThing.blend" id="8_ljlaw"]
 [ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="8_syq55"]
 [ext_resource type="PackedScene" uid="uid://yt1f44l0qcs0" path="res://LS5Framework/Objects/Camera/CameraOverrideVolume.tscn" id="9_4bq72"]
 [ext_resource type="Texture2D" uid="uid://bc7ebln3j6r3o" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/wave14.png" id="9_11qsf"]
+[ext_resource type="PackedScene" uid="uid://b6p45g1nurtpx" path="res://LS5Framework/Scenes/Levels/MountainRoad/RoadThing.glb" id="12_b1wk1"]
+[ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
+[ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b1wk1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p4p7t"]
 resource_local_to_scene = true
 shader = ExtResource("5_vq3sr")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
 shader_parameter/moon_direction = Vector3(-0.76604444, -0.64278764, 0)
 shader_parameter/zenith_color = Color(0.095625, 0.29625002, 0.755, 1)
 shader_parameter/horizon_color = Color(0.5, 0.7, 1.05, 1)
-shader_parameter/ground_color = Color(0.035, 0.028, 0.025, 1)
-shader_parameter/ground_visibility = 1.0
+shader_parameter/ground_color = Color(0.30360106, 0.45174468, 0.71891415, 1)
+shader_parameter/ground_visibility = 0.6
 shader_parameter/sun_color = Color(1, 0.8066667, 0.57, 1)
 shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
 shader_parameter/cloud_light_color = Color(1, 0.8466667, 0.7066667, 1)
@@ -75,20 +71,20 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_p4p7t"]
+[sub_resource type="Sky" id="Sky_uuygb"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_b1wk1")
+sky_material = SubResource("ShaderMaterial_p4p7t")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_uuygb"]
+[sub_resource type="Environment" id="Environment_j7og0"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_p4p7t")
+sky = SubResource("Sky_uuygb")
 ambient_light_source = 3
-ambient_light_color = Color(0.42999998, 0.57, 0.8333333, 1)
+ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
 ambient_light_sky_contribution = 0.82
-ambient_light_energy = 0.91235775
+ambient_light_energy = 0.94372034
 reflected_light_source = 2
 tonemap_mode = 4
 ssr_enabled = true
@@ -287,17 +283,10 @@ shader_parameter/ssr_fade_end = 0.95
 shader_parameter/ssr_edge_fade = 0.05
 shader_parameter/ssr_roughness_mip = 4.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4bq72"]
-size = Vector3(115.67102, 38.03302, 134.50684)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wbhhh"]
-size = Vector3(176.50787, 140.57251, 185.71265)
-
 [sub_resource type="Resource" id="CameraTrait_0001"]
 resource_name = "Enter Volume"
 script = ExtResource("cam_trait_activation")
 event = 1
-area_path = NodePath("")
 
 [sub_resource type="Resource" id="CameraTrait_0002"]
 resource_name = "Rehit Boundary"
@@ -308,7 +297,6 @@ area_path = NodePath("RehitBoundary")
 [sub_resource type="Resource" id="CameraTrait_0003"]
 resource_name = "Timed Entry"
 script = ExtResource("cam_trait_transition")
-phase = 0
 mode = 1
 duration = 9999.0
 
@@ -316,14 +304,20 @@ duration = 9999.0
 resource_name = "Instant Exit"
 script = ExtResource("cam_trait_transition")
 phase = 1
-mode = 0
-duration = 0.35
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4bq72"]
+size = Vector3(115.67102, 38.03302, 134.50684)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wbhhh"]
+size = Vector3(176.50787, 140.57251, 185.71265)
 
 [node name="MountainRoad" type="Node3D" unique_id=794803344]
 
 [node name="PlayerSpawn" type="Node3D" parent="." unique_id=1015454562]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 129.92084, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 706.3555, 0)
 script = ExtResource("1_losvj")
+downwarp_enabled = true
+downwarp_distance = 150.0
 
 [node name="Node3D" type="Node3D" parent="PlayerSpawn" unique_id=815639902]
 
@@ -339,7 +333,7 @@ initial_time_of_day_hours = 8.0
 day_length_minutes = 14.0
 
 [node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_uuygb")
+environment = SubResource("Environment_j7og0")
 
 [node name="Misc?!?!" type="Node3D" parent="." unique_id=2089609842]
 visible = false
@@ -369,18 +363,11 @@ surface_material_override/0 = SubResource("ShaderMaterial_uuygb")
 transform = Transform3D(-0.09398663, 0, -0.99557346, 0, 1, 0, 0.99557346, 0, -0.09398663, -4.9942513, -26.535187, -3.372673)
 visible = false
 enabled = false
-disable_camera_controls = false
-release_when_replaced = true
-retain_heading_on_release = true
-cancel_on_manual_look = false
-override_previous_constraints = true
 constraint_priority = 100
-up_mode = 2
+override_previous_constraints = true
 activation_traits = Array[ExtResource("cam_trait_activation")]([SubResource("CameraTrait_0001"), SubResource("CameraTrait_0002")])
-position_traits = Array[ExtResource("cam_trait_position")]([])
-orientation_traits = Array[ExtResource("cam_trait_orientation")]([])
-lens_traits = Array[ExtResource("cam_trait_lens")]([])
 transition_traits = Array[ExtResource("cam_trait_transition")]([SubResource("CameraTrait_0003"), SubResource("CameraTrait_0004")])
+up_mode = 2
 
 [node name="CollisionShape3D" parent="CameraOverrideVolume" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.244076, 4.273163, -2.659413)
@@ -393,9 +380,10 @@ disabled = true
 
 [node name="World" type="Node3D" parent="." unique_id=1163623774]
 
-[node name="RoadThing" parent="World" unique_id=692140637 instance=ExtResource("8_ljlaw")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -1007.956, 707.2848, 94.744)
+[node name="RoadThing" parent="World" unique_id=1648113134 instance=ExtResource("12_b1wk1")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -1007.956, 707.285, 94.744)
 
 [editable path="Lights/EnvironmentWeatherSystem"]
 [editable path="Lights/EnvironmentWeatherSystem/DayNightCycle"]
 [editable path="CameraOverrideVolume"]
+[editable path="World/RoadThing"]

@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://cxbwl0rw14q3b"]
 
+[ext_resource type="Texture2D" uid="uid://b1o7y46t0vilg" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/m128_sand001.png" id="1_4osux"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="1_8sfca"]
-[ext_resource type="PackedScene" uid="uid://ce32jl2wm15fj" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EmeraldCoastPt1.tscn" id="1_q4gbu"]
+[ext_resource type="PackedScene" uid="uid://b0ubwvm1a5e1j" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/BACKDROP_ISLAND.glb" id="2_qsh8t"]
 [ext_resource type="Shader" uid="uid://p3g0j2rv6t4n" path="res://LS5Framework/Objects/Environment/DayNightCycle/day_night_sky.gdshader" id="2_radro"]
+[ext_resource type="PackedScene" uid="uid://c8m2ul44df2cl" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_1/EC.glb" id="3_e3gqs"]
 [ext_resource type="Shader" uid="uid://chmgmj434uopx" path="res://LS5Framework/Shaders/WaterShader_StayAtHomeDev/Shader/Water.gdshader" id="3_f6x8d"]
+[ext_resource type="PackedScene" uid="uid://cldcbpow4a6sd" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/EC_Pt2.glb" id="4_iwrtv"]
 [ext_resource type="Texture2D" uid="uid://bc7ebln3j6r3o" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_2/wave14.png" id="4_l2wl7"]
 [ext_resource type="PackedScene" uid="uid://c12m0rampjump" path="res://LS5Framework/Objects/Ramps/JumpPanelRamp.tscn" id="5_ehpxi"]
 [ext_resource type="PackedScene" uid="uid://dab7ow5oahfhc" path="res://LS5Framework/Objects/Homing/HomingTarget.tscn" id="6_l23e3"]
@@ -49,7 +52,15 @@
 [ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="cam_trait_position"]
 [ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3phsd"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_s4xou"]
+size = Vector2(24000, 24000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j1w8o"]
+albedo_color = Color(0.060371235, 0.14116654, 0.14825544, 1)
+albedo_texture = ExtResource("1_4osux")
+uv1_scale = Vector3(74.915, 34.823, 50.925)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yuwwo"]
 resource_local_to_scene = true
 shader = ExtResource("2_radro")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -107,18 +118,18 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_2syql"]
+[sub_resource type="Sky" id="Sky_easqi"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_3phsd")
+sky_material = SubResource("ShaderMaterial_yuwwo")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_mhv1v"]
+[sub_resource type="Environment" id="Environment_gwwuk"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_2syql")
+sky = SubResource("Sky_easqi")
 ambient_light_source = 3
-ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
+ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
 ambient_light_sky_contribution = 0.82
 ambient_light_energy = 0.94372034
 reflected_light_source = 2
@@ -143,11 +154,11 @@ fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_4osux"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_make8"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_e3gqs"]
+[sub_resource type="Curve3D" id="Curve3D_s88xw"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -172,11 +183,11 @@ size = Vector3(3, 0.5, 3)
 albedo_texture = ExtResource("9_ag4b8")
 uv1_scale = Vector3(20.215, 6.955, 1)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_iwrtv"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_blxl6"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_s4xou"]
+[sub_resource type="Curve3D" id="Curve3D_b60og"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -191,11 +202,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_yuwwo"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_y3id6"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_easqi"]
+[sub_resource type="Curve3D" id="Curve3D_c4nmr"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -210,11 +221,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_gwwuk"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7scfl"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_make8"]
+[sub_resource type="Curve3D" id="Curve3D_8ov1f"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -244,11 +255,11 @@ alpha_hash_scale = 1.0
 alpha_antialiasing_mode = 0
 albedo_color = Color(1, 1, 1, 0)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_s88xw"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ejwow"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_blxl6"]
+[sub_resource type="Curve3D" id="Curve3D_ahtbt"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 20.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.6190186, 26.13379, 5.6203613),
@@ -256,11 +267,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_b60og"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rnh56"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_y3id6"]
+[sub_resource type="Curve3D" id="Curve3D_5p8ul"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 17.435, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.3981934, 25.09491, 5.375534),
@@ -268,11 +279,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_7scfl"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3u76p"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_8ov1f"]
+[sub_resource type="Curve3D" id="Curve3D_hdcyx"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0.81, 12.045, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1.3145164, 22.410555, 11.569281),
@@ -307,11 +318,11 @@ size = Vector3(3, 0.5, 3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_784d8"]
 size = Vector3(50000, 2.922, 50000)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ejwow"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_t2xni"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_ahtbt"]
+[sub_resource type="Curve3D" id="Curve3D_inw4d"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -367,14 +378,14 @@ size = Vector3(20.392578, 13.610901, 25.359283)
 [sub_resource type="BoxShape3D" id="BoxShape3D_j0k8r"]
 size = Vector3(125.62793, 30.601563, 130.34668)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rnh56"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g22vk"]
 render_priority = 0
 shader = ExtResource("22_7fxeh")
 shader_parameter/tex_flat = ExtResource("23_i5omx")
 shader_parameter/tex_glow = ExtResource("24_isflb")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = false
-shader_parameter/swap_time = 249.698
+shader_parameter/swap_time = 7502.262
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l51wo"]
 size = Vector3(36.186234, 40.35939, 58.338074)
@@ -636,26 +647,26 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_5p8ul"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_1i10k"]
 size = Vector2(11999.82, 9000.2)
 subdivide_width = 1
 subdivide_depth = 1
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3u76p"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6nyx4"]
 noise_type = 3
 fractal_type = 2
 domain_warp_enabled = true
 domain_warp_fractal_type = 0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hdcyx"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jnnpt"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_3u76p")
+noise = SubResource("FastNoiseLite_6nyx4")
 seamless = true
 as_normal_map = true
 bump_strength = 9.3
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_t2xni"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gbnyh"]
 noise_type = 3
 offset = Vector3(12, 0, 0)
 fractal_type = 2
@@ -663,18 +674,18 @@ fractal_octaves = 6
 fractal_lacunarity = 1.855
 domain_warp_enabled = true
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_inw4d"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6p5ea"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_t2xni")
+noise = SubResource("FastNoiseLite_gbnyh")
 seamless = true
 as_normal_map = true
 bump_strength = 8.2
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g22vk"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yfvn5"]
 load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1i10k"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_88hvn"]
 render_priority = 0
 shader = ExtResource("3_f6x8d")
 shader_parameter/albedo = Color(0.22796398, 0.45115906, 1, 1)
@@ -682,9 +693,9 @@ shader_parameter/albedo2 = Color(0.8748658, 0.90888375, 0.98501414, 1)
 shader_parameter/metallic = 0.1
 shader_parameter/roughness = 0.11
 shader_parameter/alpha = 0.92
-shader_parameter/wave = SubResource("CompressedTexture2D_g22vk")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_hdcyx")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_inw4d")
+shader_parameter/wave = SubResource("CompressedTexture2D_yfvn5")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_jnnpt")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_6p5ea")
 shader_parameter/wave_uv_scale = 0.455
 shader_parameter/normal_uv_scale = 0.01
 shader_parameter/normal2_uv_scale = 0.01
@@ -728,34 +739,34 @@ shader_parameter/ssr_fade_end = 0.95
 shader_parameter/ssr_edge_fade = 0.05
 shader_parameter/ssr_roughness_mip = 4.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6nyx4"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_b0dwv"]
 size = Vector3(11999.82, 499.975, 9000.2)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_jnnpt"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_nytw6"]
 size = Vector2(11999.82, 9000.2)
 subdivide_width = 32
 subdivide_depth = 32
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_gbnyh"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_h5rvp"]
 size = Vector2(400, 200)
 subdivide_width = 1
 subdivide_depth = 1
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_6p5ea"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wt6vm"]
 noise_type = 3
 fractal_type = 2
 domain_warp_enabled = true
 domain_warp_fractal_type = 0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yfvn5"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f1psp"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_6p5ea")
+noise = SubResource("FastNoiseLite_wt6vm")
 seamless = true
 as_normal_map = true
 bump_strength = 9.3
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_88hvn"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cepio"]
 noise_type = 3
 offset = Vector3(12, 0, 0)
 fractal_type = 2
@@ -763,18 +774,18 @@ fractal_octaves = 6
 fractal_lacunarity = 1.855
 domain_warp_enabled = true
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_b0dwv"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_61i64"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_88hvn")
+noise = SubResource("FastNoiseLite_cepio")
 seamless = true
 as_normal_map = true
 bump_strength = 8.2
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nytw6"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6qn2a"]
 load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5rvp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lwt6l"]
 render_priority = 0
 shader = ExtResource("3_f6x8d")
 shader_parameter/albedo = Color(0.22796398, 0.45115906, 1, 1)
@@ -782,9 +793,9 @@ shader_parameter/albedo2 = Color(0.8748658, 0.90888375, 0.98501414, 1)
 shader_parameter/metallic = 0.1
 shader_parameter/roughness = 0.11
 shader_parameter/alpha = 0.92
-shader_parameter/wave = SubResource("CompressedTexture2D_nytw6")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_yfvn5")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_b0dwv")
+shader_parameter/wave = SubResource("CompressedTexture2D_6qn2a")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_f1psp")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_61i64")
 shader_parameter/wave_uv_scale = 0.455
 shader_parameter/normal_uv_scale = 0.01
 shader_parameter/normal2_uv_scale = 0.01
@@ -828,34 +839,34 @@ shader_parameter/ssr_fade_end = 0.95
 shader_parameter/ssr_edge_fade = 0.05
 shader_parameter/ssr_roughness_mip = 4.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wt6vm"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_licc2"]
 size = Vector3(400, 90, 200)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_f1psp"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_dqltw"]
 size = Vector2(400, 200)
 subdivide_width = 32
 subdivide_depth = 32
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_cepio"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_1vrco"]
 size = Vector2(219.66, 200)
 subdivide_width = 1
 subdivide_depth = 1
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_61i64"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4suoj"]
 noise_type = 3
 fractal_type = 2
 domain_warp_enabled = true
 domain_warp_fractal_type = 0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6qn2a"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ia2wk"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_61i64")
+noise = SubResource("FastNoiseLite_4suoj")
 seamless = true
 as_normal_map = true
 bump_strength = 9.3
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_lwt6l"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7q5sm"]
 noise_type = 3
 offset = Vector3(12, 0, 0)
 fractal_type = 2
@@ -863,18 +874,18 @@ fractal_octaves = 6
 fractal_lacunarity = 1.855
 domain_warp_enabled = true
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_licc2"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_uglly"]
 width = 1024
 height = 1024
-noise = SubResource("FastNoiseLite_lwt6l")
+noise = SubResource("FastNoiseLite_7q5sm")
 seamless = true
 as_normal_map = true
 bump_strength = 8.2
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dqltw"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n3jog"]
 load_path = "res://.godot/imported/wave14.png-60e239494a57a9f7ded3f1b05003f5a3.s3tc.ctex"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1vrco"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a8l0p"]
 render_priority = 0
 shader = ExtResource("3_f6x8d")
 shader_parameter/albedo = Color(0.4709357, 0.5077144, 0.52635163, 1)
@@ -882,9 +893,9 @@ shader_parameter/albedo2 = Color(0.950605, 0.900705, 0.83995247, 1)
 shader_parameter/metallic = 0.1
 shader_parameter/roughness = 0.11
 shader_parameter/alpha = 0.92
-shader_parameter/wave = SubResource("CompressedTexture2D_dqltw")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_6qn2a")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_licc2")
+shader_parameter/wave = SubResource("CompressedTexture2D_n3jog")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_ia2wk")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_uglly")
 shader_parameter/wave_uv_scale = 0.455
 shader_parameter/normal_uv_scale = 0.01
 shader_parameter/normal2_uv_scale = 0.01
@@ -928,10 +939,10 @@ shader_parameter/ssr_fade_end = 0.95
 shader_parameter/ssr_edge_fade = 0.05
 shader_parameter/ssr_roughness_mip = 4.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4suoj"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_renxt"]
 size = Vector3(219.66, 90, 200)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ia2wk"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_cqkh0"]
 size = Vector2(219.66, 200)
 subdivide_width = 32
 subdivide_depth = 32
@@ -1450,7 +1461,7 @@ phase = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_i5omx"]
 size = Vector3(39.59485, 30.602295, 16.181152)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_7q5sm"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_fmth1"]
 resource_local_to_scene = true
 size = Vector3(19.3, 6, 6)
 
@@ -1459,54 +1470,12 @@ albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
 metallic = 0.6
 roughness = 0.45
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_uglly"]
-resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_bar")
-top_radius = 0.15
-bottom_radius = 0.15
-height = 19.3
-radial_segments = 24
-rings = 1
-
-[sub_resource type="Curve3D" id="Curve3D_n3jog"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_a8l0p"]
-resource_local_to_scene = true
-size = Vector3(21.3, 6, 6)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_renxt"]
-resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_bar")
-top_radius = 0.15
-bottom_radius = 0.15
-height = 21.3
-radial_segments = 24
-rings = 1
-
-[sub_resource type="Curve3D" id="Curve3D_cqkh0"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_fmth1"]
-resource_local_to_scene = true
-size = Vector3(21.3, 6, 6)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_ea4m8"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_bar")
 top_radius = 0.15
 bottom_radius = 0.15
-height = 21.3
+height = 19.3
 radial_segments = 24
 rings = 1
 
@@ -1518,60 +1487,60 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="Resource" id="Resource_umww0"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_umww0"]
+resource_local_to_scene = true
+size = Vector3(21.3, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_eksxb"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 21.3
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_udwb1"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6k7os"]
+resource_local_to_scene = true
+size = Vector3(21.3, 6, 6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kyd4x"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bar")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 21.3
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_qnyxe"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_ko376"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 6
 amount = 1.0
 random_ring_pool = null
 
-[sub_resource type="Resource" id="Resource_eksxb"]
-resource_local_to_scene = true
-script = ExtResource("40_tep1r")
-reward_type = 1
-amount = 10.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_udwb1"]
-resource_local_to_scene = true
-script = ExtResource("40_tep1r")
-reward_type = 1
-amount = 5.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_6k7os"]
-resource_local_to_scene = true
-script = ExtResource("40_tep1r")
-reward_type = 1
-amount = 5.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_kyd4x"]
-resource_local_to_scene = true
-script = ExtResource("40_tep1r")
-reward_type = 1
-amount = 5.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_qnyxe"]
-resource_local_to_scene = true
-script = ExtResource("40_tep1r")
-reward_type = 1
-amount = 5.0
-random_ring_pool = null
-
-[sub_resource type="Resource" id="Resource_ko376"]
-resource_local_to_scene = true
-script = ExtResource("40_tep1r")
-reward_type = 1
-amount = 5.0
-random_ring_pool = null
-
 [sub_resource type="Resource" id="Resource_1inie"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
-amount = 5.0
+amount = 10.0
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_gn6ag"]
@@ -1585,52 +1554,94 @@ random_ring_pool = null
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
-amount = 10.0
+amount = 5.0
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_kemi7"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
-amount = 10.0
+amount = 5.0
 random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_k8ahi"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
-reward_type = 7
+reward_type = 1
 amount = 5.0
-random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_o7aso"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
-reward_type = 7
+reward_type = 1
 amount = 5.0
-random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_j7elb"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
-amount = 10.0
-random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+amount = 5.0
+random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_7m2yl"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
-amount = 10.0
-random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+amount = 5.0
+random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_p2arl"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
 amount = 10.0
-random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_j7rnv"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
+
+[sub_resource type="Resource" id="Resource_rlg1d"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 7
+amount = 5.0
+random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+
+[sub_resource type="Resource" id="Resource_htm6i"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 7
+amount = 5.0
+random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+
+[sub_resource type="Resource" id="Resource_ysc75"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 1
+amount = 10.0
+random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+
+[sub_resource type="Resource" id="Resource_8vgty"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 1
+amount = 10.0
+random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+
+[sub_resource type="Resource" id="Resource_gphp0"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 1
+amount = 10.0
+random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+
+[sub_resource type="Resource" id="Resource_dtcvr"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 7
@@ -1638,6 +1649,458 @@ amount = 10.0
 random_ring_pool = PackedInt32Array(5, 10, 20, 40)
 
 [node name="EMERALD_COAST" type="Node3D" unique_id=530470832]
+
+[node name="LEVEL" type="Node3D" parent="." unique_id=581617351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.64, 20.016, -85.084)
+
+[node name="SeaFloor" type="MeshInstance3D" parent="LEVEL" unique_id=1908991687]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2307.5264, -723.14905, 175.45895)
+mesh = SubResource("PlaneMesh_s4xou")
+surface_material_override/0 = SubResource("StandardMaterial3D_j1w8o")
+
+[node name="Backdrop" type="Node3D" parent="LEVEL" unique_id=1788154024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3397064, 0)
+
+[node name="BACKDROP_ISLAND" parent="LEVEL/Backdrop" unique_id=1166175921 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7419992, 0, -0.67040074, 0, 1, 0, 0.67040074, 0, -0.7419992, 4583.077, -2.1227303, 888.97)
+
+[node name="BACKDROP_ISLAND5" parent="LEVEL/Backdrop" unique_id=1725488633 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7405555, 0, -0.3155988, 0, 0.805, 0, 0.3155988, 0, -0.7405555, 4386.324, -2.122715, 927.70233)
+
+[node name="BACKDROP_ISLAND17" parent="LEVEL/Backdrop" unique_id=1191631501 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.37834162, 0, -0.925666, 0, 1, 0, 0.925666, 0, -0.37834162, 5397.894, -2.1227303, 1167.8641)
+
+[node name="BACKDROP_ISLAND18" parent="LEVEL/Backdrop" unique_id=207645486 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.5307416, 0, -0.6052588, 0, 0.8049999, 0, 0.6052588, 0, -0.5307416, 5237.3403, -2.122715, 1288.0073)
+
+[node name="BACKDROP_ISLAND19" parent="LEVEL/Backdrop" unique_id=1595342291 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.5631463, 0, -0.17597216, 0, 0.59, 0, 0.17597216, 0, -0.5631463, 5019.194, -2.122715, 1327.3666)
+
+[node name="BACKDROP_ISLAND20" parent="LEVEL/Backdrop" unique_id=352403641 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.99367017, 0, -0.1123361, 0, 1, 0, 0.1123361, 0, 0.99367017, 5242.6743, -2.1227303, -840.21185)
+
+[node name="BACKDROP_ISLAND21" parent="LEVEL/Backdrop" unique_id=871998510 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7267866, 0, -0.34613016, 0, 0.8049999, 0, 0.34613016, 0, 0.7267866, 5401.953, -2.122715, -718.384)
+
+[node name="BACKDROP_ISLAND22" parent="LEVEL/Backdrop" unique_id=409414 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.32249334, 0, -0.49406272, 0, 0.59, 0, 0.49406272, 0, 0.32249334, 5499.1563, -2.122715, -519.164)
+
+[node name="BACKDROP_ISLAND23" parent="LEVEL/Backdrop" unique_id=2146508029 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7583732, 0, -0.6518204, 0, 1, 0, 0.6518204, 0, 0.7583732, 5871.994, -2.1228523, -637.8642)
+
+[node name="BACKDROP_ISLAND24" parent="LEVEL/Backdrop" unique_id=608489670 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.40620533, 0, -0.6949979, 0, 0.8049999, 0, 0.6949979, 0, 0.40620533, 5935.1567, -2.122837, -326.63882)
+
+[node name="BACKDROP_ISLAND33" parent="LEVEL/Backdrop" unique_id=124163067 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.9960611, 0, 0.08866823, 0, 1, 0, -0.08866823, 0, 0.9960611, 5236.55, -2.1228523, -1580.4155)
+
+[node name="BACKDROP_ISLAND34" parent="LEVEL/Backdrop" unique_id=2102605962 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7813287, 0, -0.19377908, 0, 0.8049999, 0, 0.19377908, 0, 0.7813287, 5503.603, -2.122837, -1408.5636)
+
+[node name="BACKDROP_ISLAND25" parent="LEVEL/Backdrop" unique_id=1814372532 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.011275053, 0, -0.5898922, 0, 0.59, 0, 0.5898922, 0, -0.011275053, 5903.462, -2.122837, -107.247635)
+
+[node name="BACKDROP_ISLAND9" parent="LEVEL/Backdrop" unique_id=1631862283 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.40855354, 0, -0.9127344, 0, 1, 0, 0.9127344, 0, 0.40855354, 5873.847, -2.1227303, 311.7478)
+
+[node name="BACKDROP_ISLAND10" parent="LEVEL/Backdrop" unique_id=894727702 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.07153192, 0, -0.8018155, 0, 0.8049999, 0, 0.8018155, 0, 0.07153192, 5849.939, -2.122715, 510.84662)
+
+[node name="BACKDROP_ISLAND2" parent="LEVEL/Backdrop" unique_id=1551157276 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6869353, 0, -0.72671866, 0, 1, 0, 0.72671866, 0, -0.6869353, 5253.3057, -2.1227608, 664.69934)
+
+[node name="BACKDROP_ISLAND3" parent="LEVEL/Backdrop" unique_id=964792115 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.5585573, 0, -0.3789969, 0, 0.67499995, 0, 0.3789969, 0, -0.5585573, 5071.7383, -2.1226082, 713.74896)
+
+[node name="BACKDROP_ISLAND26" parent="LEVEL/Backdrop" unique_id=2041955087 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.9868895, 0, 0.16139719, 0, 1, 0, -0.16139719, 0, 0.9868895, 4837.9453, -2.1227303, -647.3375)
+
+[node name="BACKDROP_ISLAND27" parent="LEVEL/Backdrop" unique_id=1606366490 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.79342484, 0, -0.13602167, 0, 0.8049999, 0, 0.13602167, 0, 0.79342484, 5024.298, -2.122715, -573.2794)
+
+[node name="BACKDROP_ISLAND28" parent="LEVEL/Backdrop" unique_id=1888486676 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8195622, 0, 0.5729901, 0, 1, 0, -0.5729901, 0, 0.8195622, 4304.2344, -2.1227303, -1323.2527)
+
+[node name="BACKDROP_ISLAND29" parent="LEVEL/Backdrop" unique_id=789967776 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7740359, 0, 0.22111821, 0, 0.8049999, 0, -0.22111821, 0, 0.7740359, 4504.276, -2.122715, -1337.2329)
+
+[node name="BACKDROP_ISLAND30" parent="LEVEL/Backdrop" unique_id=1406047186 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.5686601, 0, -0.15724388, 0, 0.59, 0, 0.15724388, 0, 0.5686601, 4708.9487, -2.122715, -1252.1095)
+
+[node name="BACKDROP_ISLAND31" parent="LEVEL/Backdrop" unique_id=470486802 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.97112596, 0, 0.2385675, 0, 1, 0, -0.2385675, 0, 0.97112596, 4153.1147, -2.1227608, -822.01086)
+
+[node name="BACKDROP_ISLAND32" parent="LEVEL/Backdrop" unique_id=104353838 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6748131, 0, 0.015879333, 0, 0.67499995, 0, -0.015879333, 0, 0.6748131, 4332.295, -2.1226082, -764.85254)
+
+[node name="BACKDROP_ISLAND43" parent="LEVEL/Backdrop" unique_id=1020685661 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.0044414727, 0, 0.6749853, 0, 0.67499995, 0, -0.6749853, 0, -0.0044414727, 2895.5046, -2.1226082, -245.39258)
+
+[node name="BACKDROP_ISLAND4" parent="LEVEL/Backdrop" unique_id=1427098615 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.042983145, 0, -0.67363006, 0, 0.675, 0, 0.67363006, 0, -0.042983145, 5505.4077, -2.1227913, 442.3236)
+
+[node name="BACKDROP_ISLAND6" parent="LEVEL/Backdrop" unique_id=1437887435 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.4952768, 0, -0.86873525, 0, 1, 0, 0.86873525, 0, 0.4952768, 5404.5205, -2.1227608, 7.2312365)
+
+[node name="BACKDROP_ISLAND7" parent="LEVEL/Backdrop" unique_id=708831825 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.1999855, 0, -0.6446942, 0, 0.6749999, 0, 0.6446942, 0, 0.1999855, 5398.591, -2.1226082, 195.21379)
+
+[node name="BACKDROP_ISLAND8" parent="LEVEL/Backdrop" unique_id=1179403106 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.63194376, 0, -0.23721729, 0, 0.675, 0, 0.23721729, 0, 0.63194376, 5346.588, -2.1227913, -161.07866)
+
+[node name="BACKDROP_ISLAND46" parent="LEVEL/Backdrop" unique_id=1243317769 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6724235, 0, -0.44257373, 0, 0.8049999, 0, 0.44257373, 0, -0.6724235, 4319.712, -2.122837, 1672.8718)
+
+[node name="BACKDROP_ISLAND47" parent="LEVEL/Backdrop" unique_id=549828922 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.5896576, 0, -0.02009666, 0, 0.59, 0, 0.02009666, 0, -0.5896576, 4098.9463, -2.122837, 1652.8834)
+
+[node name="BACKDROP_ISLAND48" parent="LEVEL/Backdrop" unique_id=2140803641 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 3678.969, -2.1227303, 1645.5824)
+
+[node name="BACKDROP_ISLAND49" parent="LEVEL/Backdrop" unique_id=1890517274 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 3478.8806, -2.122715, 1632.291)
+
+[node name="BACKDROP_ISLAND50" parent="LEVEL/Backdrop" unique_id=580821031 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.76220536, 0, 0.6473353, 0, 1, 0, -0.6473353, 0, -0.76220536, 3293.5315, -2.1227608, 1044.6794)
+
+[node name="BACKDROP_ISLAND51" parent="LEVEL/Backdrop" unique_id=1471814105 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.40815133, 0, 0.537622, 0, 0.67499995, 0, -0.537622, 0, -0.40815133, 3234.9, -2.1226082, 865.9758)
+
+[node name="BACKDROP_ISLAND52" parent="LEVEL/Backdrop" unique_id=1117334445 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6749625, 0, 0.0071154833, 0, 0.67500013, 0, -0.0071154833, 0, -0.6749625, 3528.9932, -2.1227913, 1284.6046)
+
+[node name="BACKDROP_ISLAND53" parent="LEVEL/Backdrop" unique_id=107459435 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 3958.108, -2.1227608, 1160.7327)
+
+[node name="BACKDROP_ISLAND54" parent="LEVEL/Backdrop" unique_id=1106895419 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 3770.076, -2.1226082, 1164.8036)
+
+[node name="BACKDROP_ISLAND55" parent="LEVEL/Backdrop" unique_id=502854438 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 4123.1006, -2.1227913, 1093.9353)
+
+[node name="BACKDROP_ISLAND56" parent="LEVEL/Backdrop" unique_id=108123542 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6724235, 0, -0.44257373, 0, 0.8049999, 0, 0.44257373, 0, -0.6724235, 2407.8313, -2.122837, 1545.3105)
+
+[node name="BACKDROP_ISLAND57" parent="LEVEL/Backdrop" unique_id=1440786884 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.5896576, 0, -0.02009666, 0, 0.59, 0, 0.02009666, 0, -0.5896576, 2187.0657, -2.122837, 1525.3221)
+
+[node name="BACKDROP_ISLAND58" parent="LEVEL/Backdrop" unique_id=1821146503 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 1767.0884, -2.1227303, 1518.0211)
+
+[node name="BACKDROP_ISLAND59" parent="LEVEL/Backdrop" unique_id=1404215105 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 1567, -2.122715, 1504.7297)
+
+[node name="BACKDROP_ISLAND72" parent="LEVEL/Backdrop" unique_id=2057283983 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 1138.2349, -2.1227303, 1192.8672)
+
+[node name="BACKDROP_ISLAND73" parent="LEVEL/Backdrop" unique_id=931707776 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 938.1465, -2.122715, 1179.5758)
+
+[node name="BACKDROP_ISLAND60" parent="LEVEL/Backdrop" unique_id=75154269 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.9174285, 0, -0.3979006, 0, 1, 0, 0.3979006, 0, -0.9174285, 1445.447, -2.1227608, 840.9314)
+
+[node name="BACKDROP_ISLAND61" parent="LEVEL/Backdrop" unique_id=1894466112 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.662614, 0, -0.12871514, 0, 0.67499995, 0, 0.12871514, 0, -0.662614, 1259.2231, -2.1226082, 814.6013)
+
+[node name="BACKDROP_ISLAND62" parent="LEVEL/Backdrop" unique_id=2130613522 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6749625, 0, 0.0071154833, 0, 0.67500013, 0, -0.0071154833, 0, -0.6749625, 1617.1125, -2.1227913, 1157.0433)
+
+[node name="BACKDROP_ISLAND63" parent="LEVEL/Backdrop" unique_id=861747744 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 2046.2273, -2.1227608, 1033.1714)
+
+[node name="BACKDROP_ISLAND64" parent="LEVEL/Backdrop" unique_id=1070783959 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 1858.1953, -2.1226082, 1037.2423)
+
+[node name="BACKDROP_ISLAND65" parent="LEVEL/Backdrop" unique_id=525945790 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 2211.22, -2.1227913, 966.374)
+
+[node name="BACKDROP_ISLAND125" parent="LEVEL/Backdrop" unique_id=853351490 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6724235, 0, -0.44257373, 0, 0.8049999, 0, 0.44257373, 0, -0.6724235, 3131.2695, -2.1229591, 1711.9672)
+
+[node name="BACKDROP_ISLAND126" parent="LEVEL/Backdrop" unique_id=282860091 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.5896576, 0, -0.02009666, 0, 0.59, 0, 0.02009666, 0, -0.5896576, 2910.504, -2.1229591, 1691.9788)
+
+[node name="BACKDROP_ISLAND127" parent="LEVEL/Backdrop" unique_id=568806232 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 2769.6655, -2.1228828, 1199.828)
+
+[node name="BACKDROP_ISLAND128" parent="LEVEL/Backdrop" unique_id=606731233 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 2581.6335, -2.1227303, 1203.8989)
+
+[node name="BACKDROP_ISLAND129" parent="LEVEL/Backdrop" unique_id=1954967868 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 2934.6582, -2.1229134, 1133.0306)
+
+[node name="BACKDROP_ISLAND66" parent="LEVEL/Backdrop" unique_id=597060538 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 472.2284, -2.1227303, 1379.019)
+
+[node name="BACKDROP_ISLAND67" parent="LEVEL/Backdrop" unique_id=426789078 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 272.14, -2.122715, 1365.7277)
+
+[node name="BACKDROP_ISLAND130" parent="LEVEL/Backdrop" unique_id=2036457464 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.8897273, 0, -0.45649248, 0, 1, 0, 0.45649248, 0, -0.8897273, 1125.1384, -2.1227303, 1646.1799)
+
+[node name="BACKDROP_ISLAND131" parent="LEVEL/Backdrop" unique_id=1660394459 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.7968798, 0, -0.11405137, 0, 0.8049999, 0, 0.11405137, 0, -0.7968798, 925.05, -2.122715, 1632.8885)
+
+[node name="BACKDROP_ISLAND68" parent="LEVEL/Backdrop" unique_id=1622953686 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6749625, 0, 0.0071154833, 0, 0.67500013, 0, -0.0071154833, 0, -0.6749625, 322.25256, -2.1227913, 1018.04126)
+
+[node name="BACKDROP_ISLAND141" parent="LEVEL/Backdrop" unique_id=1125642100 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.60474676, 0, -0.29984388, 0, 0.6750001, 0, 0.29984388, 0, -0.60474676, 678.6323, -2.1227913, 1375.2291)
+
+[node name="BACKDROP_ISLAND69" parent="LEVEL/Backdrop" unique_id=37410308 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.84118056, 0, -0.5407543, 0, 1, 0, 0.5407543, 0, -0.84118056, 751.3673, -2.1227608, 894.1693)
+
+[node name="BACKDROP_ISLAND70" parent="LEVEL/Backdrop" unique_id=1201056376 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6331525, 0, -0.23397154, 0, 0.67499983, 0, 0.23397154, 0, -0.6331525, 563.3353, -2.1226082, 898.24023)
+
+[node name="BACKDROP_ISLAND71" parent="LEVEL/Backdrop" unique_id=1993536903 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.20329086, 0, -0.6436596, 0, 0.675, 0, 0.6436596, 0, -0.20329086, 916.36, -2.1227913, 827.37195)
+
+[node name="BACKDROP_ISLAND82" parent="LEVEL/Backdrop" unique_id=1656195386 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.99999416, 0, 0.0034207404, 0, 1, 0, -0.0034207404, 0, -0.99999416, -184.64238, -2.1227303, 1976.5818)
+
+[node name="BACKDROP_ISLAND83" parent="LEVEL/Backdrop" unique_id=795878799 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.76016766, 0, 0.26489693, 0, 0.8049998, 0, -0.26489693, 0, -0.76016766, -356.24515, -2.122715, 1872.8296)
+
+[node name="BACKDROP_ISLAND139" parent="LEVEL/Backdrop" unique_id=2076867348 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.737949, 0, -0.6748565, 0, 1, 0, 0.6748565, 0, -0.737949, 239.56195, -2.1227303, 1904.7478)
+
+[node name="BACKDROP_ISLAND140" parent="LEVEL/Backdrop" unique_id=1432909317 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.73864186, 0, -0.32005224, 0, 0.80499995, 0, 0.32005224, 0, -0.73864186, 43.04541, -2.122715, 1944.6636)
+
+[node name="BACKDROP_ISLAND84" parent="LEVEL/Backdrop" unique_id=77936672 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.59620523, 0, 0.31648746, 0, 0.6750001, 0, -0.31648746, 0, -0.59620523, -151.96367, -2.1227913, 1587.0566)
+
+[node name="BACKDROP_ISLAND85" parent="LEVEL/Backdrop" unique_id=1923247367 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.995598, 0, -0.09372613, 0, 1, 0, 0.09372613, 0, -0.995598, 286.08237, -2.1227608, 1674.231)
+
+[node name="BACKDROP_ISLAND86" parent="LEVEL/Backdrop" unique_id=977543820 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.66985875, 0, 0.08315039, 0, 0.6749998, 0, -0.08315039, 0, -0.66985875, 117.20908, -2.1226082, 1591.4397)
+
+[node name="BACKDROP_ISLAND87" parent="LEVEL/Backdrop" unique_id=1596464809 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.47633797, 0, -0.4782541, 0, 0.6750001, 0, 0.4782541, 0, -0.47633797, 463.318, -2.1227913, 1690.7239)
+
+[node name="BACKDROP_ISLAND74" parent="LEVEL/Backdrop" unique_id=371116994 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.932166, 0, 0.36203128, 0, 1, 0, -0.36203128, 0, -0.932166, -392.7163, -2.1227303, 1508.5398)
+
+[node name="BACKDROP_ISLAND75" parent="LEVEL/Backdrop" unique_id=1028243889 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.61448395, 0, 0.52003336, 0, 0.8049998, 0, -0.52003336, 0, -0.61448395, -515.65967, -2.122715, 1350.1196)
+
+[node name="BACKDROP_ISLAND137" parent="LEVEL/Backdrop" unique_id=553328475 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.9987769, 0, -0.04944253, 0, 1, 0, 0.04944253, 0, -0.9987769, -808.2372, -2.1227303, 1626.9581)
+
+[node name="BACKDROP_ISLAND138" parent="LEVEL/Backdrop" unique_id=1809138533 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.77310705, 0, 0.224345, 0, 0.80499995, 0, -0.224345, 0, -0.77310705, -985.0842, -2.122715, 1532.4218)
+
+[node name="BACKDROP_ISLAND76" parent="LEVEL/Backdrop" unique_id=1596932367 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.932166, 0, 0.36203128, 0, 1, 0, -0.36203128, 0, -0.932166, -974.191, -2.1227303, 1134.2346)
+
+[node name="BACKDROP_ISLAND77" parent="LEVEL/Backdrop" unique_id=1161588444 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.61448395, 0, 0.52003336, 0, 0.8049998, 0, -0.52003336, 0, -0.61448395, -1097.1343, -2.122715, 975.8144)
+
+[node name="BACKDROP_ISLAND78" parent="LEVEL/Backdrop" unique_id=588683612 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.4429288, 0, 0.5093516, 0, 0.6750001, 0, -0.5093516, 0, -0.4429288, -803.9113, -2.1227913, 782.37866)
+
+[node name="BACKDROP_ISLAND79" parent="LEVEL/Backdrop" unique_id=1249643245 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.9629228, 0, 0.26977694, 0, 1, 0, -0.26977694, 0, -0.9629228, -426.3213, -2.1227608, 1020.9358)
+
+[node name="BACKDROP_ISLAND80" parent="LEVEL/Backdrop" unique_id=632226977 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.59540766, 0, 0.31798488, 0, 0.6749998, 0, -0.31798488, 0, -0.59540766, -554.2386, -2.1226082, 883.0599)
+
+[node name="BACKDROP_ISLAND81" parent="LEVEL/Backdrop" unique_id=1580040410 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.61623025, 0, -0.27547252, 0, 0.6750001, 0, 0.27547252, 0, -0.61623025, -266.80804, -2.1227913, 1099.9294)
+
+[node name="BACKDROP_ISLAND134" parent="LEVEL/Backdrop" unique_id=795852130 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6873032, 0, 0.7263708, 0, 1, 0, -0.7263708, 0, -0.6873032, -1513.3809, -2.1227608, 958.3538)
+
+[node name="BACKDROP_ISLAND135" parent="LEVEL/Backdrop" unique_id=1645555182 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.34727687, 0, 0.5788121, 0, 0.6749997, 0, -0.5788121, 0, -0.34727687, -1552.2344, -2.1226082, 774.33484)
+
+[node name="BACKDROP_ISLAND136" parent="LEVEL/Backdrop" unique_id=382469318 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.67018723, 0, 0.08046068, 0, 0.67500013, 0, -0.08046068, 0, -0.67018723, -1417.1583, -2.1227913, 1108.106)
+
+[node name="BACKDROP_ISLAND88" parent="LEVEL/Backdrop" unique_id=1577460411 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6304863, 0, 0.7762004, 0, 1, 0, -0.7762004, 0, -0.6304863, -1383.9084, -2.1228523, 577.2018)
+
+[node name="BACKDROP_ISLAND89" parent="LEVEL/Backdrop" unique_id=605799379 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.27625024, 0, 0.7561158, 0, 0.80499995, 0, -0.7561158, 0, -0.27625024, -1412.2483, -2.122837, 378.68512)
+
+[node name="BACKDROP_ISLAND90" parent="LEVEL/Backdrop" unique_id=1165818867 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.13250634, 0, 0.6618663, 0, 0.675, 0, -0.6618663, 0, -0.13250634, -1061.7106, -2.1229134, 355.8733)
+
+[node name="BACKDROP_ISLAND91" parent="LEVEL/Backdrop" unique_id=1781968152 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.3099631, 0, 0.95074856, 0, 1, 0, -0.95074856, 0, -0.3099631, -1153.3651, -2.1228523, 119.80934)
+
+[node name="BACKDROP_ISLAND92" parent="LEVEL/Backdrop" unique_id=1928126510 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.013473183, 0, 0.8048874, 0, 0.80499995, 0, -0.8048874, 0, 0.013473183, -1108.5818, -2.122837, -75.65541)
+
+[node name="BACKDROP_ISLAND93" parent="LEVEL/Backdrop" unique_id=977300901 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.3099631, 0, 0.95074856, 0, 1, 0, -0.95074856, 0, -0.3099631, -1231.7917, -2.1228523, -567.26154)
+
+[node name="BACKDROP_ISLAND94" parent="LEVEL/Backdrop" unique_id=29161913 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.013473183, 0, 0.8048874, 0, 0.80499995, 0, -0.8048874, 0, 0.013473183, -1187.0084, -2.122837, -762.7263)
+
+[node name="BACKDROP_ISLAND95" parent="LEVEL/Backdrop" unique_id=119968749 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.113823146, 0, 0.665334, 0, 0.6750001, 0, -0.665334, 0, 0.113823146, -851.6311, -2.1229134, -658.23175)
+
+[node name="BACKDROP_ISLAND96" parent="LEVEL/Backdrop" unique_id=120628117 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.40084487, 0, 0.91614604, 0, 1, 0, -0.91614604, 0, -0.40084487, -797.21704, -2.1228828, -214.92274)
+
+[node name="BACKDROP_ISLAND97" parent="LEVEL/Backdrop" unique_id=552589436 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.13084234, 0, 0.66219705, 0, 0.6749997, 0, -0.66219705, 0, -0.13084234, -771.485, -2.1227303, -401.23016)
+
+[node name="BACKDROP_ISLAND98" parent="LEVEL/Backdrop" unique_id=634608385 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.60338515, 0, 0.30257428, 0, 0.67500013, 0, -0.30257428, 0, -0.60338515, -757.36743, -2.1229134, -41.43937)
+
+[node name="BACKDROP_ISLAND99" parent="LEVEL/Backdrop" unique_id=2004997765 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6469494, 0, 0.762533, 0, 1, 0, -0.762533, 0, 0.6469494, -972.2819, -2.1229744, -1056.2213)
+
+[node name="BACKDROP_ISLAND100" parent="LEVEL/Backdrop" unique_id=1847453282 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.692382, 0, 0.41064882, 0, 0.80499995, 0, -0.41064882, 0, 0.692382, -782.3683, -2.1229591, -1120.6016)
+
+[node name="BACKDROP_ISLAND101" parent="LEVEL/Backdrop" unique_id=583347556 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6261883, 0, 0.25201824, 0, 0.6750001, 0, -0.25201824, 0, 0.6261883, -695.45197, -2.1230354, -780.245)
+
+[node name="BACKDROP_ISLAND102" parent="LEVEL/Backdrop" unique_id=65570507 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, -480.281, -2.1229744, -913.7672)
+
+[node name="BACKDROP_ISLAND103" parent="LEVEL/Backdrop" unique_id=1957771874 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, -279.91357, -2.1229591, -905.7112)
+
+[node name="BACKDROP_ISLAND132" parent="LEVEL/Backdrop" unique_id=1565111859 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, -264.34842, -2.1229744, -1338.5923)
+
+[node name="BACKDROP_ISLAND133" parent="LEVEL/Backdrop" unique_id=377316158 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, -63.980988, -2.1229591, -1330.5363)
+
+[node name="BACKDROP_ISLAND104" parent="LEVEL/Backdrop" unique_id=893609500 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, 180.63148, -2.1229744, -1117.2665)
+
+[node name="BACKDROP_ISLAND105" parent="LEVEL/Backdrop" unique_id=1365431427 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, 380.9989, -2.1229591, -1109.2103)
+
+[node name="BACKDROP_ISLAND144" parent="LEVEL/Backdrop" unique_id=1494786909 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.87748945, 0, 0.47959584, 0, 1, 0, -0.47959584, 0, 0.87748945, 505.23364, -2.1229744, -1334.4026)
+
+[node name="BACKDROP_ISLAND145" parent="LEVEL/Backdrop" unique_id=73911166 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7936259, 0, 0.13484466, 0, 0.80499995, 0, -0.13484466, 0, 0.7936259, 705.6011, -2.1229591, -1326.3464)
+
+[node name="BACKDROP_ISLAND106" parent="LEVEL/Backdrop" unique_id=325704150 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6749177, 0, 0.010531902, 0, 0.675, 0, -0.010531902, 0, 0.6749177, 339.9928, -2.1230354, -760.3326)
+
+[node name="BACKDROP_ISLAND107" parent="LEVEL/Backdrop" unique_id=1627449765 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8267566, 0, 0.5625597, 0, 1, 0, -0.5625597, 0, 0.8267566, -85.737045, -2.123005, -625.285)
+
+[node name="BACKDROP_ISLAND108" parent="LEVEL/Backdrop" unique_id=982190967 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.62681955, 0, 0.25044352, 0, 0.6749998, 0, -0.25044352, 0, 0.62681955, 102.12422, -2.1228523, -634.27014)
+
+[node name="BACKDROP_ISLAND109" parent="LEVEL/Backdrop" unique_id=275438698 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.18639475, 0, 0.648754, 0, 0.6750001, 0, -0.648754, 0, 0.18639475, -248.92708, -2.1230354, -554.19714)
+
+[node name="BACKDROP_ISLAND110" parent="LEVEL/Backdrop" unique_id=552275702 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8162787, 0, 0.57765836, 0, 1, 0, -0.57765836, 0, 0.8162787, 733.0912, -2.1229744, -981.06055)
+
+[node name="BACKDROP_ISLAND111" parent="LEVEL/Backdrop" unique_id=1676942146 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7727616, 0, 0.22553219, 0, 0.80500007, 0, -0.22553219, 0, 0.7727616, 933.04956, -2.1229591, -996.18164)
+
+[node name="BACKDROP_ISLAND112" parent="LEVEL/Backdrop" unique_id=826548835 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6691929, 0, 0.08835058, 0, 0.6750001, 0, -0.08835058, 0, 0.6691929, 932.5798, -2.1230354, -644.9028)
+
+[node name="BACKDROP_ISLAND113" parent="LEVEL/Backdrop" unique_id=889817252 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.96920073, 0, 0.24627185, 0, 1, 0, -0.24627185, 0, 0.96920073, 1174.199, -2.1229744, -720.7109)
+
+[node name="BACKDROP_ISLAND114" parent="LEVEL/Backdrop" unique_id=153988216 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8022248, 0, -0.06678648, 0, 0.80499995, 0, 0.06678648, 0, 0.8022248, 1366.2661, -2.1229591, -663.0719)
+
+[node name="BACKDROP_ISLAND142" parent="LEVEL/Backdrop" unique_id=555911673 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.96920073, 0, 0.24627185, 0, 1, 0, -0.24627185, 0, 0.96920073, 1493.8654, -2.1229744, -934.86035)
+
+[node name="BACKDROP_ISLAND143" parent="LEVEL/Backdrop" unique_id=1659143760 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8022248, 0, -0.06678648, 0, 0.80499995, 0, 0.06678648, 0, 0.8022248, 1685.9325, -2.1229591, -877.22144)
+
+[node name="BACKDROP_ISLAND115" parent="LEVEL/Backdrop" unique_id=679204235 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.96920073, 0, 0.24627185, 0, 1, 0, -0.24627185, 0, 0.96920073, 1864.957, -2.1229744, -753.4305)
+
+[node name="BACKDROP_ISLAND116" parent="LEVEL/Backdrop" unique_id=348312163 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8022248, 0, -0.06678648, 0, 0.80499995, 0, 0.06678648, 0, 0.8022248, 2057.024, -2.1229591, -695.7914)
+
+[node name="BACKDROP_ISLAND117" parent="LEVEL/Backdrop" unique_id=131851306 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6563276, 0, -0.15766712, 0, 0.6750001, 0, 0.15766712, 0, 0.6563276, 1930.5325, -2.1230354, -368.07648)
+
+[node name="BACKDROP_ISLAND118" parent="LEVEL/Backdrop" unique_id=1909524922 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.9406973, 0, 0.33924705, 0, 1, 0, -0.33924705, 0, 0.9406973, 1484.5918, -2.123005, -343.16193)
+
+[node name="BACKDROP_ISLAND119" parent="LEVEL/Backdrop" unique_id=249113501 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6694127, 0, 0.08666833, 0, 0.6749997, 0, -0.08666833, 0, 0.6694127, 1668.7844, -2.1228523, -305.13916)
+
+[node name="BACKDROP_ISLAND120" parent="LEVEL/Backdrop" unique_id=1859904701 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.34189773, 0, 0.58200574, 0, 0.675, 0, -0.58200574, 0, 0.34189773, 1308.8489, -2.1230354, -314.8973)
+
+[node name="BACKDROP_ISLAND121" parent="LEVEL/Backdrop" unique_id=340490787 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6563276, 0, -0.15766712, 0, 0.6750001, 0, 0.15766712, 0, 0.6563276, 2852.891, -2.1227913, -550.6487)
+
+[node name="BACKDROP_ISLAND122" parent="LEVEL/Backdrop" unique_id=1125041152 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.9406973, 0, 0.33924705, 0, 1, 0, -0.33924705, 0, 0.9406973, 2406.9504, -2.1227608, -525.73413)
+
+[node name="BACKDROP_ISLAND123" parent="LEVEL/Backdrop" unique_id=1541337747 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6694127, 0, 0.08666833, 0, 0.6749997, 0, -0.08666833, 0, 0.6694127, 2591.143, -2.1226082, -487.71136)
+
+[node name="BACKDROP_ISLAND124" parent="LEVEL/Backdrop" unique_id=1838454460 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.34189773, 0, 0.58200574, 0, 0.675, 0, -0.58200574, 0, 0.34189773, 2231.2075, -2.1227913, -497.4695)
+
+[node name="BACKDROP_ISLAND35" parent="LEVEL/Backdrop" unique_id=1611052739 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.683177, 0, 0.42578632, 0, 0.8049998, 0, -0.42578632, 0, 0.683177, 2925.46, -2.122837, -1120.9474)
+
+[node name="BACKDROP_ISLAND36" parent="LEVEL/Backdrop" unique_id=1574781849 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.5899744, 0, 0.0054884255, 0, 0.59, 0, -0.0054884255, 0, 0.5899744, 3145.6628, -2.122837, -1095.4983)
+
+[node name="BACKDROP_ISLAND37" parent="LEVEL/Backdrop" unique_id=379704767 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.9007589, 0, 0.43431956, 0, 1, 0, -0.43431956, 0, 0.9007589, 3565.3308, -2.1227303, -1077.7992)
+
+[node name="BACKDROP_ISLAND38" parent="LEVEL/Backdrop" unique_id=1883453961 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.7994597, 0, 0.09428273, 0, 0.8049998, 0, -0.09428273, 0, 0.7994597, 3765.0283, -2.122715, -1059.5571)
+
+[node name="BACKDROP_ISLAND39" parent="LEVEL/Backdrop" unique_id=1955120717 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6745793, 0, -0.02382788, 0, 0.6750001, 0, 0.02382788, 0, 0.6745793, 3706.321, -2.1227913, -713.21814)
+
+[node name="BACKDROP_ISLAND40" parent="LEVEL/Backdrop" unique_id=304642413 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.8543136, 0, 0.5197576, 0, 1, 0, -0.5197576, 0, 0.8543136, 3274.2705, -2.1227608, -600.0106)
+
+[node name="BACKDROP_ISLAND41" parent="LEVEL/Backdrop" unique_id=876616984 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.6387523, 0, 0.21822067, 0, 0.6749999, 0, -0.21822067, 0, 0.6387523, 3462.3457, -2.1226082, -599.42395)
+
+[node name="BACKDROP_ISLAND44" parent="LEVEL/Backdrop" unique_id=1178040112 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.6285742, 0, 0.7777497, 0, 1, 0, -0.7777497, 0, -0.6285742, 3175.2534, -2.1227608, 104.69194)
+
+[node name="BACKDROP_ISLAND45" parent="LEVEL/Backdrop" unique_id=301889759 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.30108848, 0, 0.60412765, 0, 0.6749998, 0, -0.60412765, 0, -0.30108848, 3150.8667, -2.1226082, -81.79642)
+
+[node name="BACKDROP_ISLAND42" parent="LEVEL/Backdrop" unique_id=237463817 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.21916792, 0, 0.638428, 0, 0.675, 0, -0.638428, 0, 0.21916792, 3107.6746, -2.1227913, -537.3197)
+
+[node name="BACKDROP_ISLAND11" parent="LEVEL/Backdrop" unique_id=1598173605 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.46826905, 0, -0.88358593, 0, 1, 0, 0.88358593, 0, -0.46826905, 5938.3145, -2.1227608, 1793.9214)
+
+[node name="BACKDROP_ISLAND12" parent="LEVEL/Backdrop" unique_id=877932231 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(-0.43726557, 0, -0.5142215, 0, 0.6749999, 0, 0.5142215, 0, -0.43726557, 5776.4014, -2.1226082, 1889.6128)
+
+[node name="BACKDROP_ISLAND13" parent="LEVEL/Backdrop" unique_id=58428304 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.13820788, 0, -0.6606993, 0, 0.675, 0, 0.6606993, 0, 0.13820788, 6049.4053, -2.1227913, 1654.8414)
+
+[node name="BACKDROP_ISLAND14" parent="LEVEL/Backdrop" unique_id=1237231941 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.21957389, 0, -0.97559583, 0, 1, 0, 0.97559583, 0, 0.21957389, 6187.94, -2.1226387, 1006.0392)
+
+[node name="BACKDROP_ISLAND15" parent="LEVEL/Backdrop" unique_id=95600009 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.002709508, 0, -0.67499447, 0, 0.67499983, 0, 0.67499447, 0, 0.002709508, 6127.2964, -2.122486, 1184.0701)
+
+[node name="BACKDROP_ISLAND16" parent="LEVEL/Backdrop" unique_id=1489152389 instance=ExtResource("2_qsh8t")]
+transform = Transform3D(0.5349465, 0, -0.41165185, 0, 0.675, 0, 0.41165185, 0, 0.5349465, 6181.76, -2.1226692, 828.1453)
+
+[node name="EC" parent="LEVEL" unique_id=411019064 instance=ExtResource("3_e3gqs")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, 0, 0)
+
+[node name="EC_Pt2" parent="LEVEL" unique_id=1346507346 instance=ExtResource("4_iwrtv")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 2770.534, 0.339, 870.838)
 
 [node name="Lights" type="Node3D" parent="." unique_id=2006683695]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.446808, 68.01083, -58.525085)
@@ -1656,13 +2119,10 @@ directional_shadow_max_distance = 300.0
 day_length_minutes = 8.0
 
 [node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_mhv1v")
+environment = SubResource("Environment_gwwuk")
 
 [node name="TeleportExit_EmeraldCoast" type="Node3D" parent="." unique_id=1423693014]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.25867, 25.923428, -57.035645)
-
-[node name="EmeraldCoastPt1" parent="." unique_id=1511839976 instance=ExtResource("1_q4gbu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.63513, 20.015244, -85.08374)
 
 [node name="Emerald_CockBlock" type="CSGBox3D" parent="." unique_id=427102537]
 transform = Transform3D(1.525807, 0, 1.0253048, 0, 2.6329322, 0, -1.525807, 0, 1.0253048, 83.88485, 89.71177, -23.525597)
@@ -1717,23 +2177,16 @@ visible = false
 enabled = false
 
 [node name="Spring2" parent="." unique_id=544387808 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(3.9720526, 0.4087832, 0.23601073, -1.519261e-07, 1.9999998, -3.464102, -0.4720198, 3.439898, 1.9860256, 1692.8595, 93.05762, 72.21289)
 visible = false
 active = false
 strength = 115.0
 
 [node name="CollisionShape3D" parent="Spring2" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_4osux")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_make8")
 
 [node name="SplinePath" parent="Spring2" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_e3gqs")
-
-[node name="Mesh" parent="Spring2" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_s88xw")
 
 [node name="MovingPlatform2" parent="." unique_id=1264310379 instance=ExtResource("8_t760y")]
 transform = Transform3D(8.742277e-08, 0, 1.9999999, 0, 2, 0, -1.9999999, 0, 8.742277e-08, 1502.8313, 46.373047, -0.0032176971)
@@ -1761,23 +2214,16 @@ mesh = SubResource("BoxMesh_l1kpv")
 surface_material_override/0 = SubResource("StandardMaterial3D_2820r")
 
 [node name="Spring" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody" index="3" unique_id=2085948924 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.28605384, -1.3261226, -1.4695538, -9.685755e-08, 1.4848186, -1.3398945, 1.979442, -0.1916402, -0.21236831, -15.429077, 4.326824, -16.546143)
 visible = false
 active = false
 strength = 132.0
 
 [node name="CollisionShape3D" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody/Spring" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_iwrtv")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_blxl6")
 
 [node name="SplinePath" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody/Spring" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_s4xou")
-
-[node name="Mesh" parent="MovingPlatform2/Path3D/PathFollow3D/PlatformBody/Spring" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_b60og")
 
 [node name="MovingPlatform3" parent="." unique_id=1523290837 instance=ExtResource("8_t760y")]
 transform = Transform3D(8.742277e-08, 0, 1.9999999, 0, 2, 0, -1.9999999, 0, 8.742277e-08, 1431.7565, 447.9652, 102.19482)
@@ -1807,21 +2253,14 @@ mesh = SubResource("BoxMesh_l1kpv")
 surface_material_override/0 = SubResource("StandardMaterial3D_2820r")
 
 [node name="Spring" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody" index="3" unique_id=2014989809 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.28605384, -1.3261226, -1.4695538, -9.685755e-08, 1.4848186, -1.3398945, 1.979442, -0.1916402, -0.21236831, -15.429077, 4.326824, -16.546143)
 strength = 155.0
 
 [node name="CollisionShape3D" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody/Spring" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_yuwwo")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_y3id6")
 
 [node name="SplinePath" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody/Spring" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_easqi")
-
-[node name="Mesh" parent="MovingPlatform3/Path3D/PathFollow3D/PlatformBody/Spring" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_c4nmr")
 
 [node name="MovingPlatform5" parent="." unique_id=1671668170 instance=ExtResource("8_t760y")]
 transform = Transform3D(8.742277e-08, 0, 1.9999999, 0, 2, 0, -1.9999999, 0, 8.742277e-08, 1375.2562, 511.3128, -47.535423)
@@ -1852,21 +2291,14 @@ mesh = SubResource("BoxMesh_l1kpv")
 surface_material_override/0 = SubResource("StandardMaterial3D_2820r")
 
 [node name="Spring" parent="MovingPlatform5/Path3D/PathFollow3D/PlatformBody" index="3" unique_id=1747922582 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.28605384, -1.3261226, -1.4695538, -9.685755e-08, 1.4848186, -1.3398945, 1.979442, -0.1916402, -0.21236831, -15.429077, 4.326824, -16.546143)
 strength = 140.0
 
 [node name="CollisionShape3D" parent="MovingPlatform5/Path3D/PathFollow3D/PlatformBody/Spring" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_gwwuk")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_7scfl")
 
 [node name="SplinePath" parent="MovingPlatform5/Path3D/PathFollow3D/PlatformBody/Spring" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_make8")
-
-[node name="Mesh" parent="MovingPlatform5/Path3D/PathFollow3D/PlatformBody/Spring" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_8ov1f")
 
 [node name="MovingPlatform" parent="." unique_id=610878461 instance=ExtResource("8_t760y")]
 transform = Transform3D(-8.742277e-08, 0, -1.9999999, 0, 2, 0, 1.9999999, 0, -8.742277e-08, 1141.8735, 30.46965, 35.18457)
@@ -1927,15 +2359,6 @@ action_lock_time = 0.1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13890839, 1.5332355, -0.008300781)
 shape = SubResource("BoxShape3D_radro")
 metadata/_uniform_size_base_position = Vector3(0.13890839, 1.5332355, -0.008300781)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
-
-[node name="TempMesh" parent="JumpPanelRamp5" index="1" unique_id=1872819520]
-metadata/_uniform_size_base_position = Vector3(0, 1, 0)
-metadata/_uniform_size_base_scale = Vector3(5, 2, 4)
-
-[node name="RampMesh" parent="JumpPanelRamp5" index="3" unique_id=1615587704]
-metadata/_uniform_size_base_position = Vector3(1.6520113e-08, -0.32655555, -0.37793612)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="AutomationSpline" parent="." unique_id=297344810 instance=ExtResource("11_sphnv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4082.567, 89.32365, -49.382813)
@@ -1988,68 +2411,47 @@ size = Vector3(0.20800781, 42.34961, 14.385956)
 material = SubResource("StandardMaterial3D_21fxm")
 
 [node name="Spring16" parent="." unique_id=740719634 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.9546102, 0.41310844, 0.09402275, -0.0024475625, 0.45484856, -1.9475899, -0.42366603, 1.9032744, 0.44503132, -251.32751, 36.63189, 241.45654)
 strength = 100.0
 spline_enabled = true
 
 [node name="CollisionShape3D" parent="Spring16" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_s88xw")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_ejwow")
 
 [node name="AnimationPlayer" parent="Spring16" index="2" unique_id=636684357]
 root_node = NodePath("../../Spring16")
 
 [node name="SplinePath" parent="Spring16" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_blxl6")
-
-[node name="Mesh" parent="Spring16" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_ahtbt")
 
 [node name="Spring17" parent="." unique_id=1513577316 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(0.50075287, -1.8854182, -0.44095796, -0.0024475695, 0.45484853, -1.9475898, 1.9362955, 0.48817024, 0.11157601, -236.77966, 36.63189, 292.52002)
 strength = 100.0
 spline_enabled = true
 
 [node name="CollisionShape3D" parent="Spring17" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_b60og")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_rnh56")
 
 [node name="AnimationPlayer" parent="Spring17" index="2" unique_id=636684357]
 root_node = NodePath("../../Spring16")
 
 [node name="SplinePath" parent="Spring17" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_y3id6")
-
-[node name="Mesh" parent="Spring17" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_5p8ul")
 
 [node name="Spring18" parent="." unique_id=2053999340 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.7407136, 0.8526279, 0.49289125, -0.00244762, 1.0046959, -1.7293291, -0.98484015, 1.50453, 0.8754872, -283.88965, 38.603657, 312.73535)
 strength = 100.0
 spline_enabled = true
 spline_speed = 55.0
 
 [node name="CollisionShape3D" parent="Spring18" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_7scfl")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_3u76p")
 
 [node name="AnimationPlayer" parent="Spring18" index="2" unique_id=636684357]
 root_node = NodePath("../../Spring16")
 
 [node name="SplinePath" parent="Spring18" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_8ov1f")
-
-[node name="Mesh" parent="Spring18" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_hdcyx")
 
 [node name="DashPanel2" parent="." unique_id=1547577923 instance=ExtResource("13_etxq2")]
 transform = Transform3D(-1.7982609, 0, -0.8753615, 0, 2, 0, 0.8753615, 0, -1.7982609, 3696.0645, 21.59033, 359.1582)
@@ -2422,38 +2824,32 @@ transform = Transform3D(-0.16344014, 0, 0.9865534, 0, 1, 0, -0.9865534, 0, -0.16
 strength = 75.0
 
 [node name="Spring" parent="." unique_id=307501562 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.6989106, -1.8739059, 0, 1.8739059, -0.6989106, 0, 0, 0, 2, 3765.666, 61.05448, -4.404297)
 strength = 50.0
 movement_lock_time = 0.3
 action_lock_time = 0.3
 
 [node name="Spring3" parent="." unique_id=1517913548 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.6989106, -1.8739059, 0, 1.8739059, -0.6989106, 0, 0, 0, 2, 3765.666, 61.05448, -10.404297)
 strength = 50.0
 movement_lock_time = 0.3
 action_lock_time = 0.3
 
 [node name="Spring4" parent="." unique_id=1678914114 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.6989106, -1.8739059, 0, 1.8739059, -0.6989106, 0, 0, 0, 2, 3765.666, 61.05448, 1.5957031)
 strength = 50.0
 movement_lock_time = 0.3
 action_lock_time = 0.3
 
 [node name="Spring8" parent="." unique_id=1418143835 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.4246039, 1.3950264, 0.15622221, -1.3993018, 1.4289699, 0, -0.11161841, -0.109300986, 1.9938893, 3757.9468, 43.26308, 18.927734)
 strength = 90.0
 
 [node name="Spring9" parent="." unique_id=296937800 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.9964604, 0.034969714, 0.11367931, -0.041075416, 1.9967052, 0.10715594, -0.11161842, -0.109301016, 1.9938896, 3812.5674, 23.017029, 19.643066)
 strength = 85.0
 
 [node name="Spring10" parent="." unique_id=1485403947 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.9964604, 0.04775262, 0.108929135, 0.06004516, 1.1764797, -1.6162586, -0.102666676, 1.6166685, 1.1729639, 3829.357, 64.30485, -0.5961914)
 strength = 120.0
 movement_lock_time = 1.0
@@ -2461,7 +2857,6 @@ action_lock_time = 1.0
 align_time = 1.0
 
 [node name="Spring11" parent="." unique_id=416915597 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.9996586, 0.019042477, 0.031679817, -0.03574787, 1.4321625, 1.3955766, -0.009397775, -1.3959048, 1.4322587, 3830.6716, 97.00985, 42.863007)
 strength = 130.0
 use_trajectory_solver = true
@@ -2472,21 +2867,17 @@ action_lock_time = 1.0
 align_time = 1.2
 
 [node name="CollisionShape3D" parent="Spring11" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_ejwow")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+shape = SubResource("CylinderShape3D_t2xni")
 
-[node name="TrajectorySolver" parent="Spring11" index="1"]
+[node name="TrajectorySolver" parent="Spring11" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72837543, 64.65771, -10.992573)
 visible = true
 
 [node name="SplinePath" parent="Spring11" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_ahtbt")
+curve = SubResource("Curve3D_inw4d")
 
 [node name="Mesh" parent="Spring11" index="5" unique_id=1922896033]
-transform = Transform3D(0.9999638, -0.0030724008, 0.00043199086, 0.0030724972, 0.961223, -0.27575517, 0.0004320044, 0.27575517, 0.96122783, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(0.9998273, -0.0030719815, 0.0004319319, 0.0030724972, 0.961223, -0.27575517, 0.0004320044, 0.27575517, 0.96122783, 0, 0, 0)
 
 [node name="Checkpoint2" parent="." unique_id=1727804324 instance=ExtResource("18_dup37")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3942.454, 169.27948, -59.115723)
@@ -2539,7 +2930,6 @@ forward_speed = 120.0
 up_speed = 35.0
 
 [node name="Spring5" parent="." unique_id=901182259 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(0.4336513, 1.8327597, -0.6730073, -1.9462614, 0.46050707, -5.8049254e-10, 0.1549623, 0.65492404, 1.8833643, 2924.2021, 202.76653, 566.13525)
 strength = 120.0
 movement_lock_time = 2.0
@@ -2547,7 +2937,6 @@ action_lock_time = 2.0
 align_time = 2.0
 
 [node name="Spring6" parent="." unique_id=1739693475 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.03350804, 0.6725304, 1.8832365, -1.9991324, -0.056906443, -0.015248019, 0.04845676, -1.8826752, 0.67319226, 2963.4907, 213.84904, 579.8574)
 strength = 120.0
 movement_lock_time = 2.0
@@ -2555,7 +2944,6 @@ action_lock_time = 2.0
 align_time = 2.0
 
 [node name="Spring7" parent="." unique_id=1406634848 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(0.06415287, 0.6837469, -1.878397, -1.9788618, 0.28762785, 0.037114017, 0.28282785, 1.8573534, 0.6857459, 2991.7368, 211.45897, 500.78516)
 strength = 130.0
 movement_lock_time = 2.0
@@ -2563,7 +2951,6 @@ action_lock_time = 2.0
 align_time = 2.0
 
 [node name="Spring12" parent="." unique_id=430425481 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(-0.09496513, 1.7175717, 1.0202594, -1.9787536, -0.22137414, 0.18849474, 0.27480623, -1.0004709, 1.7098365, 3021.1377, 223.82697, 580.65137)
 strength = 135.0
 movement_lock_time = 1.0
@@ -2582,17 +2969,14 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2989.4072, 180.74686, 530.659
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 3029.8262, 180.74686, 521.74414)
 
 [node name="Spring13" parent="." unique_id=1483699867 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1903.9633, 46.095226, 291.7881)
 strength = 75.0
 
 [node name="Spring14" parent="." unique_id=545440099 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.9986491, 0.073496714, 0, -0.073496714, 1.9986491, 0, 0, 0, 2, 1913.9579, 72.95866, 302.57715)
 strength = 92.0
 
 [node name="Spring15" parent="." unique_id=810236592 instance=ExtResource("7_8blru")]
-process_mode = 3
 transform = Transform3D(1.5634408, 0.56514925, 1.1118717, -0.6846416, 1.879151, 0.007551171, -1.0425537, -0.38651973, 1.6624329, 1945.0177, 122.75077, 313.4453)
 strength = 75.0
 
@@ -2669,10 +3053,7 @@ shape = SubResource("BoxShape3D_j0k8r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.022949, 0, 0)
 
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_rnh56")
-
-[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
+material_override = SubResource("ShaderMaterial_g22vk")
 
 [node name="Checkpoint" parent="RaceGoal" unique_id=1068812376 instance=ExtResource("18_dup37")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1633.8037, 162.24062, 388.91992)
@@ -2951,7 +3332,6 @@ lock_speed_value = 140.0
 lock_speed_duration = 0.1
 
 [node name="DashRing" parent="." unique_id=52179905 instance=ExtResource("33_qrn41")]
-process_mode = 3
 transform = Transform3D(0, -0.49999994, -0.8660254, -4.3711385e-08, -0.8660253, 0.5, -0.99999994, 3.785517e-08, -2.1855694e-08, 573.5996, 94.69749, 222.17004)
 strength = 50.0
 movement_lock_time = 0.1
@@ -3119,12 +3499,12 @@ gi_fallback_near_blend = 0.45
 [node name="Water_Visual" parent="WATERNODE" index="0" unique_id=1311949853]
 custom_aabb = AABB(-5999.91, -10, -4500.1, 11999.82, 20, 9000.2)
 instance_shader_parameters/height_scale = 0.0
-mesh = SubResource("PlaneMesh_5p8ul")
-surface_material_override/0 = SubResource("ShaderMaterial_1i10k")
+mesh = SubResource("PlaneMesh_1i10k")
+surface_material_override/0 = SubResource("ShaderMaterial_88hvn")
 
 [node name="CollisionShape3D" parent="WATERNODE/Area3D" parent_id_path=PackedInt32Array(896649702, 1019362843) index="0" unique_id=1363567527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -169.9875, 0)
-shape = SubResource("BoxShape3D_6nyx4")
+shape = SubResource("BoxShape3D_b0dwv")
 
 [node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE" unique_id=487325192]
 process_mode = 4
@@ -3135,8 +3515,8 @@ instance_shader_parameters/clipmap_inner_radius = 0.0
 instance_shader_parameters/clipmap_lod_scale = 0.0
 instance_shader_parameters/clipmap_outer_radius = 0.0
 instance_shader_parameters/height_scale = 0.0
-mesh = SubResource("PlaneMesh_jnnpt")
-surface_material_override/0 = SubResource("ShaderMaterial_1i10k")
+mesh = SubResource("PlaneMesh_nytw6")
+surface_material_override/0 = SubResource("ShaderMaterial_88hvn")
 
 [node name="WATERNODE2" parent="." unique_id=1376418076 instance=ExtResource("36_7s8a3")]
 transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 2686.8943, 115.04318, 248.49596)
@@ -3163,12 +3543,12 @@ wave_height = 0.0
 [node name="Water_Visual" parent="WATERNODE2" index="0" unique_id=1311949853]
 custom_aabb = AABB(-200, -10, -100, 400, 20, 200)
 instance_shader_parameters/height_scale = 0.0
-mesh = SubResource("PlaneMesh_gbnyh")
-surface_material_override/0 = SubResource("ShaderMaterial_h5rvp")
+mesh = SubResource("PlaneMesh_h5rvp")
+surface_material_override/0 = SubResource("ShaderMaterial_lwt6l")
 
 [node name="CollisionShape3D" parent="WATERNODE2/Area3D" parent_id_path=PackedInt32Array(1376418076, 1019362843) index="0" unique_id=1363567527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35, 0)
-shape = SubResource("BoxShape3D_wt6vm")
+shape = SubResource("BoxShape3D_licc2")
 
 [node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE2" unique_id=2130093233]
 process_mode = 4
@@ -3179,8 +3559,8 @@ instance_shader_parameters/clipmap_inner_radius = 0.0
 instance_shader_parameters/clipmap_lod_scale = 0.0
 instance_shader_parameters/clipmap_outer_radius = 0.0
 instance_shader_parameters/height_scale = 0.0
-mesh = SubResource("PlaneMesh_f1psp")
-surface_material_override/0 = SubResource("ShaderMaterial_h5rvp")
+mesh = SubResource("PlaneMesh_dqltw")
+surface_material_override/0 = SubResource("ShaderMaterial_lwt6l")
 
 [node name="WATERNODE3" parent="." unique_id=1017287561 instance=ExtResource("36_7s8a3")]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 2983.9417, 99.803444, 547.6021)
@@ -3207,12 +3587,12 @@ wave_height = 0.0
 [node name="Water_Visual" parent="WATERNODE3" index="0" unique_id=1311949853]
 custom_aabb = AABB(-109.83, -10, -100, 219.66, 20, 200)
 instance_shader_parameters/height_scale = 0.0
-mesh = SubResource("PlaneMesh_cepio")
-surface_material_override/0 = SubResource("ShaderMaterial_1vrco")
+mesh = SubResource("PlaneMesh_1vrco")
+surface_material_override/0 = SubResource("ShaderMaterial_a8l0p")
 
 [node name="CollisionShape3D" parent="WATERNODE3/Area3D" parent_id_path=PackedInt32Array(1017287561, 1019362843) index="0" unique_id=1363567527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35, 0)
-shape = SubResource("BoxShape3D_4suoj")
+shape = SubResource("BoxShape3D_renxt")
 
 [node name="Water_EditorPreview" type="MeshInstance3D" parent="WATERNODE3" unique_id=1052115450]
 process_mode = 4
@@ -3223,8 +3603,8 @@ instance_shader_parameters/clipmap_inner_radius = 0.0
 instance_shader_parameters/clipmap_lod_scale = 0.0
 instance_shader_parameters/clipmap_outer_radius = 0.0
 instance_shader_parameters/height_scale = 0.0
-mesh = SubResource("PlaneMesh_ia2wk")
-surface_material_override/0 = SubResource("ShaderMaterial_1vrco")
+mesh = SubResource("PlaneMesh_cqkh0")
+surface_material_override/0 = SubResource("ShaderMaterial_a8l0p")
 
 [node name="CAMERA CONSTRAINTS" type="Node3D" parent="." unique_id=1588859017]
 
@@ -3496,10 +3876,10 @@ movement_lock_time = 0.5
 action_lock_time = 0.5
 
 [node name="CollisionShape3D" parent="VaultBar" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_7q5sm")
+shape = SubResource("BoxShape3D_fmth1")
 
 [node name="Bar" parent="VaultBar/Model" parent_id_path=PackedInt32Array(1652006837, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_uglly")
+mesh = SubResource("CylinderMesh_ea4m8")
 
 [node name="LeftCap" parent="VaultBar/Model" parent_id_path=PackedInt32Array(1652006837, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -9.65, 0, 0)
@@ -3511,7 +3891,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 9.
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.477967, 61.952606, -44.529686)
 
 [node name="SplinePath" parent="VaultBar" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_n3jog")
+curve = SubResource("Curve3D_8wqdv")
 
 [node name="VaultBar2" parent="." unique_id=1685228124 instance=ExtResource("37_2i707")]
 transform = Transform3D(-0.081846006, 0, -0.99664503, 0, 1, 0, 0.99664503, 0, -0.081846006, 4339.579, 57.805584, -9.772564)
@@ -3526,10 +3906,10 @@ movement_lock_time = 0.5
 action_lock_time = 0.5
 
 [node name="CollisionShape3D" parent="VaultBar2" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_a8l0p")
+shape = SubResource("BoxShape3D_umww0")
 
 [node name="Bar" parent="VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_renxt")
+mesh = SubResource("CylinderMesh_eksxb")
 
 [node name="LeftCap" parent="VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -10.65, 0, 0)
@@ -3541,7 +3921,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 10
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.505979e-05, -10.280819, -32.24597)
 
 [node name="SplinePath" parent="VaultBar2" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_cqkh0")
+curve = SubResource("Curve3D_udwb1")
 
 [node name="VaultBar3" parent="." unique_id=1697585541 instance=ExtResource("37_2i707")]
 transform = Transform3D(0.7402426, 0, -0.67233986, 0, 1, 0, 0.67233986, 0, 0.7402426, -55.03243, 81.73574, 264.25333)
@@ -3556,10 +3936,10 @@ movement_lock_time = 0.5
 action_lock_time = 0.5
 
 [node name="CollisionShape3D" parent="VaultBar3" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_fmth1")
+shape = SubResource("BoxShape3D_6k7os")
 
 [node name="Bar" parent="VaultBar3/Model" parent_id_path=PackedInt32Array(1697585541, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_ea4m8")
+mesh = SubResource("CylinderMesh_kyd4x")
 
 [node name="LeftCap" parent="VaultBar3/Model" parent_id_path=PackedInt32Array(1697585541, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -10.65, 0, 0)
@@ -3571,7 +3951,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 10
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.505979e-05, -14.815731, -32.24597)
 
 [node name="SplinePath" parent="VaultBar3" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_8wqdv")
+curve = SubResource("Curve3D_qnyxe")
 
 [node name="SpikeBall" parent="." unique_id=2132038934 instance=ExtResource("38_radro")]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 3609.9785, 49.692875, 326.69785)
@@ -3736,88 +4116,88 @@ enabled = false
 [node name="ItemMonitor7" parent="." unique_id=1395552001 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 2812.1448, 246.24037, 284.8715)
 size = 1.5
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_umww0")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_ko376")])
 allow_player_pass_through = true
 bounce_airborne_player = false
 
 [node name="ItemMonitor8" parent="." unique_id=987593294 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 3638.739, 17.855997, 407.07922)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_eksxb")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_1inie")])
 leave_base_after_break = true
 
 [node name="ItemMonitor11" parent="." unique_id=1638506690 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.99903536, 0, -0.043912828, 0, 1, 0, 0.043912828, 0, 0.99903536, 3733.4285, 41.856007, -41.792397)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_udwb1")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_gn6ag")])
 leave_base_after_break = true
 
 [node name="ItemMonitor12" parent="." unique_id=1323793337 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.99903536, 0, -0.043912828, 0, 1, 0, 0.043912828, 0, 0.99903536, 3726.4353, 41.856007, -42.099785)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_6k7os")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_hca73")])
 leave_base_after_break = true
 
 [node name="ItemMonitor13" parent="." unique_id=1397384240 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.99903536, 0, -0.043912828, 0, 1, 0, 0.043912828, 0, 0.99903536, 3825.1724, 56.25601, 33.02092)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_kyd4x")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_kemi7")])
 leave_base_after_break = true
 
 [node name="ItemMonitor9" parent="." unique_id=137389425 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 3636.1492, 17.856, 412.93524)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_qnyxe")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_k8ahi")])
 leave_base_after_break = true
 
 [node name="ItemMonitor10" parent="." unique_id=1602665447 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 3632.4573, 17.855999, 405.83807)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_ko376")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_o7aso")])
 leave_base_after_break = true
 
 [node name="ItemMonitor14" parent="." unique_id=1932894129 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 3615.714, 20.546947, 142.93188)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_1inie")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_j7elb")])
 leave_base_after_break = true
 
 [node name="ItemMonitor15" parent="." unique_id=538650804 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 3679.1814, 20.734821, -7.323118)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_gn6ag")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_7m2yl")])
 leave_base_after_break = true
 
 [node name="ItemMonitor22" parent="." unique_id=983777345 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.53754723, 0, 0.8432336, 0, 1, 0, -0.8432336, 0, 0.53754723, 1888.6191, 20.31747, 195.90604)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_hca73")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_p2arl")])
 leave_base_after_break = true
 
 [node name="ItemMonitor23" parent="." unique_id=1530063612 instance=ExtResource("39_oj55v")]
 transform = Transform3D(-0.14592826, 0, 0.9892951, 0, 1, 0, -0.9892951, 0, -0.14592826, 1999.3044, 20.31747, 271.20966)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_kemi7")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_j7rnv")])
 leave_base_after_break = true
 
 [node name="ItemMonitor16" parent="." unique_id=29766874 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.8871464, 0, 0.46148807, 0, 1, 0, -0.46148807, 0, 0.8871464, 3750.1592, 20.801382, -49.297478)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_k8ahi")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_rlg1d")])
 leave_base_after_break = true
 
 [node name="ItemMonitor17" parent="." unique_id=481249374 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.90600866, 0, 0.42325908, 0, 1, 0, -0.42325908, 0, 0.90600866, -16.299166, 23.072538, -126.12517)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_o7aso")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_htm6i")])
 leave_base_after_break = true
 
 [node name="ItemMonitor18" parent="." unique_id=1995297735 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.90600866, 0, 0.42325908, 0, 1, 0, -0.42325908, 0, 0.90600866, -20.829208, 23.072538, -124.00887)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_j7elb")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_ysc75")])
 leave_base_after_break = true
 
 [node name="ItemMonitor19" parent="." unique_id=2107388201 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.90600866, 0, 0.42325908, 0, 1, 0, -0.42325908, 0, 0.90600866, -133.2241, 20.828087, 28.84539)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_7m2yl")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_8vgty")])
 leave_base_after_break = true
 
 [node name="ItemMonitor20" parent="." unique_id=1742821668 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.9995763, 0, -0.029107004, 0, 1, 0, 0.029107004, 0, 0.9995763, -352.56525, 21.189934, 302.455)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_p2arl")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_gphp0")])
 leave_base_after_break = true
 
 [node name="ItemMonitor21" parent="." unique_id=628545020 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.9328634, 0.35550758, 0.05814344, -0.24456531, 0.7435356, -0.6223688, -0.26448852, 0.5663651, 0.78056157, -368.01614, 19.018955, 402.0093)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_j7rnv")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_dtcvr")])
 leave_base_after_break = true
 
 [editable path="Lights/EnvironmentWeatherSystem"]
@@ -3832,6 +4212,7 @@ leave_base_after_break = true
 [editable path="MovingPlatform"]
 [editable path="Teleporter"]
 [editable path="JumpPanelRamp5"]
+[editable path="JumpPanelRamp5/Ramp"]
 [editable path="AutomationSpline"]
 [editable path="Spring16"]
 [editable path="Spring17"]

@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://cicuogv2laafy"]
-
-[ext_resource type="PackedScene" uid="uid://c3ux144d3wqwb" path="res://LS5Framework/Objects/Spring/Spring_NextGen/Spring.blend" id="1_5p0vh"]
-
-[node name="Spring" unique_id=1426791645 instance=ExtResource("1_5p0vh")]
