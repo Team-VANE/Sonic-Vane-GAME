@@ -431,7 +431,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 65837.21
+shader_parameter/swap_time = 60.676
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
 height = 8.0
@@ -444,7 +444,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 65837.21
+shader_parameter/swap_time = 60.676
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
 bounce = 1.0
@@ -3010,835 +3010,832 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 395.8119, 20.498743, 282.3782
 mirrored_bounce_ratio = 2.0
 minimum_impulse = 20.0
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="LEVEL_PIECES" unique_id=166348321]
-use_collision = true
-
-[node name="CSGBox3D" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=4559000 groups=["level", "navmesh"]]
+[node name="CSGBox3D" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=4559000 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154.22447, -32.7077, 0.94668007)
 use_collision = true
 size = Vector3(155.32507, 62, 26.54834)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D9" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1241964178 groups=["level", "navmesh"]]
+[node name="CSGBox3D9" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1241964178 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -171.21394, -3.0012627, 47.021034)
 use_collision = true
 size = Vector3(43.365234, 3, 29)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=362890964 groups=["level", "navmesh"]]
+[node name="CSGBox3D2" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=362890964 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 98.922844, -35.367924, -44.34223)
 use_collision = true
 size = Vector3(24, 1, 92)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D18" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=796769538 groups=["level", "navmesh"]]
+[node name="CSGBox3D18" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=796769538 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.8660253, 0, -0.8660253, 0.49999997, 98.922844, -107.5307, -99.67881)
 use_collision = true
 size = Vector3(24, 1, 92)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D19" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1227293049 groups=["level", "navmesh"]]
+[node name="CSGBox3D19" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1227293049 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 0.11883724, 0.9929136, 0, -0.9929136, 0.11883724, 98.922844, -192.826, -128.02716)
 use_collision = true
 size = Vector3(24, 1, 92)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1351539425 groups=["level", "navmesh"]]
+[node name="CSGBox3D3" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1351539425 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, -0.70710677, 0.70710677, 0, 0.70710677, 0.70710677, -1, 3.090862e-08, -3.090862e-08, 94.97636, 17.47229, 26.615517)
 use_collision = true
 size = Vector3(24, 1, 92)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D15" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1857581835 groups=["level", "navmesh"]]
+[node name="CSGBox3D15" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1857581835 groups=["level", "navmesh"]]
 transform = Transform3D(-4.1910255e-08, -0.47708207, 0.87885875, 1.2418362e-08, 0.87885875, 0.47708207, -1, 3.090862e-08, -3.090862e-08, 706.855, 83.71987, 390.27252)
 use_collision = true
 size = Vector3(24, 1, 436)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D20" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=121007111 groups=["level", "navmesh"]]
+[node name="CSGBox3D20" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=121007111 groups=["level", "navmesh"]]
 transform = Transform3D(-3.0086163e-08, 0.02626419, 0.999655, 3.1709746e-08, 0.999655, -0.02626419, -1, 3.090862e-08, -3.090862e-08, 929.63385, 186.83464, 390.27252)
 use_collision = true
 size = Vector3(24, 1, 62.90918)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D98" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1279640670 groups=["level", "navmesh"]]
+[node name="CSGBox3D98" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1279640670 groups=["level", "navmesh"]]
 transform = Transform3D(-3.0086163e-08, 0.02626419, 0.999655, 3.1709746e-08, 0.999655, -0.02626419, -1, 3.090862e-08, -3.090862e-08, 743.10693, 72.51342, 638.14026)
 use_collision = true
 size = Vector3(48, 1, 50)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D102" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=410133317 groups=["level", "navmesh"]]
+[node name="CSGBox3D102" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=410133317 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 469.20148, 47.928776, 680.5188)
 use_collision = true
 size = Vector3(80.16016, 1, 50)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D181" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2061378896 groups=["level", "navmesh"]]
+[node name="CSGBox3D181" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2061378896 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 493.84955, 28.480534, 680.52576)
 use_collision = true
 size = Vector3(80.17407, 39.896484, 1.0935059)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D183" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=101692873 groups=["level", "navmesh"]]
+[node name="CSGBox3D183" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=101692873 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 0.9999999, 0, -1, 0, -1.0331603e-07, 444.8667, 49.96219, 663.0977)
 use_collision = true
 size = Vector3(43.397125, 3.802246, 1.0935059)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D184" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1604000589 groups=["level", "navmesh"]]
+[node name="CSGBox3D184" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1604000589 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 0.9999999, 0, -1, 0, -1.0331603e-07, 305.13538, 54.87316, 663.0977)
 use_collision = true
 size = Vector3(43.397125, 23.856323, 1.0935059)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D159" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1417864191 groups=["level", "navmesh"]]
+[node name="CSGBox3D159" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1417864191 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 163.61084, 18.810661, 748.8206)
 use_collision = true
 size = Vector3(48, 1, 72)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D109" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1461630537 groups=["level", "navmesh"]]
+[node name="CSGBox3D109" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1461630537 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 187.08539, 98.20819, 664.4387)
 use_collision = true
 size = Vector3(48, 1, 84)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D180" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1153503309 groups=["level", "navmesh"]]
+[node name="CSGBox3D180" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1153503309 groups=["level", "navmesh"]]
 transform = Transform3D(-1.671145e-08, 0.38305342, 0.9237263, 4.0390752e-08, 0.9237263, -0.38305342, -1, 3.090862e-08, -3.090862e-08, 267.22873, 82.3567, 664.439)
 use_collision = true
 size = Vector3(48, 1, 83)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D110" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1843978373 groups=["level", "navmesh"]]
+[node name="CSGBox3D110" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1843978373 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 170.58539, 191.02219, 617.24585)
 use_collision = true
 size = Vector3(49.614258, 1, 51)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D113" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=572523611 groups=["level", "navmesh"]]
+[node name="CSGBox3D113" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=572523611 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 170.58539, 191.02219, 722.4387)
 use_collision = true
 size = Vector3(78, 1, 51)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D121" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1278897619 groups=["level", "navmesh"]]
+[node name="CSGBox3D121" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1278897619 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 320.46307, 274.4743, 617.5006)
 use_collision = true
 size = Vector3(55, 1, 104)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D188" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2037292154 groups=["level", "navmesh"]]
+[node name="CSGBox3D188" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2037292154 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 320.46527, 231.07108, 570.5123)
 use_collision = true
 size = Vector3(39.507507, 1, 103.995605)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D134" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1764624816 groups=["level", "navmesh"]]
+[node name="CSGBox3D134" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1764624816 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 316.46307, 332.73807, 627.5974)
 use_collision = true
 size = Vector3(30.862793, 1, 12)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D136" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1142546970 groups=["level", "navmesh"]]
+[node name="CSGBox3D136" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1142546970 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 347.46307, 356.22147, 596.666)
 use_collision = true
 size = Vector3(95, 1, 50)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D137" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=418176363 groups=["level", "navmesh"]]
+[node name="CSGBox3D137" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=418176363 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 289.46307, 356.22147, 596.666)
 use_collision = true
 size = Vector3(95, 1, 42)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D163" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=560810507 groups=["level", "navmesh"]]
+[node name="CSGBox3D163" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=560810507 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 7.713764, 399.78204, 556.9999)
 use_collision = true
 size = Vector3(41.56433, 1, 155.17624)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D165" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1448153042 groups=["level", "navmesh"]]
+[node name="CSGBox3D165" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1448153042 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -339.0496, 469.4217, 485.53363)
 use_collision = true
 size = Vector3(184.49692, 1, 112.25635)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D177" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=425883415 groups=["level", "navmesh"]]
+[node name="CSGBox3D177" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=425883415 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -603.3028, 506.4217, 485.53363)
 use_collision = true
 size = Vector3(184.49692, 1, 417.99164)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D166" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=838717186 groups=["level", "navmesh"]]
+[node name="CSGBox3D166" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=838717186 groups=["level", "navmesh"]]
 transform = Transform3D(-1.6420284e-15, -0.9999999, -4.371138e-08, -4.3711385e-08, -4.371138e-08, 0.9999999, -1, 0, -4.3711385e-08, -394.79453, 487.7003, 485.53363)
 use_collision = true
 size = Vector3(184.49692, 1, 38)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D178" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1351183505 groups=["level", "navmesh"]]
+[node name="CSGBox3D178" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1351183505 groups=["level", "navmesh"]]
 transform = Transform3D(-1, 4.371138e-08, -4.3711378e-08, -4.371138e-08, 4.371139e-08, 0.9999999, 4.3711392e-08, 0.9999999, -4.3711385e-08, -782.46783, 565.2578, 485.53363)
 use_collision = true
 size = Vector3(60.06836, 1, 116.91882)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D144" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=486662953 groups=["level", "navmesh"]]
+[node name="CSGBox3D144" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=486662953 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -997.0369, 623.22144, 484.66602)
 use_collision = true
 size = Vector3(185, 1, 383)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D148" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=693090952 groups=["level", "navmesh"]]
+[node name="CSGBox3D148" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=693090952 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, -921.1765, 949.72144, 484.66602)
 use_collision = true
 size = Vector3(185, 6, 455)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D149" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2099252223 groups=["level", "navmesh"]]
+[node name="CSGBox3D149" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2099252223 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 760.6575, 952.22144, 484.66602)
 use_collision = true
 size = Vector3(185, 1, 731)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D138" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1187603098 groups=["level", "navmesh"]]
+[node name="CSGBox3D138" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1187603098 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 316.46307, 356.22147, 580.666)
 use_collision = true
 size = Vector3(63, 1, 12)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D139" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=414978319 groups=["level", "navmesh"]]
+[node name="CSGBox3D139" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=414978319 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 316.46307, 356.22147, 634.166)
 use_collision = true
 size = Vector3(20, 1, 12)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D114" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1406295608 groups=["level", "navmesh"]]
+[node name="CSGBox3D114" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1406295608 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 254.58539, 191.02219, 649.9387)
 use_collision = true
 size = Vector3(223, 1, 117)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D187" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1448201574 groups=["level", "navmesh"]]
+[node name="CSGBox3D187" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1448201574 groups=["level", "navmesh"]]
 transform = Transform3D(-4.358045e-08, -0.07734415, 0.99700445, -3.3808187e-09, 0.99700445, 0.07734415, -1, 1.8204436e-15, -4.371139e-08, 376.82736, 196.22981, 599.3916)
 use_collision = true
 size = Vector3(121.9057, 1, 136.50836)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D99" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=98529289 groups=["level", "navmesh"]]
+[node name="CSGBox3D99" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=98529289 groups=["level", "navmesh"]]
 transform = Transform3D(-3.726809e-08, -0.23336053, 0.97239035, 2.2842388e-08, 0.97239035, 0.23336053, -1, 3.090862e-08, -3.090862e-08, 694.10693, 67.37265, 638.14026)
 use_collision = true
 size = Vector3(48, 1, 50)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=168407333 groups=["level", "navmesh"]]
+[node name="CSGBox3D4" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=168407333 groups=["level", "navmesh"]]
 transform = Transform3D(-3.785517e-08, -0.9659258, 0.258819, -2.1855694e-08, 0.258819, 0.9659258, -1, 3.090862e-08, -3.090862e-08, 76.00662, 10.963966, -41.75714)
 use_collision = true
 size = Vector3(8, 1, 30)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D8" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1917216610 groups=["level", "navmesh"]]
+[node name="CSGBox3D8" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1917216610 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, -1, 4.3711385e-08, 1.9106853e-15, 14.006621, 22.463966, 444.24286)
 use_collision = true
 size = Vector3(8, 1, 49)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D13" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=338799135 groups=["level", "navmesh"]]
+[node name="CSGBox3D13" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=338799135 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, -1, 4.3711385e-08, 1.9106853e-15, 2.0066214, 22.463966, 444.24286)
 use_collision = true
 size = Vector3(8, 1, 49)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D61" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1702789167 groups=["level", "navmesh"]]
+[node name="CSGBox3D61" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1702789167 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -65.92688, 227.96304, 2805.656)
 use_collision = true
 size = Vector3(200, 5.045288, 371)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D82" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1389574758 groups=["level", "navmesh"]]
+[node name="CSGBox3D82" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1389574758 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 63.31185, 226.60706, 2278.156)
 use_collision = true
 size = Vector3(157, 5.266726, 375)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D68" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2086125774 groups=["level", "navmesh"]]
+[node name="CSGBox3D68" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2086125774 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 126.16128, 334.4628, 2083.854)
 use_collision = true
 size = Vector3(582, 6.295, 582)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D62" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2029613091 groups=["level", "navmesh"]]
+[node name="CSGBox3D62" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2029613091 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 125.205185, 418.9625, 960.024)
 use_collision = true
 size = Vector3(119.839, 4.2932863, 385)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D64" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=51459468 groups=["level", "navmesh"]]
+[node name="CSGBox3D64" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=51459468 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 125.528, 83.079315, 780.7132)
 use_collision = true
 size = Vector3(242, 5.045288, 368.1919)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D100" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2133056212 groups=["level", "navmesh"]]
+[node name="CSGBox3D100" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2133056212 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 256.20322, 83.07931, 866.7132)
 use_collision = true
 size = Vector3(46, 5.045288, 368.1919)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D101" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=718476633 groups=["level", "navmesh"]]
+[node name="CSGBox3D101" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=718476633 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 230.20323, 83.07931, 866.7132)
 use_collision = true
 size = Vector3(46, 5.045288, 368.1919)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D111" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1738109512 groups=["level", "navmesh"]]
+[node name="CSGBox3D111" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1738109512 groups=["level", "navmesh"]]
 transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, 177.17857, 161.548, 685.367)
 use_collision = true
 size = Vector3(56.906494, 5.045288, 128)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D145" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1673099547 groups=["level", "navmesh"]]
+[node name="CSGBox3D145" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1673099547 groups=["level", "navmesh"]]
 transform = Transform3D(1.3113414e-07, -0.9999999, 4.3711378e-08, -3.1058807e-22, -4.3711378e-08, -0.9999999, 0.9999999, 1.3113413e-07, -2.1793419e-15, 197.41595, 154.28798, 665.4075)
 use_collision = true
 size = Vector3(47.381348, 5.045288, 74.519714)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D112" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2051313674 groups=["level", "navmesh"]]
+[node name="CSGBox3D112" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2051313674 groups=["level", "navmesh"]]
 transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, 177.37672, 161.548, 641.411)
 use_collision = true
 size = Vector3(57.358154, 1.2622986, 128)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D185" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=871258490 groups=["level", "navmesh"]]
+[node name="CSGBox3D185" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=871258490 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371138e-08, 0.9999999, -4.3711378e-08, -3.1058807e-22, -4.3711378e-08, -0.9999999, -0.9999999, -4.3711367e-08, 5.463398e-15, 205.67444, 213.25894, 665.00116)
 use_collision = true
 size = Vector3(47.40869, 1.2622986, 24.578125)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D186" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=815572409 groups=["level", "navmesh"]]
+[node name="CSGBox3D186" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=815572409 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371138e-08, 0.9999999, -4.3711378e-08, -3.1058807e-22, -4.3711378e-08, -0.9999999, -0.9999999, -4.3711367e-08, 5.463398e-15, 176.04329, 224.548, 665.00116)
 use_collision = true
 size = Vector3(47.40869, 60, 2)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D129" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1937396937 groups=["level", "navmesh"]]
+[node name="CSGBox3D129" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1937396937 groups=["level", "navmesh"]]
 transform = Transform3D(1.3113416e-07, -0.99999994, 3.5527137e-15, 4.3711385e-08, 3.5527137e-15, -0.9999999, 0.99999994, 1.3113414e-07, 4.371138e-08, 147.10663, 161.54784, 664.4075)
 use_collision = true
 size = Vector3(46, 5.045288, 128)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D103" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=803204135 groups=["level", "navmesh"]]
+[node name="CSGBox3D103" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=803204135 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, 339.5173, 43.98336, 722.7132)
 use_collision = true
 size = Vector3(313, 5.045288, 86)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D106" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1016903025 groups=["level", "navmesh"]]
+[node name="CSGBox3D106" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1016903025 groups=["level", "navmesh"]]
 transform = Transform3D(0.9926962, 6.137004e-09, -0.12064122, -0.12064117, -4.327843e-08, -0.99269617, -1.13133405e-08, 0.99999994, -4.222196e-08, 356.70444, 70.306496, 641.0392)
 use_collision = true
 size = Vector3(365.88922, 2, 88.90997)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D115" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=604265806 groups=["level", "navmesh"]]
+[node name="CSGBox3D115" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=604265806 groups=["level", "navmesh"]]
 transform = Transform3D(0.9808871, 1.9312566e-08, 0.19457775, 0.19457778, -3.9213646e-08, -0.98088706, -1.131334e-08, 0.9999999, -4.2221956e-08, 350.93372, 225.20668, 644.4354)
 use_collision = true
 size = Vector3(96.20618, 2, 74)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D116" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=230636415 groups=["level", "navmesh"]]
+[node name="CSGBox3D116" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=230636415 groups=["level", "navmesh"]]
 transform = Transform3D(1.9106855e-15, 4.3711385e-08, 0.99999994, 1, -4.3711385e-08, 0, 4.371139e-08, 0.9999999, -4.3711385e-08, 391.91412, -3731.5945, 641.0392)
 use_collision = true
 size = Vector3(93, 2, 41)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D127" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1423089493 groups=["level", "navmesh"]]
+[node name="CSGBox3D127" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1423089493 groups=["level", "navmesh"]]
 transform = Transform3D(1.9106855e-15, 4.3711385e-08, 0.99999994, 1, -4.3711385e-08, 0, 4.371139e-08, 0.9999999, -4.3711385e-08, 174.06209, 202.114, 760.0392)
 use_collision = true
 size = Vector3(22.827148, 2, 58.7041)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D130" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1554996982 groups=["level", "navmesh"]]
+[node name="CSGBox3D130" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1554996982 groups=["level", "navmesh"]]
 transform = Transform3D(3.5527137e-15, -0.9999999, 0, 1, 0, -4.3711385e-08, 4.3711385e-08, 0, 0.99999994, 146.06197, 202.114, 676.89124)
 use_collision = true
 size = Vector3(22.827148, 2, 167)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D128" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=168877624 groups=["level", "navmesh"]]
+[node name="CSGBox3D128" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=168877624 groups=["level", "navmesh"]]
 transform = Transform3D(1.9106855e-15, 4.3711385e-08, 0.99999994, 1, -4.3711385e-08, 0, 4.371139e-08, 0.9999999, -4.3711385e-08, 174.06209, 202.114, 593.49036)
 use_collision = true
 size = Vector3(22.827148, 2, 58.7041)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D117" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1581542220 groups=["level", "navmesh"]]
+[node name="CSGBox3D117" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1581542220 groups=["level", "navmesh"]]
 transform = Transform3D(3.090862e-08, 0.5, 0.8660252, 1, -4.2221952e-08, -1.1313338e-08, 3.0908616e-08, 0.8660252, -0.5, 419.49564, -3729.0903, 636.6048)
 use_collision = true
 size = Vector3(94, 2, 24)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D123" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=960961932 groups=["level", "navmesh"]]
+[node name="CSGBox3D123" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=960961932 groups=["level", "navmesh"]]
 transform = Transform3D(3.0908616e-08, 0.8660253, 0.49999985, 1, -4.222195e-08, 1.1313338e-08, 3.0908616e-08, 0.49999985, -0.8660253, 433.39392, -3728.5903, 622.7065)
 use_collision = true
 size = Vector3(95, 2, 24)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D118" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=897377293 groups=["level", "navmesh"]]
+[node name="CSGBox3D118" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=897377293 groups=["level", "navmesh"]]
 transform = Transform3D(4.2221956e-08, 0.9659257, 0.25881895, 1, -4.3711378e-08, -6.1780865e-22, 1.1313335e-08, 0.25881895, -0.9659257, 441.24268, -3725.4963, 604.207)
 use_collision = true
 size = Vector3(96, 2, 22)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D122" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1713728071 groups=["level", "navmesh"]]
+[node name="CSGBox3D122" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1713728071 groups=["level", "navmesh"]]
 transform = Transform3D(4.2221956e-08, 0.9659257, -0.25881907, 1, -4.3711378e-08, -6.1780865e-22, -1.1313342e-08, -0.25881907, -0.9659257, 441.24268, -3723.9963, 584.1729)
 use_collision = true
 size = Vector3(99, 2, 22)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D119" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2136418693 groups=["level", "navmesh"]]
+[node name="CSGBox3D119" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2136418693 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.70710665, -0.70710677, 1, -3.0908613e-08, 3.0908616e-08, -2.5121479e-15, -0.70710677, -0.70710665, 432.16354, -3716.7476, 570.24023)
 use_collision = true
 size = Vector3(88, 2, 26)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D124" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=312802823 groups=["level", "navmesh"]]
+[node name="CSGBox3D124" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=312802823 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.49999985, -0.8660253, 1, -2.185569e-08, 3.785517e-08, -2.4265484e-15, -0.8660253, -0.49999985, 415.20715, -3713.7476, 556.5518)
 use_collision = true
 size = Vector3(84, 2, 21)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D120" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=859610700 groups=["level", "navmesh"]]
+[node name="CSGBox3D120" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=859610700 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711392e-08, -5.9604645e-08, -0.9999999, 1, 3.5527137e-15, 4.371138e-08, -1.7763567e-15, -0.9999999, 5.9604645e-08, 295.62646, 289.03726, 549.8971)
 use_collision = true
 size = Vector3(195.91284, 2, 199.45966)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D126" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=124327292 groups=["level", "navmesh"]]
+[node name="CSGBox3D126" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=124327292 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711392e-08, -5.9604645e-08, -0.9999999, 1, 3.5527137e-15, 4.371138e-08, -1.7763567e-15, -0.9999999, 5.9604645e-08, 320.3563, 252.55658, 590.9703)
 use_collision = true
 size = Vector3(44.819275, 2, 104)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D131" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=190501346 groups=["level", "navmesh"]]
+[node name="CSGBox3D131" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=190501346 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 371.3563, 330.99368, 615.9703)
 use_collision = true
 size = Vector3(112, 2, 54)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D135" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1859135473 groups=["level", "navmesh"]]
+[node name="CSGBox3D135" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1859135473 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 371.3563, 329.25455, 570.11017)
 use_collision = true
 size = Vector3(115.47827, 2, 40.279785)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D133" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1348651729 groups=["level", "navmesh"]]
+[node name="CSGBox3D133" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1348651729 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 320.3563, 330.99368, 643.9703)
 use_collision = true
 size = Vector3(112, 2, 104)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D140" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=330471135 groups=["level", "navmesh"]]
+[node name="CSGBox3D140" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=330471135 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 7.8562946, 434.99368, 577.548)
 use_collision = true
 size = Vector3(70, 0.8446045, 155)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D164" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1618253466 groups=["level", "navmesh"]]
+[node name="CSGBox3D164" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1618253466 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, -0.9999999, -7.152951e-08, 1, -4.24743e-15, -4.3711385e-08, 4.371138e-08, -7.152951e-08, 0.9999999, -70.00547, 426.01706, 557.0084)
 use_collision = true
 size = Vector3(52.046753, 0.8446045, 41.581055)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D141" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1816988410 groups=["level", "navmesh"]]
+[node name="CSGBox3D141" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1816988410 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 7.8562946, 434.99368, 536.548)
 use_collision = true
 size = Vector3(70, 0.8446045, 155)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D142" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=996772921 groups=["level", "navmesh"]]
+[node name="CSGBox3D142" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=996772921 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, -547.6437, 587.9482, 577.548)
 use_collision = true
 size = Vector3(162, 0.8446045, 530)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D146" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1405179509 groups=["level", "navmesh"]]
+[node name="CSGBox3D146" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1405179509 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1148.9261, 812.97656, 486.54797)
 use_collision = true
 size = Vector3(321, 0.8446045, 178)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D189" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1142976402 groups=["level", "navmesh"]]
+[node name="CSGBox3D189" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1142976402 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1149.6229, 812.97656, 397.73834)
 visible = false
 use_collision = true
 size = Vector3(321, 2.2382202, 0.3807373)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D190" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=69571739 groups=["level", "navmesh"]]
+[node name="CSGBox3D190" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=69571739 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1179.9634, 836.05786, 397.73834)
 visible = false
 use_collision = true
 size = Vector3(274.8374, 2.2382202, 0.3807373)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D191" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=920492425 groups=["level", "navmesh"]]
+[node name="CSGBox3D191" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=920492425 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1149.6229, 812.97656, 575.9605)
 visible = false
 use_collision = true
 size = Vector3(321, 2.2382202, 0.3807373)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D192" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1943742435 groups=["level", "navmesh"]]
+[node name="CSGBox3D192" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1943742435 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1179.9634, 836.4143, 575.9605)
 visible = false
 use_collision = true
 size = Vector3(274.1245, 2.2382202, 0.3807373)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D147" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2073807082 groups=["level", "navmesh"]]
+[node name="CSGBox3D147" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2073807082 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, -1180.7837, 876.161, 486.75623)
 use_collision = true
 size = Vector3(354.58545, 0.8446045, 178.4165)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D150" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=635220661 groups=["level", "navmesh"]]
+[node name="CSGBox3D150" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=635220661 groups=["level", "navmesh"]]
 transform = Transform3D(-1.910685e-15, 0.9999999, -1.589326e-08, 0.8660254, -7.946634e-09, -0.49999997, -0.50000006, -1.3763965e-08, -0.86602527, 1144.1349, 1120.388, 536.14197)
 use_collision = true
 size = Vector3(266, 4.244568, 376)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D153" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1785830741 groups=["level", "navmesh"]]
+[node name="CSGBox3D153" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1785830741 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 1046.47, 551.2213, 5059.335)
 use_collision = true
 size = Vector3(1665.7485, 1, 731)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D154" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1128046770 groups=["level", "navmesh"]]
+[node name="CSGBox3D154" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1128046770 groups=["level", "navmesh"]]
 transform = Transform3D(-7.946634e-09, 0.9999999, -1.37639695e-08, 0.9659258, 1.123823e-08, 0.258819, 0.258819, -1.1238235e-08, -0.96592575, 1429.9474, 871.5986, 4314.998)
 use_collision = true
 size = Vector3(849.5609, 4.244568, 3176.7632)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D162" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=145888686 groups=["level", "navmesh"]]
+[node name="CSGBox3D162" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=145888686 groups=["level", "navmesh"]]
 transform = Transform3D(-7.946634e-09, 0.9999999, -1.37639695e-08, 0.9659258, 1.123823e-08, 0.258819, 0.258819, -1.1238235e-08, -0.96592575, 644.57166, 871.5986, 4314.998)
 use_collision = true
 size = Vector3(849.5609, 4.244568, 3176.7632)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D161" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1630316803 groups=["level", "navmesh"]]
+[node name="CSGBox3D161" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1630316803 groups=["level", "navmesh"]]
 transform = Transform3D(2.9802322e-08, -2.9947415e-08, 0.9999999, 0.99999994, 7.9466265e-09, -1.4901161e-08, -7.946633e-09, 0.9999999, 2.9947415e-08, 1037.0659, 568.8801, 5889.3394)
 use_collision = true
 size = Vector3(35.493088, 4.244568, 803)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D160" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1943687257 groups=["level", "navmesh"]]
+[node name="CSGBox3D160" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1943687257 groups=["level", "navmesh"]]
 transform = Transform3D(1, -4.5821885e-08, -3.0228833e-09, -3.5764756e-08, -0.9659257, 0.258819, -4.3566292e-08, -0.258819, -0.96592575, 1038.305, 672.6387, 3836.0654)
 use_collision = true
 size = Vector3(786.17017, 4.244568, 1673.7563)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D151" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1833473043 groups=["level", "navmesh"]]
+[node name="CSGBox3D151" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1833473043 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 1144.1349, 1477.6929, 829.8706)
 use_collision = true
 size = Vector3(764, 4.244568, 393)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D152" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1466457716 groups=["level", "navmesh"]]
+[node name="CSGBox3D152" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1466457716 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 967.1859, 1471.6929, 830.3706)
 use_collision = true
 size = Vector3(752, 4.244568, 394)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D157" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1983934693 groups=["level", "navmesh"]]
+[node name="CSGBox3D157" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1983934693 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 1144.1349, 1477.6929, 1403.3188)
 use_collision = true
 size = Vector3(764, 4.244568, 393)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D158" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1785819977 groups=["level", "navmesh"]]
+[node name="CSGBox3D158" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1785819977 groups=["level", "navmesh"]]
 transform = Transform3D(-1.9106853e-15, 0.9999999, -1.589326e-08, 1, -4.24743e-15, -4.3711385e-08, -4.371138e-08, -1.589326e-08, -0.9999999, 967.1859, 1471.6929, 1403.8188)
 use_collision = true
 size = Vector3(752, 4.244568, 394)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D155" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1685843304 groups=["level", "navmesh"]]
+[node name="CSGBox3D155" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1685843304 groups=["level", "navmesh"]]
 transform = Transform3D(-4.3711378e-08, -5.9604645e-08, -0.9999999, 1, -4.24743e-15, -4.371138e-08, 3.8213705e-15, -0.9999999, 5.9604645e-08, 812.1859, 1118.1929, 364.24832)
 use_collision = true
 size = Vector3(289, 4, 586)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D156" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=770730427 groups=["level", "navmesh"]]
+[node name="CSGBox3D156" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=770730427 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711374e-08, 1.4702741e-07, 0.9999999, 1, -4.2474298e-15, -4.3711378e-08, -7.642741e-15, 0.9999999, -1.4702741e-07, 750.1859, 1118.1929, 612.5913)
 use_collision = true
 size = Vector3(289, 4, 462)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D143" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1261032096 groups=["level", "navmesh"]]
+[node name="CSGBox3D143" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1261032096 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, -558.1437, 585.9482, 393.00177)
 use_collision = true
 size = Vector3(158, 0.8446045, 551)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D179" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=638090182 groups=["level", "navmesh"]]
+[node name="CSGBox3D179" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=638090182 groups=["level", "navmesh"]]
 transform = Transform3D(4.371138e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -8.321396e-15, 1.4835902e-37, -1.589326e-08, -0.9999999, -805.9497, 565.3279, 485.4775)
 use_collision = true
 size = Vector3(116.75946, 0.8446045, 186.19196)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D132" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=465265663 groups=["level", "navmesh"]]
+[node name="CSGBox3D132" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=465265663 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 269.35632, 293.01785, 596.9703)
 use_collision = true
 size = Vector3(125.95166, 2, 96)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D167" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1454264997 groups=["level", "navmesh"]]
+[node name="CSGBox3D167" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1454264997 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 322.9737, 2491.4744, 589.56445)
 use_collision = true
 size = Vector3(188.98712, 1, 210.34058)
 material = SubResource("StandardMaterial3D_d0k5m")
 
-[node name="CSGBox3D168" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1347603040 groups=["level", "navmesh"]]
+[node name="CSGBox3D168" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1347603040 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.3711385e-08, 322.9737, 2603.4744, 590.8938)
 use_collision = true
 size = Vector3(186.32837, 1, 210.34058)
 material = SubResource("StandardMaterial3D_d0k5m")
 
-[node name="CSGBox3D169" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1035905525 groups=["level", "navmesh"]]
+[node name="CSGBox3D169" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1035905525 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711392e-08, -5.9604645e-08, -0.9999999, 1, 3.5527137e-15, 4.371138e-08, -1.7763567e-15, -0.9999999, 5.9604645e-08, 323.8563, 2546.0989, 498.25854)
 use_collision = true
 size = Vector3(115.78955, 2, 213)
 material = SubResource("StandardMaterial3D_d0k5m")
 
-[node name="CSGBox3D170" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1068902887 groups=["level", "navmesh"]]
+[node name="CSGBox3D170" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1068902887 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 428.862, 2547.9937, 591.93207)
 use_collision = true
 size = Vector3(112, 2, 185.38135)
 material = SubResource("StandardMaterial3D_d0k5m")
 
-[node name="CSGBox3D172" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1692426167 groups=["level", "navmesh"]]
+[node name="CSGBox3D172" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1692426167 groups=["level", "navmesh"]]
 transform = Transform3D(4.371139e-08, 0.9999999, -1.589326e-08, 1, -4.371139e-08, -4.500025e-15, 7.764702e-23, -1.589326e-08, -0.9999999, 218.862, 2546.9575, 591.93207)
 use_collision = true
 size = Vector3(114.072266, 2, 185.38135)
 material = SubResource("StandardMaterial3D_d0k5m")
 
-[node name="CSGBox3D171" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1704420538 groups=["level", "navmesh"]]
+[node name="CSGBox3D171" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1704420538 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711385e-08, -2.7818125e-08, 0.9999999, 1, -4.24743e-15, -4.371139e-08, -3.394059e-30, 0.9999999, 2.7818125e-08, 323.9454, 2546.8418, 683.04126)
 use_collision = true
 size = Vector3(114.30371, 2, 209.17822)
 material = SubResource("StandardMaterial3D_d0k5m")
 
-[node name="CSGBox3D125" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=86061278 groups=["level", "navmesh"]]
+[node name="CSGBox3D125" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=86061278 groups=["level", "navmesh"]]
 transform = Transform3D(4.3711392e-08, 0.1569267, -0.9876101, 1, -6.8594836e-09, 4.3169806e-08, -1.7543481e-15, -0.9876101, -0.1569267, 398.12628, -3712.0063, 550.6116)
 use_collision = true
 size = Vector3(86, 2, 20)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D107" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1786287925 groups=["level", "navmesh"]]
+[node name="CSGBox3D107" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1786287925 groups=["level", "navmesh"]]
 transform = Transform3D(0.9926962, 6.137004e-09, -0.12064122, -0.12064117, -4.327843e-08, -0.99269617, -1.13133405e-08, 0.99999994, -4.222196e-08, 319.25235, 80.064095, 683.866)
 use_collision = true
 size = Vector3(261.8379, 2, 80.30762)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D182" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=549430594 groups=["level", "navmesh"]]
+[node name="CSGBox3D182" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=549430594 groups=["level", "navmesh"]]
 transform = Transform3D(0.72817636, -0.6746888, -0.1206412, -0.0884944, 0.08199411, -0.9926962, 0.6796529, 0.7335338, -3.8731844e-08, 471.38153, 73.40509, 703.9348)
 use_collision = true
 size = Vector3(59.455826, 2.3879395, 56.822266)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D104" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1049745865 groups=["level", "navmesh"]]
+[node name="CSGBox3D104" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1049745865 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, 359.5173, 44.48336, 774.7132)
 use_collision = true
 size = Vector3(351, 5.045288, 87)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D105" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1162351058 groups=["level", "navmesh"]]
+[node name="CSGBox3D105" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1162351058 groups=["level", "navmesh"]]
 transform = Transform3D(-4.3711385e-08, 0.99999994, 0, 4.3711385e-08, 3.5527137e-15, -0.9999999, -0.99999994, -4.371139e-08, -4.371138e-08, 534.4237, 44.483364, 708.2132)
 use_collision = true
 size = Vector3(138, 5.045288, 87)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D71" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1151669095 groups=["level", "navmesh"]]
+[node name="CSGBox3D71" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1151669095 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -792.472, 43.983368, 557.2132)
 use_collision = true
 size = Vector3(199, 5.045288, 102)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D72" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1354075534 groups=["level", "navmesh"]]
+[node name="CSGBox3D72" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1354075534 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -596.472, 43.983368, 557.2132)
 use_collision = true
 size = Vector3(199, 5.045288, 102)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D75" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1896168877 groups=["level", "navmesh"]]
+[node name="CSGBox3D75" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1896168877 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -599.8476, -0.016629457, 418.06906)
 use_collision = true
 size = Vector3(82, 5.045288, 14)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D76" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1124358669 groups=["level", "navmesh"]]
+[node name="CSGBox3D76" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1124358669 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -599.522, -0.016628742, 377.90857)
 use_collision = true
 size = Vector3(82, 5.045288, 14)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D80" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=99165430 groups=["level", "navmesh"]]
+[node name="CSGBox3D80" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=99165430 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -672.98, 5.9326, 133.64107)
 use_collision = true
 size = Vector3(876.8613, 5.045288, 25.898438)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D81" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=337859184 groups=["level", "navmesh"]]
+[node name="CSGBox3D81" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=337859184 groups=["level", "navmesh"]]
 transform = Transform3D(-4.3711385e-08, 0.99999994, 0, 4.3711385e-08, 3.5527137e-15, -0.9999999, -0.99999994, -4.371139e-08, -4.371138e-08, -1109.0739, 5.932581, 572.64105)
 use_collision = true
 size = Vector3(876.8613, 5.045288, 25.898438)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D77" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=308016104 groups=["level", "navmesh"]]
+[node name="CSGBox3D77" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=308016104 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -834.522, 0.9833708, 330.90857)
 use_collision = true
 size = Vector3(82, 5.045288, 16)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D78" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=263200166 groups=["level", "navmesh"]]
+[node name="CSGBox3D78" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=263200166 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -834.522, 0.9833708, 269.90857)
 use_collision = true
 size = Vector3(82, 5.045288, 16)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D79" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2035413225 groups=["level", "navmesh"]]
+[node name="CSGBox3D79" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2035413225 groups=["level", "navmesh"]]
 transform = Transform3D(0.99999994, 3.5527137e-15, 0, 0, -4.371138e-08, -0.9999999, 0, 0.99999994, -4.3711385e-08, -834.522, 8.088032, 300.4312)
 use_collision = true
 size = Vector3(82, 60, 2)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D73" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=973881085 groups=["level", "navmesh"]]
+[node name="CSGBox3D73" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=973881085 groups=["level", "navmesh"]]
 transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, -694.472, 43.983368, 459.2132)
 use_collision = true
 size = Vector3(199, 5.045288, 102)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D74" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=723691241 groups=["level", "navmesh"]]
+[node name="CSGBox3D74" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=723691241 groups=["level", "navmesh"]]
 transform = Transform3D(-0.99999994, -8.742276e-08, 3.8213705e-15, 0, -4.371138e-08, -0.9999999, 8.742278e-08, -0.99999994, 4.3711385e-08, -694.472, 43.983368, 654.2132)
 use_collision = true
 size = Vector3(199, 5.045288, 102)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D63" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=706198649 groups=["level", "navmesh"]]
+[node name="CSGBox3D63" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=706198649 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 146.53087, 409.28, 1203.8387)
 use_collision = true
 size = Vector3(627.2485, 46.949936, 285)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D70" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=316484796 groups=["level", "navmesh"]]
+[node name="CSGBox3D70" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=316484796 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 43.380177, 628.12396, 1731.8564)
 use_collision = true
 size = Vector3(373.4562, 2.4971313, 99)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D67" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2046680737 groups=["level", "navmesh"]]
+[node name="CSGBox3D67" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2046680737 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -410.822, 381.25528, 1577.6138)
 use_collision = true
 size = Vector3(1656, 5.045288, 702)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D83" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1778896361 groups=["level", "navmesh"]]
+[node name="CSGBox3D83" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1778896361 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -410.82196, 514.75525, 2611.1138)
 use_collision = true
 size = Vector3(411, 5.045288, 969)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D66" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2085057976 groups=["level", "navmesh"]]
+[node name="CSGBox3D66" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2085057976 groups=["level", "navmesh"]]
 transform = Transform3D(-1.6420284e-15, -8.742276e-08, -0.9999999, 4.3711385e-08, -0.9999999, 8.742276e-08, -1, -4.3711385e-08, 1.9106855e-15, -163.63303, 224.46263, 1198.9196)
 use_collision = true
 size = Vector3(359.6294, 5.045288, 520)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D69" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1280595661 groups=["level", "navmesh"]]
+[node name="CSGBox3D69" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1280595661 groups=["level", "navmesh"]]
 transform = Transform3D(-1.6420284e-15, -8.742276e-08, -0.9999999, 4.3711385e-08, -0.9999999, 8.742276e-08, -1, -4.3711385e-08, 1.9106855e-15, -164.63303, 53.46263, 1198.9196)
 use_collision = true
 size = Vector3(359.6294, 5.045288, 518)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D65" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1210528692 groups=["level", "navmesh"]]
+[node name="CSGBox3D65" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1210528692 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, 39.96629, 447.04187, 1426.7084)
 use_collision = true
 size = Vector3(200.1098, 5.311493, 167.81635)
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2080999740 groups=["level", "navmesh"]]
+[node name="CSGBox3D5" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2080999740 groups=["level", "navmesh"]]
 transform = Transform3D(-4.222196e-08, -0.8660255, 0.5, -1.131334e-08, 0.5, 0.8660255, -1, 3.0908623e-08, -3.0908623e-08, 79.35385, 10.277784, -32.410706)
 use_collision = true
 size = Vector3(8, 1, 30)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1762383479 groups=["level", "navmesh"]]
+[node name="CSGBox3D6" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1762383479 groups=["level", "navmesh"]]
 transform = Transform3D(-4.371139e-08, -0.7071068, 0.7071067, 0, 0.7071067, 0.7071068, -1, 3.0908623e-08, -3.0908623e-08, 81.8353, 7.201704, -11.410706)
 use_collision = true
 size = Vector3(8, 1, 30)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D10" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=725216449 groups=["level", "navmesh"]]
+[node name="CSGBox3D10" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=725216449 groups=["level", "navmesh"]]
 transform = Transform3D(-4.2221963e-08, -0.8660254, 0.49999988, -1.1313338e-08, 0.49999988, 0.8660254, -1, 3.0908623e-08, -3.0908623e-08, 46.434998, 3.9440188, -11.410706)
 use_collision = true
 size = Vector3(8, 1, 9.472168)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D173" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2126327337 groups=["level", "navmesh"]]
+[node name="CSGBox3D173" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=2126327337 groups=["level", "navmesh"]]
 transform = Transform3D(-4.222196e-08, -2.9802322e-08, 0.99999994, -1.131334e-08, 0.99999994, 2.980232e-08, -1, -1.13133325e-08, -4.222197e-08, 56.743305, 1.0278513, -26.410706)
 use_collision = true
 size = Vector3(38, 1, 12)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D176" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1587987588 groups=["level", "navmesh"]]
+[node name="CSGBox3D176" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1587987588 groups=["level", "navmesh"]]
 transform = Transform3D(-4.222196e-08, -2.9802322e-08, 0.99999994, -1.131334e-08, 0.99999994, 2.980232e-08, -1, -1.13133325e-08, -4.222197e-08, 56.743305, 3.1346211, -26.410706)
 use_collision = true
 size = Vector3(38, 1, 12)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D174" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1963260135 groups=["level", "navmesh"]]
+[node name="CSGBox3D174" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1963260135 groups=["level", "navmesh"]]
 transform = Transform3D(-4.222196e-08, -2.9802322e-08, 0.99999994, -1.131334e-08, 0.99999994, 2.980232e-08, -1, -1.13133325e-08, -4.222197e-08, 50.771137, -0.11019456, -26.410706)
 use_collision = true
 size = Vector3(38, 3, 1)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D175" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1369575151 groups=["level", "navmesh"]]
+[node name="CSGBox3D175" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1369575151 groups=["level", "navmesh"]]
 transform = Transform3D(-4.222196e-08, -2.9802322e-08, 0.99999994, -1.131334e-08, 0.99999994, 2.980232e-08, -1, -1.13133325e-08, -4.222197e-08, 62.771137, -0.1101942, -26.410706)
 use_collision = true
 size = Vector3(38, 3, 1)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D11" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=8134566 groups=["level", "navmesh"]]
+[node name="CSGBox3D11" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=8134566 groups=["level", "navmesh"]]
 transform = Transform3D(-4.3711392e-08, -0.70710677, 0.7071067, 8.881784e-16, 0.7071067, 0.70710677, -1, 3.0908623e-08, -3.0908623e-08, 46.434998, 3.9440188, -20.25071)
 use_collision = true
 size = Vector3(8, 1, 9.472168)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D12" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=744418090 groups=["level", "navmesh"]]
+[node name="CSGBox3D12" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=744418090 groups=["level", "navmesh"]]
 transform = Transform3D(-4.222196e-08, -0.5, 0.86602527, 1.1313343e-08, 0.86602527, 0.5, -1, 3.0908623e-08, -3.0908623e-08, 46.434998, 4.944019, -29.25071)
 use_collision = true
 size = Vector3(8, 1, 9.472168)
 material = ExtResource("6_pfl74")
 
-[node name="CSGBox3D21" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1822652269 groups=["level", "navmesh"]]
+[node name="CSGBox3D21" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1822652269 groups=["level", "navmesh"]]
 transform = Transform3D(-3.090862e-08, -5.9604645e-08, 0.9999999, 3.0908623e-08, 0.9999999, 5.9604645e-08, -1, 3.0908623e-08, -3.090862e-08, -25.165043, 5.9494557, -133.08325)
 use_collision = true
 collision_layer = 64
 size = Vector3(91.823, 1, 25.309204)
 material = SubResource("StandardMaterial3D_2feqb")
 
-[node name="CSGBox3D23" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=874409974 groups=["level", "navmesh"]]
+[node name="CSGBox3D23" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=874409974 groups=["level", "navmesh"]]
 transform = Transform3D(-3.090862e-08, -5.9604645e-08, 0.9999999, 3.0908623e-08, 0.9999999, 5.9604645e-08, -1, 3.0908623e-08, -3.090862e-08, 88.69891, 38.949455, 457.82825)
 size = Vector3(184, 1, 4)
 material = SubResource("StandardMaterial3D_ebuav")
 
-[node name="CSGBox3D22" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1354077339 groups=["level", "navmesh"]]
+[node name="CSGBox3D22" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1354077339 groups=["level", "navmesh"]]
 transform = Transform3D(-3.0908623e-08, -0.9999999, -5.9604645e-08, -3.0908627e-08, -5.9604645e-08, 0.9999999, -1, 3.0908627e-08, -3.0908623e-08, -29.060368, 18.690176, 5.505249)
 use_collision = true
 size = Vector3(125, 1, 43)
 material = SubResource("StandardMaterial3D_cuqiy")
 
-[node name="CSGBox3D7" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1398262141 groups=["level", "navmesh"]]
+[node name="CSGBox3D7" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1398262141 groups=["level", "navmesh"]]
 transform = Transform3D(-4.3384553e-08, -0.7881289, 0.6155101, -5.3354077e-09, 0.6155101, 0.7881289, -1, 3.0908623e-08, -3.0908623e-08, 80.330475, 7.201704, -20.882973)
 use_collision = true
 size = Vector3(8, 1, 30)
 material = ExtResource("6_pfl74")
 
-[node name="CSGSphere3D" type="CSGSphere3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=932142737 groups=["level", "navmesh"]]
+[node name="CSGSphere3D" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=932142737 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 647.0642, 57, 501.21613)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3846,7 +3843,7 @@ radius = 52.338
 radial_segments = 32
 rings = 32
 
-[node name="CSGSphere3D6" type="CSGSphere3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1461209488 groups=["level", "navmesh"]]
+[node name="CSGSphere3D6" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1461209488 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 776.0642, 57, 636.2161)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3854,7 +3851,7 @@ radius = 25.0
 radial_segments = 32
 rings = 32
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=2046392576 groups=["level", "navmesh"]]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="LEVEL_PIECES" unique_id=2046392576 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.61154, 474.9444, 1547.5013)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3863,7 +3860,7 @@ height = 402.81137
 sides = 64
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGSphere3D2" type="CSGSphere3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1576201854 groups=["level", "navmesh"]]
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1576201854 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.612, 273.192, 1547.501)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3872,7 +3869,7 @@ radial_segments = 64
 rings = 32
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGSphere3D3" type="CSGSphere3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1181883512 groups=["level", "navmesh"]]
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1181883512 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.611526, 676.31635, 1547.5013)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3881,7 +3878,7 @@ radial_segments = 64
 rings = 32
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=248218297 groups=["level", "navmesh"]]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="LEVEL_PIECES" unique_id=248218297 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.61154, 474.9444, 1924.5013)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3890,7 +3887,7 @@ height = 402.81137
 sides = 64
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGSphere3D4" type="CSGSphere3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=5828057 groups=["level", "navmesh"]]
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=5828057 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.612, 273.192, 1924.501)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3899,7 +3896,7 @@ radial_segments = 64
 rings = 32
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGSphere3D5" type="CSGSphere3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1458377156 groups=["level", "navmesh"]]
+[node name="CSGSphere3D5" type="CSGSphere3D" parent="LEVEL_PIECES" unique_id=1458377156 groups=["level", "navmesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.611526, 676.31635, 1924.5013)
 material_override = ExtResource("6_pfl74")
 use_collision = true
@@ -3908,11 +3905,14 @@ radial_segments = 64
 rings = 32
 material = SubResource("StandardMaterial3D_58wob")
 
-[node name="CSGBox3D17" type="CSGBox3D" parent="LEVEL_PIECES/CSGCombiner3D" unique_id=1527071619 groups=["level"]]
+[node name="CSGBox3D17" type="CSGBox3D" parent="LEVEL_PIECES" unique_id=1527071619 groups=["level"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -519.305, -33.692, 3132.2295)
 use_collision = true
 size = Vector3(6000, 64.031, 6001.449)
 material = ExtResource("6_pfl74")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="LEVEL_PIECES" unique_id=166348321]
+use_collision = true
 
 [node name="BlitzSonicTest" parent="." unique_id=223504575 instance=ExtResource("5_65k7s")]
 transform = Transform3D(-3.4969112e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.4969112e-08, -169.6991, 4.513918, -387.1801)
@@ -4265,9 +4265,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7411804, 0, 0)
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_tt4we")
 
-[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
-
 [node name="RaceStart_Ring" parent="." unique_id=1344341188 instance=ExtResource("35_ftftv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125.36255, -1.373987, 163.94717)
 race_type = 2
@@ -4316,9 +4313,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4013672, 1.3179932, 0)
 
 [node name="Circle" parent="RaceGoal_PARKOUR/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_jvpi5")
-
-[node name="SwapLight" parent="RaceGoal_PARKOUR/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1781754792]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -686.3259, 109.0742, 569.9366)

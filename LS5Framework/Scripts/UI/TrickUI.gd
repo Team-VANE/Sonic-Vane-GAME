@@ -38,6 +38,7 @@ var _combo_active: bool = false
 var _timer_ratio: float = 0.0
 var _timer_warning_phase: float = 0.0
 var _failure_timer: float = 0.0
+var _empty_combo_fade_remaining: float = 0.0
 var _jitter_timer: float = 0.0
 var _is_hurt: bool = false
 var _pause_hidden: bool = false
@@ -78,6 +79,7 @@ func _process(delta: float) -> void:
 	_update_display_score(delta)
 	_update_timer_warning(delta)
 	_update_failure(delta)
+	_update_empty_combo_fade(delta)
 	_update_result(delta)
 	_refresh_layout()
 	_refresh_visibility()
@@ -105,6 +107,7 @@ func update_combo_display(score: float, history: Array[String]) -> void:
 		_refresh_visibility()
 		return
 	_combo_active = true
+	_cancel_empty_combo_fade()
 	_active_container.modulate.a = 1.0
 	_set_active_text_color(Color.WHITE)
 	_set_history_lines()
@@ -120,20 +123,31 @@ func update_combo_timer(time_remaining: float, maximum_time: float) -> void:
 		_cancel_failure_state()
 	_timer_ratio = clampf(time_remaining / maximum_time if maximum_time > 0.0 else 0.0, 0.0, 1.0)
 	if time_remaining > 0.0:
+		_cancel_empty_combo_fade()
 		_combo_active = true
 	_layout_timer_fill()
 	_refresh_visibility()
 
 func finish_combo(score: float, history: Array[String]) -> void:
 	_cancel_failure_state()
+	_cancel_empty_combo_fade()
 	_target_history.assign(history)
 	_combo_active = false
 	_timer_ratio = 0.0
 	_layout_timer_fill()
-	_start_result_sequence(maxf(score, 0.0))
+	if score <= 0.0:
+		_cancel_result_sequence()
+		_target_score = 0.0
+		_display_score = 0.0
+		_score_label.text = "0"
+		_set_history_lines()
+		_empty_combo_fade_remaining = RESULT_FADE_DURATION
+	else:
+		_start_result_sequence(score)
 	_refresh_visibility()
 
 func fail_combo(_score: float, history: Array[String]) -> void:
+	_cancel_empty_combo_fade()
 	_cancel_result_sequence()
 	_target_score = 0.0
 	_display_score = 0.0
@@ -328,6 +342,16 @@ func _cancel_failure_state() -> void:
 	_active_container.modulate.a = 1.0
 	_set_active_text_color(Color.WHITE)
 
+func _update_empty_combo_fade(delta: float) -> void:
+	if _empty_combo_fade_remaining <= 0.0:
+		return
+	_empty_combo_fade_remaining = maxf(_empty_combo_fade_remaining - delta, 0.0)
+	_active_container.modulate.a = _empty_combo_fade_remaining / RESULT_FADE_DURATION
+
+func _cancel_empty_combo_fade() -> void:
+	_empty_combo_fade_remaining = 0.0
+	_active_container.modulate.a = 1.0
+
 func _get_rating(score: float) -> Dictionary:
 	if _presentation_profile != null:
 		var profile_rating: Dictionary = _presentation_profile.get_combo_rating(score)
@@ -436,7 +460,7 @@ func _set_active_text_color(color: Color) -> void:
 
 func _refresh_visibility() -> void:
 	var hud_allowed: bool = _combo_system_enabled and not _pause_hidden and SettingsManager.hud_visible
-	var active_visible: bool = hud_allowed and (_combo_active or _is_hurt)
+	var active_visible: bool = hud_allowed and (_combo_active or _is_hurt or _empty_combo_fade_remaining > 0.0)
 	var result_visible: bool = hud_allowed and _result_phase != ResultPhase.NONE
 	_active_container.visible = active_visible
 	_result_container.visible = result_visible
