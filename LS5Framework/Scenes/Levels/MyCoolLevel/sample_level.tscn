@@ -323,6 +323,9 @@ go_music_stream = ExtResource("7_vitqo")
 [node name="StartingLine" parent="RaceStart" index="2" unique_id=96905968]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3374414, 23.153576, -152.90294)
 
+[node name="CameraFacingDirection" parent="RaceStart" index="3"]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+
 [node name="aidan" parent="." unique_id=174097419 instance=ExtResource("6_5n3rl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.790627, -0.6456941, -7.418419)
 
