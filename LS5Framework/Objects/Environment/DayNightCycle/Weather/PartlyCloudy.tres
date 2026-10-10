@@ -4,11 +4,3 @@
 
 [resource]
 script = ExtResource("1_weather")
-lower_layer_height = null
-upper_layer_amount = null
-upper_layer_height = null
-upper_layer_scale = null
-upper_layer_wind_multiplier = null
-distance_fade_start = null
-distance_fade_end = null
-distance_haze_strength = null
