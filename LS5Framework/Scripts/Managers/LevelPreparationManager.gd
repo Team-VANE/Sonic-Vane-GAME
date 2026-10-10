@@ -293,6 +293,10 @@ func get_failure_reason() -> String:
 	return _failure_reason
 
 
+func get_failed_resources() -> Dictionary:
+	return _failed_resources.duplicate(true)
+
+
 func get_runtime_cache_misses() -> Dictionary:
 	return _runtime_cache_misses.duplicate()
 

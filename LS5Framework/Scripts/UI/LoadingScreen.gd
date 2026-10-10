@@ -770,6 +770,8 @@ func _update_loading_watchdog() -> void:
 	var current_usec: int = Time.get_ticks_usec()
 	var current_progress: float = _get_active_root_progress()
 	if current_progress > _watchdog_last_progress_value + 0.0001:
+		if _watchdog_reported:
+			SceneDiagnostics.clear_loading_stall()
 		_watchdog_last_progress_value = current_progress
 		_watchdog_last_progress_usec = current_usec
 		_slow_loading_notice_shown = false
@@ -797,6 +799,11 @@ func _update_loading_watchdog() -> void:
 		_watchdog_notice = "Loading is taking longer than expected. If it never finishes, restart the game and notify LS5."
 	resource_label.add_theme_color_override(&"font_color", Color(1.0, 0.42, 0.28, 1.0))
 	resource_label.text = _watchdog_notice
+	SceneDiagnostics.report_loading_problem(
+		"No threaded resource progress for %.1f seconds. Active requests: %s." % [stalled_seconds, ", ".join(_active_request_roots)],
+		_report_target,
+		true
+	)
 
 
 func _get_active_root_progress() -> float:
@@ -1206,6 +1213,7 @@ func _change_scene(scene_ref: String, packed_scene: PackedScene) -> void:
 
 func _show_load_failure(reason: String) -> void:
 	_awaiting_level_handoff = false
+	SceneDiagnostics.report_loading_problem(reason, _report_target)
 	LevelPreparationManager.fail_level_preparation(_preparation_generation, reason)
 	_load_entries.append({
 		"path": _report_target,
@@ -1224,8 +1232,13 @@ func _show_load_failure(reason: String) -> void:
 	_failure_dialog.dialog_text = reason + "\n\nDetails were saved to level_load.log."
 	_failure_dialog.ok_button_text = "Return to menu"
 	_failure_dialog.add_button("Open Local Files", false, "logs")
-	_failure_dialog.custom_action.connect(func(_action: StringName) -> void:
-		OS.shell_open(ProjectSettings.globalize_path("user://"))
+	_failure_dialog.add_button("Inspect Dependencies", false, "dependencies")
+	_failure_dialog.custom_action.connect(func(action: StringName) -> void:
+		if action == &"dependencies":
+			_failure_dialog.hide()
+			SceneDiagnostics.open_dependency_inspection(_failure_dialog)
+		else:
+			OS.shell_open(ProjectSettings.globalize_path("user://"))
 	)
 	_failure_dialog.confirmed.connect(_return_after_load_failure)
 	_failure_dialog.canceled.connect(_return_after_load_failure)

@@ -83,6 +83,10 @@ func get_current_level() -> Node:
 	return _current_level
 
 
+func is_level_loading() -> bool:
+	return _level_load_in_progress
+
+
 func get_current_level_scene_path() -> String:
 	return _current_level_scene_path
 

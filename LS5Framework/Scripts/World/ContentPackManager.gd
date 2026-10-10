@@ -480,6 +480,7 @@ func _get_required_dependency_error(descriptor: Dictionary) -> String:
 
 func _report_pack_failure(pack_id: String, reason: String) -> void:
 	push_warning("ContentPackManager: %s: %s" % [pack_id, reason])
+	SceneDiagnostics.record_event("ContentPackManager", reason, pack_id)
 	pack_load_failed.emit(pack_id, reason)
 
 

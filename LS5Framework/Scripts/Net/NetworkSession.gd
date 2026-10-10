@@ -36,6 +36,7 @@ var _character_catalog_loaded: bool = false
 var _chat_ui = null
 var _camera_rig = null
 var _camera = null
+var _local_spawn_failure: String = ""
 var _local_id: int = 1
 var _local_level_id: StringName = &""
 var _local_level_ready: bool = false
@@ -2345,6 +2346,8 @@ func _update_race_banner() -> void:
 
 func _spawn_player(peer_id: int, is_local: bool) -> void:
 	if _players_root == null:
+		if is_local:
+			_local_spawn_failure = "NetworkSession could not resolve the local player's parent node."
 		return
 
 	var node_name = "Player_%d" % peer_id
@@ -2353,10 +2356,20 @@ func _spawn_player(peer_id: int, is_local: bool) -> void:
 
 	var packed: PackedScene = _get_player_scene_for_spawn(peer_id, is_local)
 	if packed == null:
+		if is_local:
+			_local_spawn_failure = "The selected character scene was unavailable from resource loading or the prepared character scope."
 		push_warning("NetworkSession: selected character scene is not prepared.")
 		return
 
 	var inst = packed.instantiate()
+	if not inst or not (inst is Node3D):
+		if is_local:
+			_local_spawn_failure = "The selected character scene did not instantiate a valid Node3D player root."
+		if inst:
+			inst.free()
+		return
+	if is_local:
+		_local_spawn_failure = ""
 	inst.name = node_name
 
 	var spawn: Node3D = _get_player_spawn_node()
@@ -2575,6 +2588,24 @@ func _assign_camera_to_local_player(local_id: int) -> void:
 	if local_player == null:
 		return
 	_camera_rig.set("target", local_player)
+
+
+func get_scene_diagnostic_context() -> Dictionary:
+	var resolved_character: String = _get_selected_character_id()
+	var character_entry: Dictionary = _get_character_entry(resolved_character)
+	var character_scene: String = String(character_entry.get("scene", ""))
+	var character_scene_paths: Array[String] = []
+	if not character_scene.is_empty():
+		character_scene_paths.append(character_scene)
+	return {
+		"selected_character": SettingsManager.chosen_character_id,
+		"resolved_character": resolved_character,
+		"character_scene_paths": character_scene_paths,
+		"spawn_failure": _local_spawn_failure,
+		"local_peer_id": _local_id,
+		"players_root": String(_players_root.get_path()) if is_instance_valid(_players_root) and _players_root.is_inside_tree() else "<missing>",
+		"camera_rig_path": String(camera_rig_path)
+	}
 
 
 func _on_peer_connected(peer_id: int) -> void:
