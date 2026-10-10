@@ -5,9 +5,11 @@
 
 [node name="DashPanelMesh" type="Node3D" unique_id=1210066314]
 script = ExtResource("2_nvxqd")
-target_node_path = NodePath("DashPanel/Object0251")
+target_node_path = NodePath("DashPanel/Object02")
 surface_index = 0
 scroll_direction = Vector2(0, 1)
 scroll_speed = 9.0
 
 [node name="DashPanel" parent="." unique_id=692713596 instance=ExtResource("2_nevwp")]
+
+[editable path="DashPanel"]

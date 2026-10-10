@@ -151,7 +151,7 @@ background_mode = 2
 background_energy_multiplier = 1.0000001
 sky = SubResource("Sky_anuua")
 ambient_light_source = 3
-ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
+ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
 ambient_light_sky_contribution = 0.82
 ambient_light_energy = 0.94372034
 reflected_light_source = 2
@@ -431,7 +431,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 60.676
+shader_parameter/swap_time = 5124.226
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ncnqb"]
 height = 8.0
@@ -444,7 +444,7 @@ shader_parameter/tex_flat = ExtResource("42_4rehq")
 shader_parameter/tex_glow = ExtResource("43_jfrcj")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 60.676
+shader_parameter/swap_time = 5124.226
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vrbq5"]
 bounce = 1.0

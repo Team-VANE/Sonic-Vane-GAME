@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d1lkixedl3gbr"]
 
-[ext_resource type="PackedScene" uid="uid://fj8hn07om1ut" path="res://LS5Framework/Scenes/Levels/Green Hill Canyon/GHC.blend" id="1_g48xd"]
+[ext_resource type="PackedScene" uid="uid://i28w1e78xgbf" path="res://LS5Framework/Scenes/Levels/Green Hill Canyon/GreenHillCanyon.glb" id="1_odwry"]
 [ext_resource type="PackedScene" uid="uid://ghucsw5061eo" path="res://LS5Framework/Objects/Gameplay/DeathPlane.tscn" id="3_rjsqb"]
 [ext_resource type="PackedScene" uid="uid://dcow1cl6vd0n3" path="res://LS5Framework/Objects/Music/MusicTrigger.tscn" id="4_4tklw"]
 [ext_resource type="AudioStream" uid="uid://bavkddcnjuxm2" path="res://LS5Framework/Sounds/Music/Green Hill Zone Synthetic Emerald - SonikkuZaHedgehog127.mp3" id="5_0wusn"]
@@ -34,11 +34,11 @@ size = Vector3(7705.2725, 2.9222412, 7723.9688)
 [sub_resource type="BoxShape3D" id="BoxShape3D_4sypa"]
 size = Vector3(1410.8984, 2.9222412, 422.22293)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_odwry"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qla43"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_qla43"]
+[sub_resource type="Curve3D" id="Curve3D_xuk1c"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, -27.205, 56.9, 17.635, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7.03, 46.05, 17.51),
@@ -46,11 +46,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_xuk1c"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3vrut"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_3vrut"]
+[sub_resource type="Curve3D" id="Curve3D_un7nq"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, 0, 51.475, 15.17, 0, 0, 0, 0, 0, 0, 0, 0, 0, -11.275, 47.28, 17.51),
@@ -58,11 +58,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_c3k3h"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_el3hc"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_un7nq"]
+[sub_resource type="Curve3D" id="Curve3D_uchdx"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48.455, 0, 10.165, 0, 0, 0, 0, 0, -29.86, 98.025, -8.105),
@@ -73,11 +73,11 @@ point_count = 3
 [sub_resource type="BoxShape3D" id="BoxShape3D_ai0xw"]
 size = Vector3(5, 3, 5)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_el3hc"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ld34s"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_uchdx"]
+[sub_resource type="Curve3D" id="Curve3D_eh2d5"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -106,16 +106,16 @@ size = Vector3(39, 15.739494, 91.42709)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ebuav"]
 size = Vector3(89, 23, 88)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ld34s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ab6mv"]
 render_priority = 0
 shader = ExtResource("10_nfviv")
 shader_parameter/tex_flat = ExtResource("11_mun4f")
 shader_parameter/tex_glow = ExtResource("12_ai0xw")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 21315.010000000002
+shader_parameter/swap_time = 4928.158
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eh2d5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n4vbm"]
 resource_local_to_scene = true
 shader = ExtResource("13_ci8yw")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -173,18 +173,18 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_ab6mv"]
+[sub_resource type="Sky" id="Sky_7p4er"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_eh2d5")
+sky_material = SubResource("ShaderMaterial_n4vbm")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_n4vbm"]
+[sub_resource type="Environment" id="Environment_luxnm"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_ab6mv")
+sky = SubResource("Sky_7p4er")
 ambient_light_source = 3
-ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
+ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
 ambient_light_sky_contribution = 0.82
 ambient_light_energy = 0.94372034
 reflected_light_source = 2
@@ -683,7 +683,7 @@ size = Vector3(97.3692, 157.25708, 238.4136)
 
 [node name="GREEN_HILL_CANYON" type="Node3D" unique_id=1152177172 groups=["world"]]
 
-[node name="GHC" parent="." unique_id=1625592623 instance=ExtResource("1_g48xd")]
+[node name="GreenHillCanyon" parent="." unique_id=210831281 instance=ExtResource("1_odwry")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 299.828, 16.63, -488.058)
 
 [node name="DeathPlane" parent="." unique_id=1053248887 instance=ExtResource("3_rjsqb")]
@@ -721,7 +721,6 @@ enabled = false
 process_mode = 3
 transform = Transform3D(0.70710677, 0.7071068, 0, -0.70710677, 0.7071068, 0, 0, 0, 1.0000001, 202.62054, 3.3847084, -2736.2844)
 strength = 150.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 2.0
@@ -730,12 +729,12 @@ spline_path = NodePath("SplinePath")
 spline_speed = 120.0
 
 [node name="CollisionShape3D" parent="Spring27" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_odwry")
+shape = SubResource("CylinderShape3D_qla43")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="SplinePath" parent="Spring27" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_qla43")
+curve = SubResource("Curve3D_xuk1c")
 
 [node name="Mesh" parent="Spring27" index="5" unique_id=1922896033]
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
@@ -745,7 +744,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 process_mode = 3
 transform = Transform3D(-0.57394814, -0.8188917, 5.017615e-08, -0.8188915, 0.57394814, 7.1589795e-08, -8.742277e-08, 0, -1.0000002, 241.21031, 32.270836, -2717.5674)
 strength = 10.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 2.0
@@ -754,12 +752,12 @@ spline_path = NodePath("SplinePath")
 spline_speed = 100.0
 
 [node name="CollisionShape3D" parent="Spring28" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_xuk1c")
+shape = SubResource("CylinderShape3D_3vrut")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="SplinePath" parent="Spring28" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_3vrut")
+curve = SubResource("Curve3D_un7nq")
 
 [node name="Mesh" parent="Spring28" index="5" unique_id=1922896033]
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
@@ -769,7 +767,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 process_mode = 3
 transform = Transform3D(0.99999994, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000004, -155.5744, -27.745266, -2690.619)
 strength = 10.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 align_time = 2.0
@@ -778,12 +775,12 @@ spline_path = NodePath("SplinePath")
 spline_speed = 100.0
 
 [node name="CollisionShape3D" parent="Spring29" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_c3k3h")
+shape = SubResource("CylinderShape3D_el3hc")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="SplinePath" parent="Spring29" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_un7nq")
+curve = SubResource("Curve3D_uchdx")
 
 [node name="Mesh" parent="Spring29" index="5" unique_id=1922896033]
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
@@ -792,7 +789,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 [node name="DashPanel4" parent="." unique_id=2131709214 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.9942877, 0, 0.10673255, 0, 1, 0, -0.10673255, 0, -0.9942877, 1596.1912, 10.740982, -2169.5945)
 strength = 110.0
-override_previous_lock_timers = null
 movement_lock_time = 1.2
 action_lock_time = 1.2
 align_camera_yaw_roll = false
@@ -803,7 +799,6 @@ lock_speed_duration = 1.2
 [node name="DashPanel9" parent="." unique_id=1208942666 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.9942877, 0, 0.10673255, 0, 1, 0, -0.10673255, 0, -0.9942877, 1623.1912, 10.740982, -2169.5945)
 strength = 110.0
-override_previous_lock_timers = null
 movement_lock_time = 1.2
 action_lock_time = 1.2
 align_camera_yaw_roll = false
@@ -814,7 +809,6 @@ lock_speed_duration = 1.2
 [node name="DashPanel10" parent="." unique_id=2099162127 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.9942877, 0, 0.10673255, 0, 1, 0, -0.10673255, 0, -0.9942877, 1649.1057, 10.740982, -2169.5945)
 strength = 110.0
-override_previous_lock_timers = null
 movement_lock_time = 1.2
 action_lock_time = 1.2
 align_camera_yaw_roll = false
@@ -826,7 +820,6 @@ lock_speed_duration = 1.2
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 1638.7683, 39.760345, -2755.868)
 size = 3.0
 strength = 110.0
-override_previous_lock_timers = null
 movement_lock_time = 1.2
 action_lock_time = 1.2
 align_camera_yaw_roll = false
@@ -856,14 +849,11 @@ transform = Transform3D(5, 0, 0, 0, 0.6, 0, 0, 0, 2, 0, 0.87774825, -2.7260551)
 
 [node name="Mesh" parent="DashPanel13" index="5" unique_id=107706107]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="DashPanel14" parent="." unique_id=1284712156 instance=ExtResource("7_1dlih")]
 transform = Transform3D(0.08658208, 0, -0.9962447, 0, 1, 0, 0.9962447, 0, 0.08658208, 1112.7764, -3.8287249, -2783.1318)
 size = 3.5999999999999996
 strength = 190.0
-override_previous_lock_timers = null
 movement_lock_time = 2.7
 action_lock_time = 2.7
 lock_speed_enabled = true
@@ -881,13 +871,10 @@ transform = Transform3D(9, 0, 0, 0, 1.08, 0, 0, 0, 3.6, 0, 1.5799468, -4.906899)
 
 [node name="Mesh" parent="DashPanel14" index="5" unique_id=107706107]
 transform = Transform3D(3.6, 0, 0, 0, 3.6, 0, 0, 0, 3.6, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="DashPanel11" parent="." unique_id=293792614 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.9942877, 0, 0.10673255, 0, 1, 0, -0.10673255, 0, -0.9942877, 1674.2648, 10.740982, -2169.5945)
 strength = 110.0
-override_previous_lock_timers = null
 movement_lock_time = 1.2
 action_lock_time = 1.2
 align_camera_yaw_roll = false
@@ -898,7 +885,6 @@ lock_speed_duration = 1.2
 [node name="DashPanel5" parent="." unique_id=1562466037 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.98060626, 0, 0.19598801, 0, 1, 0, -0.19598801, 0, -0.98060626, 1576.3132, 61.21631, -1449.676)
 strength = 175.0
-override_previous_lock_timers = null
 align_camera_yaw_roll = false
 lock_speed_enabled = true
 lock_speed_value = 110.0
@@ -907,7 +893,6 @@ lock_speed_duration = 1.6
 [node name="DashPanel6" parent="." unique_id=872811271 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.1139142, 0, 0.9934906, 0, 1, 0, -0.9934906, 0, -0.1139142, 1548.7603, -39.284542, -757.42896)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 lock_speed_enabled = true
@@ -917,7 +902,6 @@ lock_speed_duration = 2.0
 [node name="DashPanel7" parent="." unique_id=544887278 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.021975115, -2.9999182, 0.0027635896, 0.37433538, -2.9336661e-08, 2.976554, -2.9764729, 0.022148205, 0.37432516, 1575.2107, 33.46678, -773.9531)
 strength = 100.0
-override_previous_lock_timers = null
 movement_lock_time = 2.0
 action_lock_time = 2.0
 lock_speed_enabled = true
@@ -927,7 +911,6 @@ lock_speed_duration = 2.0
 [node name="DashPanel8" parent="." unique_id=1531311025 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.020943724, 0, 2.9999273, 0, 3, 0, -2.999927, 0, -0.020943725, 1591.6724, 6.1137714, -1383.5984)
 strength = 100.0
-override_previous_lock_timers = null
 lock_speed_value = 120.0
 lock_speed_duration = 0.0
 
@@ -935,19 +918,16 @@ lock_speed_duration = 0.0
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1607.5156, -26.831493, -1430.96)
 strength = 75.0
-override_previous_lock_timers = null
 
 [node name="Spring17" parent="." unique_id=1977427825 instance=ExtResource("6_182lq")]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1661.5156, 28.683605, -1462.96)
 strength = 80.0
-override_previous_lock_timers = null
 
 [node name="Spring18" parent="." unique_id=112373382 instance=ExtResource("6_182lq")]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 0.51147306, -0.85929936, 0, 0.85929936, 0.51147306, 1638.8258, 53.395626, -2865.835)
 strength = 80.0
-override_previous_lock_timers = null
 movement_lock_time = 1.0
 action_lock_time = 1.0
 align_time = 0.8
@@ -963,7 +943,7 @@ movement_lock_time = 1.0
 action_lock_time = 1.0
 
 [node name="CollisionShape3D" parent="Spring19" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_el3hc")
+shape = SubResource("CylinderShape3D_ld34s")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
@@ -972,7 +952,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34.31836, -14.943726)
 visible = true
 
 [node name="SplinePath" parent="Spring19" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_uchdx")
+curve = SubResource("Curve3D_eh2d5")
 
 [node name="Mesh" parent="Spring19" index="5" unique_id=1922896033]
 transform = Transform3D(1, 0, 0, 0, 0.98080623, -0.19498502, 0, 0.19498502, 0.98080623, 0, 0, 0)
@@ -982,7 +962,6 @@ metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 [node name="DashPanel15" parent="." unique_id=913110982 instance=ExtResource("7_1dlih")]
 transform = Transform3D(0.7107258, 0, -0.70346904, 0, 1, 0, 0.70346904, 0, 0.7107258, -1336.7423, -174.94661, -4340.683)
 strength = 180.0
-override_previous_lock_timers = null
 
 [node name="Checkpoint5" parent="." unique_id=165412109 instance=ExtResource("8_5nk7t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 556.75354, 37.133583, -2695.2798)
@@ -1106,10 +1085,7 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9372559, 27.969238)
 
 [node name="Circle" parent="RaceGoal_GHC/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_ld34s")
-
-[node name="SwapLight" parent="RaceGoal_GHC/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
+material_override = SubResource("ShaderMaterial_ab6mv")
 
 [node name="Checkpoint" parent="." unique_id=1396472004 instance=ExtResource("8_5nk7t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1638.4855, 40.25183, -2732.2017)
@@ -1118,7 +1094,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1638.4855, 40.25183, -2732.20
 transform = Transform3D(-2, -5.0048676e-08, 2.615324e-07, 8.742278e-08, 1.7320508, 1, -2.5151803e-07, 1, -1.7320508, 1638.7437, 81.8372, -2491.0784)
 forward_speed = 90.0
 up_speed = 30.0
-override_previous_lock_timers = null
 
 [node name="CollisionShape3D" parent="JumpPanelRamp" index="0" unique_id=641640871]
 metadata/_uniform_size_base_position = Vector3(0.059417725, 0.879, -0.008331299)
@@ -1193,7 +1168,7 @@ directional_shadow_mode = 0
 day_length_minutes = 8.0
 
 [node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_n4vbm")
+environment = SubResource("Environment_luxnm")
 
 [node name="WaterThing" type="CSGCombiner3D" parent="." unique_id=1499897923]
 
@@ -1427,7 +1402,11 @@ transform = Transform3D(0.9994437, -0.011221541, -0.031405304, 0.011460155, 0.99
 [editable path="Spring28"]
 [editable path="Spring29"]
 [editable path="DashPanel13"]
+[editable path="DashPanel13/Mesh/DashPanelMesh"]
+[editable path="DashPanel13/Mesh/DashPanelMesh/DashPanel"]
 [editable path="DashPanel14"]
+[editable path="DashPanel14/Mesh/DashPanelMesh"]
+[editable path="DashPanel14/Mesh/DashPanelMesh/DashPanel"]
 [editable path="Spring19"]
 [editable path="Checkpoint5"]
 [editable path="Checkpoint4"]
