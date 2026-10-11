@@ -1368,6 +1368,7 @@ MelohRush
 Level Design:
 LinkSonic5
 Astral Sylverex
+Aidan Kelley
 
 Voice Cast:
 Sonic: Jordy Murchison (Reeseimental)
@@ -1388,7 +1389,8 @@ The Sonic Onset Adventure Team
 SEGA Enterprises Ltd. & Sonic Team
 
 
-In Loving Memory of Athbucket.[/center]"
+
+For Athbucket.[/center]"
 
 [node name="ButtonCreditsBack" type="Button" parent="Overlay/CreditsPanel/Panel/VBoxCredits" unique_id=2057861353 groups=["MenuButtons"]]
 layout_mode = 2
