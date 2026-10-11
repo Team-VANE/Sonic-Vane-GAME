@@ -13,7 +13,7 @@
 [ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
 [ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="cam_trait_transition"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p4p7t"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b1wk1"]
 resource_local_to_scene = true
 shader = ExtResource("5_vq3sr")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -71,16 +71,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_uuygb"]
+[sub_resource type="Sky" id="Sky_p4p7t"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_p4p7t")
+sky_material = SubResource("ShaderMaterial_b1wk1")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_j7og0"]
+[sub_resource type="Environment" id="Environment_uuygb"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_uuygb")
+sky = SubResource("Sky_p4p7t")
 ambient_light_source = 3
 ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
 ambient_light_sky_contribution = 0.82
@@ -333,7 +333,7 @@ initial_time_of_day_hours = 8.0
 day_length_minutes = 14.0
 
 [node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_j7og0")
+environment = SubResource("Environment_uuygb")
 
 [node name="Misc?!?!" type="Node3D" parent="." unique_id=2089609842]
 visible = false
