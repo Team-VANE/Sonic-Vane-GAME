@@ -191,9 +191,12 @@ func _set_alpha(alpha: float) -> void:
 			continue
 		var material: Material = mesh_instance.get_active_material(surface_index)
 		if material is ShaderMaterial:
-			(material as ShaderMaterial).set_shader_parameter(ALPHA_PARAMETER, clamped_alpha)
+			var shader_material: ShaderMaterial = material as ShaderMaterial
+			if shader_material.get_shader_parameter(ALPHA_PARAMETER) != clamped_alpha:
+				shader_material.set_shader_parameter(ALPHA_PARAMETER, clamped_alpha)
 		elif material is BaseMaterial3D:
 			var base_material: BaseMaterial3D = material as BaseMaterial3D
 			var albedo: Color = base_material.albedo_color
-			albedo.a = clamped_alpha
-			base_material.albedo_color = albedo
+			if albedo.a != clamped_alpha:
+				albedo.a = clamped_alpha
+				base_material.albedo_color = albedo

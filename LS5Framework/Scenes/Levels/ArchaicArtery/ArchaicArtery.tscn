@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="22_3qeqd"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Water/Examples/Adventure_Deep_Pool.tscn" id="24_t1bg2"]
 [ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="25_1jh0t"]
-[ext_resource type="LightmapGIData" uid="uid://csk6n5lwhjsmk" path="res://LS5Framework/Scenes/Levels/ArchaicArtery/sample_level.lmbake" id="25_otf76"]
+[ext_resource type="LightmapGIData" uid="uid://bm445uwapwsms" path="res://LS5Framework/Scenes/Levels/ArchaicArtery/ArchaicArtery.lmbake" id="25_otf76"]
 [ext_resource type="PackedScene" uid="uid://d1okvbdxqc08b" path="res://LS5Framework/Objects/VaultBar/VaultBar.tscn" id="25_qqmqe"]
 [ext_resource type="PackedScene" uid="uid://c6xyvqm8rq2k2" path="res://LS5Framework/Objects/Enemies/GroundedBlockout/GroundedEnemyBlockout.tscn" id="27_1jh0t"]
 

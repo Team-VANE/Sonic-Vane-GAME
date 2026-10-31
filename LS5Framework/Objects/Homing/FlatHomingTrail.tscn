@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://cvdv0wu2bvn4o"]
 
-[ext_resource type="Script" path="res://LS5Framework/Objects/Homing/FlatHomingTrail.gd" id="1_trail"]
+[ext_resource type="Script" uid="uid://d00yd76ng2ll5" path="res://LS5Framework/Objects/Homing/FlatHomingTrail.gd" id="1_trail"]
 
-[node name="FlatHomingTrail" type="MeshInstance3D"]
+[node name="FlatHomingTrail" type="MeshInstance3D" unique_id=2118329683]
 script = ExtResource("1_trail")
+tint = Color(0.27037975, 0.850053, 3.85046e-07, 0.8901961)

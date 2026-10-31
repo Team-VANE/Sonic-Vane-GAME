@@ -45,6 +45,7 @@ var _has_previous_position: bool = false
 
 
 func _ready() -> void:
+	set_physics_process(false)
 	_player = get_parent() as Node3D
 	process_physics_priority = 10
 	if not skeleton or skeleton.find_bone(String(right_foot_bone)) < 0:
@@ -76,15 +77,18 @@ func begin_kick(kind: StringName, up: Vector3) -> void:
 	_has_previous_position = false
 	_shape.radius = max(uppercut_radius if kind == &"uppercut" else (tornado_radius if kind == &"tornado" else spin_radius), 0.01)
 	_contact_active = true
+	set_physics_process(true)
 
 
 func set_contact_active(active: bool) -> void:
 	if _contact_active != active:
 		_has_previous_position = false
 	_contact_active = active
+	set_physics_process(active)
 
 
 func end_kick() -> void:
+	set_physics_process(false)
 	_contact_active = false
 	_has_previous_position = false
 	_kick_kind = &""

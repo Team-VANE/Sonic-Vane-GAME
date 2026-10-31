@@ -8,6 +8,15 @@ uniform float tail_fade_power : hint_range(0.1, 8.0) = 1.6;
 uniform float head_fade_fraction : hint_range(0.0, 0.5) = 0.08;
 uniform float edge_softness : hint_range(0.0, 0.5) = 0.16;
 
+// Sample ages follow the ribbon skin bones; native UVs span width then length.
+uniform float sample_ages[64];
+uniform int trail_sections = 31;
+
+void vertex() {
+	int section = clamp(int(round(UV.y * float(trail_sections))), 0, 63);
+	UV = vec2(sample_ages[section], UV.x);
+}
+
 void fragment() {
 	float trail_age = clamp(UV.x, 0.0, 1.0);
 	float tail_fade = pow(max(1.0 - trail_age, 0.0), max(tail_fade_power, 0.1));

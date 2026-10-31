@@ -313,7 +313,10 @@ func collect_collection_item(player: Node, collection_item: Node) -> bool:
 	_collection_progress[player_id] = collected
 	collection_progress_changed.emit(player, collected, required)
 	if player.has_method("show_prompt"):
-		player.call("show_prompt", "Collection items: %d / %d" % [collected, required], 2.0)
+		var item_name: String = "Collection Item"
+		if is_instance_valid(collection_item) and collection_item.has_method("get_collection_display_name"):
+			item_name = String(collection_item.call("get_collection_display_name"))
+		player.call("show_prompt", "%s: %d / %d" % [item_name, collected, required], 2.0)
 	if collected >= required:
 		_collection_finish_requested[player_id] = true
 		_set_collection_items_active_for_race(false)

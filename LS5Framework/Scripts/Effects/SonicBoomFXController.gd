@@ -40,9 +40,15 @@ func _apply_boom_light() -> void:
 	var progress_factor: float = 1.0 - clamp(clamped_progress / end_progress, 0.0, 1.0)
 	var energy: float = max(boom_light_max_energy, 0.0) * clamped_alpha * progress_factor
 
-	_boom_light.shadow_enabled = false
-	_boom_light.light_indirect_energy = 0.0
-	_boom_light.omni_range = max(boom_light_range, 0.01)
-	_boom_light.light_color = Color(_boom_color.r, _boom_color.g, _boom_color.b, 1.0)
-	_boom_light.light_energy = energy
-	_boom_light.visible = energy > boom_light_visible_threshold
+	if _boom_light.shadow_enabled != (false):
+		_boom_light.shadow_enabled = false
+	if _boom_light.light_indirect_energy != (0.0):
+		_boom_light.light_indirect_energy = 0.0
+	if _boom_light.omni_range != (max(boom_light_range, 0.01)):
+		_boom_light.omni_range = max(boom_light_range, 0.01)
+	if _boom_light.light_color != (Color(_boom_color.r, _boom_color.g, _boom_color.b, 1.0)):
+		_boom_light.light_color = Color(_boom_color.r, _boom_color.g, _boom_color.b, 1.0)
+	if _boom_light.light_energy != (energy):
+		_boom_light.light_energy = energy
+	if _boom_light.visible != (energy > boom_light_visible_threshold):
+		_boom_light.visible = energy > boom_light_visible_threshold

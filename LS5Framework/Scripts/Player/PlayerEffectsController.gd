@@ -562,7 +562,8 @@ func _current_animation_allows_jump_ball() -> bool:
 func _set_sonic_boom_visibility(alpha: float, progress: float) -> void:
 	var p = _owner
 	if p._sonic_boom_fx_node != null and is_instance_valid(p._sonic_boom_fx_node):
-		p._sonic_boom_fx_node.visible = alpha > 0.01
+		if p._sonic_boom_fx_node.visible != (alpha > 0.01):
+			p._sonic_boom_fx_node.visible = alpha > 0.01
 		if p._sonic_boom_fx_node.has_method("set_boom_state"):
 			p._sonic_boom_fx_node.call("set_boom_state", alpha, progress, p.sonic_boom_color)
 
@@ -571,11 +572,15 @@ func _set_sonic_boom_visibility(alpha: float, progress: float) -> void:
 	for mat in p._sonic_boom_materials:
 		if mat is ShaderMaterial:
 			var sm: ShaderMaterial = mat
-			sm.set_shader_parameter("boom_alpha", clamped_alpha)
-			sm.set_shader_parameter("boom_progress", clamped_progress)
-			sm.set_shader_parameter("boom_color", p.sonic_boom_color)
+			if sm.get_shader_parameter("boom_alpha") != clamped_alpha:
+				sm.set_shader_parameter("boom_alpha", clamped_alpha)
+			if sm.get_shader_parameter("boom_progress") != clamped_progress:
+				sm.set_shader_parameter("boom_progress", clamped_progress)
+			if sm.get_shader_parameter("boom_color") != p.sonic_boom_color:
+				sm.set_shader_parameter("boom_color", p.sonic_boom_color)
 			if p.sonic_boom_override_material_params:
-				sm.set_shader_parameter("boom_max_alpha", p.sonic_boom_max_alpha)
+				if sm.get_shader_parameter("boom_max_alpha") != p.sonic_boom_max_alpha:
+					sm.set_shader_parameter("boom_max_alpha", p.sonic_boom_max_alpha)
 
 
 func _duplicate_sonic_boom_material(source: ShaderMaterial, shader: Shader) -> ShaderMaterial:

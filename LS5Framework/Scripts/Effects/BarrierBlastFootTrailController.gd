@@ -1,6 +1,7 @@
 extends Node3D
 class_name BarrierBlastFootTrailController
 
+const MAX_TRAIL_POINTS: int = 64
 const FOOT_COUNT: int = 2
 const LEFT_FOOT_INDEX: int = 0
 const RIGHT_FOOT_INDEX: int = 1
@@ -15,7 +16,10 @@ var _player = null
 var _skeleton: Skeleton3D = null
 var _marker_nodes: Array[Node3D] = [null, null]
 var _bone_indices: Array[int] = [-1, -1]
-var _trail_meshes: Array[ImmediateMesh] = []
+var _trail_meshes: Array[RibbonTrailMesh] = []
+## Independent bone chains deform the native ribbon meshes along sampled foot paths.
+var _trail_skeletons: Array[Skeleton3D] = []
+var _trail_materials: Array[ShaderMaterial] = []
 var _trail_instances: Array[MeshInstance3D] = []
 var _trail_points: Array[Array] = [[], []]
 var _sample_timers: Array[float] = [0.0, 0.0]
@@ -40,7 +44,7 @@ func clear_trails() -> void:
 		_trail_points[foot_index].clear()
 		_sample_timers[foot_index] = 0.0
 		if foot_index < _trail_meshes.size():
-			_trail_meshes[foot_index].clear_surfaces()
+			_trail_instances[foot_index].visible = false
 	_activation_alpha = 0.0
 	_update_material_parameters()
 
@@ -49,11 +53,12 @@ func _process(delta: float) -> void:
 	if _player == null or not is_instance_valid(_player):
 		queue_free()
 		return
-	if not _sources_resolved:
-		_resolve_sources()
-
 	var target_alpha: float = _get_target_alpha()
 	var active: bool = target_alpha > 0.0
+	if not active and _activation_alpha <= 0.0 and _trail_points[0].is_empty() and _trail_points[1].is_empty():
+		return
+	if active and not _sources_resolved:
+		_resolve_sources()
 	_update_activation(delta, target_alpha)
 	_update_material_parameters()
 	_update_existing_points(delta)
@@ -71,17 +76,29 @@ func _create_renderers() -> void:
 	_material = ShaderMaterial.new()
 	_material.shader = BARRIER_FOOT_TRAIL_SHADER
 	for foot_index: int in range(FOOT_COUNT):
-		var mesh: ImmediateMesh = ImmediateMesh.new()
+		var mesh: RibbonTrailMesh = RibbonTrailMesh.new()
+		mesh.shape = RibbonTrailMesh.SHAPE_FLAT
+		mesh.section_segments = 1
+		mesh.section_length = 1.0
+		var skeleton: Skeleton3D = Skeleton3D.new()
+		skeleton.name = "LeftTrailSkeleton" if foot_index == LEFT_FOOT_INDEX else "RightTrailSkeleton"
+		add_child(skeleton)
+		_trail_skeletons.append(skeleton)
+		var material: ShaderMaterial = _material.duplicate() as ShaderMaterial
+		_trail_materials.append(material)
 		var instance: MeshInstance3D = MeshInstance3D.new()
 		instance.name = "LeftFootTrail" if foot_index == LEFT_FOOT_INDEX else "RightFootTrail"
 		instance.mesh = mesh
-		instance.material_override = _material
+		instance.material_override = material
+		instance.visible = false
 		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		instance.top_level = true
 		add_child(instance)
 		instance.global_transform = Transform3D.IDENTITY
+		instance.skeleton = instance.get_path_to(skeleton)
 		_trail_meshes.append(mesh)
 		_trail_instances.append(instance)
+		_configure_ribbon(foot_index)
 
 
 func _resolve_sources() -> void:
@@ -166,7 +183,7 @@ func _get_source_position(foot_index: int) -> Vector3:
 
 
 func _get_target_alpha() -> float:
-	if not _player.barrier_foot_trails_enabled or _player._is_dead:
+	if not _player.barrier_foot_trails_enabled or _player._is_dead or not _player.is_visible_in_tree():
 		return 0.0
 	if _player.barrier_blast_enabled:
 		return 1.0 if _player._barrier_blast_active else 0.0
@@ -194,12 +211,13 @@ func _update_activation(delta: float, target_alpha: float) -> void:
 func _update_material_parameters() -> void:
 	if _material == null or _player == null:
 		return
-	_material.set_shader_parameter("trail_color", _get_trail_color())
-	_material.set_shader_parameter("emission_energy", max(_player.barrier_foot_trail_emission_energy, 0.0))
-	_material.set_shader_parameter("activation_alpha", clamp(_activation_alpha, 0.0, 1.0))
-	_material.set_shader_parameter("tail_fade_power", max(_player.barrier_foot_trail_tail_fade_power, 0.1))
-	_material.set_shader_parameter("head_fade_fraction", clamp(_player.barrier_foot_trail_head_fade_fraction, 0.0, 0.5))
-	_material.set_shader_parameter("edge_softness", clamp(_player.barrier_foot_trail_edge_softness, 0.0, 0.5))
+	for material: ShaderMaterial in _trail_materials:
+		material.set_shader_parameter("trail_color", _get_trail_color())
+		material.set_shader_parameter("emission_energy", max(_player.barrier_foot_trail_emission_energy, 0.0))
+		material.set_shader_parameter("activation_alpha", clamp(_activation_alpha, 0.0, 1.0))
+		material.set_shader_parameter("tail_fade_power", max(_player.barrier_foot_trail_tail_fade_power, 0.1))
+		material.set_shader_parameter("head_fade_fraction", clamp(_player.barrier_foot_trail_head_fade_fraction, 0.0, 0.5))
+		material.set_shader_parameter("edge_softness", clamp(_player.barrier_foot_trail_edge_softness, 0.0, 0.5))
 
 
 func _get_trail_color() -> Color:
@@ -255,7 +273,7 @@ func _add_sample(foot_index: int, position: Vector3) -> void:
 	}
 	var points: Array = _trail_points[foot_index]
 	points.append(sample)
-	var max_points: int = max(_player.barrier_foot_trail_max_points, 2)
+	var max_points: int = clampi(_player.barrier_foot_trail_max_points, 2, MAX_TRAIL_POINTS)
 	while points.size() > max_points:
 		points.pop_front()
 
@@ -338,47 +356,70 @@ func _rebuild_trails() -> void:
 		_rebuild_trail(foot_index)
 
 
+func _configure_ribbon(foot_index: int) -> void:
+	var point_count: int = clampi(_player.barrier_foot_trail_max_points, 3, MAX_TRAIL_POINTS)
+	var mesh: RibbonTrailMesh = _trail_meshes[foot_index]
+	var skeleton: Skeleton3D = _trail_skeletons[foot_index]
+	if skeleton.get_bone_count() == point_count:
+		return
+	while _trail_points[foot_index].size() > point_count:
+		_trail_points[foot_index].pop_front()
+	mesh.sections = point_count - 1
+	skeleton.clear_bones()
+	var skin: Skin = Skin.new()
+	var half_length: float = float(mesh.sections) * 0.5
+	for index: int in point_count:
+		skeleton.add_bone("Sample%d" % index)
+		var rest: Transform3D = Transform3D(Basis.IDENTITY, Vector3(0.0, half_length - float(index), 0.0))
+		skeleton.set_bone_rest(index, rest)
+		skin.add_bind(index, rest.affine_inverse())
+	_trail_instances[foot_index].skin = skin
+	_trail_materials[foot_index].set_shader_parameter("trail_sections", mesh.sections)
+
+
 func _rebuild_trail(foot_index: int) -> void:
 	if foot_index >= _trail_meshes.size():
 		return
-	var mesh: ImmediateMesh = _trail_meshes[foot_index]
-	mesh.clear_surfaces()
+	var instance: MeshInstance3D = _trail_instances[foot_index]
 	var points: Array = _trail_points[foot_index]
-	if points.size() < 2 or _material == null:
+	instance.visible = points.size() >= 2
+	if not instance.visible:
 		return
-	var lifetime: float = max(_player.barrier_foot_trail_lifetime, 0.01)
-	var half_width: float = max(_player.barrier_foot_trail_width, 0.001) * 0.5
-	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP, _material)
+	_configure_ribbon(foot_index)
+	var skeleton: Skeleton3D = _trail_skeletons[foot_index]
+	var lifetime: float = maxf(_player.barrier_foot_trail_lifetime, 0.01)
+	var width: float = maxf(_player.barrier_foot_trail_width, 0.001)
+	var origin: Vector3 = _player.global_position
+	skeleton.global_position = origin
+	instance.global_position = origin
+	var bounds: AABB = AABB((points[0] as Dictionary).get("position", origin) - origin, Vector3.ZERO)
+	var ages: PackedFloat32Array = PackedFloat32Array()
+	ages.resize(MAX_TRAIL_POINTS)
 	var previous_width_axis: Vector3 = Vector3.ZERO
-	for point_index: int in range(points.size()):
+	for index: int in skeleton.get_bone_count():
+		var point_index: int = mini(index, points.size() - 1)
 		var point: Dictionary = points[point_index]
-		var position: Vector3 = point.get("position", Vector3.ZERO)
+		var position: Vector3 = point.get("position", origin)
 		var tangent: Vector3 = _get_point_tangent(points, point_index)
 		var outward: Vector3 = point.get("outward", _get_foot_outward(foot_index))
-		outward -= tangent * outward.dot(tangent)
-		if outward.length() < 0.001:
-			outward = _get_player_up()
-			outward -= tangent * outward.dot(tangent)
-		if outward.length() < 0.001:
+		outward = outward.slide(tangent)
+		if outward.length_squared() < 0.000001:
+			outward = _get_player_up().slide(tangent)
+		if outward.length_squared() < 0.000001:
 			outward = tangent.cross(Vector3.RIGHT)
+		if outward.length_squared() < 0.000001:
+			outward = tangent.cross(Vector3.FORWARD)
 		outward = outward.normalized()
-		var width_axis: Vector3 = tangent.cross(outward)
-		if width_axis.length() < 0.001:
-			width_axis = tangent.cross(_get_player_up())
-		if width_axis.length() < 0.001:
-			width_axis = Vector3.RIGHT
-		width_axis = width_axis.normalized()
-		if previous_width_axis.length() > 0.001 and width_axis.dot(previous_width_axis) < 0.0:
+		var width_axis: Vector3 = tangent.cross(outward).normalized()
+		if previous_width_axis and width_axis.dot(previous_width_axis) < 0.0:
 			width_axis = -width_axis
 		previous_width_axis = width_axis
-		var age_fraction: float = clamp(float(point.get("age", 0.0)) / lifetime, 0.0, 1.0)
-		mesh.surface_set_normal(outward)
-		mesh.surface_set_uv(Vector2(age_fraction, 0.0))
-		mesh.surface_add_vertex(position - width_axis * half_width)
-		mesh.surface_set_normal(outward)
-		mesh.surface_set_uv(Vector2(age_fraction, 1.0))
-		mesh.surface_add_vertex(position + width_axis * half_width)
-	mesh.surface_end()
+		var basis: Basis = Basis(width_axis * width, tangent, outward)
+		skeleton.set_bone_pose(index, Transform3D(basis, position - origin))
+		ages[index] = clampf(float(point.get("age", 0.0)) / lifetime, 0.0, 1.0)
+		bounds = bounds.expand(position - origin)
+	instance.custom_aabb = bounds.grow(width)
+	_trail_materials[foot_index].set_shader_parameter("sample_ages", ages)
 
 
 func _get_point_tangent(points: Array, point_index: int) -> Vector3:

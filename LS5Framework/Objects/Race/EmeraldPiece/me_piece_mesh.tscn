@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c7j6qi3srhyb8"]
+
+[ext_resource type="PackedScene" uid="uid://dq8fmbmh8b0b8" path="res://LS5Framework/Objects/Race/EmeraldPiece/MEPiece.glb" id="1_aycq7"]
+[ext_resource type="Material" uid="uid://bj3jo4i63outu" path="res://LS5Framework/Objects/Race/EmeraldPiece/ME_Piece.tres" id="2_l3c1d"]
+
+[node name="MEPiece2" unique_id=1659514045 instance=ExtResource("1_aycq7")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="MEPiece" parent="." index="0" unique_id=763309630]
+surface_material_override/0 = ExtResource("2_l3c1d")

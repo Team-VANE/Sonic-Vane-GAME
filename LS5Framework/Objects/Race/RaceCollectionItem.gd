@@ -8,6 +8,8 @@ enum CollectionCountTiming {
 
 ## Enables this collection item when its linked race is active.
 @export var enabled: bool = true
+## Item name shown in the overhead collection progress tip. Blank names use Collection Item.
+@export var display_name: String = "Collection Item"
 ## Radius that triggers collection around the item.
 @export_range(0.1, 100.0, 0.1) var collection_radius: float = 3.0
 ## Determines whether race progress updates after home-in or immediately on radius entry.
@@ -38,8 +40,8 @@ enum CollectionCountTiming {
 @export_range(0.0, 2.0, 0.01) var home_duration: float = 0.25
 ## Player-local offset used as the visual home-in target.
 @export var home_target_offset: Vector3 = Vector3(0.0, 1.0, 0.0)
-## Flat trail scene drawn along the item's home-in path.
-@export var home_trail_scene: PackedScene = preload("res://LS5Framework/Objects/Homing/FlatHomingTrail.tscn")
+## Native cross-shaped ribbon drawn along the item's home-in path.
+@export var home_trail_scene: PackedScene = preload("res://LS5Framework/Objects/Homing/CollectionRibbonTrail.tscn")
 
 @export_group("Effects")
 ## Particle scene spawned at the player when the home-in effect completes.
@@ -70,6 +72,11 @@ var _home_trail: Node = null
 var _visual_root: Node3D = null
 var _visual_initial_transform: Transform3D = Transform3D.IDENTITY
 var _collision_shape: CollisionShape3D = null
+
+
+func get_collection_display_name() -> String:
+	var item_name: String = display_name.strip_edges()
+	return item_name if item_name else "Collection Item"
 
 
 func _ready() -> void:

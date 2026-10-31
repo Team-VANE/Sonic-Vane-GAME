@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://c0knuae0s4d15"]
 
 [ext_resource type="Script" uid="uid://dw0i4d2nnjhqm" path="res://LS5Framework/Objects/Race/RaceCollectionItem.gd" id="1_collection"]
+[ext_resource type="PackedScene" uid="uid://c7j6qi3srhyb8" path="res://LS5Framework/Objects/Race/EmeraldPiece/me_piece_mesh.tscn" id="2_qdgsn"]
+[ext_resource type="AudioStream" uid="uid://cv33btmp12rjh" path="res://LS5Framework/Sounds/Objects/EmeraldPiece_Acquire.wav" id="3_8b2j4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_collection"]
 albedo_color = Color(0.14, 0.78, 1, 1)
@@ -22,16 +24,22 @@ radius = 3.0
 collision_mask = 4
 audio_bus_name = &"SFX"
 script = ExtResource("1_collection")
-home_duration = 0.5
+display_name = "Emerald Piece"
+visual_scene = ExtResource("2_qdgsn")
+home_duration = 0.75
+home_target_offset = Vector3(0, 0.5, 0)
+home_completed_sound = ExtResource("3_8b2j4")
 
 [node name="VisualRoot" type="Node3D" parent="." unique_id=923234971]
 
 [node name="Mesh" type="MeshInstance3D" parent="VisualRoot" unique_id=2089177708]
+visible = false
 mesh = SubResource("SphereMesh_collection")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="VisualRoot" unique_id=665517795]
-light_color = Color(0.14, 0.78, 1, 1)
+light_color = Color(0.13540962, 0.86140203, 0, 1)
 light_energy = 2.0
+omni_range = 8.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=438106996]
 shape = SubResource("SphereShape3D_collection")
