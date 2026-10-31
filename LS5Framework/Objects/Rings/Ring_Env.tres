@@ -1,0 +1,38 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bmj7ugwveae5e"]
+
+[ext_resource type="Shader" uid="uid://cnxinaoslrtg8" path="res://LS5Framework/Shaders/SphericalEnvironment.gdshader" id="1_mgj21"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_37oqk"]
+load_path = "res://.godot/imported/SphericalMap_Metal_Pale.png-c657249023599ac116d070e70bde321c.s3tc.ctex"
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mgj21")
+shader_parameter/environment_texture = SubResource("CompressedTexture2D_37oqk")
+shader_parameter/reflection_tint = Color(0.9131761, 0.66334903, 7.70092e-07, 1)
+shader_parameter/reflection_strength = 0.999999977648
+shader_parameter/reflection_exposure = 0.7500001303854997
+shader_parameter/blend_mode = 0
+shader_parameter/reflection_emission = 0.27999999374144
+shader_parameter/reflection_blur = 0.0
+shader_parameter/mapping_mode = 0
+shader_parameter/environment_scale = Vector2(1, 1)
+shader_parameter/environment_offset = Vector2(0, 0.185)
+shader_parameter/environment_rotation = 0.0
+shader_parameter/environment_scroll = Vector2(0, 0)
+shader_parameter/flip_vertical = true
+shader_parameter/base_color = Color(0.93297446, 0.6935821, 0, 1)
+shader_parameter/surface_uv_scale = Vector2(1, 1)
+shader_parameter/surface_uv_offset = Vector2(0, 0)
+shader_parameter/lighting_amount = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.5
+shader_parameter/specular = 0.0
+shader_parameter/mask_enabled = false
+shader_parameter/mask_channel = 0
+shader_parameter/mask_invert = false
+shader_parameter/fresnel_amount = 0.0
+shader_parameter/fresnel_power = 3.0
+shader_parameter/fresnel_minimum = 0.0
+shader_parameter/normal_enabled = false
+shader_parameter/normal_strength = 1.0
