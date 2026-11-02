@@ -27,6 +27,8 @@ const VOICE_PRIORITY_EMOTE: int = 2
 const VOICE_PRIORITY_DIALOGUE: int = 5
 const VOICE_PRIORITY_HURT: int = 10
 
+const CLIP_SELECTOR: Script = preload("res://LS5Framework/Scripts/Audio/AudioClipSelector.gd")
+var _clip_selector: RefCounted = CLIP_SELECTOR.new()
 var _owner: Node = null
 var _last_footstep_index: int = -1
 var _last_footstep_surface: int = FootstepSurface.DEFAULT
@@ -145,25 +147,36 @@ func _play_random_sfx_from_list(
 		last_index: int,
 		avoid_repeat: bool = true
 	) -> int:
-	# SUMMARY: Play a random sound from a list, optionally avoiding repeats.
-	# STEPS:
-	# - Step 1: Validate the player and list.
-	# - Step 2: Choose an index (avoid repeats when requested).
-	# - Step 3: Assign the stream and play.
-	if player == null or sounds.is_empty():
+	if not player or sounds.is_empty():
 		return last_index
-
-	var idx: int
-	if avoid_repeat and sounds.size() > 1 and last_index >= 0 and last_index < sounds.size():
-		idx = randi_range(0, sounds.size() - 2)
-		if idx >= last_index:
-			idx += 1
-	else:
-		idx = randi_range(0, sounds.size() - 1)
-
-	player.stream = sounds[idx]
+	var index: int = _clip_selector.pick_index(sounds, avoid_repeat)
+	if index < 0:
+		return -1
+	player.stream = sounds[index]
 	player.play()
-	return idx
+	return index
+
+
+func register_sound_lists() -> void:
+	_register_object_sound_lists(_owner)
+	for action: Node in _owner._actions:
+		if is_instance_valid(action):
+			_register_object_sound_lists(action)
+	var profile: CharacterSettingsProfile = _owner.character_settings_profile
+	if profile and profile.emote_voice_profile:
+		for entry: EmoteVoiceEntry in profile.emote_voice_profile.entries:
+			if entry:
+				_clip_selector.register_clips(entry.clips, true)
+
+
+func _register_object_sound_lists(object: Object) -> void:
+	for property: Dictionary in object.get_property_list():
+		if int(property.type) != TYPE_ARRAY:
+			continue
+		var value: Array = object.get(property.name)
+		if not value.is_empty() and value.get_typed_builtin() == TYPE_OBJECT and value.get_typed_class_name() == &"AudioStream":
+			_clip_selector.register_clips(value, true)
+
 
 
 func _play_indexed_sfx_from_list(player: AudioStreamPlayer3D, sounds: Array[AudioStream], index: int) -> bool:
@@ -211,6 +224,9 @@ func play_voice_clips(
 		_voice_queue.clear()
 	_current_voice_priority = voice_priority
 	_last_voice_index = _play_random_sfx_from_list(player, sounds, _last_voice_index, true)
+	if _last_voice_index < 0:
+		_current_voice_priority = 0
+		return
 	_replicate_voice(player)
 
 
@@ -232,16 +248,10 @@ func play_emote_voice(emote_id: StringName) -> bool:
 	if not player or (player.playing and (not profile.allow_voice_interruption or _current_voice_priority > VOICE_PRIORITY_EMOTE)):
 		return false
 	var previous: AudioStream = _last_emote_clips.get(emote_id) as AudioStream
-	var clips: Array[AudioStream] = []
-	var fresh_clips: Array[AudioStream] = []
-	for clip: AudioStream in entry.clips:
-		if clip and not clips.has(clip):
-			clips.append(clip)
-			if clip != previous:
-				fresh_clips.append(clip)
-	if clips.is_empty():
+	var index: int = _clip_selector.pick_index(entry.clips, true, previous)
+	if index < 0:
 		return false
-	var selected: AudioStream = clips.pick_random() if fresh_clips.is_empty() else fresh_clips.pick_random()
+	var selected: AudioStream = entry.clips[index]
 	_ensure_dialogue_finished_connection(player)
 	if player.playing:
 		player.stop()
@@ -302,12 +312,16 @@ func _play_next_queued_voice() -> void:
 	var sounds: Array[AudioStream] = []
 	var queued_sounds: Variant = queue_item.get("sounds", [])
 	if queued_sounds is Array:
-		sounds.assign(queued_sounds as Array)
+		sounds = queued_sounds
 	if sounds.is_empty():
 		_play_next_queued_voice()
 		return
 	_current_voice_priority = int(queue_item.get("priority", 0))
 	_last_voice_index = _play_random_sfx_from_list(player, sounds, _last_voice_index, true)
+	if _last_voice_index < 0:
+		_current_voice_priority = 0
+		_play_next_queued_voice()
+		return
 	_replicate_voice(player)
 
 

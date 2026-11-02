@@ -31,7 +31,11 @@ enum UpSource { CAMERA, WORLD, GRAVITY, PLAYER, MARKER }
 		notify_property_list_changed()
 ## Aim target or orientation marker relative to the constraint.
 @export var target_path: NodePath = NodePath("ConstraintPoint")
-## Offset from the aim target; X and Z use world space.
+## Uses the named bone for Face Player or Face Target. Missing skeletons or bones use the target root.
+@export var target_bone_enabled: bool = false
+## Bone name within the target character's skeleton.
+@export var target_bone_name: StringName = &"head"
+## Offset from the root or selected bone; X and Z use world space.
 @export var target_offset: Vector3 = Vector3(0.0, 1.5, 0.0)
 ## Applies the vertical target offset along player up instead of gravity up.
 @export var offset_uses_player_up: bool = false
@@ -76,7 +80,7 @@ func _validate_property(property: Dictionary) -> void:
 			hidden = not limit_axes
 		"target_path":
 			hidden = not marker_mode and mode != Mode.FACE_TARGET
-		"target_offset", "offset_uses_player_up", "up_source":
+		"target_offset", "offset_uses_player_up", "up_source", "target_bone_enabled", "target_bone_name":
 			hidden = not aim_mode
 		"marker_uses_guide_basis":
 			hidden = not marker_mode
@@ -120,3 +124,35 @@ func get_up(owner_node: Node3D, rig: Node3D) -> Vector3:
 			return get_transform(owner_node).basis.y.normalized()
 	return rig.call("_get_camera_up") as Vector3
 
+
+## Cached character root for bone lookup.
+var _bone_root: WeakRef
+## Cached skeleton containing the requested bone.
+var _bone_skeleton: WeakRef
+var _bone_name: StringName = &""
+var _bone_index: int = -1
+
+func get_aim_origin(target: Node3D) -> Vector3:
+	if not target_bone_enabled or target_bone_name == &"":
+		return target.global_position
+	var skeleton: Skeleton3D = _bone_skeleton.get_ref() as Skeleton3D if _bone_skeleton else null
+	var root_changed: bool = not _bone_root or _bone_root.get_ref() != target
+	var stale: bool = _bone_index >= 0 and (not is_instance_valid(skeleton) or _bone_index >= skeleton.get_bone_count() or skeleton.get_bone_name(_bone_index) != String(target_bone_name))
+	if root_changed or _bone_name != target_bone_name or stale:
+		_bone_root = weakref(target)
+		_bone_name = target_bone_name
+		skeleton = _find_bone_skeleton(target)
+		_bone_skeleton = weakref(skeleton) if skeleton else null
+		_bone_index = skeleton.find_bone(String(target_bone_name)) if skeleton else -1
+	if is_instance_valid(skeleton) and _bone_index >= 0:
+		return skeleton.to_global(skeleton.get_bone_global_pose(_bone_index).origin)
+	return target.global_position
+
+func _find_bone_skeleton(node: Node) -> Skeleton3D:
+	if node is Skeleton3D and node.find_bone(String(target_bone_name)) >= 0:
+		return node as Skeleton3D
+	for child: Node in node.get_children():
+		var skeleton: Skeleton3D = _find_bone_skeleton(child)
+		if skeleton:
+			return skeleton
+	return null

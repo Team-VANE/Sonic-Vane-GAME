@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://2abubo56814h"
+path="res://.godot/imported/VoiceMisc_Gas.ogg-cc06dbd49ce0d073a851d67be76ad75e.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_Gas.ogg"
+dest_files=["res://.godot/imported/VoiceMisc_Gas.ogg-cc06dbd49ce0d073a851d67be76ad75e.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

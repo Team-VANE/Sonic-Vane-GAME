@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="PlayerAnimationProfile" format=3]
+[gd_resource type="Resource" script_class="PlayerAnimationProfile" format=3 uid="uid://bh8o6ahl51l7t"]
 
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Player/PlayerAnimationProfile.gd" id="1_profile"]
+[ext_resource type="Script" uid="uid://dhuhh1cfpaplx" path="res://LS5Framework/Scripts/Player/PlayerAnimationProfile.gd" id="1_profile"]
 
 [resource]
 script = ExtResource("1_profile")
@@ -24,6 +24,7 @@ presentation_commands = Dictionary[StringName, StringName]({
 &"CMD_DEADFALL": &"Reaction/CMD_DEADFALL",
 &"CMD_DEADGROUND": &"Reaction/CMD_DEADGROUND",
 &"CMD_DEADPIT": &"Reaction/CMD_DEADPIT",
+&"CMD_DROP_DASH": &"Air/DropDash",
 &"CMD_HOMING": &"Air/Dash",
 &"CMD_HURT": &"Reaction/CMD_HURT",
 &"CMD_HURT_MOVING": &"Reaction/CMD_HURT_MOVING",
@@ -33,7 +34,6 @@ presentation_commands = Dictionary[StringName, StringName]({
 &"CMD_RAIL": &"Rail/LAND",
 &"CMD_SKYDIVE": &"Skydive/Skydive_Enter",
 &"CMD_SPINDASH": &"Ground/Spindash",
-&"CMD_DROP_DASH": &"Air/DropDash",
 &"CMD_SPINDASHRAIL": &"Rail/Charge",
 &"CMD_SPIN_KICK": &"Ground/SpinKick",
 &"CMD_SPRING": &"Air/Spring",
@@ -45,12 +45,14 @@ presentation_commands = Dictionary[StringName, StringName]({
 &"CMD_TRICK_YAW_LEFT": &"Tricks/YawLeft",
 &"CMD_TRICK_YAW_RIGHT": &"Tricks/YawRight",
 &"CMD_UPPERCUT_KICK": &"Air/Uppercut",
+&"CMD_VICTORY": &"Ground/VictoryIntro",
 &"CMD_WALLCLING": &"Parkour/CMD_WALLCLING",
 &"CMD_WALLKICK_CLING": &"Parkour/CMD_WALLKICK_CLING",
 &"CMD_WALLKICK_RUN_LEFT": &"Parkour/CMD_WALLKICK_RUN_LEFT",
 &"CMD_WALLKICK_RUN_RIGHT": &"Parkour/CMD_WALLKICK_RUN_RIGHT",
 &"CMD_WALLRUN_LEFT": &"Parkour/CMD_WALLRUN_LEFT",
 &"CMD_WALLRUN_RIGHT": &"Parkour/CMD_WALLRUN_RIGHT",
+&"CMD_WALL_BONK": &"Ground/WallBonk",
 &"CMD_WALL_DETACH": &"Parkour/CMD_WALL_DETACH",
 &"DRIFT_MACHINE": &"Drift/Neutral",
 &"JUMPDASH": &"Air/Dash",
@@ -71,8 +73,8 @@ presentation_commands = Dictionary[StringName, StringName]({
 })
 presentation_state_names = Dictionary[StringName, StringName]({
 &"Air/Bounce": &"BOUNCE",
-&"Air/DropDash": &"DROPDASH",
 &"Air/Dash": &"JUMPDASH",
+&"Air/DropDash": &"DROPDASH",
 &"Air/LightSpeed": &"CMD_LIGHTSPEEDDASH",
 &"Air/Shield": &"insta_shield_thrown",
 &"Air/Spring": &"CMD_SPRING",

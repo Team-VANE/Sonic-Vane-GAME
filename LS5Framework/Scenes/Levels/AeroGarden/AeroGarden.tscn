@@ -327,7 +327,7 @@ shader_parameter/tex_flat = ExtResource("12_dftnh")
 shader_parameter/tex_glow = ExtResource("13_eq5tt")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 633.86
+shader_parameter/swap_time = 23886.127
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h0nvc"]
 size = Vector3(52.86328, 23.474121, 20.675903)
@@ -665,6 +665,8 @@ tracking_response = 2.0
 [sub_resource type="Resource" id="CameraTrait_0017"]
 resource_name = "Face Player"
 script = ExtResource("cam_trait_orientation")
+target_bone_enabled = null
+target_bone_name = null
 
 [sub_resource type="Resource" id="CameraTrait_0018"]
 resource_name = "Fixed FOV"
@@ -721,6 +723,8 @@ script = ExtResource("cam_trait_position")
 resource_name = "Marker Orientation"
 script = ExtResource("cam_trait_orientation")
 mode = 2
+target_bone_enabled = null
+target_bone_name = null
 orbit_rig = true
 tracking_response = 0.0
 
@@ -773,6 +777,8 @@ resource_name = "Marker Orientation"
 script = ExtResource("cam_trait_orientation")
 mode = 2
 target_path = NodePath("OverridePoint")
+target_bone_enabled = null
+target_bone_name = null
 orbit_rig = true
 tracking_response = 0.0
 
@@ -850,6 +856,8 @@ resource_name = "Marker Orientation"
 script = ExtResource("cam_trait_orientation")
 mode = 2
 target_path = NodePath("OverridePoint")
+target_bone_enabled = null
+target_bone_name = null
 orbit_rig = true
 tracking_response = 0.5
 
@@ -1296,11 +1304,11 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0
 [node name="GoalCamera" parent="Objects/RaceGoal" index="2" unique_id=1169733806]
 transform = Transform3D(-0.46977797, -0.019219073, 0.8825755, -0.013801098, 0.99980074, 0.014425739, -0.8826769, -0.005403636, -0.4699496, -4.080078, 1.765625, 1.9685009)
 
-[node name="Circle" parent="Objects/RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
+[node name="Circle" parent="Objects/RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(1214655687, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_3i3uu")
 
-[node name="SwapLight" parent="Objects/RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
+[node name="SwapLight" parent="Objects/RaceGoal/GoalModel/GoalRing2" parent_id_path=PackedInt32Array(1214655687, 456851143, 52793995) index="2" unique_id=1016145482]
+light_energy = 20.0
 
 [node name="OmniLight3D" parent="Objects/RaceGoal" index="4" unique_id=118658822]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.673426, 0)
@@ -1334,7 +1342,7 @@ rehit_cooldown = 1.0
 curve = SubResource("Curve3D_olunl")
 
 [node name="RailBooster" parent="Objects/Rail/Path3D" index="0" unique_id=167397505 instance=ExtResource("11_olunl")]
-transform = Transform3D(-0.99998504, -0.0007124575, -0.002794545, -4.706216e-05, 0.97290415, -0.23119685, 0.0028835284, -0.23119588, -0.9728996, 3.8109841, 19.092154, 38.475178)
+transform = Transform3D(-0.999985, -0.0007124575, -0.002794545, -4.706216e-05, 0.97290415, -0.23119685, 0.0028835284, -0.23119588, -0.9728996, 3.8109841, 19.092154, 38.475178)
 visible = false
 progress = 69.312935
 active = false
@@ -1352,7 +1360,7 @@ surface_handoff_search_length = 4.0
 curve = SubResource("Curve3D_dftnh")
 
 [node name="RailBooster" parent="Objects/Rail3/Path3D" index="0" unique_id=2079203673 instance=ExtResource("11_olunl")]
-transform = Transform3D(-0.94476503, -0.3238308, 0.04947843, -0.32454765, 0.94581324, -0.0072250175, -0.044457715, -0.022885539, -0.998716, 3.150883, 27.888378, -4.6003)
+transform = Transform3D(-0.94476503, -0.3238308, 0.04947843, -0.32454765, 0.94581324, -0.007225018, -0.044457715, -0.022885539, -0.99871606, 3.150883, 27.888378, -4.6003)
 progress = 25.701004
 boost_mode = 1
 boost_speed = 70.0

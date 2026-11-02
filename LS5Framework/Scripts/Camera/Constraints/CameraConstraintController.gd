@@ -537,7 +537,7 @@ func _aim_basis(component: CameraOrientationTrait, origin: Vector3, fallback: Ba
 	if not is_instance_valid(aim_node):
 		return fallback
 	var offset_up: Vector3 = rig.call("_get_target_player_up") as Vector3 if component.offset_uses_player_up else rig.call("_get_target_gravity_up") as Vector3
-	var point: Vector3 = aim_node.global_position + Vector3(component.target_offset.x, 0.0, component.target_offset.z) + offset_up * component.target_offset.y
+	var point: Vector3 = component.get_aim_origin(aim_node) + Vector3(component.target_offset.x, 0.0, component.target_offset.z) + offset_up * component.target_offset.y
 	return _look_basis(point - origin, component.get_up(selected, rig), fallback)
 
 

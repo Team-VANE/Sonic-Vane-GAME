@@ -5,6 +5,22 @@ signal request_dispatched(request_id: int, semantic_id: StringName, command: Str
 signal request_rejected(request_id: int, semantic_id: StringName, reason: StringName)
 signal action_ended(token: int, action_id: StringName, reason: StringName)
 
+class LocomotionEvents extends Node:
+	## Player receiving locomotion markers outside upper-body overlay filters.
+	var player: Node
+
+	func request_walk_stop() -> void:
+		player.request_walk_stop()
+
+	func set_next_foot_right() -> void:
+		player.set_next_foot_right()
+
+	func set_next_foot_left() -> void:
+		player.set_next_foot_left()
+
+	func play_footstep(foot: StringName = &"", emit_dust: bool = false) -> void:
+		player.play_footstep(foot, emit_dust)
+
 class ActionRequest extends RefCounted:
 	var token: int = 0
 	var action_id: StringName = &""
@@ -39,6 +55,8 @@ var _resetting: bool = false
 var _last_rejection: Dictionary = {}
 var _last_dispatch: Dictionary = {}
 ## Animation source with player method tracks bound to the current hierarchy.
+## Separate callback target for locomotion events beneath carry overlays.
+var _locomotion_events: LocomotionEvents
 var _method_animation_player: AnimationPlayer
 ## Root used to resolve animation method tracks.
 var _method_animation_root: Node
@@ -412,6 +430,10 @@ func is_remote_playback() -> bool:
 
 
 func configure_tree() -> void:
+	var tree: AnimationTree = _owner.anim_tree
+	if tree and tree.tree_root and not tree.tree_root.resource_local_to_scene and not Engine.is_editor_hint():
+		tree.tree_root = tree.tree_root.duplicate_deep(Resource.DEEP_DUPLICATE_ALL) as AnimationRootNode
+		tree.tree_root.resource_local_to_scene = true
 	_bind_player_method_tracks()
 	if _presentation.is_enabled():
 		_owner.anim_tree.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
@@ -429,6 +451,12 @@ func _bind_player_method_tracks() -> void:
 	_method_animation_player = player
 	_method_animation_root = root
 	var player_path: NodePath = root.get_path_to(_owner)
+	if not is_instance_valid(_locomotion_events):
+		_locomotion_events = LocomotionEvents.new()
+		_locomotion_events.name = "AnimationLocomotionEvents"
+		_locomotion_events.player = _owner
+		_owner.add_child(_locomotion_events)
+	var locomotion_path: NodePath = root.get_path_to(_locomotion_events)
 	for library_name: StringName in player.get_animation_library_list():
 		var source: AnimationLibrary = player.get_animation_library(library_name)
 		var library: AnimationLibrary
@@ -436,11 +464,13 @@ func _bind_player_method_tracks() -> void:
 			var clip: Animation = source.get_animation(animation_name)
 			var replacement: Animation
 			for track: int in clip.get_track_count():
-				if not _is_misplaced_player_method_track(clip, track, root):
+				var misplaced: bool = _is_misplaced_player_method_track(clip, track, root)
+				var locomotion: bool = _is_locomotion_method_track(clip, track) and (misplaced or root.get_node_or_null(clip.track_get_path(track)) == _owner)
+				if not misplaced and not locomotion:
 					continue
 				if not replacement:
 					replacement = clip.duplicate(false) as Animation
-				replacement.track_set_path(track, player_path)
+				replacement.track_set_path(track, locomotion_path if locomotion else player_path)
 			if replacement:
 				if not library:
 					library = source.duplicate(false) as AnimationLibrary
@@ -452,6 +482,15 @@ func _bind_player_method_tracks() -> void:
 			if tree.has_animation_library(library_name):
 				tree.remove_animation_library(library_name)
 			tree.add_animation_library(library_name, library)
+
+
+func _is_locomotion_method_track(clip: Animation, track: int) -> bool:
+	if clip.track_get_type(track) != Animation.TYPE_METHOD or not clip.track_get_key_count(track):
+		return false
+	for key: int in clip.track_get_key_count(track):
+		if clip.method_track_get_name(track, key) not in [&"request_walk_stop", &"set_next_foot_right", &"set_next_foot_left", &"play_footstep"]:
+			return false
+	return true
 
 
 func _is_misplaced_player_method_track(clip: Animation, track: int, root: Node) -> bool:

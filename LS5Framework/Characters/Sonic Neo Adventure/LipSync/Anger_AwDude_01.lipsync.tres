@@ -1,0 +1,132 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://1pp7ow3vao67"]
+
+[ext_resource type="AudioStream" uid="uid://djm64t0aq3kub" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_AwDude_01.ogg" id="1_541e5"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_qmhlr"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_yu8bh"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_qkpf2"]
+
+[sub_resource type="Resource" id="Resource_anrqr"]
+script = ExtResource("2_qmhlr")
+pose_id = &"EXP_BROWS_DOWN"
+end_time = 1.9000000000000004
+row = 1
+blend_in = 0.36
+blend_out = 0.645
+
+[sub_resource type="Resource" id="Resource_vr0x6"]
+script = ExtResource("2_qmhlr")
+pose_id = &"Mouth Frown Left"
+start_time = 0.05999999999999997
+end_time = 1.65
+blend_in = 0.15
+blend_out = 0.4
+strength = 0.7647058823529411
+
+[sub_resource type="Resource" id="Resource_lt1tm"]
+script = ExtResource("2_qmhlr")
+pose_id = &"EXP_BROWS_SKEW_L"
+start_time = 0.55
+end_time = 1.25
+row = 2
+blend_in = 0.3499999999999999
+blend_out = 0.3499999999999999
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_ys3hy"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_Ah"
+start_time = 0.08999999910593032
+end_time = 0.4331921660900116
+blend_in = 0.1035396007820964
+blend_out = 0.14044391879811882
+asymmetric_blends = true
+speech_role = 1
+strength = 0.8251085637557705
+
+[sub_resource type="Resource" id="Resource_xq22m"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_AE"
+start_time = 0.28
+end_time = 0.56
+row = 1
+blend_in = 0.14
+blend_out = 0.14
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_xbib8"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_T_L_D_N"
+start_time = 0.48101038495078685
+end_time = 0.8138597
+blend_in = 0.10622021159157158
+blend_out = 0.21462910461425777
+asymmetric_blends = true
+speech_role = 3
+strength = 0.85
+
+[sub_resource type="Resource" id="Resource_2pgrq"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_Ih"
+start_time = 0.6
+end_time = 0.85
+row = 3
+blend_in = 0.125
+blend_out = 0.125
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_02dho"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_Ah"
+start_time = 0.7292305965423584
+end_time = 1.031567054738407
+row = 1
+blend_in = 0.1511682290980243
+blend_out = 0.1511682290980243
+asymmetric_blends = true
+speech_role = 1
+lock_max_blend = true
+strength = 0.5294117647058824
+
+[sub_resource type="Resource" id="Resource_hdwka"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_W_OO"
+start_time = 0.7705188033453305
+end_time = 1.2507133197784424
+row = 2
+blend_in = 0.19104825139307646
+blend_out = 0.122487162851321
+asymmetric_blends = true
+speech_role = 1
+strength = 0.5513083296459158
+
+[sub_resource type="Resource" id="Resource_ygv0j"]
+script = ExtResource("2_qmhlr")
+pose_id = &"VIS_T_L_D_N"
+start_time = 1.0741398284307797
+end_time = 1.4347200679779053
+row = 1
+blend_in = 0.147848638454161
+blend_out = 0.1807316010929645
+asymmetric_blends = true
+speech_role = 3
+strength = 0.85
+
+[resource]
+script = ExtResource("4_qkpf2")
+profile = ExtResource("3_yu8bh")
+audio = ExtResource("1_541e5")
+transcript = "Ah doud"
+audible_start = 0.04
+audible_end = 1.4047200791537762
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_qmhlr")]([SubResource("Resource_ys3hy"), SubResource("Resource_xq22m"), SubResource("Resource_xbib8"), SubResource("Resource_2pgrq"), SubResource("Resource_02dho"), SubResource("Resource_hdwka"), SubResource("Resource_ygv0j")])
+expression_cues = Array[ExtResource("2_qmhlr")]([SubResource("Resource_anrqr"), SubResource("Resource_vr0x6"), SubResource("Resource_lt1tm")])
+word_spans = Array[Dictionary]([{
+"end": 0.5522305811173283,
+"start": 0.04,
+"word": "Ah"
+}, {
+"end": 1.4047201,
+"start": 0.5522305811173283,
+"word": "doud"
+}])

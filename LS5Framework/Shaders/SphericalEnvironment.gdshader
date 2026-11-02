@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode diffuse_burley, specular_schlick_ggx;
+render_mode blend_mix, depth_prepass_alpha, cull_disabled, diffuse_burley, specular_schlick_ggx;
 
 group_uniforms Environment;
 /** Spherical environment or matcap image. */
@@ -32,6 +32,10 @@ uniform vec2 environment_scroll = vec2(0.0);
 uniform bool flip_vertical = true;
 
 group_uniforms Surface;
+/** Faces removed from rendering: Back, Front, or Disabled for both sides. */
+uniform int cull_mode : hint_enum("Back", "Front", "Disabled") = 0;
+/** Surface transparency. Zero is opaque; one is fully transparent. */
+uniform float transparency : hint_range(0.0, 1.0, 0.01) = 0.0;
 /** Base surface texture, sampled using the mesh UVs. */
 uniform sampler2D base_texture : source_color, hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
 /** Base surface color before reflection compositing. */
@@ -77,6 +81,9 @@ uniform float normal_strength : hint_range(0.0, 2.0, 0.01) = 1.0;
 group_uniforms;
 
 void fragment() {
+	if ((cull_mode == 0 && !FRONT_FACING) || (cull_mode == 1 && FRONT_FACING)) {
+		discard;
+	}
 	vec2 surface_uv = UV * surface_uv_scale + surface_uv_offset;
 	vec3 surface_normal = normalize(NORMAL);
 	if (normal_enabled) {
@@ -119,6 +126,7 @@ void fragment() {
 	}
 	ALBEDO = surface_color * lighting_amount;
 	EMISSION = surface_color * (1.0 - lighting_amount) + reflection * coverage * reflection_emission;
+	ALPHA = 1.0 - clamp(transparency, 0.0, 1.0);
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	SPECULAR = specular * lighting_amount;

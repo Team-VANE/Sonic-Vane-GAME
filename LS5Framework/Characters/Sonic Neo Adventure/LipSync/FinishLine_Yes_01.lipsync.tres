@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://cld4sxt8n3wcf"]
+
+[ext_resource type="AudioStream" uid="uid://dtu85lfirhrf2" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/FinishLine_Yes_01.ogg" id="1_cmwin"]
+[ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_7miqa"]
+[ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_upgbd"]
+[ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_3et2q"]
+
+[sub_resource type="Resource" id="Resource_xoxfi"]
+script = ExtResource("2_7miqa")
+pose_id = &"EXP_SMUG"
+end_time = 1.0
+blend_in = 0.5
+blend_out = 0.5
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_5bdn8"]
+script = ExtResource("2_7miqa")
+pose_id = &"EXP_BROWS_SKEW_R"
+start_time = 0.29
+end_time = 0.99
+row = 1
+blend_in = 0.35
+blend_out = 0.35
+lock_max_blend = true
+
+[sub_resource type="Resource" id="Resource_i8lk0"]
+script = ExtResource("2_7miqa")
+pose_id = &"VIS_EE"
+start_time = 0.05
+end_time = 0.27
+blend_in = 0.11000000000000001
+blend_out = 0.07
+
+[sub_resource type="Resource" id="Resource_n4r62"]
+script = ExtResource("2_7miqa")
+pose_id = &"VIS_Ah"
+start_time = 0.15
+end_time = 0.5700000000000001
+row = 1
+blend_in = 0.14
+blend_out = 0.21
+
+[sub_resource type="Resource" id="Resource_d70lu"]
+script = ExtResource("2_7miqa")
+pose_id = &"VIS_S_Z"
+start_time = 0.38
+end_time = 0.63
+row = 2
+blend_in = 0.125
+blend_out = 0.125
+lock_max_blend = true
+strength = 0.8529411764705881
+
+[resource]
+script = ExtResource("4_3et2q")
+profile = ExtResource("3_upgbd")
+audio = ExtResource("1_cmwin")
+audible_start = 0.14740326238097623
+audible_end = 0.6642656695039477
+smoothing_time = 0.01
+viseme_cues = Array[ExtResource("2_7miqa")]([SubResource("Resource_i8lk0"), SubResource("Resource_n4r62"), SubResource("Resource_d70lu")])
+expression_cues = Array[ExtResource("2_7miqa")]([SubResource("Resource_xoxfi"), SubResource("Resource_5bdn8")])

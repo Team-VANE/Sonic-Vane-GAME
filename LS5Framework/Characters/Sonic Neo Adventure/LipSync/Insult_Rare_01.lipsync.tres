@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="LipSyncClip" format=3 uid="uid://clsigweonu7wf"]
 
-[ext_resource type="AudioStream" uid="uid://bcyc3hch4wr0u" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_01.ogg" id="1_6ugqb"]
+[ext_resource type="AudioStream" uid="uid://bcyc3hch4wr0u" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_01;_weight=1-20.ogg" id="1_6ugqb"]
 [ext_resource type="Script" uid="uid://3etv3vrbsrxs" path="res://addons/ls5_lipsync/runtime/lip_sync_cue.gd" id="2_ycixn"]
 [ext_resource type="Resource" uid="uid://bosx3dco55inh" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoLipSyncProfile.tres" id="3_i66ml"]
 [ext_resource type="Script" uid="uid://dfynv6i3jivb8" path="res://addons/ls5_lipsync/runtime/lip_sync_clip.gd" id="4_krfhh"]

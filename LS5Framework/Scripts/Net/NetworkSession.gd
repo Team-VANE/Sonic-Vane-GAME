@@ -1663,7 +1663,7 @@ func _rpc_race_present_results(payload: Dictionary, generation: int) -> void:
 	if is_instance_valid(goal):
 		goal.call("_unregister_finish_fade_camera_constraint")
 		goal.call("apply_online_lineup_pose", get_local_player(), payload["order"], payload["dnfs"], payload["targets"], _local_id)
-		var using_animated_camera: bool = bool(goal.call("_begin_victory_presentation", get_local_player()))
+		var using_animated_camera: bool = bool(goal.call("_begin_victory_presentation", get_local_player(), not payload["order"].is_empty() and int(payload["order"][0]) == _local_id))
 		goal.call("_register_goal_camera_constraint", get_local_player())
 		if using_animated_camera:
 			await get_tree().process_frame
@@ -1873,6 +1873,8 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 	else:
 		add_child(ui)
 
+	if is_instance_valid(_race_results_goal):
+		_race_results_goal.set("_goal_results_ui", ui)
 	# Ensure the results UI can receive clicks (hide other overlays that may intercept input).
 	if hud_node != null and is_instance_valid(hud_node):
 		hud_node.visible = false
@@ -1901,7 +1903,7 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 		ui.call("show_results", local_rings, local_time, local_score, is_new_record)
 
 	# Auto-close results after 5 seconds, or allow skipping via Ability Slot 1 / left click.
-	if ui.has_method("wait_or_skip"):
+	if not _goal_victory_has_failed() and ui.has_method("wait_or_skip"):
 		await ui.call("wait_or_skip", 5.0)
 	if results_token != _race_results_token or not is_instance_valid(ui):
 		return
@@ -1924,7 +1926,7 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 	# Failsafe: don't hang forever waiting on a click; allow skip input to default to "stay".
 	var max_wait: float = 30.0
 	var remaining: float = max_wait
-	while remaining > 0.0 and _race_results_choice_pending and results_token == _race_results_token:
+	while remaining > 0.0 and _race_results_choice_pending and results_token == _race_results_token and not _goal_victory_has_failed():
 		if ui == null or not is_instance_valid(ui):
 			break
 		if ui.has_method("consume_skip"):
@@ -1944,6 +1946,18 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 		chosen = _race_results_choice
 	got_choice = not _race_results_choice_pending
 
+	if is_instance_valid(_race_results_goal):
+		await _race_results_goal.call("wait_for_victory_exit")
+		if results_token != _race_results_token:
+			return
+	var recovery_fader: Node = null
+	if _goal_victory_has_failed():
+		chosen = &"stay"
+		recovery_fader = _race_results_goal.call("_get_or_create_fader")
+		if is_instance_valid(recovery_fader):
+			await recovery_fader.call("fade_out", 0.25)
+			if results_token != _race_results_token:
+				return
 	_race_results_local_pending = false
 	if is_instance_valid(_race_results_goal):
 		_race_results_goal.call("_unregister_goal_camera_constraint", p)
@@ -2014,6 +2028,12 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 		_reset_objects_for_race_restart()
 		_return_to_race_start(p, results_start_scene, results_start_path)
 	_deactivate_race_objects_for_start(race_start_for_objects)
+	if is_instance_valid(recovery_fader):
+		await recovery_fader.call("fade_in", 0.25)
+
+
+func _goal_victory_has_failed() -> bool:
+	return is_instance_valid(_race_results_goal) and bool(_race_results_goal.get("_victory_failed"))
 
 
 func _deactivate_race_objects_for_start(race_start: Node) -> void:

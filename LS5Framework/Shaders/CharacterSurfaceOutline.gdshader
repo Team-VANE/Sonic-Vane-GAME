@@ -11,7 +11,12 @@ uniform float darkness : hint_range(0.0, 1.0, 0.01) = 0.72;
 /** Alpha threshold used to preserve cutout surface boundaries. */
 uniform float alpha_threshold : hint_range(0.0, 1.0, 0.01) = 0.1;
 
+/** Outline colour used when surface colour sampling is disabled. */
+uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+
 group_uniforms Surface;
+/** Samples surface colour, alpha cutout, and character tint. Disabled skips all surface sampling. */
+uniform bool surface_color_enabled = true;
 /** Surface colour texture sampled by the outline. */
 uniform sampler2D base_tex : source_color, hint_default_white, filter_linear_mipmap_anisotropic;
 /** Surface colour multiplier applied to the sampled texture. */
@@ -85,13 +90,16 @@ void vertex() {
 
 
 void fragment() {
-	vec4 surface = texture(base_tex, UV) * base_color;
-	if (surface.a < alpha_threshold) {
-		discard;
+	vec3 color = outline_color.rgb;
+	if (surface_color_enabled) {
+		vec4 surface = texture(base_tex, UV) * base_color;
+		if (surface.a < alpha_threshold) {
+			discard;
+		}
+		vec3 surface_color = tint_enabled ? apply_character_tint(surface.rgb, UV) : surface.rgb;
+		color = surface_color * (1.0 - darkness);
 	}
-
-	vec3 surface_color = tint_enabled ? apply_character_tint(surface.rgb, UV) : surface.rgb;
-	ALBEDO = surface_color * (1.0 - darkness);
+	ALBEDO = color;
 	METALLIC = 0.0;
 	ROUGHNESS = 1.0;
 	SPECULAR = 0.0;

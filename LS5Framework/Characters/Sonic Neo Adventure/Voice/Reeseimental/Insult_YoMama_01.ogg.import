@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bmfj8a821n0iv"
+path="res://.godot/imported/Insult_YoMama_01.ogg-211b767db4b29c64f4ab0d178842cf57.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_YoMama_01.ogg"
+dest_files=["res://.godot/imported/Insult_YoMama_01.ogg-211b767db4b29c64f4ab0d178842cf57.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

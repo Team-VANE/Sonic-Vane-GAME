@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b2wxtjoc2nd63"
+path="res://.godot/imported/FinishLine_Yeah_01.ogg-410995c3706ed7918cbff20777ac6ba1.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/FinishLine_Yeah_01.ogg"
+dest_files=["res://.godot/imported/FinishLine_Yeah_01.ogg-410995c3706ed7918cbff20777ac6ba1.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

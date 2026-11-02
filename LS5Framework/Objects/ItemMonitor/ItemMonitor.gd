@@ -49,6 +49,8 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 @export_range(0.0, 60.0, 0.01, "or_greater", "suffix:s") var collection_delay: float = 0.7
 ## Keeps the authored base mesh after the monitor breaks.
 @export var leave_base_after_break: bool = false
+## Mesh preserved by Leave Base After Break, relative to the monitor root.
+@export_node_path("MeshInstance3D") var base_mesh_path: NodePath = NodePath("VisualRoot/MonitorModel/Base")
 
 @export_group("Object Impacts")
 ## Allows locally owned dynamic objects to break this monitor.
@@ -100,6 +102,8 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 @onready var _visual_root: Node3D = $VisualRoot
 ## Contains the imported model parts used by the break state.
 @onready var _monitor_model: Node3D = $VisualRoot/MonitorModel
+## Authored base mesh retained independently of the glass and top.
+@onready var _base_mesh: MeshInstance3D = get_node_or_null(base_mesh_path) as MeshInstance3D
 ## Contains reward displays inside the glass.
 @onready var _item_display_root: Node3D = $VisualRoot/ItemDisplays
 ## Displays the first configured reward with a matching item icon association.
@@ -206,6 +210,7 @@ func _resolve_preparation_nodes() -> void:
 	_solid_shape = get_node_or_null("SolidBody/SolidShape") as CollisionShape3D
 	_visual_root = get_node_or_null("VisualRoot") as Node3D
 	_monitor_model = get_node_or_null("VisualRoot/MonitorModel") as Node3D
+	_base_mesh = get_node_or_null(base_mesh_path) as MeshInstance3D
 	_item_display_root = get_node_or_null("VisualRoot/ItemDisplays") as Node3D
 	_icon_display = get_node_or_null("VisualRoot/ItemDisplays/IconDisplay") as MeshInstance3D
 	_quantity_label_front = get_node_or_null(
@@ -376,7 +381,7 @@ func _break_monitor(player: Node3D, direct_attack: bool = true) -> void:
 		_collect_rewards(player, _state_generation)
 		return
 	var collection_generation: int = _state_generation
-	var collection_timer: SceneTreeTimer = get_tree().create_timer(collection_delay)
+	var collection_timer: SceneTreeTimer = get_tree().create_timer(collection_delay, false)
 	var recipient_reference: WeakRef = weakref(player)
 	collection_timer.timeout.connect(func() -> void:
 		var recipient: Node = recipient_reference.get_ref() as Node
@@ -548,7 +553,7 @@ func _set_broken_visual_state() -> void:
 		return
 	for child: Node in _monitor_model.get_children():
 		if child is Node3D:
-			(child as Node3D).visible = child.name == &"Base"
+			(child as Node3D).visible = is_instance_valid(_base_mesh) and (child == _base_mesh or child.is_ancestor_of(_base_mesh))
 
 
 func _cache_intact_state() -> void:
@@ -580,7 +585,7 @@ func _start_respawn_timer() -> void:
 	if respawn_delay_sec <= 0.0 or get_tree() == null:
 		call_deferred("_finish_respawn_wait", respawn_generation)
 		return
-	var respawn_timer: SceneTreeTimer = get_tree().create_timer(respawn_delay_sec)
+	var respawn_timer: SceneTreeTimer = get_tree().create_timer(respawn_delay_sec, false)
 	respawn_timer.timeout.connect(_finish_respawn_wait.bind(respawn_generation))
 
 

@@ -4,12 +4,16 @@ extends EditorPlugin
 const LiveEdit = preload("res://LS5Framework/Scripts/Camera/Constraints/CameraConstraintLiveEdit.gd")
 
 var _debugger: EditorDebuggerPlugin = null
+## Direction guides for goal lineup and camera markers.
+var _goal_gizmo: EditorNode3DGizmoPlugin
 var _remaining: float = 0.0
 var _sent: Dictionary = {}
 var _ready_sessions: Dictionary = {}
 
 
 func _enter_tree() -> void:
+	_goal_gizmo = preload("res://addons/ls5_camera_live_edit/goal_lineup_gizmo.gd").new()
+	add_node_3d_gizmo_plugin(_goal_gizmo)
 	_debugger = preload("res://addons/ls5_camera_live_edit/debugger.gd").new()
 	_debugger.connect("configuration_requested", _on_configuration_requested)
 	_debugger.connect("configuration_suspended", _on_configuration_suspended)
@@ -17,6 +21,9 @@ func _enter_tree() -> void:
 
 
 func _exit_tree() -> void:
+	if _goal_gizmo:
+		remove_node_3d_gizmo_plugin(_goal_gizmo)
+	_goal_gizmo = null
 	if _debugger:
 		remove_debugger_plugin(_debugger)
 	_debugger = null

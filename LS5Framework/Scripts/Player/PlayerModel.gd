@@ -409,6 +409,8 @@ func _configure_character_color_pass(
 ) -> void:
 	if shader_material == null:
 		return
+	if shader_material.shader and shader_material.shader.resource_path == "res://LS5Framework/Shaders/CharacterSurfaceOutline.gdshader" and shader_material.get_shader_parameter(&"surface_color_enabled") == false:
+		return
 	shader_material.set_shader_parameter(&"tint_enabled", true)
 	shader_material.set_shader_parameter(&"base_tex", base_texture)
 	shader_material.set_shader_parameter(&"base_color", base_color)

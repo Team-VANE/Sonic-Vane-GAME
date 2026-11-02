@@ -1,5 +1,17 @@
 [gd_resource type="Resource" script_class="EmoteVoiceProfile" format=3 uid="uid://sdsi07ril7y6"]
 
+[ext_resource type="AudioStream" uid="uid://bttpqkwglpxis" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Yes_01.ogg" id="3_524do"]
+[ext_resource type="AudioStream" uid="uid://b2wxtjoc2nd63" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/FinishLine_Yeah_01.ogg" id="4_2lnqv"]
+[ext_resource type="AudioStream" uid="uid://dtu85lfirhrf2" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/FinishLine_Yes_01.ogg" id="5_au3ro"]
+[ext_resource type="AudioStream" uid="uid://i5vmx6mh7of3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Happy_Happening_03.ogg" id="65_500cn"]
+[ext_resource type="AudioStream" uid="uid://bgnvuvccippa5" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Happy_CantComplain_01.ogg" id="66_cgvrf"]
+[ext_resource type="AudioStream" uid="uid://djm64t0aq3kub" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_AwDude_01.ogg" id="79_nvevl"]
+[ext_resource type="AudioStream" uid="uid://yohp812citqw" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_AwDude_02.ogg" id="80_a8yan"]
+[ext_resource type="AudioStream" uid="uid://djw00qg3nsv34" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_AwDude_03.ogg" id="81_8u1c2"]
+[ext_resource type="AudioStream" uid="uid://dg576vks6hw77" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_Blam_01.ogg" id="82_m628v"]
+[ext_resource type="AudioStream" uid="uid://bmfj8a821n0iv" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_YoMama_01.ogg" id="93_j8h6q"]
+[ext_resource type="AudioStream" uid="uid://2abubo56814h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_Gas.ogg" id="102_jpxpn"]
+[ext_resource type="AudioStream" uid="uid://btdeik7di5moq" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/VoiceMisc_Bobby_01.ogg" id="103_5noax"]
 [ext_resource type="AudioStream" uid="uid://ii2qxsfdvfef" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Celebrate_Yes_01.ogg" id="clip_1"]
 [ext_resource type="AudioStream" uid="uid://doo8p3m4q5q8x" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_01.ogg" id="clip_2"]
 [ext_resource type="AudioStream" uid="uid://bgnaeerrojmfg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/No_02.ogg" id="clip_3"]
@@ -74,8 +86,8 @@
 [ext_resource type="AudioStream" uid="uid://ctxng8lr4018w" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_Shoot_01.ogg" id="clip_72"]
 [ext_resource type="AudioStream" uid="uid://c8cjmd1h3rmog" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_NotCool_01.ogg" id="clip_73"]
 [ext_resource type="AudioStream" uid="uid://bah560t0bj33t" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_NotCool_02.ogg" id="clip_74"]
-[ext_resource type="AudioStream" uid="uid://bcyc3hch4wr0u" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_01.ogg" id="clip_75"]
-[ext_resource type="AudioStream" uid="uid://qacq0ajwmt4h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_02.ogg" id="clip_76"]
+[ext_resource type="AudioStream" uid="uid://bcyc3hch4wr0u" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_01;_weight=1-20.ogg" id="clip_75"]
+[ext_resource type="AudioStream" uid="uid://qacq0ajwmt4h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Rare_02;_weight=1-20.ogg" id="clip_76"]
 [ext_resource type="AudioStream" uid="uid://cfr1dp3ot1wht" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Really_01.ogg" id="clip_77"]
 [ext_resource type="AudioStream" uid="uid://br4iu3hqd2he4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Really_04.ogg" id="clip_78"]
 [ext_resource type="AudioStream" uid="uid://cd6i81iwgfvyx" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Insult_Suitcase_02.ogg" id="clip_79"]
@@ -96,7 +108,7 @@
 [sub_resource type="Resource" id="emote_yes"]
 script = ExtResource("entry")
 emote_id = &"yes"
-clips = Array[AudioStream]([ExtResource("clip_1")])
+clips = Array[AudioStream]([ExtResource("clip_1"), ExtResource("3_524do"), ExtResource("4_2lnqv"), ExtResource("5_au3ro")])
 
 [sub_resource type="Resource" id="emote_no"]
 script = ExtResource("entry")
@@ -161,7 +173,7 @@ clips = Array[AudioStream]([ExtResource("clip_57"), ExtResource("clip_58")])
 [sub_resource type="Resource" id="emote_cheer"]
 script = ExtResource("entry")
 emote_id = &"cheer"
-clips = Array[AudioStream]([ExtResource("clip_59"), ExtResource("clip_60")])
+clips = Array[AudioStream]([ExtResource("clip_59"), ExtResource("clip_60"), ExtResource("65_500cn"), ExtResource("66_cgvrf")])
 
 [sub_resource type="Resource" id="emote_surprise"]
 script = ExtResource("entry")
@@ -171,17 +183,17 @@ clips = Array[AudioStream]([ExtResource("clip_61"), ExtResource("clip_62"), ExtR
 [sub_resource type="Resource" id="emote_anger"]
 script = ExtResource("entry")
 emote_id = &"anger"
-clips = Array[AudioStream]([ExtResource("clip_67"), ExtResource("clip_68"), ExtResource("clip_69"), ExtResource("clip_70"), ExtResource("clip_71"), ExtResource("clip_72")])
+clips = Array[AudioStream]([ExtResource("clip_67"), ExtResource("clip_68"), ExtResource("clip_69"), ExtResource("clip_70"), ExtResource("clip_71"), ExtResource("clip_72"), ExtResource("79_nvevl"), ExtResource("80_a8yan"), ExtResource("81_8u1c2"), ExtResource("82_m628v")])
 
 [sub_resource type="Resource" id="emote_insult"]
 script = ExtResource("entry")
 emote_id = &"insult"
-clips = Array[AudioStream]([ExtResource("clip_73"), ExtResource("clip_74"), ExtResource("clip_75"), ExtResource("clip_76"), ExtResource("clip_77"), ExtResource("clip_78"), ExtResource("clip_79"), ExtResource("clip_80"), ExtResource("clip_81"), ExtResource("clip_82")])
+clips = Array[AudioStream]([ExtResource("clip_73"), ExtResource("clip_74"), ExtResource("clip_75"), ExtResource("clip_76"), ExtResource("clip_77"), ExtResource("clip_78"), ExtResource("clip_79"), ExtResource("clip_80"), ExtResource("clip_81"), ExtResource("clip_82"), ExtResource("93_j8h6q")])
 
 [sub_resource type="Resource" id="emote_wild_card"]
 script = ExtResource("entry")
 emote_id = &"wild_card"
-clips = Array[AudioStream]([ExtResource("clip_83"), ExtResource("clip_84"), ExtResource("clip_85"), ExtResource("clip_86"), ExtResource("clip_87"), ExtResource("clip_88"), ExtResource("clip_89"), ExtResource("clip_90")])
+clips = Array[AudioStream]([ExtResource("clip_83"), ExtResource("clip_84"), ExtResource("clip_85"), ExtResource("clip_86"), ExtResource("clip_87"), ExtResource("clip_88"), ExtResource("clip_89"), ExtResource("clip_90"), ExtResource("102_jpxpn"), ExtResource("103_5noax")])
 
 [resource]
 script = ExtResource("profile")

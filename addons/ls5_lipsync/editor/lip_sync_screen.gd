@@ -1085,6 +1085,11 @@ func _build_preview() -> void:
 	if not _preview_root:
 		return
 	_viewport.add_child(_preview_root)
+	for path: NodePath in _profile.preview_hidden_node_paths:
+		var excluded: Node3D = _preview_root.get_node_or_null(path) as Node3D
+		if excluded:
+			excluded.set_meta(&"lipsync_preview_visible", false)
+	_apply_preview_visibility(_preview_root)
 	var skeletons: Array[Node] = _preview_root.find_children("*", "Skeleton3D", true, false)
 	if skeletons.is_empty():
 		_status.text = "Preview scene has no Skeleton3D."
@@ -1103,6 +1108,13 @@ func _build_preview() -> void:
 	_update_camera()
 	if _clip:
 		_preview_driver.set_preview(_clip, _timeline.playhead)
+
+
+func _apply_preview_visibility(node: Node) -> void:
+	if node is Node3D and node.has_meta(&"lipsync_preview_visible") and not bool(node.get_meta(&"lipsync_preview_visible")):
+		(node as Node3D).hide()
+	for child: Node in node.get_children():
+		_apply_preview_visibility(child)
 
 
 func _update_camera() -> void:

@@ -1,5 +1,13 @@
 [gd_resource type="AnimationLibrary" format=3 uid="uid://u1fdnidpmllv"]
 
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1_ToIdle.res" id="victory_2"]
+
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1_Loop.res" id="victory_1"]
+
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1.res" id="victory_0"]
+
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallBonk.res" id="wall_bonk"]
+
 [ext_resource type="Animation" uid="uid://crjl60afovi42" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/BrakeStop.res" id="1"]
 [ext_resource type="Animation" uid="uid://twg8cv8qaaw3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/BrakeStop_End.res" id="2"]
 [ext_resource type="Animation" uid="uid://bjptk64l1xd1i" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/BrakeStop_Enter.res" id="3"]
@@ -93,6 +101,10 @@
 
 [resource]
 _data = {
+&"Goal_Victory_1_ToIdle": ExtResource("victory_2"),
+&"Goal_Victory_1_Loop": ExtResource("victory_1"),
+&"Goal_Victory_1": ExtResource("victory_0"),
+&"WallBonk": ExtResource("wall_bonk"),
 &"BrakeStop": ExtResource("1"),
 &"BrakeStop_End": ExtResource("2"),
 &"BrakeStop_Enter": ExtResource("3"),

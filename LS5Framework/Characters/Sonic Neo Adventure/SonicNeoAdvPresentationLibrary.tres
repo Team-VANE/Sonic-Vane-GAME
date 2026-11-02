@@ -11,7 +11,7 @@
 [ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Presentation/Carry_Throw.tres" id="9_ibtvq"]
 [ext_resource type="Animation" uid="uid://3ntjf4120bwd" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Drift_Left.res" id="10_5ljxt"]
 [ext_resource type="Animation" uid="uid://dq4jlhusknt8e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Drift_Right.res" id="11_w1ydr"]
-[ext_resource type="Animation" uid="uid://cfkbjrbr7agu8" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/DropDash.res" id="12_cgcax"]
+[ext_resource type="Animation" uid="uid://b22de5bg4ovsg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/DropDash.res" id="12_cgcax"]
 [ext_resource type="Animation" uid="uid://bg6uv8g16yoxv" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EYES_Down.res" id="12_yomss"]
 [ext_resource type="Animation" uid="uid://catekqo3fk24r" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EYES_Forward.res" id="13_ykcge"]
 [ext_resource type="Animation" uid="uid://clf2valjqm64u" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EYES_Left.res" id="14_7o6rn"]
@@ -21,7 +21,10 @@
 [ext_resource type="Animation" uid="uid://8v5ij7e42efs" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Fall_Forward.res" id="18_87m08"]
 [ext_resource type="Animation" uid="uid://bdel68etr8anc" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Fast.res" id="19_s7x7m"]
 [ext_resource type="Animation" uid="uid://cxbyc33blvcn4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Med.res" id="20_lubst"]
+[ext_resource type="Animation" uid="uid://754eppqj88yl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1.res" id="20_pk118"]
+[ext_resource type="Animation" uid="uid://0uhabx4ho8nl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1_Loop.res" id="21_ryel2"]
 [ext_resource type="Animation" uid="uid://cvmgbrevvikc6" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Slow.res" id="21_uhw87"]
+[ext_resource type="Animation" uid="uid://bs1pdxtjr6s7e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1_ToIdle.res" id="22_5adve"]
 [ext_resource type="Animation" uid="uid://ccgjdo0ijb8ww" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Fast.res" id="22_tpq67"]
 [ext_resource type="Animation" uid="uid://cqjnufuxm107h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Med.res" id="23_4e8aa"]
 [ext_resource type="Animation" uid="uid://bdishkojhbhyt" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Slow.res" id="24_yert7"]
@@ -84,6 +87,7 @@
 [ext_resource type="Animation" uid="uid://cn061la3ddmw3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Walk_Left_To_Idle.res" id="81_00c4v"]
 [ext_resource type="Animation" uid="uid://t13g1lu3au2m" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Walk_Right_To_Idle.res" id="82_jnqo0"]
 [ext_resource type="Animation" uid="uid://wq7t6l2ypuhr" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallCling_Enter.res" id="83_tev37"]
+[ext_resource type="Animation" uid="uid://cshradaw4n113" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallBonk.res" id="84_k1yeb"]
 [ext_resource type="Animation" uid="uid://xq8mionyg24j" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallCling_Loop.res" id="84_me3yv"]
 [ext_resource type="Animation" uid="uid://du6h3krlqvmx4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallKick_Cling.res" id="85_8tsdp"]
 [ext_resource type="Animation" uid="uid://du3lkupynf63e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/WallKick_Left.res" id="86_ve4lw"]
@@ -113,6 +117,9 @@ _data = {
 &"EYES_Up": ExtResource("16_sc6ol"),
 &"Fall": ExtResource("17_5he1n"),
 &"Fall_Forward": ExtResource("18_87m08"),
+&"Goal_Victory_1": ExtResource("20_pk118"),
+&"Goal_Victory_1_Loop": ExtResource("21_ryel2"),
+&"Goal_Victory_1_ToIdle": ExtResource("22_5adve"),
 &"Grind_Backwards_Fast": ExtResource("19_s7x7m"),
 &"Grind_Backwards_Med": ExtResource("20_lubst"),
 &"Grind_Backwards_Slow": ExtResource("21_uhw87"),
@@ -177,6 +184,7 @@ _data = {
 &"VaultBar_Swing_Under": ExtResource("80_jf5si"),
 &"Walk_Left_To_Idle": ExtResource("81_00c4v"),
 &"Walk_Right_To_Idle": ExtResource("82_jnqo0"),
+&"WallBonk": ExtResource("84_k1yeb"),
 &"WallCling_Enter": ExtResource("83_tev37"),
 &"WallCling_Loop": ExtResource("84_me3yv"),
 &"WallKick_Cling": ExtResource("85_8tsdp"),

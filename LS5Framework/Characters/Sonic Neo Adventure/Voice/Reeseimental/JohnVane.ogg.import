@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cylpe4bl8dykr"
+path="res://.godot/imported/JohnVane.ogg-453f5f83af91fa8d066c8ea51d2c555c.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/JohnVane.ogg"
+dest_files=["res://.godot/imported/JohnVane.ogg-453f5f83af91fa8d066c8ea51d2c555c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -15,6 +15,8 @@ var _pending_target: StringName = &""
 var _pending_owner: int = 0
 var _owner_token: int = 0
 var _fade_remaining: float = 0.0
+## Additional playback multiplier while a victory intro or loop is waiting to exit.
+var victory_playback_scale: float = 1.0
 var _terminal: bool = false
 var _skydive_phase: StringName = &""
 var _bank: int = 0
@@ -48,6 +50,7 @@ func reset() -> void:
 	_pending_target = &""
 	_pending_owner = 0
 	_owner_token = 0
+	victory_playback_scale = 1.0
 	_terminal = false
 	_skydive_phase = &""
 	_reaction = &""
@@ -276,6 +279,12 @@ func set_clocks(movement_scale: float) -> void:
 		scale *= maxf(_owner._active_action.get_animation_speed_multiplier(), 0.0)
 	for family: StringName in FAMILIES:
 		var rate: float = movement_scale if family in [&"Rail", &"Drift"] or (family == &"Ground" and current_state() == &"SPINDASH") else scale
+		if family == &"Ground":
+			var state: StringName = _playback(family).get_current_node()
+			if state in [&"VictoryIntro", &"VictoryLoop"]:
+				rate = victory_playback_scale
+			elif state == &"VictoryExit":
+				rate = 1.0
 		_owner.anim_tree.set(BASE + "/" + String(family) + "Clock/scale", maxf(rate, 0.0))
 	_owner.anim_tree.set("parameters/StateMachine/REACTIONS/Clock/scale", maxf(_owner.animation_profile.reaction_playback_scale, 0.0))
 
@@ -364,7 +373,9 @@ func after_advance() -> void:
 		&"Drift":
 			done = not _owner.has_state(_owner.STATE_DRIFT) or not _owner.attached
 		&"Ground":
-			if state == &"Spindash":
+			if state in [&"VictoryIntro", &"VictoryLoop"]:
+				done = false
+			elif state == &"Spindash":
 				done = not _owner._spindash_charging and not _owner.has_state(_owner.STATE_SPINDASH)
 			elif state in [&"Land", &"LandHard", &"LandMoving"]:
 				done = not _owner.attached or _owner.rolling or (_finished(playback) and not _owner.has_action_landing_animation_override())

@@ -17,7 +17,7 @@ shader_parameter/tex_flat = ExtResource("5_wm1k7")
 shader_parameter/tex_glow = ExtResource("6_kkook")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 5384.8240000000005
+shader_parameter/swap_time = 1248.3020000000001
 
 [node name="RaceGoal" type="Area3D" unique_id=767008932]
 script = ExtResource("1_rg")
@@ -40,16 +40,17 @@ shape = SubResource("BoxShape3D_1")
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
 
 [node name="GoalCamera" type="Node3D" parent="." unique_id=1169733806]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.3791, 0.23, 0)
 
 [node name="GoalModel" parent="." unique_id=456851143 instance=ExtResource("2_5wjdx")]
 transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 10, 0)
 
-[node name="Circle" parent="GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
+[node name="Circle" parent="GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(456851143, 52793995, 744465181) index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_oqkmk")
 
-[node name="SwapLight" parent="GoalModel/GoalRing2" index="2" unique_id=1016145482]
+[node name="SwapLight" parent="GoalModel/GoalRing2" parent_id_path=PackedInt32Array(456851143, 52793995) index="2" unique_id=1016145482]
 light_color = Color(0.6104771, 0.5345298, 1, 1)
-light_bake_mode = 0
+light_energy = 20.0
 shadow_enabled = false
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=118658822]

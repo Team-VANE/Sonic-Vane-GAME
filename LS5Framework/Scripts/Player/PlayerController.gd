@@ -732,6 +732,7 @@ func _ready() -> void:
 
 	_ensure_modules()
 	_setup_water_detection()
+	_audio_module.register_sound_lists()
 	if buddy_enable and SettingsManager.buddy_active:
 		call_deferred("spawn_selected_buddy")
 
@@ -1258,7 +1259,94 @@ func stop_all_momentum_and_special_movement() -> void:
 	_respawn_module.stop_all_momentum_and_special_movement()
 
 
+## Gameplay suspension owned by the goal sequence, independent of its animation playback.
+var _goal_sequence_frozen: bool = false
+var _goal_pose_transform: Transform3D = Transform3D.IDENTITY
+
+func set_goal_sequence_frozen(frozen: bool) -> void:
+	_goal_sequence_frozen = frozen
+	if frozen:
+		_goal_pose_transform = global_transform
+		velocity = Vector3.ZERO
+		attached = true
+		_prev_attached = true
+		rolling = false
+		_compact_collision_timer = 0.0
+		_is_falling = false
+		_is_jumping = false
+		state_flags = STATE_GROUNDED
+		main_state = MainState.GROUNDED
+	else:
+		_reset_standing_clearance_state()
+	_refresh_ui_input_blocked()
+
+## Vertical root offset keeping the full main sphere above the goal's support plane.
+func get_goal_ground_offset(pose: Transform3D, normal: Vector3) -> float:
+	if not _ensure_main_sphere_configured():
+		return 0.0
+	var support: Vector3 = normal.normalized()
+	var vertical: float = support.dot(Vector3.UP)
+	if vertical < 0.1:
+		return 0.0
+	var shape_world: Transform3D = pose * _main_sphere_base_transform
+	var radius: float = (main_collision_shape.shape as SphereShape3D).radius * shape_world.basis.x.length()
+	var center_offset: Vector3 = shape_world.origin - pose.origin
+	return maxf((radius - support.dot(center_offset)) / vertical, 0.0)
+
+
+func _tick_goal_pose(delta: float) -> void:
+	global_transform = _goal_pose_transform
+	velocity = Vector3.ZERO
+	attached = true
+	_prev_attached = true
+	rolling = false
+	_move_input = Vector2.ZERO
+	_move_direction = Vector3.ZERO
+	_last_air_velocity = Vector3.ZERO
+	_clear_action_input_requests()
+	state_flags = STATE_GROUNDED
+	main_state = MainState.GROUNDED
+	_update_physics_animation(delta)
+	_update_jump_ball(delta)
+	_update_jump_dash_trail(delta)
+	_update_carried_object_target()
+	_network_send_state(delta)
+	_sync_online_debug_puppet(delta)
+
+
+## Cancels gameplay actions and pending sequences before goal posing or victory playback.
+func prepare_for_goal_sequence() -> void:
+	_ensure_modules()
+	set_goal_sequence_frozen(true)
+	var previous: CharacterAction = _active_action
+	clear_active_action()
+	for action: CharacterAction in _actions:
+		if is_instance_valid(action):
+			if action != previous:
+				action.on_action_exit(null)
+			action.reset_traversal_history()
+	cancel_vault_bar()
+	if _automation_controller:
+		_automation_controller.clear(&"goal_sequence")
+	_respawn_module.stop_all_momentum_and_special_movement()
+	_cancel_barrier_blast()
+	_gracefully_end_airborne_torque()
+	_reset_drift_state()
+	if _hurt_action and not _is_dead:
+		_hurt_action.is_active = false
+		_hurt_action.hurt_type = HurtAction.HurtType.NONE
+		_sync_hurt_state_from_action()
+	cancel_bounce_stomp_for_action()
+	_clear_action_input_requests()
+	_move_input = Vector2.ZERO
+	_move_direction = Vector3.ZERO
+	set_goal_sequence_frozen(true)
+	get_animation_director().reset(&"goal_sequence")
+	get_animation_director().restart_movement()
+
+
 func prepare_for_level_change() -> void:
+	set_goal_sequence_frozen(false)
 	_ensure_modules()
 	_respawn_module.stop_all_momentum_and_special_movement()
 	_water_module.reset_for_level_change()
@@ -1746,7 +1834,7 @@ func set_chat_input_blocked(value: bool) -> void:
 
 func _refresh_ui_input_blocked() -> void:
 	var was_blocked: bool = _ui_input_blocked
-	_ui_input_blocked = _ui_input_legacy_blocked or _chat_input_blocked or _is_chat_input_active()
+	_ui_input_blocked = _goal_sequence_frozen or _ui_input_legacy_blocked or _chat_input_blocked or _is_chat_input_active()
 	if _ui_input_blocked:
 		_move_input = Vector2.ZERO
 		_move_direction = Vector3.ZERO
@@ -1827,6 +1915,7 @@ func teleport_near_transform(target_transform: Transform3D, offset: Vector3 = Ve
 
 
 func leave_race(from_respawn: bool) -> void:
+	set_goal_sequence_frozen(false)
 	if not _network_is_local_authority():
 		return
 	var was_racing: bool = race_session_joined or race_active or race_in_countdown or race_finished
@@ -1851,6 +1940,7 @@ func leave_race(from_respawn: bool) -> void:
 
 
 func force_leave_race_for_scene_change() -> void:
+	set_goal_sequence_frozen(false)
 	# Clears any race/queue state before scene transitions.
 	if not _network_is_local_authority():
 		return
@@ -2382,6 +2472,9 @@ func get_gameplay_timer_delta(fallback_delta: float) -> float:
 
 
 func _physics_process(delta: float) -> void:
+	if _goal_sequence_frozen and _network_is_local_authority():
+		_tick_goal_pose(delta)
+		return
 	_movement_slide_cache_valid = false
 	_end_standing_clearance_batch()
 	_movement_real_delta = delta
@@ -3073,6 +3166,9 @@ func _set_standing_collision_transform(target_transform: Transform3D) -> void:
 
 
 func _update_standing_collision() -> void:
+	if _goal_sequence_frozen:
+		_set_standing_collision_enabled(false)
+		return
 	if standing_collision_shape == null or standing_collision_shape.shape == null:
 		return
 	var compact: bool = not attached or rolling or _spindash_charging or _jump_requested
@@ -11121,6 +11217,8 @@ func _update_action_runtime(delta: float) -> void:
 
 
 func activate_action(action, context: Dictionary = {}) -> bool:
+	if _goal_sequence_frozen:
+		return false
 	if action == null or not is_instance_valid(action):
 		return false
 	if action.input_action and _automation_controller and not _automation_controller.motion.allows(action.action_id):

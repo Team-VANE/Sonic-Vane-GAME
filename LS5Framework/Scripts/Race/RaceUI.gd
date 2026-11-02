@@ -337,10 +337,16 @@ func consume_skip() -> bool:
 	return was_requested
 
 
+var _results_wait_cancelled: bool = false
+
+func cancel_results_wait() -> void:
+	_results_wait_cancelled = true
+
 func wait_or_skip(delay: float) -> void:
+	_results_wait_cancelled = false
 	_skip_requested = false
 	var remaining: float = max(delay, 0.0)
-	while remaining > 0.0:
+	while remaining > 0.0 and not _results_wait_cancelled:
 		if _skip_requested:
 			_skip_requested = false
 			_accelerate_active_tweens()

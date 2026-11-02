@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://djw00qg3nsv34"
+path="res://.godot/imported/Anger_AwDude_03.ogg-5e9e1dc636743d6915b2c8a11ea2be4b.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Anger_AwDude_03.ogg"
+dest_files=["res://.godot/imported/Anger_AwDude_03.ogg-5e9e1dc636743d6915b2c8a11ea2be4b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

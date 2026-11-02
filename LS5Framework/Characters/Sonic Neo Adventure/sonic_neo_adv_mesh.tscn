@@ -36,6 +36,8 @@ shader = ExtResource("23_outline")
 shader_parameter/outline_width = 0.035
 shader_parameter/darkness = 0.72
 shader_parameter/alpha_threshold = 0.1
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/surface_color_enabled = false
 shader_parameter/base_color = Color(1, 1, 1, 1)
 shader_parameter/tint_enabled = false
 shader_parameter/primary_color = Color(1, 1, 1, 1)
@@ -109,7 +111,7 @@ animation_speed_falloff_time = 1.2
 
 [node name="Sonic_NeoAdv_Root" unique_id=1917975666 instance=ExtResource("1_f4e4o")]
 
-[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(739993320) index="0" unique_id=1055452222]
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1288060692) index="0" unique_id=1966021238]
 bones/0/position = Vector3(-2.0149565, 3.9222505, 0.031912666)
 bones/1/position = Vector3(0.59311986, 0.032619476, 1.8573728)
 bones/1/rotation = Quaternion(-3.6386425e-08, -0.7071068, -0.7071068, 7.0383706e-08)
@@ -429,16 +431,16 @@ bones/175/position = Vector3(1.6009591e-15, 4.091938, -0.0031870622)
 bones/175/rotation = Quaternion(0.02933039, -1.1915795e-07, -3.496453e-09, 0.9995698)
 bones/175/scale = Vector3(1, 1, 1)
 
-[node name="DEF_eye_l" parent="Armature/Skeleton3D" index="0" unique_id=543124059]
+[node name="DEF_eye_l" parent="Armature/Skeleton3D" index="0" unique_id=558300222]
 transform = Transform3D(0.91313833, 0.4048258, -0.047902286, 0.08654764, -0.30735385, -0.9476513, -0.39835668, 0.86119074, -0.3156932, 0.25789142, 4.657033, 0.8128628)
 
-[node name="DEF_eye_r" parent="Armature/Skeleton3D" index="1" unique_id=2062707021]
+[node name="DEF_eye_r" parent="Armature/Skeleton3D" index="1" unique_id=1840646967]
 transform = Transform3D(0.9131378, -0.40482605, 0.047902852, -0.08654721, -0.3073537, -0.9476512, 0.39835712, 0.86119056, -0.31569296, -0.25789207, 4.657033, 0.8128629)
 
-[node name="Eyeglobe" parent="Armature/Skeleton3D" index="3" unique_id=184316529]
+[node name="Eyeglobe" parent="Armature/Skeleton3D" index="3" unique_id=1635705037]
 surface_material_override/0 = SubResource("ShaderMaterial_xhas5")
 
-[node name="SpinBall" parent="Armature/Skeleton3D" index="7" unique_id=486901057]
+[node name="SpinBall" parent="Armature/Skeleton3D" index="7" unique_id=112818478]
 visible = false
 
 [node name="GazeTrackingModifier3D" type="SkeletonModifier3D" parent="Armature/Skeleton3D" index="10" unique_id=104063011 node_paths=PackedStringArray("facial_animation_player")]
@@ -510,10 +512,10 @@ right_animation = &"CAMMOD_Quills_Right"
 bone_roots = Array[StringName]([&"ROT-quill_top.R", &"ROT-quill_top.L", &"ROT-quill_bottom.R", &"ROT-quill_mid", &"ROT-quill_bottom.L", &"ROT-quill_top"])
 yaw_fade_end = 1.3089969389957472
 
-[node name="WheelRunImage" parent="Armature/Skeleton3D" index="13" unique_id=2044474088]
+[node name="WheelRunImage" parent="Armature/Skeleton3D" index="13" unique_id=1576346361]
 surface_material_override/0 = ExtResource("18_neo_afterimage_material")
 
-[node name="AnimationPlayer" parent="." index="3" unique_id=1096408287]
+[node name="AnimationPlayer" parent="." index="3" unique_id=256248676]
 libraries/ = ExtResource("14_neo_animations")
 
 [node name="PlayerAudio" type="Node3D" parent="." index="4" unique_id=1640784168]
@@ -569,7 +571,35 @@ bus = &"SFX"
 attenuation_filter_cutoff_hz = 12000.0
 attenuation_filter_db = -2.0
 
-[node name="AbilitySounds" type="Node3D" parent="PlayerAudio" index="7" unique_id=227528407]
+[node name="AnimAudio01" type="AudioStreamPlayer3D" parent="PlayerAudio" index="7" unique_id=1868501632]
+unit_size = 60.0
+max_distance = 450.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 12000.0
+attenuation_filter_db = -2.0
+
+[node name="AnimAudio02" type="AudioStreamPlayer3D" parent="PlayerAudio" index="8" unique_id=230960962]
+unit_size = 60.0
+max_distance = 450.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 12000.0
+attenuation_filter_db = -2.0
+
+[node name="AnimAudio03" type="AudioStreamPlayer3D" parent="PlayerAudio" index="9" unique_id=613413316]
+unit_size = 60.0
+max_distance = 450.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 12000.0
+attenuation_filter_db = -2.0
+
+[node name="AnimAudio04" type="AudioStreamPlayer3D" parent="PlayerAudio" index="10" unique_id=659546423]
+unit_size = 60.0
+max_distance = 450.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 12000.0
+attenuation_filter_db = -2.0
+
+[node name="AbilitySounds" type="Node3D" parent="PlayerAudio" index="11" unique_id=227528407]
 
 [node name="SFX_BounceStart" type="AudioStreamPlayer3D" parent="PlayerAudio/AbilitySounds" index="0" unique_id=670440557]
 stream = ExtResource("2_punte")
@@ -709,6 +739,7 @@ parameters/LandingRollOverride/active = false
 parameters/LandingRollOverride/internal_active = false
 parameters/LandingRollOverride/request = 0
 parameters/MoveTimeScale/scale = 1.0
+parameters/StateMachine/Actions/Ground/conditions/VictoryExitRequested = false
 parameters/StateMachine/Actions/GroundSeek/seek_request = -1.0
 parameters/StateMachine/Actions/GroundClock/scale = 1.0
 parameters/StateMachine/Actions/AirSeek/seek_request = -1.0

@@ -4,6 +4,8 @@ class_name LipSyncProfile
 
 ## Scene instantiated by the character preview.
 @export var preview_scene: PackedScene
+## Nodes hidden only in the Lip Sync preview, relative to Preview Scene. Supports imported models without editable node metadata.
+@export var preview_hidden_node_paths: Array[NodePath] = []
 ## Bone centered by the character preview camera.
 @export var preview_focus_bone: StringName = &"head"
 ## Preview camera offset from the focus bone.

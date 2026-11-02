@@ -1,6 +1,11 @@
 extends AudioStreamPlayer
 class_name CharacterUIVoicePlayer
 
+const CLIP_SELECTOR: Script = preload("res://LS5Framework/Scripts/Audio/AudioClipSelector.gd")
+var _clip_selector: RefCounted = CLIP_SELECTOR.new()
+
+var _registered_profiles: Dictionary = {}
+
 var _cooldown_deadlines_ms: Dictionary = {}
 var _last_clips: Dictionary = {}
 
@@ -8,6 +13,7 @@ var _last_clips: Dictionary = {}
 func play_voice_class(profile: CharacterUIVoiceProfile, character_id: String, voice_class: StringName) -> bool:
 	if profile == null or playing:
 		return false
+	register_profile(profile)
 	var clips: Array[AudioStream] = profile.get_clips(voice_class)
 	if clips.is_empty():
 		return false
@@ -28,18 +34,13 @@ func play_voice_class(profile: CharacterUIVoiceProfile, character_id: String, vo
 
 
 func _select_clip(clips: Array[AudioStream], previous_clip: AudioStream) -> AudioStream:
-	var available_clips: Array[AudioStream] = []
-	for clip: AudioStream in clips:
-		if clip != null:
-			available_clips.append(clip)
-	if available_clips.is_empty():
-		return null
-	if available_clips.size() == 1:
-		return available_clips[0]
-	var fresh_clips: Array[AudioStream] = []
-	for clip: AudioStream in available_clips:
-		if clip != previous_clip:
-			fresh_clips.append(clip)
-	if fresh_clips.is_empty():
-		return available_clips.pick_random()
-	return fresh_clips.pick_random()
+	var index: int = _clip_selector.pick_index(clips, true, previous_clip)
+	return clips[index] if index >= 0 else null
+
+
+func register_profile(profile: CharacterUIVoiceProfile, refresh: bool = false) -> void:
+	if not profile or (_registered_profiles.has(profile.get_instance_id()) and not refresh):
+		return
+	_registered_profiles[profile.get_instance_id()] = profile
+	for voice_class: StringName in [&"confirm", &"character", &"level", &"settings", &"online", &"loading", &"confirm_exit"]:
+		_clip_selector.register_clips(profile.get_clips(voice_class), refresh)

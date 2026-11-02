@@ -341,9 +341,9 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 @export var wall_detach_animation_command: StringName = &"CMD_WALL_DETACH"
 ## Animation state entered after a wall kick or detachment animation finishes.
 @export var wall_exit_fall_animation_command: StringName = &"FallBlend"
-## Placeholder wall-kick animation duration before transitioning to the fall blendspace.
+## Fallback wall-kick duration when animation playback timing is unavailable.
 @export var wall_kick_animation_duration: float = 0.3
-## Placeholder detachment animation duration before transitioning to the fall blendspace.
+## Fallback detachment duration when animation playback timing is unavailable.
 @export var wall_detach_animation_duration: float = 0.12
 ## Aligns the character model along the wall during runs and into it during clings.
 @export var align_visual_to_wall: bool = true
@@ -2401,10 +2401,12 @@ func _update_wall_exit_animation(delta: float) -> void:
 		return
 	_wall_exit_animation_elapsed += max(delta, 0.0)
 	var animation_finished: bool = _wall_exit_animation_elapsed >= _wall_exit_animation_duration
-	if owner_player.anim_state != null and owner_player.get_animation_director().get_current_state() == _wall_exit_animation_command:
-		var animation_length: float = owner_player.get_animation_director().get_active_playback().get_current_length()
+	var director: PlayerAnimationDirector = owner_player.get_animation_director()
+	var playback: AnimationNodeStateMachinePlayback = director.get_active_playback()
+	if playback and (playback.get_current_node() == _wall_exit_animation_command or director.get_current_state() == _wall_exit_animation_command):
+		var animation_length: float = playback.get_current_length()
 		if animation_length > 0.001:
-			animation_finished = owner_player.get_animation_director().get_active_playback().get_current_play_position() >= animation_length - 0.02
+			animation_finished = playback.get_current_play_position() >= animation_length - 0.001
 	if not animation_finished:
 		return
 	_wall_exit_animation_pending = false

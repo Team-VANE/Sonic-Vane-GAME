@@ -1,7 +1,6 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://cpqlmrf3kmf2m"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wb5s7"]
-resource_local_to_scene = true
 animation = &"Idle"
 use_custom_timeline = true
 timeline_length = 3.4
@@ -10,7 +9,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_60fi3"]
-resource_local_to_scene = true
 animation = &"Idle"
 use_custom_timeline = true
 timeline_length = 3.4
@@ -19,7 +17,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4uy6r"]
-resource_local_to_scene = true
 animation = &"Idle"
 use_custom_timeline = true
 timeline_length = 3.4
@@ -28,7 +25,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_of5u6"]
-resource_local_to_scene = true
 animation = &"Idle"
 use_custom_timeline = true
 timeline_length = 3.4
@@ -37,7 +33,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rnk11"]
-resource_local_to_scene = true
 animation = &"Idle_Wait_1"
 use_custom_timeline = true
 timeline_length = 3.4
@@ -46,43 +41,36 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0aubq"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_42de7"]
-resource_local_to_scene = true
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8m0kb"]
-resource_local_to_scene = true
 xfade_time = 0.08
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jukgl"]
-resource_local_to_scene = true
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yepm1"]
-resource_local_to_scene = true
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rxabv"]
-resource_local_to_scene = true
 xfade_time = 0.08
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [resource]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true;_movement-time-scale=false"
 states/End/position = Vector2(1027, 100)
 states/Idle/node = SubResource("AnimationNodeAnimation_of5u6")

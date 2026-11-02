@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://cxy2p1rufk8un" path="res://LS5Framework/Sounds/Music/Some_Guy_On_The_Internet-EmeraldHill_Faithfully_Restored.ogg" id="13_07swv"]
 [ext_resource type="PackedScene" uid="uid://bucbdoyievjwl" path="res://LS5Framework/Objects/Race/RaceStart.tscn" id="13_50ke2"]
 [ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="14_07swv"]
+[ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="17_7ondq"]
 [ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="17_mhc1b"]
 [ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="18_eomp1"]
 [ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="19_0wwbu"]
@@ -149,11 +150,14 @@ shader_parameter/ssr_roughness_mip = 4.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_qnnpr"]
 size = Vector3(8000, 139.09326, 8000)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_50ke2"]
-size = Vector3(38, 7.436035, 55)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_t1qp6"]
+height = 15.162598
+radius = 12.355957
 
-[sub_resource type="BoxMesh" id="BoxMesh_amcd3"]
-size = Vector3(38, 7.436035, 55)
+[sub_resource type="CylinderMesh" id="CylinderMesh_erx8o"]
+top_radius = 12.355957
+bottom_radius = 12.355957
+height = 15.162598
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_07swv"]
 size = Vector3(30, 25, 30)
@@ -165,7 +169,7 @@ shader_parameter/tex_flat = ExtResource("18_eomp1")
 shader_parameter/tex_glow = ExtResource("19_0wwbu")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 11503.959
+shader_parameter/swap_time = 49813.565
 
 [node name="Blueberry_Beach" type="Node3D" unique_id=794803344]
 
@@ -982,18 +986,21 @@ go_music_stream = ExtResource("13_07swv")
 go_music_fade_in = 0.0
 
 [node name="CollisionShape3D" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="0" unique_id=1655613209]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5441895, 0.5)
-shape = SubResource("BoxShape3D_50ke2")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4.6098633, -21.676819)
+shape = SubResource("CylinderShape3D_t1qp6")
 
 [node name="BoundaryVisual" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="1" unique_id=950711976]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5441895, 0.5)
-mesh = SubResource("BoxMesh_amcd3")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4.6098633, -21.676819)
+mesh = SubResource("CylinderMesh_erx8o")
 
 [node name="StartingLine" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="2" unique_id=96905968]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.677185, 0)
 
 [node name="CameraFacingDirection" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" index="3"]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="Terminal" parent="OBJECTS/RaceStart_BBZ_COLLECTION_01" unique_id=107229639 instance=ExtResource("17_7ondq")]
+transform = Transform3D(-0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, -0.70710677, 14.772156, -2.103012, 28.64006)
 
 [node name="RaceGoal_BBZ_COLLECTION_01" parent="OBJECTS" unique_id=1001605477 instance=ExtResource("14_07swv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1143.1344, 199.134, -109.06793)

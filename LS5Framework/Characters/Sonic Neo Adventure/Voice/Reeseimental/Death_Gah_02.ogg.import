@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cgj4s1vewrwtg"
+path="res://.godot/imported/Death_Gah_02.ogg-c6f764c6b2a1534d9dcaa0b2a1770fa7.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Death_Gah_02.ogg"
+dest_files=["res://.godot/imported/Death_Gah_02.ogg-c6f764c6b2a1534d9dcaa0b2a1770fa7.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

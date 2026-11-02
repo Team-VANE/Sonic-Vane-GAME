@@ -276,6 +276,9 @@ const PLAYER_TRACKING_MODE_MINIMAL: int = 1
 const PLAYER_TRACKING_MODE_OFF: int = 2
 var player_tracking_mode: int = PLAYER_TRACKING_MODE_MINIMAL
 
+var _audio_pause_applied: bool = false
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process_input(true)
@@ -301,6 +304,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	sync_audio_pause()
 	if not fps_counter_visible or _fps_counter_label == null:
 		return
 	_fps_counter_update_time -= delta
@@ -619,7 +623,13 @@ func _center_window_on_current_screen(window_size: Vector2i) -> void:
 	)
 	DisplayServer.window_set_position(centered_position)
 
+func sync_audio_pause() -> void:
+	if get_tree() and _audio_pause_applied != get_tree().paused:
+		_apply_audio()
+
+
 func _apply_audio() -> void:
+	_audio_pause_applied = get_tree() != null and get_tree().paused
 	var bus_master: int = AudioServer.get_bus_index("Master")
 	if bus_master != -1:
 		AudioServer.set_bus_volume_db(bus_master, 0.0)
@@ -629,7 +639,7 @@ func _apply_audio() -> void:
 		var music_percent: float = get_music_volume_percent()
 		var master_mix: float = get_master_volume_percent()
 		var effective_music : float = clamp((music_percent * master_mix) / 100.0, 0.0, 100.0)
-		AudioServer.set_bus_mute(bus_music, effective_music <= 0.0)
+		AudioServer.set_bus_mute(bus_music, _audio_pause_applied or effective_music <= 0.0)
 		AudioServer.set_bus_volume_db(bus_music, _percent_to_db(effective_music, MUSIC_MIN_DB, MUSIC_MAX_DB))
 
 	var bus_sfx: int = AudioServer.get_bus_index("SFX")
@@ -637,7 +647,7 @@ func _apply_audio() -> void:
 		var sfx_percent: float = get_sfx_volume_percent()
 		var master_mix: float = get_master_volume_percent()
 		var effective_sfx : float = clamp((sfx_percent * master_mix) / 100.0, 0.0, 100.0)
-		AudioServer.set_bus_mute(bus_sfx, effective_sfx <= 0.0)
+		AudioServer.set_bus_mute(bus_sfx, _audio_pause_applied or effective_sfx <= 0.0)
 		AudioServer.set_bus_volume_db(bus_sfx, _percent_to_db(effective_sfx, SFX_MIN_DB, SFX_MAX_DB))
 
 	var bus_ui: int = AudioServer.get_bus_index("UI")
@@ -653,7 +663,7 @@ func _apply_audio() -> void:
 		var voice_percent: float = get_voice_volume_percent()
 		var master_mix: float = get_master_volume_percent()
 		var effective_voice : float = clamp((voice_percent * master_mix) / 100.0, 0.0, 100.0)
-		AudioServer.set_bus_mute(bus_voice, effective_voice <= 0.0)
+		AudioServer.set_bus_mute(bus_voice, _audio_pause_applied or effective_voice <= 0.0)
 		AudioServer.set_bus_volume_db(bus_voice, _percent_to_db(effective_voice, VOICE_MIN_DB, VOICE_MAX_DB))
 
 # Call this from your level scenes:

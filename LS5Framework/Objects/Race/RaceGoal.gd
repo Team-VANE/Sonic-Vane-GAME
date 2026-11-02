@@ -17,6 +17,8 @@ enum GoalCameraMode {
 
 @export_group("Goal Pose")
 @export var goal_pose_path: NodePath = NodePath("GoalPose")
+## Faces each player towards the goal camera when placed in the lineup. Missing cameras use the lineup direction.
+@export var player_face_camera: bool = true
 
 @export_group("Downwarp")
 @export var downwarp_enabled: bool = true
@@ -40,8 +42,16 @@ enum GoalCameraMode {
 @export var face_player_model_root: bool = true
 ## Aims the static goal camera at the player instead of using its authored rotation.
 @export var face_player: bool = true
-## Aim offset from the player's origin.
-@export var face_offset: Vector3 = Vector3(0.0, 1.5, 0.0)
+## Aims at the named character bone when Face Player is enabled. Missing bones use the player root.
+@export var face_player_bone_enabled: bool = true
+## Bone followed by the goal camera when bone aiming is enabled.
+@export var face_player_bone_name: StringName = &"head"
+## Smooths player or bone-facing changes with the camera constraint's tracking response.
+@export var face_damping_enabled: bool = true
+## Facing response per second when damping is enabled. Lower values give more damping; zero follows directly.
+@export_range(0.0, 200.0, 0.1, "or_greater") var face_damping_response: float = 8.0
+## Aim offset from the player root or selected bone.
+@export var face_offset: Vector3 = Vector3(0.0, 0.8, 0.0)
 ## Overrides FOV during the goal presentation.
 @export var fov_override_enabled: bool = false
 ## FOV used when the goal-camera override is enabled.
@@ -112,6 +122,12 @@ var _goal_camera_rig: Node = null
 var _finish_fade_camera_constraint: RaceCameraConstraint = null
 var _finish_fade_camera_rig: Node = null
 var _active_victory_presentation: Node = null
+var _victory_failed: bool = false
+## Player held in the goal pose until results explicitly finish.
+var _frozen_goal_player: WeakRef
+## Results interface associated with the active goal presentation.
+var _goal_results_ui: Node
+var _waiting_for_goal_option: bool = false
 var _visual_root: Node = null
 var _anim_player: AnimationPlayer = null
 var _idle_audio: AudioStreamPlayer3D = null
@@ -489,6 +505,7 @@ func _run_goal_sequence(player: Node) -> void:
 		is_new_record = HighScoreManager.save_time_if_better(level_key, final_time)
 
 	var ui = _spawn_ui()
+	_goal_results_ui = ui
 	if ui != null and is_instance_valid(ui) and race_start != null and is_instance_valid(race_start):
 		if ui.has_method("configure_ghost_save") and race_start.has_method("get_pending_ghost_summary"):
 			ui.call("configure_ghost_save", race_start.call("get_pending_ghost_summary"))
@@ -535,30 +552,36 @@ func _run_goal_sequence(player: Node) -> void:
 	_play_results_music()
 
 	# Wait before showing results (skippable with Ability Slot 1 via RaceUI).
-	if ui != null and is_instance_valid(ui) and ui.has_method("wait_or_skip"):
+	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("wait_or_skip"):
 		await ui.call("wait_or_skip", results_delay)
 		if not _goal_sequence_is_current(player, sequence_token):
 			return
-	if ui != null and is_instance_valid(ui) and ui.has_method("show_results"):
+	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("show_results"):
 		ui.call("show_results", rings_value, final_time, score_value, is_new_record, ghost_note)
 	if ui != null and is_instance_valid(ui) and ui.has_method("set_restart_label"):
 		ui.call("set_restart_label", "Return to start")
 
 	# Wait before showing options (also skippable).
-	if ui != null and is_instance_valid(ui) and ui.has_method("wait_or_skip"):
+	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("wait_or_skip"):
 		await ui.call("wait_or_skip", options_delay)
 		if not _goal_sequence_is_current(player, sequence_token):
 			return
-	if ui != null and is_instance_valid(ui) and ui.has_method("show_options"):
+	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("show_options"):
 		ui.call("show_options")
 
 	var selected: StringName = &"stay"
-	if ui != null and is_instance_valid(ui):
+	if not _victory_failed and ui != null and is_instance_valid(ui):
+		_waiting_for_goal_option = true
 		selected = await ui.option_selected
+		_waiting_for_goal_option = false
 		if not _goal_sequence_is_current(player, sequence_token):
 			return
 	if race_start != null and is_instance_valid(race_start) and race_start.has_method("discard_pending_ghost_run"):
 		race_start.call("discard_pending_ghost_run")
+
+	await wait_for_victory_exit()
+	if not _goal_sequence_is_current(player, sequence_token):
+		return
 
 	# Always do a fade-out/fade-in for stay/return/restart.
 	if fader != null and is_instance_valid(fader):
@@ -571,6 +594,7 @@ func _run_goal_sequence(player: Node) -> void:
 			if not _goal_sequence_is_current(player, sequence_token):
 				return
 
+	_release_goal_player()
 	if selected == &"restart_race":
 		_reset_objects_for_race_restart()
 		_return_to_race_start(player, race_start)
@@ -744,6 +768,8 @@ func _handle_goal_option_no_restart(player: Node, option: StringName) -> void:
 
 
 func _teleport_player_to_goal_pose(player: Node) -> void:
+	if player.has_method("prepare_for_goal_sequence"):
+		player.call("prepare_for_goal_sequence")
 	var pose_node = get_node_or_null(goal_pose_path)
 	if pose_node == null and get_tree() != null and get_tree().current_scene != null:
 		pose_node = get_tree().current_scene.get_node_or_null(goal_pose_path)
@@ -777,10 +803,9 @@ func _teleport_player_to_goal_pose(player: Node) -> void:
 
 
 func _apply_goal_pose_visual_alignment(player: Node, pose_xform: Transform3D) -> void:
-	# SUMMARY: Snap the model to the goal pose facing direction for results.
-	# STEPS:
-	# - Step 1: Extract up/forward from the pose transform.
-	# - Step 2: Use snap_model_to_normal to apply an immediate visual alignment.
+	if is_instance_valid(player) and player.has_method("set_goal_sequence_frozen"):
+		_frozen_goal_player = weakref(player)
+		player.call("set_goal_sequence_frozen", true)
 	if player == null or not is_instance_valid(player):
 		return
 	if not player.has_method("snap_model_to_normal"):
@@ -789,7 +814,14 @@ func _apply_goal_pose_visual_alignment(player: Node, pose_xform: Transform3D) ->
 	var up: Vector3 = pose_xform.basis.y
 	if up.length() < 0.001:
 		up = Vector3.UP
+	up = up.normalized()
 	var forward: Vector3 = -pose_xform.basis.z
+	if player_face_camera:
+		var camera_source: Node3D = _resolve_goal_camera_source()
+		if camera_source:
+			var camera_direction: Vector3 = (camera_source.global_position - pose_xform.origin).slide(up)
+			if camera_direction.length_squared() > 0.000001:
+				forward = camera_direction.normalized()
 	if forward.length() < 0.001:
 		forward = Vector3.FORWARD
 	player.call("snap_model_to_normal", up, forward)
@@ -808,8 +840,11 @@ func _apply_downwarp(xform: Transform3D, player: Node) -> Transform3D:
 
 	var result = get_world_3d().direct_space_state.intersect_ray(params)
 	if result:
-		var p = result.position
-		xform.origin = p + Vector3.UP * max(downwarp_offset, 0.0)
+		var p: Vector3 = result.position
+		var ground_offset: float = 0.0
+		if is_instance_valid(player) and player.has_method("get_goal_ground_offset"):
+			ground_offset = float(player.call("get_goal_ground_offset", xform, result.normal))
+		xform.origin = p + Vector3.UP * (ground_offset + maxf(downwarp_offset, 0.0))
 	return xform
 
 
@@ -825,6 +860,8 @@ func _register_goal_camera_constraint(player: Node) -> void:
 	var c := RaceCameraConstraint.new()
 	c.constraint_priority = 9500
 	c.disable_camera_controls = true
+	c.aim_trait.target_bone_enabled = face_player_bone_enabled
+	c.aim_trait.target_bone_name = face_player_bone_name
 	if fov_override_enabled:
 		var lens: CameraLensTrait = CameraLensTrait.new()
 		lens.fov = fov_override
@@ -844,14 +881,14 @@ func _register_goal_camera_constraint(player: Node) -> void:
 		c.collision_mode = CameraConstraint.CollisionMode.DISABLED
 		c.aim_trait.target_node = camera_source
 		c.aim_trait.orbit_rig = false
-		var uses_static_camera_source: bool = goal_camera_mode == GoalCameraMode.STATIC_GOAL_CAMERA or _active_victory_presentation == null
+		var uses_static_camera_source: bool = goal_camera_mode == GoalCameraMode.STATIC_GOAL_CAMERA or not _has_victory_camera()
 		c.position_trait.offset = camera_position_offset if uses_static_camera_source else Vector3.ZERO
 		if not fov_override_enabled and camera_source is Camera3D:
 			var lens: CameraLensTrait = CameraLensTrait.new()
 			lens.mode = CameraLensTrait.Mode.SOURCE_FOV
 			lens.source_node = camera_source
 			c.lens_traits.append(lens)
-		if goal_camera_mode == GoalCameraMode.PLAYER_VICTORY_CAMERA and _active_victory_presentation != null:
+		if goal_camera_mode == GoalCameraMode.PLAYER_VICTORY_CAMERA and _has_victory_camera() and not (face_player and face_player_bone_enabled):
 			c.aim_trait.marker_uses_guide_basis = _victory_camera_uses_guide_basis()
 		elif face_player and player is Node3D:
 			c.aim_trait.mode = CameraOrientationTrait.Mode.FACE_TARGET
@@ -861,6 +898,9 @@ func _register_goal_camera_constraint(player: Node) -> void:
 		else:
 			c.aim_trait.marker_uses_guide_basis = true
 
+	if face_damping_enabled and c.aim_trait.mode in [CameraOrientationTrait.Mode.FACE_PLAYER, CameraOrientationTrait.Mode.FACE_TARGET]:
+		c.aim_trait.tracking_response = maxf(face_damping_response, 0.0)
+
 	_goal_constraint = c
 	_goal_camera_rig = rig
 	add_child(c)
@@ -868,7 +908,7 @@ func _register_goal_camera_constraint(player: Node) -> void:
 
 
 func _resolve_goal_camera_source() -> Node3D:
-	if goal_camera_mode == GoalCameraMode.PLAYER_VICTORY_CAMERA and _active_victory_presentation != null:
+	if goal_camera_mode == GoalCameraMode.PLAYER_VICTORY_CAMERA and _has_victory_camera():
 		if _active_victory_presentation.has_method("get_victory_camera_anchor"):
 			var anchor_value: Variant = _active_victory_presentation.call("get_victory_camera_anchor")
 			if anchor_value is Node3D and is_instance_valid(anchor_value):
@@ -887,18 +927,23 @@ func _get_goal_camera_aim_up() -> Vector3:
 	return aim_up
 
 
-func _begin_victory_presentation(player: Node) -> bool:
+func _begin_victory_presentation(player: Node, play_victory: bool = true) -> bool:
+	if is_instance_valid(player) and player.has_method("set_goal_sequence_frozen"):
+		_frozen_goal_player = weakref(player)
 	_end_victory_presentation()
-	if goal_camera_mode != GoalCameraMode.PLAYER_VICTORY_CAMERA:
+	_victory_failed = false
+	_waiting_for_goal_option = false
+	if not play_victory:
 		return false
 	_active_victory_presentation = _find_victory_presentation(player)
 	if _active_victory_presentation == null:
 		return false
+	if _active_victory_presentation.has_signal("victory_interrupted") and not _active_victory_presentation.is_connected("victory_interrupted", _on_victory_interrupted):
+		_active_victory_presentation.connect("victory_interrupted", _on_victory_interrupted)
 	_active_victory_presentation.call("begin_victory_presentation")
 	var anchor_value: Variant = _active_victory_presentation.call("get_victory_camera_anchor")
-	if anchor_value is Node3D and is_instance_valid(anchor_value):
+	if goal_camera_mode == GoalCameraMode.PLAYER_VICTORY_CAMERA and anchor_value is Node3D and is_instance_valid(anchor_value):
 		return true
-	_end_victory_presentation()
 	return false
 
 
@@ -923,6 +968,8 @@ func _victory_camera_uses_guide_basis() -> bool:
 
 func _end_victory_presentation() -> void:
 	if _active_victory_presentation != null and is_instance_valid(_active_victory_presentation):
+		if _active_victory_presentation.has_signal("victory_interrupted") and _active_victory_presentation.is_connected("victory_interrupted", _on_victory_interrupted):
+			_active_victory_presentation.disconnect("victory_interrupted", _on_victory_interrupted)
 		if _active_victory_presentation.has_method("end_victory_presentation"):
 			_active_victory_presentation.call("end_victory_presentation")
 	_active_victory_presentation = null
@@ -982,6 +1029,7 @@ func _unregister_finish_fade_camera_constraint() -> void:
 
 
 func _unregister_goal_camera_constraint(player: Node = null) -> void:
+	_release_goal_player()
 	if _goal_constraint == null or not is_instance_valid(_goal_constraint):
 		_goal_constraint = null
 		_goal_camera_rig = null
@@ -1027,6 +1075,8 @@ func apply_online_lineup_pose(player: Node, order: Array, dnfs: Array, targets: 
 	var index: int = lineup.find(peer_id)
 	if index < 0 or not is_instance_valid(player):
 		return
+	if player.has_method("prepare_for_goal_sequence"):
+		player.call("prepare_for_goal_sequence")
 	var pose: Transform3D = get_goal_pose_transform()
 	var right: Vector3 = pose.basis.x.normalized()
 	var forward: Vector3 = -pose.basis.z.normalized()
@@ -1053,7 +1103,7 @@ func apply_online_lineup_pose(player: Node, order: Array, dnfs: Array, targets: 
 
 func _compute_aim_offset(player: Node) -> Vector3:
 	var offset: Vector3 = face_offset
-	if not face_player_model_root or player == null or not is_instance_valid(player):
+	if face_player_bone_enabled or not face_player_model_root or player == null or not is_instance_valid(player):
 		return offset
 	if not player.has_method("get"):
 		return offset
@@ -1440,3 +1490,35 @@ func reset_for_race_start() -> void:
 		_back_audio.stop()
 	set_goal_active_for_race(false)
 	call_deferred("_play_goal_anim", anim_idle)
+
+## Completes the victory loop and ToIdle before a normal results exit.
+func wait_for_victory_exit(skip_wait: bool = false) -> void:
+	var presentation: Node = _active_victory_presentation
+	if not is_instance_valid(presentation) or not presentation.has_method("request_victory_exit"):
+		return
+	presentation.call("request_victory_exit", skip_wait)
+	while is_instance_valid(presentation) and presentation.call("is_victory_active"):
+		await get_tree().process_frame
+
+## Immediately releases victory playback for cancellations, scene changes, or scripted events.
+func skip_victory_wait() -> void:
+	_end_victory_presentation()
+
+func _has_victory_camera() -> bool:
+	return is_instance_valid(_active_victory_presentation) and is_instance_valid(_active_victory_presentation.call("get_victory_camera_anchor"))
+
+func _on_victory_interrupted() -> void:
+	_victory_failed = true
+	if is_instance_valid(_goal_results_ui):
+		if _goal_results_ui.has_method("hide"):
+			_goal_results_ui.call("hide")
+		if _goal_results_ui.has_method("cancel_results_wait"):
+			_goal_results_ui.call("cancel_results_wait")
+		if _waiting_for_goal_option:
+			_goal_results_ui.emit_signal("option_selected", &"stay")
+
+func _release_goal_player() -> void:
+	var player: Node = _frozen_goal_player.get_ref() as Node if _frozen_goal_player else null
+	if is_instance_valid(player) and player.has_method("set_goal_sequence_frozen"):
+		player.call("set_goal_sequence_frozen", false)
+	_frozen_goal_player = null

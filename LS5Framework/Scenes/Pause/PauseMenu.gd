@@ -611,6 +611,7 @@ func _open_pause() -> void:
 			p.call("set_local_pause_enabled", true)
 	else:
 		get_tree().paused = true
+		SettingsManager.sync_audio_pause()
 	_refresh_race_leave_button()
 	_refresh_return_hub_button()
 	_refresh_quick_restart_button()
@@ -652,6 +653,7 @@ func _resume_game(lock_cursor: bool = true) -> void:
 			p.call("set_local_pause_enabled", false)
 	else:
 		get_tree().paused = false
+		SettingsManager.sync_audio_pause()
 	if lock_cursor:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
