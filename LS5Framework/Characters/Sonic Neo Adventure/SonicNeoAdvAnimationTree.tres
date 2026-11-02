@@ -1,45 +1,36 @@
 [gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://cf16ancw52263"]
 
-[ext_resource type="AnimationNodeStateMachine" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvIdleTree.tres" id="idle_animation_tree"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cpqlmrf3kmf2m" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvIdleTree.tres" id="idle_animation_tree"]
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_60fi3"]
-resource_local_to_scene = true
 resource_name = "Physics Ears Add"
 filter_enabled = true
 sync = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a6jag"]
-resource_local_to_scene = true
 resource_name = "Physics Ears"
 animation = &"PHYSICS_Ears_Additive"
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4uy6r"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_hgyf8"]
-resource_local_to_scene = true
 resource_name = "Physics Quills Add"
 filter_enabled = true
 sync = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_35l5j"]
-resource_local_to_scene = true
 resource_name = "Physics Quills"
 animation = &"PHYSICS_Quill_Additive"
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_h8id1"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jukgl"]
-resource_local_to_scene = true
 animation = &"Carry_Hold"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yepm1"]
-resource_local_to_scene = true
 animation = &"Carry_Pickup"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rxabv"]
-resource_local_to_scene = true
 animation = &"Carry_PutDown"
 use_custom_timeline = true
 timeline_length = 0.4
@@ -48,7 +39,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ug6rr"]
-resource_local_to_scene = true
 animation = &"Carry_Throw"
 use_custom_timeline = true
 timeline_length = 0.4
@@ -57,10 +47,8 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mwbrh"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_6xrp5"]
-resource_local_to_scene = true
 states/Carry_Hold/node = SubResource("AnimationNodeAnimation_jukgl")
 states/Carry_Hold/position = Vector2(400, 100)
 states/Carry_Pickup/node = SubResource("AnimationNodeAnimation_yepm1")
@@ -74,87 +62,67 @@ transitions = ["Start", "Carry_Hold", SubResource("AnimationNodeStateMachineTran
 graph_offset = Vector2(-351, -178)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_gt8fb"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_0psud"]
-resource_local_to_scene = true
 filter_enabled = true
 filters = ["../..", "../../..", "Armature/Skeleton3D:Carry", "Armature/Skeleton3D:clavicle.l", "Armature/Skeleton3D:clavicle.r", "Armature/Skeleton3D:hand.l", "Armature/Skeleton3D:hand.r", "Armature/Skeleton3D:index_01.l", "Armature/Skeleton3D:index_01.r", "Armature/Skeleton3D:index_02.l", "Armature/Skeleton3D:index_02.r", "Armature/Skeleton3D:index_03.l", "Armature/Skeleton3D:index_03.r", "Armature/Skeleton3D:index_04.leaf.r", "Armature/Skeleton3D:lowerarm.l", "Armature/Skeleton3D:lowerarm.r", "Armature/Skeleton3D:middle_01.l", "Armature/Skeleton3D:middle_01.r", "Armature/Skeleton3D:middle_02.l", "Armature/Skeleton3D:middle_02.r", "Armature/Skeleton3D:middle_03.l", "Armature/Skeleton3D:middle_03.r", "Armature/Skeleton3D:middle_04.leaf.r", "Armature/Skeleton3D:pinky_01.l", "Armature/Skeleton3D:pinky_01.r", "Armature/Skeleton3D:pinky_02.l", "Armature/Skeleton3D:pinky_02.r", "Armature/Skeleton3D:pinky_03.l", "Armature/Skeleton3D:pinky_03.r", "Armature/Skeleton3D:ring_01.l", "Armature/Skeleton3D:ring_01.r", "Armature/Skeleton3D:ring_02.l", "Armature/Skeleton3D:ring_02.r", "Armature/Skeleton3D:ring_03.l", "Armature/Skeleton3D:ring_03.r", "Armature/Skeleton3D:ring_04.leaf.r", "Armature/Skeleton3D:spine_01", "Armature/Skeleton3D:spine_02", "Armature/Skeleton3D:thumb_01.l", "Armature/Skeleton3D:thumb_01.r", "Armature/Skeleton3D:thumb_02.l", "Armature/Skeleton3D:thumb_02.r", "Armature/Skeleton3D:thumb_03.l", "Armature/Skeleton3D:thumb_03.r", "Armature/Skeleton3D:upperarm.l", "Armature/Skeleton3D:upperarm.r"]
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_eoona"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="DebugPreviewAnimation"]
-resource_local_to_scene = true
 animation = &"RESET"
 
 [sub_resource type="AnimationNodeBlend2" id="DebugPreviewBlend"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="DebugPreviewSeek"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_lmmtb"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w0jf4"]
-resource_local_to_scene = true
 animation = &"Land_Roll"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_clayi"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xafkf"]
-resource_local_to_scene = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7cb0n"]
-resource_local_to_scene = true
 states/Roll/node = SubResource("AnimationNodeAnimation_w0jf4")
 states/Roll/position = Vector2(250, 0)
 transitions = ["Start", "Roll", SubResource("AnimationNodeStateMachineTransition_clayi"), "Roll", "End", SubResource("AnimationNodeStateMachineTransition_xafkf")]
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_o8f6y"]
-resource_local_to_scene = true
 fadeout_time = 0.08
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_pow07"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_6btl7"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hlfvd"]
-resource_local_to_scene = true
 resource_name = "_spinball-enabled=true"
 animation = &"Jump"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_drop_dash"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=true;min_speed=0;max_speed=1;min_alpha=0.765;max_alpha=0.965;_spinball-enabled=false"
 animation = &"DropDash"
 use_custom_timeline = true
-timeline_length = 0.00999999999999999
+timeline_length = 0.12
 stretch_time_scale = true
 start_offset = 0.0
 loop_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_21vdq"]
-resource_local_to_scene = true
 animation = &"Spring_Forward"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yhji4"]
-resource_local_to_scene = true
 animation = &"Hurt_Backwards"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e5hla"]
-resource_local_to_scene = true
 animation = &"Fall"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kv7n0"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=false;min_alpha=0.9;max_alpha=0.9"
 animation = &"TornadoKick"
 use_custom_timeline = true
@@ -164,240 +132,181 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uo3w4"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=false;min_alpha=0.9;max_alpha=0.9"
 animation = &"UppercutKick"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dpr6a"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_06tbc"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yluh8"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k6pk4"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_onrcv"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ilpfb"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6qfes"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bvj4s"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vbsnu"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5rcwn"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7qvxr"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4b5b4"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7hg11"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gfex1"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dv5sk"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0wvy2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ie3t8"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h1p5y"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ovqn7"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3oq5c"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_grl1o"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y1x78"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sdgr2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_31nwv"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s24dh"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ekwhs"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_btx1x"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aw78t"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_50krl"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bpxof"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3iint"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_38n43"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jrus2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a2dwi"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nxnev"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yqly0"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j2xhh"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ubt28"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_umjgg"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_730xo"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8vsvg"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l3vro"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uaf28"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_netai"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_10p6h"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_et8t6"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7melk"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_enkia"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qedn5"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yqb1u"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xifc0"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7vvu1"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wat6w"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s1ljs"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_svkum"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_roy2x"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_drop_dash"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_dmn1f"]
-resource_local_to_scene = true
 resource_name = "Air"
 states/Bounce/node = SubResource("AnimationNodeAnimation_hlfvd")
 states/Bounce/position = Vector2(500, 0)
@@ -422,13 +331,10 @@ transitions = ["Bounce", "Dash", SubResource("AnimationNodeStateMachineTransitio
 graph_offset = Vector2(67, -107)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8qsww"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_b0rya"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_waovp"]
-resource_local_to_scene = true
 animation = &"Drift_Right"
 use_custom_timeline = true
 timeline_length = 0.3
@@ -437,7 +343,6 @@ start_offset = 0.0
 loop_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n3nqk"]
-resource_local_to_scene = true
 animation = &"Drift_Left"
 use_custom_timeline = true
 timeline_length = 0.3
@@ -446,50 +351,41 @@ start_offset = 0.0
 loop_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4scby"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2jtbv"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_luh4t"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Left"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w8wov"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Right"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f7yag"]
-resource_local_to_scene = true
 xfade_time = 0.1
 advance_mode = 2
 advance_condition = &"Neutral"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8qfry"]
-resource_local_to_scene = true
 xfade_time = 0.1
 advance_mode = 2
 advance_condition = &"Neutral"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_404g8"]
-resource_local_to_scene = true
 xfade_time = 0.12
 advance_mode = 2
 advance_condition = &"Right"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tq4n1"]
-resource_local_to_scene = true
 xfade_time = 0.12
 advance_mode = 2
 advance_condition = &"Left"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_s6nj6"]
-resource_local_to_scene = true
 resource_name = "Drift"
 states/Drift_Left/node = SubResource("AnimationNodeAnimation_waovp")
 states/Drift_Left/position = Vector2(-280, 80)
@@ -502,13 +398,10 @@ transitions = ["Start", "Neutral", SubResource("AnimationNodeStateMachineTransit
 graph_offset = Vector2(-472, -284)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_icdk7"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_ww5wf"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n77oc"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=false;min_alpha=0.9;max_alpha=0.9"
 animation = &"SpinKick"
 use_custom_timeline = true
@@ -518,20 +411,53 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bicyk"]
-resource_local_to_scene = true
 resource_name = "_spinball-enabled=true"
 animation = &"RollFloor"
 
+[sub_resource type="AnimationNodeAnimation" id="VictoryExitClip"]
+resource_name = "_jump-ball-enabled=false;_spinball-enabled=false"
+animation = &"Goal_Victory_1_ToIdle"
+
+[sub_resource type="AnimationNodeAnimation" id="VictoryIntroClip"]
+resource_name = "_jump-ball-enabled=false;_spinball-enabled=false"
+animation = &"Goal_Victory_1"
+use_custom_timeline = true
+timeline_length = 5.8500000000000005
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="VictoryLoopClip"]
+resource_name = "_jump-ball-enabled=false;_spinball-enabled=false"
+animation = &"Goal_Victory_1_Loop"
+
+[sub_resource type="AnimationNodeAnimation" id="WallBonkClip"]
+resource_name = "_jump-ball-enabled=false;_spinball-enabled=false"
+animation = &"WallBonk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="VictoryIntroToLoop"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="VictoryLoopToExit"]
+break_loop_at_end = true
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"VictoryExitRequested"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="BonkFromSpinKick"]
+xfade_time = 0.08
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="BonkToSpinKick"]
+xfade_time = 0.08
+
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fpuok"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e6gj1"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n6wxo"]
-resource_local_to_scene = true
 resource_name = "Ground"
 states/End/position = Vector2(1023, 100)
 states/SpinKick/node = SubResource("AnimationNodeAnimation_n77oc")
@@ -539,38 +465,39 @@ states/SpinKick/position = Vector2(325, -243)
 states/Spindash/node = SubResource("AnimationNodeAnimation_bicyk")
 states/Spindash/position = Vector2(717, -243)
 states/Start/position = Vector2(16, 100)
-transitions = ["SpinKick", "Spindash", SubResource("AnimationNodeStateMachineTransition_fpuok"), "Spindash", "SpinKick", SubResource("AnimationNodeStateMachineTransition_e6gj1")]
-graph_offset = Vector2(-324, -394)
+states/VictoryExit/node = SubResource("VictoryExitClip")
+states/VictoryExit/position = Vector2(700, -600)
+states/VictoryIntro/node = SubResource("VictoryIntroClip")
+states/VictoryIntro/position = Vector2(200, -600)
+states/VictoryLoop/node = SubResource("VictoryLoopClip")
+states/VictoryLoop/position = Vector2(450, -600)
+states/WallBonk/node = SubResource("WallBonkClip")
+states/WallBonk/position = Vector2(325, -420)
+transitions = ["VictoryIntro", "VictoryLoop", SubResource("VictoryIntroToLoop"), "VictoryLoop", "VictoryExit", SubResource("VictoryLoopToExit"), "SpinKick", "WallBonk", SubResource("BonkFromSpinKick"), "WallBonk", "SpinKick", SubResource("BonkToSpinKick"), "SpinKick", "Spindash", SubResource("AnimationNodeStateMachineTransition_fpuok"), "Spindash", "SpinKick", SubResource("AnimationNodeStateMachineTransition_e6gj1")]
+graph_offset = Vector2(-292, -794)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_i66me"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_vbgcr"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fq3ho"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true"
 animation = &"WallCling_Enter"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pfqlu"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true"
 animation = &"WallCling_Loop"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2dive"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6qnl2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ak7vg"]
-resource_local_to_scene = true
 states/Enter/node = SubResource("AnimationNodeAnimation_fq3ho")
 states/Enter/position = Vector2(180, 100)
 states/Loop/node = SubResource("AnimationNodeAnimation_pfqlu")
@@ -579,47 +506,41 @@ states/Start/position = Vector2(-40, 100)
 transitions = ["Start", "Enter", SubResource("AnimationNodeStateMachineTransition_2dive"), "Enter", "Loop", SubResource("AnimationNodeStateMachineTransition_6qnl2")]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mvdcj"]
-resource_local_to_scene = true
 resource_name = "_jump-ball-enabled=false"
 animation = &"WallKick_Cling"
 use_custom_timeline = true
-timeline_length = 0.5
+timeline_length = 0.52
 stretch_time_scale = true
 start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rimo5"]
-resource_local_to_scene = true
 resource_name = "_jump-ball-enabled=false"
 animation = &"WallKick_Right"
 use_custom_timeline = true
-timeline_length = 0.7
+timeline_length = 0.52
 stretch_time_scale = true
 start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eau2y"]
-resource_local_to_scene = true
 resource_name = "_jump-ball-enabled=false"
 animation = &"WallKick_Left"
 use_custom_timeline = true
-timeline_length = 0.7
+timeline_length = 0.52
 stretch_time_scale = true
 start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xyhv5"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=true;min_speed=30;max_speed=100;min_alpha=0;max_alpha=0.765;_gaze-enabled=true"
 animation = &"WallRun_Left"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v3722"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=true;min_speed=30;max_speed=100;min_alpha=0;max_alpha=0.765;_gaze-enabled=true"
 animation = &"WallRun_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uyauq"]
-resource_local_to_scene = true
 animation = &"Fall"
 use_custom_timeline = true
 timeline_length = 0.12
@@ -628,7 +549,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yep4e"]
-resource_local_to_scene = true
 animation = &"Ledge_Grab"
 use_custom_timeline = true
 timeline_length = 0.2
@@ -637,306 +557,232 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8ic1x"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vsb11"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i0jeu"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6o23s"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rfpum"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7xs0p"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k24tp"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uyd2y"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0x1cy"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q4xmk"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p0fdw"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c22nn"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t53f5"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c6o5k"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ko42a"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ku1lk"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vbe8v"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w4ktd"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vdhly"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sooaj"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0g4g5"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o5j1v"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5o3w0"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8c3si"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7nupj"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8806q"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_blq3y"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v432f"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y2qyp"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a7wif"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_syu1c"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lo7ua"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hhl68"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2yhfk"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_skv2c"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cfj5g"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uvd8b"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h1q4m"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ebaxu"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4m18r"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v11to"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wlyft"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ccojp"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2gdbx"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o35qa"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mlsev"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nioa8"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1oi14"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bs0bw"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_urdme"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8y8cm"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qetr4"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3ovh6"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3jx23"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fsbo0"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kb1gx"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ypsjf"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8rrmt"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y5u7p"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tsbqw"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3t4h"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c8vns"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e0bpx"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ai577"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sed7d"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j8e8a"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cq8me"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4a3ph"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e1s4b"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d5x18"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yl7fe"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vkdwp"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hh5sy"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_pdlua"]
-resource_local_to_scene = true
 resource_name = "Parkour;_camera-overlay-enabled=true"
 states/CMD_LANDING_ROLL/node = SubResource("AnimationNodeAnimation_w0jf4")
 states/CMD_LANDING_ROLL/position = Vector2(677, 421)
 states/CMD_WALLCLING/node = SubResource("AnimationNodeStateMachine_ak7vg")
 states/CMD_WALLCLING/position = Vector2(664, -15)
 states/CMD_WALLKICK_CLING/node = SubResource("AnimationNodeAnimation_mvdcj")
-states/CMD_WALLKICK_CLING/position = Vector2(664, 171)
+states/CMD_WALLKICK_CLING/position = Vector2(826, 163)
 states/CMD_WALLKICK_RUN_LEFT/node = SubResource("AnimationNodeAnimation_rimo5")
 states/CMD_WALLKICK_RUN_LEFT/position = Vector2(-279, 45)
 states/CMD_WALLKICK_RUN_RIGHT/node = SubResource("AnimationNodeAnimation_eau2y")
@@ -952,16 +798,13 @@ states/LEDGE_GRAB/node = SubResource("AnimationNodeAnimation_yep4e")
 states/LEDGE_GRAB/position = Vector2(223, 498)
 states/Start/position = Vector2(-387, 148)
 transitions = ["Start", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_8ic1x"), "CMD_LANDING_ROLL", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_vsb11"), "CMD_LANDING_ROLL", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_i0jeu"), "CMD_LANDING_ROLL", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_6o23s"), "CMD_LANDING_ROLL", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_rfpum"), "CMD_LANDING_ROLL", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_7xs0p"), "CMD_LANDING_ROLL", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_k24tp"), "CMD_LANDING_ROLL", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_uyd2y"), "CMD_LANDING_ROLL", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_0x1cy"), "CMD_WALLCLING", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_q4xmk"), "CMD_WALLCLING", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_p0fdw"), "CMD_WALLCLING", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_c22nn"), "CMD_WALLCLING", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_t53f5"), "CMD_WALLCLING", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_c6o5k"), "CMD_WALLCLING", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_ko42a"), "CMD_WALLCLING", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_ku1lk"), "CMD_WALLCLING", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_vbe8v"), "CMD_WALLKICK_CLING", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_w4ktd"), "CMD_WALLKICK_CLING", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_vdhly"), "CMD_WALLKICK_CLING", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_sooaj"), "CMD_WALLKICK_CLING", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_0g4g5"), "CMD_WALLKICK_CLING", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_o5j1v"), "CMD_WALLKICK_CLING", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_5o3w0"), "CMD_WALLKICK_CLING", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_8c3si"), "CMD_WALLKICK_CLING", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_7nupj"), "CMD_WALLKICK_RUN_LEFT", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_8806q"), "CMD_WALLKICK_RUN_LEFT", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_blq3y"), "CMD_WALLKICK_RUN_LEFT", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_v432f"), "CMD_WALLKICK_RUN_LEFT", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_y2qyp"), "CMD_WALLKICK_RUN_LEFT", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_a7wif"), "CMD_WALLKICK_RUN_LEFT", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_syu1c"), "CMD_WALLKICK_RUN_LEFT", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_lo7ua"), "CMD_WALLKICK_RUN_LEFT", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_hhl68"), "CMD_WALLKICK_RUN_RIGHT", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_2yhfk"), "CMD_WALLKICK_RUN_RIGHT", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_skv2c"), "CMD_WALLKICK_RUN_RIGHT", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_cfj5g"), "CMD_WALLKICK_RUN_RIGHT", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_uvd8b"), "CMD_WALLKICK_RUN_RIGHT", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_h1q4m"), "CMD_WALLKICK_RUN_RIGHT", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_ebaxu"), "CMD_WALLKICK_RUN_RIGHT", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_4m18r"), "CMD_WALLKICK_RUN_RIGHT", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_v11to"), "CMD_WALLRUN_LEFT", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_wlyft"), "CMD_WALLRUN_LEFT", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_ccojp"), "CMD_WALLRUN_LEFT", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_2gdbx"), "CMD_WALLRUN_LEFT", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_o35qa"), "CMD_WALLRUN_LEFT", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_mlsev"), "CMD_WALLRUN_LEFT", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_nioa8"), "CMD_WALLRUN_LEFT", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_1oi14"), "CMD_WALLRUN_LEFT", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_bs0bw"), "CMD_WALLRUN_RIGHT", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_urdme"), "CMD_WALLRUN_RIGHT", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_8y8cm"), "CMD_WALLRUN_RIGHT", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_qetr4"), "CMD_WALLRUN_RIGHT", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_3ovh6"), "CMD_WALLRUN_RIGHT", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_3jx23"), "CMD_WALLRUN_RIGHT", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_fsbo0"), "CMD_WALLRUN_RIGHT", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_kb1gx"), "CMD_WALLRUN_RIGHT", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_ypsjf"), "CMD_WALL_DETACH", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_8rrmt"), "CMD_WALL_DETACH", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_y5u7p"), "CMD_WALL_DETACH", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_tsbqw"), "CMD_WALL_DETACH", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_q3t4h"), "CMD_WALL_DETACH", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_c8vns"), "CMD_WALL_DETACH", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_e0bpx"), "CMD_WALL_DETACH", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_ai577"), "CMD_WALL_DETACH", "LEDGE_GRAB", SubResource("AnimationNodeStateMachineTransition_sed7d"), "LEDGE_GRAB", "CMD_LANDING_ROLL", SubResource("AnimationNodeStateMachineTransition_j8e8a"), "LEDGE_GRAB", "CMD_WALLCLING", SubResource("AnimationNodeStateMachineTransition_cq8me"), "LEDGE_GRAB", "CMD_WALLKICK_CLING", SubResource("AnimationNodeStateMachineTransition_4a3ph"), "LEDGE_GRAB", "CMD_WALLKICK_RUN_LEFT", SubResource("AnimationNodeStateMachineTransition_e1s4b"), "LEDGE_GRAB", "CMD_WALLKICK_RUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_d5x18"), "LEDGE_GRAB", "CMD_WALLRUN_LEFT", SubResource("AnimationNodeStateMachineTransition_yl7fe"), "LEDGE_GRAB", "CMD_WALLRUN_RIGHT", SubResource("AnimationNodeStateMachineTransition_vkdwp"), "LEDGE_GRAB", "CMD_WALL_DETACH", SubResource("AnimationNodeStateMachineTransition_hh5sy")]
-graph_offset = Vector2(-614, -134)
+graph_offset = Vector2(-875, -159)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_bfrwq"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_ynkkp"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i182q"]
-resource_local_to_scene = true
 resource_name = "_spinball-enabled=true"
 animation = &"RollFloor"
 use_custom_timeline = true
@@ -971,47 +814,36 @@ start_offset = 0.0
 loop_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p8oxw"]
-resource_local_to_scene = true
 animation = &"Grind_Backwards_Med"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e1mpc"]
-resource_local_to_scene = true
 animation = &"Grind_Forwards_Med"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jkols"]
-resource_local_to_scene = true
 animation = &"Grind_Forwards_Med"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yssjq"]
-resource_local_to_scene = true
 animation = &"Grind_Backwards_Med"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0cp1b"]
-resource_local_to_scene = true
 animation = &"Grind_Backwards_Slow"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ertl5"]
-resource_local_to_scene = true
 animation = &"Grind_Forwards_Slow"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7t1ej"]
-resource_local_to_scene = true
 animation = &"Grind_Backwards_Slow"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0p4dj"]
-resource_local_to_scene = true
 animation = &"Grind_Forwards_Slow"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ilabg"]
-resource_local_to_scene = true
 animation = &"Grind_Forwards_Fast"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h6xwo"]
-resource_local_to_scene = true
 animation = &"Grind_Backwards_Fast"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_243k6"]
-resource_local_to_scene = true
 min_space = Vector2(0, -1)
 max_space = Vector2(200, 1)
 sync_mode = 1
@@ -1047,7 +879,6 @@ blend_point_9/pos = Vector2(130, -1)
 blend_point_9/name = &"9"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hr7fk"]
-resource_local_to_scene = true
 animation = &"Grind_Switch_Land"
 use_custom_timeline = true
 timeline_length = 0.5
@@ -1056,7 +887,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ppucp"]
-resource_local_to_scene = true
 animation = &"Grind_Switch_Left"
 use_custom_timeline = true
 timeline_length = 0.5
@@ -1065,7 +895,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sm5hk"]
-resource_local_to_scene = true
 animation = &"Grind_Switch_Right"
 use_custom_timeline = true
 timeline_length = 0.5
@@ -1074,91 +903,72 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nykkm"]
-resource_local_to_scene = true
 xfade_time = 0.02
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fahh4"]
-resource_local_to_scene = true
 xfade_time = 0.08
 priority = 20
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8wity"]
-resource_local_to_scene = true
 xfade_time = 0.02
 advance_mode = 2
 advance_condition = &"SwitchLeft"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7e2hl"]
-resource_local_to_scene = true
 xfade_time = 0.02
 advance_mode = 2
 advance_condition = &"SwitchRight"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wmuhg"]
-resource_local_to_scene = true
 xfade_time = 0.04
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y607g"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"NotCharging"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8e6ct"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jtctt"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_shagm"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_up6s7"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0m03k"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5ip1v"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fw6hd"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ejl5x"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kcdxm"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3sgko"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f1ua2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iatc7"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_87est"]
-resource_local_to_scene = true
 resource_name = "Rail;_gaze-enabled=true;_camera-overlay-enabled=true"
 states/Charge/node = SubResource("AnimationNodeAnimation_i182q")
 states/Charge/position = Vector2(512, 265)
@@ -1176,13 +986,10 @@ transitions = ["Start", "LAND", SubResource("AnimationNodeStateMachineTransition
 graph_offset = Vector2(-441, -276)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_httv1"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_rkow5"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_fa0a1"]
-resource_local_to_scene = true
 xfade_time = 0.12
 input_0/name = "Ground"
 input_0/auto_advance = false
@@ -1214,15 +1021,12 @@ input_6/break_loop_at_end = false
 input_6/reset = false
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rpkmx"]
-resource_local_to_scene = true
 animation = &"Skydive_Cancel"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_coiik"]
-resource_local_to_scene = true
 animation = &"Skydive_Dive"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4aucy"]
-resource_local_to_scene = true
 animation = &"Skydive_Dive_To_Glide"
 use_custom_timeline = true
 timeline_length = 0.4
@@ -1231,7 +1035,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jw7i4"]
-resource_local_to_scene = true
 animation = &"Skydive_Enter"
 use_custom_timeline = true
 timeline_length = 0.4
@@ -1240,150 +1043,122 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s4hel"]
-resource_local_to_scene = true
 animation = &"Skydive_Exit"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yi4ho"]
-resource_local_to_scene = true
 animation = &"Skydive_Glide"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dxl38"]
-resource_local_to_scene = true
 animation = &"Skydive_Glide_To_Dive"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2jhoh"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_suvjg"]
-resource_local_to_scene = true
 xfade_time = 0.08
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eyhws"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Glide"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ur4ma"]
-resource_local_to_scene = true
 xfade_time = 0.08
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nbygu"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Dive"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p7obh"]
-resource_local_to_scene = true
 xfade_time = 0.08
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1kskp"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Cancel"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7bywe"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Exit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ft32y"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Cancel"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rkjrb"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Exit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_02y6b"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Cancel"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bqgyt"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Exit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ap0sy"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Cancel"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mi6oo"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Exit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6pp8e"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Cancel"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jhwv5"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Exit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n4k1h"]
-resource_local_to_scene = true
 xfade_time = 0.08
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8ip24"]
-resource_local_to_scene = true
 xfade_time = 0.08
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j7nye"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_it3hq"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qog4m"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lwx6v"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_st563"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g8bgv"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_l2llc"]
-resource_local_to_scene = true
 resource_name = "Skydive;Skydive"
 states/Skydive_Cancel/node = SubResource("AnimationNodeAnimation_rpkmx")
 states/Skydive_Cancel/position = Vector2(750, 300)
@@ -1402,13 +1177,10 @@ states/Skydive_Glide_To_Dive/position = Vector2(500, 300)
 transitions = ["Start", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_2jhoh"), "Skydive_Enter", "Skydive_Dive", SubResource("AnimationNodeStateMachineTransition_suvjg"), "Skydive_Dive", "Skydive_Dive_To_Glide", SubResource("AnimationNodeStateMachineTransition_eyhws"), "Skydive_Dive_To_Glide", "Skydive_Glide", SubResource("AnimationNodeStateMachineTransition_ur4ma"), "Skydive_Glide", "Skydive_Glide_To_Dive", SubResource("AnimationNodeStateMachineTransition_nbygu"), "Skydive_Glide_To_Dive", "Skydive_Dive", SubResource("AnimationNodeStateMachineTransition_p7obh"), "Skydive_Enter", "Skydive_Cancel", SubResource("AnimationNodeStateMachineTransition_1kskp"), "Skydive_Enter", "Skydive_Exit", SubResource("AnimationNodeStateMachineTransition_7bywe"), "Skydive_Dive", "Skydive_Cancel", SubResource("AnimationNodeStateMachineTransition_ft32y"), "Skydive_Dive", "Skydive_Exit", SubResource("AnimationNodeStateMachineTransition_rkjrb"), "Skydive_Dive_To_Glide", "Skydive_Cancel", SubResource("AnimationNodeStateMachineTransition_02y6b"), "Skydive_Dive_To_Glide", "Skydive_Exit", SubResource("AnimationNodeStateMachineTransition_bqgyt"), "Skydive_Glide", "Skydive_Cancel", SubResource("AnimationNodeStateMachineTransition_ap0sy"), "Skydive_Glide", "Skydive_Exit", SubResource("AnimationNodeStateMachineTransition_mi6oo"), "Skydive_Glide_To_Dive", "Skydive_Cancel", SubResource("AnimationNodeStateMachineTransition_6pp8e"), "Skydive_Glide_To_Dive", "Skydive_Exit", SubResource("AnimationNodeStateMachineTransition_jhwv5"), "Skydive_Cancel", "End", SubResource("AnimationNodeStateMachineTransition_n4k1h"), "Skydive_Exit", "End", SubResource("AnimationNodeStateMachineTransition_8ip24"), "Skydive_Cancel", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_j7nye"), "Skydive_Exit", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_it3hq"), "Skydive_Dive", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_qog4m"), "Skydive_Dive_To_Glide", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_lwx6v"), "Skydive_Glide", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_st563"), "Skydive_Glide_To_Dive", "Skydive_Enter", SubResource("AnimationNodeStateMachineTransition_g8bgv")]
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_87xcj"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_ru3jr"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0kg5y"]
-resource_local_to_scene = true
 animation = &"Trick_Pitch_Back"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1417,7 +1189,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qdv0h"]
-resource_local_to_scene = true
 animation = &"Trick_Pitch_Forward"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1426,7 +1197,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tehhe"]
-resource_local_to_scene = true
 animation = &"Trick_Roll_Left"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1435,7 +1205,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yb278"]
-resource_local_to_scene = true
 animation = &"Trick_Roll_Right"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1444,7 +1213,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_stq86"]
-resource_local_to_scene = true
 animation = &"Trick_Yaw_Left"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1453,7 +1221,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xfeci"]
-resource_local_to_scene = true
 animation = &"Trick_Yaw_Right"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1462,7 +1229,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g25nx"]
-resource_local_to_scene = true
 animation = &"Trick_Pitch_Back"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1471,7 +1237,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k0pk6"]
-resource_local_to_scene = true
 animation = &"Trick_Pitch_Forward"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1480,7 +1245,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cqklw"]
-resource_local_to_scene = true
 animation = &"Trick_Roll_Left"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1489,7 +1253,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_npox0"]
-resource_local_to_scene = true
 animation = &"Trick_Roll_Right"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1498,7 +1261,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1wif1"]
-resource_local_to_scene = true
 animation = &"Trick_Yaw_Left"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1507,7 +1269,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_45jxw"]
-resource_local_to_scene = true
 animation = &"Trick_Yaw_Right"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -1516,16 +1277,12 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_poi13"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_emudy"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_u7n0m"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_g1ltj"]
-resource_local_to_scene = true
 allow_transition_to_self = true
 input_0/name = "PitchForward"
 input_0/auto_advance = false
@@ -1553,7 +1310,6 @@ input_5/break_loop_at_end = false
 input_5/reset = true
 
 [sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_8qj27"]
-resource_local_to_scene = true
 allow_transition_to_self = true
 input_0/name = "PitchForward"
 input_0/auto_advance = false
@@ -1581,7 +1337,6 @@ input_5/break_loop_at_end = false
 input_5/reset = true
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_2gb7p"]
-resource_local_to_scene = true
 graph_offset = Vector2(-935.52234, -174.43292)
 nodes/output/position = Vector2(500, 0)
 nodes/A_PitchForward/node = SubResource("AnimationNodeAnimation_qdv0h")
@@ -1621,23 +1376,19 @@ nodes/Banks/position = Vector2(200, 0)
 node_connections = [&"output", 0, &"Banks", &"SelectA", 0, &"A_PitchForward", &"SelectA", 1, &"A_PitchBack", &"SelectA", 2, &"A_YawLeft", &"SelectA", 3, &"A_YawRight", &"SelectA", 4, &"A_RollLeft", &"SelectA", 5, &"A_RollRight", &"SeekA", 0, &"SelectA", &"SelectB", 0, &"B_PitchForward", &"SelectB", 1, &"B_PitchBack", &"SelectB", 2, &"B_YawLeft", &"SelectB", 3, &"B_YawRight", &"SelectB", 4, &"B_RollLeft", &"SelectB", 5, &"B_RollRight", &"SeekB", 0, &"SelectB", &"Banks", 0, &"SeekA", &"Banks", 1, &"SeekB"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f5i2n"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_fkpt7"]
-resource_local_to_scene = true
 resource_name = "Tricks;_camera-overlay-enabled=true"
 states/Active/node = SubResource("AnimationNodeBlendTree_2gb7p")
 states/Active/position = Vector2(506, 100)
 transitions = ["Start", "Active", SubResource("AnimationNodeStateMachineTransition_f5i2n")]
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_w32g1"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_x8dvm"]
-resource_local_to_scene = true
-graph_offset = Vector2(-1112.4897, -337.62396)
+graph_offset = Vector2(-948.93384, -427.62396)
 nodes/output/position = Vector2(350, 300)
 nodes/Ground/node = SubResource("AnimationNodeStateMachine_n6wxo")
 nodes/Ground/position = Vector2(-820, -260)
@@ -1684,19 +1435,15 @@ nodes/Select/position = Vector2(0, 300)
 node_connections = [&"output", 0, &"Select", &"GroundSeek", 0, &"Ground", &"GroundClock", 0, &"GroundSeek", &"AirSeek", 0, &"Air", &"AirClock", 0, &"AirSeek", &"RailSeek", 0, &"Rail", &"RailClock", 0, &"RailSeek", &"ParkourSeek", 0, &"Parkour", &"ParkourClock", 0, &"ParkourSeek", &"DriftSeek", 0, &"Drift", &"DriftClock", 0, &"DriftSeek", &"TricksClock", 0, &"Tricks", &"SkydiveSeek", 0, &"Skydive", &"SkydiveClock", 0, &"SkydiveSeek", &"Select", 0, &"GroundClock", &"Select", 1, &"AirClock", &"Select", 2, &"RailClock", &"Select", 3, &"ParkourClock", &"Select", 4, &"DriftClock", &"Select", 5, &"TricksClock", &"Select", 6, &"SkydiveClock"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nv3c3"]
-resource_local_to_scene = true
 animation = &"Fall_Forward"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kaxs0"]
-resource_local_to_scene = true
 animation = &"Spring"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rgabt"]
-resource_local_to_scene = true
 animation = &"Spring_Forward"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_q3l6d"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true;_camera-overlay-enabled=true"
 min_space = Vector2(0, -100)
 max_space = Vector2(200, 100)
@@ -1715,7 +1462,6 @@ blend_point_3/pos = Vector2(60, 6)
 blend_point_3/name = &"3"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_clvn0"]
-resource_local_to_scene = true
 animation = &"Pre-Jump"
 use_custom_timeline = true
 timeline_length = 0.25
@@ -1724,39 +1470,31 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eqdbs"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lre5n"]
-resource_local_to_scene = true
 xfade_time = 0.05
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gw7ae"]
-resource_local_to_scene = true
 xfade_time = 0.08
 advance_mode = 2
 advance_condition = &"Falling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dbgsl"]
-resource_local_to_scene = true
 xfade_time = 0.05
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2dxh5"]
-resource_local_to_scene = true
 xfade_time = 0.05
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_frlkp"]
-resource_local_to_scene = true
 xfade_time = 0.05
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ocx7h"]
-resource_local_to_scene = true
 xfade_time = 0.05
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5u6j5"]
-resource_local_to_scene = true
 resource_name = "Air"
 states/FallBlend/node = SubResource("AnimationNodeBlendSpace2D_q3l6d")
 states/FallBlend/position = Vector2(700, 0)
@@ -1767,19 +1505,15 @@ states/PreJump/position = Vector2(200, 0)
 transitions = ["Start", "FallBlend", SubResource("AnimationNodeStateMachineTransition_eqdbs"), "PreJump", "Jump", SubResource("AnimationNodeStateMachineTransition_lre5n"), "Jump", "FallBlend", SubResource("AnimationNodeStateMachineTransition_gw7ae"), "PreJump", "FallBlend", SubResource("AnimationNodeStateMachineTransition_dbgsl"), "Jump", "PreJump", SubResource("AnimationNodeStateMachineTransition_2dxh5"), "FallBlend", "PreJump", SubResource("AnimationNodeStateMachineTransition_frlkp"), "FallBlend", "Jump", SubResource("AnimationNodeStateMachineTransition_ocx7h")]
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_ny20n"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ilk7f"]
-resource_local_to_scene = true
 resource_name = "_spinball-enabled=true"
 animation = &"RollFloor"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ivygt"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_gvc37"]
-resource_local_to_scene = true
 resource_name = "Ball"
 states/Roll/node = SubResource("AnimationNodeAnimation_ilk7f")
 states/Roll/position = Vector2(200, 0)
@@ -1787,13 +1521,10 @@ transitions = ["Start", "Roll", SubResource("AnimationNodeStateMachineTransition
 graph_offset = Vector2(-371, -239)
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_wcby6"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_i5m12"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k4na2"]
-resource_local_to_scene = true
 animation = &"BrakeStop"
 use_custom_timeline = true
 timeline_length = 0.45
@@ -1802,7 +1533,6 @@ start_offset = 0.0
 loop_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wuhji"]
-resource_local_to_scene = true
 animation = &"BrakeStop_End"
 use_custom_timeline = true
 timeline_length = 0.35
@@ -1811,7 +1541,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_607nk"]
-resource_local_to_scene = true
 animation = &"BrakeStop_Enter"
 use_custom_timeline = true
 timeline_length = 0.2
@@ -1820,79 +1549,60 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i2uua"]
-resource_local_to_scene = true
 animation = &"Move1_Walk"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ew44y"]
-resource_local_to_scene = true
 animation = &"Move1_Walk_Left"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3vf4"]
-resource_local_to_scene = true
-animation = &"Move3_Run"
-
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7x720"]
-resource_local_to_scene = true
 animation = &"Move3_Run_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mh11x"]
-resource_local_to_scene = true
 animation = &"Move4_TopRun_Left"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lv4ws"]
-resource_local_to_scene = true
+animation = &"Move3_Run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3vf4"]
 animation = &"Move4_TopRun"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_op05h"]
-resource_local_to_scene = true
 animation = &"Move4_TopRun_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x0wvq"]
-resource_local_to_scene = true
 animation = &"Move5_MaxRun_Left"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uggpx"]
-resource_local_to_scene = true
 animation = &"Move5_MaxRun"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c8n4f"]
-resource_local_to_scene = true
 animation = &"Move5_MaxRun_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rrpiy"]
-resource_local_to_scene = true
 animation = &"Move4_TopRun_Left"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o6coe"]
-resource_local_to_scene = true
 animation = &"Move4_TopRun"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yo6c7"]
-resource_local_to_scene = true
 animation = &"Move1_Walk_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l6vxe"]
-resource_local_to_scene = true
 animation = &"Move4_TopRun_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ku3eg"]
-resource_local_to_scene = true
 animation = &"Move2_Jog"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_okwma"]
-resource_local_to_scene = true
 animation = &"Move2_Jog_Left"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ifmmm"]
-resource_local_to_scene = true
 animation = &"Move2_Jog_Right"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ci221"]
-resource_local_to_scene = true
 animation = &"Move3_Run_Left"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_0kt08"]
-resource_local_to_scene = true
 resource_name = "_afterimage-speed=true;min_speed=50;max_speed=142;min_alpha=0;max_alpha=0.765;_gaze-enabled=true"
 min_space = Vector2(0, -1)
 max_space = Vector2(300, 1)
@@ -1925,31 +1635,31 @@ blend_point_8/node = SubResource("AnimationNodeAnimation_yo6c7")
 blend_point_8/pos = Vector2(20.25, -1)
 blend_point_8/name = &"8"
 blend_point_9/node = SubResource("AnimationNodeAnimation_ci221")
-blend_point_9/pos = Vector2(81, 1)
+blend_point_9/pos = Vector2(100, 1)
 blend_point_9/name = &"9"
-blend_point_10/node = SubResource("AnimationNodeAnimation_c3vf4")
-blend_point_10/pos = Vector2(81, 0)
-blend_point_10/name = &"10"
-blend_point_11/node = SubResource("AnimationNodeAnimation_7x720")
-blend_point_11/pos = Vector2(81, -1)
-blend_point_11/name = &"11"
-blend_point_12/node = SubResource("AnimationNodeAnimation_mh11x")
-blend_point_12/pos = Vector2(81.09, 1)
-blend_point_12/name = &"12"
-blend_point_13/node = SubResource("AnimationNodeAnimation_lv4ws")
-blend_point_13/pos = Vector2(81.09, 0)
-blend_point_13/name = &"13"
+blend_point_10/node = SubResource("AnimationNodeAnimation_7x720")
+blend_point_10/pos = Vector2(100, -1)
+blend_point_10/name = &"11"
+blend_point_11/node = SubResource("AnimationNodeAnimation_mh11x")
+blend_point_11/pos = Vector2(101, 1)
+blend_point_11/name = &"12"
+blend_point_12/node = SubResource("AnimationNodeAnimation_lv4ws")
+blend_point_12/pos = Vector2(100, 0)
+blend_point_12/name = &"13"
+blend_point_13/node = SubResource("AnimationNodeAnimation_c3vf4")
+blend_point_13/pos = Vector2(101, 0)
+blend_point_13/name = &"10"
 blend_point_14/node = SubResource("AnimationNodeAnimation_op05h")
-blend_point_14/pos = Vector2(81.09, -1)
+blend_point_14/pos = Vector2(101, -1)
 blend_point_14/name = &"14"
 blend_point_15/node = SubResource("AnimationNodeAnimation_x0wvq")
-blend_point_15/pos = Vector2(140.01, 1)
+blend_point_15/pos = Vector2(141, 1)
 blend_point_15/name = &"15"
 blend_point_16/node = SubResource("AnimationNodeAnimation_uggpx")
-blend_point_16/pos = Vector2(140.01, 0)
+blend_point_16/pos = Vector2(141, 0)
 blend_point_16/name = &"16"
 blend_point_17/node = SubResource("AnimationNodeAnimation_c8n4f")
-blend_point_17/pos = Vector2(140.01, -1)
+blend_point_17/pos = Vector2(141, -1)
 blend_point_17/name = &"17"
 blend_point_18/node = SubResource("AnimationNodeAnimation_rrpiy")
 blend_point_18/pos = Vector2(140, 1)
@@ -1962,17 +1672,14 @@ blend_point_20/pos = Vector2(140, -1)
 blend_point_20/name = &"20"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n7hpl"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true"
 animation = &"Idle_To_Walk"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cxb2r"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true;_camera-overlay-enabled=true"
 animation = &"Land"
 
 [sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_7rvrv"]
-resource_local_to_scene = true
 min_space = 0.0
 blend_point_0/node = SubResource("AnimationNodeAnimation_cxb2r")
 blend_point_0/pos = 0.0
@@ -1982,7 +1689,6 @@ blend_point_1/pos = 1.0
 blend_point_1/name = &"1"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a7gmm"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true;_camera-overlay-enabled=true"
 animation = &"Land_Moving"
 use_custom_timeline = true
@@ -1992,29 +1698,24 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r1t51"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true"
 animation = &"Walk_Left_To_Idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l8n38"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true"
 animation = &"Walk_Right_To_Idle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vck7e"]
-resource_local_to_scene = true
 advance_mode = 2
 advance_condition = &"StartIdle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hsm4b"]
-resource_local_to_scene = true
 xfade_time = 0.08
 break_loop_at_end = true
 advance_mode = 2
 advance_condition = &"StartMoving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ioypk"]
-resource_local_to_scene = true
 xfade_time = 0.07
 break_loop_at_end = true
 priority = 2
@@ -2022,7 +1723,6 @@ advance_mode = 2
 advance_condition = &"ResumeMoving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0yx7d"]
-resource_local_to_scene = true
 xfade_time = 0.07
 break_loop_at_end = true
 priority = 2
@@ -2030,7 +1730,6 @@ advance_mode = 2
 advance_condition = &"ResumeMoving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3gbab"]
-resource_local_to_scene = true
 xfade_time = 0.07
 break_loop_at_end = true
 switch_mode = 2
@@ -2038,7 +1737,6 @@ advance_mode = 2
 advance_condition = &"Slow"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cufwb"]
-resource_local_to_scene = true
 xfade_time = 0.07
 break_loop_at_end = true
 switch_mode = 2
@@ -2046,98 +1744,82 @@ advance_mode = 2
 advance_condition = &"Slow"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mff4p"]
-resource_local_to_scene = true
 xfade_time = 0.02
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lywlp"]
-resource_local_to_scene = true
 xfade_time = 0.07
 break_loop_at_end = true
 advance_mode = 2
 advance_condition = &"StopLeft"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s7buy"]
-resource_local_to_scene = true
 xfade_time = 0.07
 break_loop_at_end = true
 advance_mode = 2
 advance_condition = &"StopRight"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8q32v"]
-resource_local_to_scene = true
 advance_mode = 2
 advance_condition = &"StartFast"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xvr34"]
-resource_local_to_scene = true
 break_loop_at_end = true
 advance_mode = 2
 advance_condition = &"Skidding"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hwsfy"]
-resource_local_to_scene = true
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_odtud"]
-resource_local_to_scene = true
 break_loop_at_end = true
 advance_mode = 2
 advance_condition = &"NotSkidding"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kwa6r"]
-resource_local_to_scene = true
 break_loop_at_end = true
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tih1h"]
-resource_local_to_scene = true
 advance_mode = 2
 advance_condition = &"Skidding"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_60fi3"]
-resource_local_to_scene = true
 xfade_time = 0.35
 advance_mode = 2
 advance_condition = &"LandingIdle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a6jag"]
-resource_local_to_scene = true
 xfade_time = 0.35
 advance_mode = 2
 advance_condition = &"LandingMoving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4uy6r"]
-resource_local_to_scene = true
 xfade_time = 0.35
 advance_mode = 2
 advance_condition = &"LandingIdle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hgyf8"]
-resource_local_to_scene = true
 xfade_time = 0.35
 advance_mode = 2
 advance_condition = &"LandingMoving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_35l5j"]
-resource_local_to_scene = true
 xfade_time = 0.35
 advance_mode = 2
 advance_condition = &"LandingIdle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h8id1"]
-resource_local_to_scene = true
 xfade_time = 0.35
 advance_mode = 2
 advance_condition = &"LandingMoving"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_weaeo"]
-resource_local_to_scene = true
 resource_name = "_gaze-enabled=true;_camera-overlay-enabled=true"
 states/BrakeStop/node = SubResource("AnimationNodeAnimation_k4na2")
 states/BrakeStop/position = Vector2(1179, 328)
@@ -2167,10 +1849,8 @@ transitions = ["Start", "IDLE_ANIMATION", SubResource("AnimationNodeStateMachine
 graph_offset = Vector2(-460, -12)
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_fwowf"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_fjlhp"]
-resource_local_to_scene = true
 xfade_time = 0.12
 input_0/name = "Ground"
 input_0/auto_advance = false
@@ -2186,9 +1866,8 @@ input_2/break_loop_at_end = false
 input_2/reset = false
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_k18am"]
-resource_local_to_scene = true
 resource_name = "Movement families"
-graph_offset = Vector2(-1289.3333, -584.63245)
+graph_offset = Vector2(-1139.3333, -221.63245)
 nodes/output/position = Vector2(300, 0)
 nodes/Ground/node = SubResource("AnimationNodeStateMachine_weaeo")
 nodes/Ground/position = Vector2(-840, -500)
@@ -2209,13 +1888,10 @@ nodes/BallSeek/position = Vector2(-580, 220)
 node_connections = [&"output", 0, &"Clock", &"Select", 0, &"GroundSeek", &"Select", 1, &"AirSeek", &"Select", 2, &"BallSeek", &"Clock", 0, &"Select", &"GroundSeek", 0, &"Ground", &"AirSeek", 0, &"Air", &"BallSeek", 0, &"Ball"]
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_immfv"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_xqw1b"]
-resource_local_to_scene = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rwc64"]
-resource_local_to_scene = true
 animation = &"Hurt_DeadFall"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -2224,7 +1900,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3ho45"]
-resource_local_to_scene = true
 animation = &"Hurt_Dead"
 use_custom_timeline = true
 timeline_length = 1.5
@@ -2233,7 +1908,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_211p2"]
-resource_local_to_scene = true
 animation = &"Hurt_DeadFall"
 use_custom_timeline = true
 timeline_length = 2.0
@@ -2242,7 +1916,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_usbr8"]
-resource_local_to_scene = true
 animation = &"Hurt_Backwards"
 use_custom_timeline = true
 timeline_length = 1.0
@@ -2251,7 +1924,6 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vmmpm"]
-resource_local_to_scene = true
 animation = &"Hurt_Forwards"
 use_custom_timeline = true
 timeline_length = 1.0
@@ -2260,91 +1932,69 @@ start_offset = 0.0
 loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nnlt2"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_notga"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vjxfo"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ex1wu"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lhap2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n1c88"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s4xc2"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t8p1m"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sr1tj"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8hbhm"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vwnou"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ouddm"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7bttm"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fd6o8"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0ivx1"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c1e4h"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4yei7"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d3n33"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s5xid"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_goiep"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_518da"]
-resource_local_to_scene = true
 xfade_time = 0.08
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_06wie"]
-resource_local_to_scene = true
 states/CMD_DEADFALL/node = SubResource("AnimationNodeAnimation_rwc64")
 states/CMD_DEADFALL/position = Vector2(20, 249)
 states/CMD_DEADGROUND/node = SubResource("AnimationNodeAnimation_3ho45")
@@ -2361,7 +2011,6 @@ transitions = ["Start", "CMD_HURT", SubResource("AnimationNodeStateMachineTransi
 graph_offset = Vector2(-505, -237)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_37bhk"]
-resource_local_to_scene = true
 resource_name = "_additive-physics-enabled=false"
 graph_offset = Vector2(-974.91296, -125.43797)
 nodes/State/node = SubResource("AnimationNodeStateMachine_06wie")
@@ -2373,41 +2022,33 @@ nodes/Clock/position = Vector2(-150, 0)
 node_connections = [&"output", 0, &"Clock", &"Seek", 0, &"State", &"Clock", 0, &"Seek"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_35cy5"]
-resource_local_to_scene = true
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7c4bh"]
-resource_local_to_scene = true
 xfade_time = 0.04
 reset = false
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ptubx"]
-resource_local_to_scene = true
 xfade_time = 0.04
 reset = false
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yxi4s"]
-resource_local_to_scene = true
 xfade_time = 0.04
 reset = false
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u1nbe"]
-resource_local_to_scene = true
 xfade_time = 0.04
 reset = false
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nfgyh"]
-resource_local_to_scene = true
 xfade_time = 0.08
 reset = false
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dsx2o"]
-resource_local_to_scene = true
 xfade_time = 0.08
 reset = false
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2neh4"]
-resource_local_to_scene = true
 resource_name = "Presentation domains"
 states/Actions/node = SubResource("AnimationNodeBlendTree_x8dvm")
 states/Actions/position = Vector2(400, 0)
@@ -2420,8 +2061,7 @@ transitions = ["Start", "Motion", SubResource("AnimationNodeStateMachineTransiti
 graph_offset = Vector2(-462, -162)
 
 [resource]
-resource_local_to_scene = true
-graph_offset = Vector2(-770, -247)
+graph_offset = Vector2(-412.91614, -350.1366)
 nodes/output/position = Vector2(1860, 60)
 nodes/AdditivePhysicsEars/node = SubResource("AnimationNodeAdd2_60fi3")
 nodes/AdditivePhysicsEars/position = Vector2(580, -80)
