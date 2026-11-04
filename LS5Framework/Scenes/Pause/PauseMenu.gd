@@ -366,6 +366,7 @@ func _ready() -> void:
 	_ensure_data_tab()
 	_ensure_player_tracking_setting()
 	_organize_options_tabs()
+	$Overlay/OptionsPanel/Panel.connect_settings_controls(self)
 	_configure_graphics_apply_button()
 	_configure_options_tab_focus()
 	_apply_tab_titles()

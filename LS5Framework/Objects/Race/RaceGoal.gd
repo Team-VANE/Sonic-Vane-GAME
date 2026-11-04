@@ -1248,17 +1248,10 @@ func _get_player_spawn_node() -> Node3D:
 	if get_tree() == null:
 		return null
 	var level_manager = _get_level_manager()
-	if level_manager != null:
-		if level_manager.has_method("resolve_node_in_current_level"):
-			var n = level_manager.call("resolve_node_in_current_level", NodePath("PlayerSpawn"))
-			if n is Node3D:
-				return n as Node3D
-		if level_manager.has_method("get_current_level"):
-			var level = level_manager.call("get_current_level")
-			if level != null and is_instance_valid(level):
-				var level_spawn = level.get_node_or_null("PlayerSpawn")
-				if level_spawn is Node3D:
-					return level_spawn as Node3D
+	if level_manager and level_manager.has_method("get_current_spawn_point"):
+		var level_spawn: Node3D = level_manager.call("get_current_spawn_point")
+		if level_spawn:
+			return level_spawn
 	var scene = get_tree().current_scene
 	if scene != null:
 		var n = scene.get_node_or_null("PlayerSpawn")

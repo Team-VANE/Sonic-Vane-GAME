@@ -3,6 +3,70 @@ extends Panel
 class_name OptionsPanelLayout
 
 const MAXIMUM_PANEL_WIDTH: float = 1180.0
+const SETTINGS_CONTROLS: Dictionary = {
+	&"item_selected": [
+		"OptionResolution",
+		"OptionLOD",
+		"OptionHomingTargetMode",
+		"OptionMouseHomingTargetMode",
+		"OptionLightspeedDashTargetMode",
+		"OptionGhostRecordingRate",
+		"OptionGhostPlaybackRate",
+	],
+	&"pressed": [
+		"ButtonApplyResolution",
+		"ButtonResetDefaults",
+		"ButtonOptionsBack",
+	],
+	&"toggled": [
+		"CheckFullscreen",
+		"CheckVsync",
+		"CheckSSR",
+		"CheckSSAO",
+		"CheckSSIL",
+		"CheckSDFGI",
+		"CheckShadows",
+		"CheckGlow",
+		"CheckDepthOfField",
+		"CheckWaterDisplacement",
+		"CheckWaterRefraction",
+		"CheckWaterNormals",
+		"CheckWaterDepthFx",
+		"CheckSeparateHomingTargeting",
+		"CheckCameraDolly",
+		"CheckCameraTargetLookahead",
+		"CheckAutoFollowCamera",
+		"CheckAutoFollowControllerOnly",
+		"CheckCenterReticle",
+		"CheckRememberEmotePage",
+		"CheckComboSystem",
+		"CheckRecordRaceGhosts",
+		"CheckUseCharacterColorsOffline",
+	],
+	&"value_changed": [
+		"SliderCameraFar",
+		"SliderCameraFov",
+		"SliderMaster",
+		"SliderMusic",
+		"SliderSfx",
+		"SliderUi",
+		"SliderVoice",
+		"SliderHomingRadius",
+		"SliderCameraFollowSmoothing",
+		"SliderCameraTargetLookaheadAmount",
+		"SliderAutoFollowSensitivity",
+		"SliderAutoFollowInterruptDelay",
+		"SliderCenterReticleScale",
+		"SliderCenterReticleOpacity",
+		"SliderReticleVerticalOffset",
+	],
+	&"color_changed": [
+		"ColorCenterReticle",
+		"ColorOfflinePrimary",
+		"ColorOfflineSecondary",
+		"ColorOfflineTrail",
+	],
+}
 
 ## Container spanning the options viewport.
 var _frame: Control
@@ -20,6 +84,18 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		_create_navigation_footer()
 	_queue_layout()
+
+
+func connect_settings_controls(menu: Control) -> void:
+	for signal_name: StringName in SETTINGS_CONTROLS:
+		for control_name: String in SETTINGS_CONTROLS[signal_name]:
+			var control: Node = find_child(control_name, true, false)
+			var handler: Callable = Callable(menu, "_on_%s_%s" % [control_name, signal_name])
+			if not control or not handler.is_valid():
+				push_error("Missing options control or handler: " + control_name)
+				continue
+			if not control.is_connected(signal_name, handler):
+				control.connect(signal_name, handler)
 
 
 func _queue_layout() -> void:

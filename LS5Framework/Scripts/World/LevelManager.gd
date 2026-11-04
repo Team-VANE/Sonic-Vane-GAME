@@ -39,6 +39,8 @@ const LEVEL_TRANSIENT_GROUP: StringName = &"LevelTransient"
 var _current_level_id: StringName = &""
 var _current_level_scene_path: String = ""
 var _current_level: Node = null
+var _direct_level_scene_path: String = ""
+var _direct_level_spawn_path: NodePath
 var _pending_teleport: Dictionary = {}
 var _level_doc_entries: Array = []
 var _level_doc_dir_cached: String = ""
@@ -59,7 +61,11 @@ func _ready() -> void:
 			pending_scene = v
 		get_tree().remove_meta("pending_level_scene")
 	if pending_scene.strip_edges() != "":
-		call_deferred("load_level_by_scene_path", pending_scene, StringName(""), NodePath("PlayerSpawn"))
+		if get_tree().has_meta("pending_level_spawn_path"):
+			_direct_level_scene_path = pending_scene
+			_direct_level_spawn_path = get_tree().get_meta("pending_level_spawn_path")
+			get_tree().remove_meta("pending_level_spawn_path")
+		call_deferred("load_level_by_scene_path", pending_scene)
 		return
 	if auto_load_hub and hub_level_id != &"":
 		call_deferred("_load_hub")
@@ -81,6 +87,16 @@ func get_current_level_id() -> StringName:
 
 func get_current_level() -> Node:
 	return _current_level
+
+
+func get_current_spawn_point() -> Node3D:
+	if not is_instance_valid(_current_level):
+		return null
+	if _current_level_scene_path == _direct_level_scene_path and not _direct_level_spawn_path.is_empty():
+		var direct_spawn: Node3D = _current_level.get_node_or_null(_direct_level_spawn_path) as Node3D
+		if direct_spawn:
+			return direct_spawn
+	return _current_level.get_node_or_null("PlayerSpawn") as Node3D
 
 
 func is_level_loading() -> bool:
@@ -812,6 +828,10 @@ func _apply_spawn_teleport(spawn_path: NodePath) -> void:
 	var body = _get_local_player()
 	if body == null:
 		return
+	if spawn_path == NodePath("PlayerSpawn"):
+		var spawn: Node3D = get_current_spawn_point()
+		if spawn:
+			spawn_path = _current_level.get_path_to(spawn)
 	_apply_exit_teleport(body, _current_level, spawn_path, false, true, Vector3.ZERO)
 
 

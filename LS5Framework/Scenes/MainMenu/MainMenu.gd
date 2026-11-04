@@ -355,6 +355,7 @@ func _ready() -> void:
 	_organize_gameplay_sections()
 	_ensure_displays_tab()
 	_organize_options_tabs()
+	$Overlay/OptionsPanel/Panel.connect_settings_controls(self)
 	_configure_graphics_apply_button()
 	_configure_options_tab_focus()
 	_show_main_menu(true)

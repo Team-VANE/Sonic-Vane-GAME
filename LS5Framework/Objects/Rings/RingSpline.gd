@@ -41,10 +41,10 @@ func activate_for_gameplay(_context: Dictionary) -> bool:
 
 
 func _regenerate_after_physics() -> void:
-	if get_tree() == null:
+	if not is_inside_tree():
 		return
 	await get_tree().physics_frame
-	if get_tree() == null:
+	if not is_inside_tree():
 		return
 	await get_tree().process_frame
 	if is_inside_tree() and not _managed_preparation:

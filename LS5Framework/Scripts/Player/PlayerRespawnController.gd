@@ -205,19 +205,11 @@ func _get_ground_animation_state_machine() -> AnimationNodeStateMachine:
 func _resolve_respawn_point() -> Node3D:
 	var p = _owner
 	var level_manager = _get_level_manager()
-	if level_manager != null:
-		if level_manager.has_method("resolve_node_in_current_level"):
-			var n = level_manager.call("resolve_node_in_current_level", NodePath("PlayerSpawn"))
-			if n is Node3D:
-				p.respawn_point = n
-				return n
-		if level_manager.has_method("get_current_level"):
-			var level = level_manager.call("get_current_level")
-			if level is Node:
-				var n2 = level.get_node_or_null("PlayerSpawn")
-				if n2 is Node3D:
-					p.respawn_point = n2
-					return n2
+	if level_manager and level_manager.has_method("get_current_spawn_point"):
+		var spawn: Node3D = level_manager.call("get_current_spawn_point")
+		if spawn:
+			p.respawn_point = spawn
+			return spawn
 
 	if p.get_tree() != null:
 		var cs = p.get_tree().current_scene

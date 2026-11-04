@@ -12,6 +12,7 @@ var _path_ref: WeakRef
 var _curve: Curve3D
 var _transform: Transform3D = Transform3D.IDENTITY
 var _dirty: bool = true
+var _rebuilding: bool = false
 var _points: PackedVector3Array = []
 var _distances: PackedFloat64Array = []
 var _local_distances: PackedFloat64Array = []
@@ -48,6 +49,8 @@ func invalidate() -> void:
 
 
 func refresh() -> bool:
+	if _rebuilding:
+		return false
 	var path: Path3D = _path_ref.get_ref() as Path3D if _path_ref else null
 	if not is_instance_valid(path) or not path.is_inside_tree():
 		validation_message = "A live Path3D is required."
@@ -63,7 +66,9 @@ func refresh() -> bool:
 		_transform = path.global_transform
 		_dirty = true
 	if _dirty:
+		_rebuilding = true
 		_rebuild()
+		_rebuilding = false
 	return not _points.is_empty()
 
 
@@ -85,7 +90,6 @@ func _rebuild() -> void:
 		validation_message = "Route transforms must be finite, nonsingular, and nonmirrored."
 		return
 	var baked: PackedVector3Array = _curve.get_baked_points()
-	var local_offsets: PackedFloat64Array = []
 	var local_distance: float = 0.0
 	for index: int in baked.size():
 		if index:
@@ -101,7 +105,6 @@ func _rebuild() -> void:
 			length += _points[-1].distance_to(point)
 		_points.append(point)
 		_distances.append(length)
-		local_offsets.append(local_distance)
 		_local_distances.append(local_distance)
 	if _points.size() < 2 or length < 0.0001:
 		_points.clear()
@@ -112,6 +115,7 @@ func _rebuild() -> void:
 	var previous_tangent: Vector3 = (_points[1] - _points[0]).normalized()
 	var previous_up: Vector3 = _safe_up(previous_tangent, _transform.basis.y)
 	var tilts: PackedFloat32Array = _curve.get_baked_tilts()
+	var baked_length: float = _curve.get_baked_length()
 	for index: int in _points.size():
 		var before: int = maxi(index - 1, 0)
 		var after: int = mini(index + 1, _points.size() - 1)
@@ -129,10 +133,10 @@ func _rebuild() -> void:
 			transported = Quaternion(previous_tangent, tangent) * previous_up
 		var up_value: Vector3 = _safe_up(tangent, transported)
 		if _curve.up_vector_enabled:
-			var local_up: Vector3 = _curve.sample_baked_up_vector(minf(local_offsets[index], _curve.get_baked_length()), true)
+			var local_up: Vector3 = _curve.sample_baked_up_vector(minf(_local_distances[index], baked_length), true)
 			up_value = _safe_up(tangent, _transform.basis * local_up)
 		elif not tilts.is_empty():
-			var tilt_index: int = mini(int(local_offsets[index] / maxf(_curve.bake_interval, 0.001)), tilts.size() - 1)
+			var tilt_index: int = mini(int(_local_distances[index] / maxf(_curve.bake_interval, 0.001)), tilts.size() - 1)
 			up_value = up_value.rotated(tangent, tilts[tilt_index])
 		tangents.append(tangent)
 		ups.append(up_value)

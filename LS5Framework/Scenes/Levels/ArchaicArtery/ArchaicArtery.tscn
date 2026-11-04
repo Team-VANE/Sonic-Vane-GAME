@@ -21,13 +21,16 @@
 [ext_resource type="PackedScene" uid="uid://cwsdj34dkp0dx" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn" id="20_ee4q3"]
 [ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="21_3qeqd"]
 [ext_resource type="PackedScene" uid="uid://bktxefyel8i42" path="res://LS5Framework/Objects/Race/RaceGoal.tscn" id="22_3qeqd"]
+[ext_resource type="Shader" uid="uid://coo7mvt00c0xt" path="res://LS5Framework/Objects/Race/GoalRing/goal_ring_swap.gdshader" id="22_paeey"]
+[ext_resource type="Texture2D" uid="uid://cly188qsju2u6" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL.png" id="23_r0r0n"]
+[ext_resource type="Texture2D" uid="uid://c1m7ix7sf8vvr" path="res://LS5Framework/Objects/Race/GoalRing/GOAL_LABEL_GLOW.png" id="24_3hd5v"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Water/Examples/Adventure_Deep_Pool.tscn" id="24_t1bg2"]
 [ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="25_1jh0t"]
 [ext_resource type="LightmapGIData" uid="uid://bm445uwapwsms" path="res://LS5Framework/Scenes/Levels/ArchaicArtery/ArchaicArtery.lmbake" id="25_otf76"]
 [ext_resource type="PackedScene" uid="uid://d1okvbdxqc08b" path="res://LS5Framework/Objects/VaultBar/VaultBar.tscn" id="25_qqmqe"]
 [ext_resource type="PackedScene" uid="uid://c6xyvqm8rq2k2" path="res://LS5Framework/Objects/Enemies/GroundedBlockout/GroundedEnemyBlockout.tscn" id="27_1jh0t"]
 
-[sub_resource type="Resource" id="Resource_5eyg5"]
+[sub_resource type="Resource" id="Resource_ahp56"]
 resource_local_to_scene = true
 script = ExtResource("21_3qeqd")
 reward_type = 6
@@ -98,6 +101,8 @@ metadata/_custom_type_script = "uid://ejxv0c1rj01v"
 [sub_resource type="Resource" id="Resource_3qeqd"]
 resource_name = "Face Player"
 script = ExtResource("15_kche2")
+target_bone_enabled = null
+target_bone_name = null
 target_offset = Vector3(0, 10.895, 0)
 
 [sub_resource type="Resource" id="Resource_eya2y"]
@@ -137,6 +142,8 @@ resource_name = "Face Player"
 script = ExtResource("15_kche2")
 mode = 1
 target_path = NodePath("../../Springs/Spring3")
+target_bone_enabled = null
+target_bone_name = null
 target_offset = Vector3(0, 0, 0)
 offset_uses_player_up = true
 up_source = 1
@@ -185,6 +192,8 @@ offset_space = 2
 resource_name = "Face Player"
 script = ExtResource("15_kche2")
 mode = 3
+target_bone_enabled = null
+target_bone_name = null
 rotation_degrees = Vector3(-90, 180, 0)
 
 [sub_resource type="Resource" id="Resource_1jh0t"]
@@ -212,6 +221,15 @@ metadata/_custom_type_script = "uid://bgccl8q6bo21v"
 [sub_resource type="BoxShape3D" id="BoxShape3D_uff3j"]
 size = Vector3(155.47632, 510.0293, 156.792)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jkkcb"]
+render_priority = 0
+shader = ExtResource("22_paeey")
+shader_parameter/tex_flat = ExtResource("23_r0r0n")
+shader_parameter/tex_glow = ExtResource("24_3hd5v")
+shader_parameter/swap_interval = 1.0
+shader_parameter/use_emission = true
+shader_parameter/swap_time = 13081.426
+
 [sub_resource type="Environment" id="Environment_20ag2"]
 tonemap_mode = 3
 tonemap_white = 16.0
@@ -221,12 +239,12 @@ adjustment_enabled = true
 adjustment_contrast = 1.14
 adjustment_saturation = 0.71
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_tx7g3"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kie5a"]
 resource_local_to_scene = true
 height = 7.559326
 radius = 6.484375
 
-[sub_resource type="Curve3D" id="Curve3D_5ftrs"]
+[sub_resource type="Curve3D" id="Curve3D_ewfof"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -268,7 +286,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.790627, -0.6456941, -7.418
 
 [node name="ItemMonitor" parent="SetDressing" unique_id=1395552001 instance=ExtResource("20_ee4q3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -246.97932, -55.652336, 1204.0725)
-rewards = Array[ExtResource("21_3qeqd")]([SubResource("Resource_5eyg5")])
+rewards = Array[ExtResource("21_3qeqd")]([SubResource("Resource_ahp56")])
 
 [node name="RingSplines" type="Node3D" parent="SetDressing" unique_id=1639372671]
 
@@ -669,7 +687,19 @@ shape = SubResource("BoxShape3D_uff3j")
 transform = Transform3D(-4.371139e-08, -1, -5.9604645e-08, 2.3643439e-07, 5.9604645e-08, -1, 1, -4.3711392e-08, 2.3643439e-07, 12.856079, -193.49146, 11.306061)
 
 [node name="RaceGoal" parent="SetDressing" unique_id=767008932 instance=ExtResource("22_3qeqd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 135.35251, -213.93845, 3382.2517)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 135.35251, -218.43593, 3382.2517)
+face_player_bone_enabled = true
+face_damping_enabled = true
+face_offset = Vector3(0, 0.8, 0)
+
+[node name="GoalPose" parent="SetDressing/RaceGoal" index="1" unique_id=279916230]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="GoalCamera" parent="SetDressing/RaceGoal" index="2" unique_id=1169733806]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.267029, 0.3645935, 0)
+
+[node name="Circle" parent="SetDressing/RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(767008932, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
+material_override = SubResource("ShaderMaterial_jkkcb")
 
 [node name="VaultBar" parent="SetDressing" unique_id=1685228124 instance=ExtResource("25_qqmqe")]
 transform = Transform3D(1.0129586e-07, 0.6350637, 0.77245975, -8.327854e-08, 0.77245975, -0.6350637, -1, 0, 1.3113416e-07, 220.97983, -287.87018, 2232.9556)
@@ -759,10 +789,10 @@ strength = 130.0
 
 [node name="CollisionShape3D" parent="Spring" index="0" unique_id=594366491]
 transform = Transform3D(1, -3.576274e-07, 5.9606144e-08, 3.576277e-07, 1, -4.5596953e-06, -5.9604513e-08, 4.5596953e-06, 1, 0, 0.2, 0)
-shape = SubResource("CylinderShape3D_tx7g3")
+shape = SubResource("CylinderShape3D_kie5a")
 
 [node name="SplinePath" parent="Spring" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_5ftrs")
+curve = SubResource("Curve3D_ewfof")
 
 [editable path="RaceStart"]
 [editable path="SetDressing/RingSplines/RingSpline1"]
@@ -800,4 +830,7 @@ curve = SubResource("Curve3D_5ftrs")
 [editable path="SetDressing/cameraStuff/CameraConstraint6"]
 [editable path="SetDressing/cameraStuff/CameraConstraint3"]
 [editable path="SetDressing/cameraStuff/CameraConstraint4"]
+[editable path="SetDressing/RaceGoal"]
+[editable path="SetDressing/RaceGoal/GoalModel"]
+[editable path="SetDressing/RaceGoal/GoalModel/GoalRing2"]
 [editable path="Spring"]

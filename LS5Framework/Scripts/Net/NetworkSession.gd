@@ -2116,17 +2116,10 @@ func _reset_objects_for_race_restart_recursive(node: Node) -> void:
 
 func _get_player_spawn_node() -> Node3D:
 	var level_manager = _get_level_manager()
-	if level_manager != null:
-		if level_manager.has_method("resolve_node_in_current_level"):
-			var level_spawn = level_manager.call("resolve_node_in_current_level", NodePath("PlayerSpawn"))
-			if level_spawn is Node3D:
-				return level_spawn as Node3D
-		if level_manager.has_method("get_current_level"):
-			var level = level_manager.call("get_current_level")
-			if level != null and is_instance_valid(level):
-				var level_spawn_node = level.get_node_or_null("PlayerSpawn")
-				if level_spawn_node is Node3D:
-					return level_spawn_node as Node3D
+	if level_manager and level_manager.has_method("get_current_spawn_point"):
+		var level_spawn: Node3D = level_manager.call("get_current_spawn_point")
+		if level_spawn:
+			return level_spawn
 	var spawn = get_node_or_null(spawn_point_path)
 	if spawn == null and get_parent() != null:
 		spawn = get_parent().get_node_or_null(spawn_point_path)
