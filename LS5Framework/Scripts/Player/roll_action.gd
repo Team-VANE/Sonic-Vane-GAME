@@ -89,6 +89,8 @@ extends CharacterAction
 @export var skydive_roll_spindash_lockout: float = 0.6
 
 var is_rolling: bool = false
+const SPINDASH_ROLL_DURATION: float = 0.7
+var spindash_roll_remaining: float = 0.0
 var routed_toggle_active: bool = false
 var _collision_uncurl_requested: bool = false
 
@@ -106,6 +108,8 @@ func process_input_event(input_name: StringName, mode: ActionTrigger) -> bool:
 	if not should_trigger_from_input(input_name, mode):
 		return false
 	if is_rolling:
+		if spindash_roll_remaining > 0.0:
+			return true
 		if routed_toggle_active:
 			routed_toggle_active = false
 			_set_rolling(false)
@@ -168,7 +172,7 @@ func set_routed_toggle_active(toggle_active: bool, context: Dictionary = {}) -> 
 		_set_rolling(true)
 		_apply_skydive_roll_lockout(context)
 		return true
-	if owner_player.is_drop_dash_charging():
+	if owner_player.is_drop_dash_charging() or spindash_roll_remaining > 0.0:
 		return false
 	if not routed_toggle_active:
 		return false
@@ -184,6 +188,26 @@ func on_action_enter(_context: Dictionary = {}) -> void:
 func on_action_exit(next_action: CharacterAction) -> void:
 	routed_toggle_active = false
 	_set_rolling(false, next_action != null)
+
+
+func begin_spindash_roll() -> void:
+	spindash_roll_remaining = SPINDASH_ROLL_DURATION
+	_set_rolling(true)
+
+
+func tick_spindash_roll(delta: float) -> void:
+	if spindash_roll_remaining <= 0.0:
+		return
+	if not owner_player.attached or not _can_continue_roll() or not owner_player.get_automation_controller().motion.allows(&"roll"):
+		cancel_spindash_roll()
+		return
+	spindash_roll_remaining = maxf(spindash_roll_remaining - delta, 0.0)
+
+
+func cancel_spindash_roll() -> void:
+	if spindash_roll_remaining > 0.0:
+		_set_rolling(false, true)
+		owner_player._sync_roll_state_from_action()
 
 
 func physics_update_action(_delta: float) -> void:
@@ -218,6 +242,9 @@ func continuous_physics_update(_delta: float) -> void:
 
 	var spindash_action = _get_spindash_action()
 	if spindash_action != null and spindash_action.is_charging:
+		_set_rolling(true)
+		return
+	if spindash_roll_remaining > 0.0:
 		_set_rolling(true)
 		return
 
@@ -294,6 +321,8 @@ func _can_continue_roll() -> bool:
 
 
 func _set_rolling(rolling_now: bool, action_transition: bool = false) -> void:
+	if not rolling_now:
+		spindash_roll_remaining = 0.0
 	if rolling_now or action_transition:
 		_collision_uncurl_requested = false
 	if is_rolling == rolling_now:

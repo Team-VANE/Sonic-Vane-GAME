@@ -31,6 +31,8 @@ class MarkerReader extends SpeedAfterImageController:
 @export_range(0.0, 1.0, 0.01) var flicker_stutter_chance: float = 0.08
 ## Forward shear while spindashing or drop-dashing.
 @export_range(-1.0, 1.0, 0.01) var shear_strength: float = 0.3
+## Forward stretch at the start of a grounded spindash launch.
+@export_range(0.0, 1.0, 0.01) var spindash_forward_stretch: float = 0.65
 ## Vertical stretch during bounce descent, aligned with player gravity-up.
 @export_range(0.0, 0.5, 0.01) var bounce_fall_stretch_strength: float = 0.18
 ## Bottom height anchored while shearing and stretching.
@@ -62,6 +64,7 @@ var _ball_frame: bool = false
 var _flicker_random: RandomNumberGenerator = RandomNumberGenerator.new()
 var _shear: float = 0.0
 var _bounce_stretch: float = 0.0
+var _forward_stretch: float = 0.0
 var _rebound_elapsed: float = 1000.0
 var _active: bool = false
 ## Model geometry alternated without hiding the skeleton or its ancestors.
@@ -98,6 +101,7 @@ func notify_rebound() -> void:
 	_rebound_elapsed = 0.0
 	_shear = 0.0
 	_bounce_stretch = 0.0
+	_forward_stretch = 0.0
 
 func _process(delta: float) -> void:
 	var settings: Dictionary = {}
@@ -133,6 +137,11 @@ func _process(delta: float) -> void:
 	if bouncing or drop_dash_released:
 		_shear = 0.0
 	var target_shear: float = float(settings.get("shear", shear_strength)) if deforming else 0.0
+	var launch_fraction: float = 0.0
+	if active and _player.attached and _player._roll_action:
+		launch_fraction = _player._roll_action.spindash_roll_remaining / RollAction.SPINDASH_ROLL_DURATION
+	var launch_weight: float = pow(launch_fraction, 3.0)
+	_forward_stretch = lerpf(_forward_stretch, spindash_forward_stretch * launch_weight, 1.0 - exp(-36.0 * maxf(delta, 0.0)))
 	_shear = lerpf(_shear, target_shear, 1.0 - exp(-shear_response * maxf(delta, 0.0)))
 	_bounce_stretch = lerpf(_bounce_stretch, bounce_fall_stretch_strength if bouncing else 0.0, 1.0 - exp(-shear_response * maxf(delta, 0.0)))
 	_rebound_elapsed += maxf(delta, 0.0)
@@ -144,9 +153,14 @@ func _process(delta: float) -> void:
 	var local_up: Vector3 = (_deformation.get_parent().global_basis.inverse() * _player.get_gravity_up()).normalized()
 	var difference: float = stretch - width
 	var vertical_basis: Basis = Basis(Vector3.RIGHT * width + local_up * difference * local_up.x, Vector3.UP * width + local_up * difference * local_up.y, Vector3.BACK * width + local_up * difference * local_up.z)
-	var shear_basis: Basis = Basis(Vector3.RIGHT, Vector3(0.0, 1.0, -_shear), Vector3.BACK)
+	var launch_width: float = 1.0 / sqrt(1.0 + _forward_stretch)
+	var shear_basis: Basis = Basis(
+		Vector3.RIGHT * launch_width,
+		Vector3(0.0, launch_width, -_shear),
+		Vector3.BACK * (1.0 + _forward_stretch)
+	)
 	var vertical_pivot: Vector3 = local_up * bottom_height
-	var shear_pivot: Vector3 = Vector3.UP * bottom_height
+	var shear_pivot: Vector3 = Vector3(0.0, bottom_height, absf(bottom_height))
 	var vertical_transform: Transform3D = Transform3D(vertical_basis, vertical_pivot - vertical_basis * vertical_pivot)
 	var shear_transform: Transform3D = Transform3D(shear_basis, shear_pivot - shear_basis * shear_pivot)
 	_deformation.transform = _base_transform * vertical_transform * shear_transform

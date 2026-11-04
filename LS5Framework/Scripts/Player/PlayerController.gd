@@ -3206,6 +3206,8 @@ func _update_standing_collision() -> void:
 
 
 func _movement_physics_process(delta: float) -> void:
+	if _roll_action and _roll_action.spindash_roll_remaining > 0.0:
+		_roll_action.tick_spindash_roll(_movement_real_delta)
 	var motion_delta: float = get_movement_delta(delta)
 	_compact_collision_timer = maxf(_compact_collision_timer - _movement_real_delta, 0.0)
 	if _network_is_active() and not is_multiplayer_authority():
@@ -6799,9 +6801,11 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	# Use raw input to decide if the player is *trying* to move
 	var modular_top_speed: float = _automation_controller.motion.get_player_top_speed()
 	var has_input: bool = movement_input_strength > 0.001
-	var is_rolling: bool = rolling and roll_enabled and not drop_dash_air_control
 	var is_spindash_charging: bool = _spindash_charging and spindash_enabled and not drop_dash_air_control
 	var spindash_release_now: bool = _spindash_release_requested and is_attached
+	var starts_spindash_roll: bool = spindash_release_now and not _spindash_release_with_jump and _roll_action != null and not is_surface_roll_blocked()
+	var spindash_roll_protected: bool = is_attached and (starts_spindash_roll or (_roll_action != null and _roll_action.spindash_roll_remaining > 0.0))
+	var is_rolling: bool = (spindash_roll_protected or (rolling and roll_enabled)) and not drop_dash_air_control
 
 	# --------------------------------------------------
 	# AUTOMATION SPLINE: optional movement lock + rotation align
@@ -7411,7 +7415,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				)
 				if is_spindash_charging:
 					ordinary_roll_resistance_allowed = true
-				if ordinary_roll_resistance_allowed:
+				if ordinary_roll_resistance_allowed and not spindash_roll_protected:
 					var charge_decel: float = roll_decel
 					if is_spindash_charging:
 						if _spindash_roll_held:
@@ -7566,8 +7570,21 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		lateral = influenced.slide(physics_up)
 		vertical = influenced.dot(physics_up)
 
-	if _spindash_release_requested and is_attached:
+	var detach_spindash_from_wall: bool = false
+	if spindash_release_now:
+		var release_direction: Vector3 = _get_spindash_release_dir(physics_up, lateral)
 		lateral = _apply_spindash_release(physics_up, lateral)
+		var uphill: Vector3 = world_up.slide(support_normal).normalized()
+		detach_spindash_from_wall = (
+			not _spindash_release_with_jump
+			and support_angle_deg > walkable_from_up_max_angle_deg
+			and support_angle_deg < wall_from_up_max_angle_deg
+			and release_direction.dot(uphill) >= cos(deg_to_rad(55.0))
+			and lateral.dot(world_up) > 0.001
+		)
+		if starts_spindash_roll and not detach_spindash_from_wall:
+			_roll_action.begin_spindash_roll()
+			_sync_roll_state_from_action()
 		_spindash_turn_free_timer = max(spindash_turn_penalty_disable_time, 0.0)
 		_spindash_release_requested = false
 		_spindash_release_with_jump = false
@@ -7583,6 +7600,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		and downhill_dir.length() > 0.0
 		and not _surface_ignores_slope_gravity()
 		and not sticky_deceleration_active
+		and not (spindash_roll_protected and lateral.dot(downhill_dir) < 0.0)
 	):
 		var downhill_component: float = lateral.dot(downhill_dir)
 		var slope_sample_speed: float = lateral.length()
@@ -8025,6 +8043,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	)
 	var rolling_soft_cap_allowed: bool = (
 		not is_rolling
+		or (spindash_roll_protected and soft_cap_attached)
 		or airborne_roll_soft_cap
 		or in_water_movement_physics
 		or _running_on_water_surface
@@ -8240,6 +8259,11 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		v_final = Vector3.ZERO
 
 	velocity = v_final
+	if detach_spindash_from_wall:
+		velocity = velocity.slide(support_normal)
+		_start_detach(support_normal, world_up)
+		if _roll_action:
+			_roll_action.cancel_spindash_roll()
 	if water_physics_enabled and _running_on_water_surface and attached:
 		_check_water_surface_min_speed()
 	velocity += inherited_launch_velocity
@@ -11229,6 +11253,8 @@ func activate_action(action, context: Dictionary = {}) -> bool:
 		return false
 	if not action.can_execute(context):
 		return false
+	if _roll_action and action != _roll_action:
+		_roll_action.cancel_spindash_roll()
 	if action != _fall_action and action != _spindash_action and is_drop_dash_charging():
 		_cancel_spindash_charge()
 		if _roll_action:
@@ -11247,6 +11273,8 @@ func activate_action(action, context: Dictionary = {}) -> bool:
 
 
 func clear_active_action() -> void:
+	if _roll_action:
+		_roll_action.cancel_spindash_roll()
 	if _active_action != null and is_instance_valid(_active_action):
 		_active_action.on_action_exit(null)
 	_active_action = null
