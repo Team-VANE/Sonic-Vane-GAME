@@ -1,0 +1,196 @@
+[gd_scene format=3 uid="uid://b0cc4nybn8pdw"]
+
+[ext_resource type="Script" uid="uid://ccq5yu8651pfv" path="res://LS5Framework/Objects/Enemies/Core/Enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://cdwnvk0ci23ar" path="res://LS5Framework/Scripts/Actors/ActorHealth.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://cldhg7femsy4x" path="res://LS5Framework/Scripts/Actors/ActorGravityReceiver3D.gd" id="3_gravity"]
+[ext_resource type="Script" uid="uid://bhj8tanhuo7hv" path="res://LS5Framework/Objects/Enemies/Core/EnemyPerception.gd" id="4_perception"]
+[ext_resource type="Script" uid="uid://cvnhu7qqcejn6" path="res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd" id="5_brain"]
+[ext_resource type="Script" uid="uid://dx8vv7jx1ohnb" path="res://LS5Framework/Scripts/Actors/ActorCollisionController3D.gd" id="6_collision"]
+[ext_resource type="Script" uid="uid://bew8f7flya08i" path="res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTankVisuals.gd" id="7_animation"]
+[ext_resource type="Script" uid="uid://bqgf2x8djxral" path="res://LS5Framework/Scripts/Actors/ActorAudioCues3D.gd" id="8_audio"]
+[ext_resource type="Script" uid="uid://ceq8k61ipwtmu" path="res://LS5Framework/Scripts/Actors/ActorDefeatEffects3D.gd" id="9_effects"]
+[ext_resource type="Script" uid="uid://8phnf15chfjg" path="res://LS5Framework/Scripts/Actors/ActorRespawnComponent3D.gd" id="10_respawn"]
+[ext_resource type="Script" uid="uid://cmhwrx1uie7ks" path="res://LS5Framework/Objects/Enemies/Core/Locomotion/GroundedEnemyLocomotion.gd" id="11_grounded"]
+[ext_resource type="Script" uid="uid://j2u1k48dpnht" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttackController.gd" id="12_attacks"]
+[ext_resource type="Script" uid="uid://bd5bey6xd11sb" path="res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyMeleeAttack.gd" id="13_melee"]
+[ext_resource type="Script" uid="uid://rnxcpdi1i6m5" path="res://LS5Framework/Scripts/Actors/ActorTargetable3D.gd" id="14_targetable"]
+[ext_resource type="Script" uid="uid://btwll4rjg6ko" path="res://LS5Framework/Scripts/Actors/ActorHurtbox3D.gd" id="15_hurtbox"]
+[ext_resource type="Script" uid="uid://cn17erwd7t2dh" path="res://LS5Framework/Objects/Gameplay/ScoreAward.gd" id="16_score"]
+[ext_resource type="PackedScene" uid="uid://du58elexijmqe" path="res://LS5Framework/Effects/Explosion/ExplosionEffect.tscn" id="17_explosion"]
+[ext_resource type="PackedScene" uid="uid://c2qkoyc31wbnt" path="res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTank.glb" id="18_model"]
+[ext_resource type="AnimationLibrary" path="res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTankAnimations.tres" id="19_library"]
+[ext_resource type="AudioStream" uid="uid://dcduhlxit01nj" path="res://LS5Framework/Sounds/Objects/Enemies/RhinoTank_Charge.wav" id="snd_charge"]
+[ext_resource type="AudioStream" uid="uid://de2rl3forrsdn" path="res://LS5Framework/Sounds/Objects/Enemies/Badnik_Explode.wav" id="snd_explode"]
+[ext_resource type="AudioStream" uid="uid://dtvgn7xb7rh20" path="res://LS5Framework/Sounds/Objects/Enemies/RhinoTank_Patrol_Loop.wav" id="snd_patrol"]
+[ext_resource type="AudioStream" uid="uid://b0ccc80ra6yt3" path="res://LS5Framework/Sounds/Objects/Enemies/RhinoTank_RevUp.wav" id="snd_rev"]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTankBurners.gd" id="burners"]
+
+[sub_resource type="BoxShape3D" id="BodyShape"]
+size = Vector3(3.6, 3.4, 4.2)
+
+[sub_resource type="SphereShape3D" id="HurtboxShape"]
+radius = 2.0
+
+[sub_resource type="BoxShape3D" id="HornShape"]
+size = Vector3(1.5, 1.5, 1.4)
+
+[node name="RhinoTank" type="CharacterBody3D" unique_id=2132688344]
+collision_layer = 128
+script = ExtResource("1_enemy")
+size_target_paths = Array[NodePath]([NodePath("CollisionShape3D"), NodePath("Visual"), NodePath("Targetable"), NodePath("Hurtbox/CollisionShape3D"), NodePath("MeleeHitbox")])
+defeat_delay_sec = 0.45
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2095941330]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BodyShape")
+metadata/_enemy_size_base_position = Vector3(0, 0.7, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Visual" type="Node3D" parent="." unique_id=1198429774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+metadata/_enemy_size_base_position = Vector3(0, -1, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Model" parent="Visual" unique_id=1298421360 instance=ExtResource("18_model")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1647615813]
+root_node = NodePath("../Visual/Model")
+libraries/ = ExtResource("19_library")
+
+[node name="Targetable" type="Marker3D" parent="." unique_id=1856964671]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+script = ExtResource("14_targetable")
+metadata/_enemy_size_base_position = Vector3(0, 0.4, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=1357339278]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("15_hurtbox")
+contact_damage_enabled = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=913021271]
+shape = SubResource("HurtboxShape")
+metadata/_enemy_size_base_position = Vector3(0, 0, 0)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="MeleeHitbox" type="Area3D" parent="." unique_id=737768033]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -2.1)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+metadata/_enemy_size_base_position = Vector3(0, 0.1, -2.1)
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeHitbox" unique_id=1689916370]
+shape = SubResource("HornShape")
+
+[node name="Components" type="Node3D" parent="." unique_id=784685720]
+
+[node name="Health" type="Node" parent="Components" unique_id=466680210]
+script = ExtResource("2_health")
+
+[node name="Gravity" type="Node" parent="Components" unique_id=1911305730]
+script = ExtResource("3_gravity")
+
+[node name="Perception" type="Node" parent="Components" unique_id=1901954630]
+script = ExtResource("4_perception")
+detection_radius = 50.0
+loss_radius = 80.0
+field_of_view_deg = 135.0
+target_memory_sec = 0.0
+
+[node name="Brain" type="Node" parent="Components" unique_id=2010842342]
+script = ExtResource("5_brain")
+
+[node name="Collision" type="Node" parent="Components" unique_id=1822937000]
+script = ExtResource("6_collision")
+managed_collision_paths = Array[NodePath]([NodePath("Hurtbox"), NodePath("MeleeHitbox")])
+
+[node name="Animation" type="Node" parent="Components" unique_id=1305907969]
+script = ExtResource("7_animation")
+animation_player_path = NodePath("AnimationPlayer")
+animation_idle = &"Patrol"
+animation_alert = &"RevUp"
+animation_move = &"Patrol"
+animation_attack_primary = &"Chasing"
+animation_hurt = &"Defeated"
+animation_dead = &"Defeated"
+hurt_linger_sec = 0.45
+hide_visual_on_death = false
+animation_blend_time = 0.08
+
+[node name="Audio" type="Node3D" parent="Components" unique_id=1709169771]
+script = ExtResource("8_audio")
+idle_player_path = NodePath("PatrolLoop")
+cue_player_path = NodePath("RevUpCharge")
+idle_sound = ExtResource("snd_patrol")
+alert_sound = ExtResource("snd_rev")
+defeat_sound = ExtResource("snd_explode")
+attack_sound = ExtResource("snd_charge")
+idle_requires_movement = true
+idle_voice_group = &"rhino_tank"
+
+[node name="PatrolLoop" type="AudioStreamPlayer3D" parent="Components/Audio" unique_id=1115404389]
+stream = ExtResource("snd_patrol")
+volume_db = -6.0
+unit_size = 35.0
+max_db = 0.0
+max_distance = 180.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -1.0
+
+[node name="RevUpCharge" type="AudioStreamPlayer3D" parent="Components/Audio" unique_id=855751351]
+stream = ExtResource("snd_rev")
+volume_db = -6.0
+unit_size = 60.0
+max_db = 0.0
+max_distance = 180.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 15000.0
+attenuation_filter_db = -1.0
+
+[node name="DefeatEffects" type="Node3D" parent="Components" unique_id=2013752973]
+script = ExtResource("9_effects")
+defeat_effect_scene = ExtResource("17_explosion")
+
+[node name="Respawn" type="Node" parent="Components" unique_id=1006595012]
+script = ExtResource("10_respawn")
+respawn_enabled = true
+respawn_delay_sec = 8.0
+
+[node name="Optional" type="Node" parent="Components" unique_id=998084982]
+
+[node name="Burners" type="Node" parent="Components/Optional"]
+script = ExtResource("burners")
+
+[node name="Locomotion" type="Node" parent="." unique_id=607100268]
+script = ExtResource("11_grounded")
+movement_speed = 38.0
+acceleration = 100.0
+deceleration = 130.0
+facing_speed_deg = 240.0
+ledge_probe_distance = 3.0
+auto_jump_obstacles = false
+jump_enabled = false
+sideways_deceleration = 130.0
+
+[node name="Attacks" type="Node" parent="." unique_id=351291121]
+script = ExtResource("12_attacks")
+
+[node name="Horn" type="Node" parent="Attacks" unique_id=1122838830]
+script = ExtResource("13_melee")
+maximum_range = 10000.0
+windup_duration_sec = 0.0
+active_duration_sec = 60.0
+recovery_duration_sec = 0.0
+cooldown_duration_sec = 0.0
+lock_movement = false
+
+[node name="ScoreAward" type="Node" parent="." unique_id=1544353303]
+script = ExtResource("16_score")
+score_amount = 250

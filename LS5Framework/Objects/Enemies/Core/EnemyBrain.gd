@@ -47,6 +47,14 @@ var _jump_request_timer: float = 0.0
 var _last_target: Node3D = null
 
 
+func wants_perception() -> bool:
+	return true
+
+
+func notify_hurt() -> void:
+	pass
+
+
 func physics_tick(
 	delta: float,
 	actor: CharacterBody3D,

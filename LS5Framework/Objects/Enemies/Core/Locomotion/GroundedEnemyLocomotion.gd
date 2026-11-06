@@ -48,6 +48,10 @@ const SURFACE_METADATA = preload("res://LS5Framework/Scripts/World/SurfaceBehavi
 @export var stop_at_ledges: bool = true
 ## Forward distance used by the ledge support probe.
 @export var ledge_probe_distance: float = 0.85
+## Maximum rise between successive ledge-probe samples, in actor-size units.
+@export_range(0.0, 5.0, 0.05) var ledge_probe_step_up: float = 0.75
+## Maximum drop between successive ledge-probe samples, in actor-size units.
+@export_range(0.0, 5.0, 0.05) var ledge_probe_step_down: float = 1.0
 ## Enables automatic jumps over detected obstacles.
 @export var auto_jump_obstacles: bool = true
 ## Enables automatic jumps when support is absent ahead.
@@ -92,6 +96,14 @@ func setup(owner_actor: CharacterBody3D) -> void:
 	_probe_support(true)
 
 
+func has_support_in_direction(direction: Vector3, lookahead: float = -1.0) -> bool:
+	return _has_support_ahead(direction, lookahead)
+
+
+func is_surface_traversable(collider: Object, normal: Vector3) -> bool:
+	return _surface_is_accepted(collider, normal, false)
+
+
 func physics_tick(delta: float, intent: EnemyIntent) -> void:
 	if actor == null:
 		return
@@ -125,8 +137,7 @@ func physics_tick(delta: float, intent: EnemyIntent) -> void:
 		_update_orientation(idle_facing, gravity_up, delta)
 		_idle_transform = actor.global_transform
 		return
-	var movement_rate: float = acceleration if desired_velocity.length() > lateral_velocity.length() else deceleration
-	lateral_velocity = lateral_velocity.move_toward(desired_velocity, max(movement_rate, 0.0) * delta)
+	lateral_velocity = _approach_movement_velocity(lateral_velocity, desired_velocity, movement_plane_normal, acceleration, deceleration, delta)
 	if _grounded:
 		actor.velocity = lateral_velocity - _support_normal * max(adhesion_acceleration, 0.0) * delta
 		if jump_enabled and jump_requested and _jump_cooldown <= 0.0:
@@ -305,20 +316,35 @@ func _surface_is_accepted(collider: Object, normal_value: Vector3, airborne: boo
 	return angle_deg <= clamp(limit, 0.0, 180.0) + 0.001
 
 
-func _has_support_ahead(direction: Vector3) -> bool:
+func _has_support_ahead(direction: Vector3, lookahead: float = -1.0) -> bool:
 	if actor.get_world_3d() == null:
 		return true
 	var offset: float = max(ground_contact_offset, 0.0) * max(float(actor.get("size")), 0.01)
-	var origin: Vector3 = actor.global_position + direction * max(ledge_probe_distance, 0.0) + _support_normal * max(support_snap_distance, 0.05)
+	var probe_distance: float = ledge_probe_distance if lookahead < 0.0 else lookahead
+	var actor_size: float = maxf(float(actor.get("size")), 0.01)
+	var rise: float = maxf(ledge_probe_step_up * actor_size, support_snap_distance)
+	var drop: float = maxf(ledge_probe_step_down * actor_size, support_snap_distance)
+	var samples: int = clampi(int(ceil(maxf(probe_distance, 0.0) / (actor_size * 0.5))), 1, 64)
+	var sample_distance: float = maxf(probe_distance, 0.0) / float(samples)
+	var point: Vector3 = actor.global_position - _support_normal * offset
+	var normal: Vector3 = _support_normal
 	var query: PhysicsRayQueryParameters3D = _ledge_query
-	query.from = origin
-	query.to = origin - _support_normal * (offset + max(support_snap_distance, 0.0) * 2.0)
 	query.collision_mask = support_collision_mask
 	query.exclude = [actor.get_rid()]
-	var hit: Dictionary = actor.get_world_3d().direct_space_state.intersect_ray(query)
-	if hit.is_empty():
-		return false
-	return _surface_is_accepted(hit.get("collider") as Object, hit.get("normal", _support_normal) as Vector3, false)
+	var space: PhysicsDirectSpaceState3D = actor.get_world_3d().direct_space_state
+	for sample: int in samples:
+		var forward: Vector3 = direction.slide(normal).normalized()
+		if forward.is_zero_approx():
+			return false
+		var expected: Vector3 = point + forward * sample_distance
+		query.from = expected + normal * maxf(rise, 0.05)
+		query.to = expected - normal * maxf(drop, 0.05)
+		var hit: Dictionary = space.intersect_ray(query)
+		if hit.is_empty() or not _surface_is_accepted(hit.get("collider") as Object, hit.normal, false):
+			return false
+		point = hit.position
+		normal = hit.normal.normalized()
+	return true
 
 
 func _has_obstacle_ahead(direction: Vector3) -> bool:

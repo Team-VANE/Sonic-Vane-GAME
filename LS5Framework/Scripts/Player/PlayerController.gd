@@ -2195,12 +2195,17 @@ func _refresh_moving_collision_support() -> void:
 		return
 	var up: Vector3 = get_collision_support_up()
 	var query: PhysicsRayQueryParameters3D = _moving_support_ray
-	query.from = get_main_collision_world_center()
-	query.to = query.from - up * maxf(ground_ray_length, get_main_collision_world_radius() + safe_margin)
+	var center: Vector3 = get_main_collision_world_center()
+	query.from = center
+	query.to = center - up * maxf(ground_ray_length, get_main_collision_world_radius() + safe_margin)
 	query.collision_mask = collision_mask
 	query.exclude = _get_collision_query_exclusions()
 	query.collide_with_areas = false
 	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():
+		# Rising supports can cross the sphere center before movement resolves contact.
+		query.from = center + up * get_main_collision_world_radius()
+		hit = get_world_3d().direct_space_state.intersect_ray(query)
 	if hit.is_empty() or hit.collider != _collision_support_body or int(hit.shape) != _collision_support_shape:
 		_collision_support_body = null
 		return
@@ -2481,6 +2486,7 @@ func _physics_process(delta: float) -> void:
 	_ensure_modules()
 	_automation_controller.advance(delta)
 	if not _level_load_suspended and not _local_pause_enabled:
+		_targeting_module.tick_bounce_magnetism_recovery(delta)
 		_water_module.refresh_submersion_state()
 		_water_module.update_logic_speed(delta)
 	_movement_tick_scale = effective_movement_time_scale
@@ -2502,7 +2508,7 @@ func _move_with_movement_time_scale() -> void:
 		_intent_landing_recovery_blocked = true
 	_end_standing_clearance_batch()
 	_movement_slide_cache_valid = false
-	_update_standing_collision()
+	_update_standing_collision(true)
 	_movement_sphere_contact.clear()
 	_movement_object_contact_handled = false
 	var movement_start: Transform3D = global_transform
@@ -3165,7 +3171,7 @@ func _set_standing_collision_transform(target_transform: Transform3D) -> void:
 		return
 
 
-func _update_standing_collision() -> void:
+func _update_standing_collision(before_movement: bool = false) -> void:
 	if _goal_sequence_frozen:
 		_set_standing_collision_enabled(false)
 		return
@@ -3183,26 +3189,37 @@ func _update_standing_collision() -> void:
 	elif not _can_expand_collision() and (_main_sphere_compact or not _standing_collision_enabled):
 		_set_standing_collision_enabled(false)
 		_set_standing_collision_transform(standing_transform)
-	elif _record_standing_clearance(_has_standing_clearance()):
-		if _main_sphere_compact:
-			_set_standing_collision_enabled(false)
-		_set_standing_collision_transform(standing_transform)
-		if _set_main_sphere_compact(false):
-			_set_standing_collision_enabled(true)
+	else:
+		var standing_clear: bool = _has_standing_clearance()
+		if not standing_clear and before_movement and not _main_sphere_compact and _has_moving_collision_support():
+			var up: Vector3 = get_collision_support_up()
+			var support_point: Vector3 = _collision_support_body.to_global(_collision_support_local_point)
+			var rise: float = get_main_collision_world_radius() - (get_main_collision_world_center() - support_point).dot(up)
+			if rise > safe_margin and _has_standing_clearance_at(up * (rise + safe_margin)):
+				# Recheck standing clearance after the movement sphere resolves support contact.
+				_set_standing_collision_enabled(false)
+				_set_standing_collision_transform(standing_transform)
+				return
+		if _record_standing_clearance(standing_clear):
+			if _main_sphere_compact:
+				_set_standing_collision_enabled(false)
+			_set_standing_collision_transform(standing_transform)
+			if _set_main_sphere_compact(false):
+				_set_standing_collision_enabled(true)
+			else:
+				_set_standing_collision_enabled(false)
 		else:
 			_set_standing_collision_enabled(false)
-	else:
-		_set_standing_collision_enabled(false)
-		_set_standing_collision_transform(standing_transform)
-		_set_main_sphere_compact(true)
-		var neutral_action: bool = (
-			_active_action == null
-			or _active_action == _grounded_action
-			or _active_action == _fall_action
-			or _active_action == _jump_action
-		)
-		if _roll_action != null and neutral_action and _roll_action.force_start_from_surface():
-			_sync_roll_state_from_action()
+			_set_standing_collision_transform(standing_transform)
+			_set_main_sphere_compact(true)
+			var neutral_action: bool = (
+				_active_action == null
+				or _active_action == _grounded_action
+				or _active_action == _fall_action
+				or _active_action == _jump_action
+			)
+			if _roll_action != null and neutral_action and _roll_action.force_start_from_surface():
+				_sync_roll_state_from_action()
 
 
 func _movement_physics_process(delta: float) -> void:
@@ -3625,6 +3642,8 @@ func _movement_physics_process(delta: float) -> void:
 			velocity = Vector3.ZERO
 	if _lightspeed_dash_active:
 		_post_move_lightspeed_dash(delta)
+		if not _lightspeed_dash_active:
+			v_before = velocity
 	_refresh_automation_25d_constraint_after_slide()
 	_apply_automation_25d_world_constraint(0.0, true)
 	_automation_controller.motion.constrain_position(motion_delta, phys_up)
@@ -4710,6 +4729,7 @@ func _cancel_spindash_charge() -> void:
 
 
 func cancel_drop_dash_for_object_interaction() -> bool:
+	_consume_attack_magnetism_bounce_compensation()
 	if not _spindash_action or not _spindash_action.drop_dash_charging:
 		return false
 	_spindash_action.reset_state()
@@ -6404,6 +6424,7 @@ func _apply_launch_from_surface(detach_normal: Vector3, world_up: Vector3) -> vo
 # ===========================================================
 func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -> void:
 	var inherited_launch_velocity: Vector3 = Vector3.ZERO
+	var magnetism_gravity_step: float = 0.0
 	var timer_delta: float = get_gameplay_timer_delta(delta)
 	var physics_up: Vector3 = up_for_physics.normalized()
 	if physics_up.length() < 0.001:
@@ -7861,7 +7882,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			gravity_scale *= spring_gravity_scale
 
 		if _drowned_action == null or not _drowned_action.is_drowned():
-			vertical -= get_effective_gravity_strength() * gravity_scale * delta
+			var gravity_step: float = get_effective_gravity_strength() * gravity_scale * delta
+			vertical -= gravity_step
+			magnetism_gravity_step = maxf(gravity_step * physics_up.dot(world_up), 0.0)
 
 		# Apply water vertical speed limits (multipliers on base speeds)
 		if in_submerged_vertical_physics:
@@ -8203,7 +8226,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 
 	# --- RECOMBINE VELOCITY FROM LATERAL + VERTICAL ---
 	var v_final: Vector3 = lateral + physics_up * vertical
-	v_final = _apply_attack_magnetism(delta, physics_up, v_final)
+	v_final = _apply_attack_magnetism(delta, physics_up, v_final, magnetism_gravity_step)
 	v_final = _adjust_final_movement_velocity(v_final, physics_up)
 
 	# --------------------------------------------------
@@ -11430,6 +11453,7 @@ func get_air_acceleration_override(lateral_speed: float, fallback_value: float) 
 
 
 func end_active_flight_for_external_impulse(context: Dictionary = {}) -> bool:
+	_consume_attack_magnetism_bounce_compensation()
 	if not is_current_action_flight():
 		return false
 	if attached:
@@ -11545,9 +11569,14 @@ func limit_homing_bounce_from_below(result_velocity: Vector3, target_position: V
 	_ensure_modules()
 	return _targeting_module.limit_homing_bounce_from_below(result_velocity, target_position, up)
 
-func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity: Vector3) -> Vector3:
+func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity: Vector3, gravity_step: float = -1.0) -> Vector3:
 	_ensure_modules()
-	return _targeting_module._apply_attack_magnetism(delta, physics_up, current_velocity)
+	return _targeting_module._apply_attack_magnetism(delta, physics_up, current_velocity, gravity_step)
+
+
+func begin_bounce_magnetism_recovery(rebound_speed: float) -> void:
+	_ensure_modules()
+	_targeting_module.begin_bounce_magnetism_recovery(rebound_speed)
 
 func _tick_attack_magnetism_bounce_compensation(delta: float) -> void:
 	_ensure_modules()
@@ -11939,6 +11968,7 @@ func _do_bounce_landing(v_before: Vector3, landing_normal: Vector3, surface_velo
 
 	# Resolve the rebound in the surface frame, then restore world motion.
 	velocity = v_tangent + n * bounce_speed + surface_velocity
+	begin_bounce_magnetism_recovery(bounce_speed)
 
 	_on_trick_detected(TrickSystem.TrickType.BOUNCE_POGO)
 
@@ -14054,16 +14084,19 @@ func apply_prop_bounce_response(response: PropBounceResponse, source: Node3D, up
 	var lateral: Vector3 = velocity.slide(axis) * response.lateral_retention
 	var jump_scale: float = response.jump_held_multiplier if _is_jump_held() else 1.0
 	var speed: float = maxf(response.speed * jump_scale, 0.0)
+	var compensation: float = _consume_attack_magnetism_bounce_compensation()
 	if response.mode == PropBounceResponse.Mode.BADNIK:
-		speed = maxf(speed, absf(velocity.dot(axis)))
-		speed += _consume_attack_magnetism_bounce_compensation()
+		var earned_vertical: float = velocity.dot(axis) - compensation * axis.dot(_get_gravity_up())
+		speed = maxf(speed, absf(earned_vertical))
 	elif response.mode == PropBounceResponse.Mode.RADIAL:
 		axis = (global_position - source.global_position).normalized()
 	elif response.mode == PropBounceResponse.Mode.DIRECTIONAL:
 		axis = (source.global_basis * response.direction).normalized()
 	if axis.is_zero_approx():
 		axis = up
-	velocity = lateral + axis * minf(speed, maxf(response.maximum_speed, 0.0)) + target_velocity * response.inherit_target_velocity
+	var rebound_speed: float = minf(speed, maxf(response.maximum_speed, 0.0))
+	velocity = lateral + axis * rebound_speed + target_velocity * response.inherit_target_velocity
+	begin_bounce_magnetism_recovery(rebound_speed)
 	attached = false
 	_attachment_immunity = launch_immunity_time
 	_airborne_time = 0.0

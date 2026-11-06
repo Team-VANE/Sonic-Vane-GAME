@@ -46,8 +46,7 @@ func physics_tick(delta: float, intent: EnemyIntent) -> void:
 			desired_velocity += planar_direction.normalized() * max(horizontal_speed, 0.0) * intent.speed_ratio
 		if abs(vertical_amount) > max(vertical_deadzone, 0.0):
 			desired_velocity += up * sign(vertical_amount) * max(vertical_speed, 0.0) * intent.speed_ratio
-	var rate: float = acceleration if desired_velocity.length() > actor.velocity.length() else deceleration
-	actor.velocity = actor.velocity.move_toward(desired_velocity, max(rate, 0.0) * delta)
+	actor.velocity = _approach_movement_velocity(actor.velocity, desired_velocity, up, acceleration, deceleration, delta)
 	var previous_position: Vector3 = actor.global_position
 	_begin_move(actor.velocity)
 	_idle_refresh_timer = max(_idle_refresh_timer - delta, 0.0)

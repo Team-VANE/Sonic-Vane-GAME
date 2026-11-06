@@ -1325,6 +1325,12 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 @export var attack_magnetism_input_away_dot: float = -0.15
 ## Extra strength when input points toward the target.
 @export var attack_magnetism_input_toward_bonus: float = 0.65
+## Total vertical speed correction available during an assisted approach. Zero disables vertical steering.
+@export_range(0.0, 50.0, 0.1, "or_greater") var attack_magnetism_vertical_budget: float = 24.0
+## Maximum vertical steering acceleration in either direction.
+@export_range(0.0, 250.0, 1.0, "or_greater") var attack_magnetism_vertical_acceleration: float = 160.0
+## Time available for vertical correction after it first starts.
+@export_range(0.0, 1.0, 0.01) var attack_magnetism_vertical_duration: float = 0.32
 ## Strength multiplier used with no descent.
 @export_range(0.0, 1.0, 0.01) var attack_magnetism_no_descent_strength: float = 0.18
 ## Descent speed where attack magnetism reaches full strength.
@@ -1333,10 +1339,16 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 @export var attack_magnetism_max_descent_speed: float = 300.0
 ## Strength multiplier used at or beyond max descent speed.
 @export_range(0.0, 1.0, 0.01) var attack_magnetism_fast_descent_strength: float = 0.78
-## Enemy bounce velocity gained from descent speed reduced by attack magnetism.
+## Fraction of lost descent restored before calculating a rebound. Magnetism-added descent is always excluded.
 @export var attack_magnetism_bounce_lost_descent_gain: float = 1.0
-## Time lost descent compensation remains available for enemy bounce.
+## Time the magnetism velocity correction remains available for a rebound after the last steering adjustment.
 @export var attack_magnetism_bounce_compensation_time: float = 0.25
+## Time with no attack magnetism after weak and strong rebounds, in seconds.
+@export var attack_magnetism_bounce_delay_range: Vector2 = Vector2(0.08, 0.25)
+## Time to blend from no magnetism to full strength after weak and strong rebounds, in seconds.
+@export var attack_magnetism_bounce_blend_range: Vector2 = Vector2(0.14, 0.45)
+## Rebound speed that uses the longest magnetism delay and blend.
+@export_range(1.0, 400.0, 1.0, "or_greater") var attack_magnetism_bounce_full_recovery_speed: float = 100.0
 
 @export_storage var lightspeed_dash_enabled: bool = true
 @export_storage var lightspeed_dash_start_radius: float = 18.0

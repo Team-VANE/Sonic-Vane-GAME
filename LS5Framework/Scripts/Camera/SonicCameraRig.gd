@@ -58,7 +58,7 @@ const CAMERA_ALIGNMENT_ACTION: StringName = &"VomitCam"
 
 var _auto_target_timer: float = 0.0
 
-@export var distance: float = 8.0
+@export var distance: float = 11.0
 @export var vertical_offset: float = 1.5        # base / mid offset
 
 @export var min_vertical_offset: float = 0.5    # lowest when fully zoomed in

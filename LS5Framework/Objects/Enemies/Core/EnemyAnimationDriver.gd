@@ -30,6 +30,8 @@ class_name EnemyAnimationDriver
 @export var hurt_linger_sec: float = 0.2
 ## Hides the configured visual root when the actor is defeated.
 @export var hide_visual_on_death: bool = true
+## Time used to crossfade between semantic animations.
+@export_range(0.0, 1.0, 0.01) var animation_blend_time: float = 0.0
 
 var _actor: CharacterBody3D = null
 var _visual_root: Node3D = null
@@ -137,12 +139,12 @@ func _play_animation(animation_name: StringName) -> void:
 	if _animation_player.is_playing() and _animation_player.current_animation == String(animation_name):
 		return
 	if _animation_player.has_animation(animation_name):
-		_animation_player.play(animation_name)
+		_animation_player.play(animation_name, animation_blend_time)
 		return
 	var full_name: String = String(animation_name)
 	var separator_index: int = full_name.find("/")
 	if separator_index >= 0:
 		var short_name: String = full_name.substr(separator_index + 1)
 		if _animation_player.has_animation(short_name):
-			_animation_player.play(short_name)
+			_animation_player.play(short_name, animation_blend_time)
 

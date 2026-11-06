@@ -484,6 +484,10 @@ func get_attack_magnetism_position(_context: Variant = null) -> Vector3:
 	return get_homing_target_position(Vector3.ZERO)
 
 
+func get_attack_magnetism_hit_shape() -> CollisionShape3D:
+	return _touch_shape
+
+
 func _set_targeting_registered(registered: bool) -> void:
 	_set_homing_target_registered(registered and homing_target_enabled)
 	var should_register: bool = registered and attack_magnetism_enabled and not _broken

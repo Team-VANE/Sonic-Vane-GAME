@@ -1,6 +1,12 @@
 extends Node3D
 class_name ActorAudioCues3D
 
+@export_group("Audio Nodes")
+## Optional authored AudioStreamPlayer3D for the movement or idle loop. Empty creates a cue player.
+@export_node_path("AudioStreamPlayer3D") var idle_player_path: NodePath
+## Optional authored AudioStreamPlayer3D shared by one-shot cues. Empty creates a cue player.
+@export_node_path("AudioStreamPlayer3D") var cue_player_path: NodePath
+
 @export_group("Cues")
 ## Loop played while the owning actor is alive and active.
 @export var idle_sound: AudioStream
@@ -34,6 +40,10 @@ class_name ActorAudioCues3D
 @export var idle_max_distance: float = 64.0
 ## Random pitch offset applied once when the idle player is created.
 @export_range(0.0, 0.5, 0.01) var idle_pitch_variation: float = 0.0
+## Plays the idle loop only while actual movement exceeds the configured threshold.
+@export var idle_requires_movement: bool = false
+## Minimum movement speed required by a movement-driven idle loop.
+@export_range(0.0, 20.0, 0.01) var idle_movement_min_speed: float = 0.1
 
 @export_group("Idle Voice Limiting")
 ## Identifier used to share an idle-loop voice budget between similar actors.
@@ -56,15 +66,24 @@ var _idle_update_time: float = 0.0
 
 func setup() -> void:
 	var resolved_idle_bus: StringName = idle_sound_bus if idle_sound_bus else sound_bus
-	_idle_player = _create_player(
-		&"IdleCue",
-		_prepare_loop(idle_sound),
-		resolved_idle_bus,
-		idle_volume_db,
-		idle_max_distance,
-		max(pitch_scale + randf_range(-idle_pitch_variation, idle_pitch_variation), 0.01)
-	)
-	_one_shot_player = _create_player(&"OneShotCue", null, sound_bus, volume_db, max_distance, pitch_scale)
+	_idle_player = get_node_or_null(idle_player_path) as AudioStreamPlayer3D if not idle_player_path.is_empty() else null
+	if _idle_player:
+		var stream: AudioStream = idle_sound if idle_sound else _idle_player.stream
+		_idle_player.stream = _prepare_loop(stream)
+		idle_volume_db = _idle_player.volume_db
+		idle_max_distance = _idle_player.max_distance
+	else:
+		_idle_player = _create_player(
+			&"IdleCue",
+			_prepare_loop(idle_sound),
+			resolved_idle_bus,
+			idle_volume_db,
+			idle_max_distance,
+			max(pitch_scale + randf_range(-idle_pitch_variation, idle_pitch_variation), 0.01)
+		)
+	_one_shot_player = get_node_or_null(cue_player_path) as AudioStreamPlayer3D if not cue_player_path.is_empty() else null
+	if not _one_shot_player:
+		_one_shot_player = _create_player(&"OneShotCue", null, sound_bus, volume_db, max_distance, pitch_scale)
 	if idle_voice_group:
 		_idle_group_name = StringName("actor_idle_audio_%s" % idle_voice_group)
 		add_to_group(_idle_group_name)
@@ -79,7 +98,8 @@ func _process(delta: float) -> void:
 	_update_limited_idle()
 
 
-func set_idle_active(value: bool) -> void:
+func set_idle_active(value: bool, movement_speed: float = 0.0) -> void:
+	value = value and (not idle_requires_movement or movement_speed > idle_movement_min_speed)
 	_idle_requested = value
 	if _idle_player == null or _idle_player.stream == null:
 		return
@@ -110,6 +130,11 @@ func play_cue(cue: StringName) -> void:
 	_one_shot_player.stop()
 	_one_shot_player.stream = stream
 	_one_shot_player.play()
+
+
+func stop_one_shot() -> void:
+	if _one_shot_player:
+		_one_shot_player.stop()
 
 
 func _create_player(

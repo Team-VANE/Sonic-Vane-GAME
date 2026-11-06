@@ -207,8 +207,6 @@ func apply_enemy_bounce(origin: Vector3, speed: float, source: Node = null) -> v
 	if p._homing_active or p._homing_post_attack_timer > 0.0:
 		bounce_speed *= max(p.homing_bounce_speed_fraction, 0.0)
 	bounce_speed = max(bounce_speed, max(p.enemy_bounce_min_speed, 0.0))
-	if not was_homing_contact:
-		bounce_speed += p._consume_attack_magnetism_bounce_compensation()
 	p.velocity = dir * bounce_speed
 	p.attached = false
 	p.reset_trick_staleness()
@@ -220,7 +218,12 @@ func apply_enemy_bounce(origin: Vector3, speed: float, source: Node = null) -> v
 	p.visual_bounce_rebounded.emit()
 	p.refresh_airborne_abilities()
 	if was_homing_contact:
+		var pass_through: bool = _get_homing_contact_pass_through(source)
 		_complete_homing_from_enemy_contact(source, homing_contact_velocity, homing_contact_lateral, up, origin)
+		if not pass_through:
+			p.begin_bounce_magnetism_recovery(maxf(p.velocity.dot(up), 0.0))
+	else:
+		p.begin_bounce_magnetism_recovery(bounce_speed)
 	_interrupt_skydive_for_enemy_bounce(&"enemy_bounce")
 	p.reset_flight_eligibility()
 	p.end_active_flight_for_external_impulse({"reason": &"enemy_bounce"})
@@ -228,12 +231,13 @@ func apply_enemy_bounce(origin: Vector3, speed: float, source: Node = null) -> v
 
 func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = null) -> void:
 	var p = _owner
+	var compensation: float = p._consume_attack_magnetism_bounce_compensation()
 	p.cancel_drop_dash_for_object_interaction()
 	if p._bounce_state == p.BounceState.STOMP:
 		p._on_trick_detected(TrickSystem.TrickType.STOMP_DAREHOG)
 
 	var was_homing_contact: bool = _homing_contact_matches_source(source)
-	var up: Vector3 = _get_homing_contact_up()
+	var up: Vector3 = _get_homing_contact_up() if was_homing_contact else p._get_gravity_up()
 
 	var v: Vector3 = p.velocity
 	var vertical: float = v.dot(up)
@@ -241,6 +245,8 @@ func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = nu
 	var homing_contact_velocity: Vector3 = v
 	var homing_contact_lateral: Vector3 = lateral
 
+	if not was_homing_contact:
+		vertical -= compensation
 	if vertical >= 0.0:
 		vertical = vertical + vertical * 0.5
 	else:
@@ -249,8 +255,6 @@ func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = nu
 	if p._homing_active or p._homing_post_attack_timer > 0.0:
 		vertical *= max(p.homing_bounce_speed_fraction, 0.0)
 	vertical = max(vertical, max(p.enemy_bounce_min_speed, 0.0))
-	if not was_homing_contact:
-		vertical += p._consume_attack_magnetism_bounce_compensation()
 
 	p.velocity = lateral + up * vertical
 	p.attached = false
@@ -267,7 +271,12 @@ func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = nu
 	if end_bounce_stomp and p._bounce_state != p.BounceState.NONE:
 		p._bounce_state = p.BounceState.NONE
 	if was_homing_contact:
+		var pass_through: bool = _get_homing_contact_pass_through(source)
 		_complete_homing_from_enemy_contact(source, homing_contact_velocity, homing_contact_lateral, up, p.global_position)
+		if not pass_through:
+			p.begin_bounce_magnetism_recovery(maxf(p.velocity.dot(up), 0.0))
+	else:
+		p.begin_bounce_magnetism_recovery(vertical)
 	_interrupt_skydive_for_enemy_bounce(&"enemy_attack_bounce")
 	p.reset_flight_eligibility()
 	p.end_active_flight_for_external_impulse({"reason": &"enemy_attack_bounce"})
@@ -362,13 +371,12 @@ func _complete_homing_from_enemy_contact(source: Node, contact_velocity: Vector3
 	var target_position: Vector3 = _get_homing_contact_target_position(source, fallback_origin)
 	var jump_held: bool = p._is_jump_held()
 	var is_pass_through: bool = _get_homing_contact_pass_through(source)
-	var bounce_compensation: float = p._consume_attack_magnetism_bounce_compensation()
 	if is_pass_through:
 		var homing_dir: Vector3 = _get_homing_contact_direction(source, contact_velocity, fallback_origin)
 		var homing_spd: float = max(p.homing_speed, p._homing_saved_speed_mag)
 		p.velocity = homing_dir * homing_spd
 	else:
-		var pop_speed: float = _get_homing_contact_pop_speed(source) + bounce_compensation
+		var pop_speed: float = _get_homing_contact_pop_speed(source)
 		var retained: Vector3 = Vector3.ZERO
 		if p.homing_retain_speed_if_jump_held and jump_held:
 			if contact_velocity.dot(up) < 0.0:

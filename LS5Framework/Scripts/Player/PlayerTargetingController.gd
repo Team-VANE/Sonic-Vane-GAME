@@ -8,6 +8,14 @@ var _owner: Node = null
 var _lightspeed_terrain_offset: Vector3 = Vector3.ZERO
 var _lightspeed_obstruction_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
 var _lightspeed_obstruction_exclusions: Array[RID] = []
+var _bounce_compensation_up: Vector3 = Vector3.ZERO
+var _bounce_compensation_action: StringName = &""
+var _bounce_recovery_remaining: float = 0.0
+var _bounce_recovery_blend: float = 0.0
+var _vertical_assist_action: StringName = &""
+var _vertical_assist_spent: float = 0.0
+var _vertical_assist_remaining: float = 0.0
+const MAGNETISM_PREDICTION_TIME: float = 0.38
 
 
 func _init(owner: Node) -> void:
@@ -332,7 +340,36 @@ func get_homing_reticle_target_position(target: Node3D) -> Vector3:
 	return _get_homing_candidate_position(target, p.global_position)
 
 
-func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity: Vector3) -> Vector3:
+func begin_bounce_magnetism_recovery(rebound_speed: float) -> void:
+	var p = _owner
+	_reset_magnetism_vertical_assist()
+	var weight: float = clampf(rebound_speed / maxf(p.attack_magnetism_bounce_full_recovery_speed, 1.0), 0.0, 1.0)
+	var delay_range: Vector2 = p.attack_magnetism_bounce_delay_range
+	var blend_range: Vector2 = p.attack_magnetism_bounce_blend_range
+	var delay: float = maxf(lerpf(delay_range.x, maxf(delay_range.x, delay_range.y), weight), 0.0)
+	_bounce_recovery_blend = maxf(lerpf(blend_range.x, maxf(blend_range.x, blend_range.y), weight), 0.0)
+	_bounce_recovery_remaining = delay + _bounce_recovery_blend
+	p._attack_magnetism_scan_result.clear()
+	p._attack_magnetism_scan_timer = 0.0
+	p._attack_magnetism_target = null
+	p._attack_magnetism_target_position = Vector3.ZERO
+	p._attack_magnetism_strength_current = 0.0
+	_consume_attack_magnetism_bounce_compensation()
+
+
+func tick_bounce_magnetism_recovery(delta: float) -> void:
+	_bounce_recovery_remaining = maxf(_bounce_recovery_remaining - delta, 0.0)
+
+
+func _get_bounce_magnetism_recovery_factor() -> float:
+	if _bounce_recovery_remaining <= 0.0:
+		return 1.0
+	if _bounce_recovery_remaining >= _bounce_recovery_blend:
+		return 0.0
+	return 1.0 - _bounce_recovery_remaining / _bounce_recovery_blend
+
+
+func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity: Vector3, gravity_step: float = -1.0) -> Vector3:
 	var p = _owner
 	p._attack_magnetism_target = null
 	p._attack_magnetism_target_position = Vector3.ZERO
@@ -340,10 +377,22 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 	if delta > 0.0:
 		_tick_attack_magnetism_bounce_compensation(delta)
 	if not _can_apply_attack_magnetism():
+		_reset_magnetism_vertical_assist()
 		p._attack_magnetism_scan_result.clear()
 		p._attack_magnetism_scan_timer = 0.0
+		_consume_attack_magnetism_bounce_compensation()
 		return current_velocity
 	if delta <= 0.0:
+		return current_velocity
+	var action: StringName = p.get_current_action_id()
+	if action != _vertical_assist_action:
+		_reset_magnetism_vertical_assist()
+		_vertical_assist_action = action
+	var timer_step: float = p.get_gameplay_timer_delta(delta)
+	var available_time: float = _vertical_assist_remaining
+	_vertical_assist_remaining = maxf(available_time - timer_step, 0.0)
+	var recovery_factor: float = _get_bounce_magnetism_recovery_factor()
+	if recovery_factor <= 0.0:
 		return current_velocity
 
 	var up: Vector3 = physics_up.normalized()
@@ -362,7 +411,25 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 	if target == null:
 		return current_velocity
 
-	var target_position: Vector3 = result.get("position", target.global_position)
+	var target_position: Vector3 = result["position"]
+	var hit_position: Vector3 = target_position
+	var target_velocity: Vector3 = Vector3.ZERO
+	var carrier: Node = target
+	while carrier and not carrier is PhysicsBody3D:
+		carrier = carrier.get_parent()
+	if carrier is CharacterBody3D:
+		target_velocity = (carrier as CharacterBody3D).velocity
+	elif carrier is RigidBody3D:
+		target_velocity = (carrier as RigidBody3D).linear_velocity
+	if not target_velocity.is_finite():
+		target_velocity = Vector3.ZERO
+	target_velocity = p.world_to_movement_velocity(target_velocity)
+	if not target_velocity.is_zero_approx():
+		var lead_time: float = minf(p.global_position.distance_to(target_position) / maxf(current_velocity.length(), 1.0), 0.12)
+		var lead_offset: Vector3 = (target_velocity * lead_time).limit_length(3.0)
+		var predicted_position: Vector3 = target_position + lead_offset
+		if not _is_homing_target_obstructed(p.global_position, predicted_position, target, true):
+			target_position = predicted_position
 	var to_target: Vector3 = target_position - p.global_position
 	var dist: float = to_target.length()
 	if dist <= 0.001:
@@ -374,49 +441,190 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 	if target_speed <= 0.001:
 		return current_velocity
 
-	var strength: float = float(result.get("strength", 0.0))
+	var strength: float = float(result.get("strength", 0.0)) * recovery_factor
 	if strength <= 0.0:
 		return current_velocity
 
 	p._attack_magnetism_target = target
 	p._attack_magnetism_target_position = target_position
 	p._attack_magnetism_strength_current = strength
+	if not is_zero_approx(p._attack_magnetism_bounce_descent_compensation):
+		p._attack_magnetism_bounce_compensation_timer = maxf(p.attack_magnetism_bounce_compensation_time, 0.0)
 
-	var desired_velocity: Vector3 = target_dir * target_speed
-	var adjusted_velocity: Vector3 = current_velocity.move_toward(desired_velocity, strength * delta)
-	var previous_descent: float = max(-current_velocity.dot(up), 0.0)
-	var adjusted_descent: float = max(-adjusted_velocity.dot(up), 0.0)
-	var lost_descent: float = max(previous_descent - adjusted_descent, 0.0)
-	if lost_descent > 0.0:
-		_store_attack_magnetism_bounce_compensation(lost_descent)
-	return adjusted_velocity
+	var speed: float = current_velocity.length()
+	var direction: Vector3 = current_velocity.normalized() if speed > 0.001 else target_dir
+	var angle: float = direction.angle_to(target_dir)
+	var closing_speed: float = maxf(current_velocity.dot(target_dir), 0.0)
+	var time_to_target: float = maxf(dist / maxf(closing_speed, 1.0), 0.08)
+	var urgency: float = clampf(strength / 55.0, 0.0, 1.0)
+	var turn_rate: float = minf(maxf(strength / 35.0, angle / time_to_target * urgency), deg_to_rad(220.0))
+	var weight: float = minf(turn_rate * delta / maxf(angle, 0.001), 1.0)
+	var adjusted_direction: Vector3 = direction.slerp(target_dir, weight).normalized()
+	if adjusted_direction.is_zero_approx():
+		adjusted_direction = direction
+	var gravity_up: Vector3 = p._get_gravity_up()
+	var planar_direction: Vector3 = adjusted_direction.slide(gravity_up).normalized()
+	if planar_direction.is_zero_approx():
+		planar_direction = current_velocity.slide(gravity_up).normalized()
+	var incoming_vertical: float = current_velocity.dot(gravity_up)
+	var adjusted_speed: float = move_toward(speed, target_speed, strength * delta)
+	var correction: float = 0.0
+	var budget: float = maxf(p.attack_magnetism_vertical_budget - _vertical_assist_spent, 0.0)
+	var duration: float = maxf(p.attack_magnetism_vertical_duration, 0.0)
+	var correction_time: float = duration if _vertical_assist_spent == 0.0 else available_time
+	if budget > 0.0 and correction_time > 0.0:
+		var gravity: float = gravity_step / delta if gravity_step >= 0.0 else maxf(p.get_effective_gravity_strength(), 0.0)
+		var requested: float = _get_magnetism_vertical_correction(
+			target, carrier, hit_position, current_velocity, target_velocity, gravity_up, gravity
+		)
+		var correction_step: float = delta * minf(correction_time / maxf(timer_step, 0.000001), 1.0)
+		var vertical_authority: float = maxf(urgency, 0.45 * recovery_factor)
+		var maximum_step: float = minf(budget, maxf(p.attack_magnetism_vertical_acceleration, 0.0) * vertical_authority * correction_step)
+		correction = clampf(requested, -maximum_step, maximum_step)
+	var adjusted_vertical: float = clampf(incoming_vertical + correction, -adjusted_speed, adjusted_speed)
+	var planar_speed: float = sqrt(maxf(adjusted_speed * adjusted_speed - adjusted_vertical * adjusted_vertical, 0.0))
+	if planar_direction.is_zero_approx() and planar_speed > 0.001:
+		return current_velocity
+	var applied_correction: float = adjusted_vertical - incoming_vertical
+	if not is_zero_approx(applied_correction):
+		if _vertical_assist_spent == 0.0:
+			_vertical_assist_remaining = maxf(duration - timer_step, 0.0)
+		_vertical_assist_spent += absf(applied_correction)
+		_store_attack_magnetism_bounce_compensation(applied_correction)
+	return planar_direction * planar_speed + gravity_up * adjusted_vertical
+
+
+func _reset_magnetism_vertical_assist() -> void:
+	_vertical_assist_action = &""
+	_vertical_assist_spent = 0.0
+	_vertical_assist_remaining = 0.0
+
+
+func _get_magnetism_vertical_correction(
+	target: Node3D, carrier: Node, aim: Vector3, velocity: Vector3, target_velocity: Vector3,
+	up: Vector3, gravity: float
+) -> float:
+	var p = _owner
+	var shape_node: CollisionShape3D
+	if target.has_method("get_attack_magnetism_hit_shape"):
+		shape_node = target.call("get_attack_magnetism_hit_shape") as CollisionShape3D
+	elif carrier and carrier.has_method("get_attack_magnetism_hit_shape"):
+		shape_node = carrier.call("get_attack_magnetism_hit_shape") as CollisionShape3D
+	var radius: float = p.get_main_collision_world_radius()
+	var round_radius: float = radius
+	var half_height: float = radius
+	if shape_node and not shape_node.disabled:
+		var shape: Shape3D = shape_node.shape
+		var basis: Basis = shape_node.global_basis
+		var scale: Vector3 = basis.get_scale().abs()
+		var max_scale: float = maxf(scale.x, maxf(scale.y, scale.z))
+		if shape is SphereShape3D or shape is CapsuleShape3D:
+			aim = shape_node.global_position
+			var shape_radius: float = shape.radius * max_scale
+			radius += shape_radius
+			round_radius += shape_radius
+			half_height += shape_radius
+			if shape is CapsuleShape3D:
+				var core: Vector3 = basis.y * maxf(shape.height * 0.5 - shape.radius, 0.0)
+				radius += core.slide(up).length()
+				half_height += absf(core.dot(up))
+		elif shape is BoxShape3D:
+			aim = shape_node.global_position
+			var half_size: Vector3 = shape.size * 0.5
+			for axis: int in range(3):
+				var extent: Vector3 = basis[axis] * half_size[axis]
+				radius += extent.slide(up).length()
+				half_height += absf(extent.dot(up))
+			round_radius = 0.0
+
+	radius = maxf(radius, 0.1)
+	var offset: Vector3 = aim - p.get_main_collision_world_center()
+	var relative_velocity: Vector3 = velocity - target_velocity
+	var planar_offset: Vector3 = offset.slide(up)
+	var planar_velocity: Vector3 = relative_velocity.slide(up)
+	var planar_speed_sq: float = planar_velocity.length_squared()
+	var closest_time: float = 0.0
+	if planar_speed_sq > 0.001:
+		closest_time = planar_offset.dot(planar_velocity) / planar_speed_sq
+	var closest_distance_sq: float = (planar_offset - planar_velocity * closest_time).length_squared()
+	var radius_sq: float = radius * radius
+	if closest_distance_sq > radius_sq and closest_time >= 0.0:
+		# Estimate the crossing after lateral steering when the current heading misses.
+		var approach_speed: float = maxf(planar_velocity.length(), velocity.length() * 0.45)
+		if approach_speed > 0.001:
+			closest_time = planar_offset.length() / approach_speed
+			planar_velocity = planar_offset.normalized() * approach_speed
+			planar_speed_sq = approach_speed * approach_speed
+			closest_distance_sq = 0.0
+	var crossing_time: float = 0.0
+	if planar_speed_sq > 0.001 and closest_distance_sq < radius_sq:
+		crossing_time = sqrt((radius_sq - closest_distance_sq) / planar_speed_sq)
+	elif planar_speed_sq <= 0.001 and closest_distance_sq <= radius_sq:
+		crossing_time = MAGNETISM_PREDICTION_TIME
+	var entry_time: float = maxf(closest_time - crossing_time, 0.0)
+	var exit_time: float = minf(closest_time + crossing_time, MAGNETISM_PREDICTION_TIME)
+	if entry_time > exit_time:
+		return 0.0
+
+	var height: float = offset.dot(up)
+	var vertical_speed: float = relative_velocity.dot(up)
+	var best_correction: float = INF
+	var highest_time: float = clampf(vertical_speed / gravity, entry_time, exit_time) if gravity > 0.0 else entry_time
+	var saw_above: bool = false
+	var saw_below: bool = false
+	for sample: int in range(8):
+		var time: float = highest_time if sample == 7 else lerpf(entry_time, exit_time, float(sample) / 6.0)
+		var lateral_distance_sq: float = (planar_offset - planar_velocity * time).length_squared()
+		if lateral_distance_sq > radius_sq:
+			continue
+		var height_limit: float = half_height - round_radius
+		height_limit += round_radius * sqrt(maxf(1.0 - lateral_distance_sq / radius_sq, 0.0))
+		var miss: float = height - (vertical_speed * time - 0.5 * gravity * time * time)
+		var error: float = miss - clampf(miss, -height_limit, height_limit)
+		saw_above = saw_above or error > 0.0
+		saw_below = saw_below or error < 0.0
+		if is_zero_approx(error) or (saw_above and saw_below):
+			return 0.0
+		var candidate: float = error / maxf(time, 0.05)
+		if absf(candidate) < absf(best_correction):
+			best_correction = candidate
+	return best_correction if is_finite(best_correction) else 0.0
 
 
 func _tick_attack_magnetism_bounce_compensation(delta: float) -> void:
 	var p = _owner
-	if p._attack_magnetism_bounce_compensation_timer <= 0.0:
-		p._attack_magnetism_bounce_descent_compensation = 0.0
-		return
 	p._attack_magnetism_bounce_compensation_timer = max(p._attack_magnetism_bounce_compensation_timer - p.get_gameplay_timer_delta(delta), 0.0)
-	if p._attack_magnetism_bounce_compensation_timer <= 0.0:
-		p._attack_magnetism_bounce_descent_compensation = 0.0
+	if p._attack_magnetism_bounce_compensation_timer <= 0.0 or not _bounce_compensation_matches_context():
+		_consume_attack_magnetism_bounce_compensation()
 
 
 func _store_attack_magnetism_bounce_compensation(lost_descent: float) -> void:
 	var p = _owner
-	var gain: float = max(p.attack_magnetism_bounce_lost_descent_gain, 0.0)
-	if gain <= 0.0:
+	if is_zero_approx(lost_descent):
 		return
-	p._attack_magnetism_bounce_descent_compensation += max(lost_descent, 0.0) * gain
-	p._attack_magnetism_bounce_compensation_timer = max(p.attack_magnetism_bounce_compensation_time, 0.0)
+	if not _bounce_compensation_matches_context():
+		_consume_attack_magnetism_bounce_compensation()
+	_bounce_compensation_up = p._get_gravity_up()
+	_bounce_compensation_action = p.get_current_action_id()
+	p._attack_magnetism_bounce_descent_compensation += lost_descent
+	p._attack_magnetism_bounce_compensation_timer = maxf(p.attack_magnetism_bounce_compensation_time, 0.0)
+
+
+func _bounce_compensation_matches_context() -> bool:
+	return _bounce_compensation_up.is_zero_approx() or (
+		_bounce_compensation_up.is_equal_approx(_owner._get_gravity_up())
+		and _bounce_compensation_action == _owner.get_current_action_id()
+	)
 
 
 func _consume_attack_magnetism_bounce_compensation() -> float:
 	var p = _owner
-	var compensation: float = p._attack_magnetism_bounce_descent_compensation
+	var compensation: float = p._attack_magnetism_bounce_descent_compensation if _bounce_compensation_matches_context() else 0.0
 	p._attack_magnetism_bounce_descent_compensation = 0.0
 	p._attack_magnetism_bounce_compensation_timer = 0.0
-	return max(compensation, 0.0)
+	_bounce_compensation_up = Vector3.ZERO
+	_bounce_compensation_action = &""
+	return compensation * clampf(p.attack_magnetism_bounce_lost_descent_gain, 0.0, 1.0) if compensation > 0.0 else compensation
 
 
 func _get_attack_magnetism_scan_result(delta: float, heading: Vector3, up: Vector3, current_velocity: Vector3) -> Dictionary:
@@ -426,20 +634,37 @@ func _get_attack_magnetism_scan_result(delta: float, heading: Vector3, up: Vecto
 		interval = 1.0 / p.attack_magnetism_target_update_rate_hz
 	p._attack_magnetism_scan_timer -= p.get_gameplay_timer_delta(delta)
 
-	if p._attack_magnetism_scan_timer > 0.0 and _is_attack_magnetism_scan_result_valid():
+	var previous: Variant = p._attack_magnetism_scan_result.get("target")
+	if _is_attack_magnetism_scan_result_valid():
+		var position: Vector3 = _get_attack_magnetism_target_position(previous)
+		var offset: Vector3 = position - p.global_position
+		var target_range: float = _get_attack_magnetism_setting(previous, "attack_magnetism_range", _get_attack_magnetism_player_range(current_velocity))
+		if (
+			offset.length() <= target_range * 1.1
+			and offset.dot(heading) > -0.05
+			and _get_attack_magnetism_input_factor(offset.normalized(), up) > 0.0
+			and not _is_homing_target_obstructed(p.global_position, position, previous, true)
+		):
+			p._attack_magnetism_scan_result["position"] = position
+		else:
+			p._attack_magnetism_scan_result.clear()
+	else:
+		p._attack_magnetism_scan_result.clear()
+	if p._attack_magnetism_scan_timer > 0.0:
 		return p._attack_magnetism_scan_result
 
 	p._attack_magnetism_scan_timer = interval
-	p._attack_magnetism_scan_result = _select_attack_magnetism_target(p.global_position, heading, up, current_velocity)
-	return p._attack_magnetism_scan_result
+	var result: Dictionary = _select_attack_magnetism_target(p.global_position, heading, up, current_velocity)
+	p._attack_magnetism_scan_result = result
+	return result
 
 
 func _is_attack_magnetism_scan_result_valid() -> bool:
 	var p = _owner
 	if p._attack_magnetism_scan_result.is_empty():
 		return false
-	var target: Node3D = p._attack_magnetism_scan_result.get("target", null) as Node3D
-	if target == null or not is_instance_valid(target):
+	var target: Variant = p._attack_magnetism_scan_result.get("target")
+	if not is_instance_valid(target):
 		return false
 	return _is_attack_magnetism_target_available(target)
 
@@ -601,6 +826,10 @@ func _select_attack_magnetism_target(origin: Vector3, heading: Vector3, up: Vect
 	var best_position: Vector3 = Vector3.ZERO
 	var best_score: float = -999999.0
 	var best_strength: float = 0.0
+	var locked_target: Node3D = p._attack_magnetism_scan_result.get("target") as Node3D
+	var input_heading: Vector3 = p._move_direction.slide(up).normalized()
+	var planar_heading: Vector3 = heading.slide(up).normalized()
+	var descending: bool = current_velocity.dot(up) < -0.001
 
 	for candidate in candidates:
 		if candidate == null or not is_instance_valid(candidate):
@@ -618,7 +847,8 @@ func _select_attack_magnetism_target(origin: Vector3, heading: Vector3, up: Vect
 		var target_position: Vector3 = _get_attack_magnetism_target_position(target)
 		var to_target: Vector3 = target_position - origin
 		var dist: float = to_target.length()
-		if dist <= 0.001 or dist > target_range:
+		var retained_range: float = target_range * 1.1 if target == locked_target else target_range
+		if dist <= 0.001 or dist > retained_range:
 			continue
 
 		var target_dir: Vector3 = to_target / dist
@@ -626,7 +856,11 @@ func _select_attack_magnetism_target(origin: Vector3, heading: Vector3, up: Vect
 		angle_deg = clamp(angle_deg, 0.0, 180.0)
 		var min_dot: float = cos(deg_to_rad(angle_deg))
 		var heading_dot: float = clamp(target_dir.dot(heading), -1.0, 1.0)
-		if heading_dot < min_dot:
+		var target_planar: Vector3 = target_dir.slide(up).normalized()
+		if descending and to_target.dot(up) <= 0.0 and not target_planar.is_zero_approx():
+			var approach_heading: Vector3 = planar_heading if not planar_heading.is_zero_approx() else input_heading
+			heading_dot = maxf(heading_dot, target_planar.dot(approach_heading))
+		if heading_dot < min_dot and target != locked_target:
 			continue
 
 		var input_factor: float = _get_attack_magnetism_input_factor(target_dir, up)
@@ -642,13 +876,17 @@ func _select_attack_magnetism_target(origin: Vector3, heading: Vector3, up: Vect
 		var strength_multiplier: float = 1.0
 		if p._object_has_property(target, "attack_magnetism_strength_multiplier"):
 			strength_multiplier = max(float(target.get("attack_magnetism_strength_multiplier")), 0.0)
-		var strength: float = max(base_strength, 0.0) * strength_multiplier * heading_factor * input_factor * descent_factor * distance_factor
+		var strength: float = max(base_strength, 0.0) * strength_multiplier * lerpf(0.35, 1.0, heading_factor) * input_factor * descent_factor * distance_factor
 		if strength <= 0.0:
 			continue
 
-		var input_score: float = min(input_factor, 2.0)
-		var score: float = heading_factor * 10000.0 + input_score * 100.0 - (dist / target_range) * 10.0
-		if score > best_score:
+		var score: float = heading_factor - 0.25 * (dist / target_range)
+		if not input_heading.is_zero_approx():
+			var input_angle: float = input_heading.angle_to(target_planar) if not target_planar.is_zero_approx() else PI * 0.5
+			score = 0.2 * score - input_angle
+		if target == locked_target:
+			score += 0.18
+		if score > best_score and (target == locked_target or not _is_homing_target_obstructed(origin, target_position, target, true)):
 			best_score = score
 			best = target
 			best_position = target_position
@@ -1330,6 +1568,10 @@ func cancel_homing_attack(restore_saved_velocity: bool = false) -> void:
 
 func reset_for_level_change() -> void:
 	var p = _owner
+	_bounce_recovery_remaining = 0.0
+	_bounce_recovery_blend = 0.0
+	_reset_magnetism_vertical_assist()
+	_consume_attack_magnetism_bounce_compensation()
 	_stop_lightspeed_dash_if_active(false)
 	p._homing_active = false
 	p._homing_target = null
@@ -1755,6 +1997,7 @@ func _end_lightspeed_dash(apply_release_velocity: bool, try_attach: bool = false
 	p._lightspeed_raycast_cache.clear()  # Clear raycast cache when dash ends
 	if apply_release_velocity and p._lightspeed_dash_release_velocity.length() > 0.001:
 		p.velocity = p._lightspeed_dash_release_velocity
+		p._last_air_velocity = p.velocity
 	p._lightspeed_dash_release_velocity = Vector3.ZERO
 	p._lightspeed_dash_last_dir = Vector3.ZERO
 	p._lightspeed_dash_speed = 0.0
@@ -1782,6 +2025,9 @@ func _attempt_lightspeed_dash_ground_attach() -> void:
 	print("[LSD-ATTACH] hit ", surface_kind, " at ", hit_position, " normal=", hit_normal)
 	p.global_position = hit_position + hit_normal * max(p.collision_ground_distance, 0.05)
 	p._apply_grounded_from_downwarp(hit_position, hit_normal)
+	p.velocity = p.velocity.slide(p.surface_normal)
+	p._ground_snap_attached_this_frame = true
+	p.refresh_airborne_abilities(p.surface_normal.dot(p._get_gravity_up()) > 0.7)
 	p._lock_to_surface()
 
 

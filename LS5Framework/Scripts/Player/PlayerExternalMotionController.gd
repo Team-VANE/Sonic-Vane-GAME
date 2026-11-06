@@ -14,6 +14,7 @@ func _init(owner: Node) -> void:
 
 func apply_teleport(exit_transform: Transform3D, keep_vel: bool, match_rot: bool, exit_local_offset: Vector3) -> void:
 	var p = _owner
+	p._consume_attack_magnetism_bounce_compensation()
 	p.cancel_homing_attack(false)
 	cancel_spline_spring()
 	cancel_vault_bar()

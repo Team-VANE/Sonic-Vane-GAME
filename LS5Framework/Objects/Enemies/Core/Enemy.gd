@@ -55,6 +55,8 @@ const SURFACE_METADATA = preload("res://LS5Framework/Scripts/World/SurfaceBehavi
 @export_group("Respawn Presentation")
 ## Reusable visual and audio feedback played when this enemy respawns.
 @export var respawn_feedback: ObjectRespawnFeedback = preload("res://LS5Framework/Resources/Effects/ObjectRespawnFeedback.tres")
+## Time reserved for the defeat animation before effects and the respawn timer begin.
+@export_range(0.0, 10.0, 0.01) var defeat_delay_sec: float = 0.0
 
 @export_group("Components")
 ## Health component used for damage and defeat state.
@@ -107,6 +109,8 @@ var _intent: EnemyIntent = EnemyIntent.new()
 var _spawn_transform: Transform3D = Transform3D.IDENTITY
 var _spawn_active: bool = true
 var _dead: bool = false
+var _defeat_pending: bool = false
+var _defeat_remaining: float = 0.0
 var _environmental_hazard_immunity_timer: float = 0.0
 var _pending_environmental_hazards: Dictionary = {}
 var _fall_damage_cooldown_timer: float = 0.0
@@ -172,13 +176,17 @@ func _physics_process(delta: float) -> void:
 		if component != null and is_instance_valid(component):
 			component.physics_tick(delta)
 	if _dead:
-		if _respawn and _respawn.physics_tick(delta):
+		if _defeat_pending:
+			_defeat_remaining = maxf(_defeat_remaining - delta, 0.0)
+			if _defeat_remaining <= 0.0:
+				_finish_defeat()
+		elif _respawn and _respawn.physics_tick(delta):
 			_respawn_enemy()
 		_update_presentation(delta)
 		return
 	if _attacks:
 		_attacks.physics_tick(delta)
-	if active and _perception:
+	if active and _perception and (not _brain or _brain.wants_perception()):
 		_perception.physics_tick(delta)
 	elif _perception:
 		_perception.clear()
@@ -195,6 +203,7 @@ func _physics_process(delta: float) -> void:
 		if _intent.movement_locked:
 			_intent.move_direction = Vector3.ZERO
 			_intent.speed_ratio = 0.0
+	var movement_start: Vector3 = global_position
 	if _locomotion:
 		_locomotion.capture_impact_contacts = fall_damage_enabled
 		_locomotion.physics_tick(delta, _intent)
@@ -202,7 +211,9 @@ func _physics_process(delta: float) -> void:
 	if _targetable:
 		_targetable.physics_tick(delta, velocity.length_squared() > 0.000001)
 	if _audio:
-		_audio.set_idle_active(active)
+		var movement: Vector3 = (global_position - movement_start).slide(get_gravity_up())
+		var movement_speed: float = movement.length() / delta if delta > 0.0 else 0.0
+		_audio.set_idle_active(active, movement_speed)
 	_update_presentation(delta)
 
 
@@ -281,6 +292,15 @@ func get_effective_gravity_strength() -> float:
 
 func get_gravity_acceleration_vector() -> Vector3:
 	return _gravity.get_gravity_acceleration_vector() if _gravity else Vector3.ZERO
+
+
+func get_attack_magnetism_hit_shape() -> CollisionShape3D:
+	if not _hurtbox:
+		return null
+	for child: Node in _hurtbox.get_children():
+		if child is CollisionShape3D and not child.disabled:
+			return child as CollisionShape3D
+	return null
 
 
 func apply_gravity_modifier(
@@ -393,6 +413,8 @@ func _initialize_components() -> void:
 
 
 func _on_damaged(_amount: int, _source: Node) -> void:
+	if _brain:
+		_brain.notify_hurt()
 	for component: EnemyOptionalComponent in _optional_components:
 		if component != null and is_instance_valid(component):
 			component.on_enemy_damaged(_amount, _source)
@@ -423,12 +445,24 @@ func _on_died(source: Node) -> void:
 		_animation.set_dead(true)
 	if _audio:
 		_audio.set_idle_active(false)
-		_audio.play_cue(&"defeat")
-	if _defeat_effects:
-		_defeat_effects.play_defeat_effect(size)
+		_audio.stop_one_shot()
 	if _score_award:
 		_score_award.award(source)
 	clear_gravity_state(&"death", true)
+	_defeat_pending = true
+	_defeat_remaining = maxf(defeat_delay_sec, 0.0)
+	if _defeat_remaining <= 0.0:
+		_finish_defeat()
+
+
+func _finish_defeat() -> void:
+	_defeat_pending = false
+	if _audio:
+		_audio.play_cue(&"defeat")
+	if _defeat_effects:
+		_defeat_effects.play_defeat_effect(size)
+	if defeat_delay_sec > 0.0 and _animation:
+		_animation.set_visual_visible(false)
 	if _respawn:
 		_respawn.request_respawn()
 
@@ -485,6 +519,8 @@ func _respawn_enemy() -> void:
 
 func _reset_components(gravity_reason: StringName) -> void:
 	_dead = false
+	_defeat_pending = false
+	_defeat_remaining = 0.0
 	active = _spawn_active
 	velocity = Vector3.ZERO
 	_environmental_hazard_immunity_timer = (

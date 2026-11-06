@@ -1,6 +1,9 @@
 extends Node
 class_name EnemyLocomotion
 
+## Brakes drift perpendicular to the requested movement heading, in units per second squared. Zero uses the default movement response.
+@export_range(0.0, 200.0, 0.1, "or_greater") var sideways_deceleration: float = 0.0
+
 var actor: CharacterBody3D = null
 var capture_impact_contacts: bool = true
 var _pre_move_velocity: Vector3 = Vector3.ZERO
@@ -13,6 +16,19 @@ func setup(owner_actor: CharacterBody3D) -> void:
 
 func physics_tick(_delta: float, _intent: EnemyIntent) -> void:
 	pass
+
+
+func _approach_movement_velocity(current: Vector3, target: Vector3, up: Vector3, acceleration: float, deceleration: float, delta: float) -> Vector3:
+	var sideways: Vector3 = Vector3.ZERO
+	if sideways_deceleration > 0.0:
+		var side_axis: Vector3 = up.cross(target)
+		if side_axis.length_squared() > 0.000001:
+			side_axis = side_axis.normalized()
+			sideways = side_axis * current.dot(side_axis)
+			current -= sideways
+			sideways = sideways.move_toward(Vector3.ZERO, sideways_deceleration * delta)
+	var rate: float = acceleration if target.length_squared() > current.length_squared() else deceleration
+	return current.move_toward(target, maxf(rate, 0.0) * delta) + sideways
 
 
 func reset_locomotion() -> void:
