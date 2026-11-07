@@ -648,7 +648,7 @@ shader_parameter/tex_flat = ExtResource("23_i5omx")
 shader_parameter/tex_glow = ExtResource("24_isflb")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = false
-shader_parameter/swap_time = 43121.522000000004
+shader_parameter/swap_time = 442.276
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l51wo"]
 size = Vector3(36.186234, 40.35939, 58.338074)
@@ -1594,20 +1594,20 @@ random_ring_pool = PackedInt32Array(5, 10, 20, 40)
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 1
-amount = 5.0
+amount = 10.0
 random_ring_pool = PackedInt32Array(5, 10, 20, 40)
 
 [sub_resource type="Resource" id="Resource_ias4f"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
-reward_type = 8
-amount = 10.0
+reward_type = 1
+amount = 5.0
 random_ring_pool = PackedInt32Array(5, 10, 20, 40)
 
 [sub_resource type="Resource" id="Resource_3hfrs"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
-reward_type = 1
+reward_type = 8
 amount = 10.0
 random_ring_pool = PackedInt32Array(5, 10, 20, 40)
 
@@ -1619,6 +1619,13 @@ amount = 10.0
 random_ring_pool = PackedInt32Array(5, 10, 20, 40)
 
 [sub_resource type="Resource" id="Resource_021gh"]
+resource_local_to_scene = true
+script = ExtResource("40_tep1r")
+reward_type = 1
+amount = 10.0
+random_ring_pool = PackedInt32Array(5, 10, 20, 40)
+
+[sub_resource type="Resource" id="Resource_sxl2n"]
 resource_local_to_scene = true
 script = ExtResource("40_tep1r")
 reward_type = 7
@@ -3100,6 +3107,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.022949, 0, 0)
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(763678701, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_8wqdv")
 
+[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" parent_id_path=PackedInt32Array(763678701, 456851143, 52793995) index="2" unique_id=1016145482]
+light_energy = 20.0
+
 [node name="Checkpoint" parent="RaceGoal" unique_id=1068812376 instance=ExtResource("18_dup37")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1633.8037, 162.24062, 388.91992)
 
@@ -4073,32 +4083,32 @@ leave_base_after_break = true
 
 [node name="ItemMonitor24" parent="." unique_id=755661992 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.572997, 0, 0.8195574, 0, 1, 0, -0.8195574, 0, 0.572997, 200.96268, 45.442554, 96.02972)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_dtcvr")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_wo0cy")])
 leave_base_after_break = true
 
 [node name="ItemMonitor26" parent="." unique_id=1223420640 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.572997, 0, 0.8195574, 0, 1, 0, -0.8195574, 0, 0.572997, 205.88002, 45.442554, 99.4677)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_wo0cy")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_ias4f")])
 leave_base_after_break = true
 
 [node name="ItemMonitor25" parent="." unique_id=327802644 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.572997, 0, 0.8195574, 0, 1, 0, -0.8195574, 0, 0.572997, 279.37662, 18.77802, 137.45389)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_ias4f")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_3hfrs")])
 leave_base_after_break = true
 
 [node name="ItemMonitor19" parent="." unique_id=2107388201 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.90600866, 0, 0.42325908, 0, 1, 0, -0.42325908, 0, 0.90600866, -133.2241, 20.828087, 28.84539)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_3hfrs")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_gg0ql")])
 leave_base_after_break = true
 
 [node name="ItemMonitor20" parent="." unique_id=1742821668 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.9995763, 0, -0.029107004, 0, 1, 0, 0.029107004, 0, 0.9995763, -352.56525, 21.189934, 302.455)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_gg0ql")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_021gh")])
 leave_base_after_break = true
 
 [node name="ItemMonitor21" parent="." unique_id=628545020 instance=ExtResource("39_oj55v")]
 transform = Transform3D(0.9328634, 0.35550758, 0.05814344, -0.24456531, 0.7435356, -0.6223688, -0.26448852, 0.5663651, 0.78056157, -368.01614, 19.018955, 402.0093)
-rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_021gh")])
+rewards = Array[ExtResource("40_tep1r")]([SubResource("Resource_sxl2n")])
 leave_base_after_break = true
 
 [node name="RhinoTank" parent="." unique_id=1566066094 instance=ExtResource("60_make8")]

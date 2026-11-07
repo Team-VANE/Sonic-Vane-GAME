@@ -6,11 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://3e65l5w7j2vu" path="res://LS5Framework/Sounds/Music/Nights journey of dreams：Growing Wings.ogg" id="3_intt7"]
 [ext_resource type="AudioStream" uid="uid://dk5mfl8hsh6xu" path="res://LS5Framework/Sounds/Music/NoWay.ogg" id="4_no_way"]
 [ext_resource type="AudioStream" uid="uid://d20h38k8jl2jp" path="res://LS5Framework/Sounds/Menu/ui_warning.wav" id="4_warning"]
-[ext_resource type="Script" uid="uid://d1i4c5ruedr0k" path="res://LS5Framework/Scripts/UI/ControlsRebindTab.gd" id="5_controls"]
 [ext_resource type="AudioStream" uid="uid://bxxtlwvmilicb" path="res://LS5Framework/Sounds/Menu/ui_down.wav" id="5_xltau"]
 [ext_resource type="AudioStream" uid="uid://c7v1madotqxd5" path="res://LS5Framework/Sounds/Menu/ui_release.wav" id="6_tu5gr"]
 [ext_resource type="Theme" uid="uid://dpl7x0l87ydk0" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="7_menu_theme"]
-[ext_resource type="Script" uid="uid://oskcidghu0bm" path="res://LS5Framework/Scripts/UI/BindingsTab.gd" id="8_bindings"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Scenes/HUD/HUDMusicTrackDisplay.tscn" id="9_music_display"]
 [ext_resource type="Script" uid="uid://cddrxj1wujx2p" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="10_crt_effect"]
 [ext_resource type="FontVariation" uid="uid://cbojhxrvs8exq" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="11_orbitron_900"]
@@ -18,9 +16,6 @@
 [ext_resource type="Script" uid="uid://dbc21mjmi7x8" path="res://LS5Framework/Scripts/UI/CharacterUIVoicePlayer.gd" id="13_character_ui_voice"]
 [ext_resource type="AudioStream" uid="uid://d4crnkamhq4it" path="res://LS5Framework/Sounds/Menu/ui_title_swoopin.wav" id="20_title_swoopin"]
 [ext_resource type="AudioStream" uid="uid://0quip8cyac8w" path="res://LS5Framework/Sounds/Menu/ui_title_start.wav" id="21_title_start"]
-
-[ext_resource type="Script" path="res://LS5Framework/Scripts/UI/OptionsPanelLayout.gd" id="water_options_layout"]
-
 [ext_resource type="PackedScene" path="res://LS5Framework/Scenes/UI/OptionsMenu.tscn" id="shared_options"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_missing_data_warning"]
@@ -463,8 +458,7 @@ autowrap_mode = 3
 layout_mode = 2
 text = "Back"
 
-[node name="OptionsPanel" parent="Overlay" instance=ExtResource("shared_options")]
-visible = false
+[node name="OptionsPanel" parent="Overlay" unique_id=612373443 instance=ExtResource("shared_options")]
 
 [node name="CreditsPanel" type="Control" parent="Overlay" unique_id=1530605513]
 visible = false
@@ -516,6 +510,10 @@ text = "[center]\"SONIC VANE\"
 LS5 Engine 3 Framework
 
 Created by LinkSonic5 in the Godot engine.
+
+Character Animation:
+LinkSonic5
+MelohRush
 
 UI Design:
 LinkSonic5
@@ -962,7 +960,7 @@ text = "No"
 [node name="MusicTrackDisplay" parent="." unique_id=423384420 instance=ExtResource("9_music_display")]
 layout_mode = 1
 
-[node name="VersionSafeArea" type="MarginContainer" parent="."]
+[node name="VersionSafeArea" type="MarginContainer" parent="." unique_id=71292679]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -975,11 +973,10 @@ theme_override_constants/margin_top = 48
 theme_override_constants/margin_right = 48
 theme_override_constants/margin_bottom = 48
 
-[node name="VersionLabel" type="Label" parent="VersionSafeArea"]
+[node name="VersionLabel" type="Label" parent="VersionSafeArea" unique_id=1901461925]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.5)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
 theme_override_constants/shadow_offset_x = 1
@@ -1121,4 +1118,3 @@ bus = &"UI"
 [connection signal="pressed" from="Overlay/UnsavedGraphicsDialog/WarningFrame/Margin/Content/Buttons/ButtonGoBack" to="." method="_on_unsaved_graphics_go_back_pressed"]
 [connection signal="pressed" from="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content/Buttons/ButtonYes" to="." method="_on_graphics_settings_confirmed"]
 [connection signal="pressed" from="Overlay/GraphicsConfirmDialog/WarningFrame/Margin/Content/Buttons/ButtonNo" to="." method="_on_graphics_settings_reverted"]
-
