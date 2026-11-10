@@ -176,8 +176,6 @@ func _on_trick_detected(trick_type: int, timer_add_seconds: float = -1.0) -> voi
 		return
 	if is_current_action_flight():
 		return
-	var trick_name: String = _trick_system.get_trick_name(trick_type) if _trick_system != null else str(trick_type)
-	push_warning("TRICK SIGNAL RECEIVED: %s" % trick_name)
 	if _trick_system != null:
 		_trick_system.register_trick(
 			trick_type,
@@ -196,7 +194,6 @@ func _on_combo_updated(_multiplier: float, score: float) -> void:
 		if not _trick_system.combo_system_enabled:
 			return
 		var combo_entries: Array[String] = _trick_system.get_combo_list_entries()
-		push_warning("Updating Trick UI: score=%f" % score)
 		_trick_ui.update_combo_display(score, combo_entries)
 
 func _on_combo_timer_updated(time_remaining: float, maximum_time: float) -> void:
@@ -793,7 +790,6 @@ func _connect_trick_signals() -> void:
 		var trick_sequence_callable: Callable = Callable(self, "_on_trick_sequence_updated")
 		if not _trick_system.trick_sequence_updated.is_connected(trick_sequence_callable):
 			_trick_system.trick_sequence_updated.connect(trick_sequence_callable)
-		push_warning("Trick signals connected: detector=%s system=%s ui=%s" % [_trick_detector != null, _trick_system != null, _trick_ui != null])
 	if _trick_system != null:
 		var trick_performed_callable: Callable = Callable(self, "_on_trick_performed")
 		if not _trick_system.trick_performed.is_connected(trick_performed_callable):
@@ -7627,19 +7623,19 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		var slope_sample_speed: float = lateral.length()
 		if slope_static_hold:
 			lateral = Vector3.ZERO
-		var slope_down_mult: float = 1.0
-		var slope_up_mult: float = 1.0
+		var slope_down_mult: float = maxf(slope_downhill_gravity_multiplier, 0.0)
+		var slope_up_mult: float = maxf(slope_uphill_gravity_multiplier, 0.0)
 		if is_rolling:
 			slope_down_mult = max(_sample_curve_by_speed(
 				roll_downhill_accel_multiplier_curve,
 				slope_sample_speed,
 				roll_downhill_accel_multiplier
-			), 0.0)
+			), 0.0) * maxf(roll_slope_downhill_gravity_multiplier, 0.0)
 			slope_up_mult = max(_sample_curve_by_speed(
 				roll_uphill_decel_multiplier_curve,
 				slope_sample_speed,
 				roll_uphill_decel_multiplier
-			), 0.0)
+			), 0.0) * maxf(roll_slope_uphill_gravity_multiplier, 0.0)
 
 		var on_rigid_floor: bool = (
 			(_platform_on_floor_last
@@ -11055,7 +11051,6 @@ func _cache_special_action_references() -> void:
 		trick_ui_node = get_node("TrickUI_Layer/TrickUI")
 	if trick_ui_node != null:
 		_trick_ui = trick_ui_node as TrickUI
-		push_warning("TrickUI found: %s" % _trick_ui.name)
 	else:
 		push_warning("TrickUI NOT found!")
 

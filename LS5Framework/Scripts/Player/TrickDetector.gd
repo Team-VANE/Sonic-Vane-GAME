@@ -62,7 +62,6 @@ func update_trick_detection(model_basis: Basis, current_time: float, torque_yaw_
 func _start_trick(current_time: float) -> void:
 	_trick_in_progress = true
 	_trick_start_time = current_time
-	push_warning("trick attempt started")
 
 func _complete_trick(current_time: float) -> void:
 	# Determine dominant axis and direction at the moment of completion
@@ -104,7 +103,6 @@ func _complete_trick(current_time: float) -> void:
 		trick_type = TrickSystem.TrickType.FRONTFLIP_LEFT_SPIN if z > 0 else TrickSystem.TrickType.BACKFLIP_LEFT_SPIN
 
 	if trick_type != TrickSystem.TrickType.NONE:
-		push_warning("!!! TRICK DETECTOR SUCCESS: %d (x=%.2f, y=%.2f, z=%.2f) !!!" % [trick_type, x, y, z])
 		trick_detected.emit(trick_type)
 		
 		# Bulletproof fallback: search up the tree for the player
@@ -115,7 +113,6 @@ func _complete_trick(current_time: float) -> void:
 				p = p.get_parent()
 		
 		if p != null:
-			push_warning("Calling player directly: %s" % p.name)
 			p._on_trick_detected(trick_type)
 		else:
 			push_warning("Could not find player node to notify!")

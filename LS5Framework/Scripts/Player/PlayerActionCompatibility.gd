@@ -29,6 +29,8 @@ func _apply_action_node_settings() -> void:
 		p.ground_turn_free_angle_curve = p._grounded_action.ground_turn_free_angle_curve
 		p.ground_turn_min_speed_factor = p._grounded_action.ground_turn_min_speed_factor
 		p.slope_downhill_accel = p._grounded_action.slope_downhill_accel
+		p.slope_downhill_gravity_multiplier = p._grounded_action.slope_downhill_gravity_multiplier
+		p.slope_uphill_gravity_multiplier = p._grounded_action.slope_uphill_gravity_multiplier
 		p.slope_downhill_accel_curve = p._grounded_action.slope_downhill_accel_curve
 		p.slope_uphill_decel = p._grounded_action.slope_uphill_decel
 		p.slope_uphill_decel_curve = p._grounded_action.slope_uphill_decel_curve
@@ -92,6 +94,8 @@ func _apply_action_node_settings() -> void:
 		p.roll_air_top_speed_slowdown_enabled = p._roll_action.roll_air_top_speed_slowdown_enabled
 		p.roll_top_speed_slowdown_scale = p._roll_action.roll_top_speed_slowdown_scale
 		p.roll_downhill_accel_multiplier = p._roll_action.roll_downhill_accel_multiplier
+		p.roll_slope_downhill_gravity_multiplier = p._roll_action.roll_slope_downhill_gravity_multiplier
+		p.roll_slope_uphill_gravity_multiplier = p._roll_action.roll_slope_uphill_gravity_multiplier
 		p.roll_downhill_accel_multiplier_curve = p._roll_action.roll_downhill_accel_multiplier_curve
 		p.roll_uphill_decel_multiplier = p._roll_action.roll_uphill_decel_multiplier
 		p.roll_uphill_decel_multiplier_curve = p._roll_action.roll_uphill_decel_multiplier_curve

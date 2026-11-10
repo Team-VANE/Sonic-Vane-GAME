@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://ch8axpwvwgf6s"]
 
-[ext_resource type="Script" path="res://LS5Framework/Scripts/Race/RaceVictoryPresentation.gd" id="victory_presentation_script"]
-
 [ext_resource type="Script" uid="uid://dnsfns6ucd7k3" path="res://LS5Framework/Scripts/Player/SonicPlayer.gd" id="1_sn0px"]
 [ext_resource type="Resource" uid="uid://bh8o6ahl51l7t" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvAnimationProfile.tres" id="2_animation_profile"]
 [ext_resource type="Resource" uid="uid://vmwfoh52r2oe" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvCharacterSettingsProfile.tres" id="2_maoer"]
@@ -197,6 +195,7 @@
 [ext_resource type="Script" uid="uid://ddwvshvcufotb" path="res://LS5Framework/Scripts/Player/KickContactController.gd" id="kick_contacts_script"]
 [ext_resource type="Script" uid="uid://ds54uwhpcvso7" path="res://LS5Framework/Scripts/Effects/SpinBallVisuals.gd" id="spin_ball_script"]
 [ext_resource type="Script" uid="uid://dkrsspb84hnqn" path="res://LS5Framework/Scripts/Player/uppercut_kick_ability.gd" id="uppercut_script"]
+[ext_resource type="Script" uid="uid://bxcpeu51erbs0" path="res://LS5Framework/Scripts/Race/RaceVictoryPresentation.gd" id="victory_presentation_script"]
 [ext_resource type="Script" uid="uid://cakdmdepnpccg" path="res://LS5Framework/Characters/Sonic Neo Adventure/Wait02LipSyncTest.gd" id="wait02_lipsync_test"]
 [ext_resource type="Script" uid="uid://wgygkpxv2yyp" path="res://LS5Framework/Scripts/Player/wall_bonk_action.gd" id="wall_bonk_script"]
 
@@ -250,7 +249,7 @@ alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 albedo_color = Color(0.14901961, 0, 0.9019608, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv80i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yg7sk"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("90_p7w40")
@@ -671,7 +670,7 @@ tint = Color(0.08333349, 0, 1, 1)
 [node name="JumpBall" parent="." unique_id=190440021 instance=ExtResource("89_8n3w6")]
 transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 0)
 visible = false
-jump_ball_material = SubResource("ShaderMaterial_xv80i")
+jump_ball_material = SubResource("ShaderMaterial_yg7sk")
 tint = Color(0.08333349, 0, 1, 0.72)
 tail_fade_axis = Vector3(0, 1, 0)
 
@@ -686,7 +685,7 @@ debug_shape_thickness = 5
 collision_mask = 17
 hit_back_faces = false
 
-[node name="RaceVictoryPresentation" type="Node" parent="."]
+[node name="RaceVictoryPresentation" type="Node" parent="." unique_id=757462044]
 script = ExtResource("victory_presentation_script")
 sequenced_victory = true
 
@@ -727,6 +726,7 @@ ground_turn_sharp_rate_multiplier = 1.1
 ground_turn_speed_preservation = 0.15
 ground_turn_max_penalty_angle_curve = ExtResource("96_n1isw")
 ground_turn_free_angle_curve = ExtResource("97_8ja4f")
+slope_uphill_gravity_multiplier = 0.65
 slope_downhill_accel = 50.0
 slope_downhill_accel_curve = ExtResource("98_i20ek")
 slope_uphill_decel = 28.0

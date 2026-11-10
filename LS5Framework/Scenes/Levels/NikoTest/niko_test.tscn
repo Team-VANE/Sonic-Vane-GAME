@@ -5732,10 +5732,6 @@ enabled = true
 target_paths = Array[NodePath]([])
 behavior_priority = 0
 movement_traits = Array[ExtResource("77_5l7yj")]([SubResource("Resource_b0xqo")])
-attachment_traits = Array[NodePath]([])
-hazard_traits = Array[NodePath]([])
-visibility_traits = Array[NodePath]([])
-custom_traits = Array[NodePath]([])
 
 [node name="CollisionShape3D" parent="ForceRollTrigger" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
@@ -5758,11 +5754,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5862045, 17.613003, 443.459
 enabled = true
 target_paths = Array[NodePath]([])
 behavior_priority = 0
-movement_traits = Array[NodePath]([])
 attachment_traits = Array[ExtResource("81_jvpi5")]([SubResource("Resource_4y3dw")])
-hazard_traits = Array[NodePath]([])
-visibility_traits = Array[NodePath]([])
-custom_traits = Array[NodePath]([])
 
 [node name="CollisionShape3D" parent="ForceClingTrigger" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.30249, 0.7570801)
@@ -5821,11 +5813,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1157.0886, 985.613, 443.4592
 enabled = true
 target_paths = Array[NodePath]([])
 behavior_priority = 0
-movement_traits = Array[NodePath]([])
 attachment_traits = Array[ExtResource("81_jvpi5")]([SubResource("Resource_0a7mq")])
-hazard_traits = Array[NodePath]([])
-visibility_traits = Array[NodePath]([])
-custom_traits = Array[NodePath]([])
 
 [node name="CollisionShape3D" parent="ForceClingTrigger2" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8010254, -132.0268, 42.60309)
@@ -5891,8 +5879,6 @@ respawn_delay = 10.0
 anchored = false
 surface_dust_scene = null
 surface_impact_min_speed = 2.0
-surface_impact_sounds = Array[NodePath]([])
-surface_slide_sounds = Array[NodePath]([])
 surface_sound_max_volume_db = -4.0
 surface_sound_max_speed = 45.0
 surface_effect_probe_max_skin = 1.2
@@ -5906,8 +5892,6 @@ respawn_delay = 10.0
 anchored = false
 surface_dust_scene = null
 surface_impact_min_speed = 2.0
-surface_impact_sounds = Array[NodePath]([])
-surface_slide_sounds = Array[NodePath]([])
 surface_sound_max_volume_db = -4.0
 surface_sound_max_speed = 45.0
 surface_effect_probe_max_skin = 1.2
@@ -5919,8 +5903,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 7.908292, 216)
 respawn_delay = 10.0
 surface_dust_scene = null
 surface_impact_min_speed = 2.0
-surface_impact_sounds = Array[NodePath]([])
-surface_slide_sounds = Array[NodePath]([])
 surface_sound_max_volume_db = -4.0
 surface_sound_max_speed = 45.0
 surface_effect_probe_max_skin = 1.2

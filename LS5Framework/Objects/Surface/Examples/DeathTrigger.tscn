@@ -28,11 +28,7 @@ editor_description = "Applies pit-death behavior on entry."
 enabled = true
 target_paths = Array[NodePath]([])
 behavior_priority = 0
-movement_traits = Array[NodePath]([])
-attachment_traits = Array[NodePath]([])
 hazard_traits = Array[ExtResource("Trait")]([SubResource("Resource_ugtpm")])
-visibility_traits = Array[NodePath]([])
-custom_traits = Array[NodePath]([])
 
 [node name="CollisionShape3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)

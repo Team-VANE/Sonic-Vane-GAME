@@ -40,6 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://b8g6kgbrudl3v" path="res://LS5Framework/Images/Effects/Sun_Flare_Thin.png" id="36_ksg7d"]
 [ext_resource type="PackedScene" uid="uid://488y6mgbj6iw" path="res://LS5Framework/Objects/SpikeStrip/spike_strip.tscn" id="50_eupwc"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Water/Examples/Adventure_Deep_Pool.tscn" id="50_ksg7d"]
+[ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="51_ksg7d"]
 [ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="cam_trait_activation"]
 [ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="cam_trait_lens"]
 [ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="cam_trait_orientation"]
@@ -82,7 +83,7 @@ shader_parameter/tex_flat = ExtResource("8_kmp54")
 shader_parameter/tex_glow = ExtResource("9_5ksmr")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 21117.524
+shader_parameter/swap_time = 140.199
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_62ca1"]
 size = Vector3(71.62383, 61.625034, 58.338074)
@@ -1151,6 +1152,9 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 68.4
 
 [node name="Circle" parent="RaceGoalGHO/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(765298263, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_tc3te")
+
+[node name="SwapLight" parent="RaceGoalGHO/GoalModel/GoalRing2" parent_id_path=PackedInt32Array(765298263, 456851143, 52793995) index="2" unique_id=1016145482]
+light_energy = 20.0
 
 [node name="Checkpoint3" parent="." unique_id=2068731244 instance=ExtResource("1_qr57n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4774.143, 77.77864, -3276.8608)
@@ -3381,6 +3385,9 @@ depth_visibility_distance = 720.1
 depth_strength = 1.79
 caustic_max_distance = 400.0
 caustic_distance_fade = 150.0
+
+[node name="Terminal" parent="." unique_id=107229639 instance=ExtResource("51_ksg7d")]
+transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, 5572.1333, 1.1305199, -2947.9006)
 
 [editable path="Checkpoint4"]
 [editable path="Checkpoint4/Checkpoint"]

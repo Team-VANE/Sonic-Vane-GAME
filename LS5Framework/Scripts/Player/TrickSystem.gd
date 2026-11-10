@@ -311,7 +311,6 @@ func register_trick(trick_type: TrickType, current_time: float, timer_add_second
 	_add_combo_time(time_to_add, starting_combo)
 	_update_combo()
 	_emit_trick_signals(trick_type, repeat_count + 1)
-	push_warning("register_trick: %s count=%d score=%.2f" % [get_trick_name(trick_type), repeat_count + 1, entry_score])
 
 func register_feat(feat_id: StringName, display_name: String, base_score: float, timer_add_seconds: float = -1.0) -> void:
 	if not combo_system_enabled or feat_id == &"" or display_name.is_empty():
@@ -465,7 +464,6 @@ func _emit_trick_signals(trick_type: TrickType, count: int) -> void:
 	trick_performed.emit(trick_type, count)
 	combo_updated.emit(combo_multiplier, total_score)
 	trick_sequence_updated.emit(current_air_tricks)
-	push_warning("combo emitted multiplier=%f total_score=%f" % [combo_multiplier, total_score])
 
 func reset_staleness() -> void:
 	action_staleness_counts.clear()

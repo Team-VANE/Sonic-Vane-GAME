@@ -20,6 +20,10 @@ extends CharacterAction
 @export var roll_top_speed_slowdown_scale: float = 0.2
 
 @export_subgroup("Movement/Slope")
+## Overall rolling downhill tangential gravity scale, applied in addition to roll response curves.
+@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:x") var roll_slope_downhill_gravity_multiplier: float = 1.0
+## Overall rolling uphill tangential gravity scale, applied in addition to roll response curves.
+@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:x") var roll_slope_uphill_gravity_multiplier: float = 0.7
 ## Applies ordinary roll surface resistance while rolling on slopes and loop surfaces.
 @export var roll_slope_surface_resistance_enabled: bool = false
 @export var roll_downhill_accel_multiplier: float = 2.4

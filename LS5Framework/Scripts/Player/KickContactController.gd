@@ -33,7 +33,7 @@ extends Node3D
 
 var _player: Node3D
 var _attachment: BoneAttachment3D
-var _sensor: Area3D
+var _sensor: Marker3D
 var _shape: SphereShape3D = SphereShape3D.new()
 var _contact_active: bool = false
 var _kick_kind: StringName = &""
@@ -55,17 +55,10 @@ func _ready() -> void:
 	_attachment.name = "KickFootAttachment"
 	_attachment.bone_name = String(right_foot_bone)
 	skeleton.add_child(_attachment)
-	_sensor = Area3D.new()
+	_sensor = Marker3D.new()
 	_sensor.name = "KickContactSensor"
-	_sensor.collision_layer = 0
-	_sensor.collision_mask = 0
-	_sensor.monitoring = false
-	_sensor.monitorable = false
 	_sensor.position = foot_offset
 	_attachment.add_child(_sensor)
-	var collision: CollisionShape3D = CollisionShape3D.new()
-	collision.shape = _shape
-	_sensor.add_child(collision)
 
 
 func begin_kick(kind: StringName, up: Vector3) -> void:
@@ -124,7 +117,7 @@ func _physics_process(_delta: float) -> void:
 	query.shape = _shape
 	query.collision_mask = target_collision_mask
 	query.collide_with_areas = true
-	query.exclude = [_player.get_rid(), _sensor.get_rid()]
+	query.exclude = [_player.get_rid()]
 	for sample: int in range(samples + 1):
 		var sample_position: Vector3 = start.lerp(position_now, float(sample) / float(samples))
 		query.transform = Transform3D(Basis.IDENTITY, sample_position)
@@ -183,7 +176,7 @@ func _process_contact(collider: Node3D, origin: Vector3) -> void:
 
 func _is_obstructed(origin: Vector3, target: Node3D) -> bool:
 	var ray: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(origin, target.global_position, obstruction_collision_mask)
-	var excluded: Array[RID] = [_player.get_rid(), _sensor.get_rid()]
+	var excluded: Array[RID] = [_player.get_rid()]
 	if target is CollisionObject3D:
 		excluded.append((target as CollisionObject3D).get_rid())
 	if target is ActorHurtbox3D and target.get_parent() is CollisionObject3D:

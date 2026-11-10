@@ -37,6 +37,10 @@ extends CharacterAction
 @export_storage var ground_turn_min_speed_factor: float = 0.965
 
 @export_subgroup("Slope/Acceleration")
+## Overall downhill tangential gravity scale, applied in addition to slope response curves.
+@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:x") var slope_downhill_gravity_multiplier: float = 1.0
+## Overall uphill tangential gravity scale, applied in addition to slope response curves.
+@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:x") var slope_uphill_gravity_multiplier: float = 0.7
 ## Downhill response acceleration at full slope effect under the character's baseline gravity.
 @export var slope_downhill_accel: float = 90.0
 ## Optional downhill acceleration by lateral speed.

@@ -1065,6 +1065,10 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 
 ## Multiplier applied to downhill speed gain while rolling (higher = faster downhill).
 @export_storage var roll_downhill_accel_multiplier: float = 1.9
+## Overall rolling downhill tangential gravity scale.
+@export_storage var roll_slope_downhill_gravity_multiplier: float = 1.0
+## Overall rolling uphill tangential gravity scale.
+@export_storage var roll_slope_uphill_gravity_multiplier: float = 0.8
 
 ## Optional rolling downhill acceleration multiplier by lateral speed.
 ## X: lateral speed, Y: multiplier.
@@ -2048,6 +2052,10 @@ var _smoothed_surface_normal: Vector3 = Vector3.UP
 
 ## Downhill response acceleration at full effect under baseline gravity.
 @export_storage var slope_downhill_accel: float = 85.0
+## Overall grounded downhill tangential gravity scale.
+@export_storage var slope_downhill_gravity_multiplier: float = 1.0
+## Overall grounded uphill tangential gravity scale.
+@export_storage var slope_uphill_gravity_multiplier: float = 0.8
 
 ## Optional downhill acceleration by lateral speed.
 ## X: lateral speed, Y: acceleration.
