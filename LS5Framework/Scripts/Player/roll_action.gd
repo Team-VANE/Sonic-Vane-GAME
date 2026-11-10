@@ -204,6 +204,7 @@ func tick_spindash_roll(delta: float) -> void:
 		return
 	if not owner_player.attached or not _can_continue_roll() or not owner_player.get_automation_controller().motion.allows(&"roll"):
 		cancel_spindash_roll()
+		_clear_active_roll()
 		return
 	spindash_roll_remaining = maxf(spindash_roll_remaining - delta, 0.0)
 
