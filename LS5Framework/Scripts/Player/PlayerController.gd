@@ -1057,7 +1057,7 @@ func _is_enemy_targeting_grace_release_event(event: InputEvent) -> bool:
 	return false
 
 
-func _has_enemy_targeting_grace_release_action() -> bool:
+func _has_ability_or_interact_press() -> bool:
 	if SettingsManager.is_gameplay_action_just_pressed(&"interact"):
 		return true
 	for slot_index: int in range(1, 17):
@@ -3386,11 +3386,12 @@ func _movement_physics_process(delta: float) -> void:
 	_automation_controller.motion.capture_input(_move_input, _control_forward * _move_input.y + _control_right * _move_input.x)
 	if _ability_input_router != null:
 		_ability_input_router.update(delta)
-	var priority_input_consumed: bool = _prepare_priority_action_input(delta)
+	var spring_input_locked: bool = _spring_action_lock_timer > 0.0 or _spring_movement_lock_timer > 0.0
+	var priority_input_consumed: bool = not spring_input_locked and _prepare_priority_action_input(delta)
 	_preemptive_profile_input_consumed = priority_input_consumed
 	if not priority_input_consumed:
 		_update_roll_state()
-		_preemptive_profile_input_consumed = _process_preemptive_character_profile_input_routes()
+		_preemptive_profile_input_consumed = not spring_input_locked and _process_preemptive_character_profile_input_routes()
 		_update_spindash_state(delta)
 		_process_action_inputs()
 	_update_action_runtime(delta)
@@ -3988,6 +3989,8 @@ func _read_input() -> void:
 
 
 func _update_roll_state() -> void:
+	if _spline_active or (_spring_detached and (_spring_align_timer > 0.0 or _spring_movement_lock_timer > 0.0)):
+		return
 	if _automation_controller and not _automation_controller.motion.allows(&"roll"):
 		return
 	if _roll_action != null:
@@ -4831,7 +4834,7 @@ func _update_spindash_state(delta: float) -> void:
 	if _rail_active:
 		_update_spindash_state_on_rail(delta)
 		return
-	if _spring_align_timer > 0.0 and _spring_detached:
+	if _spring_detached and (_spring_align_timer > 0.0 or _spring_movement_lock_timer > 0.0):
 		_cancel_spindash_charge()
 		return
 
@@ -6484,6 +6487,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 
 	# Spring state flag
 	var in_spring_state: bool = _spring_align_timer > 0.0
+	var spring_launch_locked: bool = _spring_detached and (
+		in_spring_state or (not is_attached and _spring_movement_lock_timer > 0.0 and not is_current_action_flight())
+	)
 	var in_race_countdown: bool = race_in_countdown and not race_active and not race_finished
 
 	# Spring detach uses gravity-up as the physics frame.
@@ -6500,7 +6506,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	_automation_expired_this_frame = false
 	if _automation_timer <= 0.0:
 		_automation_expired_this_frame = true
-	var shared_motor_active: bool = not _lightspeed_dash_active and not _homing_active and not (in_spring_state and _spring_detached)
+	var shared_motor_active: bool = not _lightspeed_dash_active and not _homing_active and not spring_launch_locked
 	var ground_decel_effective: float = max(decel, 0.0)
 	var air_decel_base: float = max(air_decel, 0.0)
 	if shared_motor_active:
@@ -6629,10 +6635,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	# --------------------------------------------------
 	# SPRING OVERRIDE: no local steering / slopes / skid
 	# --------------------------------------------------
-	if in_spring_state and _spring_detached:
+	if spring_launch_locked:
 		_reset_drift_state()
-		# Apply gravity along gravity-down while in spring.
-		var gravity_scale: float = spring_gravity_scale
+		var gravity_scale: float = spring_gravity_scale if in_spring_state else 1.0
 		if _drowned_action == null or not _drowned_action.is_drowned():
 			vertical -= get_effective_gravity_strength() * gravity_scale * delta
 
@@ -6646,7 +6651,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		var v_final: Vector3 = lateral + physics_up * vertical
 
 		# Lock velocity along spring direction if requested
-		if _spring_align_dir.length() > 0.001 and _spring_lock_sideways:
+		if in_spring_state and _spring_align_dir.length() > 0.001 and _spring_lock_sideways:
 			var dir: Vector3 = _spring_align_dir.normalized()
 			var along_speed: float = v_final.dot(dir)
 			var v_along: Vector3 = dir * along_speed
@@ -10462,6 +10467,8 @@ func _apply_left_stick_trick_momentum(lateral: Vector3, maximum_speed: float, wa
 func _should_start_manual_airborne_torque() -> bool:
 	if not manual_airborne_torque_enabled:
 		return false
+	if _spring_detached and (_spring_movement_lock_timer > 0.0 or _spring_action_lock_timer > 0.0):
+		return false
 	if is_parkour_active():
 		return false
 	if attached:
@@ -11135,7 +11142,8 @@ func _process_action_inputs() -> void:
 		return
 	if _post_ui_unblock_action_suppress_timer > 0.0:
 		return
-	if _has_enemy_targeting_grace_release_action():
+	var action_pressed: bool = _has_ability_or_interact_press()
+	if action_pressed:
 		_release_enemy_targeting_spawn_grace()
 	if _hurt_active:
 		if SettingsManager.is_gameplay_action_just_pressed(String(jump_slot)) and not race_in_countdown:
@@ -11154,7 +11162,8 @@ func _process_action_inputs() -> void:
 	if _spring_action_lock_timer > 0.0:
 		return
 	if _spring_movement_lock_timer > 0.0:
-		_spring_movement_lock_timer = 0.0
+		if action_pressed:
+			_spring_movement_lock_timer = 0.0
 		return
 	if SettingsManager.is_gameplay_action_just_pressed("ability_slot_02") and _switch_drift_direction_from_action1():
 		return

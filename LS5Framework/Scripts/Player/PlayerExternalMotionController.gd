@@ -585,6 +585,28 @@ func _automation_locks_active() -> bool:
 	return true
 
 
+func _prepare_spring_launch(preserve_flight: bool) -> void:
+	var p = _owner
+	cancel_vault_bar()
+	if not p.cancel_drop_dash_for_object_interaction():
+		p._reset_spindash_state()
+	if p._lightspeed_dash_active:
+		p._stop_lightspeed_dash_if_active()
+	if p._rail_switch_active:
+		p._cancel_rail_switch()
+	if p._rail_active:
+		p.cancel_rail_grind()
+	if not preserve_flight:
+		p.clear_active_action()
+		if p._roll_action:
+			p._roll_action._set_rolling(false, true)
+			p._sync_roll_state_from_action()
+	p._ramp_hold_forward_timer = 0.0
+	p._ramp_hold_up_timer = 0.0
+	p._jump_requested = false
+	p._coyote_jump_requested = false
+
+
 func apply_spring_impulse(
 	spring_position: Vector3,
 	spring_direction: Vector3,
@@ -618,10 +640,10 @@ func apply_spring_impulse(
 	downward_trajectory_landing_forward_pitch_enabled: bool = true
 	) -> void:
 	var p = _owner
-	cancel_vault_bar()
+	var preserve_flight: bool = preserve_active_flight and p.is_current_action_flight()
+	_prepare_spring_launch(preserve_flight)
 	if p._dbg_tp_trace > 0:
 		print("[TP] SPRING_IMPULSE called: dir=%v strength=%s vel=%v" % [spring_direction, spring_strength, p.velocity])
-	p.cancel_drop_dash_for_object_interaction()
 	if p._spring_action != null:
 		p._sync_spring_state_to_action()
 		p._spring_action.apply_impulse(
@@ -658,7 +680,6 @@ func apply_spring_impulse(
 		)
 		p._sync_spring_state_from_action()
 		return
-	var preserve_flight: bool = preserve_active_flight and p.is_current_action_flight()
 	var effective_align_time: float = align_time
 	var effective_align_model: bool = align_model_during_spring
 	var effective_lock_horizontal: bool = lock_horizontal_during_align
@@ -1311,7 +1332,7 @@ func start_spline_spring(
 	var length: float = curve.get_baked_length()
 	if length <= 0.001:
 		return
-	p.cancel_drop_dash_for_object_interaction()
+	_prepare_spring_launch(false)
 
 	p._spline_path = spline_path
 	p._spline_total_length = length

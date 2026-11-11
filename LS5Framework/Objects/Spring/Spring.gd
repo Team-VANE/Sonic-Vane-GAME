@@ -116,8 +116,7 @@ var launch_axis: int = 0
 ## How long to lock player steering movement (they still travel on the trajectory).
 @export var movement_lock_time: float = 0.0
 
-## How long to lock actions. Pressing any action while this is > 0
-## will *break movement lock* but still not perform the action.
+## How long to lock actions. After this expires, a new action press can release the movement lock.
 @export var action_lock_time: float = 0.0
 
 ## How long to keep the player under the spring's directional influence.
@@ -392,16 +391,16 @@ func _on_body_entered(body: Node3D) -> void:
 		return
 	if _is_carried_object(body):
 		return
-	if body.has_method("cancel_homing_attack"):
-		body.call("cancel_homing_attack", stop_momentum)
-	if body.has_method("cancel_spline_spring"):
-		body.call("cancel_spline_spring")
-
 	# ---- per-body rehit cooldown ----
 	var id: int = body.get_instance_id()
 	var remaining: float = _body_cooldowns.get(id, 0.0)
 	if remaining > 0.0:
 		return  # still on cooldown – ignore this enter
+
+	if body.has_method("cancel_homing_attack"):
+		body.call("cancel_homing_attack", stop_momentum)
+	if body.has_method("cancel_spline_spring"):
+		body.call("cancel_spline_spring")
 
 	var used_spring: bool = false
 	var player: Node3D = body
