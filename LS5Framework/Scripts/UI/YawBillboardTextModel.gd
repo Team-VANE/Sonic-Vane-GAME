@@ -44,7 +44,19 @@ var _scanline_effect = null
 func _ready() -> void:
 	_ensure_model()
 	_apply_content()
-	set_process(true)
+	visibility_changed.connect(_on_visibility_changed)
+	_on_visibility_changed()
+
+
+func _on_visibility_changed() -> void:
+	var displayed: bool = is_visible_in_tree()
+	set_process(displayed)
+	if not displayed:
+		_set_canvas_visible(false)
+
+
+func is_projected_visible() -> bool:
+	return _canvas_layer != null and _canvas_layer.visible
 
 
 func _process(_delta: float) -> void:
@@ -319,16 +331,25 @@ func _update_canvas_projection(camera: Camera3D, viewport: Viewport) -> void:
 	var screen_position: Vector2 = camera.unproject_position(global_position)
 	var projected_scale: Vector2 = Vector2.ONE * canvas_scale
 	var projected_position: Vector2 = screen_position - _panel.size * 0.5
+	var projected_size: Vector2 = _panel.size * projected_scale
+	var projected_bounds: Rect2 = Rect2(screen_position - projected_size * 0.5, projected_size).grow(12.0)
+	if not projected_bounds.intersects(Rect2(Vector2.ZERO, viewport_size)):
+		_set_canvas_visible(false)
+		return
 	if _panel.scale != projected_scale:
 		_panel.scale = projected_scale
 	if _panel.position != projected_position:
 		_panel.position = projected_position
-	_set_canvas_visible(is_visible_in_tree())
+	_set_canvas_visible(true)
 
 
 func _set_canvas_visible(value: bool) -> void:
 	if _canvas_layer != null and _canvas_layer.visible != value:
 		_canvas_layer.visible = value
+	if _scanline_effect != null:
+		var update_masks: bool = value and _scanline_effect.text_clearance_enabled
+		if _scanline_effect.is_processing() != update_masks:
+			_scanline_effect.set_process(update_masks)
 
 
 func _measure_message_panel(message: String) -> Vector2:

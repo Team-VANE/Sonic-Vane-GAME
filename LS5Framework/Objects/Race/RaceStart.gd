@@ -136,6 +136,7 @@ const _MUSIC_TITLECARD_OFFSET_MAX: float = 5.0
 var _sequence_running: bool = false
 var _has_fired: bool = false
 var _candidate_player = null
+var _overlapping_characters: Array[CharacterBody3D] = []
 var _waiting_for_network_go: bool = false
 var _active_ui = null
 var _active_player = null
@@ -841,6 +842,8 @@ func get_active_ghost_time_comparison(finish_time: float) -> String:
 
 
 func _on_body_entered(body: Node) -> void:
+	if body is CharacterBody3D:
+		_overlapping_characters.append(body as CharacterBody3D)
 	if not active or _sequence_running:
 		return
 	if one_shot and _has_fired:
@@ -890,6 +893,8 @@ func _on_body_entered(body: Node) -> void:
 
 
 func _on_body_exited(body: Node) -> void:
+	if body is CharacterBody3D:
+		_overlapping_characters.erase(body)
 	if body == null:
 		return
 	if _candidate_player != null and body == _candidate_player:
@@ -980,16 +985,20 @@ func _server_race_session_still_active() -> bool:
 
 func _process(delta: float) -> void:
 	_update_race_label(delta)
-	_tick_ghost_recording(delta)
-	_cleanup_stale_settings_menu()
+	if _ghost_recording_active:
+		_tick_ghost_recording(delta)
+	if _settings_menu != null:
+		_cleanup_stale_settings_menu()
 	if get_tree() != null and get_tree().paused:
 		return
 	_check_ring_race_completion()
-	var wants_interact: bool = (_is_online() and online_requires_interact) or ((not _is_online()) and offline_requires_interact)
-	if not wants_interact:
+	if _candidate_player == null and _overlapping_characters.is_empty():
 		return
-	var session = _get_network_session()
-	if _is_online() and session != null and session.has_method("is_race_busy"):
+	var online: bool = _is_online()
+	if not (online_requires_interact if online else offline_requires_interact):
+		return
+	var session: Node = _get_network_session() if online else null
+	if session != null and session.has_method("is_race_busy"):
 		var busy_val = session.call("is_race_busy")
 		var busy: bool = false
 		if busy_val is bool:
@@ -1000,16 +1009,15 @@ func _process(delta: float) -> void:
 			_interact_prompt_visible = false
 			_candidate_player = null
 			return
-	var overlapping_bodies: Array = get_overlapping_bodies()
 	if _candidate_player != null:
 		if not is_instance_valid(_candidate_player):
 			_candidate_player = null
-		elif not overlapping_bodies.has(_candidate_player):
+		elif not _overlapping_characters.has(_candidate_player):
 			_hide_interact_prompt()
 			_interact_prompt_visible = false
 			_candidate_player = null
 	if _candidate_player == null:
-		_candidate_player = _refresh_candidate_from_overlaps(wants_interact, overlapping_bodies)
+		_candidate_player = _refresh_candidate_from_overlaps()
 	if _sequence_running or _settings_menu != null or _candidate_player == null:
 		return
 	if not is_instance_valid(_candidate_player):
@@ -1047,27 +1055,13 @@ func _cleanup_stale_settings_menu() -> void:
 		_unfreeze_player_for_menu(player)
 
 
-func _refresh_candidate_from_overlaps(wants_interact: bool, overlapping_bodies: Array) -> Node:
-	if not wants_interact:
-		return null
+func _refresh_candidate_from_overlaps() -> Node:
 	if not active or _sequence_running:
 		return null
 	if one_shot and _has_fired:
 		return null
 
-	var session = _get_network_session()
-	if _is_online() and session != null and session.has_method("is_race_busy"):
-		var busy_val = session.call("is_race_busy")
-		var busy: bool = false
-		if busy_val is bool:
-			busy = bool(busy_val)
-		if busy:
-			if _interact_prompt_visible:
-				_hide_interact_prompt()
-			return null
-
-	for body_any in overlapping_bodies:
-		var body: Node = body_any
+	for body: CharacterBody3D in _overlapping_characters:
 		if not _is_valid_candidate_player(body):
 			continue
 		if _is_player_ui_blocked(body):
@@ -1119,6 +1113,9 @@ func _update_race_label(delta: float) -> void:
 	if _race_label == null:
 		return
 	_update_race_label_distance_visibility()
+	if not _race_label.is_visible_in_tree() or (_race_label.has_method("is_projected_visible") and not _race_label.is_projected_visible()):
+		_race_label_refresh_timer = 0.0
+		return
 
 	if race_label_refresh_seconds <= 0.0:
 		_update_race_label_text()
