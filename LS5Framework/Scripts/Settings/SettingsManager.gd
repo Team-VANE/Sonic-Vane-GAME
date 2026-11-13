@@ -71,6 +71,10 @@ const PARTICLE_BASE_RATIO_META: StringName = &"settings_base_amount_ratio"
 const VOLUMETRIC_FOG_BASE_ENABLED_META: StringName = &"settings_base_volumetric_fog_enabled"
 var volumetric_fog_enabled: bool = true
 var shadow_resolution: int = SHADOW_RESOLUTION_HIGH
+
+const SHADOW_DISTANCES: Array[int] = [100, 250, 500, 800]
+const DEFAULT_SHADOW_DISTANCE: int = 250
+var shadow_distance: int = DEFAULT_SHADOW_DISTANCE
 var particle_quality: int = PARTICLE_QUALITY_ULTRA
 var weather_occlusion_enabled: bool = true
 
@@ -767,6 +771,7 @@ func apply_graphics_to(world_env: WorldEnvironment, dir_light: DirectionalLight3
 
 	if dir_light:
 		dir_light.shadow_enabled = shadows
+		dir_light.directional_shadow_max_distance = float(shadow_distance)
 
 
 func register_graphics_targets(world_env: WorldEnvironment, dir_light: DirectionalLight3D) -> void:
@@ -808,7 +813,7 @@ func _apply_graphics_to_registered() -> void:
 		_apply_graphics_to_entry(entry)
 	_apply_graphics_to_viewport()
 	_apply_shadow_resolution()
-	_apply_particle_quality_to_tree()
+	_apply_scene_graphics_quality()
 	_apply_weather_graphics_settings()
 
 func _cleanup_camera_targets() -> void:
@@ -887,6 +892,10 @@ func _apply_shadow_resolution() -> void:
 		viewport.positional_shadow_atlas_size = resolution_size
 
 
+func _validated_shadow_distance(value: int) -> int:
+	return value if value in SHADOW_DISTANCES else DEFAULT_SHADOW_DISTANCE
+
+
 func get_shadow_resolution_size() -> int:
 	match shadow_resolution:
 		SHADOW_RESOLUTION_LOW:
@@ -912,7 +921,7 @@ func get_particle_quality_multiplier() -> float:
 
 
 func _on_scene_node_added(node: Node) -> void:
-	if node is GPUParticles3D or node is CPUParticles3D:
+	if node is DirectionalLight3D or node is GPUParticles3D or node is CPUParticles3D:
 		call_deferred("_apply_graphics_quality_to_node", node)
 	if node.is_in_group(&"HUD"):
 		call_deferred("_apply_hud_visibility_to_node", node)
@@ -931,7 +940,7 @@ func _apply_hud_visibility_to_node(hud_node: Node) -> void:
 	hud_node.set("visible", hud_visible)
 
 
-func _apply_particle_quality_to_tree() -> void:
+func _apply_scene_graphics_quality() -> void:
 	if get_tree() == null:
 		return
 	_apply_graphics_quality_to_node(get_tree().root)
@@ -940,6 +949,8 @@ func _apply_particle_quality_to_tree() -> void:
 func _apply_graphics_quality_to_node(node: Node) -> void:
 	if node == null or not is_instance_valid(node):
 		return
+	if node is DirectionalLight3D:
+		node.directional_shadow_max_distance = float(shadow_distance)
 	if node is GPUParticles3D or node is CPUParticles3D:
 		var ancestor: Node = node.get_parent()
 		while ancestor != null:
@@ -1096,6 +1107,7 @@ func get_graphics_snapshot() -> Dictionary:
 		"render_scale_ratio": render_scale_ratio,
 		"volumetric_fog_enabled": volumetric_fog_enabled,
 		"shadow_resolution": shadow_resolution,
+		"shadow_distance": shadow_distance,
 		"particle_quality": particle_quality,
 		"weather_occlusion_enabled": weather_occlusion_enabled,
 		"ssr": ssr,
@@ -1123,6 +1135,7 @@ func apply_graphics_snapshot(snapshot: Dictionary) -> void:
 	render_scale_ratio = clampf(float(snapshot.get("render_scale_ratio", render_scale_ratio)), RENDER_SCALE_HIGH_PERFORMANCE, RENDER_SCALE_NATIVE)
 	volumetric_fog_enabled = bool(snapshot.get("volumetric_fog_enabled", volumetric_fog_enabled))
 	shadow_resolution = clampi(int(snapshot.get("shadow_resolution", shadow_resolution)), SHADOW_RESOLUTION_LOW, SHADOW_RESOLUTION_ULTRA)
+	shadow_distance = _validated_shadow_distance(int(snapshot.get("shadow_distance", shadow_distance)))
 	particle_quality = clampi(int(snapshot.get("particle_quality", particle_quality)), PARTICLE_QUALITY_LOW, PARTICLE_QUALITY_ULTRA)
 	weather_occlusion_enabled = bool(snapshot.get("weather_occlusion_enabled", weather_occlusion_enabled))
 	ssr = bool(snapshot.get("ssr", ssr))
@@ -2271,6 +2284,7 @@ func _write_settings_config(cfg: ConfigFile) -> void:
 	cfg.set_value("graphics", "render_scale_ratio", render_scale_ratio)
 	cfg.set_value("graphics", "volumetric_fog_enabled", volumetric_fog_enabled)
 	cfg.set_value("graphics", "shadow_resolution", shadow_resolution)
+	cfg.set_value("graphics", "shadow_distance", shadow_distance)
 	cfg.set_value("graphics", "particle_quality", particle_quality)
 	cfg.set_value("graphics", "weather_occlusion_enabled", weather_occlusion_enabled)
 	cfg.set_value("graphics", "lod_distance_quality", lod_distance_quality)
@@ -2535,6 +2549,7 @@ func _load() -> void:
 	render_scale_ratio = clampf(float(cfg.get_value("graphics", "render_scale_ratio", render_scale_ratio)), RENDER_SCALE_HIGH_PERFORMANCE, RENDER_SCALE_NATIVE)
 	volumetric_fog_enabled = bool(cfg.get_value("graphics", "volumetric_fog_enabled", volumetric_fog_enabled))
 	shadow_resolution = clampi(int(cfg.get_value("graphics", "shadow_resolution", shadow_resolution)), SHADOW_RESOLUTION_LOW, SHADOW_RESOLUTION_ULTRA)
+	shadow_distance = _validated_shadow_distance(int(cfg.get_value("graphics", "shadow_distance", DEFAULT_SHADOW_DISTANCE)))
 	particle_quality = clampi(int(cfg.get_value("graphics", "particle_quality", particle_quality)), PARTICLE_QUALITY_LOW, PARTICLE_QUALITY_ULTRA)
 	weather_occlusion_enabled = bool(cfg.get_value("graphics", "weather_occlusion_enabled", weather_occlusion_enabled))
 	lod_distance_quality = clampi(int(cfg.get_value("graphics", "lod_distance_quality", lod_distance_quality)), LOD_DISTANCE_LOW, LOD_DISTANCE_JUICED)

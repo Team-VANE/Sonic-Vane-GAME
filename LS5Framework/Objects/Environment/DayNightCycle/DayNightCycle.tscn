@@ -74,7 +74,7 @@ background_mode = 2
 background_energy_multiplier = 1.0000001
 sky = SubResource("Sky_day_night")
 ambient_light_source = 3
-ambient_light_color = Color(0.12499998, 0.37079164, 0.8333333, 1)
+ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
 ambient_light_sky_contribution = 0.82
 ambient_light_energy = 0.94372034
 reflected_light_source = 2
@@ -114,7 +114,7 @@ light_energy = 0.96728456
 light_angular_distance = 0.53
 shadow_enabled = true
 directional_shadow_fade_start = 0.789
-directional_shadow_max_distance = 845.8
+directional_shadow_max_distance = 200.0
 sky_mode = 1
 
 [node name="Moon" type="DirectionalLight3D" parent="." unique_id=1577357035]
@@ -126,5 +126,5 @@ light_indirect_energy = 0.5
 light_angular_distance = 0.52
 shadow_enabled = true
 directional_shadow_fade_start = 0.789
-directional_shadow_max_distance = 845.0
+directional_shadow_max_distance = 200.0
 sky_mode = 1

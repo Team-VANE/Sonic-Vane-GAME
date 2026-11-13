@@ -227,6 +227,29 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Controls directional and positional shadow atlas resolution."
 
+[node name="HBoxShadowDistance" type="HBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LabelShadowDistance" type="Label" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowDistance"]
+layout_mode = 2
+text = "Shadow Distance"
+
+[node name="OptionShadowDistance" type="OptionButton" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowDistance" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Sets how far directional lights cast shadows from the camera."
+item_count = 4
+selected = 1
+popup/item_0/text = "Low (100)"
+popup/item_0/id = 100
+popup/item_1/text = "Medium (250)"
+popup/item_1/id = 250
+popup/item_2/text = "High (500)"
+popup/item_2/id = 500
+popup/item_3/text = "Juiced (800)"
+popup/item_3/id = 800
+
 [node name="HBoxParticleQuality" type="HBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
 layout_mode = 2
 theme_override_constants/separation = 12

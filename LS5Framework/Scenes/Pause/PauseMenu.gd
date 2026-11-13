@@ -189,6 +189,8 @@ var opt_player_tracking_mode: OptionButton = null
 @onready var opt_render_scale_ratio: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleRatio/OptionRenderScaleRatio
 ## Selects the atlas size used by 3D shadows.
 @onready var opt_shadow_resolution: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowResolution/OptionShadowResolution
+## Directional shadow distance preset in the graphics options.
+@onready var opt_shadow_distance: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowDistance/OptionShadowDistance
 ## Selects the density multiplier used by 3D particles.
 @onready var opt_particle_quality: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxParticleQuality/OptionParticleQuality
 ## Applies every staged graphics setting.
@@ -1955,6 +1957,7 @@ func _collect_graphics_snapshot_from_ui() -> Dictionary:
 		"render_scale_ratio": _get_selected_render_scale_ratio(),
 		"volumetric_fog_enabled": chk_volumetric_fog.button_pressed,
 		"shadow_resolution": opt_shadow_resolution.get_selected_id(),
+		"shadow_distance": opt_shadow_distance.get_selected_id(),
 		"particle_quality": opt_particle_quality.get_selected_id(),
 		"weather_occlusion_enabled": chk_weather_occlusion.button_pressed,
 		"ssr": chk_ssr.button_pressed,
@@ -2008,6 +2011,7 @@ func _sync_options_from_settings() -> void:
 	var shadow_resolution_index: int = opt_shadow_resolution.get_item_index(SettingsManager.shadow_resolution)
 	if shadow_resolution_index >= 0:
 		opt_shadow_resolution.select(shadow_resolution_index)
+	opt_shadow_distance.select(opt_shadow_distance.get_item_index(SettingsManager.shadow_distance))
 	var particle_quality_index: int = opt_particle_quality.get_item_index(SettingsManager.particle_quality)
 	if particle_quality_index >= 0:
 		opt_particle_quality.select(particle_quality_index)
