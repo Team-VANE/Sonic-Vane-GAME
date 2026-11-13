@@ -23,10 +23,16 @@ signal ghost_save_requested()
 @export_range(0, 40, 1, "or_greater", "suffix:px") var go_tracking_spacing: int = 5
 
 @export_group("Results Presentation")
+## Points awarded per ring in the results total.
+@export_range(0, 1000, 1, "or_greater") var results_points_per_ring: int = 100
+## Maximum time bonus for a completed race.
+@export_range(0, 100000, 1, "or_greater") var results_max_time_bonus: int = 10000
+## Points subtracted from the time bonus per elapsed second.
+@export_range(0.0, 1000.0, 1.0, "or_greater") var results_time_penalty_per_second: float = 50.0
 ## Time taken by the results panel to enter.
 @export_range(0.0, 5.0, 0.01, "or_greater", "suffix:s") var results_enter_duration: float = 0.55
-## Time taken to reveal the result text.
-@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:s") var results_reveal_duration: float = 0.8
+## Time from the first readout to the total score reveal.
+@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:s") var results_reveal_duration: float = 1.95
 ## Speed multiplier applied to presentation tweens after skip input.
 @export_range(1.0, 20.0, 0.1, "or_greater") var skip_animation_speed: float = 5.0
 ## Maximum remaining wait after presentation skip input.
@@ -40,26 +46,40 @@ signal ghost_save_requested()
 @onready var label_countdown: Label = get_node_or_null("Root/CountdownFrame/Margin/CountdownText") as Label
 ## Contains the race result summary.
 @onready var panel_results: PanelContainer = get_node_or_null("Root/Results") as PanelContainer
-## Displays race result values and placements.
-@onready var label_results: RichTextLabel = get_node_or_null("Root/Results/Margin/VBox/ResultsText") as RichTextLabel
+## Heading for the race results panel.
+@onready var label_results_title: Label = $Root/Results/Margin/VBox/Title
+## Scrolls the readouts and supplementary results.
+@onready var results_scroll: ScrollContainer = $Root/Results/Margin/VBox/ResultsScroll
+## Aligns the labels and values for the race scores.
+@onready var results_scores: GridContainer = $Root/Results/Margin/VBox/ResultsScroll/Readouts/Scores
+## Displays online race placements.
+@onready var label_results_places: RichTextLabel = $Root/Results/Margin/VBox/ResultsScroll/Readouts/Places
+## Separates ghost information from the results above it.
+@onready var results_ghost_divider: HSeparator = $Root/Results/Margin/VBox/ResultsScroll/Readouts/GhostDivider
+## Displays the ghost comparison and recording status.
+@onready var label_results_ghost: Label = $Root/Results/Margin/VBox/ResultsScroll/Readouts/GhostNote
 ## Highlights a newly achieved record.
-@onready var label_new_record: Label = get_node_or_null("Root/Results/NewRecord") as Label
+@onready var label_new_record: Label = get_node_or_null("Root/Results/Margin/VBox/NewRecord") as Label
+## Opens the post-race options after the final score is revealed.
+@onready var button_continue: Button = get_node_or_null("Root/Results/Margin/VBox/Continue") as Button
+## Plays the cue for each result readout.
+@onready var results_entry_audio: AudioStreamPlayer = get_node_or_null("ResultsEntryAudio") as AudioStreamPlayer
 ## Contains post-race action buttons.
-@onready var panel_options: PanelContainer = get_node_or_null("Root/Options") as PanelContainer
+@onready var panel_options: PanelContainer = get_node_or_null("Root/OptionsCenter/Options") as PanelContainer
 ## Contains the optional ghost save action shown for a completed recording.
-@onready var ghost_save_container: VBoxContainer = get_node_or_null("Root/Options/Margin/VBox/GhostSave") as VBoxContainer
+@onready var ghost_save_container: VBoxContainer = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/GhostSave") as VBoxContainer
 ## Describes the pending ghost recording and its save state.
-@onready var label_ghost_save: Label = get_node_or_null("Root/Options/Margin/VBox/GhostSave/Status") as Label
+@onready var label_ghost_save: Label = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/GhostSave/Status") as Label
 ## Commits the pending ghost recording to disk.
-@onready var button_save_ghost: Button = get_node_or_null("Root/Options/Margin/VBox/GhostSave/SaveGhost") as Button
+@onready var button_save_ghost: Button = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/GhostSave/SaveGhost") as Button
 ## Keeps the player at the current location after closing the results.
-@onready var button_stay: Button = get_node_or_null("Root/Options/Margin/VBox/Stay") as Button
+@onready var button_stay: Button = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/Stay") as Button
 ## Returns the player to the configured hub after closing the results.
-@onready var button_return_hub: Button = get_node_or_null("Root/Options/Margin/VBox/ReturnHub") as Button
+@onready var button_return_hub: Button = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/ReturnHub") as Button
 ## Restarts the current race or returns to its start.
-@onready var button_restart: Button = get_node_or_null("Root/Options/Margin/VBox/RestartRace") as Button
+@onready var button_restart: Button = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/RestartRace") as Button
 ## Returns to the main menu after a race.
-@onready var button_return_menu: Button = get_node_or_null("Root/Options/Margin/VBox/ReturnMenu") as Button
+@onready var button_return_menu: Button = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/ReturnMenu") as Button
 
 var _skip_requested: bool = false
 var _countdown_frame_presented: bool = false
@@ -86,7 +106,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event == null:
+	if event == null or event.is_echo() or not visible:
 		return
 	if get_tree() != null and get_tree().has_meta(&"chat_input_active") and bool(get_tree().get_meta(&"chat_input_active")):
 		return
@@ -251,11 +271,19 @@ func show_race_results_with_places(
 	)
 
 
+func _on_continue_pressed() -> void:
+	if not visible or not button_continue.is_visible_in_tree() or button_continue.disabled:
+		return
+	show_options()
+
+
 func show_options() -> void:
 	if panel_options == null:
 		return
-	panel_options.visible = true
-	panel_options.reset_size()
+	_skip_requested = false
+	if panel_results != null:
+		panel_results.hide()
+	panel_options.show()
 	call_deferred("_animate_options_in")
 
 
@@ -263,12 +291,7 @@ func _animate_options_in() -> void:
 	if panel_options == null or not panel_options.visible:
 		return
 	_focus_post_race_options()
-	_track_tween(UIExcitementEffects.sweep_in(
-		panel_options,
-		Vector2(0.0, 220.0),
-		0.46,
-		0.94
-	))
+	_track_tween(UIExcitementEffects.pulse_in(panel_options, 0.3, 0.94, 1.0))
 
 
 func _focus_post_race_options() -> void:
@@ -302,10 +325,8 @@ func configure_ghost_save(summary: Dictionary) -> void:
 	ghost_save_container.visible = available
 	if not available:
 		return
-	var tick_rate: int = int(summary.get("tick_rate", GhostDataManager.LEGACY_TICK_RATE))
-	var sample_count: int = int(summary.get("sample_count", 0))
 	if label_ghost_save != null:
-		label_ghost_save.text = "UNSAVED GHOST  |  %d Hz  |  %d samples\nSave it now, or choose another action to discard it." % [tick_rate, sample_count]
+		label_ghost_save.text = "UNSAVED GHOST\nSave it now, or choose another action to discard it."
 	if button_save_ghost != null:
 		button_save_ghost.disabled = false
 		button_save_ghost.text = "Save Ghost"
@@ -331,16 +352,13 @@ func set_restart_label(text_value: String) -> void:
 		button_restart.text = text_value
 
 
-func consume_skip() -> bool:
-	var was_requested: bool = _skip_requested
-	_skip_requested = false
-	return was_requested
-
-
 var _results_wait_cancelled: bool = false
 
 func cancel_results_wait() -> void:
 	_results_wait_cancelled = true
+	_kill_active_tweens()
+	if results_entry_audio != null:
+		results_entry_audio.stop()
 
 func wait_or_skip(delay: float) -> void:
 	_results_wait_cancelled = false
@@ -376,42 +394,88 @@ func _set_result_text(
 		is_new_record: bool,
 		extra_note: String
 	) -> void:
-	if panel_results != null:
-		panel_results.visible = true
-	if label_results != null:
-		var note_text: String = ""
-		if extra_note.strip_edges() != "":
-			note_text = "\n%s" % extra_note
-		var color_html: String = _foreground_color.to_html(false)
-		label_results.text = (
-			"[center][font_size=38][color=#%s][b]RACE RESULTS[/b][/color][/font_size][/center]"
-			+ "\n\nRings: %d\nTime: %s\nScore: %d%s%s"
-		) % [
-			color_html,
-			rings_value,
-			format_time(time_seconds),
-			score_value,
-			places_bbcode,
-			note_text,
-		]
-		label_results.scroll_to_line(0)
-	if label_new_record != null:
-		label_new_record.visible = is_new_record
-	call_deferred("_animate_results_in", is_new_record)
-
-
-func _animate_results_in(is_new_record: bool) -> void:
-	if panel_results == null or not panel_results.visible:
+	if panel_results == null:
 		return
-	_track_tween(UIExcitementEffects.sweep_in(
-		panel_results,
-		Vector2(300.0, 90.0),
-		results_enter_duration,
-		0.9
-	))
-	_track_tween(UIExcitementEffects.reveal_text(label_results, results_reveal_duration))
-	if is_new_record and label_new_record != null:
-		_track_tween(UIExcitementEffects.pulse_in(label_new_record, 0.55, 0.3, 1.16))
+	_kill_active_tweens()
+	_skip_requested = false
+	panel_options.hide()
+	button_continue.hide()
+	button_continue.disabled = true
+	label_new_record.hide()
+	for cell: Node in results_scores.get_children():
+		results_scores.remove_child(cell)
+		cell.queue_free()
+	label_results_places.hide()
+	results_ghost_divider.hide()
+	label_results_ghost.hide()
+	results_scroll.scroll_vertical = 0
+	panel_results.show()
+
+	var ring_bonus: int = maxi(rings_value, 0) * results_points_per_ring
+	var time_bonus: int = 0
+	var time_text: String = "DNF"
+	if is_finite(time_seconds) and time_seconds > 0.0:
+		time_bonus = roundi(maxf(float(results_max_time_bonus) - time_seconds * results_time_penalty_per_second, 0.0))
+		time_text = format_time(time_seconds)
+	var entries: Array[String] = [
+		str(rings_value),
+		str(score_value),
+		time_text,
+	]
+	var captions: Array[String] = ["Rings", "Score", "Time"]
+	var total: int = score_value + ring_bonus + time_bonus
+	_track_tween(UIExcitementEffects.pulse_in(panel_results, results_enter_duration, 0.9, 1.0))
+	var reveal_tween: Tween = create_tween()
+	_track_tween(reveal_tween)
+	reveal_tween.tween_interval(maxf(results_enter_duration, 0.01))
+	var entry_interval: float = maxf(results_reveal_duration / float(entries.size()), 0.05)
+	for index: int in entries.size():
+		reveal_tween.tween_callback(_reveal_results_entry.bind(captions[index], entries[index]))
+		reveal_tween.tween_interval(entry_interval)
+	reveal_tween.tween_callback(_finish_results_reveal.bind(total, places_bbcode, extra_note, is_new_record))
+
+
+func _add_results_row(caption: String, value: String, bold: bool = false) -> void:
+	var caption_label: Label = _create_result_cell(caption, bold)
+	caption_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	results_scores.add_child(caption_label)
+
+	var value_label: Label = _create_result_cell(value, true)
+	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	results_scores.add_child(value_label)
+
+
+func _create_result_cell(text: String, bold: bool) -> Label:
+	var cell: Label = Label.new()
+	cell.text = text
+	cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cell.add_theme_font_size_override("font_size", 24)
+	cell.add_theme_color_override("font_color", _foreground_color)
+	if bold:
+		cell.add_theme_font_override("font", label_results_places.get_theme_font("bold_font"))
+	return cell
+
+
+func _reveal_results_entry(caption: String, value: String) -> void:
+	_add_results_row(caption, value)
+	if results_entry_audio != null:
+		results_entry_audio.play()
+
+
+func _finish_results_reveal(total: int, places_bbcode: String, extra_note: String, is_new_record: bool) -> void:
+	_add_results_row("Total", str(total), true)
+	label_results_places.text = places_bbcode.strip_edges()
+	label_results_places.visible = not label_results_places.text.is_empty()
+	label_results_ghost.text = extra_note.strip_edges()
+	label_results_ghost.visible = not label_results_ghost.text.is_empty()
+	results_ghost_divider.visible = label_results_ghost.visible
+	if is_new_record:
+		label_new_record.show()
+		_track_tween(UIExcitementEffects.pulse_in(label_new_record, 0.4, 0.9, 1.08))
+	button_continue.disabled = false
+	button_continue.show()
+	button_continue.grab_focus()
+	_skip_requested = false
 
 
 func _pulse_countdown_text(is_go: bool) -> void:
@@ -431,6 +495,8 @@ func _pulse_countdown_text(is_go: bool) -> void:
 
 
 func _request_speedup() -> void:
+	if panel_options.visible or button_continue.is_visible_in_tree():
+		return
 	_skip_requested = true
 	_accelerate_active_tweens()
 
@@ -494,8 +560,10 @@ func _resolve_character_colors() -> void:
 		label_level.add_theme_color_override("font_color", _foreground_color)
 	if label_countdown != null:
 		label_countdown.add_theme_color_override("font_color", _foreground_color)
-	if label_results != null:
-		label_results.add_theme_color_override("default_color", _foreground_color)
+	label_results_title.add_theme_color_override("font_color", _foreground_color)
+	label_results_title.add_theme_font_override("font", label_results_places.get_theme_font("bold_font"))
+	label_results_places.add_theme_color_override("default_color", _foreground_color)
+	label_results_ghost.add_theme_color_override("font_color", _foreground_color)
 	if label_ghost_save != null:
 		label_ghost_save.add_theme_color_override("font_color", _foreground_color)
 
@@ -530,7 +598,8 @@ func _emit_option_and_close(option: StringName) -> void:
 
 
 func _menu_navigation_scope() -> Dictionary:
-	var scope_root: Control = panel_options
-	if not scope_root or not scope_root.is_visible_in_tree():
-		return {}
-	return {"root": scope_root, "page": "", "default": button_stay}
+	if panel_options and panel_options.is_visible_in_tree():
+		return {"root": panel_options, "page": "", "default": button_stay}
+	if button_continue and button_continue.is_visible_in_tree():
+		return {"root": panel_results, "page": "", "default": button_continue}
+	return {}

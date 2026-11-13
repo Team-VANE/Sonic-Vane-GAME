@@ -1897,54 +1897,27 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 	if not debug_used_local and local_time > 0.0:
 		var level_key := _get_level_key_for_scores()
 		is_new_record = HighScoreManager.save_time_if_better(level_key, local_time)
+	if ui.has_method("configure_post_race_options"):
+		ui.call("configure_post_race_options", true, false)
+	if ui.has_method("set_restart_label"):
+		ui.call("set_restart_label", "Return to start")
+	_race_results_choice = &""
+	_race_results_choice_pending = ui.has_signal("option_selected")
+	if _race_results_choice_pending:
+		ui.option_selected.connect(Callable(self, "_on_race_ui_option_selected"))
 	if ui.has_method("show_race_results_with_places"):
 		ui.call("show_race_results_with_places", local_rings, local_time, local_score, bb, is_new_record)
 	elif ui.has_method("show_results"):
 		ui.call("show_results", local_rings, local_time, local_score, is_new_record)
 
-	# Auto-close results after 5 seconds, or allow skipping via Ability Slot 1 / left click.
-	if not _goal_victory_has_failed() and ui.has_method("wait_or_skip"):
-		await ui.call("wait_or_skip", 5.0)
-	if results_token != _race_results_token or not is_instance_valid(ui):
-		return
-
-	# Online post-race options (return-to-start enabled; menu disabled); keep controls locked until selection.
-	if ui.has_method("configure_post_race_options"):
-		ui.call("configure_post_race_options", true, false)
-	if ui.has_method("set_restart_label"):
-		ui.call("set_restart_label", "Return to start")
-	if ui.has_method("show_options"):
-		ui.call("show_options")
-
-	var chosen: StringName = &"stay"
-	var got_choice: bool = false
-	_race_results_choice = &""
-	_race_results_choice_pending = true
-	if ui.has_signal("option_selected"):
-		ui.option_selected.connect(Callable(self, "_on_race_ui_option_selected"))
-
-	# Failsafe: don't hang forever waiting on a click; allow skip input to default to "stay".
-	var max_wait: float = 30.0
-	var remaining: float = max_wait
-	while remaining > 0.0 and _race_results_choice_pending and results_token == _race_results_token and not _goal_victory_has_failed():
-		if ui == null or not is_instance_valid(ui):
+	while _race_results_choice_pending and results_token == _race_results_token and not _goal_victory_has_failed():
+		if not is_instance_valid(ui) or get_tree() == null:
 			break
-		if ui.has_method("consume_skip"):
-			var did_skip: bool = bool(ui.call("consume_skip"))
-			if did_skip:
-				chosen = &"stay"
-				_race_results_choice_pending = false
-				break
-		if get_tree() == null:
-			break
-		var step: float = min(0.1, remaining)
-		remaining -= step
-		await get_tree().create_timer(step).timeout
+		await get_tree().create_timer(0.1).timeout
 	if results_token != _race_results_token:
 		return
-	if not _race_results_choice_pending and _race_results_choice != &"":
-		chosen = _race_results_choice
-	got_choice = not _race_results_choice_pending
+	_race_results_choice_pending = false
+	var chosen: StringName = _race_results_choice if _race_results_choice != &"" else &"stay"
 
 	if is_instance_valid(_race_results_goal):
 		await _race_results_goal.call("wait_for_victory_exit")

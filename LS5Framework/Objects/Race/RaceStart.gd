@@ -796,7 +796,7 @@ func finalize_local_ghost_run(player: Node, finish_time: float, score: int, debu
 			note = "Ghost not saved: race exceeded 5:00."
 		elif not _ghost_samples.is_empty():
 			_pending_ghost_payload = GhostDataManager.build_ghost_payload(_get_display_level_name(), _get_level_key(), _get_race_id_value(), finish_time, score, _ghost_samples, get_race_type_name(), _ghost_record_tick_rate)
-			note = "Unsaved ghost ready: %d Hz, %d samples." % [_ghost_record_tick_rate, _ghost_samples.size()]
+			note = "Unsaved ghost ready."
 	_clear_ghost_runtime(false)
 	return note
 

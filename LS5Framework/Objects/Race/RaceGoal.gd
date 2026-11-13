@@ -59,7 +59,6 @@ enum GoalCameraMode {
 
 @export_group("Timing")
 @export var results_delay: float = 5.0
-@export var options_delay: float = 5.0
 
 @export_group("UI")
 @export var race_ui_scene: PackedScene = preload("res://LS5Framework/Scenes/Race/RaceUI.tscn")
@@ -560,14 +559,6 @@ func _run_goal_sequence(player: Node) -> void:
 		ui.call("show_results", rings_value, final_time, score_value, is_new_record, ghost_note)
 	if ui != null and is_instance_valid(ui) and ui.has_method("set_restart_label"):
 		ui.call("set_restart_label", "Return to start")
-
-	# Wait before showing options (also skippable).
-	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("wait_or_skip"):
-		await ui.call("wait_or_skip", options_delay)
-		if not _goal_sequence_is_current(player, sequence_token):
-			return
-	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("show_options"):
-		ui.call("show_options")
 
 	var selected: StringName = &"stay"
 	if not _victory_failed and ui != null and is_instance_valid(ui):

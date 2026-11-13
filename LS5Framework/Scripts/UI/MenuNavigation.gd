@@ -19,6 +19,9 @@ var _release_barrier: bool = false
 var _axis: Vector2 = Vector2.ZERO
 var _controller_device: int = -1
 var _stick_direction: StringName = &""
+## Vertical scrollbar receiving right-stick input.
+var _right_stick_scrollbar: VScrollBar
+var _right_stick_scroll_remainder: float = 0.0
 var _keyboard_active: bool = true
 var _restoring: bool = false
 var _popup_was_open: bool = false
@@ -104,6 +107,8 @@ func _refresh_scope() -> void:
 		_scope = next
 		_root = next_root
 		_scope_key = key
+		_right_stick_scrollbar = null
+		_right_stick_scroll_remainder = 0.0
 		_clear_repeat()
 		_release_barrier = _any_menu_input_held()
 		if _root:
@@ -578,17 +583,63 @@ func _clear_repeat() -> void:
 
 func _scroll_with_right_stick(delta: float) -> void:
 	var focus: Control = get_viewport().gui_get_focus_owner()
-	if not _eligible(focus) or focus is LineEdit or focus is TextEdit:
+	if focus is LineEdit or focus is TextEdit:
 		return
 	var device: int = SettingsManager.get_preferred_joypad_device()
 	if device < 0:
 		return
 	var amount: float = Input.get_joy_axis(device, JOY_AXIS_RIGHT_Y)
 	if absf(amount) < 0.25:
+		_right_stick_scroll_remainder = 0.0
 		return
-	var scroll: ScrollContainer = _parent_scroll(focus)
-	if scroll:
-		scroll.scroll_vertical += roundi(amount * 900.0 * delta)
+	_scroll_menu_vertical(amount * 900.0 * delta, focus)
+
+
+func _scroll_menu_vertical(pixels: float, focus: Control) -> void:
+	var scrollbar: VScrollBar
+	if is_instance_valid(focus) and (focus == _root or _root.is_ancestor_of(focus)):
+		var node: Node = focus
+		while node:
+			scrollbar = _vertical_scrollbar(node)
+			if scrollbar or node == _root:
+				break
+			node = node.get_parent()
+	if not scrollbar:
+		scrollbar = _find_visible_vertical_scrollbar(_root)
+	if not scrollbar:
+		return
+	if scrollbar != _right_stick_scrollbar:
+		_right_stick_scrollbar = scrollbar
+		_right_stick_scroll_remainder = 0.0
+	_right_stick_scroll_remainder += pixels
+	var step: int = int(_right_stick_scroll_remainder)
+	_right_stick_scroll_remainder -= step
+	if step:
+		scrollbar.value += step
+
+
+func _vertical_scrollbar(node: Node) -> VScrollBar:
+	var scrollbar: VScrollBar
+	if node is ScrollContainer:
+		scrollbar = node.get_v_scroll_bar()
+	elif node is RichTextLabel and node.scroll_active:
+		scrollbar = node.get_v_scroll_bar()
+	if scrollbar and scrollbar.is_visible_in_tree() and scrollbar.max_value - scrollbar.page > scrollbar.min_value:
+		return scrollbar
+	return null
+
+
+func _find_visible_vertical_scrollbar(node: Node) -> VScrollBar:
+	if node is CanvasItem and not node.is_visible_in_tree():
+		return null
+	var scrollbar: VScrollBar = _vertical_scrollbar(node)
+	if scrollbar:
+		return scrollbar
+	for child: Node in node.get_children():
+		scrollbar = _find_visible_vertical_scrollbar(child)
+		if scrollbar:
+			return scrollbar
+	return null
 
 
 func _any_menu_input_held() -> bool:

@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b5v0ew6s4quth"]
+[gd_scene load_steps=10 format=3 uid="uid://b5v0ew6s4quth"]
 
 [ext_resource type="Script" uid="uid://b7w3845ehvvkr" path="res://LS5Framework/Scripts/Race/RaceUI.gd" id="1_raceui"]
 [ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_menu_theme"]
 [ext_resource type="Script" uid="uid://dcg31xt0t5v2b" path="res://LS5Framework/Scripts/UI/HUDResolutionScale.gd" id="3_resolution_scale"]
 [ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="4_crt_effect"]
+
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/Results_Entry.wav" id="5_results_entry"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_countdown"]
 bg_color = Color(0.018, 0.028, 0.065, 0.9)
@@ -47,11 +49,20 @@ corner_radius_bottom_left = 18
 shadow_color = Color(0, 0, 0, 0.58)
 shadow_size = 12
 
+[sub_resource type="StyleBoxLine" id="StyleBox_ghost_divider"]
+color = Color(0.34, 0.52, 0.78, 0.7)
+thickness = 1
+
 [node name="RaceUI" type="CanvasLayer" unique_id=72677273]
 script = ExtResource("1_raceui")
 
 [node name="CRTUIBackgroundEffect" type="Node" parent="."]
 script = ExtResource("4_crt_effect")
+
+[node name="ResultsEntryAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_results_entry")
+bus = &"UI"
+max_polyphony = 4
 
 [node name="Root" type="Control" parent="." unique_id=240764814]
 layout_mode = 3
@@ -130,10 +141,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -450.0
-offset_top = -310.0
-offset_right = 450.0
-offset_bottom = 160.0
+offset_left = -300.0
+offset_top = -240.0
+offset_right = 300.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -145,48 +156,63 @@ mouse_filter = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 44
+theme_override_constants/margin_bottom = 24
 
 [node name="VBox" type="VBoxContainer" parent="Root/Results/Margin" unique_id=78321900]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="ResultsText" type="RichTextLabel" parent="Root/Results/Margin/VBox" unique_id=1310485186]
+[node name="Title" type="Label" parent="Root/Results/Margin/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 34
+text = "RACE RESULTS"
+horizontal_alignment = 1
+
+[node name="ResultsScroll" type="ScrollContainer" parent="Root/Results/Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
-mouse_filter = 1
-theme_override_colors/default_color = Color(0.65, 0.82, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/normal_font_size = 24
-bbcode_enabled = true
-text = "[center][font_size=38][b]RACE RESULTS[/b][/font_size][/center]
+horizontal_scroll_mode = 0
 
-Rings: 0
-Time: 00:00:00
-Score: 0"
-fit_content = false
-scroll_active = true
+[node name="Readouts" type="VBoxContainer" parent="Root/Results/Margin/VBox/ResultsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Scores" type="GridContainer" parent="Root/Results/Margin/VBox/ResultsScroll/Readouts"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Places" type="RichTextLabel" parent="Root/Results/Margin/VBox/ResultsScroll/Readouts" unique_id=1310485186]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="GhostDivider" type="HSeparator" parent="Root/Results/Margin/VBox/ResultsScroll/Readouts"]
+visible = false
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBox_ghost_divider")
+
+[node name="GhostNote" type="Label" parent="Root/Results/Margin/VBox/ResultsScroll/Readouts"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 
-[node name="NewRecord" type="Label" parent="Root/Results" unique_id=677585345]
+[node name="NewRecord" type="Label" parent="Root/Results/Margin/VBox" unique_id=677585345]
 visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -170.0
-offset_top = -66.0
-offset_right = 170.0
-offset_bottom = -18.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
 mouse_filter = 2
-rotation = -0.04363323
 theme_override_colors/font_color = Color(1, 0.86, 0.16, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -196,23 +222,31 @@ text = "NEW RECORD!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Options" type="PanelContainer" parent="Root" unique_id=67087800]
+[node name="Continue" type="Button" parent="Root/Results/Margin/VBox"]
 visible = false
-layout_mode = 0
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -450.0
-offset_top = 180.0
-offset_right = 450.0
-offset_bottom = 180.0
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(240, 48)
+disabled = true
+text = "Continue"
+
+[node name="OptionsCenter" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 1
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Options" type="PanelContainer" parent="Root/OptionsCenter" unique_id=67087800]
+visible = false
+custom_minimum_size = Vector2(540, 0)
+layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBox_options")
 
-[node name="Margin" type="MarginContainer" parent="Root/Options"]
+[node name="Margin" type="MarginContainer" parent="Root/OptionsCenter/Options"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 18
@@ -220,47 +254,54 @@ theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 18
 theme_override_constants/margin_bottom = 14
 
-[node name="VBox" type="VBoxContainer" parent="Root/Options/Margin" unique_id=1052835648]
+[node name="VBox" type="VBoxContainer" parent="Root/OptionsCenter/Options/Margin" unique_id=1052835648]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="GhostSave" type="VBoxContainer" parent="Root/Options/Margin/VBox"]
+[node name="Heading" type="Label" parent="Root/OptionsCenter/Options/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Race Options"
+horizontal_alignment = 1
+
+[node name="GhostSave" type="VBoxContainer" parent="Root/OptionsCenter/Options/Margin/VBox"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="Status" type="Label" parent="Root/Options/Margin/VBox/GhostSave"]
+[node name="Status" type="Label" parent="Root/OptionsCenter/Options/Margin/VBox/GhostSave"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.65, 0.82, 1, 1)
 theme_override_font_sizes/font_size = 14
-text = "UNSAVED GHOST  |  30 Hz\nSave it now, or choose another action to discard it."
+text = "UNSAVED GHOST\nSave it now, or choose another action to discard it."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="SaveGhost" type="Button" parent="Root/Options/Margin/VBox/GhostSave"]
+[node name="SaveGhost" type="Button" parent="Root/OptionsCenter/Options/Margin/VBox/GhostSave"]
 layout_mode = 2
 tooltip_text = "Writes the completed ghost run to the matching level and race folder."
 text = "Save Ghost"
 
-[node name="Stay" type="Button" parent="Root/Options/Margin/VBox" unique_id=1991541617]
+[node name="Stay" type="Button" parent="Root/OptionsCenter/Options/Margin/VBox" unique_id=1991541617]
 layout_mode = 2
 text = "Stay here"
 
-[node name="ReturnHub" type="Button" parent="Root/Options/Margin/VBox" unique_id=2128262081]
+[node name="ReturnHub" type="Button" parent="Root/OptionsCenter/Options/Margin/VBox" unique_id=2128262081]
 layout_mode = 2
 text = "Back to hub"
 
-[node name="RestartRace" type="Button" parent="Root/Options/Margin/VBox" unique_id=1847303249]
+[node name="RestartRace" type="Button" parent="Root/OptionsCenter/Options/Margin/VBox" unique_id=1847303249]
 layout_mode = 2
 text = "Restart race"
 
-[node name="ReturnMenu" type="Button" parent="Root/Options/Margin/VBox" unique_id=421031561]
+[node name="ReturnMenu" type="Button" parent="Root/OptionsCenter/Options/Margin/VBox" unique_id=421031561]
 layout_mode = 2
 text = "Return to main menu"
 
-[connection signal="pressed" from="Root/Options/Margin/VBox/Stay" to="." method="_on_stay_pressed"]
-[connection signal="pressed" from="Root/Options/Margin/VBox/ReturnHub" to="." method="_on_return_hub_pressed"]
-[connection signal="pressed" from="Root/Options/Margin/VBox/RestartRace" to="." method="_on_restart_race_pressed"]
-[connection signal="pressed" from="Root/Options/Margin/VBox/ReturnMenu" to="." method="_on_return_menu_pressed"]
-[connection signal="pressed" from="Root/Options/Margin/VBox/GhostSave/SaveGhost" to="." method="_on_save_ghost_pressed"]
+[connection signal="pressed" from="Root/Results/Margin/VBox/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Root/OptionsCenter/Options/Margin/VBox/Stay" to="." method="_on_stay_pressed"]
+[connection signal="pressed" from="Root/OptionsCenter/Options/Margin/VBox/ReturnHub" to="." method="_on_return_hub_pressed"]
+[connection signal="pressed" from="Root/OptionsCenter/Options/Margin/VBox/RestartRace" to="." method="_on_restart_race_pressed"]
+[connection signal="pressed" from="Root/OptionsCenter/Options/Margin/VBox/ReturnMenu" to="." method="_on_return_menu_pressed"]
+[connection signal="pressed" from="Root/OptionsCenter/Options/Margin/VBox/GhostSave/SaveGhost" to="." method="_on_save_ghost_pressed"]
