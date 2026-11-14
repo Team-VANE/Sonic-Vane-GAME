@@ -3,41 +3,41 @@
 [ext_resource type="Material" uid="uid://btouj0vckmd1a" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/ANVIL_EXPORT_Material_3.tres" id="1_j0nwf"]
 [ext_resource type="Material" uid="uid://dynui31beak5h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/ANVIL_EXPORT_Material_8.tres" id="2_c6y8o"]
 [ext_resource type="Texture2D" uid="uid://dmhyy251765pw" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Fur.png" id="3_rnlm7"]
-[ext_resource type="Texture2D" uid="uid://bb3ywc3yb7es4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Shoe_Red_Sole_MASK.png" id="5_5kyrl"]
+[ext_resource type="Texture2D" uid="uid://cjn3xlj4qvsn0" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Shoe_Red_Sole_RGBMASK.png" id="5_5kyrl"]
 [ext_resource type="Script" uid="uid://bptw4vdcfuiih" path="res://LS5Framework/Scripts/Player/PlayerCharacterVisualProfile.gd" id="5_i74mw"]
 [ext_resource type="Texture2D" uid="uid://drd3s7eqa2plj" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Shoe_Red_Sole.png" id="6_kerjs"]
 [ext_resource type="Script" uid="uid://c3dpxgqxiu1up" path="res://LS5Framework/Scripts/Player/CharacterColorMaterialEntry.gd" id="7_entry"]
 [ext_resource type="Material" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/FootAfterImage.tres" id="8_wheel_mat"]
 [ext_resource type="Texture2D" uid="uid://utth2bo1ym42" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Foot_AfterImage_Red.png" id="9_wheel_tex"]
-[ext_resource type="Texture2D" uid="uid://dhh0qohlugdg1" path="res://LS5Framework/Characters/Sonic Neo Adventure/Foot_AfterImage_Mask.png" id="10_wheel_mask"]
+[ext_resource type="Texture2D" uid="uid://15qtdlrhu8go" path="res://LS5Framework/Characters/Sonic Neo Adventure/Foot_AfterImage_Red_RGBMASK.png" id="10_wheel_mask"]
 [ext_resource type="Material" uid="uid://bthpelsb7wo6" path="res://LS5Framework/Characters/Sonic Neo Adventure/Materials/ANVIL_EXPORT_Material_11.tres" id="11_spin_mat"]
 [ext_resource type="Texture2D" uid="uid://cultmuji77jxi" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Sonic_Spin.png" id="12_spin_tex"]
-[ext_resource type="Texture2D" uid="uid://kxuwxs0ri44l" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_Spin_Mask.png" id="13_spin_mask"]
+[ext_resource type="Texture2D" uid="uid://brrx3qhkner4h" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Sonic_Spin_RGBMASK.png" id="13_spin_mask"]
+[ext_resource type="Texture2D" uid="uid://cw0y4va7ep1oy" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Fur_RGBMASK.png" id="14_fur_rgb"]
 
 [sub_resource type="Resource" id="CharacterColorMaterialEntry_fur"]
 script = ExtResource("7_entry")
 material = ExtResource("1_j0nwf")
 texture = ExtResource("3_rnlm7")
+rgb_mask = ExtResource("14_fur_rgb")
 
 [sub_resource type="Resource" id="CharacterColorMaterialEntry_shoes"]
 script = ExtResource("7_entry")
 material = ExtResource("2_c6y8o")
 texture = ExtResource("6_kerjs")
-color_slot = 1
-mask = ExtResource("5_5kyrl")
+rgb_mask = ExtResource("5_5kyrl")
 
 [sub_resource type="Resource" id="CharacterColorMaterialEntry_wheel_run"]
 script = ExtResource("7_entry")
 material = ExtResource("8_wheel_mat")
 texture = ExtResource("9_wheel_tex")
-color_slot = 1
-mask = ExtResource("10_wheel_mask")
+rgb_mask = ExtResource("10_wheel_mask")
 
 [sub_resource type="Resource" id="CharacterColorMaterialEntry_spin_ball"]
 script = ExtResource("7_entry")
 material = ExtResource("11_spin_mat")
 texture = ExtResource("12_spin_tex")
-mask = ExtResource("13_spin_mask")
+rgb_mask = ExtResource("13_spin_mask")
 
 [resource]
 script = ExtResource("5_i74mw")

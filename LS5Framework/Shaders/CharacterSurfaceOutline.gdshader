@@ -33,6 +33,7 @@ uniform sampler2D mask_secondary : source_color, hint_default_black;
 uniform vec4 primary_color : source_color = vec4(1.0);
 /** Secondary character colour. */
 uniform vec4 secondary_color : source_color = vec4(1.0);
+#include "res://LS5Framework/Shaders/CharacterRGBMask.gdshaderinc"
 /** Primary mask intensity. */
 uniform float primary_strength = 1.0;
 /** Secondary mask intensity. */
@@ -64,6 +65,9 @@ vec3 hsv_to_rgb(vec3 color) {
 
 
 vec3 apply_character_tint(vec3 sampled_color, vec2 uv) {
+	if (rgb_mask_enabled) {
+		return character_rgb_tint(sampled_color, character_rgb_mask_weights(uv));
+	}
 	float primary_mask = texture(mask_primary, uv).r * primary_strength;
 	float secondary_mask = texture(mask_secondary, uv).r * secondary_strength;
 	float mask_weight = clamp(max(primary_mask, secondary_mask), 0.0, 1.0);

@@ -10,6 +10,7 @@ uniform sampler2D mask_secondary : source_color, hint_default_white;
 
 uniform vec4 primary_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform vec4 secondary_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+#include "res://LS5Framework/Shaders/CharacterRGBMask.gdshaderinc"
 uniform float primary_strength = 1.0;
 uniform float secondary_strength = 1.0;
 
@@ -56,33 +57,38 @@ vec3 _hsv_to_rgb(vec3 c) {
 
 void fragment() {
 	vec4 base = texture(base_tex, UV) * base_color;
-	float mask_primary_value = texture(mask_primary, UV).r * primary_strength;
-	float mask_secondary_value = texture(mask_secondary, UV).r * secondary_strength;
-	float mask_weight = clamp(max(mask_primary_value, mask_secondary_value), 0.0, 1.0);
+	vec3 color_out;
+	if (rgb_mask_enabled) {
+		color_out = character_rgb_tint(base.rgb, character_rgb_mask_weights(UV));
+	} else {
+		float mask_primary_value = texture(mask_primary, UV).r * primary_strength;
+		float mask_secondary_value = texture(mask_secondary, UV).r * secondary_strength;
+		float mask_weight = clamp(max(mask_primary_value, mask_secondary_value), 0.0, 1.0);
 
-	vec3 tinted = base.rgb;
-	float primary_mix = clamp(mask_primary_value * primary_color.a, 0.0, 1.0);
-	float secondary_mix = clamp(mask_secondary_value * secondary_color.a, 0.0, 1.0);
-	tinted = mix(tinted, primary_color.rgb, primary_mix);
-	tinted = mix(tinted, secondary_color.rgb, secondary_mix);
+		vec3 tinted = base.rgb;
+		float primary_mix = clamp(mask_primary_value * primary_color.a, 0.0, 1.0);
+		float secondary_mix = clamp(mask_secondary_value * secondary_color.a, 0.0, 1.0);
+		tinted = mix(tinted, primary_color.rgb, primary_mix);
+		tinted = mix(tinted, secondary_color.rgb, secondary_mix);
 
-	vec3 hsv = _rgb_to_hsv(tinted);
-	float sat_min = saturation_threshold;
-	float sat_max = max(saturation_threshold + saturation_softness, saturation_threshold + 0.001);
-	float sat_weight = smoothstep(sat_min, sat_max, hsv.y);
-	sat_weight = pow(clamp(sat_weight, 0.0, 1.0), max(saturation_exponent, 0.01));
+		vec3 hsv = _rgb_to_hsv(tinted);
+		float sat_min = saturation_threshold;
+		float sat_max = max(saturation_threshold + saturation_softness, saturation_threshold + 0.001);
+		float sat_weight = smoothstep(sat_min, sat_max, hsv.y);
+		sat_weight = pow(clamp(sat_weight, 0.0, 1.0), max(saturation_exponent, 0.01));
 
-	vec3 primary_hsv = _rgb_to_hsv(primary_color.rgb);
-	vec3 secondary_hsv = _rgb_to_hsv(secondary_color.rgb);
-	float target_hue = primary_hsv.x;
-	if (mask_secondary_value > mask_primary_value) {
-		target_hue = secondary_hsv.x;
+		vec3 primary_hsv = _rgb_to_hsv(primary_color.rgb);
+		vec3 secondary_hsv = _rgb_to_hsv(secondary_color.rgb);
+		float target_hue = primary_hsv.x;
+		if (mask_secondary_value > mask_primary_value) {
+			target_hue = secondary_hsv.x;
+		}
+
+		float hue_blend = mix(hsv.x, target_hue, sat_weight);
+		vec3 shifted = _hsv_to_rgb(vec3(hue_blend, hsv.y, hsv.z));
+		float blend = clamp(overlay_strength * mask_weight * sat_weight, 0.0, 1.0);
+		color_out = mix(tinted, shifted, blend);
 	}
-
-	float hue_blend = mix(hsv.x, target_hue, sat_weight);
-	vec3 shifted = _hsv_to_rgb(vec3(hue_blend, hsv.y, hsv.z));
-	float blend = clamp(overlay_strength * mask_weight * sat_weight, 0.0, 1.0);
-	vec3 color_out = mix(tinted, shifted, blend);
 	float metallic_value = metallic_scalar;
 	if (has_metallic_tex) {
 		int ch = clamp(metallic_tex_channel, 0, 3);

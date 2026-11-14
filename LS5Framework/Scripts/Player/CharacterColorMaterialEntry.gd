@@ -15,6 +15,8 @@ enum ColorSlot {
 @export_enum("Primary", "Secondary", "Tertiary") var color_slot: int = ColorSlot.PRIMARY
 ## Greyscale texture controlling where the selected character colour is applied. Empty affects the full material.
 @export var mask: Texture2D
+## RGB mask for primary (red), secondary (green), and tertiary (blue) tint weights. Takes precedence over the greyscale mask.
+@export var rgb_mask: Texture2D
 
 
 func matches(candidate_material: Material, candidate_texture: Texture2D) -> bool:

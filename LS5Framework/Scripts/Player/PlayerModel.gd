@@ -297,20 +297,10 @@ func _apply_character_tint() -> void:
 				alpha_scissor_enabled = base_material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
 				alpha_scissor_threshold = base_material.alpha_scissor_threshold
 
-			var selected_color: Color = entry.get_color(
-				p._character_primary_color,
-				p._character_secondary_color,
-				p._character_trail_color
-			)
 			var applied_texture: Texture2D = entry.texture if entry.texture != null else base_tex
 			shader_material.set_shader_parameter("base_tex", applied_texture)
 			shader_material.set_shader_parameter("base_color", base_color)
-			shader_material.set_shader_parameter("mask_primary", entry.mask)
-			shader_material.set_shader_parameter("mask_secondary", null)
-			shader_material.set_shader_parameter("primary_strength", 1.0)
-			shader_material.set_shader_parameter("secondary_strength", 0.0)
-			shader_material.set_shader_parameter("primary_color", selected_color)
-			shader_material.set_shader_parameter("secondary_color", selected_color)
+			_apply_character_mask(shader_material, entry)
 			shader_material.set_shader_parameter("metallic_scalar", metallic_scalar)
 			shader_material.set_shader_parameter("roughness_scalar", roughness_scalar)
 			shader_material.set_shader_parameter("specular_scalar", specular_scalar)
@@ -336,8 +326,7 @@ func _apply_character_tint() -> void:
 				src_mat.next_pass,
 				applied_texture,
 				base_color,
-				entry.mask,
-				selected_color
+				entry
 			)
 			if uses_transparency:
 				shader_material.set_shader_parameter("alpha_scissor_enabled", alpha_scissor_enabled)
@@ -351,15 +340,13 @@ func _configure_character_surface_passes(
 	source_pass: Material,
 	base_texture: Texture2D,
 	base_color: Color,
-	mask: Texture2D,
-	selected_color: Color
+	entry: CharacterColorMaterialEntry
 ) -> void:
 	tint_material.next_pass = _duplicate_character_surface_pass(
 		source_pass,
 		base_texture,
 		base_color,
-		mask,
-		selected_color
+		entry
 	)
 
 
@@ -367,8 +354,7 @@ func _duplicate_character_surface_pass(
 	source_pass: Material,
 	base_texture: Texture2D,
 	base_color: Color,
-	mask: Texture2D,
-	selected_color: Color
+	entry: CharacterColorMaterialEntry
 ) -> Material:
 	if source_pass == null:
 		return null
@@ -379,8 +365,7 @@ func _duplicate_character_surface_pass(
 		source_pass.next_pass,
 		base_texture,
 		base_color,
-		mask,
-		selected_color
+		entry
 	)
 	if not copied_pass is ShaderMaterial:
 		return copied_pass
@@ -394,8 +379,7 @@ func _duplicate_character_surface_pass(
 		shader_material,
 		base_texture,
 		base_color,
-		mask,
-		selected_color
+		entry
 	)
 	return copied_pass
 
@@ -404,8 +388,7 @@ func _configure_character_color_pass(
 	shader_material: ShaderMaterial,
 	base_texture: Texture2D,
 	base_color: Color,
-	mask: Texture2D,
-	selected_color: Color
+	entry: CharacterColorMaterialEntry
 ) -> void:
 	if shader_material == null:
 		return
@@ -414,12 +397,7 @@ func _configure_character_color_pass(
 	shader_material.set_shader_parameter(&"tint_enabled", true)
 	shader_material.set_shader_parameter(&"base_tex", base_texture)
 	shader_material.set_shader_parameter(&"base_color", base_color)
-	shader_material.set_shader_parameter(&"mask_primary", mask)
-	shader_material.set_shader_parameter(&"mask_secondary", null)
-	shader_material.set_shader_parameter(&"primary_strength", 1.0)
-	shader_material.set_shader_parameter(&"secondary_strength", 0.0)
-	shader_material.set_shader_parameter(&"primary_color", selected_color)
-	shader_material.set_shader_parameter(&"secondary_color", selected_color)
+	_apply_character_mask(shader_material, entry)
 	shader_material.set_shader_parameter(
 		&"saturation_threshold",
 		clamp(_owner.character_hue_saturation_threshold, 0.0, 1.0)
@@ -436,6 +414,23 @@ func _configure_character_color_pass(
 		&"overlay_strength",
 		clamp(_owner.character_hue_overlay_strength, 0.0, 1.0)
 	)
+
+
+func _apply_character_mask(shader_material: ShaderMaterial, entry: CharacterColorMaterialEntry) -> void:
+	var primary: Color = _owner._character_primary_color
+	var secondary: Color = _owner._character_secondary_color
+	var tertiary: Color = _owner._character_trail_color
+	var rgb_enabled: bool = entry.rgb_mask != null
+	var selected_color: Color = entry.get_color(primary, secondary, tertiary)
+	shader_material.set_shader_parameter(&"rgb_mask_enabled", rgb_enabled)
+	shader_material.set_shader_parameter(&"mask_rgb", entry.rgb_mask)
+	shader_material.set_shader_parameter(&"tertiary_color", tertiary)
+	shader_material.set_shader_parameter(&"mask_primary", entry.mask)
+	shader_material.set_shader_parameter(&"mask_secondary", null)
+	shader_material.set_shader_parameter(&"primary_strength", 1.0)
+	shader_material.set_shader_parameter(&"secondary_strength", 0.0)
+	shader_material.set_shader_parameter(&"primary_color", primary if rgb_enabled else selected_color)
+	shader_material.set_shader_parameter(&"secondary_color", secondary if rgb_enabled else selected_color)
 
 
 func _clear_character_tint_overrides() -> void:

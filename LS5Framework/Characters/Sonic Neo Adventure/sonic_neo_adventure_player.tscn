@@ -237,7 +237,7 @@ radius = 0.8
 height = 2.02959
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wwjg1"]
-radius = 0.39972764
+radius = 0.37247023
 
 [sub_resource type="SphereMesh" id="SphereMesh_v3bn8"]
 radius = 1.0
@@ -632,7 +632,7 @@ collision_mask = 2147483647
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HeadWaterDetector" unique_id=999999996]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0323266, -0.05074227)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0455025, -0.05074227)
 shape = SubResource("SphereShape3D_wwjg1")
 
 [node name="ModelRoot" type="Node3D" parent="." unique_id=71309623]
