@@ -37,16 +37,17 @@ func set_icon_color(color: Color) -> void:
 		color_material.set_shader_parameter("tint_color", color)
 
 
-func set_player_up_enabled(enabled: bool, animate: bool = true) -> void:
+func set_player_up_enabled(enabled: bool, animate: bool = true, play_sound: bool = true) -> void:
 	mode_texture.texture = player_up_texture if enabled else gravity_up_texture
 	if not animate:
 		scale = NORMAL_SCALE
 		return
 
-	if enabled:
-		player_up_audio.play()
-	else:
-		gravity_up_audio.play()
+	if play_sound:
+		if enabled:
+			player_up_audio.play()
+		else:
+			gravity_up_audio.play()
 	_play_toggle_animation()
 
 

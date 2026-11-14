@@ -201,17 +201,17 @@ func clear_item_notifications() -> void:
 		item_notifier.clear_all_notifications()
 
 
-func set_camera_orientation_mode(player_up_enabled: bool, animate: bool = true) -> void:
+func set_camera_orientation_mode(player_up_enabled: bool, animate: bool = true, play_sound: bool = true) -> void:
 	if camera_orientation_indicator == null:
 		if not is_node_ready():
-			call_deferred("set_camera_orientation_mode", player_up_enabled, animate)
+			call_deferred("set_camera_orientation_mode", player_up_enabled, animate, play_sound)
 			return
 		_ensure_nodes()
 		if camera_orientation_indicator == null:
 			push_warning("HUD: CameraOrientationIndicator node not found.")
 			return
 	if camera_orientation_indicator.has_method("set_player_up_enabled"):
-		camera_orientation_indicator.call("set_player_up_enabled", player_up_enabled, animate)
+		camera_orientation_indicator.call("set_player_up_enabled", player_up_enabled, animate, play_sound)
 
 func set_timer_running(value: bool) -> void:
 	running = value

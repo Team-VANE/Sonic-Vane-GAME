@@ -961,12 +961,26 @@ func apply_dash_panel_impulse(
 	var previous_position: Vector3 = p.global_position
 	var previous_surface_point: Vector3 = p.surface_point
 	p.cancel_drop_dash_for_object_interaction()
+	if p._lightspeed_dash_active:
+		p._stop_lightspeed_dash_if_active()
+	if p._rail_switch_active:
+		p._cancel_rail_switch()
 	cancel_vault_bar()
 	p._bounce_state = p.BounceState.NONE
 	cancel_spline_spring()
 	p.cancel_rail_grind(false)
 	if override_previous_lock_timers:
 		p.clear_object_lock_timers()
+		p._dash_speed_lock_timer = 0.0
+		p._dash_speed_lock_speed = 0.0
+		p._ramp_hold_forward_timer = 0.0
+		p._ramp_hold_up_timer = 0.0
+		clear_timed_max_speed_override()
+
+	if movement_lock_time > 0.0 or action_lock_time > 0.0:
+		p._clear_action_input_requests()
+		p.cancel_homing_attack(false)
+		p._reset_spindash_state()
 
 	p._automation_active = false
 	p._automation_timer = 0.0
@@ -1044,12 +1058,7 @@ func apply_dash_panel_impulse(
 		var wall_run_result: Dictionary = wall_run_result_value
 		if not wall_run_result.is_empty():
 			p._dash_speed_lock_timer = 0.0
-			if movement_lock_time > 0.0:
-				p._spring_movement_lock_timer = max(p._spring_movement_lock_timer, movement_lock_time)
-				p._spring_clear_move_on_ground = false
-			if action_lock_time > 0.0:
-				p._spring_action_lock_timer = max(p._spring_action_lock_timer, action_lock_time)
-				p._spring_clear_action_on_ground = false
+			_apply_dash_panel_control_locks(movement_lock_time, action_lock_time)
 			if align_camera and p.camera_rig != null and p.camera_rig.has_method("align_to_direction"):
 				if not (p.camera_rig.has_method("is_constraint_active") and p.camera_rig.is_constraint_active()):
 					var wall_up: Vector3 = wall_run_result.get("up", Vector3.UP)
@@ -1144,19 +1153,15 @@ func apply_dash_panel_impulse(
 				vertical = 0.0
 				lateral = new_v
 
+	if movement_lock_time > 0.0 or action_lock_time > 0.0:
+		p.clear_active_action()
 	p.velocity = lateral
 	p.attached = true
 	p._prev_attached = true
 	p._is_jumping = false
 	p._is_falling = false
 
-	if movement_lock_time > 0.0:
-		p._spring_movement_lock_timer = max(p._spring_movement_lock_timer, movement_lock_time)
-		p._spring_clear_move_on_ground = false
-
-	if action_lock_time > 0.0:
-		p._spring_action_lock_timer = max(p._spring_action_lock_timer, action_lock_time)
-		p._spring_clear_action_on_ground = false
+	_apply_dash_panel_control_locks(movement_lock_time, action_lock_time)
 
 	# Camera align
 	if align_camera and p.camera_rig != null and p.camera_rig.has_method("align_to_direction"):
@@ -1171,6 +1176,20 @@ func apply_dash_panel_impulse(
 	p.reset_flight_timer_to_max()
 	p.end_active_flight_for_external_impulse({"reason": &"dash_panel_impulse"})
 	p._sync_spring_state_to_action()
+
+
+func _apply_dash_panel_control_locks(movement_lock_time: float, action_lock_time: float) -> void:
+	var p = _owner
+	if movement_lock_time > 0.0:
+		p._spring_movement_lock_timer = maxf(p._spring_movement_lock_timer, movement_lock_time)
+		p._spring_clear_move_on_ground = false
+		p._dash_movement_lock_active = true
+		p._move_input = Vector2.ZERO
+		p._move_direction = Vector3.ZERO
+		p._walk_input_held = false
+	if action_lock_time > 0.0:
+		p._spring_action_lock_timer = maxf(p._spring_action_lock_timer, action_lock_time)
+		p._spring_clear_action_on_ground = false
 
 
 func _move_dash_panel_player(

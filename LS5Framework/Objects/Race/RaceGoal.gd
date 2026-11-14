@@ -839,12 +839,13 @@ func _apply_downwarp(xform: Transform3D, player: Node) -> Transform3D:
 	return xform
 
 
-func _register_goal_camera_constraint(player: Node) -> void:
+func _register_goal_camera_constraint(player: Node, facing_player: Node3D = null) -> void:
 	if _goal_constraint != null and is_instance_valid(_goal_constraint):
 		return
 	var rig: Node = _resolve_camera_rig(player)
 	if rig == null or not rig.has_method("register_camera_constraint"):
 		return
+	var aim_player: Node3D = facing_player if is_instance_valid(facing_player) else player as Node3D
 
 	var camera_source: Node3D = _resolve_goal_camera_source()
 	var xform: Transform3D = camera_source.global_transform if camera_source != null else global_transform
@@ -862,9 +863,12 @@ func _register_goal_camera_constraint(player: Node) -> void:
 		c.set_locked_transform(xform)
 		if face_player:
 			c.aim_trait.mode = CameraOrientationTrait.Mode.FACE_PLAYER
+			if aim_player and aim_player != player:
+				c.aim_trait.mode = CameraOrientationTrait.Mode.FACE_TARGET
+				c.aim_trait.target_node = aim_player
 			c.aim_trait.orbit_rig = false
 			c.aim_trait.tracking_response = 14.0
-		c.aim_trait.target_offset = _compute_aim_offset(player)
+		c.aim_trait.target_offset = _compute_aim_offset(aim_player)
 	else:
 		c.set_locked_transform(xform)
 		c.position_trait.mode = CameraPositionTrait.Mode.FIXED_CAMERA
@@ -881,10 +885,10 @@ func _register_goal_camera_constraint(player: Node) -> void:
 			c.lens_traits.append(lens)
 		if goal_camera_mode == GoalCameraMode.PLAYER_VICTORY_CAMERA and _has_victory_camera() and not (face_player and face_player_bone_enabled):
 			c.aim_trait.marker_uses_guide_basis = _victory_camera_uses_guide_basis()
-		elif face_player and player is Node3D:
+		elif face_player and aim_player:
 			c.aim_trait.mode = CameraOrientationTrait.Mode.FACE_TARGET
-			c.aim_trait.target_node = player as Node3D
-			c.aim_trait.target_offset = _compute_aim_offset(player)
+			c.aim_trait.target_node = aim_player
+			c.aim_trait.target_offset = _compute_aim_offset(aim_player)
 			c.aim_trait.up_override = _get_goal_camera_aim_up()
 		else:
 			c.aim_trait.marker_uses_guide_basis = true
@@ -895,6 +899,8 @@ func _register_goal_camera_constraint(player: Node) -> void:
 	_goal_constraint = c
 	_goal_camera_rig = rig
 	add_child(c)
+	if face_player and is_instance_valid(player) and player.is_inside_tree() and c.aim_trait.mode == CameraOrientationTrait.Mode.FACE_TARGET:
+		c.aim_trait.target_path = c.get_path_to(player)
 	rig.call("register_camera_constraint", c)
 
 

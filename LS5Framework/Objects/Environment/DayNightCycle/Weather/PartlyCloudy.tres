@@ -4,3 +4,4 @@
 
 [resource]
 script = ExtResource("1_weather")
+saturation_multiplier = 1.1

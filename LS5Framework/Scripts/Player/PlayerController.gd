@@ -3318,6 +3318,8 @@ func _movement_physics_process(delta: float) -> void:
 		_spring_movement_lock_timer = max(_spring_movement_lock_timer - delta, 0.0)
 		_spring_action_lock_timer   = max(_spring_action_lock_timer - delta, 0.0)
 	# Dash panel timer
+	if _spring_movement_lock_timer <= 0.0:
+		_dash_movement_lock_active = false
 	_dash_speed_lock_timer = max(_dash_speed_lock_timer - delta, 0.0)
 	_timed_max_speed_override_timer = max(_timed_max_speed_override_timer - delta, 0.0)
 	_tick_speed_shoes(delta)
@@ -6769,7 +6771,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	if automation_25d_active:
 		movement_input_strength = _apply_automation_25d_input_mapping(physics_up)
 	var continuous_trick_input_active: bool = (
-		_left_stick_trick_momentum_active
+		not _dash_movement_lock_active
+		and _left_stick_trick_momentum_active
 		and _uses_left_stick_trick_controls()
 		and SettingsManager.left_stick_trick_movement
 		== SettingsManager.LEFT_STICK_TRICK_MOVEMENT_LAST_INPUT
@@ -10467,6 +10470,8 @@ func _apply_left_stick_trick_momentum(lateral: Vector3, maximum_speed: float, wa
 func _should_start_manual_airborne_torque() -> bool:
 	if not manual_airborne_torque_enabled:
 		return false
+	if _dash_movement_lock_active:
+		return false
 	if _spring_detached and (_spring_movement_lock_timer > 0.0 or _spring_action_lock_timer > 0.0):
 		return false
 	if is_parkour_active():
@@ -11162,7 +11167,7 @@ func _process_action_inputs() -> void:
 	if _spring_action_lock_timer > 0.0:
 		return
 	if _spring_movement_lock_timer > 0.0:
-		if action_pressed:
+		if action_pressed and not _dash_movement_lock_active:
 			_spring_movement_lock_timer = 0.0
 		return
 	if SettingsManager.is_gameplay_action_just_pressed("ability_slot_02") and _switch_drift_direction_from_action1():
@@ -11769,6 +11774,7 @@ func clear_object_lock_timers() -> void:
 		_pending_anim_crossfade = -1.0
 	cancel_spline_spring()
 	_spring_movement_lock_timer = 0.0
+	_dash_movement_lock_active = false
 	_spring_action_lock_timer = 0.0
 	_spring_clear_move_on_ground = false
 	_spring_clear_action_on_ground = false
@@ -12208,6 +12214,8 @@ func has_homing_target_for_prompt() -> bool:
 
 func _action_input_locked() -> bool:
 	if _local_pause_enabled or _ui_input_blocked or _debug_mode:
+		return true
+	if _dash_movement_lock_active and _spring_movement_lock_timer > 0.0:
 		return true
 	if get_tree() != null and get_tree().paused:
 		return true

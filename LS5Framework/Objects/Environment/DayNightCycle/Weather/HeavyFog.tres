@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="DayNightWeather" format=3]
+[gd_resource type="Resource" script_class="DayNightWeather" format=3 uid="uid://cts6kq1n8f06h"]
 
-[ext_resource type="Script" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightWeather.gd" id="1_weather"]
+[ext_resource type="Script" uid="uid://bjqfip2tur0i0" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightWeather.gd" id="1_weather"]
 
 [resource]
 script = ExtResource("1_weather")
@@ -23,4 +23,4 @@ wind_speed = 0.0015
 overcast_light_multiplier = 0.38
 overcast_ambient_multiplier = 0.76
 fog_density_multiplier = 12.0
-saturation_multiplier = 0.66
+saturation_multiplier = 0.96

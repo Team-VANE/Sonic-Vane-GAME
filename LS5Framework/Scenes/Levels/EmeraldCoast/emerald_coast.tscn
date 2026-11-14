@@ -162,6 +162,7 @@ fog_sky_affect = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
+adjustment_saturation = 1.21
 
 [sub_resource type="Resource" id="Resource_b60og"]
 resource_local_to_scene = true
@@ -648,7 +649,7 @@ shader_parameter/tex_flat = ExtResource("23_i5omx")
 shader_parameter/tex_glow = ExtResource("24_isflb")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = false
-shader_parameter/swap_time = 442.276
+shader_parameter/swap_time = 4667.191
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l51wo"]
 size = Vector3(36.186234, 40.35939, 58.338074)
@@ -2503,10 +2504,6 @@ root_node = NodePath("../../Spring16")
 [node name="SplinePath" parent="Spring18" index="4" unique_id=1818114504]
 curve = SubResource("Curve3D_wt6vm")
 
-[node name="DashPanel2" parent="." unique_id=1547577923 instance=ExtResource("13_etxq2")]
-transform = Transform3D(-1.7982609, 0, -0.8753615, 0, 2, 0, 0.8753615, 0, -1.7982609, 3696.0645, 21.59033, 359.1582)
-strength = 120.0
-
 [node name="DashPanel3" parent="." unique_id=494006109 instance=ExtResource("13_etxq2")]
 transform = Transform3D(-1.7982609, 0, -0.8753615, 0, 2, 0, 0.8753615, 0, -1.7982609, 3696.0645, 21.59033, 359.1582)
 strength = 200.0
@@ -2516,7 +2513,7 @@ movement_lock_time = 1.0
 action_lock_time = 1.0
 
 [node name="DashPanel4" parent="." unique_id=66788658 instance=ExtResource("13_etxq2")]
-transform = Transform3D(-1.7982609, 0, -0.8753615, 0, 2, 0, 0.8753615, 0, -1.7982609, 3700.8374, 21.59033, 356.83496)
+transform = Transform3D(-1.7982609, 0, -0.8753615, 0, 2, 0, 0.8753615, 0, -1.7982609, 3702.6357, 21.59033, 355.9596)
 strength = 200.0
 additive_mode = 1
 min_additive_launch_speed = 90.0
@@ -3106,9 +3103,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.022949, 0, 0)
 
 [node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(763678701, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
 material_override = SubResource("ShaderMaterial_8wqdv")
-
-[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" parent_id_path=PackedInt32Array(763678701, 456851143, 52793995) index="2" unique_id=1016145482]
-light_energy = 20.0
 
 [node name="Checkpoint" parent="RaceGoal" unique_id=1068812376 instance=ExtResource("18_dup37")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1633.8037, 162.24062, 388.91992)

@@ -384,6 +384,7 @@ func unstuck_now() -> void:
 	p._move_input = Vector2.ZERO
 	p._move_direction = Vector3.ZERO
 	p._spring_movement_lock_timer = 0.0
+	p._dash_movement_lock_active = false
 	p._spring_action_lock_timer = 0.0
 	p._spring_align_timer = 0.0
 	p._spring_detached = false
@@ -493,6 +494,7 @@ func stop_all_momentum_and_special_movement() -> void:
 	p._spring_trajectory_torque_active = false
 	p._spring_trajectory_landing_forward_pitch_active = false
 	p._spring_movement_lock_timer = 0.0
+	p._dash_movement_lock_active = false
 	p._spring_action_lock_timer = 0.0
 
 	# Reset basic airborne flags so grounded actions can resume once controls are unlocked.

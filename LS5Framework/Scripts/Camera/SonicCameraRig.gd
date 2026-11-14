@@ -1309,7 +1309,7 @@ func get_use_player_up_effective() -> bool:
 	return _get_use_player_up_effective()
 
 
-func _sync_camera_orientation_hud(animate: bool) -> void:
+func _sync_camera_orientation_hud(animate: bool, play_sound: bool = false) -> void:
 	var hud_node: Node = _get_camera_orientation_hud()
 	if hud_node == null or not hud_node.has_method("set_camera_orientation_mode"):
 		return
@@ -1319,7 +1319,7 @@ func _sync_camera_orientation_hud(animate: bool) -> void:
 		return
 	_camera_orientation_hud_id = hud_node.get_instance_id()
 	_camera_orientation_hud_mode = mode
-	hud_node.call("set_camera_orientation_mode", mode, animate and not first_sync)
+	hud_node.call("set_camera_orientation_mode", mode, animate and not first_sync, play_sound and not first_sync)
 
 
 func _get_camera_orientation_hud() -> Node:
@@ -3249,7 +3249,7 @@ func set_player_up_toggle(value: bool, animate: bool = false) -> void:
 	SettingsManager.set_camera_player_up_enabled(value)
 	if is_instance_valid(_constraint_driver.selected):
 		_constraint_driver.selected.alignment_override_dismissed = true
-	_sync_camera_orientation_hud(animate)
+	_sync_camera_orientation_hud(animate, animate)
 
 
 func toggle_player_up() -> void:

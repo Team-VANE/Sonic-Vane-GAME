@@ -1661,10 +1661,17 @@ func _rpc_race_present_results(payload: Dictionary, generation: int) -> void:
 	var token: int = _race_results_token
 	var goal: Node = _race_results_goal
 	if is_instance_valid(goal):
+		var local_player: Node = get_local_player()
+		var winner_id: int = 0
+		for peer_id: int in payload["order"]:
+			if not _is_debug_disqualified(peer_id, payload["debug"]):
+				winner_id = peer_id
+				break
+		var winner: Node3D = get_player_node(winner_id) as Node3D if payload["targets"].has(winner_id) else null
 		goal.call("_unregister_finish_fade_camera_constraint")
-		goal.call("apply_online_lineup_pose", get_local_player(), payload["order"], payload["dnfs"], payload["targets"], _local_id)
-		var using_animated_camera: bool = bool(goal.call("_begin_victory_presentation", get_local_player(), not payload["order"].is_empty() and int(payload["order"][0]) == _local_id))
-		goal.call("_register_goal_camera_constraint", get_local_player())
+		goal.call("apply_online_lineup_pose", local_player, payload["order"], payload["dnfs"], payload["targets"], _local_id)
+		var using_animated_camera: bool = bool(goal.call("_begin_victory_presentation", local_player, winner_id == _local_id and winner_id > 0))
+		goal.call("_register_goal_camera_constraint", local_player, winner)
 		if using_animated_camera:
 			await get_tree().process_frame
 			if token != _race_results_token or not _is_online():

@@ -56,14 +56,13 @@ var launch_axis: int = 2
 # LOCKING / CAMERA
 # -----------------------------------------------------------
 @export_group("Locking & Camera")
-## Replaces prior action, movement, and spring alignment locks when activated.
+## Replaces prior action, movement, spring alignment, and dash speed locks when activated.
 @export var override_previous_lock_timers: bool = true
 
-## How long to lock player steering movement (they still move along the dash).
+## How long to lock player steering. The player keeps moving and ability presses cannot end this lock.
 @export var movement_lock_time: float = 0.0
 
-## How long to lock actions. Pressing any action while this is > 0
-## will break movement lock but still not perform the action.
+## How long to lock actions after the dash panel activates.
 @export var action_lock_time: float = 0.0
 
 ## If true, aligns the camera yaw (and potential roll later)

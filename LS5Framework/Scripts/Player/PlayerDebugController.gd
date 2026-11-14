@@ -466,6 +466,7 @@ func _set_debug_mode(enabled: bool) -> void:
 		p._clear_action_input_requests()
 		# Reset spring/action/movement locks and related automation state.
 		p._spring_movement_lock_timer = 0.0
+		p._dash_movement_lock_active = false
 		p._spring_action_lock_timer = 0.0
 		p._spring_align_timer = 0.0
 		p._spring_detached = false

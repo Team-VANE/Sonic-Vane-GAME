@@ -3619,6 +3619,7 @@ var _spring_model_snap_timer: float = 0.0
 # --- Dash Panels -------------------------------------------------------------
 var _dash_speed_lock_timer: float = 0.0
 var _dash_speed_lock_speed: float = 0.0
+var _dash_movement_lock_active: bool = false
 var _timed_max_speed_override_timer: float = 0.0
 var _timed_max_speed_override: float = 0.0
 var _functional_max_speed: float = 0.0
