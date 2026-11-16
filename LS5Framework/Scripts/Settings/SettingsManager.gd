@@ -39,6 +39,8 @@ var _resolutions: Array[Dictionary] = []
 var resolution_index: int = 0
 var fullscreen: bool = false
 var vsync_enabled: bool = false
+## Requests HDR display output when supported by the system.
+var hdr_output_enabled: bool = true
 
 var ssr: bool = true
 var ssao: bool = true
@@ -58,6 +60,10 @@ const RENDER_SCALE_PERFORMANCE: float = 0.5
 const RENDER_SCALE_HIGH_PERFORMANCE: float = 0.4
 var render_scale_mode: int = RENDER_SCALE_MODE_DIRECT
 var render_scale_ratio: float = RENDER_SCALE_NATIVE
+
+enum AntiAliasing { OFF, MSAA, TAA, FXAA }
+## Selects the main viewport's 3D anti-aliasing method.
+var anti_aliasing: int = AntiAliasing.OFF
 
 const SHADOW_RESOLUTION_LOW: int = 0
 const SHADOW_RESOLUTION_MEDIUM: int = 1
@@ -609,6 +615,7 @@ func _apply_display() -> void:
 		if was_fullscreen:
 			call_deferred("_apply_windowed_resolution", size)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if vsync_enabled else DisplayServer.VSYNC_DISABLED)
+	root_window.hdr_output_requested = hdr_output_enabled
 	resolution_changed.emit(size, get_resolution_aspect(idx))
 
 
@@ -866,6 +873,10 @@ func _apply_graphics_to_viewport() -> void:
 		return
 	vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR if render_scale_mode == RENDER_SCALE_MODE_FSR else Viewport.SCALING_3D_MODE_BILINEAR
 	vp.scaling_3d_scale = clampf(render_scale_ratio, RENDER_SCALE_HIGH_PERFORMANCE, RENDER_SCALE_NATIVE)
+	var aa_mode: int = anti_aliasing if is_anti_aliasing_supported(anti_aliasing) else AntiAliasing.OFF
+	vp.msaa_3d = Viewport.MSAA_4X if aa_mode == AntiAliasing.MSAA else Viewport.MSAA_DISABLED
+	vp.use_taa = aa_mode == AntiAliasing.TAA
+	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if aa_mode == AntiAliasing.FXAA else Viewport.SCREEN_SPACE_AA_DISABLED
 	if not vp.has_method("get_world_3d"):
 		return
 	var world = vp.call("get_world_3d")
@@ -1099,13 +1110,25 @@ func set_render_scale_ratio(value: float) -> void:
 	_apply_graphics_to_viewport()
 
 
+func is_anti_aliasing_supported(mode: int) -> bool:
+	var renderer: StringName = RenderingServer.get_current_rendering_method()
+	match mode:
+		AntiAliasing.TAA:
+			return renderer == &"forward_plus"
+		AntiAliasing.FXAA:
+			return renderer != &"gl_compatibility"
+	return true
+
+
 func get_graphics_snapshot() -> Dictionary:
 	return {
 		"resolution_index": resolution_index,
 		"fullscreen": fullscreen,
 		"vsync_enabled": vsync_enabled,
+		"hdr_output_enabled": hdr_output_enabled,
 		"render_scale_mode": render_scale_mode,
 		"render_scale_ratio": render_scale_ratio,
+		"anti_aliasing": anti_aliasing,
 		"volumetric_fog_enabled": volumetric_fog_enabled,
 		"shadow_resolution": shadow_resolution,
 		"shadow_distance": shadow_distance,
@@ -1132,8 +1155,10 @@ func apply_graphics_snapshot(snapshot: Dictionary) -> void:
 	resolution_index = clampi(int(snapshot.get("resolution_index", resolution_index)), 0, _resolutions.size() - 1)
 	fullscreen = bool(snapshot.get("fullscreen", fullscreen))
 	vsync_enabled = bool(snapshot.get("vsync_enabled", vsync_enabled))
+	hdr_output_enabled = bool(snapshot.get("hdr_output_enabled", hdr_output_enabled))
 	render_scale_mode = clampi(int(snapshot.get("render_scale_mode", render_scale_mode)), RENDER_SCALE_MODE_DIRECT, RENDER_SCALE_MODE_FSR)
 	render_scale_ratio = clampf(float(snapshot.get("render_scale_ratio", render_scale_ratio)), RENDER_SCALE_HIGH_PERFORMANCE, RENDER_SCALE_NATIVE)
+	anti_aliasing = clampi(int(snapshot.get("anti_aliasing", anti_aliasing)), AntiAliasing.OFF, AntiAliasing.FXAA)
 	volumetric_fog_enabled = bool(snapshot.get("volumetric_fog_enabled", volumetric_fog_enabled))
 	shadow_resolution = clampi(int(snapshot.get("shadow_resolution", shadow_resolution)), SHADOW_RESOLUTION_LOW, SHADOW_RESOLUTION_ULTRA)
 	shadow_distance = _validated_shadow_distance(int(snapshot.get("shadow_distance", shadow_distance)))
@@ -2316,6 +2341,7 @@ func _write_settings_config(cfg: ConfigFile) -> void:
 	cfg.set_value("display", "resolution_index", resolution_index)
 	cfg.set_value("display", "fullscreen", fullscreen)
 	cfg.set_value("display", "vsync_enabled", vsync_enabled)
+	cfg.set_value("display", "hdr_output_enabled", hdr_output_enabled)
 	cfg.set_value("display", "hud_visible", hud_visible)
 	cfg.set_value("display", "action_prompts_visible", action_prompts_visible)
 	cfg.set_value("display", "fps_counter_visible", fps_counter_visible)
@@ -2329,6 +2355,7 @@ func _write_settings_config(cfg: ConfigFile) -> void:
 	cfg.set_value("graphics", "depth_of_field_enabled", depth_of_field_enabled)
 	cfg.set_value("graphics", "render_scale_mode", render_scale_mode)
 	cfg.set_value("graphics", "render_scale_ratio", render_scale_ratio)
+	cfg.set_value("graphics", "anti_aliasing", anti_aliasing)
 	cfg.set_value("graphics", "volumetric_fog_enabled", volumetric_fog_enabled)
 	cfg.set_value("graphics", "shadow_resolution", shadow_resolution)
 	cfg.set_value("graphics", "shadow_distance", shadow_distance)
@@ -2581,6 +2608,7 @@ func _load() -> void:
 	resolution_index = clampi(resolution_index, 0, _resolutions.size() - 1)
 	fullscreen       = bool(cfg.get_value("display", "fullscreen", fullscreen))
 	vsync_enabled    = bool(cfg.get_value("display", "vsync_enabled", vsync_enabled))
+	hdr_output_enabled = bool(cfg.get_value("display", "hdr_output_enabled", hdr_output_enabled))
 	hud_visible      = bool(cfg.get_value("display", "hud_visible", hud_visible))
 	action_prompts_visible = bool(cfg.get_value("display", "action_prompts_visible", true))
 	fps_counter_visible = bool(cfg.get_value("display", "fps_counter_visible", fps_counter_visible))
@@ -2594,6 +2622,7 @@ func _load() -> void:
 	depth_of_field_enabled = bool(cfg.get_value("graphics", "depth_of_field_enabled", depth_of_field_enabled))
 	render_scale_mode = clampi(int(cfg.get_value("graphics", "render_scale_mode", render_scale_mode)), RENDER_SCALE_MODE_DIRECT, RENDER_SCALE_MODE_FSR)
 	render_scale_ratio = clampf(float(cfg.get_value("graphics", "render_scale_ratio", render_scale_ratio)), RENDER_SCALE_HIGH_PERFORMANCE, RENDER_SCALE_NATIVE)
+	anti_aliasing = clampi(int(cfg.get_value("graphics", "anti_aliasing", anti_aliasing)), AntiAliasing.OFF, AntiAliasing.FXAA)
 	volumetric_fog_enabled = bool(cfg.get_value("graphics", "volumetric_fog_enabled", volumetric_fog_enabled))
 	shadow_resolution = clampi(int(cfg.get_value("graphics", "shadow_resolution", shadow_resolution)), SHADOW_RESOLUTION_LOW, SHADOW_RESOLUTION_ULTRA)
 	shadow_distance = _validated_shadow_distance(int(cfg.get_value("graphics", "shadow_distance", DEFAULT_SHADOW_DISTANCE)))

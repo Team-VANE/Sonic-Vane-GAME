@@ -10,14 +10,20 @@ uniform vec4 crop_bounds = vec4(0.0, 0.0, 1.0, 1.0);
 uniform float scanline_scale = 1.0;
 uniform float vignette_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 output_bounds = vec4(0.0, 0.0, 1.0, 1.0);
-uniform bool green_screen = false;
+uniform bool isolate_player = false;
+uniform bool checkerboard = false;
 uniform sampler2D player_matte : repeat_disable, filter_linear;
 
 void fragment() {
 	vec4 scene = textureLod(scene_color, SCREEN_UV, 0.0);
-	if (green_screen) {
+	if (isolate_player) {
 		float player_alpha = texture(player_matte, SCREEN_UV).a;
-		scene = vec4(mix(vec3(0.0, 1.0, 0.0), scene.rgb, player_alpha), 1.0);
+		vec3 backdrop = vec3(0.0, 1.0, 0.0);
+		if (checkerboard) {
+			vec2 tile = floor(FRAGCOORD.xy / 16.0);
+			backdrop = vec3(mix(0.23, 0.42, mod(tile.x + tile.y, 2.0)));
+		}
+		scene = vec4(mix(backdrop, scene.rgb, player_alpha), 1.0);
 	}
 	if (filter_mode == 1) {
 		float luminance = dot(scene.rgb, vec3(0.2126, 0.7152, 0.0722));

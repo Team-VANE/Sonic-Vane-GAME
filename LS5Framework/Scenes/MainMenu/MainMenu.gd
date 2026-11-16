@@ -131,6 +131,8 @@ var opt_player_tracking_mode: OptionButton = null
 @onready var opt_render_scale_mode: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleMode/OptionRenderScaleMode
 ## Selects the internal 3D rendering ratio.
 @onready var opt_render_scale_ratio: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxRenderScaleRatio/OptionRenderScaleRatio
+## Stages the 3D anti-aliasing method for graphics confirmation.
+@onready var opt_anti_aliasing: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxAntiAliasing/OptionAntiAliasing
 ## Selects the atlas size used by 3D shadows.
 @onready var opt_shadow_resolution: OptionButton = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxShadowResolution/OptionShadowResolution
 ## Directional shadow distance preset in the graphics options.
@@ -141,6 +143,8 @@ var opt_player_tracking_mode: OptionButton = null
 @onready var button_apply_resolution: Button = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/ButtonApplyResolution
 
 @onready var chk_vsync: CheckBox      = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxVsync/CheckVsync
+## Stages HDR display output for graphics confirmation.
+@onready var chk_hdr_output: CheckBox = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxHDROutput/CheckHDROutput
 @onready var chk_fullscreen: CheckBox = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxFullscreen/CheckFullscreen
 
 @onready var chk_ssr: CheckBox     = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/GridGraphics/CheckSSR
@@ -2241,8 +2245,10 @@ func _collect_graphics_snapshot_from_ui() -> Dictionary:
 		"resolution_index": resolution_index,
 		"fullscreen": chk_fullscreen.button_pressed,
 		"vsync_enabled": chk_vsync.button_pressed,
+		"hdr_output_enabled": chk_hdr_output.button_pressed,
 		"render_scale_mode": opt_render_scale_mode.get_selected_id(),
 		"render_scale_ratio": _get_selected_render_scale_ratio(),
+		"anti_aliasing": opt_anti_aliasing.get_selected_id(),
 		"volumetric_fog_enabled": chk_volumetric_fog.button_pressed,
 		"shadow_resolution": opt_shadow_resolution.get_selected_id(),
 		"shadow_distance": opt_shadow_distance.get_selected_id(),
@@ -2292,10 +2298,12 @@ func _sync_options_from_settings() -> void:
 	chk_fullscreen.button_pressed = SettingsManager.fullscreen
 	_update_resolution_control_state()
 	chk_vsync.button_pressed = SettingsManager.vsync_enabled
+	chk_hdr_output.set_pressed_no_signal(SettingsManager.hdr_output_enabled)
 	var render_mode_index: int = opt_render_scale_mode.get_item_index(SettingsManager.render_scale_mode)
 	if render_mode_index >= 0:
 		opt_render_scale_mode.select(render_mode_index)
 	_select_render_scale_ratio(SettingsManager.render_scale_ratio)
+	opt_anti_aliasing.select(opt_anti_aliasing.get_item_index(SettingsManager.anti_aliasing))
 	var shadow_resolution_index: int = opt_shadow_resolution.get_item_index(SettingsManager.shadow_resolution)
 	if shadow_resolution_index >= 0:
 		opt_shadow_resolution.select(shadow_resolution_index)

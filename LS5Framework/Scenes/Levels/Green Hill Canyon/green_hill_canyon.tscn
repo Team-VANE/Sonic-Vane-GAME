@@ -45,11 +45,11 @@ size = Vector3(7705.2725, 2.9222412, 7723.9688)
 [sub_resource type="BoxShape3D" id="BoxShape3D_4sypa"]
 size = Vector3(1410.8984, 2.9222412, 422.22293)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_nqjbc"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_n4vbm"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_g3tte"]
+[sub_resource type="Curve3D" id="Curve3D_7p4er"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, -27.205, 56.9, 17.635, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7.03, 46.05, 17.51),
@@ -57,11 +57,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_f0y43"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_luxnm"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_rg4xw"]
+[sub_resource type="Curve3D" id="Curve3D_x3wdf"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, 0, 51.475, 15.17, 0, 0, 0, 0, 0, 0, 0, 0, 0, -11.275, 47.28, 17.51),
@@ -69,11 +69,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_nxq5g"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nqjbc"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_llis5"]
+[sub_resource type="Curve3D" id="Curve3D_g3tte"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 13.835, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48.455, 0, 10.165, 0, 0, 0, 0, 0, -29.86, 98.025, -8.105),
@@ -84,11 +84,11 @@ point_count = 3
 [sub_resource type="BoxShape3D" id="BoxShape3D_ai0xw"]
 size = Vector3(5, 3, 5)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_djsev"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f0y43"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_t3lvl"]
+[sub_resource type="Curve3D" id="Curve3D_rg4xw"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -120,16 +120,16 @@ height = 8.2421875
 [sub_resource type="BoxShape3D" id="BoxShape3D_ebuav"]
 size = Vector3(89, 23, 88)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_logby"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nxq5g"]
 render_priority = 0
 shader = ExtResource("10_nfviv")
 shader_parameter/tex_flat = ExtResource("11_mun4f")
 shader_parameter/tex_glow = ExtResource("12_ai0xw")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 2938.8540000000003
+shader_parameter/swap_time = 170.642
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v7vys"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_llis5"]
 resource_local_to_scene = true
 shader = ExtResource("13_ci8yw")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -187,16 +187,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_nr4tk"]
+[sub_resource type="Sky" id="Sky_djsev"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_v7vys")
+sky_material = SubResource("ShaderMaterial_llis5")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_htdn8"]
+[sub_resource type="Environment" id="Environment_t3lvl"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_nr4tk")
+sky = SubResource("Sky_djsev")
 ambient_light_source = 3
 ambient_light_color = Color(0.18256412, 0.42191362, 0.8746939, 1)
 ambient_light_sky_contribution = 0.82
@@ -222,9 +222,9 @@ fog_sky_affect = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
-adjustment_saturation = 1.1
+adjustment_saturation = 1.3310001
 
-[sub_resource type="Resource" id="Resource_yx35x"]
+[sub_resource type="Resource" id="Resource_d8jkd"]
 resource_local_to_scene = true
 script = ExtResource("17_n4vbm")
 texture = ExtResource("18_7p4er")
@@ -232,7 +232,7 @@ axis_position = 0.55
 diameter = 0.44
 tint = Color(0.75, 0.88, 1, 0.38)
 
-[sub_resource type="Resource" id="Resource_w0fot"]
+[sub_resource type="Resource" id="Resource_logby"]
 resource_local_to_scene = true
 script = ExtResource("17_n4vbm")
 texture = ExtResource("19_luxnm")
@@ -240,7 +240,7 @@ axis_position = 0.2
 diameter = 0.16
 tint = Color(0.8, 1, 0.9, 0.28)
 
-[sub_resource type="Resource" id="Resource_plaef"]
+[sub_resource type="Resource" id="Resource_v7vys"]
 resource_local_to_scene = true
 script = ExtResource("17_n4vbm")
 texture = ExtResource("18_7p4er")
@@ -248,7 +248,7 @@ axis_position = 1.05
 diameter = 0.075
 tint = Color(0.65, 0.85, 1, 0.3)
 
-[sub_resource type="Resource" id="Resource_5ve4c"]
+[sub_resource type="Resource" id="Resource_nr4tk"]
 resource_local_to_scene = true
 script = ExtResource("17_n4vbm")
 texture = ExtResource("19_luxnm")
@@ -627,7 +627,7 @@ shader_parameter/ssr_fade_end = 0.95
 shader_parameter/ssr_edge_fade = 0.05
 shader_parameter/ssr_roughness_mip = 4.0
 
-[sub_resource type="Resource" id="Resource_uotpy"]
+[sub_resource type="Resource" id="Resource_htdn8"]
 resource_local_to_scene = true
 resource_name = "Authored terrain ribbon"
 script = ExtResource("phase6_AutomationRibbonTrait")
@@ -641,7 +641,7 @@ max_position_correction_speed = 20.0
 mode = 2
 airborne = true
 
-[sub_resource type="Resource" id="Resource_3vqwp"]
+[sub_resource type="Resource" id="Resource_yx35x"]
 resource_local_to_scene = true
 resource_name = "Authored action permissions"
 script = ExtResource("phase6_AutomationInputTrait")
@@ -649,7 +649,7 @@ allow_braking = false
 block_drift = true
 airborne = true
 
-[sub_resource type="Resource" id="Resource_sfcmh"]
+[sub_resource type="Resource" id="Resource_w0fot"]
 resource_local_to_scene = true
 resource_name = "Signed ribbon input"
 script = ExtResource("phase6_AutomationInputTrait")
@@ -657,7 +657,7 @@ mode = 1
 input_deadzone = 0.05
 airborne = true
 
-[sub_resource type="Resource" id="Resource_xwcgb"]
+[sub_resource type="Resource" id="Resource_plaef"]
 resource_local_to_scene = true
 resource_name = "Authored side-view camera"
 script = ExtResource("phase6_AutomationCameraTrait")
@@ -687,7 +687,7 @@ point_count = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_un7nq"]
 size = Vector3(259.3335, 129.729, 24.985138)
 
-[sub_resource type="Resource" id="Resource_loncr"]
+[sub_resource type="Resource" id="Resource_5ve4c"]
 resource_local_to_scene = true
 resource_name = "Authored terrain ribbon"
 script = ExtResource("phase6_AutomationRibbonTrait")
@@ -701,14 +701,14 @@ max_position_correction_speed = 20.0
 mode = 2
 airborne = true
 
-[sub_resource type="Resource" id="Resource_r5v3x"]
+[sub_resource type="Resource" id="Resource_uotpy"]
 resource_local_to_scene = true
 resource_name = "Contact adhesion"
 script = ExtResource("phase6_AutomationSurfaceTrait")
 mode = 1
 airborne = true
 
-[sub_resource type="Resource" id="Resource_icrrq"]
+[sub_resource type="Resource" id="Resource_3vqwp"]
 resource_local_to_scene = true
 resource_name = "Authored action permissions"
 script = ExtResource("phase6_AutomationInputTrait")
@@ -716,7 +716,7 @@ allow_braking = false
 block_drift = true
 airborne = true
 
-[sub_resource type="Resource" id="Resource_fsqmh"]
+[sub_resource type="Resource" id="Resource_sfcmh"]
 resource_local_to_scene = true
 resource_name = "Signed ribbon input"
 script = ExtResource("phase6_AutomationInputTrait")
@@ -724,7 +724,7 @@ mode = 1
 input_deadzone = 0.05
 airborne = true
 
-[sub_resource type="Resource" id="Resource_85o2y"]
+[sub_resource type="Resource" id="Resource_xwcgb"]
 resource_local_to_scene = true
 resource_name = "Authored side-view camera"
 script = ExtResource("phase6_AutomationCameraTrait")
@@ -763,7 +763,7 @@ size = Vector3(7.175293, 42.64441, 41)
 [sub_resource type="BoxShape3D" id="BoxShape3D_odwry"]
 size = Vector3(5, 48, 46.2948)
 
-[sub_resource type="Resource" id="Resource_w28lq"]
+[sub_resource type="Resource" id="Resource_loncr"]
 resource_local_to_scene = true
 resource_name = "Canonical heading"
 script = ExtResource("phase6_AutomationSteeringTrait")
@@ -771,7 +771,7 @@ canonical_direction = true
 strength = 1.0
 allow_pullback = false
 
-[sub_resource type="Resource" id="Resource_1i0ny"]
+[sub_resource type="Resource" id="Resource_r5v3x"]
 resource_local_to_scene = true
 resource_name = "Authored turn limit"
 script = ExtResource("phase6_AutomationSteeringTrait")
@@ -780,7 +780,7 @@ canonical_direction = true
 turn_rate = 9999.0
 allow_pullback = false
 
-[sub_resource type="Resource" id="Resource_cnoou"]
+[sub_resource type="Resource" id="Resource_icrrq"]
 resource_local_to_scene = true
 resource_name = "Canonical propulsion"
 script = ExtResource("phase6_AutomationSpeedTrait")
@@ -791,7 +791,7 @@ acceleration = 75.0
 allow_braking = false
 affect_rolling = true
 
-[sub_resource type="Resource" id="Resource_q2tkd"]
+[sub_resource type="Resource" id="Resource_fsqmh"]
 resource_local_to_scene = true
 resource_name = "Authored player soft cap"
 script = ExtResource("phase6_AutomationSpeedTrait")
@@ -800,7 +800,7 @@ player_top_speed = true
 target_speed = 185.0
 affect_rolling = true
 
-[sub_resource type="Resource" id="Resource_qveoj"]
+[sub_resource type="Resource" id="Resource_85o2y"]
 resource_local_to_scene = true
 resource_name = "Authored action permissions"
 script = ExtResource("phase6_AutomationInputTrait")
@@ -923,10 +923,10 @@ spline_path = NodePath("SplinePath")
 spline_speed = 120.0
 
 [node name="CollisionShape3D" parent="Spring27" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_nqjbc")
+shape = SubResource("CylinderShape3D_n4vbm")
 
 [node name="SplinePath" parent="Spring27" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_g3tte")
+curve = SubResource("Curve3D_7p4er")
 
 [node name="Spring28" parent="." unique_id=1898439031 node_paths=PackedStringArray("spline_path") instance=ExtResource("6_182lq")]
 transform = Transform3D(-0.57394814, -0.8188917, 5.017615e-08, -0.8188915, 0.57394814, 7.1589795e-08, -8.742277e-08, 0, -1.0000002, 241.21031, 32.270836, -2717.5674)
@@ -939,10 +939,10 @@ spline_path = NodePath("SplinePath")
 spline_speed = 100.0
 
 [node name="CollisionShape3D" parent="Spring28" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_f0y43")
+shape = SubResource("CylinderShape3D_luxnm")
 
 [node name="SplinePath" parent="Spring28" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_rg4xw")
+curve = SubResource("Curve3D_x3wdf")
 
 [node name="Spring29" parent="." unique_id=1892095065 node_paths=PackedStringArray("spline_path") instance=ExtResource("6_182lq")]
 transform = Transform3D(0.99999994, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000004, -155.5744, -27.745266, -2690.619)
@@ -955,10 +955,10 @@ spline_path = NodePath("SplinePath")
 spline_speed = 100.0
 
 [node name="CollisionShape3D" parent="Spring29" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_nxq5g")
+shape = SubResource("CylinderShape3D_nqjbc")
 
 [node name="SplinePath" parent="Spring29" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_llis5")
+curve = SubResource("Curve3D_g3tte")
 
 [node name="DashPanel4" parent="." unique_id=2131709214 instance=ExtResource("7_1dlih")]
 transform = Transform3D(-0.9942877, 0, 0.10673255, 0, 1, 0, -0.10673255, 0, -0.9942877, 1596.1912, 10.740982, -2169.5945)
@@ -1113,14 +1113,14 @@ movement_lock_time = 1.0
 action_lock_time = 1.0
 
 [node name="CollisionShape3D" parent="Spring19" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_djsev")
+shape = SubResource("CylinderShape3D_f0y43")
 
 [node name="TrajectorySolver" parent="Spring19" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34.31836, -14.943726)
 visible = true
 
 [node name="SplinePath" parent="Spring19" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_t3lvl")
+curve = SubResource("Curve3D_rg4xw")
 
 [node name="Mesh" parent="Spring19" index="5" unique_id=1922896033]
 transform = Transform3D(1, 0, 0, 0, 0.98080623, -0.19498502, 0, 0.19498502, 0.98080623, 0, 0, 0)
@@ -1251,7 +1251,7 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9372559, 27.969238)
 
 [node name="Circle" parent="RaceGoal_GHC/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(220082632, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_logby")
+material_override = SubResource("ShaderMaterial_nxq5g")
 
 [node name="SwapLight" parent="RaceGoal_GHC/GoalModel/GoalRing2" parent_id_path=PackedInt32Array(220082632, 456851143, 52793995) index="2" unique_id=1016145482]
 light_energy = 20.0
@@ -1323,10 +1323,10 @@ directional_shadow_mode = 0
 day_length_minutes = 8.0
 
 [node name="WorldEnvironment" parent="Lights/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_htdn8")
+environment = SubResource("Environment_t3lvl")
 
 [node name="SunFlare" parent="Lights/EnvironmentWeatherSystem" index="2"]
-lens_elements = Array[ExtResource("17_n4vbm")]([SubResource("Resource_yx35x"), SubResource("Resource_w0fot"), SubResource("Resource_plaef"), SubResource("Resource_5ve4c")])
+lens_elements = Array[ExtResource("17_n4vbm")]([SubResource("Resource_d8jkd"), SubResource("Resource_logby"), SubResource("Resource_v7vys"), SubResource("Resource_nr4tk")])
 
 [node name="WaterThing" type="CSGCombiner3D" parent="." unique_id=1499897923]
 
@@ -1397,9 +1397,9 @@ enabled = false
 maximum_tracking_window = 100.0
 tracking_window = 12.0
 recovery_distance = 20.0
-position_traits = Array[ExtResource("phase6_AutomationPositionTrait")]([SubResource("Resource_uotpy")])
-input_traits = Array[ExtResource("phase6_AutomationInputTrait")]([SubResource("Resource_3vqwp"), SubResource("Resource_sfcmh")])
-camera_traits = Array[ExtResource("phase6_AutomationCameraTrait")]([SubResource("Resource_xwcgb")])
+position_traits = Array[ExtResource("phase6_AutomationPositionTrait")]([SubResource("Resource_htdn8")])
+input_traits = Array[ExtResource("phase6_AutomationInputTrait")]([SubResource("Resource_yx35x"), SubResource("Resource_w0fot")])
+camera_traits = Array[ExtResource("phase6_AutomationCameraTrait")]([SubResource("Resource_plaef")])
 metadata/automation_migration_id = "LS5Framework/Scenes/Levels/Green Hill Canyon/green_hill_canyon.tscn::AutomationSpline2_5D"
 
 [node name="Path3D" parent="AutomationSpline2_5D" index="0"]
@@ -1415,10 +1415,10 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1137
 maximum_tracking_window = 100.0
 tracking_window = 12.0
 recovery_distance = 20.0
-position_traits = Array[ExtResource("phase6_AutomationPositionTrait")]([SubResource("Resource_loncr")])
-surface_traits = Array[ExtResource("phase6_AutomationSurfaceTrait")]([SubResource("Resource_r5v3x")])
-input_traits = Array[ExtResource("phase6_AutomationInputTrait")]([SubResource("Resource_icrrq"), SubResource("Resource_fsqmh")])
-camera_traits = Array[ExtResource("phase6_AutomationCameraTrait")]([SubResource("Resource_85o2y")])
+position_traits = Array[ExtResource("phase6_AutomationPositionTrait")]([SubResource("Resource_5ve4c")])
+surface_traits = Array[ExtResource("phase6_AutomationSurfaceTrait")]([SubResource("Resource_uotpy")])
+input_traits = Array[ExtResource("phase6_AutomationInputTrait")]([SubResource("Resource_3vqwp"), SubResource("Resource_sfcmh")])
+camera_traits = Array[ExtResource("phase6_AutomationCameraTrait")]([SubResource("Resource_xwcgb")])
 metadata/automation_migration_id = "LS5Framework/Scenes/Levels/Green Hill Canyon/green_hill_canyon.tscn::AutomationSpline2_5D2"
 
 [node name="Path3D" parent="AutomationSpline2_5D2" index="0"]
@@ -1475,9 +1475,9 @@ area_crossings_bidirectional = false
 integrate_before_speed_limits = true
 sample_lookahead = 0.5
 recovery_distance = 20.0
-steering_traits = Array[ExtResource("phase6_AutomationSteeringTrait")]([SubResource("Resource_w28lq"), SubResource("Resource_1i0ny")])
-speed_traits = Array[ExtResource("phase6_AutomationSpeedTrait")]([SubResource("Resource_cnoou"), SubResource("Resource_q2tkd")])
-input_traits = Array[ExtResource("phase6_AutomationInputTrait")]([SubResource("Resource_qveoj")])
+steering_traits = Array[ExtResource("phase6_AutomationSteeringTrait")]([SubResource("Resource_loncr"), SubResource("Resource_r5v3x")])
+speed_traits = Array[ExtResource("phase6_AutomationSpeedTrait")]([SubResource("Resource_icrrq"), SubResource("Resource_fsqmh")])
+input_traits = Array[ExtResource("phase6_AutomationInputTrait")]([SubResource("Resource_85o2y")])
 metadata/automation_migration_id = "LS5Framework/Scenes/Levels/Green Hill Canyon/green_hill_canyon.tscn::AutomationSpline1"
 
 [node name="Path3D" parent="AutomationSpline1" index="0" unique_id=716481439]

@@ -16,9 +16,10 @@ const ROLL_SPEED: float = PI * 0.5
 const FOV_SPEED: float = 45.0
 const THUMBNAIL_SIZE: Vector2i = Vector2i(800, 600)
 const PREVIEW_CANVAS_MASK: int = 1 << 19
-const GREEN_SCREEN_MASK: int = 1 << 17
+const PLAYER_MATTE_MASK: int = 1 << 17
 const FULL_FRAME: Vector4 = Vector4(0.0, 0.0, 1.0, 1.0)
-enum PhotoFilter { ORIGINAL, MONOCHROME, VIVID, MUTED, SEPIATONE, CRT, GREEN_SCREEN }
+enum PhotoFilter { ORIGINAL, MONOCHROME, VIVID, MUTED, SEPIATONE, CRT, GREEN_SCREEN, TRANSPARENT_BACKGROUND }
+enum ScreenshotFormat { PNG, EXR }
 const SCREENSHOT_PRESETS: Array[Vector2i] = [
 	Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080),
 	Vector2i(2560, 1080), Vector2i(2560, 1440), Vector2i(3440, 1440),
@@ -76,6 +77,11 @@ const SCREENSHOT_PRESETS: Array[Vector2i] = [
 @onready var _sun_flare: CheckButton = %SunFlare
 ## Sets the darkening around the edges of the saved frame.
 @onready var _vignette: HSlider = %Vignette
+## Maps saved radial effect parameters to their sliders.
+@onready var _radial_settings: Dictionary = {
+	"line_intensity": %LineIntensity, "radial_intensity": %RadialIntensity,
+	"radial_center_x": %RadialCenterX, "radial_center_y": %RadialCenterY,
+}
 ## Lists weather presets available in the current stage.
 @onready var _weather: OptionButton = %PhotoWeather
 ## Sets the local solar time of the shot.
@@ -96,6 +102,10 @@ const SCREENSHOT_PRESETS: Array[Vector2i] = [
 @onready var _screenshot_button: Button = %TakeScreenshot
 ## Selects the screenshot output dimensions.
 @onready var _screenshot_size: OptionButton = %ScreenshotSize
+## Selects the saved screenshot format.
+@onready var _screenshot_format: OptionButton = %ScreenshotFormat
+## Forces SDR preview and capture for the photo session.
+@onready var _force_sdr: CheckButton = %ForceSDR
 ## Opens the directory used for screenshot exports.
 @onready var _screenshot_folder: Button = %OpenScreenshotFolder
 ## Displays the saved filename or capture failure.
@@ -125,19 +135,23 @@ var _sun_flares: Array[CameraFlare3D] = []
 ## Camera-angle modifiers belonging to the local character.
 var _quill_modifiers: Array[CameraAngleOverlay3D] = []
 var _preferred_resolution: Vector2i = Vector2i.ZERO
+var _preferred_format: int = ScreenshotFormat.PNG
 ## Anchors the photo camera's online movement limit.
 var _online_player: Node3D
 ## Local player whose visibility is controlled for the shot.
 var _player: Node3D
 var _player_was_visible: bool = true
-var _green_screen: bool = false
+var _player_isolated: bool = false
 ## Original render layers of meshes included in the player matte.
-var _green_screen_layers: Dictionary[int, int] = {}
+var _isolation_layers: Dictionary[int, int] = {}
 ## Supplies the player silhouette independently of the lit scene.
-var _green_matte: SubViewport
+var _player_matte: SubViewport
 ## Renders the player mask from the photo camera's viewpoint.
-var _green_matte_camera: Camera3D
+var _matte_camera: Camera3D
 var _canvas_mask: int = 0
+var _sdr_override_active: bool = false
+var _previous_hdr_output_requested: bool = false
+var _previous_hdr_2d: bool = false
 var _capture_pending: bool = false
 var _frame_pending: bool = false
 var _frame_stepping: bool = false
@@ -164,17 +178,22 @@ func _ready() -> void:
 	_hide_player.toggled.connect(_set_player_hidden)
 	_screenshot_button.pressed.connect(_take_screenshot)
 	_screenshot_size.item_selected.connect(_on_screenshot_size_selected)
+	_screenshot_format.add_item("PNG", ScreenshotFormat.PNG)
+	_screenshot_format.add_item("EXR", ScreenshotFormat.EXR)
+	_screenshot_format.item_selected.connect(func(index: int) -> void:
+		_preferred_format = _screenshot_format.get_item_id(index))
+	_force_sdr.toggled.connect(_set_force_sdr)
 	get_viewport().size_changed.connect(_refresh_preview_after_resize, CONNECT_DEFERRED)
 	_screenshot_folder.pressed.connect(_open_screenshot_folder)
 	_depth_of_field.toggled.connect(func(_enabled: bool) -> void: _update_depth_of_field())
 	_focus_distance.value_changed.connect(func(_value: float) -> void: _update_depth_of_field())
 	_blur_amount.value_changed.connect(func(_value: float) -> void: _update_depth_of_field())
-	for name_text: String in ["Original", "Black and White", "Vivid", "Muted", "Sepiatone", "CRT", "Green Screen"]:
+	for name_text: String in ["Original", "Black and White", "Vivid", "Muted", "Sepiatone", "CRT", "Green Screen", "Transparent Background"]:
 		_filter.add_item(name_text)
 	_filter.item_selected.connect(_set_filter)
 	for toggle: CheckButton in [_water_effect, _speed_lines, _radial_blur, _live_quills, _sun_flare]:
 		toggle.toggled.connect(func(_enabled: bool) -> void: _apply_photo_effects())
-	for slider: HSlider in _radial_settings().values():
+	for slider: HSlider in _radial_settings.values():
 		slider.value_changed.connect(func(_value: float) -> void: _apply_radial_effect())
 	_vignette.value_changed.connect(func(_value: float) -> void: _update_canvas_visibility())
 	_weather.item_selected.connect(func(_index: int) -> void: _apply_weather_preview())
@@ -280,9 +299,10 @@ func _exit_tree() -> void:
 
 
 func _restore_photo_state(detaching: bool = false) -> void:
+	_set_force_sdr(false)
 	_player_panel.close(detaching)
 	_save_photo_settings()
-	_restore_green_screen_layers()
+	_restore_isolation_layers()
 	if is_instance_valid(_weather_system):
 		_weather_system.set_photo_weather(-1.0, 0.0, &"", _gameplay_camera)
 	_weather_system = null
@@ -312,7 +332,7 @@ func _restore_photo_state(detaching: bool = false) -> void:
 
 func _set_player_hidden(hidden: bool) -> void:
 	if is_instance_valid(_player):
-		_player.visible = _green_screen or (_player_was_visible and not hidden)
+		_player.visible = _player_isolated or (_player_was_visible and not hidden)
 
 
 func has_photo_view() -> bool:
@@ -435,8 +455,8 @@ func _process(delta: float) -> void:
 		var offset: Vector3 = _camera.global_position - origin
 		_camera.global_position = origin + offset.limit_length(online_camera_radius)
 	_player_panel.update_camera_gaze()
-	if _green_screen:
-		_sync_green_matte()
+	if _player_isolated:
+		_sync_player_matte()
 	if _live_quills.button_pressed and get_tree().paused:
 		for modifier: CameraAngleOverlay3D in _quill_modifiers:
 			if is_instance_valid(modifier):
@@ -492,10 +512,10 @@ func _apply_weather_preview() -> void:
 
 func _apply_photo_effects() -> void:
 	if is_instance_valid(_effect_rig):
-		_effect_rig.call("set_photo_screen_effects", PREVIEW_CANVAS_MASK, not _green_screen and _water_effect.button_pressed, false, false)
+		_effect_rig.call("set_photo_screen_effects", PREVIEW_CANVAS_MASK, not _player_isolated and _water_effect.button_pressed, false, false)
 	for flare: CameraFlare3D in _sun_flares:
 		if is_instance_valid(flare):
-			flare.set_photo_flare_enabled(not _green_screen and _sun_flare.button_pressed)
+			flare.set_photo_flare_enabled(not _player_isolated and _sun_flare.button_pressed)
 	for modifier: CameraAngleOverlay3D in _quill_modifiers:
 		if is_instance_valid(modifier):
 			modifier.set_photo_view(_camera, _live_quills.button_pressed)
@@ -503,15 +523,14 @@ func _apply_photo_effects() -> void:
 
 
 func _apply_radial_effect() -> void:
-	var controls: Dictionary = _radial_settings()
-	var lines: HSlider = controls["line_intensity"]
-	var blur: HSlider = controls["radial_intensity"]
-	var horizontal: HSlider = controls["radial_center_x"]
-	var vertical: HSlider = controls["radial_center_y"]
+	var lines: HSlider = _radial_settings["line_intensity"]
+	var blur: HSlider = _radial_settings["radial_intensity"]
+	var horizontal: HSlider = _radial_settings["radial_center_x"]
+	var vertical: HSlider = _radial_settings["radial_center_y"]
 	var values: Vector2 = Vector2(lines.value if _speed_lines.button_pressed else 0.0, blur.value if _radial_blur.button_pressed else 0.0)
-	_radial_effect.set_manual_photo_effect(PREVIEW_CANVAS_MASK, Vector2.ZERO if _green_screen else values, Vector2(horizontal.value, vertical.value))
-	for key: String in controls:
-		var slider: HSlider = controls[key]
+	_radial_effect.set_manual_photo_effect(PREVIEW_CANVAS_MASK, Vector2.ZERO if _player_isolated else values, Vector2(horizontal.value, vertical.value))
+	for key: String in _radial_settings:
+		var slider: HSlider = _radial_settings[key]
 		var label: Label = slider.get_parent().get_node("Value")
 		label.text = "%s  %d%%" % [slider.tooltip_text, roundi(slider.value * 100.0)]
 	_update_canvas_visibility()
@@ -588,7 +607,7 @@ func _update_depth_of_field() -> void:
 	var blur: float = _blur_amount.value
 	_focus_distance_label.text = "Focus Distance  %.1f" % distance
 	_blur_amount_label.text = "Blur Strength  %d%%" % roundi(blur * 200.0)
-	if _green_screen:
+	if _player_isolated:
 		return
 	var enabled: bool = _depth_of_field.button_pressed and not _depth_of_field.disabled
 	_focus_distance.editable = enabled
@@ -608,10 +627,10 @@ func _update_depth_of_field() -> void:
 
 func _set_filter(index: int) -> void:
 	var original: Environment = _gameplay_camera.environment
-	var green_screen: bool = index == PhotoFilter.GREEN_SCREEN
-	if _green_screen != green_screen:
-		_set_green_screen(green_screen)
-	if green_screen:
+	var isolate_player: bool = index in [PhotoFilter.GREEN_SCREEN, PhotoFilter.TRANSPARENT_BACKGROUND]
+	if _player_isolated != isolate_player:
+		_set_player_isolated(isolate_player)
+	if isolate_player:
 		_preview_material.set_shader_parameter(&"filter_mode", 0)
 		_update_canvas_visibility()
 		return
@@ -636,9 +655,9 @@ func _set_filter(index: int) -> void:
 	_camera.environment = filtered
 
 
-func _set_green_screen(enabled: bool) -> void:
+func _set_player_isolated(enabled: bool) -> void:
 	if enabled:
-		_green_screen = true
+		_player_isolated = true
 		_camera.environment = _gameplay_camera.environment
 		_camera.attributes = _gameplay_camera.attributes
 		var model: Node3D = _player.get("model_root") as Node3D if "model_root" in _player else _player
@@ -647,26 +666,26 @@ func _set_green_screen(enabled: bool) -> void:
 		for node: Node in model.find_children("*", "MeshInstance3D", true, false):
 			var mesh: MeshInstance3D = node as MeshInstance3D
 			if mesh.layers & _camera.cull_mask and mesh.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY:
-				_green_screen_layers[mesh.get_instance_id()] = mesh.layers
-				mesh.layers |= GREEN_SCREEN_MASK
-		_green_matte = SubViewport.new()
-		_green_matte.transparent_bg = true
-		_green_matte.world_3d = _camera.get_world_3d()
-		_green_matte.canvas_cull_mask = 0
-		_green_matte.msaa_3d = get_viewport().msaa_3d
-		_green_matte.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-		add_child(_green_matte)
-		_green_matte_camera = Camera3D.new()
-		_green_matte_camera.cull_mask = GREEN_SCREEN_MASK
-		_green_matte_camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
-		_green_matte_camera.environment = Environment.new()
-		_green_matte_camera.compositor = Compositor.new()
-		_green_matte.add_child(_green_matte_camera)
-		_green_matte_camera.make_current()
-		_sync_green_matte()
-		_preview_material.set_shader_parameter(&"player_matte", _green_matte.get_texture())
+				_isolation_layers[mesh.get_instance_id()] = mesh.layers
+				mesh.layers |= PLAYER_MATTE_MASK
+		_player_matte = SubViewport.new()
+		_player_matte.transparent_bg = true
+		_player_matte.world_3d = _camera.get_world_3d()
+		_player_matte.canvas_cull_mask = 0
+		_player_matte.msaa_3d = get_viewport().msaa_3d
+		_player_matte.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		add_child(_player_matte)
+		_matte_camera = Camera3D.new()
+		_matte_camera.cull_mask = PLAYER_MATTE_MASK
+		_matte_camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+		_matte_camera.environment = Environment.new()
+		_matte_camera.compositor = Compositor.new()
+		_player_matte.add_child(_matte_camera)
+		_matte_camera.make_current()
+		_sync_player_matte()
+		_preview_material.set_shader_parameter(&"player_matte", _player_matte.get_texture())
 	else:
-		_restore_green_screen_layers()
+		_restore_isolation_layers()
 		_camera.cull_mask = _gameplay_camera.cull_mask
 		_camera.compositor = _gameplay_camera.compositor
 		_update_depth_of_field()
@@ -675,34 +694,34 @@ func _set_green_screen(enabled: bool) -> void:
 	_apply_photo_effects()
 
 
-func _restore_green_screen_layers() -> void:
-	if _green_screen:
+func _restore_isolation_layers() -> void:
+	if _player_isolated:
 		_preview_material.set_shader_parameter(&"player_matte", null)
-		_green_matte.render_target_update_mode = SubViewport.UPDATE_DISABLED
-		_green_matte.queue_free()
-		_green_matte = null
-		_green_matte_camera = null
-	for instance_id: int in _green_screen_layers:
+		_player_matte.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		_player_matte.queue_free()
+		_player_matte = null
+		_matte_camera = null
+	for instance_id: int in _isolation_layers:
 		var mesh: MeshInstance3D = instance_from_id(instance_id) as MeshInstance3D
 		if is_instance_valid(mesh):
-			mesh.layers = _green_screen_layers[instance_id]
-	_green_screen_layers.clear()
-	_green_screen = false
+			mesh.layers = _isolation_layers[instance_id]
+	_isolation_layers.clear()
+	_player_isolated = false
 	_hide_player.disabled = false
 
 
-func _sync_green_matte() -> void:
-	_green_matte.size = Vector2i(get_viewport().get_texture().get_size()).max(Vector2i(2, 2))
-	_green_matte_camera.global_transform = _camera.global_transform
-	_green_matte_camera.projection = _camera.projection
-	_green_matte_camera.fov = _camera.fov
-	_green_matte_camera.size = _camera.size
-	_green_matte_camera.frustum_offset = _camera.frustum_offset
-	_green_matte_camera.h_offset = _camera.h_offset
-	_green_matte_camera.v_offset = _camera.v_offset
-	_green_matte_camera.near = _camera.near
-	_green_matte_camera.far = _camera.far
-	_green_matte_camera.keep_aspect = _camera.keep_aspect
+func _sync_player_matte() -> void:
+	_player_matte.size = Vector2i(get_viewport().get_texture().get_size()).max(Vector2i(2, 2))
+	_matte_camera.global_transform = _camera.global_transform
+	_matte_camera.projection = _camera.projection
+	_matte_camera.fov = _camera.fov
+	_matte_camera.size = _camera.size
+	_matte_camera.frustum_offset = _camera.frustum_offset
+	_matte_camera.h_offset = _camera.h_offset
+	_matte_camera.v_offset = _camera.v_offset
+	_matte_camera.near = _camera.near
+	_matte_camera.far = _camera.far
+	_matte_camera.keep_aspect = _camera.keep_aspect
 
 
 func _on_bindings_changed(_action: StringName) -> void:
@@ -741,7 +760,7 @@ func _update_hints() -> void:
 
 func _update_canvas_visibility() -> void:
 	var preview_visible: bool = _update_preview()
-	var effects_visible: bool = not _green_screen and (_radial_effect.visible or (is_instance_valid(_effect_rig) and _water_effect.button_pressed) or (_sun_flare.button_pressed and not _sun_flares.is_empty()))
+	var effects_visible: bool = not _player_isolated and (_radial_effect.visible or (is_instance_valid(_effect_rig) and _water_effect.button_pressed) or (_sun_flare.button_pressed and not _sun_flares.is_empty()))
 	var mask: int = 0 if _camera_focused or _capture_pending else _canvas_mask
 	get_viewport().canvas_cull_mask = mask | PREVIEW_CANVAS_MASK if preview_visible or effects_visible else mask
 
@@ -768,13 +787,17 @@ func _update_preview() -> bool:
 			bounds = output_bounds
 	_preview_material.set_shader_parameter(&"crop_bounds", bounds)
 	_preview_material.set_shader_parameter(&"output_bounds", output_bounds)
-	var vignette: float = 0.0 if _green_screen else _vignette.value
+	var vignette: float = 0.0 if _player_isolated else _vignette.value
 	_preview_material.set_shader_parameter(&"vignette_strength", vignette)
-	_preview_material.set_shader_parameter(&"green_screen", _green_screen)
+	_preview_material.set_shader_parameter(&"isolate_player", _player_isolated)
+	var transparent_background: bool = _filter.selected == PhotoFilter.TRANSPARENT_BACKGROUND
+	_preview_material.set_shader_parameter(&"checkerboard", transparent_background)
 	(%VignetteLabel as Label).text = "Vignette  %d%%" % roundi(_vignette.value * 100.0)
 	_preview_material.set_shader_parameter(&"scanline_scale", scanline_scale)
 	var filtered: bool = _filter.selected in [PhotoFilter.SEPIATONE, PhotoFilter.CRT]
-	_preview_layer.visible = _green_screen or filtered or bounds != FULL_FRAME or vignette > 0.0
+	_preview_layer.visible = _player_isolated or filtered or bounds != FULL_FRAME or vignette > 0.0
+	if transparent_background and _capture_pending:
+		_preview_layer.hide()
 	return _preview_layer.visible
 
 
@@ -806,7 +829,36 @@ func _on_screenshot_size_selected(index: int) -> void:
 	_update_canvas_visibility()
 
 
+func _set_force_sdr(enabled: bool) -> void:
+	if enabled == _sdr_override_active:
+		return
+	var viewport: Viewport = get_viewport()
+	var window: Window = get_window()
+	if enabled:
+		_previous_hdr_output_requested = window.hdr_output_requested
+		_previous_hdr_2d = viewport.use_hdr_2d
+		window.hdr_output_requested = false
+		viewport.use_hdr_2d = false
+	else:
+		viewport.use_hdr_2d = _previous_hdr_2d
+		window.hdr_output_requested = _previous_hdr_output_requested
+	_sdr_override_active = enabled
+	_sync_screenshot_format()
+
+
+func _sync_screenshot_format() -> void:
+	var format_id: int = ScreenshotFormat.PNG if _sdr_override_active else _preferred_format
+	_screenshot_format.select(_screenshot_format.get_item_index(format_id))
+	_screenshot_format.disabled = _sdr_override_active
+	_screenshot_format.tooltip_text = "Force SDR uses PNG." if _sdr_override_active else "PNG saves an SDR image. EXR preserves HDR highlight values."
+
+
 func _apply_photo_settings(settings: ConfigFile) -> void:
+	var format_id: int = int(settings.get_value("photo", "format", ScreenshotFormat.PNG))
+	_preferred_format = ScreenshotFormat.EXR if format_id == ScreenshotFormat.EXR else ScreenshotFormat.PNG
+	_force_sdr.set_pressed_no_signal(bool(settings.get_value("photo", "force_sdr", false)))
+	_set_force_sdr(_force_sdr.button_pressed)
+	_sync_screenshot_format()
 	_vignette.set_value_no_signal(float(settings.get_value("photo", "vignette", 0.0)))
 	var controls: Dictionary = _saved_toggles()
 	for key: String in controls:
@@ -814,9 +866,8 @@ func _apply_photo_settings(settings: ConfigFile) -> void:
 		toggle.set_pressed_no_signal(bool(settings.get_value("photo", key, key != "hide_player" and key != "depth_of_field")))
 	_focus_distance.set_value_no_signal(float(settings.get_value("photo", "focus_distance", 1.0)))
 	_blur_amount.set_value_no_signal(float(settings.get_value("photo", "blur_amount", 0.12)))
-	var radial_settings: Dictionary = _radial_settings()
-	for key: String in radial_settings:
-		var slider: HSlider = radial_settings[key]
+	for key: String in _radial_settings:
+		var slider: HSlider = _radial_settings[key]
 		slider.set_value_no_signal(float(settings.get_value("photo", key, 0.0)))
 	var fov: float = float(settings.get_value("photo", "fov", _entry_fov))
 	_fov_slider.set_value_no_signal(clampf(fov, _fov_slider.min_value, _fov_slider.max_value))
@@ -846,11 +897,6 @@ func _saved_toggles() -> Dictionary:
 		"speed_lines": _speed_lines, "radial_blur": _radial_blur, "live_quills": _live_quills, "sun_flare": _sun_flare}
 
 
-func _radial_settings() -> Dictionary:
-	return {"line_intensity": %LineIntensity, "radial_intensity": %RadialIntensity,
-		"radial_center_x": %RadialCenterX, "radial_center_y": %RadialCenterY}
-
-
 func _save_photo_settings(keep_unavailable_weather: bool = true) -> void:
 	var settings: ConfigFile = ConfigFile.new()
 	if is_instance_valid(_weather_system) and _weather_edited:
@@ -863,17 +909,18 @@ func _save_photo_settings(keep_unavailable_weather: bool = true) -> void:
 			for key: String in previous.get_section_keys("weather"):
 				settings.set_value("weather", key, previous.get_value("weather", key))
 	settings.set_value("photo", "vignette", _vignette.value)
+	settings.set_value("photo", "force_sdr", _force_sdr.button_pressed)
 	var controls: Dictionary = _saved_toggles()
 	for key: String in controls:
 		settings.set_value("photo", key, (controls[key] as CheckButton).button_pressed)
-	var radial_settings: Dictionary = _radial_settings()
-	for key: String in radial_settings:
-		settings.set_value("photo", key, (radial_settings[key] as HSlider).value)
+	for key: String in _radial_settings:
+		settings.set_value("photo", key, (_radial_settings[key] as HSlider).value)
 	settings.set_value("photo", "fov", _camera_fov)
 	settings.set_value("photo", "focus_distance", _focus_distance.value)
 	settings.set_value("photo", "blur_amount", _blur_amount.value)
 	settings.set_value("photo", "filter", _filter.selected)
 	settings.set_value("photo", "resolution", _preferred_resolution)
+	settings.set_value("photo", "format", _preferred_format)
 	var error: Error = settings.save(PREFERENCES_PATH)
 	if error != OK:
 		push_warning("Could not save Photo Mode settings (%s)." % error_string(error))
@@ -909,15 +956,18 @@ func _take_screenshot() -> void:
 	_capture_pending = true
 	var generation: int = _capture_generation
 	var viewport: Viewport = get_viewport()
-	if _green_screen:
-		_sync_green_matte()
+	var transparent_background: bool = _filter.selected == PhotoFilter.TRANSPARENT_BACKGROUND
+	if _player_isolated:
+		_sync_player_matte()
 	_refresh_screenshot_sizes()
 	var dimensions: Vector2i = _screenshot_size.get_selected_metadata()
+	var save_exr: bool = _screenshot_format.get_selected_id() == ScreenshotFormat.EXR
 	_update_canvas_visibility()
 	await RenderingServer.frame_post_draw
 	if generation != _capture_generation:
 		return
 	var image: Image = viewport.get_texture().get_image()
+	var matte: Image = _player_matte.get_texture().get_image() if transparent_background else null
 	_capture_pending = false
 	_update_canvas_visibility()
 	if not image or image.is_empty():
@@ -925,17 +975,25 @@ func _take_screenshot() -> void:
 		return
 	if dimensions == Vector2i.ZERO:
 		dimensions = get_window().size
-	image = _resize_screenshot(image, dimensions)
+	if transparent_background:
+		if not matte or matte.is_empty() or matte.get_size() != image.get_size():
+			_report_capture("Could not read the transparency mask.", false)
+			return
+		image = _resize_transparent_screenshot(image, matte, dimensions, viewport.use_hdr_2d)
+	else:
+		image = _resize_screenshot(image, dimensions)
 	var folder: String = ProjectSettings.globalize_path(SCREENSHOT_DIRECTORY)
 	var error: Error = DirAccess.make_dir_recursive_absolute(folder)
 	if error != OK:
 		_report_capture("Could not create Screenshots (%s)." % error_string(error), false)
 		return
-	var output_max: float = get_window().get_output_max_linear_value()
-	var hdr: bool = output_max > 1.0
 	var stamp: String = Time.get_datetime_string_from_system().replace(":", "-").replace("T", "_")
-	var filename: String = "SonicVane_%s_%d.%s" % [stamp, Time.get_ticks_usec(), "exr" if hdr else "png"]
-	error = _save_screenshot(image, folder.path_join(filename), output_max, viewport.use_hdr_2d)
+	var filename: String = "SonicVane_%s_%d.%s" % [stamp, Time.get_ticks_usec(), "exr" if save_exr else "png"]
+	var path: String = folder.path_join(filename)
+	if save_exr:
+		error = image.save_exr(path, false, true, get_window().get_output_max_linear_value())
+	else:
+		error = _save_screenshot_png(image, path, viewport.use_hdr_2d, transparent_background)
 	if error != OK:
 		_report_capture("Screenshot failed (%s)." % error_string(error), false)
 		return
@@ -963,14 +1021,57 @@ func _screenshot_crop(source: Vector2i, dimensions: Vector2i) -> Rect2i:
 	return Rect2i(Vector2i(Vector2(source - crop_size) * 0.5), crop_size)
 
 
-func _save_screenshot(image: Image, path: String, output_max: float, linear: bool) -> Error:
-	if output_max > 1.0:
-		return image.save_exr(path, false, true, output_max)
+func _resize_transparent_screenshot(image: Image, matte: Image, dimensions: Vector2i, linear: bool) -> Image:
+	image.convert(Image.FORMAT_RGBAH)
+	for y: int in range(image.get_height()):
+		for x: int in range(image.get_width()):
+			var alpha: float = matte.get_pixel(x, y).a
+			var color: Color = image.get_pixel(x, y) * alpha
+			color.a = alpha
+			image.set_pixel(x, y, color)
+	image = _resize_screenshot(image, dimensions)
+	for y: int in range(image.get_height()):
+		for x: int in range(image.get_width()):
+			var color: Color = image.get_pixel(x, y)
+			var alpha: float = color.a
+			if alpha > 0.0:
+				color /= alpha
+				color.a = minf(alpha, 1.0)
+			else:
+				color = Color(0.0, 0.0, 0.0, 0.0)
+			image.set_pixel(x, y, color)
+	if not linear:
+		image.convert(Image.FORMAT_RGBA8)
+	return image
+
+
+func _save_screenshot_png(image: Image, path: String, linear: bool, transparent_background: bool = false) -> Error:
 	linear = linear or image.get_format() in [Image.FORMAT_RGBH, Image.FORMAT_RGBAH, Image.FORMAT_RGBF, Image.FORMAT_RGBAF]
-	image.convert(Image.FORMAT_RGB8)
 	if linear:
-		image.linear_to_srgb()
+		image = _encode_screenshot_srgb(image, transparent_background)
+	else:
+		image.convert(Image.FORMAT_RGBA8 if transparent_background else Image.FORMAT_RGB8)
 	return image.save_png(path)
+
+
+func _encode_screenshot_srgb(image: Image, transparent_background: bool) -> Image:
+	var width: int = image.get_width()
+	var height: int = image.get_height()
+	var pixels: PackedByteArray = PackedByteArray()
+	var channels: int = 4 if transparent_background else 3
+	pixels.resize(width * height * channels)
+	var offset: int = 0
+	for y: int in range(height):
+		for x: int in range(width):
+			var srgb: Color = image.get_pixel(x, y).linear_to_srgb()
+			pixels[offset] = srgb.r8
+			pixels[offset + 1] = srgb.g8
+			pixels[offset + 2] = srgb.b8
+			if transparent_background:
+				pixels[offset + 3] = srgb.a8
+			offset += channels
+	var format: Image.Format = Image.FORMAT_RGBA8 if transparent_background else Image.FORMAT_RGB8
+	return Image.create_from_data(width, height, false, format, pixels)
 
 
 func _report_capture(message: String, success: bool) -> void:

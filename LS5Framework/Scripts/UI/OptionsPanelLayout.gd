@@ -73,6 +73,8 @@ var _frame: Control
 ## Displays navigation bindings for the active input device.
 var _navigation_hint: Label
 var _hint_signature: String = ""
+## Displays the game window's current output format.
+@onready var _hdr_output_status: Label = get_node_or_null("%HDROutputStatus") as Label
 
 
 func _ready() -> void:
@@ -83,7 +85,31 @@ func _ready() -> void:
 	visibility_changed.connect(_queue_layout)
 	if not Engine.is_editor_hint():
 		_create_navigation_footer()
+		_update_hdr_output_status()
+		_populate_anti_aliasing()
 	_queue_layout()
+
+
+func _update_hdr_output_status() -> void:
+	if not _hdr_output_status:
+		return
+	var window_id: int = get_tree().root.get_window_id()
+	var hdr_enabled: bool = DisplayServer.window_is_hdr_output_enabled(window_id)
+	var status: String = tr("HDR active") if hdr_enabled else tr("SDR active")
+	if _hdr_output_status.text != status:
+		_hdr_output_status.text = status
+
+
+func _populate_anti_aliasing() -> void:
+	var option: OptionButton = get_node_or_null("%OptionAntiAliasing") as OptionButton
+	if not option:
+		return
+	option.add_item("Off", SettingsManager.AntiAliasing.OFF)
+	option.add_item("MSAA 4×", SettingsManager.AntiAliasing.MSAA)
+	option.add_item("TAA", SettingsManager.AntiAliasing.TAA)
+	option.add_item("FXAA (Fast)", SettingsManager.AntiAliasing.FXAA)
+	for index: int in range(option.item_count):
+		option.set_item_disabled(index, not SettingsManager.is_anti_aliasing_supported(option.get_item_id(index)))
 
 
 func connect_settings_controls(menu: Control) -> void:
@@ -142,6 +168,7 @@ func _create_navigation_footer() -> void:
 func _process(_delta: float) -> void:
 	if not Engine.is_editor_hint() and is_visible_in_tree():
 		_update_navigation_hint()
+		_update_hdr_output_status()
 
 
 func _update_navigation_hint() -> void:

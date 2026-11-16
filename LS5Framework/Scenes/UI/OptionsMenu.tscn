@@ -186,10 +186,25 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Scale only the 3D scene while keeping menus and HUD at native resolution."
 
+[node name="HBoxAntiAliasing" type="HBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxAntiAliasing"]
+layout_mode = 2
+text = "Anti-Aliasing"
+
+[node name="OptionAntiAliasing" type="OptionButton" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxAntiAliasing" groups=["MenuButtons"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+fit_to_longest_item = false
+tooltip_text = "Smooths edges in the 3D scene. TAA requires Forward+. FXAA requires Forward+ or Mobile."
+
 [node name="ButtonApplyResolution" type="Button" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent" groups=["MenuButtons"]]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Apply the selected window resolution."
+tooltip_text = "Preview changes to the graphics settings."
 text = "Apply"
 
 [node name="HBoxFullscreen" type="HBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
@@ -213,6 +228,33 @@ text = "VSync"
 [node name="CheckVsync" type="CheckBox" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxVsync" groups=["MenuButtons"]]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="HBoxHDROutput" type="HBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
+layout_mode = 2
+
+[node name="HDROutputLabels" type="VBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxHDROutput"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxHDROutput/HDROutputLabels"]
+layout_mode = 2
+text = "HDR Output"
+autowrap_mode = 3
+
+[node name="HDROutputStatus" type="Label" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxHDROutput/HDROutputLabels"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.82, 0.96, 1)
+theme_override_font_sizes/font_size = 16
+text = "SDR active"
+autowrap_mode = 3
+
+[node name="CheckHDROutput" type="CheckBox" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent/HBoxHDROutput" groups=["MenuButtons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Request HDR display output. Uses SDR when HDR is unavailable."
 
 [node name="HBoxShadowResolution" type="HBoxContainer" parent="Panel/VBoxOptions/TabsOptions/TabGraphics/ScrollGraphics/GraphicsContent"]
 layout_mode = 2
