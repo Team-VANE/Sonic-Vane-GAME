@@ -1,5 +1,14 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://dldaeeorfxp8e"]
 
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_master"]
+ceiling_db = -1.0
+
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_sfx"]
+ceiling_db = -4.0
+
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_voice"]
+ceiling_db = -3.0
+
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_rain"]
 cutoff_hz = 18000.0
 resonance = 0.35
@@ -31,15 +40,6 @@ pan = -0.45
 
 [sub_resource type="AudioEffectPanner" id="AudioEffectPanner_ring_right"]
 pan = 0.45
-
-[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_master"]
-ceiling_db = -1.0
-
-[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_sfx"]
-ceiling_db = -4.0
-
-[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_voice"]
-ceiling_db = -3.0
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectHardLimiter_master")

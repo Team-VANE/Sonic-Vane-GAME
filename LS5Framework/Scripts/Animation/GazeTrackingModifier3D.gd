@@ -61,10 +61,49 @@ var _smoothed_head_yaw: float = 0.0
 var _smoothed_head_pitch: float = 0.0
 var _head_smoothing_valid: bool = false
 var _rear_yaw_sign: float = 0.0
+var _photo_gaze_state: Dictionary = {}
 
 
 func _ready() -> void:
 	_cache_bones()
+
+
+func has_photo_gaze() -> bool:
+	return not _photo_gaze_state.is_empty()
+
+
+func begin_photo_gaze() -> void:
+	_photo_gaze_state = {
+		"target": target_global_position, "tracking": tracking_active, "influence": influence,
+		"yaw": _smoothed_head_yaw, "pitch": _smoothed_head_pitch,
+		"smoothed": _head_smoothing_valid, "rear_sign": _rear_yaw_sign,
+	}
+
+
+func aim_photo_gaze(target: Vector3) -> void:
+	target_global_position = target
+	tracking_active = true
+	influence = 1.0
+
+
+func reset_photo_gaze() -> void:
+	tracking_active = false
+	influence = 0.0
+	_head_smoothing_valid = false
+	_rear_yaw_sign = 0.0
+
+
+func end_photo_gaze() -> void:
+	if not has_photo_gaze():
+		return
+	target_global_position = _photo_gaze_state["target"]
+	tracking_active = _photo_gaze_state["tracking"]
+	influence = _photo_gaze_state["influence"]
+	_smoothed_head_yaw = _photo_gaze_state["yaw"]
+	_smoothed_head_pitch = _photo_gaze_state["pitch"]
+	_head_smoothing_valid = _photo_gaze_state["smoothed"]
+	_rear_yaw_sign = _photo_gaze_state["rear_sign"]
+	_photo_gaze_state.clear()
 
 
 func _process_modification_with_delta(delta: float) -> void:
@@ -102,7 +141,7 @@ func _process_modification_with_delta(delta: float) -> void:
 		_smoothed_head_yaw = 0.0
 		_smoothed_head_pitch = 0.0
 		_head_smoothing_valid = true
-	if head_rotation_lerp_speed <= 0.0:
+	if head_rotation_lerp_speed <= 0.0 or has_photo_gaze():
 		_smoothed_head_yaw = target_yaw
 		_smoothed_head_pitch = target_pitch
 	else:

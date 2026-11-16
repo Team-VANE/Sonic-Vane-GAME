@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ds5kvbpmvq3ds" path="res://LS5Framework/Objects/Environment/DayNightCycle/DayNightProfile.gd" id="1_profile"]
 
 [sub_resource type="Gradient" id="Gradient_ambient"]
-offsets = PackedFloat32Array(0, 0.2, 0.27, 0.35, 0.5, 0.65, 0.73, 0.8, 1)
+offsets = PackedFloat32Array(0, 0.12, 0.2, 0.3, 0.5, 0.7, 0.8, 0.88, 1)
 colors = PackedColorArray(0.39992803, 0.43624833, 0.97683305, 1, 0.29130796, 0.29453933, 0.89071786, 1, 0.47286874, 0.12561974, 0.27293816, 1, 0.12299998, 0.36694995, 0.82, 1, 0.2818377, 0.51351976, 0.9658504, 1, 0.12299998, 0.36694995, 0.82, 1, 0.50438017, 0.122539945, 0.09523546, 1, 0.2901961, 0.29411766, 0.8901961, 1, 0.4, 0.43529412, 0.9764706, 1)
 
 [sub_resource type="Curve" id="Curve_ambient_energy"]

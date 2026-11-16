@@ -6,7 +6,7 @@ signal water_graphics_changed
 
 const CONFIG_PATH := "user://settings.cfg"
 const DEFAULT_CONFIG_PATH := "res://LS5Framework/Scripts/Settings/DefaultSettings.cfg"
-const CONFIG_SCHEMA_VERSION: int = 1
+const CONFIG_SCHEMA_VERSION: int = 4
 const INPUT_ACTION_NAME_MIGRATIONS: Dictionary = {
 	&"action_0": &"ability_slot_01",
 	&"action_1": &"ability_slot_02",
@@ -192,6 +192,7 @@ var reticle_vertical_offset: float = 23.0
 var hud_visible: bool = true
 var action_prompts_visible: bool = true
 var fps_counter_visible: bool = false
+var _fps_counter_suppressed: bool = false
 var _fps_counter_label: Label = null
 var _fps_counter_update_time: float = 0.0
 
@@ -346,7 +347,7 @@ func _create_fps_counter() -> void:
 func _apply_fps_counter_visibility() -> void:
 	if _fps_counter_label == null:
 		return
-	_fps_counter_label.visible = fps_counter_visible
+	_fps_counter_label.visible = fps_counter_visible and not _fps_counter_suppressed
 	if fps_counter_visible:
 		_fps_counter_update_time = 0.0
 
@@ -1465,6 +1466,11 @@ func set_fps_counter_visible(value: bool) -> void:
 	_apply_fps_counter_visibility()
 
 
+func set_fps_counter_suppressed(value: bool) -> void:
+	_fps_counter_suppressed = value
+	_apply_fps_counter_visibility()
+
+
 func set_center_reticle_scale(value: float) -> void:
 	center_reticle_scale = max(value, 0.01)
 
@@ -2210,6 +2216,47 @@ func _migrate_legacy_debug_toggle_binding() -> bool:
 	return changed
 
 
+func _migrate_photo_lift_bindings() -> void:
+	for action: StringName in [&"photo_camera_raise", &"photo_camera_lower"]:
+		var old_key: Key = KEY_E if action == &"photo_camera_raise" else KEY_Q
+		var new_key: Key = KEY_R if action == &"photo_camera_raise" else KEY_C
+		var bindings: Array = get_action_bindings(action)
+		for binding: Dictionary in bindings:
+			if binding.get("type") == "key" and int(binding.get("keycode", 0)) == old_key:
+				binding["keycode"] = new_key
+		if not bindings.is_empty():
+			input_bindings[action] = bindings
+			_apply_bindings_to_action(action, bindings)
+
+
+func _migrate_photo_screenshot_binding() -> void:
+	var action: StringName = &"photo_screenshot"
+	var bindings: Array = get_action_bindings(action)
+	for binding: Dictionary in bindings:
+		if binding.get("type") == "joy_button" and int(binding.get("button", -1)) == JOY_BUTTON_RIGHT_SHOULDER:
+			binding["button"] = JOY_BUTTON_X
+			input_bindings[action] = bindings
+			_apply_bindings_to_action(action, bindings)
+			return
+
+
+func _migrate_photo_fov_bindings() -> void:
+	for action: StringName in [&"photo_fov_narrow", &"photo_fov_widen"]:
+		var bindings: Array = get_action_bindings(action)
+		if bindings.is_empty():
+			continue
+		var has_keyboard: bool = bindings.any(func(binding: Dictionary) -> bool:
+			return _binding_kind_matches(String(binding.get("type", "")), &"keyboard")
+		)
+		if has_keyboard:
+			continue
+		for binding: Dictionary in _get_project_default_bindings(action):
+			if binding.get("type") == "key":
+				bindings.append(binding)
+		input_bindings[action] = bindings
+		_apply_bindings_to_action(action, bindings)
+
+
 func _is_input_action_locked(action_name: StringName) -> bool:
 	if String(action_name).begins_with("ui_"):
 		return true
@@ -2770,6 +2817,12 @@ func _load() -> void:
 			_apply_bindings_to_action(action_name, bindings)
 
 	_migrate_legacy_debug_toggle_binding()
+	if int(cfg.get_value("meta", "schema_version", 1)) < 2:
+		_migrate_photo_lift_bindings()
+	if int(cfg.get_value("meta", "schema_version", 1)) < 3:
+		_migrate_photo_screenshot_binding()
+	if int(cfg.get_value("meta", "schema_version", 1)) < 4:
+		_migrate_photo_fov_bindings()
 	_backfill_missing_project_bindings()
 	_save()
 

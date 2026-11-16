@@ -127,6 +127,8 @@ func allows_body_request() -> bool:
 func start_rail_switch(side: float) -> void:
 	if not is_enabled() or not allows_body_request():
 		return
+	if _owner._rail_switch_animation_started or _owner.get_animation_director().is_rail_switch_animation_playing():
+		return
 	resume_motion(&"rail_switch")
 	_returning_to_motion = false
 	_fade_remaining = 0.0

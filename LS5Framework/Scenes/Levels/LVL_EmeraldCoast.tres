@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://em8ditouu2hg"]
 
 [ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_level_doc"]
+[ext_resource type="Texture2D" uid="uid://b8nni37m24jix" path="res://LS5Framework/Scenes/Levels/EmeraldCoast/EmeraldCoast_Thumbnail.png" id="2_qa0nh"]
 
 [resource]
 script = ExtResource("1_level_doc")
@@ -8,3 +9,4 @@ level_name = "Emerald Coast"
 order = 40
 scene = "res://LS5Framework/Scenes/Main.tscn"
 level_scene = "res://LS5Framework/Scenes/Levels/EmeraldCoast/emerald_coast.tscn"
+thumbnail = ExtResource("2_qa0nh")

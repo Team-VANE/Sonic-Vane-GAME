@@ -3,6 +3,11 @@ extends CanvasLayer
 signal option_selected(option: StringName)
 signal ghost_save_requested()
 
+const RESULTS_STAR: Texture2D = preload("res://LS5Framework/Images/UI/RESULTS_Star.png")
+const RECORD_GOLD: Color = Color(1.0, 0.76, 0.18)
+const RECORD_STAR_SLOT_SIZE: Vector2 = Vector2(30.0, 30.0)
+const RECORD_STAR_SIZE: Vector2 = Vector2(20.0, 20.0)
+
 ## Input action that accelerates race presentation sequences.
 @export var action_skip: StringName = &"ability_slot_01"
 ## Allows the configured mouse button to accelerate race presentation sequences.
@@ -58,12 +63,12 @@ signal ghost_save_requested()
 @onready var results_ghost_divider: HSeparator = $Root/Results/Margin/VBox/ResultsScroll/Readouts/GhostDivider
 ## Displays the ghost comparison and recording status.
 @onready var label_results_ghost: Label = $Root/Results/Margin/VBox/ResultsScroll/Readouts/GhostNote
-## Highlights a newly achieved record.
-@onready var label_new_record: Label = get_node_or_null("Root/Results/Margin/VBox/NewRecord") as Label
 ## Opens the post-race options after the final score is revealed.
 @onready var button_continue: Button = get_node_or_null("Root/Results/Margin/VBox/Continue") as Button
 ## Plays the cue for each result readout.
 @onready var results_entry_audio: AudioStreamPlayer = get_node_or_null("ResultsEntryAudio") as AudioStreamPlayer
+## Plays alongside the entry cue when a new record is revealed.
+@onready var results_high_score_audio: AudioStreamPlayer = get_node_or_null("ResultsHighScoreAudio") as AudioStreamPlayer
 ## Contains post-race action buttons.
 @onready var panel_options: PanelContainer = get_node_or_null("Root/OptionsCenter/Options") as PanelContainer
 ## Contains the optional ghost save action shown for a completed recording.
@@ -82,6 +87,7 @@ signal ghost_save_requested()
 @onready var button_return_menu: Button = get_node_or_null("Root/OptionsCenter/Options/Margin/VBox/ReturnMenu") as Button
 
 var _skip_requested: bool = false
+var _results_record_key: String = ""
 var _countdown_frame_presented: bool = false
 var _primary_color: Color = Color(0.2, 0.55, 1.0, 1.0)
 var _foreground_color: Color = Color(0.65, 0.82, 1.0, 1.0)
@@ -243,6 +249,10 @@ func show_go(duration: float = 1.0) -> void:
 		panel_countdown.visible = false
 
 
+func set_results_record_key(record_key: String) -> void:
+	_results_record_key = record_key
+
+
 func show_results(
 		rings_value: int,
 		time_seconds: float,
@@ -359,6 +369,8 @@ func cancel_results_wait() -> void:
 	_kill_active_tweens()
 	if results_entry_audio != null:
 		results_entry_audio.stop()
+	if results_high_score_audio:
+		results_high_score_audio.stop()
 
 func wait_or_skip(delay: float) -> void:
 	_results_wait_cancelled = false
@@ -401,7 +413,6 @@ func _set_result_text(
 	panel_options.hide()
 	button_continue.hide()
 	button_continue.disabled = true
-	label_new_record.hide()
 	for cell: Node in results_scores.get_children():
 		results_scores.remove_child(cell)
 		cell.queue_free()
@@ -424,25 +435,56 @@ func _set_result_text(
 	]
 	var captions: Array[String] = ["Rings", "Score", "Time"]
 	var total: int = score_value + ring_bonus + time_bonus
+	var records: Array[String] = HighScoreManager.save_result_stats(_results_record_key, rings_value, score_value, total)
+	_results_record_key = ""
+	if is_new_record:
+		records.append("Time")
 	_track_tween(UIExcitementEffects.pulse_in(panel_results, results_enter_duration, 0.9, 1.0))
 	var reveal_tween: Tween = create_tween()
 	_track_tween(reveal_tween)
 	reveal_tween.tween_interval(maxf(results_enter_duration, 0.01))
 	var entry_interval: float = maxf(results_reveal_duration / float(entries.size()), 0.05)
 	for index: int in entries.size():
-		reveal_tween.tween_callback(_reveal_results_entry.bind(captions[index], entries[index]))
+		reveal_tween.tween_callback(_reveal_results_entry.bind(captions[index], entries[index], records.has(captions[index])))
 		reveal_tween.tween_interval(entry_interval)
-	reveal_tween.tween_callback(_finish_results_reveal.bind(total, places_bbcode, extra_note, is_new_record))
+	reveal_tween.tween_callback(_finish_results_reveal.bind(total, places_bbcode, extra_note, records.has("Total")))
 
 
-func _add_results_row(caption: String, value: String, bold: bool = false) -> void:
+func _add_results_row(caption: String, value: String, bold: bool, is_record: bool) -> void:
 	var caption_label: Label = _create_result_cell(caption, bold)
 	caption_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	results_scores.add_child(caption_label)
 
 	var value_label: Label = _create_result_cell(value, true)
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	if is_record:
+		value_label.add_theme_color_override("font_color", RECORD_GOLD)
 	results_scores.add_child(value_label)
+
+	var star_slot: Control = Control.new()
+	star_slot.custom_minimum_size = RECORD_STAR_SLOT_SIZE
+	star_slot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	star_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	results_scores.add_child(star_slot)
+	if not is_record:
+		return
+	var star: TextureRect = TextureRect.new()
+	star.texture = RESULTS_STAR
+	star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	star.size = RECORD_STAR_SIZE
+	star.position = (RECORD_STAR_SLOT_SIZE - RECORD_STAR_SIZE) * 0.5
+	star.pivot_offset = RECORD_STAR_SIZE * 0.5
+	star_slot.add_child(star)
+	var spin: Tween = star.create_tween().set_loops().set_ignore_time_scale(true)
+	spin.tween_property(star, "rotation", TAU, 1.0).from(0.0)
+	star.visibility_changed.connect(func() -> void:
+		if star.is_visible_in_tree():
+			spin.play()
+		else:
+			spin.pause()
+	)
 
 
 func _create_result_cell(text: String, bold: bool) -> Label:
@@ -456,22 +498,21 @@ func _create_result_cell(text: String, bold: bool) -> Label:
 	return cell
 
 
-func _reveal_results_entry(caption: String, value: String) -> void:
-	_add_results_row(caption, value)
+func _reveal_results_entry(caption: String, value: String, is_record: bool, bold: bool = false) -> void:
+	_add_results_row(caption, value, bold, is_record)
 	if results_entry_audio != null:
 		results_entry_audio.play()
+	if is_record and results_high_score_audio:
+		results_high_score_audio.play()
 
 
-func _finish_results_reveal(total: int, places_bbcode: String, extra_note: String, is_new_record: bool) -> void:
-	_add_results_row("Total", str(total), true)
+func _finish_results_reveal(total: int, places_bbcode: String, extra_note: String, is_record: bool) -> void:
+	_reveal_results_entry("Total", str(total), is_record, true)
 	label_results_places.text = places_bbcode.strip_edges()
 	label_results_places.visible = not label_results_places.text.is_empty()
 	label_results_ghost.text = extra_note.strip_edges()
 	label_results_ghost.visible = not label_results_ghost.text.is_empty()
 	results_ghost_divider.visible = label_results_ghost.visible
-	if is_new_record:
-		label_new_record.show()
-		_track_tween(UIExcitementEffects.pulse_in(label_new_record, 0.4, 0.9, 1.08))
 	button_continue.disabled = false
 	button_continue.show()
 	button_continue.grab_focus()

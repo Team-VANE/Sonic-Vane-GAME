@@ -380,6 +380,13 @@ func _finish_power_up_discard(entry: HUDItemNotificationEntry) -> void:
 		entry.queue_free()
 
 
+func expire_power_up_notifications() -> void:
+	for entry: HUDItemNotificationEntry in _entries + _power_up_entries:
+		if is_instance_valid(entry) and entry.is_power_up:
+			entry.set_process(false)
+			_on_power_up_expired(entry)
+
+
 func clear_all_notifications() -> void:
 	_kill_tween(_layout_tween)
 	_kill_tween(_cleanup_tween)

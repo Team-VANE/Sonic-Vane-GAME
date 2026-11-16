@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://LS5Framework/Scripts/UI/OptionsPanelLayout.gd" id="water_options_layout"]
 
 [ext_resource type="PackedScene" path="res://LS5Framework/Scenes/UI/OptionsMenu.tscn" id="shared_options"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/PhotoMode/PhotoMode.tscn" id="photo_mode"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_reset_defaults_warning"]
 bg_color = Color(0.16, 0.018, 0.025, 0.98)
@@ -184,6 +185,11 @@ text = "Resume"
 layout_mode = 2
 theme_override_fonts/font = ExtResource("7_orbitron_600")
 text = "Options"
+
+[node name="ButtonPhotoMode" type="Button" parent="Overlay/PausePanel/VBoxPause"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_orbitron_600")
+text = "Photo Mode"
 
 [node name="ButtonRestart" type="Button" parent="Overlay/PausePanel/VBoxPause"]
 layout_mode = 2
@@ -563,9 +569,13 @@ theme_override_fonts/font = ExtResource("7_orbitron_600")
 text = "No"
 tooltip_text = "Restore the previous graphics settings."
 
+[node name="PhotoMode" parent="." instance=ExtResource("photo_mode")]
+layout_mode = 1
+
 [connection signal="pressed" from="Overlay/OnlinePanel/VBoxOnline/ButtonLeaveQueue" to="." method="_on_ButtonLeaveQueue_pressed"]
 [connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonResume" to="." method="_on_ButtonResume_pressed"]
 [connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
+[connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonPhotoMode" to="." method="_on_ButtonPhotoMode_pressed"]
 [connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonRestart" to="." method="_on_ButtonRestart_pressed"]
 [connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonQuickRestart" to="." method="_on_ButtonQuickRestart_pressed"]
 [connection signal="pressed" from="Overlay/PausePanel/VBoxPause/ButtonLeaveRace" to="." method="_on_ButtonLeaveRace_pressed"]

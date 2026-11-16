@@ -1,0 +1,570 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd" id="1_photo"]
+[ext_resource type="Font" path="res://LS5Framework/Resources/Fonts/Orbitron900.tres" id="2_title"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/ui_release.wav" id="3_capture"]
+[ext_resource type="Shader" path="res://LS5Framework/Scenes/PhotoMode/PhotoPreview.gdshader" id="4_preview"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Images/UI/Scan-lines-512.png" id="5_scanlines"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Camera/SpeedRadialBlurEffect.tscn" id="6_radial"]
+
+[ext_resource type="Script" path="res://LS5Framework/Scenes/PhotoMode/PhotoPlayerPanel.gd" id="7_player"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_preview"]
+resource_local_to_scene = true
+shader = ExtResource("4_preview")
+shader_parameter/scanlines = ExtResource("5_scanlines")
+
+[node name="PhotoMode" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_photo")
+
+[node name="Camera" type="Camera3D" parent="." groups=["SceneDiagnosticsCameraOverride"]]
+top_level = true
+physics_interpolation_mode = 2
+
+[node name="Shutter" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_capture")
+bus = &"UI"
+
+[node name="RadialEffect" parent="." instance=ExtResource("6_radial")]
+visible = false
+process_mode = 4
+
+[node name="PreviewLayer" type="CanvasLayer" parent="."]
+layer = -1
+visible = false
+
+[node name="Preview" type="ColorRect" parent="PreviewLayer"]
+visibility_layer = 524288
+material = SubResource("ShaderMaterial_preview")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Copy" type="BackBufferCopy" parent="PreviewLayer/Preview"]
+visibility_layer = 524288
+show_behind_parent = true
+copy_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -414.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+[node name="Title" type="Label" parent="Panel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.90, 1.0, 1.0)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 24
+text = "Photo Mode"
+autowrap_mode = 3
+
+[node name="WorldStatus" type="Label" parent="Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "World frozen"
+autowrap_mode = 3
+
+[node name="Tabs" type="TabContainer" parent="Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tab_focus_mode = 0
+theme_override_font_sizes/font_size = 15
+[node name="Camera" type="ScrollContainer" parent="Panel/Content/Tabs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Settings" type="VBoxContainer" parent="Panel/Content/Tabs/Camera"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Lens" type="VBoxContainer" parent="Panel/Content/Tabs/Camera/Settings"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="FieldOfViewLabel" type="Label" parent="Panel/Content/Tabs/Camera/Settings/Lens"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Field of View"
+autowrap_mode = 3
+
+[node name="FieldOfView" type="HSlider" parent="Panel/Content/Tabs/Camera/Settings/Lens"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Adjusts the photo camera field of view."
+min_value = 15.0
+max_value = 120.0
+step = 1.0
+value = 75.0
+
+[node name="SwitchFocus" type="Button" parent="Panel/Content/Tabs/Camera/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Camera Controls"
+text_overrun_behavior = 3
+
+[node name="ResetCamera" type="Button" parent="Panel/Content/Tabs/Camera/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Reset Camera"
+text_overrun_behavior = 3
+
+[node name="HidePlayer" type="CheckButton" parent="Panel/Content/Tabs/Camera/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Hide Player"
+
+[node name="CameraControls" type="Label" parent="Panel/Content/Tabs/Camera/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+
+
+[node name="FrameAdvance" type="Button" parent="Panel/Content/Tabs/Camera/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Advance One Frame"
+tooltip_text = "Steps the offline world by one physics tick."
+
+[node name="Lens" type="ScrollContainer" parent="Panel/Content/Tabs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Settings" type="VBoxContainer" parent="Panel/Content/Tabs/Lens"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="DepthOfField" type="CheckButton" parent="Panel/Content/Tabs/Lens/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Depth of Field"
+
+[node name="FocusDistanceLabel" type="Label" parent="Panel/Content/Tabs/Lens/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+
+[node name="FocusDistance" type="HSlider" parent="Panel/Content/Tabs/Lens/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Sets the distance from the camera that stays sharp."
+min_value = 0.5
+max_value = 120.0
+step = 0.5
+value = 1.0
+exp_edit = true
+
+[node name="BlurAmountLabel" type="Label" parent="Panel/Content/Tabs/Lens/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+
+[node name="BlurAmount" type="HSlider" parent="Panel/Content/Tabs/Lens/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Sets the strength of the near and far blur."
+max_value = 0.5
+step = 0.01
+value = 0.12
+
+[node name="Filters" type="ScrollContainer" parent="Panel/Content/Tabs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Settings" type="VBoxContainer" parent="Panel/Content/Tabs/Filters"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Filter" type="OptionButton" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+tooltip_text = "Applies a color adjustment to the photo camera."
+
+[node name="VignetteLabel" type="Label" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Vignette"
+
+[node name="Vignette" type="HSlider" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+min_value = 0
+max_value = 1
+step = 0.01
+tooltip_text = "Vignette"
+
+
+[node name="WaterEffect" type="CheckButton" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+button_pressed = true
+text = "Underwater Effect"
+tooltip_text = "Shows the active underwater tint and distortion."
+
+[node name="SpeedLines" type="CheckButton" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+button_pressed = true
+text = "Radial Speed Lines"
+tooltip_text = "Shows speed streaks when the speed effect is active."
+
+[node name="RadialBlur" type="CheckButton" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+button_pressed = true
+text = "Radial Blur"
+tooltip_text = "Shows motion blur when the speed effect is active."
+
+[node name="LineIntensityRow" type="VBoxContainer" parent="Panel/Content/Tabs/Filters/Settings"]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Panel/Content/Tabs/Filters/Settings/LineIntensityRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="LineIntensity" type="HSlider" parent="Panel/Content/Tabs/Filters/Settings/LineIntensityRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Speed Line Intensity"
+min_value = 0.0
+max_value = 2.0
+step = 0.01
+
+
+[node name="RadialIntensityRow" type="VBoxContainer" parent="Panel/Content/Tabs/Filters/Settings"]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Panel/Content/Tabs/Filters/Settings/RadialIntensityRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="RadialIntensity" type="HSlider" parent="Panel/Content/Tabs/Filters/Settings/RadialIntensityRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Radial Blur Intensity"
+min_value = 0.0
+max_value = 2.0
+step = 0.01
+
+
+[node name="RadialCenterXRow" type="VBoxContainer" parent="Panel/Content/Tabs/Filters/Settings"]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Panel/Content/Tabs/Filters/Settings/RadialCenterXRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="RadialCenterX" type="HSlider" parent="Panel/Content/Tabs/Filters/Settings/RadialCenterXRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Horizontal Center Offset"
+min_value = -0.45
+max_value = 0.45
+step = 0.01
+
+
+[node name="RadialCenterYRow" type="VBoxContainer" parent="Panel/Content/Tabs/Filters/Settings"]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Panel/Content/Tabs/Filters/Settings/RadialCenterYRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="RadialCenterY" type="HSlider" parent="Panel/Content/Tabs/Filters/Settings/RadialCenterYRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+tooltip_text = "Vertical Center Offset"
+min_value = -0.45
+max_value = 0.45
+step = 0.01
+
+
+[node name="SunFlare" type="CheckButton" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+button_pressed = true
+text = "Sun Lens Flare"
+tooltip_text = "Shows the stage's sun lens flare as the camera moves."
+
+
+[node name="LiveQuills" type="CheckButton" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+button_pressed = true
+text = "Live Quill Shift"
+tooltip_text = "Updates supported quill poses from the photo camera angle."
+
+[node name="ResetPhotoSettings" type="Button" parent="Panel/Content/Tabs/Filters/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Reset Photo Settings"
+text_overrun_behavior = 3
+tooltip_text = "Restores photo settings while keeping the current framing position."
+
+[node name="Weather" type="ScrollContainer" parent="Panel/Content/Tabs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Settings" type="VBoxContainer" parent="Panel/Content/Tabs/Weather"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="WeatherStatus" type="Label" parent="Panel/Content/Tabs/Weather/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+
+[node name="PhotoWeather" type="OptionButton" parent="Panel/Content/Tabs/Weather/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+fit_to_longest_item = false
+text_overrun_behavior = 3
+tooltip_text = "Applies a stage weather preset immediately for the photo."
+
+
+[node name="PhotoHourLabel" type="Label" parent="Panel/Content/Tabs/Weather/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Time of Day"
+
+[node name="PhotoHour" type="HSlider" parent="Panel/Content/Tabs/Weather/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+min_value = 0
+max_value = 24
+step = 0.0833333333
+tooltip_text = "Time of Day"
+
+
+[node name="SunEastLabel" type="Label" parent="Panel/Content/Tabs/Weather/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Sun East Rotation"
+
+[node name="SunEast" type="HSlider" parent="Panel/Content/Tabs/Weather/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+min_value = -180.0
+max_value = 180
+step = 1
+tooltip_text = "Sun East Rotation"
+
+
+[node name="Capture" type="ScrollContainer" parent="Panel/Content/Tabs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Settings" type="VBoxContainer" parent="Panel/Content/Tabs/Capture"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="ScreenshotSizeLabel" type="Label" parent="Panel/Content/Tabs/Capture/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Screenshot Size"
+
+[node name="ScreenshotSize" type="OptionButton" parent="Panel/Content/Tabs/Capture/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+fit_to_longest_item = false
+text_overrun_behavior = 3
+tooltip_text = "Sets the saved image size. Different aspect ratios crop around the center."
+
+[node name="TakeScreenshot" type="Button" parent="Panel/Content/Tabs/Capture/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Take Screenshot"
+text_overrun_behavior = 3
+
+[node name="OpenScreenshotFolder" type="Button" parent="Panel/Content/Tabs/Capture/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Open Screenshot Folder"
+text_overrun_behavior = 3
+
+[node name="CaptureStatus" type="Label" parent="Panel/Content/Tabs/Capture/Settings"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+autowrap_mode = 3
+
+[node name="Player" type="ScrollContainer" parent="Panel/Content/Tabs"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+script = ExtResource("7_player")
+
+[node name="Settings" type="VBoxContainer" parent="Panel/Content/Tabs/Player"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="FaceCamera" type="CheckButton" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Look at Camera"
+tooltip_text = "Tracks the camera while enabled. Turning it off freezes the last gaze target."
+
+[node name="ResetGaze" type="Button" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Reset Gaze"
+tooltip_text = "Clears tracking and returns to the current animation's head and eye pose."
+
+[node name="BodyLabel" type="Label" parent="Panel/Content/Tabs/Player/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Body Animation"
+
+[node name="BodyAnimation" type="OptionButton" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+fit_to_longest_item = false
+text_overrun_behavior = 3
+tooltip_text = "Applies a skeletal animation without moving the player through the level."
+
+[node name="BodyFrameLabel" type="Label" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Animation Frame"
+
+[node name="BodyFrame" type="HSlider" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+step = 1.0
+tooltip_text = "Scrubs the body animation in 60 fps increments."
+
+[node name="ResetPose" type="Button" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Clear Animation Layers"
+
+[node name="FaceStatus" type="Label" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "No lip-sync profile for this character."
+autowrap_mode = 3
+
+[node name="FaceLayers" type="VBoxContainer" parent="Panel/Content/Tabs/Player/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ExitPhotoMode" type="Button" parent="Panel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Exit Photo Mode"
+text_overrun_behavior = 3
+
+[node name="ExitConfirmation" type="PanelContainer" parent="Panel"]
+visible = false
+layout_mode = 2
+
+[node name="Actions" type="VBoxContainer" parent="Panel/ExitConfirmation"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Prompt" type="Label" parent="Panel/ExitConfirmation/Actions"]
+layout_mode = 2
+text = "Leave Photo Mode?"
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 3
+
+[node name="KeepEditing" type="Button" parent="Panel/ExitConfirmation/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Keep Editing"
+
+[node name="ConfirmExit" type="Button" parent="Panel/ExitConfirmation/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Leave Photo Mode"

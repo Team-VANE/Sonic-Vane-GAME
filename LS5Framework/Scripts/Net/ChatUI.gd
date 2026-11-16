@@ -21,6 +21,7 @@ const CHAT_INPUT_ACTIVE_META: StringName = &"chat_input_active"
 @onready var input_hint: Label = $Panel/Margin/VBox/InputHint
 
 var _open: bool = false
+var _photo_mode_hidden: bool = false
 var _history_entries: Array[Dictionary] = []
 var _mouse_mode_before_open: Input.MouseMode = Input.MOUSE_MODE_CAPTURED
 
@@ -56,6 +57,8 @@ func _process(_delta: float) -> void:
 		visible = false
 		input.visible = false
 		return
+	if _photo_mode_hidden:
+		return
 	if not visible:
 		visible = true
 	if not input.visible:
@@ -66,6 +69,11 @@ func _process(_delta: float) -> void:
 		if not input.has_focus():
 			input.grab_focus()
 			input.caret_column = input.text.length()
+
+
+func set_photo_mode_hidden(value: bool) -> void:
+	_photo_mode_hidden = value
+	visible = not value and _is_online()
 
 
 func _input(event: InputEvent) -> void:
@@ -116,7 +124,7 @@ func _ensure_chat_input_binds() -> void:
 
 
 func _is_online() -> bool:
-	return multiplayer != null and multiplayer.has_multiplayer_peer()
+	return NetworkManager.is_in_session()
 
 
 func _open_chat() -> void:

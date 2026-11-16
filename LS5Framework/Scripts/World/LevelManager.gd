@@ -726,8 +726,11 @@ func _begin_loading_transition(scene_path: String, level_id: StringName) -> Load
 	if transition == null:
 		return null
 	transition.adopt_for_level_handoff()
+	var entry: Dictionary = _get_loading_level_entry(scene_path, level_id)
 	if not transition.has_loading_message():
-		transition.set_level_name(_get_level_display_name(scene_path, level_id))
+		transition.set_level_name(_get_level_display_name(scene_path, level_id, entry))
+	if not entry.is_empty():
+		transition.set_level_thumbnail(LevelCatalog.get_entry_thumbnail(entry))
 	if not transition.is_covering_screen():
 		if not transition.screen_covered.is_connected(_suspend_gameplay_for_level_load):
 			transition.screen_covered.connect(
@@ -804,21 +807,32 @@ func _find_loading_transition() -> LoadingScreen:
 	return null
 
 
-func _get_level_display_name(scene_path: String, level_id: StringName) -> String:
+func _get_loading_level_entry(scene_path: String, level_id: StringName) -> Dictionary:
 	var normalized_scene_path: String = scene_path.strip_edges()
+	if normalized_scene_path.begins_with("uid://"):
+		normalized_scene_path = ResourceUID.ensure_path(normalized_scene_path)
+	var id_match: Dictionary = {}
 	for entry_value: Variant in _get_level_catalog_entries():
 		if not (entry_value is Dictionary):
 			continue
 		var entry: Dictionary = entry_value
 		var entry_scene_path: String = _get_scene_path_from_entry(entry).strip_edges()
-		var entry_id: StringName = StringName(String(entry.get("id", "")))
-		if entry_scene_path == normalized_scene_path or (level_id != &"" and entry_id == level_id):
-			var display_name: String = String(entry.get("name", "")).strip_edges()
-			if display_name != "":
-				return display_name
+		if entry_scene_path.begins_with("uid://"):
+			entry_scene_path = ResourceUID.ensure_path(entry_scene_path)
+		if entry_scene_path == normalized_scene_path:
+			return entry
+		if level_id != &"" and StringName(entry.get("id", "")) == level_id:
+			id_match = entry
+	return id_match
+
+
+func _get_level_display_name(scene_path: String, level_id: StringName, entry: Dictionary) -> String:
+	var display_name: String = String(entry.get("name", "")).strip_edges()
+	if not display_name.is_empty():
+		return display_name
 	if level_id != &"":
 		return String(level_id).replace("_", " ").capitalize()
-	var file_name: String = normalized_scene_path.get_file().get_basename()
+	var file_name: String = scene_path.strip_edges().get_file().get_basename()
 	if file_name != "":
 		return file_name.replace("_", " ").capitalize()
 	return "Level"

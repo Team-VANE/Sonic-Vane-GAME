@@ -1662,13 +1662,27 @@ func notify_item_collected(item_id: StringName, amount: float = 1.0) -> void:
 
 
 func apply_speed_shoes(duration_override: float = -1.0) -> bool:
+	if race_finished:
+		return false
 	_ensure_modules()
 	return _item_effects_module.apply_speed_shoes(duration_override)
 
 
 func apply_invincibility(duration_override: float = -1.0) -> bool:
+	if race_finished:
+		return false
 	_ensure_modules()
 	return _item_effects_module.apply_invincibility(duration_override)
+
+
+func clear_timed_item_effects() -> void:
+	if not _network_is_local_authority():
+		return
+	_ensure_modules()
+	_item_effects_module.clear_all_effects()
+	var local_hud: Node = _get_hud_node()
+	if local_hud and local_hud.has_method("expire_power_up_notifications"):
+		local_hud.call("expire_power_up_notifications")
 
 
 func is_invincibility_active() -> bool:
@@ -1996,10 +2010,8 @@ func _restore_autoplay_music() -> void:
 			(node as MusicController).stop_music(fade_out)
 	if autoplay_controller == null:
 		return
-	if autoplay_controller.has_method("play_autoplay"):
+	if autoplay_controller.autoplay and autoplay_controller.autoplay_stream:
 		autoplay_controller.play_autoplay(true, -1.0, fade_out)
-	elif autoplay_controller.autoplay_stream != null:
-		autoplay_controller.play_music(autoplay_controller.autoplay_stream, autoplay_controller.autoplay_fade_in, fade_out, true)
 	for n in get_tree().get_nodes_in_group("RaceFinishBanner"):
 		if n != null and is_instance_valid(n):
 			n.queue_free()
@@ -3388,14 +3400,18 @@ func _movement_physics_process(delta: float) -> void:
 	_automation_controller.motion.capture_input(_move_input, _control_forward * _move_input.y + _control_right * _move_input.x)
 	if _ability_input_router != null:
 		_ability_input_router.update(delta)
-	var spring_input_locked: bool = _spring_action_lock_timer > 0.0 or _spring_movement_lock_timer > 0.0
-	var priority_input_consumed: bool = not spring_input_locked and _prepare_priority_action_input(delta)
-	_preemptive_profile_input_consumed = priority_input_consumed
-	if not priority_input_consumed:
-		_update_roll_state()
-		_preemptive_profile_input_consumed = not spring_input_locked and _process_preemptive_character_profile_input_routes()
-		_update_spindash_state(delta)
-		_process_action_inputs()
+	_preemptive_profile_input_consumed = false
+	if _rail_switch_active or (_rail_active and get_animation_director().is_rail_switch_animation_playing()):
+		_clear_action_input_requests()
+	else:
+		var spring_input_locked: bool = _spring_action_lock_timer > 0.0 or _spring_movement_lock_timer > 0.0
+		var priority_input_consumed: bool = not spring_input_locked and _prepare_priority_action_input(delta)
+		_preemptive_profile_input_consumed = priority_input_consumed
+		if not priority_input_consumed:
+			_update_roll_state()
+			_preemptive_profile_input_consumed = not spring_input_locked and _process_preemptive_character_profile_input_routes()
+			_update_spindash_state(delta)
+			_process_action_inputs()
 	_update_action_runtime(delta)
 	if _buddy_jump_mimic_active:
 		var jump_slot: StringName = get_ability_input_slot(&"jump", &"ability_slot_01")
@@ -6599,6 +6615,10 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				_homing_saved_speed_mag = velocity.length()
 				_homing_saved_lateral = velocity - up * velocity.dot(up)
 				var to_target: Vector3 = _homing_target_position - global_position
+				_homing_arc_span = to_target.slide(physics_up.normalized()).length()
+				_homing_arc_progress = 0.0
+				_homing_arc_offset = Vector3.ZERO
+				_homing_trajectory_velocity_adjustment = Vector3.ZERO
 				var target_dist: float = to_target.length()
 				if target_dist > 0.001:
 					velocity = (to_target / target_dist) * max(homing_speed, velocity.length())
@@ -8289,8 +8309,6 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	if detach_spindash_from_wall:
 		velocity = velocity.slide(support_normal)
 		_start_detach(support_normal, world_up)
-		if _roll_action:
-			_roll_action.cancel_spindash_roll()
 	if water_physics_enabled and _running_on_water_surface and attached:
 		_check_water_surface_min_speed()
 	velocity += inherited_launch_velocity
@@ -11257,7 +11275,7 @@ func _update_action_runtime(delta: float) -> void:
 	if _ui_input_blocked:
 		_clear_action_input_requests()
 		return
-	if _active_action == null and not attached and not _lightspeed_dash_active:
+	if _active_action == null and not attached and not _lightspeed_dash_active and not _rail_switch_active:
 		activate_neutral_air_action({"reason": &"airborne_neutral"})
 	if _active_action == null:
 		return
@@ -12213,7 +12231,7 @@ func has_homing_target_for_prompt() -> bool:
 
 
 func _action_input_locked() -> bool:
-	if _local_pause_enabled or _ui_input_blocked or _debug_mode:
+	if _local_pause_enabled or _ui_input_blocked or _debug_mode or _rail_switch_active:
 		return true
 	if _dash_movement_lock_active and _spring_movement_lock_timer > 0.0:
 		return true

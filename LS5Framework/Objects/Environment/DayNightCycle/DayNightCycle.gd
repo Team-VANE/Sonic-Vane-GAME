@@ -8,6 +8,19 @@ signal time_transition_finished(hour: float)
 signal weather_transition_finished(weather: DayNightWeather)
 signal profile_transition_finished(profile: DayNightProfile)
 
+var _photo_hour: float = -1.0
+var _photo_azimuth: float = 0.0
+## Weather sampled by the photo preview.
+var _photo_weather: DayNightWeather
+
+
+func set_photo_preview(hour: float, azimuth: float, preview_weather: DayNightWeather) -> void:
+	_photo_hour = hour
+	_photo_azimuth = azimuth
+	_photo_weather = preview_weather
+	_apply_celestial_transforms()
+	_apply_environment_state()
+
 @export_group("Resources")
 ## Lighting, atmosphere, fog, and celestial appearance sampled across the day.
 @export var profile: DayNightProfile
@@ -339,15 +352,19 @@ func resume_cycle() -> void:
 
 
 func get_normalized_time() -> float:
-	return time_of_day_hours / 24.0
+	return _lighting_hour() / 24.0
+
+
+func _lighting_hour() -> float:
+	return _photo_hour if _photo_hour >= 0.0 else time_of_day_hours
 
 
 func get_sun_direction() -> Vector3:
-	return _get_orbit_direction(time_of_day_hours, sun_path_tilt_degrees)
+	return _get_orbit_direction(_lighting_hour(), sun_path_tilt_degrees)
 
 
 func get_moon_direction() -> Vector3:
-	return _get_orbit_direction(time_of_day_hours + moon_orbit_offset_hours, sun_path_tilt_degrees + moon_orbit_inclination_degrees)
+	return _get_orbit_direction(_lighting_hour() + moon_orbit_offset_hours, sun_path_tilt_degrees + moon_orbit_inclination_degrees)
 
 
 func get_day_phase() -> StringName:
@@ -355,7 +372,7 @@ func get_day_phase() -> StringName:
 	if sun_height > 0.12:
 		return &"day"
 	if sun_height > -0.16:
-		return &"dawn" if time_of_day_hours < 12.0 else &"dusk"
+		return &"dawn" if _lighting_hour() < 12.0 else &"dusk"
 	return &"night"
 
 
@@ -530,7 +547,8 @@ func _get_orbit_direction(hour: float, inclination_degrees: float) -> Vector3:
 	var orbit_angle: float = (wrapf(hour, 0.0, 24.0) - 6.0) / 24.0 * TAU
 	var direction: Vector3 = Vector3(cos(orbit_angle), sin(orbit_angle), 0.0)
 	direction = direction.rotated(Vector3.FORWARD, deg_to_rad(inclination_degrees))
-	direction = direction.rotated(Vector3.UP, deg_to_rad(sun_path_azimuth_degrees))
+	var azimuth: float = _photo_azimuth if _photo_hour >= 0.0 else sun_path_azimuth_degrees
+	direction = direction.rotated(Vector3.UP, deg_to_rad(azimuth))
 	return direction.normalized()
 
 
@@ -622,6 +640,8 @@ func _apply_environment_state() -> void:
 	_apply_shader_state(profile_state, weather_state)
 	_cloud_update_elapsed = 0.0
 	var normalized_time: float = get_normalized_time()
+	if _photo_hour >= 0.0:
+		return
 	time_changed.emit(time_of_day_hours, normalized_time)
 	var next_phase: StringName = get_day_phase()
 	if next_phase != _current_phase:
@@ -849,6 +869,8 @@ func _blend_profile_states(from_state: Dictionary, to_state: Dictionary, weight:
 
 
 func _get_weather_state() -> Dictionary:
+	if _photo_weather:
+		return _sample_weather(_photo_weather)
 	var current_state: Dictionary = _sample_weather(weather)
 	if not _weather_transition_active or not _weather_transition_target:
 		return current_state

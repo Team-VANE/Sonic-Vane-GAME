@@ -18,6 +18,10 @@ uniform float speed_line_length : hint_range(0.05, 0.9) = 0.5;
 uniform float viewport_aspect = 1.7777778;
 uniform float time_offset = 0.0;
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear;
+uniform bool photo_lines_enabled = true;
+uniform bool photo_blur_enabled = true;
+uniform vec2 center_offset = vec2(0.0);
+uniform vec2 manual_intensity = vec2(-1.0);
 
 const int SAMPLE_COUNT = 12;
 
@@ -28,8 +32,9 @@ float random_lane_value(float value) {
 float get_speed_line_mask(vec2 radial_uv, float time_value) {
 	float abs_x = max(abs(radial_uv.x), 0.00001);
 	float abs_y = max(abs(radial_uv.y), 0.00001);
-	float scale_to_vertical_edge = 0.5 / abs_x;
-	float scale_to_horizontal_edge = 0.5 / abs_y;
+	vec2 center = vec2(0.5) + center_offset;
+	float scale_to_vertical_edge = (radial_uv.x >= 0.0 ? 1.0 - center.x : center.x) / abs_x;
+	float scale_to_horizontal_edge = (radial_uv.y >= 0.0 ? 1.0 - center.y : center.y) / abs_y;
 	float boundary_scale;
 	float side_index;
 	float edge_coordinate;
@@ -37,11 +42,11 @@ float get_speed_line_mask(vec2 radial_uv, float time_value) {
 	if (scale_to_vertical_edge < scale_to_horizontal_edge) {
 		boundary_scale = scale_to_vertical_edge;
 		side_index = radial_uv.x >= 0.0 ? 0.0 : 1.0;
-		edge_coordinate = radial_uv.y * boundary_scale + 0.5;
+		edge_coordinate = radial_uv.y * boundary_scale + center.y;
 	} else {
 		boundary_scale = scale_to_horizontal_edge;
 		side_index = radial_uv.y >= 0.0 ? 2.0 : 3.0;
-		edge_coordinate = radial_uv.x * boundary_scale + 0.5;
+		edge_coordinate = radial_uv.x * boundary_scale + center.x;
 	}
 
 	float lane_count = max(float(speed_line_lanes_per_side), 1.0);
@@ -87,7 +92,7 @@ float get_speed_line_mask(vec2 radial_uv, float time_value) {
 }
 
 void fragment() {
-	vec2 radial_uv = SCREEN_UV - vec2(0.5);
+	vec2 radial_uv = SCREEN_UV - (vec2(0.5) + center_offset);
 	vec2 aspect_position = radial_uv * vec2(viewport_aspect, 1.0);
 	float radial_distance = length(aspect_position);
 
@@ -102,7 +107,9 @@ void fragment() {
 	);
 
 	float active_intensity = max(intensity, 0.0);
-	float blur_distance = max_blur_radius * active_intensity * pulse;
+	float line_intensity = manual_intensity.x >= 0.0 ? manual_intensity.x : active_intensity;
+	active_intensity = manual_intensity.y >= 0.0 ? manual_intensity.y : active_intensity;
+	float blur_distance = photo_blur_enabled ? max_blur_radius * active_intensity * pulse : 0.0;
 	vec2 half_pixel = SCREEN_PIXEL_SIZE * 0.5;
 	vec2 blur_step = radial_uv * blur_distance / float(SAMPLE_COUNT - 1);
 	vec2 sample_uv = SCREEN_UV;
@@ -119,7 +126,7 @@ void fragment() {
 	}
 
 	blurred_color /= total_weight;
-	float color_split = chromatic_separation * active_intensity * edge_mask * pulse;
+	float color_split = photo_blur_enabled ? chromatic_separation * active_intensity * edge_mask * pulse : 0.0;
 	if (color_split > 0.000001) {
 		vec2 streak_mid_uv = SCREEN_UV - radial_uv * blur_distance * 0.5;
 		vec2 far_uv = clamp(
@@ -139,17 +146,17 @@ void fragment() {
 		blurred_color = mix(blurred_color, chromatic_color, chromatic_mix);
 	}
 
-	float speed_line_mask = get_speed_line_mask(radial_uv, time_offset);
+	float speed_line_mask = photo_lines_enabled ? get_speed_line_mask(radial_uv, time_offset) : 0.0;
 	float speed_line_strength = clamp(
-		speed_line_mask * speed_line_opacity * active_intensity,
+		speed_line_mask * speed_line_opacity * line_intensity,
 		0.0,
 		0.4
 	);
 	blurred_color = mix(blurred_color, vec3(1.0), speed_line_strength);
 
-	float mask_alpha = clamp(edge_mask * active_intensity * max_opacity * pulse, 0.0, 1.0);
+	float mask_alpha = photo_blur_enabled ? clamp(edge_mask * active_intensity * max_opacity * pulse, 0.0, 1.0) : 0.0;
 	float speed_line_alpha = clamp(
-		speed_line_mask * active_intensity * clamp(speed_line_opacity * 4.0, 0.0, 1.0) * 0.65,
+		speed_line_mask * line_intensity * clamp(speed_line_opacity * 4.0, 0.0, 1.0) * 0.65,
 		0.0,
 		0.85
 	);

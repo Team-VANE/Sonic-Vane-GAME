@@ -380,6 +380,25 @@ func get_terminal_weather_state() -> Dictionary:
 	}
 
 
+func get_photo_cycle() -> DayNightCycle:
+	return _day_night_cycle
+
+
+func set_photo_weather(hour: float, azimuth: float, preset_id: StringName, camera: Camera3D = null) -> void:
+	var preset: DynamicWeatherPreset = _find_preset(preset_id) if preset_id and hour >= 0.0 else null
+	if _day_night_cycle:
+		_day_night_cycle.set_photo_preview(hour, azimuth, preset.sky_weather if preset else null)
+	if _rain_system:
+		_rain_system.set_photo_rain(preset.rain_profile if preset and precipitation_enabled else null)
+		if camera:
+			_rain_system.update_photo_rain_camera(camera, true)
+
+
+func update_photo_rain_camera(camera: Camera3D) -> void:
+	if _rain_system:
+		_rain_system.update_photo_rain_camera(camera)
+
+
 func apply_terminal_weather_changes(changes: Dictionary) -> bool:
 	if _is_network_client() or not _level_preparation_ready:
 		return false

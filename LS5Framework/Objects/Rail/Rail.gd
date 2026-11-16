@@ -46,6 +46,8 @@ var entry_direction_mode: int = 0
 @export_subgroup("Entry Momentum")
 @export_range(0.0, 200.0) var entry_head_on_speed_min: float = 6.0
 @export_range(0.0, 1.0) var entry_head_on_tangent_ratio_max: float = 0.2
+## Fraction of sideways approach speed redirected into the grind. Zero disables the boost. Falling speed does not contribute.
+@export_range(0.0, 1.0, 0.01) var entry_tangential_landing_boost: float = 0.45
 
 @export_group("Surface Handoff")
 ## Attempts a surface handoff at open endpoints and on contact during grinding.
@@ -455,7 +457,7 @@ func on_homing_hit(player: Node, _jump_held: bool) -> bool:
 	if player.has_method("get_rail_entry_forward"):
 		entry_forward = player.call("get_rail_entry_forward")
 
-	var params: Dictionary = build_session_params_for_entry(entry_point, entry_velocity, entry_forward)
+	var params: Dictionary = build_session_params_for_entry(entry_point, entry_velocity, entry_forward, _get_entry_up(player))
 	if params.is_empty():
 		return false
 
@@ -482,106 +484,27 @@ func _get_rehit_cooldown(body: Node) -> float:
 
 
 func _build_session_params(body: Node3D, override_velocity = null, override_origin = null) -> Dictionary:
-	var curve := path.curve
-	if curve == null:
-		return {}
-
-	var curve_length := curve.get_baked_length()
-	if curve_length <= 0.01:
-		return {}
-
-	var query_pos: Vector3 = body.global_transform.origin
-	if override_origin is Vector3:
-		query_pos = override_origin
-	var start_offset: float = _find_closest_offset_on_path(query_pos, curve, curve_length)
-
-	var tangent: Vector3 = _sample_tangent(start_offset, 0.05)
-	if tangent.length() < 0.001:
-		tangent = Vector3.FORWARD
-	else:
-		tangent = tangent.normalized()
-
-	var projected_speed: float = 0.0
+	var entry_point: Vector3 = override_origin if override_origin is Vector3 else body.global_position
 	var entry_velocity: Vector3 = Vector3.ZERO
-	
 	if override_velocity is Vector3:
 		entry_velocity = override_velocity
-	elif body != null and body.has_method("get_rail_entry_velocity"):
+	elif body.has_method("get_rail_entry_velocity"):
 		entry_velocity = body.call("get_rail_entry_velocity")
 	elif body is CharacterBody3D:
 		entry_velocity = body.velocity
-	
-	projected_speed = entry_velocity.dot(tangent)
-	
-	# Radial landing speed preservation:
-	# If we are entering at a shallow enough angle, preserve the full magnitude of velocity
-	# to avoid speed loss from position correction or steep entry vectors.
-	var entry_speed: float = entry_velocity.length()
-	if entry_speed > 0.001:
-		var dot_abs: float = abs(projected_speed)
-		var ratio: float = dot_abs / entry_speed
-		# threshold of ~45 degrees (cos(45) approx 0.707)
-		if ratio > 0.707:
-			projected_speed = entry_speed * (1.0 if projected_speed >= 0.0 else -1.0)
 
-	var entry_forward := Vector3.ZERO
-	if body != null and body.has_method("get_rail_entry_forward"):
+	var entry_forward: Vector3 = Vector3.ZERO
+	if body.has_method("get_rail_entry_forward"):
 		entry_forward = body.call("get_rail_entry_forward")
-	
-	var tangent_ratio: float = 0.0
-	if entry_speed > 0.001:
-		tangent_ratio = abs(projected_speed) / entry_speed
-	
-	var head_on: bool = entry_speed >= entry_head_on_speed_min and tangent_ratio <= entry_head_on_tangent_ratio_max
-	var session_min_speed := min_speed
-	var session_lock_speed_enabled := lock_speed_enabled
-	var session_lock_speed_value := lock_speed_value
-	var forward_dot := 0.0
-	var forward_valid := false
-	if entry_forward.length() > 0.001:
-		forward_dot = tangent.dot(entry_forward.normalized())
-		forward_valid = true
-	if head_on:
-		projected_speed = 0.0
-		session_min_speed = 0.0
-		session_lock_speed_enabled = false
-		session_lock_speed_value = 0.0
+	return build_session_params_for_entry(entry_point, entry_velocity, entry_forward, _get_entry_up(body))
 
-	var sign := _determine_direction(projected_speed, forward_dot, forward_valid)
-	projected_speed = abs(projected_speed) * sign
 
-	if session_lock_speed_enabled:
-		projected_speed = session_lock_speed_value * sign
-	elif session_min_speed > 0.0:
-		var mag = max(abs(projected_speed), session_min_speed)
-		projected_speed = mag * (1.0 if projected_speed >= 0.0 else -1.0)
-
-	return {
-		"rail_node": self,
-		"path": path,
-		"start_offset": start_offset,
-		"start_travel_sign": sign,
-		"initial_speed": projected_speed,
-		"align_model": align_model,
-		"align_to_path_tilt": align_to_path_tilt,
-		"allow_jump_exit": allow_jump_exit,
-		"allow_reverse": allow_reverse,
-		"allow_input_reverse": allow_input_reverse,
-		"end_detach_distance": end_detach_distance,
-		"surface_handoff_enabled": surface_handoff_enabled,
-		"surface_handoff_search_length": surface_handoff_search_length,
-		"surface_handoff_max_angle_deg": surface_handoff_max_angle_deg,
-		"min_speed": session_min_speed,
-		"lock_speed_enabled": session_lock_speed_enabled,
-		"lock_speed_value": session_lock_speed_value,
-		"gravity_scale": gravity_scale,
-		"player_height_offset": player_height_offset,
-		"reverse_speed_threshold": reverse_speed_threshold,
-		"reverse_boost_speed": reverse_boost_speed,
-		"movement_lock_time": movement_lock_time,
-		"action_lock_time": action_lock_time,
-		"override_previous_lock_timers": override_previous_lock_timers
-	}
+func _get_entry_up(body: Node3D) -> Vector3:
+	if body.has_method("get_gravity_up"):
+		var up: Vector3 = body.call("get_gravity_up")
+		if not up.is_zero_approx():
+			return up.normalized()
+	return Vector3.UP
 
 
 func _determine_direction(projected_speed: float, fallback_dot: float, fallback_valid: bool) -> float:
@@ -602,7 +525,8 @@ func _determine_direction(projected_speed: float, fallback_dot: float, fallback_
 func build_session_params_for_entry(
 	entry_point: Vector3,
 	entry_velocity: Vector3,
-	entry_forward: Vector3 = Vector3.ZERO
+	entry_forward: Vector3 = Vector3.ZERO,
+	entry_up: Vector3 = Vector3.UP
 ) -> Dictionary:
 	if path == null:
 		return {}
@@ -624,20 +548,12 @@ func build_session_params_for_entry(
 
 	var projected_speed: float = entry_velocity.dot(tangent)
 	var entry_speed: float = entry_velocity.length()
+	var tangent_ratio: float = absf(projected_speed) / entry_speed if entry_speed > 0.001 else 0.0
 
-	# Radial landing speed preservation:
-	# If we are entering at a shallow enough angle, preserve the full magnitude of velocity
-	# to avoid speed loss from position correction or steep entry vectors.
-	if entry_speed > 0.001:
-		var dot_abs: float = abs(projected_speed)
-		var ratio: float = dot_abs / entry_speed
-		# threshold of ~45 degrees (cos(45) approx 0.707)
-		if ratio > 0.707:
-			projected_speed = entry_speed * (1.0 if projected_speed >= 0.0 else -1.0)
-
-	var tangent_ratio: float = 0.0
-	if entry_speed > 0.001:
-		tangent_ratio = abs(projected_speed) / entry_speed
+	# Shallow entries retain full approach speed.
+	if tangent_ratio > 0.707:
+		projected_speed = entry_speed * signf(projected_speed)
+		tangent_ratio = 1.0
 
 	var forward_dot: float = 0.0
 	var forward_valid: bool = false
@@ -656,20 +572,27 @@ func build_session_params_for_entry(
 		session_lock_speed_value = 0.0
 
 	var sign: float = _determine_direction(projected_speed, forward_dot, forward_valid)
-	projected_speed = abs(projected_speed) * sign
+	var speed: float = absf(projected_speed)
+	if entry_tangential_landing_boost > 0.0 and tangent_ratio <= 0.707:
+		var crossing_velocity: Vector3 = entry_velocity.slide(entry_up)
+		var planar_tangent: Vector3 = tangent.slide(entry_up).normalized()
+		if not planar_tangent.is_zero_approx():
+			crossing_velocity = crossing_velocity.slide(planar_tangent)
+		var boost: float = crossing_velocity.length() * clampf(entry_tangential_landing_boost, 0.0, 1.0)
+		var parallel_speed: float = lock_speed_value if lock_speed_enabled else maxf(entry_speed, min_speed)
+		speed = maxf(speed, minf(Vector2(speed, boost).length(), parallel_speed))
 
 	if session_lock_speed_enabled:
-		projected_speed = session_lock_speed_value * sign
+		speed = session_lock_speed_value
 	elif session_min_speed > 0.0:
-		var mag: float = max(abs(projected_speed), session_min_speed)
-		projected_speed = mag * (1.0 if projected_speed >= 0.0 else -1.0)
+		speed = maxf(speed, session_min_speed)
 
 	return {
 		"rail_node": self,
 		"path": path,
 		"start_offset": start_offset,
 		"start_travel_sign": sign,
-		"initial_speed": projected_speed,
+		"initial_speed": speed * sign,
 		"align_model": align_model,
 		"align_to_path_tilt": align_to_path_tilt,
 		"allow_jump_exit": allow_jump_exit,

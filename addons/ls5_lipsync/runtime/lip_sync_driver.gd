@@ -21,6 +21,7 @@ var _smoothing_response: float = 0.0
 var _protect_speech_timing: bool = true
 var _preview_evaluating: bool = false
 var _editor_preview_enabled: bool = false
+var _photo_pose_layers: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -57,6 +58,51 @@ func _process(delta: float) -> void:
 		_playback_time = _scale_playback_time(_clip, elapsed_time)
 	if _influence_active or was_active or not _smoothing_history.is_empty():
 		_process_modification_with_delta(delta)
+
+
+func set_photo_pose_layers(layers: Array[Dictionary]) -> void:
+	_photo_pose_layers.clear()
+	var skeleton: Skeleton3D = get_skeleton()
+	if not skeleton or not profile:
+		return
+	var silent: LipSyncPose = profile.find_pose(profile.silent_viseme_id)
+	for layer: Dictionary in layers:
+		var pose: LipSyncPose = layer["pose"]
+		var expression: bool = layer["expression"]
+		var weight: float = layer["weight"]
+		var time: float = layer["time"]
+		if not pose or not pose.animation or weight <= 0.0:
+			continue
+		var bones: PackedStringArray = profile.expression_bones if expression else profile.viseme_bones
+		var samples: Dictionary = {}
+		for bone_name: String in bones:
+			var bone: int = skeleton.find_bone(bone_name)
+			if bone < 0:
+				continue
+			var values: Dictionary = _sample_animation_pose(pose.animation, bone_name, time)
+			if values.is_empty():
+				continue
+			var rest: Transform3D = skeleton.get_bone_rest(bone)
+			var neutral: Dictionary = {
+				"position": rest.origin, "rotation": rest.basis.get_rotation_quaternion(), "scale": rest.basis.get_scale(),
+			}
+			neutral.merge(_sample_pose(silent, bone_name), true)
+			samples[bone] = {"neutral": neutral, "values": values if not expression else _mix_values(neutral, values, weight)}
+		_photo_pose_layers.append({"samples": samples, "expression": expression, "weight": weight})
+
+
+func _apply_photo_pose_layers(skeleton: Skeleton3D) -> void:
+	for layer: Dictionary in _photo_pose_layers:
+		var samples: Dictionary = layer["samples"]
+		for bone: int in samples:
+			var sample: Dictionary = samples[bone]
+			var base: Dictionary = _read_bone_pose(skeleton, bone)
+			var values: Dictionary = sample["values"]
+			if layer["expression"]:
+				base = _add_pose_delta(base, sample["neutral"], values)
+			else:
+				base = _mix_values(base, values, float(layer["weight"]))
+			_write_bone_pose(skeleton, bone, base)
 
 
 func set_editor_preview_enabled(enabled: bool) -> void:
@@ -103,6 +149,9 @@ func _scale_playback_time(clip: LipSyncClip, elapsed_time: float) -> float:
 
 
 func _process_modification_with_delta(delta: float) -> void:
+	if not _photo_pose_layers.is_empty():
+		_apply_photo_pose_layers(get_skeleton())
+		return
 	if Engine.is_editor_hint() and (not _editor_preview_enabled or not _preview_evaluating):
 		return
 	if _preview_active and not _preview_evaluating:
@@ -290,20 +339,24 @@ func _sample_pose(pose: LipSyncPose, bone_name: String) -> Dictionary:
 	var cache_key: String = "%d:%s" % [pose.get_instance_id(), bone_name]
 	if _pose_cache.has(cache_key):
 		return _pose_cache[cache_key]
+	var values: Dictionary = _sample_animation_pose(pose.animation, bone_name, 0.0)
+	_pose_cache[cache_key] = values
+	return values
+
+
+func _sample_animation_pose(animation: Animation, bone_name: String, time: float) -> Dictionary:
 	var values: Dictionary = {}
-	var animation: Animation = pose.animation
 	for track: int in range(animation.get_track_count()):
 		var path: NodePath = animation.track_get_path(track)
-		if String(path.get_concatenated_subnames()) != bone_name:
+		if String(path.get_concatenated_subnames()) != bone_name or not animation.track_is_enabled(track) or not animation.track_get_key_count(track):
 			continue
 		match animation.track_get_type(track):
 			Animation.TYPE_POSITION_3D:
-				values["position"] = animation.position_track_interpolate(track, 0.0)
+				values["position"] = animation.position_track_interpolate(track, time, false)
 			Animation.TYPE_ROTATION_3D:
-				values["rotation"] = animation.rotation_track_interpolate(track, 0.0)
+				values["rotation"] = animation.rotation_track_interpolate(track, time, false)
 			Animation.TYPE_SCALE_3D:
-				values["scale"] = animation.scale_track_interpolate(track, 0.0)
-	_pose_cache[cache_key] = values
+				values["scale"] = animation.scale_track_interpolate(track, time, false)
 	return values
 
 

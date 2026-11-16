@@ -195,6 +195,11 @@ func show_item_notification(
 	return item_notifier.enqueue_item(item_id, amount, effect_duration)
 
 
+func expire_power_up_notifications() -> void:
+	if item_notifier:
+		item_notifier.expire_power_up_notifications()
+
+
 func clear_item_notifications() -> void:
 	_ensure_nodes()
 	if item_notifier != null:

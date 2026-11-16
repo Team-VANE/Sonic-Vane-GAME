@@ -1323,6 +1323,10 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 @export var attack_magnetism_detection_angle_deg: float = 50.0
 ## Direction-adjustment acceleration applied by attack magnetism.
 @export var attack_magnetism_strength: float = 55.0
+## Distance from the target's aim point where close-range steering starts to strengthen. Zero disables the boost.
+@export_range(0.0, 60.0, 0.25, "or_greater", "suffix:m") var attack_magnetism_close_steering_range: float = 35.0
+## Maximum turn rate multiplier at the target's aim point.
+@export_range(1.0, 5.0, 0.05) var attack_magnetism_close_steering_multiplier: float = 3.5
 ## Minimum speed kept while attack magnetism turns the current velocity.
 @export var attack_magnetism_min_speed: float = 0.0
 ## Input dot at or below this value blocks attack magnetism.
@@ -3132,6 +3136,10 @@ var _homing_saved_lateral: Vector3 = Vector3.ZERO
 var _homing_saved_speed_mag: float = 0.0
 var _homing_retain_timer: float = 0.0
 var _homing_elapsed: float = 0.0
+var _homing_arc_span: float = 0.0
+var _homing_arc_progress: float = 0.0
+var _homing_arc_offset: Vector3 = Vector3.ZERO
+var _homing_trajectory_velocity_adjustment: Vector3 = Vector3.ZERO
 var _homing_post_attack_timer: float = 0.0
 var _homing_target_position: Vector3 = Vector3.ZERO
 var _homing_target_position_valid: bool = false

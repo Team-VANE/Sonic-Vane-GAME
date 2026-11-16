@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b5v0ew6s4quth"]
+[gd_scene load_steps=11 format=3 uid="uid://b5v0ew6s4quth"]
 
 [ext_resource type="Script" uid="uid://b7w3845ehvvkr" path="res://LS5Framework/Scripts/Race/RaceUI.gd" id="1_raceui"]
 [ext_resource type="Theme" path="res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres" id="2_menu_theme"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd" id="4_crt_effect"]
 
 [ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/Results_Entry.wav" id="5_results_entry"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Menu/Results_HighScore.wav" id="6_results_high_score"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_countdown"]
 bg_color = Color(0.018, 0.028, 0.065, 0.9)
@@ -61,6 +62,11 @@ script = ExtResource("4_crt_effect")
 
 [node name="ResultsEntryAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_results_entry")
+bus = &"UI"
+max_polyphony = 4
+
+[node name="ResultsHighScoreAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_results_high_score")
 bus = &"UI"
 max_polyphony = 4
 
@@ -186,7 +192,7 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 3
 
 [node name="Places" type="RichTextLabel" parent="Root/Results/Margin/VBox/ResultsScroll/Readouts" unique_id=1310485186]
 visible = false
@@ -208,19 +214,6 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
-
-[node name="NewRecord" type="Label" parent="Root/Results/Margin/VBox" unique_id=677585345]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(1, 0.86, 0.16, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 32
-text = "NEW RECORD!"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Continue" type="Button" parent="Root/Results/Margin/VBox"]
 visible = false

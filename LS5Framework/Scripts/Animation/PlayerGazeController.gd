@@ -71,7 +71,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if gaze_modifier == null:
+	if gaze_modifier == null or gaze_modifier.has_photo_gaze():
 		return
 	_scan_time_remaining -= max(delta, 0.0)
 	_target_hold_remaining = max(_target_hold_remaining - max(delta, 0.0), 0.0)

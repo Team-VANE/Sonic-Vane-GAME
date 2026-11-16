@@ -70,6 +70,22 @@ var _routes: Array[Dictionary] = []
 var _cached_root: AnimationRootNode
 var _routes_dirty: bool = true
 var _poses_dirty: bool = true
+## Camera used by the photo session.
+var _photo_camera: Camera3D
+var _photo_live: bool = true
+var _photo_delta: float = 0.0
+
+
+func set_photo_view(camera: Camera3D, live: bool) -> void:
+	_photo_camera = camera
+	_photo_live = live
+	_photo_delta = 0.0
+
+
+func refresh_photo_view(delta: float) -> void:
+	if active and _photo_live and is_instance_valid(_photo_camera) and get_skeleton():
+		_photo_delta = delta
+		get_skeleton().advance(0.0)
 
 
 func _ready() -> void:
@@ -137,8 +153,16 @@ func _process_modification_with_delta(delta: float) -> void:
 	if _poses_dirty:
 		_cache_pose_deltas(skeleton)
 		_poses_dirty = false
+	if is_instance_valid(_photo_camera) and not _photo_live:
+		if not _weights.is_zero_approx():
+			_apply_pose_deltas(skeleton)
+		return
 	var target: Vector2 = Vector2.ZERO
 	var camera: Camera3D = _camera if is_instance_valid(_camera) else skeleton.get_viewport().get_camera_3d()
+	if is_instance_valid(_photo_camera):
+		camera = _photo_camera
+		delta = maxf(delta, _photo_delta)
+		_photo_delta = 0.0
 	if camera and is_instance_valid(_animation_tree) and _animation_tree.active and _is_overlay_allowed():
 		var head: Transform3D = skeleton.global_transform * skeleton.get_bone_global_pose(_head_bone)
 		var direction: Vector3 = camera.global_position - head.origin

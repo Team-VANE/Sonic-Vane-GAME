@@ -77,6 +77,27 @@ func set_intensity(value: float) -> void:
 		_rect.visible = true
 
 
+func set_photo_presentation(mask: int, lines: bool, blur: bool) -> void:
+	if _rect:
+		_rect.visibility_layer = mask
+	if _material:
+		_material.set_shader_parameter(&"photo_lines_enabled", lines)
+		_material.set_shader_parameter(&"photo_blur_enabled", blur)
+	visible = lines or blur
+	layer = -4 if mask != 1 else -2
+
+
+func set_manual_photo_effect(mask: int, intensities: Vector2, offset: Vector2) -> void:
+	set_photo_presentation(mask, intensities.x > 0.0, intensities.y > 0.0)
+	if _material:
+		_material.set_shader_parameter(&"manual_intensity", intensities)
+		_material.set_shader_parameter(&"center_offset", offset)
+		_material.set_shader_parameter(&"time_offset", 0.37)
+		_update_viewport_aspect()
+	if _rect:
+		_rect.visible = visible
+
+
 func _update_viewport_aspect() -> void:
 	if _material == null:
 		return

@@ -74,7 +74,7 @@ background_mode = 2
 background_energy_multiplier = 1.0000001
 sky = SubResource("Sky_day_night")
 ambient_light_source = 3
-ambient_light_color = Color(0.14947294, 0.39137825, 0.8443084, 1)
+ambient_light_color = Color(0.18256412, 0.42191362, 0.8746939, 1)
 ambient_light_sky_contribution = 0.82
 ambient_light_energy = 0.94372034
 reflected_light_source = 2
@@ -98,6 +98,7 @@ fog_sky_affect = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
+adjustment_saturation = 1.1
 
 [node name="DayNightCycle" type="Node3D" unique_id=905397325]
 script = ExtResource("1_cycle")

@@ -4,6 +4,7 @@
 [ext_resource type="Shader" path="res://LS5Framework/Scripts/Camera/speed_radial_blur.gdshader" id="2_blurshader"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_blurfx"]
+resource_local_to_scene = true
 shader = ExtResource("2_blurshader")
 shader_parameter/intensity = 0.0
 shader_parameter/max_blur_radius = 0.06

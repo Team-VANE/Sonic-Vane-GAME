@@ -40,6 +40,17 @@ static func load_level_entries(levels_dir: String) -> Array:
 	return entries
 
 
+static func get_entry_thumbnail(entry: Dictionary) -> Texture2D:
+	var thumbnail: Texture2D = entry.get("thumbnail") as Texture2D
+	if thumbnail:
+		return thumbnail
+	var attributes: Dictionary = entry.get("attributes", {})
+	var path: String = String(attributes.get("thumbnail", "")).strip_edges()
+	if not path.is_empty() and ResourceLoader.exists(path):
+		return ResourceLoader.load(path) as Texture2D
+	return null
+
+
 static func _find_level_doc_resources(levels_dir: String) -> Array:
 	var result: Array = []
 	if levels_dir.strip_edges() == "":

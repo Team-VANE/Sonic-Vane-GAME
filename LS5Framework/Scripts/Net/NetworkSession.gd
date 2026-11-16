@@ -549,6 +549,10 @@ func is_race_session_active() -> bool:
 	return _race_session_active
 
 
+func is_local_player_racing() -> bool:
+	return _is_peer_racing(_local_id)
+
+
 func request_start_race(level_scene_path: String, race_start_path: String, queue_duration: float = 30.0, dnf_duration: float = -1.0) -> void:
 	if not _is_online():
 		return
@@ -1410,15 +1414,11 @@ func _play_results_music() -> void:
 
 
 func _restore_autoplay_music() -> void:
-	var mc = _get_primary_music_controller()
-	if mc == null:
-		return
+	var mc: MusicController = _get_primary_music_controller()
 	var fade_out: float = results_music_fade_out
 	_stop_all_music(fade_out)
-	if mc.has_method("play_autoplay"):
+	if mc and mc.autoplay and mc.autoplay_stream:
 		mc.play_autoplay(true, -1.0, fade_out)
-	elif mc.autoplay_stream != null:
-		mc.play_music(mc.autoplay_stream, mc.autoplay_fade_in, fade_out, true)
 
 
 func _get_or_create_finish_banner() -> Node:
@@ -1561,6 +1561,8 @@ func _rpc_race_prepare_results(payload: Dictionary, generation: int) -> void:
 	_race_session_start_path = String(payload.get("start_path", ""))
 	player.set("race_active", false)
 	player.set("race_finished", true)
+	if player.has_method("clear_timed_item_effects"):
+		player.call("clear_timed_item_effects")
 	var hud: Node = player.get("hud")
 	if hud and hud.has_method("set_timer_running"):
 		hud.call("set_timer_running", false)
@@ -1901,9 +1903,11 @@ func _rpc_show_race_results(order: Array, dnfs: Array, times: Dictionary, rings:
 
 	var bb: String = _format_places_bbcode(order, dnfs, times, debug_flags)
 	var is_new_record: bool = false
-	if not debug_used_local and local_time > 0.0:
-		var level_key := _get_level_key_for_scores()
-		is_new_record = HighScoreManager.save_time_if_better(level_key, local_time)
+	if not debug_used_local and not dnfs.has(_local_id) and is_finite(local_time) and local_time > 0.0:
+		var record_key: String = _get_level_key_for_scores()
+		is_new_record = HighScoreManager.save_time_if_better(record_key, local_time)
+		if ui.has_method("set_results_record_key"):
+			ui.call("set_results_record_key", record_key)
 	if ui.has_method("configure_post_race_options"):
 		ui.call("configure_post_race_options", true, false)
 	if ui.has_method("set_restart_label"):

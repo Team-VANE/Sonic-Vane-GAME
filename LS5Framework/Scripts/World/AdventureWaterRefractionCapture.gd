@@ -76,6 +76,9 @@ func _sync() -> void:
 	if not is_supported():
 		return
 	var camera: Camera3D = _source.get_camera_3d()
+	if not is_instance_valid(camera) or not (camera.cull_mask & WATER_RENDER_LAYER):
+		_suspend()
+		return
 	var data: Array[Dictionary] = []
 	var visible_view: bool = not Engine.is_editor_hint() or not _source.get_parent() is Control or (_source.get_parent() as Control).is_visible_in_tree()
 	var meshes: Dictionary = {}
@@ -95,7 +98,7 @@ func _sync() -> void:
 	for id: int in _meshes.keys():
 		if not meshes.has(id):
 			_meshes.erase(id)
-	if data.is_empty() or not is_instance_valid(camera):
+	if data.is_empty():
 		_suspend()
 		return
 	var world_changed: bool = not _base_compositor and is_instance_valid(_world_source) and _world_source.get("compositor") != _inherited_compositor

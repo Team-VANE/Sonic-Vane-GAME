@@ -112,6 +112,11 @@ var _mesh_probe: SubViewport
 ## Camera testing only candidate geometry in the private probe world.
 var _mesh_probe_camera: Camera3D
 var _mesh_instances: Dictionary[int, RID] = {}
+## Overrides camera selection while posing a photo.
+var _photo_camera: Camera3D
+var _previous_process_mode: ProcessMode
+var _previous_overlay_visible: bool
+var _previous_canvas_layers: Array[int] = []
 
 
 func _ready() -> void:
@@ -120,6 +125,35 @@ func _ready() -> void:
 	_bleach.draw.connect(_draw_bleach)
 	_bleach_disc.draw.connect(_draw_bleach_disc)
 	_overlay.layer = 0
+	if directional:
+		add_to_group(&"SunLensFlare")
+
+
+func begin_photo_view(camera: Camera3D, mask: int) -> void:
+	_photo_camera = camera
+	_previous_process_mode = process_mode
+	_previous_overlay_visible = _overlay.visible
+	_previous_canvas_layers.clear()
+	for item: Control in [_glow, _lens, _bleach, _bleach_disc]:
+		_previous_canvas_layers.append(item.visibility_layer)
+		item.visibility_layer = mask
+	_overlay.layer = -2
+
+
+func set_photo_flare_enabled(value: bool) -> void:
+	_overlay.visible = value
+	process_mode = Node.PROCESS_MODE_ALWAYS if value else Node.PROCESS_MODE_DISABLED
+
+
+func end_photo_view() -> void:
+	_photo_camera = null
+	process_mode = _previous_process_mode
+	_overlay.layer = 0
+	_overlay.visible = _previous_overlay_visible
+	var items: Array[Control] = [_glow, _lens, _bleach, _bleach_disc]
+	for index: int in range(items.size()):
+		items[index].visibility_layer = _previous_canvas_layers[index]
+	_previous_canvas_layers.clear()
 
 
 func _process(delta: float) -> void:
@@ -166,6 +200,8 @@ func _update_view() -> void:
 	_view_weight = 0.0
 	_bleach_weight = 0.0
 	var next_camera: Camera3D = get_node_or_null(camera_path) as Camera3D if not camera_path.is_empty() else get_viewport().get_camera_3d()
+	if is_instance_valid(_photo_camera):
+		next_camera = _photo_camera
 	var next_source: Node3D = get_node_or_null(source_path) as Node3D if not source_path.is_empty() else self
 	if next_camera != _camera or next_source != _source:
 		_camera = next_camera

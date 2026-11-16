@@ -371,6 +371,8 @@ func finish_for_player(player: Node) -> void:
 		player.call("finish_active_combo")
 	if player.has_method("set"):
 		player.set("race_finished", true)
+	if player.has_method("clear_timed_item_effects"):
+		player.call("clear_timed_item_effects")
 	if player.has_method("play_voice_event"):
 		player.call("play_voice_event", &"finish_line")
 	_touched_this_race = true
@@ -497,11 +499,12 @@ func _run_goal_sequence(player: Node) -> void:
 				ghost_note += ("\n" if ghost_note.strip_edges() != "" else "") + recording_note
 
 	var is_new_record: bool = false
-	if not debug_used and final_time > 0.0:
-		var level_key := _get_level_key()
+	var record_key: String = ""
+	if not debug_used and is_finite(final_time) and final_time > 0.0:
+		record_key = _get_level_key()
 		if race_start != null and is_instance_valid(race_start) and race_start.has_method("get_high_score_key"):
-			level_key = String(race_start.call("get_high_score_key"))
-		is_new_record = HighScoreManager.save_time_if_better(level_key, final_time)
+			record_key = String(race_start.call("get_high_score_key"))
+		is_new_record = HighScoreManager.save_time_if_better(record_key, final_time)
 
 	var ui = _spawn_ui()
 	_goal_results_ui = ui
@@ -556,6 +559,8 @@ func _run_goal_sequence(player: Node) -> void:
 		if not _goal_sequence_is_current(player, sequence_token):
 			return
 	if not _victory_failed and ui != null and is_instance_valid(ui) and ui.has_method("show_results"):
+		if ui.has_method("set_results_record_key"):
+			ui.call("set_results_record_key", record_key)
 		ui.call("show_results", rings_value, final_time, score_value, is_new_record, ghost_note)
 	if ui != null and is_instance_valid(ui) and ui.has_method("set_restart_label"):
 		ui.call("set_restart_label", "Return to start")
@@ -1318,31 +1323,20 @@ func _get_autoplay_controller() -> MusicController:
 	if get_tree() == null:
 		return null
 	var controllers := get_tree().get_nodes_in_group("MusicControllers")
-	var fallback: MusicController = null
 	for node in controllers:
 		if node is MusicController:
 			var controller: MusicController = node
-			if fallback == null:
-				fallback = controller
 			if controller.autoplay and controller.autoplay_stream != null:
 				return controller
-	return fallback
+	return null
 
 
 func _restore_autoplay_music() -> void:
-	var mc = _get_autoplay_controller()
+	var mc: MusicController = _get_autoplay_controller()
 	if mc == null:
+		_stop_all_music(results_music_fade_out)
 		return
-	if mc.has_method("play_autoplay"):
-		mc.play_autoplay(true)
-	elif mc.autoplay_stream != null:
-		var fade_in: float = mc.autoplay_fade_in
-		var fade_out: float = music_fade_out_time
-		if mc.has_method("get"):
-			var v = mc.get("autoplay_fade_out")
-			if v is float:
-				fade_out = float(v)
-		mc.play_music(mc.autoplay_stream, fade_in, fade_out, true)
+	mc.play_autoplay(true)
 
 
 func _end_singleplayer_race(player: Node) -> void:

@@ -319,8 +319,10 @@ func _get_homing_contact_up() -> Vector3:
 func _get_homing_contact_direction(source: Node, fallback_velocity: Vector3, fallback_origin: Vector3) -> Vector3:
 	var p = _owner
 	var dir: Vector3 = Vector3.ZERO
-	if p._homing_target != null and is_instance_valid(p._homing_target):
-		dir = p.get_homing_attack_target_position() - p.global_position
+	if p._homing_arc_progress >= 1.0:
+		dir = fallback_velocity
+	elif p._homing_target != null and is_instance_valid(p._homing_target):
+		dir = p.get_homing_attack_target_position() - p.global_position + p._homing_arc_offset
 	if dir.length() < 0.001 and source != null and is_instance_valid(source) and source is Node3D:
 		dir = (source as Node3D).global_position - p.global_position
 	if dir.length() < 0.001:
@@ -368,6 +370,8 @@ func _get_homing_contact_pop_speed(source: Node) -> float:
 
 func _complete_homing_from_enemy_contact(source: Node, contact_velocity: Vector3, contact_lateral: Vector3, up: Vector3, fallback_origin: Vector3) -> void:
 	var p = _owner
+	contact_velocity -= p._homing_trajectory_velocity_adjustment
+	contact_lateral -= (p._homing_trajectory_velocity_adjustment as Vector3).slide(up)
 	var target_position: Vector3 = _get_homing_contact_target_position(source, fallback_origin)
 	var jump_held: bool = p._is_jump_held()
 	var is_pass_through: bool = _get_homing_contact_pass_through(source)

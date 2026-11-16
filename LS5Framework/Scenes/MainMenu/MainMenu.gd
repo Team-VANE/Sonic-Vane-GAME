@@ -726,13 +726,13 @@ func _on_ButtonLevelBack_pressed() -> void:
 	_show_main_menu()
 
 # Called for each dynamically-created level button
-func _on_level_button_pressed(level_name: String, scene_path: String, level_scene_path: String = "") -> void:
+func _on_level_button_pressed(level_name: String, scene_path: String, level_scene_path: String = "", thumbnail: Texture2D = null) -> void:
 	if _loading_started or _data_folder_missing:
 		return
 	_play_click()
 	if level_scene_path.strip_edges() != "":
 		_set_pending_level_scene(level_scene_path)
-	_change_scene_with_loading(scene_path, level_name, level_scene_path)
+	_change_scene_with_loading(scene_path, level_name, level_scene_path, thumbnail)
 
 
 func _on_character_button_pressed(entry: Dictionary) -> void:
@@ -1415,7 +1415,7 @@ func _on_level_entry_pressed(entry: Dictionary) -> void:
 	var level_scene_path: String = ""
 	if entry.has("level_scene"):
 		level_scene_path = str(entry["level_scene"])
-	_on_level_button_pressed(name, scene_path, level_scene_path)
+	_on_level_button_pressed(name, scene_path, level_scene_path, LevelCatalog.get_entry_thumbnail(entry))
 
 
 func _clear_level_list() -> void:
@@ -1452,7 +1452,7 @@ func _start_test_level_from_menu() -> void:
 	var net = get_node_or_null("/root/NetworkManager")
 	if net != null:
 		net.call("leave")
-	_change_scene_with_loading(scene_path, level_name, level_scene_path)
+	_change_scene_with_loading(scene_path, level_name, level_scene_path, LevelCatalog.get_entry_thumbnail(test_entry))
 
 
 func _request_test_level_skip() -> void:
@@ -1480,7 +1480,7 @@ func _start_requested_test_level_skip() -> void:
 	_start_test_level_from_menu()
 
 
-func _show_loading_screen(level_name: String) -> LoadingScreen:
+func _show_loading_screen(level_name: String, thumbnail: Texture2D) -> LoadingScreen:
 	if LOADING_SCREEN_SCENE == null:
 		return null
 	var screen: LoadingScreen = LOADING_SCREEN_SCENE.instantiate() as LoadingScreen
@@ -1489,10 +1489,11 @@ func _show_loading_screen(level_name: String) -> LoadingScreen:
 	if get_tree() != null:
 		get_tree().root.add_child(screen)
 	screen.set_level_name(level_name)
+	screen.set_level_thumbnail(thumbnail)
 	return screen
 
 
-func _change_scene_with_loading(scene_ref: String, level_name: String, level_scene_ref: String = "") -> void:
+func _change_scene_with_loading(scene_ref: String, level_name: String, level_scene_ref: String, thumbnail: Texture2D) -> void:
 	if _data_folder_missing:
 		return
 	if scene_ref.strip_edges() == "":
@@ -1501,7 +1502,7 @@ func _change_scene_with_loading(scene_ref: String, level_name: String, level_sce
 		return
 	_loading_started = true
 	_play_character_ui_voice(&"loading")
-	var screen: LoadingScreen = _show_loading_screen(level_name)
+	var screen: LoadingScreen = _show_loading_screen(level_name, thumbnail)
 	if screen != null:
 		screen.intro_finished.connect(_clear_menu_for_loading, CONNECT_ONE_SHOT)
 		var audio_manifest: AudioPreparationManifest = null

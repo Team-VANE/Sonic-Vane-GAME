@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://hlgooqx7uwdi"]
 
 [ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_xphwv"]
+[ext_resource type="Texture2D" uid="uid://8dx26o4t4sis" path="res://LS5Framework/Scenes/Levels/White Jungle/WhiteJungle_Thumb.png" id="2_cyr4s"]
 
 [resource]
 script = ExtResource("1_xphwv")
@@ -9,3 +10,4 @@ order = 5
 selection_category = "Work In Progress"
 scene = "res://LS5Framework/Scenes/Main.tscn"
 level_scene = "res://LS5Framework/Scenes/Levels/White Jungle/white_jungle.tscn"
+thumbnail = ExtResource("2_cyr4s")

@@ -5,6 +5,7 @@ const ONLINE_TELEPORT_STATE_WAIT_FRAMES: int = 180
 const PAUSE_PREVIEW_ACTION: StringName = &"hide_pause_menu"
 const CHARACTER_SETTINGS_MENU_SCENE: PackedScene = preload("res://LS5Framework/Scenes/UI/CharacterSettingsMenu.tscn")
 const HELD_BUTTON_PROMPT_SCENE: PackedScene = preload("res://LS5Framework/Scenes/UI/HeldButtonPrompt.tscn")
+const PhotoMode = preload("res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd")
 
 ## Controller checkpoint shortcut hold time required to restart an available race.
 @export_range(0.1, 3.0, 0.05, "suffix:s") var race_restart_hold_duration: float = 0.7
@@ -122,6 +123,15 @@ var _character_settings_menu: CharacterSettingsMenu = null
 @onready var button_quick_restart: Button = $Overlay/PausePanel/VBoxPause/ButtonQuickRestart
 @onready var button_respawn_start: Button = $Overlay/PausePanel/VBoxPause/HBoxRespawn/ButtonRespawnStart
 @onready var button_respawn_checkpoint: Button = $Overlay/PausePanel/VBoxPause/HBoxRespawn/ButtonRespawnCheckpoint
+## Opens Photo Mode from the pause actions.
+@onready var button_photo_mode: Button = $Overlay/PausePanel/VBoxPause/ButtonPhotoMode
+## Owns the photo camera and its controls during pause.
+@onready var _photo_mode: PhotoMode = $PhotoMode
+
+## Local player that opened Photo Mode.
+var _photo_player: Node3D
+var _pause_online: bool = false
+var _previous_tree_pause: bool = false
 
 @onready var tabs_options: TabContainer = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions
 @onready var tab_controls: Control = $Overlay/OptionsPanel/Panel/VBoxOptions/TabsOptions/TabControls
@@ -302,7 +312,7 @@ const GRAPHICS_CONFIRMATION_DURATION: float = 15.0
 
 
 func _is_online() -> bool:
-	return multiplayer != null and multiplayer.has_multiplayer_peer()
+	return multiplayer and multiplayer.has_multiplayer_peer() and not (multiplayer.multiplayer_peer is OfflineMultiplayerPeer)
 
 
 func _get_local_player() -> Node:
@@ -344,6 +354,7 @@ func _ready() -> void:
 	if not button_options_back.pressed.is_connected(_on_ButtonOptionsBack_pressed):
 		button_options_back.pressed.connect(_on_ButtonOptionsBack_pressed)
 	MenuNavigation.register_menu(self, _menu_navigation_scope)
+	_photo_mode.exit_requested.connect(_close_photo_mode)
 	_create_pause_viewport()
 	_create_pause_panel_guides()
 	_create_pause_shortcut_prompts()
@@ -404,7 +415,16 @@ func _wire_online_signals() -> void:
 
 
 func _process(delta: float) -> void:
+	if _is_open and _pause_online != _is_online():
+		_resume_game()
+		return
+	if _photo_mode.visible:
+		var player: Node = _get_local_player()
+		if _photo_player != player or not _photo_mode.has_photo_view() or not _can_open_photo_mode(player):
+			_resume_game()
+		return
 	if _is_open and panel_pause.visible:
+		button_photo_mode.disabled = not _can_open_photo_mode(_get_local_player())
 		_layout_pause_viewport()
 	_update_pause_shortcuts(delta)
 	if is_instance_valid(_character_settings_menu):
@@ -484,6 +504,8 @@ func _set_pause_preview_hidden(hidden: bool) -> void:
 
 func _input(event: InputEvent) -> void:
 	SettingsManager.track_input_device(event)
+	if _photo_mode.visible:
+		return
 	if is_instance_valid(_navigation_confirmation) and _navigation_confirmation.visible:
 		return
 	if is_instance_valid(_character_settings_menu):
@@ -511,6 +533,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _photo_mode.visible:
+		return
 	if is_instance_valid(_navigation_confirmation) and _navigation_confirmation.visible:
 		return
 	if is_instance_valid(_character_settings_menu):
@@ -598,6 +622,8 @@ func _open_pause() -> void:
 	visible = true
 	_show_pause_panel()
 	_is_open = true
+	_pause_online = _is_online()
+	_previous_tree_pause = get_tree().paused
 	_set_hud_visible(false)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	_play_sfx(sfx_pause)
@@ -606,7 +632,7 @@ func _open_pause() -> void:
 		p.call("set_ui_input_blocked", true)
 		if p.has_method("set_combo_ui_pause_hidden"):
 			p.call("set_combo_ui_pause_hidden", true)
-	if _is_online():
+	if _pause_online:
 		_refresh_player_list()
 		_refresh_return_hub_button()
 		_refresh_quick_restart_button()
@@ -618,6 +644,64 @@ func _open_pause() -> void:
 	_refresh_race_leave_button()
 	_refresh_return_hub_button()
 	_refresh_quick_restart_button()
+	button_photo_mode.disabled = not _can_open_photo_mode(p)
+
+
+func _can_open_photo_mode(player: Node) -> bool:
+	if not is_instance_valid(player) or not player is Node3D or not player.is_inside_tree():
+		return false
+	if _is_death_sequence_active(player) or bool(player.get("_goal_sequence_frozen")) or not _can_open_pause():
+		return false
+	if bool(player.get("_level_load_suspended")) or NetworkManager.is_connecting():
+		return false
+	if _is_online():
+		if not NetworkManager.is_in_session():
+			return false
+		var session: Node = _get_network_session()
+		if session and session.has_method("is_local_player_racing") and session.call("is_local_player_racing"):
+			return false
+	return get_viewport().get_camera_3d() != null
+
+
+func _on_ButtonPhotoMode_pressed() -> void:
+	var player: Node = _get_local_player()
+	if not _is_open or _photo_mode.visible or _pause_online != _is_online() or not _can_open_photo_mode(player):
+		return
+	_photo_player = player as Node3D
+	dimmer.hide()
+	overlay.hide()
+	_cancel_pause_shortcut_hold()
+	_set_photo_chat_hidden(true)
+	_photo_mode.open(get_viewport().get_camera_3d(), _photo_player, _pause_online)
+
+
+func _close_photo_mode() -> void:
+	_end_photo_mode()
+	dimmer.show()
+	overlay.show()
+	_show_pause_panel()
+	MenuNavigation.restore_focus()
+	button_photo_mode.grab_focus()
+
+
+func _end_photo_mode() -> void:
+	if _photo_mode.visible:
+		_photo_mode.close()
+		_set_photo_chat_hidden(false)
+	_photo_player = null
+
+
+func _set_photo_chat_hidden(value: bool) -> void:
+	var scene: Node = get_tree().current_scene
+	var chat: Node = scene.get_node_or_null("ChatUI") if scene else null
+	if chat and chat.has_method("set_photo_mode_hidden"):
+		chat.call("set_photo_mode_hidden", value)
+
+
+func _exit_tree() -> void:
+	if _is_open and not _pause_online:
+		get_tree().paused = _previous_tree_pause
+		SettingsManager.sync_audio_pause()
 
 
 func _release_gameplay_inputs() -> void:
@@ -636,8 +720,11 @@ func _release_gameplay_inputs() -> void:
 
 func _resume_game(lock_cursor: bool = true) -> void:
 	_release_gameplay_inputs()
+	_end_photo_mode()
 	_stop_camera_preview()
 	_set_pause_preview_hidden(false)
+	dimmer.show()
+	overlay.show()
 	if _deadzone_visual != null:
 		_deadzone_visual.visible = false
 	visible = false
@@ -651,11 +738,10 @@ func _resume_game(lock_cursor: bool = true) -> void:
 		p.call("set_ui_input_blocked", false)
 		if p.has_method("set_combo_ui_pause_hidden"):
 			p.call("set_combo_ui_pause_hidden", false)
-	if _is_online():
-		if p != null:
-			p.call("set_local_pause_enabled", false)
-	else:
-		get_tree().paused = false
+	if p != null and _pause_online:
+		p.call("set_local_pause_enabled", false)
+	if not _pause_online:
+		get_tree().paused = _previous_tree_pause
 		SettingsManager.sync_audio_pause()
 	if lock_cursor:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -2765,6 +2851,8 @@ func _on_CheckRememberEmotePage_toggled(pressed: bool) -> void:
 func _menu_navigation_scope() -> Dictionary:
 	if not _is_open or _pause_preview_hidden:
 		return {}
+	if _photo_mode.visible:
+		return _photo_mode.navigation_scope()
 	if reset_defaults_dialog.visible:
 		return {"root": reset_defaults_dialog, "default": button_cancel_reset_defaults}
 	if graphics_confirm_dialog.visible:

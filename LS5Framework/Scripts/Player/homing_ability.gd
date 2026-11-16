@@ -38,6 +38,8 @@ extends CharacterAbility
 @export_subgroup("Movement")
 ## Minimum travel speed during homing.
 @export var homing_speed: float = 85.0
+## Peak height of the homing arc above the direct path, along physics up. Short attacks cap the height at half their travel. Zero uses the direct path.
+@export_range(0.0, 30.0, 0.1, "or_greater", "suffix:m") var homing_trajectory_arc_height: float = 4.0
 ## Homing steering response.
 @export var homing_turn_rate: float = 3.5
 ## Slides past minor terrain contacts while a fresh ray still has a clear path to the homing target.

@@ -6,6 +6,13 @@ signal cover_edge_distance_changed(distance: float)
 signal profile_transition_finished(profile: RainProfile)
 signal thunder_played(stream: AudioStream)
 
+const COVER_PROBE_MOVEMENT: float = 0.75
+const STATIONARY_COVER_INTERVAL: float = 1.25
+const COVER_EDGE_PROBE_MOVEMENT: float = 2.0
+const COVER_EDGE_INTERVAL: float = 1.0
+const STATIONARY_COVER_EDGE_INTERVAL: float = 3.0
+const COLLISION_RANGE_STEP: float = 16.0
+
 @export_group("Rain")
 ## Rain appearance and motion settings applied to both distance-detail layers.
 @export var profile: RainProfile
@@ -27,8 +34,8 @@ signal thunder_played(stream: AudioStream)
 @export_flags_3d_physics var cover_collision_mask: int = 1
 ## Allows Area3D nodes on the cover mask to block exposure probes.
 @export var cover_collide_with_areas: bool = false
-## Seconds between cover probe batches.
-@export_range(0.02, 1.0, 0.01) var cover_check_interval_seconds: float = 0.1
+## Minimum seconds between exposure samples while the camera or rain direction is moving.
+@export_range(0.02, 1.0, 0.01) var cover_check_interval_seconds: float = 0.3
 ## Odd number of probes per axis. Five creates a 5 by 5 grid.
 @export_range(1, 5, 2) var cover_grid_size: int = 3
 ## Horizontal radius sampled around the camera for partial-cover detection.
@@ -176,6 +183,13 @@ var _applied_profile: RainProfile
 var _rain_direction: Vector3 = Vector3.DOWN
 var _spawn_height: float = 30.0
 var _cover_elapsed: float = 0.0
+var _cover_camera_id: int = 0
+var _cover_sample_origin: Vector3 = Vector3.ZERO
+var _cover_sample_ray: Vector3 = Vector3.ZERO
+var _cover_edge_elapsed: float = 0.0
+var _cover_edge_sample_origin: Vector3 = Vector3.ZERO
+var _cover_edge_sample_ray: Vector3 = Vector3.ZERO
+var _cover_edge_sample_valid: bool = false
 var _cover_target: float = 1.0
 var _cover_exposure: float = 1.0
 var _cover_edge_distance_target: float = 0.0
@@ -200,6 +214,46 @@ var _profile_transition_from: Dictionary = {}
 var _profile_transition_target: RainProfile
 var _profile_transition_duration: float = 0.0
 var _profile_transition_elapsed: float = 0.0
+## Rain profile rendered while the photo weather override is active.
+var _photo_rain: RainProfile
+
+
+func set_photo_rain(preview: RainProfile) -> void:
+	if preview == _photo_rain:
+		if preview:
+			_refresh_photo_rain_lighting()
+		return
+	_photo_rain = preview
+	var state: Dictionary = _sample_profile(preview) if preview else _current_state
+	_apply_profile_state(state)
+	_update_collision_visibility(_has_active_rain(state))
+	_refresh_photo_rain_lighting()
+	var intensity: float = clampf(float(state.get("intensity", 0.0)) * intensity_multiplier, 0.0, 1.0)
+	var emission: float = intensity * _global_particle_quality_multiplier if rain_enabled else 0.0
+	for particles: GPUParticles3D in [_near_particles, _far_particles]:
+		if not particles:
+			continue
+		particles.restart(true)
+		particles.visible = not preview or emission > 0.001
+		_set_particle_emission(particles, emission)
+		if preview and particles.emitting:
+			particles.request_particles_process(particles.lifetime)
+	if not preview:
+		_cover_camera_id = 0
+		_update_camera()
+		update_photo_rain_camera(_camera, true)
+		_update_emission()
+
+
+func update_photo_rain_camera(camera: Camera3D, force: bool = false) -> void:
+	if (_photo_rain or force) and camera and _emitter_anchor:
+		_emitter_anchor.global_position = camera.global_position
+
+
+func _refresh_photo_rain_lighting() -> void:
+	_update_ambient_lighting_target()
+	_lighting_multiplier = _lighting_target
+	_apply_lighting_multiplier()
 
 
 func _ready() -> void:
@@ -213,6 +267,7 @@ func _ready() -> void:
 	_configure_static_resources()
 	_current_state = _sample_profile(profile)
 	_apply_profile_state(_current_state)
+	_update_collision_visibility(_has_active_rain(_current_state))
 	_update_ambient_lighting_target()
 	_lighting_multiplier = _lighting_target
 	_apply_lighting_multiplier()
@@ -222,15 +277,20 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if _photo_rain:
+		return
 	_update_camera()
 	_update_ambient_lighting(delta)
 	if _camera and _emitter_anchor:
 		_emitter_anchor.global_transform = Transform3D(Basis.IDENTITY, _camera.global_position)
-	_update_collision_anchor()
 	_advance_profile_transition(delta)
 	if not _profile_transition_active and profile != _applied_profile:
 		_current_state = _sample_profile(profile)
 		_apply_profile_state(_current_state)
+	var raining: bool = _has_active_rain(_current_state)
+	_update_collision_visibility(raining)
+	if raining:
+		_update_collision_anchor()
 	var cover_speed: float = cover_fade_in_speed if _cover_target > _cover_exposure else cover_fade_out_speed
 	var previous_exposure: float = _cover_exposure
 	_cover_exposure = move_toward(_cover_exposure, _cover_target, cover_speed * delta)
@@ -244,22 +304,45 @@ func _process(delta: float) -> void:
 	)
 	if not is_equal_approx(previous_edge_distance, _cover_edge_distance):
 		cover_edge_distance_changed.emit(_cover_edge_distance)
-	_update_far_cover_visibility()
+	if raining:
+		_update_far_cover_visibility()
 	_update_emission()
 	_update_audio(delta)
 	_update_thunder(delta)
 
 
 func _physics_process(delta: float) -> void:
-	if not _global_weather_occlusion_enabled:
+	if _photo_rain:
+		return
+	if not _global_weather_occlusion_enabled or not cover_detection_enabled or not _has_active_rain(_current_state) or not is_instance_valid(_camera):
+		_cover_camera_id = 0
+		_cover_edge_sample_valid = false
 		_cover_target = 1.0
 		_cover_edge_distance_target = 0.0
 		return
 	_cover_elapsed += delta
-	if _cover_elapsed < cover_check_interval_seconds:
+	_cover_edge_elapsed += delta
+	var camera_id: int = _camera.get_instance_id()
+	var camera_changed: bool = camera_id != _cover_camera_id
+	if not camera_changed and _cover_elapsed < cover_check_interval_seconds:
 		return
+	var origin: Vector3 = _camera.global_position + Vector3.UP * cover_probe_height
+	var vertical_distance: float = maxf(_spawn_height - cover_probe_height, 1.0)
+	var ray_length: float = vertical_distance / maxf(-_rain_direction.y, 0.05) + cover_ray_margin
+	var ray: Vector3 = -_rain_direction * ray_length
+	if not camera_changed and _cover_elapsed < STATIONARY_COVER_INTERVAL:
+		var movement_squared: float = COVER_PROBE_MOVEMENT * COVER_PROBE_MOVEMENT
+		var camera_still: bool = origin.distance_squared_to(_cover_sample_origin) < movement_squared
+		var rain_still: bool = ray.distance_squared_to(_cover_sample_ray) < movement_squared
+		if camera_still and rain_still:
+			return
+	if camera_changed:
+		_cover_edge_sample_valid = false
+	_cover_camera_id = camera_id
+	_cover_sample_origin = origin
+	_cover_sample_ray = ray
 	_cover_elapsed = 0.0
-	_update_cover_target()
+	_update_cover_target(origin, ray)
 
 
 func set_profile(target_profile: RainProfile) -> void:
@@ -293,6 +376,9 @@ func set_system_active(active: bool) -> void:
 		_update_emission()
 		_update_audio(0.0)
 		return
+	_cover_camera_id = 0
+	_cover_edge_sample_valid = false
+	_update_collision_visibility(false)
 	_set_particle_emission(_near_particles, 0.0)
 	_set_particle_emission(_far_particles, 0.0)
 	if _outdoor_audio_player:
@@ -365,10 +451,12 @@ func _sync_global_graphics_settings() -> void:
 
 func apply_global_graphics_settings(particle_multiplier: float, occlusion_enabled: bool) -> void:
 	_global_particle_quality_multiplier = clampf(particle_multiplier, 0.0, 1.0)
+	if _global_weather_occlusion_enabled != occlusion_enabled:
+		_cover_camera_id = 0
+		_cover_edge_sample_valid = false
 	_global_weather_occlusion_enabled = occlusion_enabled
-	if _collision_heightfield:
-		_collision_heightfield.visible = occlusion_enabled and (near_collision_enabled or far_collision_enabled)
-		_collision_anchor_initialized = false
+	var rain_state: Dictionary = _sample_profile(_photo_rain) if _photo_rain else _current_state
+	_update_collision_visibility(_has_active_rain(rain_state))
 	if not occlusion_enabled:
 		_cover_target = 1.0
 		_cover_edge_distance_target = 0.0
@@ -389,7 +477,6 @@ func _configure_static_resources() -> void:
 		_far_particles.interpolate = true
 		_far_particles.fract_delta = true
 	if _collision_heightfield:
-		_collision_heightfield.visible = _global_weather_occlusion_enabled and (near_collision_enabled or far_collision_enabled)
 		_collision_heightfield.heightfield_mask = collision_visual_mask
 		_collision_heightfield.size = collision_heightfield_size
 		_collision_heightfield.resolution = collision_heightfield_resolution
@@ -497,6 +584,21 @@ func _apply_lighting_multiplier() -> void:
 		_near_draw_material.set_shader_parameter("lighting_multiplier", _lighting_multiplier)
 	if _far_draw_material:
 		_far_draw_material.set_shader_parameter("lighting_multiplier", _lighting_multiplier)
+
+
+func _has_active_rain(state: Dictionary) -> bool:
+	return _system_active and rain_enabled and float(state.get("intensity", 0.0)) * intensity_multiplier > 0.0001
+
+
+func _update_collision_visibility(raining: bool) -> void:
+	if not _collision_heightfield:
+		return
+	var collision_active: bool = raining and _global_weather_occlusion_enabled and (near_collision_enabled or far_collision_enabled)
+	if _collision_heightfield.visible != collision_active:
+		_collision_heightfield.visible = collision_active
+		_collision_anchor_initialized = false
+		if collision_active:
+			_applied_far_cover_extension = -1.0
 
 
 func _update_collision_anchor() -> void:
@@ -689,60 +791,56 @@ func _update_far_cover_visibility(force_update: bool = false) -> void:
 		var base_fade_out_end: float = float(_current_state.get("far_fade_out_end", 240.0))
 		_far_draw_material.set_shader_parameter("fade_out_start", base_fade_out_start + range_extension * 0.72)
 		_far_draw_material.set_shader_parameter("fade_out_end", base_fade_out_end + range_extension)
-	if _global_weather_occlusion_enabled and _collision_heightfield:
-		var collision_radius: float = effective_far_radius
+	if _global_weather_occlusion_enabled and _collision_heightfield and (near_collision_enabled or far_collision_enabled) and (_photo_rain or _has_active_rain(_current_state)):
+		var collision_extension: float = ceilf(range_extension / COLLISION_RANGE_STEP) * COLLISION_RANGE_STEP
+		var collision_radius: float = base_far_radius + collision_extension
 		if not far_collision_enabled:
 			collision_radius = float(_current_state.get("near_radius", 15.0))
 		var required_horizontal_size: float = (collision_radius + horizontal_travel + 5.0) * 2.0
 		var required_vertical_size: float = _spawn_height * 2.0 + 10.0
-		_collision_heightfield.size = Vector3(
+		var collision_size: Vector3 = Vector3(
 			maxf(collision_heightfield_size.x, required_horizontal_size),
 			maxf(collision_heightfield_size.y, required_vertical_size),
 			maxf(collision_heightfield_size.z, required_horizontal_size)
 		)
+		if not _collision_heightfield.size.is_equal_approx(collision_size):
+			_collision_heightfield.size = collision_size
 
 
-func _update_cover_target() -> void:
-	if not _global_weather_occlusion_enabled or not cover_detection_enabled:
-		_cover_target = 1.0
-		_cover_edge_distance_target = 0.0
-		return
-	if not _camera or not is_inside_tree():
-		_cover_target = 0.0
-		_cover_edge_distance_target = 0.0
-		return
+func _update_cover_target(origin: Vector3, ray: Vector3) -> void:
 	var world: World3D = get_world_3d()
 	if not world:
-		_cover_target = 0.0
+		_cover_camera_id = 0
+		_cover_target = 1.0
+		_cover_edge_sample_valid = false
 		_cover_edge_distance_target = 0.0
 		return
+	var space: PhysicsDirectSpaceState3D = world.direct_space_state
 	_cover_query.collision_mask = cover_collision_mask
 	_cover_query.collide_with_areas = cover_collide_with_areas
+	if _is_cover_probe_blocked(space, origin, ray):
+		_cover_target = 0.0
+		_update_cover_edge_target(space, origin, ray)
+		return
+	_cover_edge_sample_valid = false
+	_cover_edge_distance_target = 0.0
 	var grid_size: int = clampi(cover_grid_size, 1, 5)
 	if grid_size % 2 == 0:
 		grid_size = mini(grid_size + 1, 5)
 	var center_index: int = grid_size / 2
 	var blocked_count: int = 0
 	var probe_count: int = grid_size * grid_size
-	var center_blocked: bool = false
-	var vertical_distance: float = maxf(_spawn_height - cover_probe_height, 1.0)
-	var ray_length: float = vertical_distance / maxf(-_rain_direction.y, 0.05) + cover_ray_margin
 	for grid_x: int in range(grid_size):
 		var x_weight: float = 0.5 if grid_size == 1 else float(grid_x) / float(grid_size - 1)
 		var offset_x: float = lerpf(-cover_probe_radius, cover_probe_radius, x_weight)
 		for grid_z: int in range(grid_size):
+			if grid_x == center_index and grid_z == center_index:
+				continue
 			var z_weight: float = 0.5 if grid_size == 1 else float(grid_z) / float(grid_size - 1)
 			var offset_z: float = lerpf(-cover_probe_radius, cover_probe_radius, z_weight)
 			var horizontal_offset: Vector3 = Vector3(offset_x, 0.0, offset_z)
-			if _is_cover_probe_blocked(world, horizontal_offset, ray_length):
+			if _is_cover_probe_blocked(space, origin + horizontal_offset, ray):
 				blocked_count += 1
-				if grid_x == center_index and grid_z == center_index:
-					center_blocked = true
-	if center_blocked:
-		_cover_target = 0.0
-		_cover_edge_distance_target = _measure_nearest_cover_edge_distance(world, ray_length)
-		return
-	_cover_edge_distance_target = 0.0
 	var exposure: float = 1.0 - float(blocked_count) / float(maxi(probe_count, 1))
 	if exposure <= full_cover_exposure_threshold:
 		_cover_target = 0.0
@@ -750,9 +848,27 @@ func _update_cover_target() -> void:
 		_cover_target = inverse_lerp(full_cover_exposure_threshold, 1.0, exposure)
 
 
-func _measure_nearest_cover_edge_distance(world: World3D, ray_length: float) -> float:
+func _update_cover_edge_target(space: PhysicsDirectSpaceState3D, origin: Vector3, ray: Vector3) -> void:
 	if not cover_edge_audio_enabled:
-		return 0.0
+		_cover_edge_sample_valid = false
+		_cover_edge_distance_target = 0.0
+		return
+	if _cover_edge_sample_valid:
+		if _cover_edge_elapsed < COVER_EDGE_INTERVAL:
+			return
+		var movement_squared: float = COVER_EDGE_PROBE_MOVEMENT * COVER_EDGE_PROBE_MOVEMENT
+		var camera_still: bool = origin.distance_squared_to(_cover_edge_sample_origin) < movement_squared
+		var rain_still: bool = ray.distance_squared_to(_cover_edge_sample_ray) < movement_squared
+		if _cover_edge_elapsed < STATIONARY_COVER_EDGE_INTERVAL and camera_still and rain_still:
+			return
+	_cover_edge_sample_valid = true
+	_cover_edge_elapsed = 0.0
+	_cover_edge_sample_origin = origin
+	_cover_edge_sample_ray = ray
+	_cover_edge_distance_target = _measure_nearest_cover_edge_distance(space, origin, ray)
+
+
+func _measure_nearest_cover_edge_distance(space: PhysicsDirectSpaceState3D, origin: Vector3, ray: Vector3) -> float:
 	var maximum_distance: float = maxf(cover_edge_probe_max_distance, 1.0)
 	var spacing: float = clampf(cover_edge_probe_spacing, 0.5, maximum_distance)
 	var direction_count: int = clampi(cover_edge_probe_directions, 4, 16)
@@ -763,13 +879,13 @@ func _measure_nearest_cover_edge_distance(world: World3D, ray_length: float) -> 
 			var angle: float = TAU * float(direction_index) / float(direction_count)
 			var direction: Vector3 = Vector3(cos(angle), 0.0, sin(angle))
 			var horizontal_offset: Vector3 = direction * distance
-			if _is_cover_probe_blocked(world, horizontal_offset, ray_length):
+			if _is_cover_probe_blocked(space, origin + horizontal_offset, ray):
 				continue
 			var blocked_distance: float = maxf(distance - spacing, 0.0)
 			var open_distance: float = distance
 			for _refinement_index: int in range(3):
 				var test_distance: float = (blocked_distance + open_distance) * 0.5
-				if _is_cover_probe_blocked(world, direction * test_distance, ray_length):
+				if _is_cover_probe_blocked(space, origin + direction * test_distance, ray):
 					blocked_distance = test_distance
 				else:
 					open_distance = test_distance
@@ -777,15 +893,10 @@ func _measure_nearest_cover_edge_distance(world: World3D, ray_length: float) -> 
 	return maximum_distance
 
 
-func _is_cover_probe_blocked(world: World3D, horizontal_offset: Vector3, ray_length: float) -> bool:
-	var ray_origin: Vector3 = (
-		_camera.global_position
-		+ horizontal_offset
-		+ Vector3.UP * cover_probe_height
-	)
-	_cover_query.from = ray_origin
-	_cover_query.to = ray_origin - _rain_direction * ray_length
-	var hit: Dictionary = world.direct_space_state.intersect_ray(_cover_query)
+func _is_cover_probe_blocked(space: PhysicsDirectSpaceState3D, origin: Vector3, ray: Vector3) -> bool:
+	_cover_query.from = origin
+	_cover_query.to = origin + ray
+	var hit: Dictionary = space.intersect_ray(_cover_query)
 	return not hit.is_empty()
 
 

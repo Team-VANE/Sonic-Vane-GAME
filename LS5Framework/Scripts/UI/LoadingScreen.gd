@@ -54,12 +54,14 @@ const MAX_STALL_LOG_COMPLETIONS: int = 25
 @onready var background: ColorRect = $Root/Background
 ## Frames the loading message and moves during the transition.
 @onready var banner: VBoxContainer = $Root/Banner
+## Displays the selected level's thumbnail above the loading message.
+@onready var level_thumbnail: TextureRect = $Root/Banner/LevelFrame/FrameContent/Margin/Stack/Thumbnail
 ## Displays flavour text above the level name.
-@onready var prefix_label: Label = $Root/Banner/LevelFrame/FrameContent/Margin/Content/Prefix
+@onready var prefix_label: Label = $Root/Banner/LevelFrame/FrameContent/Margin/Stack/Content/Prefix
 ## Displays the selected level name.
-@onready var level_label: Label = $Root/Banner/LevelFrame/FrameContent/Margin/Content/LevelName
+@onready var level_label: Label = $Root/Banner/LevelFrame/FrameContent/Margin/Stack/Content/LevelName
 ## Displays flavour text below the level name.
-@onready var suffix_label: Label = $Root/Banner/LevelFrame/FrameContent/Margin/Content/Suffix
+@onready var suffix_label: Label = $Root/Banner/LevelFrame/FrameContent/Margin/Stack/Content/Suffix
 ## Displays the resources currently being loaded.
 @onready var resource_label: Label = $Root/Banner/ProgressInset/ProgressFrame/Margin/Content/ResourceStatus
 ## Displays aggregate resource loading progress.
@@ -74,6 +76,7 @@ var _outro_active: bool = false
 var _awaiting_level_handoff: bool = false
 var _loading_started: bool = false
 var _transition_tween: Tween = null
+var _banner_slide: float = 0.0
 var _tracked_resources: Dictionary = {}
 var _loaded_resources: Dictionary = {}
 var _load_entries: Array[Dictionary] = []
@@ -107,12 +110,21 @@ func _ready() -> void:
 	_resource_status_default_color = resource_label.get_theme_color(&"font_color")
 	if not root.resized.is_connected(_update_banner_layout):
 		root.resized.connect(_update_banner_layout)
+	banner.minimum_size_changed.connect(_update_banner_layout, CONNECT_DEFERRED)
+	banner.resized.connect(_position_banner)
 	_update_banner_layout()
 
 
 func _process(_delta: float) -> void:
 	if not _active_request_roots.is_empty():
 		_update_loading_watchdog()
+
+
+func set_level_thumbnail(texture: Texture2D) -> void:
+	if not is_node_ready():
+		await ready
+	level_thumbnail.texture = texture
+	level_thumbnail.visible = texture != null
 
 
 func set_level_name(level_name: String) -> void:
@@ -171,8 +183,7 @@ func play_intro() -> void:
 		music_fade_timer = get_tree().create_timer(music_fade_out_duration, true, false, true)
 	_update_banner_layout()
 	_kill_transition_tween()
-	var target_position: Vector2 = banner.position
-	banner.position = Vector2(-banner.size.x - offscreen_margin, target_position.y)
+	_set_banner_slide(-1.0)
 	banner.scale = Vector2(0.96, 0.96)
 	banner.modulate.a = 0.0
 	background.modulate.a = 0.0
@@ -187,10 +198,10 @@ func play_intro() -> void:
 	_transition_tween.tween_callback(_mark_screen_covered).set_delay(
 		max(background_fade_duration, 0.01)
 	)
-	_transition_tween.tween_property(
-		banner,
-		"position",
-		target_position,
+	_transition_tween.tween_method(
+		_set_banner_slide,
+		_banner_slide,
+		0.0,
 		max(banner_enter_duration, 0.01)
 	).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	_transition_tween.tween_property(
@@ -245,13 +256,12 @@ func play_outro() -> void:
 		await play_intro()
 	_outro_active = true
 	_kill_transition_tween()
-	var target_position: Vector2 = Vector2(root.size.x + offscreen_margin, banner.position.y)
 	_transition_tween = create_tween()
 	_transition_tween.set_parallel(true)
-	_transition_tween.tween_property(
-		banner,
-		"position",
-		target_position,
+	_transition_tween.tween_method(
+		_set_banner_slide,
+		_banner_slide,
+		1.0,
 		max(banner_exit_duration, 0.01)
 	).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	_transition_tween.tween_property(
@@ -1263,8 +1273,25 @@ func _update_banner_layout() -> void:
 	var available_width: float = max(root.size.x - viewport_margin * 2.0, 1.0)
 	var lower_width: float = min(minimum_banner_width, available_width)
 	var banner_width: float = clamp(root.size.x * 0.62, lower_width, min(maximum_banner_width, available_width))
-	banner.offset_left = -banner_width * 0.5
-	banner.offset_right = banner_width * 0.5
+	if level_thumbnail.visible:
+		var other_height: float = banner.get_combined_minimum_size().y - level_thumbnail.custom_minimum_size.y
+		var available_height: float = maxf(root.size.y - viewport_margin - other_height, 0.0)
+		var preferred_height: float = minf(banner_width * 0.5, root.size.y * 0.4)
+		level_thumbnail.custom_minimum_size.y = minf(preferred_height, available_height)
+	banner.size = Vector2(banner_width, 0.0)
+	_position_banner()
+
+
+func _set_banner_slide(value: float) -> void:
+	_banner_slide = value
+	_position_banner()
+
+
+func _position_banner() -> void:
+	var centered_position: Vector2 = (root.size - banner.size) * 0.5
+	var slide_distance: float = (root.size.x + banner.size.x) * 0.5 + offscreen_margin
+	banner.pivot_offset = banner.size * 0.5
+	banner.position = centered_position + Vector2(_banner_slide * slide_distance, 0.0)
 
 
 func _ensure_rng_seeded() -> void:

@@ -35,6 +35,14 @@ const CONTROL_CATEGORIES: Array[Dictionary] = [
 		{"action": "VomitCam", "label": "Camera Alignment / Rear View"},
 		{"action": "toggle_mouse_lock", "label": "Toggle Mouse Lock"}
 	]},
+	{"label": "Photo Mode", "actions": [
+		{"action": "photo_switch_focus", "label": "Switch Photo Mode Focus"},
+		{"action": "photo_camera_raise", "label": "Raise Photo Camera"},
+		{"action": "photo_camera_lower", "label": "Lower Photo Camera"},
+		{"action": "photo_camera_roll_left", "label": "Roll Photo Camera Left"},
+		{"action": "photo_camera_roll_right", "label": "Roll Photo Camera Right"},
+		{"action": "photo_screenshot", "label": "Take Screenshot"}
+	]},
 	{"label": "General", "actions": [
 		{"action": "emote_wheel", "label": "Open / Cancel Emote Wheel"},
 		{"action": "emote_page_previous", "label": "Previous Emote Page"},

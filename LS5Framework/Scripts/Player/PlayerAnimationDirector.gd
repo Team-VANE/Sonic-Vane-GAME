@@ -522,6 +522,17 @@ func get_group_playback(group: StringName) -> AnimationNodeStateMachinePlayback:
 	return _owner.anim_tree.get("%s/%s/playback" % [PlayerAnimation.SM_BASE, group]) if _owner.anim_tree else null
 
 
+func is_rail_switch_animation_playing() -> bool:
+	if not _owner.anim_tree or not _owner.anim_tree.active or get_current_state() != &"RAIL":
+		return false
+	var playback: AnimationNodeStateMachinePlayback = get_group_playback(&"RAIL")
+	if not playback or not playback.is_playing():
+		return false
+	var current: StringName = playback.get_current_node()
+	var fading: StringName = playback.get_fading_from_node()
+	return current in [&"SWITCH_LEFT", &"SWITCH_RIGHT"] or fading in [&"SWITCH_LEFT", &"SWITCH_RIGHT"]
+
+
 func get_active_playback() -> AnimationNodeStateMachinePlayback:
 	if _motion.is_landing():
 		return _owner.ground_state

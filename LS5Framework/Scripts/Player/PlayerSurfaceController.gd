@@ -2123,6 +2123,8 @@ func _start_detach(detach_normal: Vector3, world_up: Vector3) -> void:
 	p._start_coyote_jump_window()
 	
 	p.attached = false
+	if p._roll_action:
+		p._roll_action.finish_spindash_roll()
 	p._surface_support_timer = 0.0
 	p._surface_support_curvature = 0.0
 	p._surface_support_reaction_accel = 0.0

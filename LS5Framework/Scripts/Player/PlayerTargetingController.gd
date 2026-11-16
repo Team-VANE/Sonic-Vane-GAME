@@ -412,25 +412,23 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 		return current_velocity
 
 	var target_position: Vector3 = result["position"]
-	var hit_position: Vector3 = target_position
-	var target_velocity: Vector3 = Vector3.ZERO
-	var carrier: Node = target
-	while carrier and not carrier is PhysicsBody3D:
-		carrier = carrier.get_parent()
-	if carrier is CharacterBody3D:
-		target_velocity = (carrier as CharacterBody3D).velocity
-	elif carrier is RigidBody3D:
-		target_velocity = (carrier as RigidBody3D).linear_velocity
-	if not target_velocity.is_finite():
-		target_velocity = Vector3.ZERO
-	target_velocity = p.world_to_movement_velocity(target_velocity)
-	if not target_velocity.is_zero_approx():
-		var lead_time: float = minf(p.global_position.distance_to(target_position) / maxf(current_velocity.length(), 1.0), 0.12)
-		var lead_offset: Vector3 = (target_velocity * lead_time).limit_length(3.0)
-		var predicted_position: Vector3 = target_position + lead_offset
-		if not _is_homing_target_obstructed(p.global_position, predicted_position, target, true):
-			target_position = predicted_position
-	var to_target: Vector3 = target_position - p.global_position
+	var gravity_up: Vector3 = p._get_gravity_up()
+	var gravity: float = gravity_step / delta if gravity_step >= 0.0 else maxf(p.get_effective_gravity_strength(), 0.0)
+	var carrier: Node = _get_magnetism_target_carrier(target)
+	var target_velocity: Vector3 = _get_magnetism_target_velocity(carrier)
+	var shape_node: CollisionShape3D = _get_magnetism_hit_shape(target, carrier)
+	var collision_center: Vector3 = p.get_main_collision_world_center()
+	var radius: float = p.get_main_collision_world_radius()
+	var approach: Dictionary = _predict_magnetism_approach(
+		shape_node, target_position, collision_center, current_velocity - target_velocity, gravity_up * gravity, radius
+	)
+	var predicted_contact: bool = shape_node != null and float(approach["miss"]) <= 0.0
+	var contact_point: Vector3 = approach["point"]
+	var lead_time: float = minf(float(approach["time"]), 0.12)
+	var steering_point: Vector3 = contact_point + (target_velocity * lead_time).limit_length(3.0)
+	if not predicted_contact and _is_homing_target_obstructed(p.global_position, steering_point, target, true):
+		steering_point = target_position
+	var to_target: Vector3 = steering_point - collision_center
 	var dist: float = to_target.length()
 	if dist <= 0.001:
 		return current_velocity
@@ -446,7 +444,7 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 		return current_velocity
 
 	p._attack_magnetism_target = target
-	p._attack_magnetism_target_position = target_position
+	p._attack_magnetism_target_position = steering_point
 	p._attack_magnetism_strength_current = strength
 	if not is_zero_approx(p._attack_magnetism_bounce_descent_compensation):
 		p._attack_magnetism_bounce_compensation_timer = maxf(p.attack_magnetism_bounce_compensation_time, 0.0)
@@ -458,11 +456,15 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 	var time_to_target: float = maxf(dist / maxf(closing_speed, 1.0), 0.08)
 	var urgency: float = clampf(strength / 55.0, 0.0, 1.0)
 	var turn_rate: float = minf(maxf(strength / 35.0, angle / time_to_target * urgency), deg_to_rad(220.0))
+	var close_range: float = p.attack_magnetism_close_steering_range
+	if close_range > 0.0:
+		var close_distance: float = collision_center.distance_to(contact_point)
+		var proximity: float = 1.0 - smoothstep(0.0, close_range, close_distance)
+		turn_rate *= lerpf(1.0, p.attack_magnetism_close_steering_multiplier, proximity)
 	var weight: float = minf(turn_rate * delta / maxf(angle, 0.001), 1.0)
-	var adjusted_direction: Vector3 = direction.slerp(target_dir, weight).normalized()
+	var adjusted_direction: Vector3 = direction if predicted_contact else direction.slerp(target_dir, weight).normalized()
 	if adjusted_direction.is_zero_approx():
 		adjusted_direction = direction
-	var gravity_up: Vector3 = p._get_gravity_up()
 	var planar_direction: Vector3 = adjusted_direction.slide(gravity_up).normalized()
 	if planar_direction.is_zero_approx():
 		planar_direction = current_velocity.slide(gravity_up).normalized()
@@ -472,10 +474,9 @@ func _apply_attack_magnetism(delta: float, physics_up: Vector3, current_velocity
 	var budget: float = maxf(p.attack_magnetism_vertical_budget - _vertical_assist_spent, 0.0)
 	var duration: float = maxf(p.attack_magnetism_vertical_duration, 0.0)
 	var correction_time: float = duration if _vertical_assist_spent == 0.0 else available_time
-	if budget > 0.0 and correction_time > 0.0:
-		var gravity: float = gravity_step / delta if gravity_step >= 0.0 else maxf(p.get_effective_gravity_strength(), 0.0)
+	if not predicted_contact and budget > 0.0 and correction_time > 0.0:
 		var requested: float = _get_magnetism_vertical_correction(
-			target, carrier, hit_position, current_velocity, target_velocity, gravity_up, gravity
+			shape_node, contact_point, current_velocity, target_velocity, gravity_up, gravity
 		)
 		var correction_step: float = delta * minf(correction_time / maxf(timer_step, 0.000001), 1.0)
 		var vertical_authority: float = maxf(urgency, 0.45 * recovery_factor)
@@ -500,16 +501,93 @@ func _reset_magnetism_vertical_assist() -> void:
 	_vertical_assist_remaining = 0.0
 
 
-func _get_magnetism_vertical_correction(
-	target: Node3D, carrier: Node, aim: Vector3, velocity: Vector3, target_velocity: Vector3,
-	up: Vector3, gravity: float
-) -> float:
-	var p = _owner
+func _get_magnetism_target_carrier(target: Node3D) -> Node:
+	var carrier: Node = target
+	while carrier and not carrier is PhysicsBody3D:
+		carrier = carrier.get_parent()
+	return carrier
+
+
+func _get_magnetism_target_velocity(carrier: Node) -> Vector3:
+	var velocity: Vector3 = Vector3.ZERO
+	if carrier is CharacterBody3D:
+		velocity = carrier.velocity
+	elif carrier is RigidBody3D:
+		velocity = carrier.linear_velocity
+	return _owner.world_to_movement_velocity(velocity) if velocity.is_finite() else Vector3.ZERO
+
+
+func _get_magnetism_hit_shape(target: Node3D, carrier: Node) -> CollisionShape3D:
 	var shape_node: CollisionShape3D
 	if target.has_method("get_attack_magnetism_hit_shape"):
 		shape_node = target.call("get_attack_magnetism_hit_shape") as CollisionShape3D
 	elif carrier and carrier.has_method("get_attack_magnetism_hit_shape"):
 		shape_node = carrier.call("get_attack_magnetism_hit_shape") as CollisionShape3D
+	return shape_node if shape_node and not shape_node.disabled and shape_node.shape else null
+
+
+func _predict_magnetism_approach(
+	shape_node: CollisionShape3D, fallback: Vector3, origin: Vector3, velocity: Vector3,
+	gravity: Vector3, player_radius: float
+) -> Dictionary:
+	var shape: Shape3D = shape_node.shape if shape_node else null
+	var transform: Transform3D = shape_node.global_transform if shape_node else Transform3D(Basis.IDENTITY, fallback)
+	var inverse: Transform3D = transform.affine_inverse()
+	var best_distance_sq: float = INF
+	var best_point: Vector3 = fallback
+	var best_error: Vector3 = Vector3.ZERO
+	var best_time: float = 0.0
+	var refinement_center: float = 0.0
+	var sample_step: float = MAGNETISM_PREDICTION_TIME / 6.0
+	var linear_time: float = (transform.origin - origin).dot(velocity) / maxf(velocity.length_squared(), 0.001)
+	for sample: int in range(12):
+		var time: float
+		if sample < 7:
+			time = float(sample) * sample_step
+		elif sample == 7:
+			time = clampf(linear_time, 0.0, MAGNETISM_PREDICTION_TIME)
+		else:
+			if sample % 2 == 0:
+				refinement_center = best_time
+			var refinement: float = sample_step * (0.5 if sample < 10 else 0.25)
+			time = clampf(refinement_center + refinement * (-1.0 if sample % 2 == 0 else 1.0), 0.0, MAGNETISM_PREDICTION_TIME)
+		var forecast: Vector3 = origin + velocity * time - gravity * (0.5 * time * time)
+		var point: Vector3 = transform * _closest_magnetism_shape_point(shape, inverse * forecast)
+		var distance_sq: float = forecast.distance_squared_to(point)
+		if distance_sq < best_distance_sq:
+			best_distance_sq = distance_sq
+			best_point = point
+			best_error = point - forecast
+			best_time = time
+	return {
+		"point": best_point,
+		"error": best_error,
+		"time": best_time,
+		"miss": maxf(sqrt(best_distance_sq) - player_radius, 0.0),
+	}
+
+
+func _closest_magnetism_shape_point(shape: Shape3D, position: Vector3) -> Vector3:
+	if shape is SphereShape3D:
+		return position.limit_length(shape.radius)
+	if shape is CapsuleShape3D:
+		var half_core: float = maxf(shape.height * 0.5 - shape.radius, 0.0)
+		var axis_point: Vector3 = Vector3(0.0, clampf(position.y, -half_core, half_core), 0.0)
+		return axis_point + (position - axis_point).limit_length(shape.radius)
+	if shape is BoxShape3D:
+		var half_size: Vector3 = shape.size * 0.5
+		return position.clamp(-half_size, half_size)
+	if shape is CylinderShape3D:
+		var radial: Vector2 = Vector2(position.x, position.z).limit_length(shape.radius)
+		return Vector3(radial.x, clampf(position.y, -shape.height * 0.5, shape.height * 0.5), radial.y)
+	return Vector3.ZERO
+
+
+func _get_magnetism_vertical_correction(
+	shape_node: CollisionShape3D, aim: Vector3, velocity: Vector3, target_velocity: Vector3,
+	up: Vector3, gravity: float
+) -> float:
+	var p = _owner
 	var radius: float = p.get_main_collision_world_radius()
 	var round_radius: float = radius
 	var half_height: float = radius
@@ -648,8 +726,11 @@ func _get_attack_magnetism_scan_result(delta: float, heading: Vector3, up: Vecto
 			p._attack_magnetism_scan_result["position"] = position
 		else:
 			p._attack_magnetism_scan_result.clear()
+			p._attack_magnetism_scan_timer = 0.0
 	else:
 		p._attack_magnetism_scan_result.clear()
+		if previous != null:
+			p._attack_magnetism_scan_timer = 0.0
 	if p._attack_magnetism_scan_timer > 0.0:
 		return p._attack_magnetism_scan_result
 
@@ -797,7 +878,11 @@ func try_correct_homing_terrain_contact(normal: Vector3, collider: Object, incom
 	if tangent.is_zero_approx() or tangent.dot(to_target.normalized()) <= 0.1:
 		return false
 	var push_speed: float = minf(maxf(ability.homing_terrain_correction_push_speed, 0.0), speed * 0.1)
-	p.velocity = (tangent * speed + n * push_speed).normalized() * speed
+	var travel_speed: float = (incoming_velocity - p._homing_trajectory_velocity_adjustment).length()
+	p.velocity = (tangent * speed + n * push_speed).normalized() * travel_speed
+	p._homing_arc_span = 0.0
+	p._homing_arc_offset = Vector3.ZERO
+	p._homing_trajectory_velocity_adjustment = Vector3.ZERO
 	p._last_air_velocity = p.velocity
 	p._dbg_radial_result = "homing_terrain_correction"
 	return true
@@ -830,6 +915,9 @@ func _select_attack_magnetism_target(origin: Vector3, heading: Vector3, up: Vect
 	var input_heading: Vector3 = p._move_direction.slide(up).normalized()
 	var planar_heading: Vector3 = heading.slide(up).normalized()
 	var descending: bool = current_velocity.dot(up) < -0.001
+	var collision_center: Vector3 = p.get_main_collision_world_center()
+	var player_radius: float = p.get_main_collision_world_radius()
+	var gravity: Vector3 = p._get_gravity_up() * maxf(p.get_effective_gravity_strength(), 0.0)
 
 	for candidate in candidates:
 		if candidate == null or not is_instance_valid(candidate):
@@ -880,10 +968,24 @@ func _select_attack_magnetism_target(origin: Vector3, heading: Vector3, up: Vect
 		if strength <= 0.0:
 			continue
 
-		var score: float = heading_factor - 0.25 * (dist / target_range)
+		var carrier: Node = _get_magnetism_target_carrier(target)
+		var shape_node: CollisionShape3D = _get_magnetism_hit_shape(target, carrier)
+		var relative_velocity: Vector3 = current_velocity - _get_magnetism_target_velocity(carrier)
+		var approach: Dictionary = _predict_magnetism_approach(
+			shape_node, target_position, collision_center, relative_velocity, gravity, player_radius
+		)
+		var time: float = approach["time"]
+		var error: Vector3 = approach["error"]
+		var lift_budget: float = minf(
+			maxf(p.attack_magnetism_vertical_budget - _vertical_assist_spent, 0.0),
+			p.attack_magnetism_vertical_acceleration * time
+		)
+		var vertical_shortfall: float = maxf(absf(error.dot(up)) - player_radius - lift_budget * time, 0.0)
+		var score: float = 0.22 * heading_factor - 0.1 * (dist / target_range)
+		score -= 0.045 * float(approach["miss"]) + 0.045 * vertical_shortfall
 		if not input_heading.is_zero_approx():
 			var input_angle: float = input_heading.angle_to(target_planar) if not target_planar.is_zero_approx() else PI * 0.5
-			score = 0.2 * score - input_angle
+			score -= 0.65 * input_angle
 		if target == locked_target:
 			score += 0.18
 		if score > best_score and (target == locked_target or not _is_homing_target_obstructed(origin, target_position, target, true)):
@@ -1483,11 +1585,14 @@ func _update_homing(delta: float, up_for_physics: Vector3, is_attached: bool) ->
 		hit_distance = max(hit_distance, p._get_rail_path_snap_radius())
 
 	if dist <= hit_distance:
-		var current_velocity: Vector3 = p.velocity
-		var current_lateral: Vector3 = p.velocity - up * p.velocity.dot(up)
+		var current_velocity: Vector3 = p.velocity - p._homing_trajectory_velocity_adjustment
+		var current_lateral: Vector3 = current_velocity.slide(up)
 		var jump_held: bool = p._is_jump_held()
 
-		var homing_dir: Vector3 = to / max(dist, 0.001)
+		var travel_offset: Vector3 = to + p._homing_arc_offset
+		var homing_dir: Vector3 = travel_offset / maxf(travel_offset.length(), 0.001)
+		if p._homing_arc_progress >= 1.0 and not current_velocity.is_zero_approx():
+			homing_dir = current_velocity.normalized()
 		var homing_spd: float = max(p.homing_speed, p._homing_saved_speed_mag)
 		var is_pass_through: bool = p._object_has_property(p._homing_target, "pass_through") and p._homing_target.get("pass_through")
 
@@ -1531,19 +1636,49 @@ func _update_homing(delta: float, up_for_physics: Vector3, is_attached: bool) ->
 		p._homing_elapsed = 0.0
 		return
 
-	var desired_dir: Vector3 = to / dist
+	# Steering uses the unarced path. Arc velocity is applied after the travel speed is resolved.
+	var desired_dir: Vector3 = (to + p._homing_arc_offset).normalized()
+	if desired_dir.is_zero_approx():
+		desired_dir = to / dist
 	var spd: float = max(p.homing_speed, p._homing_saved_speed_mag)
-	var current_dir: Vector3 = p.velocity.normalized()
-	if current_dir.length() < 0.001:
-		p.velocity = desired_dir * spd
-	else:
+	var current_dir: Vector3 = (p.velocity - p._homing_trajectory_velocity_adjustment).normalized()
+	var travel_velocity: Vector3 = desired_dir * spd
+	if not current_dir.is_zero_approx():
 		var angle: float = current_dir.angle_to(desired_dir)
 		var max_turn: float = p.homing_turn_rate * delta
 		if angle > max_turn and angle > 0.001:
 			var t: float = max_turn / angle
-			p.velocity = current_dir.slerp(desired_dir, t) * spd
-		else:
-			p.velocity = desired_dir * spd
+			travel_velocity = current_dir.slerp(desired_dir, t) * spd
+	if delta > 0.0 and dist <= hit_distance + spd * delta * 2.0:
+		# End the arc before the final approach and limit the step to the actual target.
+		var arrival_speed: float = minf(spd, dist / delta)
+		var arrival_velocity: Vector3 = (to / dist) * arrival_speed
+		p._homing_arc_progress = 1.0
+		p._homing_arc_offset *= 1.0 - minf(arrival_speed * delta / dist, 1.0)
+		p._homing_trajectory_velocity_adjustment = arrival_velocity - travel_velocity
+		p.velocity = arrival_velocity
+		return
+	p.velocity = travel_velocity + _advance_homing_arc(to, up, travel_velocity, hit_distance, delta)
+
+
+func _advance_homing_arc(to: Vector3, up: Vector3, travel_velocity: Vector3, hit_distance: float, delta: float) -> Vector3:
+	var p = _owner
+	var ability: HomingAbility = p._homing_action
+	var span: float = p._homing_arc_span - hit_distance
+	if not ability or ability.homing_trajectory_arc_height <= 0.0 or span <= 0.001 or delta <= 0.0:
+		p._homing_trajectory_velocity_adjustment = Vector3.ZERO
+		p._homing_arc_offset = Vector3.ZERO
+		return Vector3.ZERO
+	var planar_offset: Vector3 = to.slide(up)
+	var closing_step: float = maxf(travel_velocity.dot(planar_offset.normalized()), 0.0) * delta
+	var remaining: float = maxf(planar_offset.length() - closing_step - hit_distance, 0.0)
+	var progress: float = maxf(p._homing_arc_progress, clampf(1.0 - remaining / span, 0.0, 1.0))
+	var height: float = minf(ability.homing_trajectory_arc_height, span * 0.5)
+	var next_offset: Vector3 = up * (4.0 * height * progress * (1.0 - progress))
+	p._homing_trajectory_velocity_adjustment = (next_offset - p._homing_arc_offset) / delta
+	p._homing_arc_offset = next_offset
+	p._homing_arc_progress = progress
+	return p._homing_trajectory_velocity_adjustment
 
 
 func cancel_homing_attack(restore_saved_velocity: bool = false) -> void:

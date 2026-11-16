@@ -845,6 +845,8 @@ func _update_rail_switch_candidate(world_up: Vector3) -> void:
 
 func _start_rail_switch(candidate: Dictionary, world_up: Vector3) -> void:
 	var p = _owner
+	if _rail_switch_locked():
+		return
 	var rail_node: Node3D = candidate.get("rail")
 	if rail_node == null:
 		return
@@ -897,11 +899,15 @@ func _start_rail_switch(candidate: Dictionary, world_up: Vector3) -> void:
 	p._last_air_velocity = v
 
 
+func _rail_switch_locked() -> bool:
+	return _owner._rail_switch_active or _owner.get_animation_director().is_rail_switch_animation_playing()
+
+
 func _try_start_rail_switch(world_up: Vector3) -> bool:
 	var p = _owner
 	if not p.rail_switch_enabled:
 		return false
-	if p._rail_switch_active:
+	if _rail_switch_locked():
 		return false
 
 	var side: float = _get_rail_switch_side_input(world_up)
@@ -913,7 +919,7 @@ func _try_start_rail_switch(world_up: Vector3) -> bool:
 		return false
 
 	_start_rail_switch(candidate, world_up)
-	return true
+	return p._rail_switch_active
 
 
 func _cancel_rail_switch() -> void:
@@ -1216,8 +1222,10 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 		if SettingsManager.is_gameplay_action_just_pressed(String(jump_slot)):
 			if _try_start_rail_switch(world_up):
 				return
-			_end_rail(true, world_up)
-			return
+			var blocked_switch: bool = p.rail_switch_enabled and _rail_switch_locked() and _get_rail_switch_side_input(world_up) != 0.0
+			if not blocked_switch:
+				_end_rail(true, world_up)
+				return
 
 	# Ignore movement input while rail grinding unless explicitly enabled.
 	if not p._rail_input_reverse_enabled:

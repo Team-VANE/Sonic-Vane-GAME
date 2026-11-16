@@ -708,6 +708,13 @@ func _queue_water_graphics_refresh() -> void:
 	_refresh_precise_camera_water.call_deferred()
 
 
+func set_photo_screen_effects(mask: int, water: bool, lines: bool, blur: bool) -> void:
+	if _underwater_effect is UnderwaterEffect:
+		_underwater_effect.set_photo_presentation(mask, water)
+	if _speed_radial_blur_effect is SpeedRadialBlurEffect:
+		_speed_radial_blur_effect.set_photo_presentation(mask, lines, blur)
+
+
 func _setup_speed_radial_blur_effect() -> void:
 	if not speed_radial_blur_enabled or speed_radial_blur_effect_scene == null:
 		return

@@ -20,6 +20,8 @@ var _target: float = 0.0
 var _time: float = 0.0
 var _rect: ColorRect = null
 var _depth_absorption_active: bool = false
+## Refreshes the screen texture between photo effects.
+var _photo_copy: BackBufferCopy
 ## Graphics options controlling underwater tint and distortion.
 var _graphics_settings: Node
 
@@ -33,6 +35,11 @@ func _ready() -> void:
 	if _rect == null:
 		return
 	_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_photo_copy = BackBufferCopy.new()
+	_photo_copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
+	_photo_copy.show_behind_parent = true
+	_photo_copy.hide()
+	_rect.add_child(_photo_copy)
 	_apply_shader_params()
 
 
@@ -61,6 +68,16 @@ func _process(delta: float) -> void:
 
 func set_underwater(state: bool) -> void:
 	_target = 1.0 if state else 0.0
+
+
+func set_photo_presentation(mask: int, enabled: bool) -> void:
+	if _rect:
+		_rect.visibility_layer = mask
+	if _photo_copy:
+		_photo_copy.visibility_layer = mask
+		_photo_copy.visible = mask != 1 and enabled
+	visible = enabled
+	layer = -3 if mask != 1 else -1
 
 
 func set_depth_absorption_active(active: bool) -> void:

@@ -54,19 +54,9 @@ mouse_filter = 0
 color = Color(0, 0, 0, 1)
 
 [node name="Banner" type="VBoxContainer" parent="Root"]
-custom_minimum_size = Vector2(520, 250)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -125.0
-offset_right = 400.0
-offset_bottom = 125.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_right = 520.0
+offset_bottom = 282.0
 mouse_filter = 2
 theme_override_constants/separation = 12
 
@@ -91,18 +81,31 @@ color = Color(0.15, 0.55, 1, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_constants/margin_left = 32
+theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 32
+theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="Content" type="VBoxContainer" parent="Root/Banner/LevelFrame/FrameContent/Margin"]
+[node name="Stack" type="VBoxContainer" parent="Root/Banner/LevelFrame/FrameContent/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Thumbnail" type="TextureRect" parent="Root/Banner/LevelFrame/FrameContent/Margin/Stack"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Content" type="VBoxContainer" parent="Root/Banner/LevelFrame/FrameContent/Margin/Stack"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 1
 alignment = 1
 
-[node name="Prefix" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Content"]
+[node name="Prefix" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Stack/Content"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.53, 0.74, 1, 1)
@@ -114,7 +117,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="LevelName" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Content"]
+[node name="LevelName" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Stack/Content"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.82, 0.92, 1, 1)
@@ -124,10 +127,9 @@ theme_override_font_sizes/font_size = 42
 text = "LEVEL NAME"
 horizontal_alignment = 1
 vertical_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
+autowrap_mode = 3
 
-[node name="Suffix" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Content"]
+[node name="Suffix" type="Label" parent="Root/Banner/LevelFrame/FrameContent/Margin/Stack/Content"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.53, 0.74, 1, 1)
