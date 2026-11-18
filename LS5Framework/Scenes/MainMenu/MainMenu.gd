@@ -46,17 +46,25 @@ const MISSING_DATA_FONT: Font = preload("res://LS5Framework/Resources/Fonts/Orbi
 
 ## Main menu frame and its contents, animated together during navigation.
 @onready var panel_main: Control = $Overlay/MenuContainer
+## Free Play actions and browsers.
+@onready var panel_free_play: Control = $Overlay/FreePlayPanel
+## Campaign selection screen.
+@onready var panel_story_select: Control = $Overlay/StorySelectPanel
+## Sonic campaign placeholder.
+@onready var panel_sonic_story: Control = $Overlay/SonicStoryPanel
+## Shadow campaign placeholder.
+@onready var panel_shadow_story: Control = $Overlay/ShadowStoryPanel
 @onready var panel_character: Control   = $Overlay/CharacterSelectPanel
 @onready var panel_level: Control       = $Overlay/LevelSelectPanel
 @onready var panel_online: Control      = $Overlay/OnlinePanel
 @onready var panel_options: Control     = $Overlay/OptionsPanel
 @onready var panel_credits: Control     = $Overlay/CreditsPanel
-## Starts the configured test level from the main menu.
-@onready var button_start_test_level: Button = $Overlay/MenuContainer/VBoxMain/ButtonStart
+## Starts the configured test level from Free Play.
+@onready var button_start_test_level: Button = $Overlay/FreePlayPanel/Center/Frame/Content/ButtonStart
 ## Opens character selection when packaged game data is available.
-@onready var button_character_select: Button = $Overlay/MenuContainer/VBoxMain/ButtonCharacterSelect
-## Opens level selection when packaged game data is available.
-@onready var button_level_select: Button = $Overlay/MenuContainer/VBoxMain/ButtonLevelSelect
+@onready var button_character_select: Button = $Overlay/FreePlayPanel/Center/Frame/Content/ButtonCharacterSelect
+## Opens stage selection when packaged game data is available.
+@onready var button_level_select: Button = $Overlay/FreePlayPanel/Center/Frame/Content/ButtonLevelSelect
 ## Replaces the standard title backdrop when the required Data folder is unavailable.
 @onready var missing_data_background: ColorRect = $MissingDataBackground
 ## Blocks the main menu while the required Data folder warning is visible.
@@ -426,9 +434,6 @@ func _ready() -> void:
 			node.pressed.connect(_on_any_button_pressed)
 
 	# Online menu buttons
-	var btn_online = get_node_or_null("Overlay/MenuContainer/VBoxMain/ButtonOnline")
-	if btn_online != null:
-		btn_online.pressed.connect(_on_ButtonOnline_pressed)
 	get_node("Overlay/OnlinePanel/Panel/VBoxOnline/ButtonOnlineBack").pressed.connect(_on_ButtonOnlineBack_pressed)
 	get_node("Overlay/OnlinePanel/Panel/VBoxOnline/HBoxButtons/ButtonHost").pressed.connect(_on_ButtonHost_pressed)
 	get_node("Overlay/OnlinePanel/Panel/VBoxOnline/HBoxButtons/ButtonJoin").pressed.connect(_on_ButtonJoin_pressed)
@@ -473,7 +478,7 @@ func _restore_menu_mouse_cursor() -> void:
 func _on_ButtonStart_pressed() -> void:
 	if _loading_started or _data_folder_missing:
 		return
-	_start_test_level_from_menu()
+	_start_level_from_menu(_get_test_level_entry())
 
 func _on_ButtonOnline_pressed() -> void:
 	if _loading_started:
@@ -720,14 +725,14 @@ func _on_ButtonCharacterBack_pressed() -> void:
 	if _loading_started:
 		return
 	_play_click()
-	_show_main_menu()
+	_transition_to_panel(panel_free_play, -1)
 
 
 func _on_ButtonLevelBack_pressed() -> void:
 	if _loading_started:
 		return
 	_play_click()
-	_show_main_menu()
+	_transition_to_panel(panel_free_play, -1)
 
 # Called for each dynamically-created level button
 func _on_level_button_pressed(level_name: String, scene_path: String, level_scene_path: String = "", thumbnail: Texture2D = null) -> void:
@@ -964,6 +969,24 @@ func _on_ButtonCreditsBack_pressed() -> void:
 func _show_main_menu(immediate: bool = false) -> void:
 	_transition_to_panel(panel_main, -1, immediate)
 
+func _open_submenu(panel_path: NodePath) -> void:
+	if _loading_started or _menu_transition_active:
+		return
+	_play_click()
+	_transition_to_panel(get_node(panel_path) as Control)
+
+func _on_mode_back_pressed() -> void:
+	if _loading_started or _menu_transition_active:
+		return
+	_play_click()
+	_show_main_menu()
+
+func _on_story_back_pressed() -> void:
+	if _loading_started or _menu_transition_active:
+		return
+	_play_click()
+	_transition_to_panel(panel_story_select, -1)
+
 func _show_character_select() -> void:
 	if _data_folder_missing:
 		return
@@ -987,7 +1010,10 @@ func _show_credits() -> void:
 
 
 func _register_menu_panels() -> void:
-	_menu_panels = [panel_main, panel_character, panel_level, panel_online, panel_options, panel_credits]
+	_menu_panels = [
+		panel_main, panel_free_play, panel_story_select, panel_sonic_story, panel_shadow_story,
+		panel_character, panel_level, panel_online, panel_options, panel_credits,
+	]
 	_menu_panel_offsets.clear()
 	for panel in _menu_panels:
 		if panel != null:
@@ -1078,7 +1104,7 @@ func _on_ButtonOnlineBack_pressed() -> void:
 	if net != null and net.has_method("is_connecting") and bool(net.call("is_connecting")):
 		net.call("leave")
 	_play_click()
-	_show_main_menu()
+	_transition_to_panel(panel_free_play, -1)
 
 func _on_ButtonHost_pressed() -> void:
 	if _loading_started or _data_folder_missing:
@@ -1368,8 +1394,7 @@ func _build_level_list() -> void:
 		_level_browser = _create_centered_browser(panel_level)
 	_level_browser.favourite = _on_level_favourite_pressed
 	_level_browser.favourite_key = SettingsManager.favourite_level_key
-	_level_browser.configure(_level_entries, "LEVEL SELECT", "", _on_level_entry_pressed, _on_ButtonLevelBack_pressed)
-	_update_quick_level_button()
+	_level_browser.configure(_level_entries, "STAGE SELECT", "", _on_level_entry_pressed, _on_ButtonLevelBack_pressed)
 
 
 func _on_level_favourite_pressed(entry: Dictionary) -> void:
@@ -1383,22 +1408,12 @@ func _on_level_favourite_pressed(entry: Dictionary) -> void:
 	SettingsManager.save_now()
 	_level_browser.favourite_key = SettingsManager.favourite_level_key
 	_level_browser._rebuild()
-	_update_quick_level_button()
 	_play_click()
 	HUDMusicTrackDisplay.post_notification(
 		get_tree(),
 		"Favourite removed" if removed else "%s favourited" % String(entry.get("name", "Level")),
 		"F1 now loads the test level." if removed else "Press F1 anywhere in the main menu to load this level."
 	)
-
-
-func _update_quick_level_button() -> void:
-	if not is_instance_valid(button_start_test_level):
-		return
-	var entry: Dictionary = _get_quick_level_entry()
-	var is_favourite: bool = not SettingsManager.favourite_level_key.is_empty() and CenteredMenuBrowser._entry_key(entry) == SettingsManager.favourite_level_key
-	button_start_test_level.text = "Play Favourite" if is_favourite else "Start Test Level"
-	button_start_test_level.tooltip_text = "F1: %s" % String(entry.get("name", "Test Level"))
 
 
 func _get_quick_level_entry() -> Dictionary:
@@ -1436,10 +1451,9 @@ func _get_test_level_entry() -> Dictionary:
 	return {}
 
 
-func _start_test_level_from_menu() -> void:
+func _start_level_from_menu(test_entry: Dictionary) -> void:
 	if _loading_started or _data_folder_missing:
 		return
-	var test_entry: Dictionary = _get_quick_level_entry()
 	var scene_path: String = test_level_scene
 	var level_scene_path: String = ""
 	var level_name: String = "Test Level"
@@ -1481,7 +1495,7 @@ func _start_requested_test_level_skip() -> void:
 		sfx_title_swoopin.stop()
 	if sfx_title_start.playing:
 		sfx_title_start.stop()
-	_start_test_level_from_menu()
+	_start_level_from_menu(_get_quick_level_entry())
 
 
 func _show_loading_screen(level_name: String, thumbnail: Texture2D) -> LoadingScreen:
@@ -1636,6 +1650,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_ButtonOnlineBack_pressed()
 		elif panel_credits.visible:
 			_on_ButtonCreditsBack_pressed()
+		elif panel_sonic_story.visible or panel_shadow_story.visible:
+			_on_story_back_pressed()
+		elif panel_free_play.visible or panel_story_select.visible:
+			_on_mode_back_pressed()
 		elif panel_main.visible and not _data_folder_missing:
 			show_title_screen()
 		else:
@@ -1643,8 +1661,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("respawn"):
-		if _is_main_menu_screen():
-			_start_test_level_from_menu()
+		if _active_panel == panel_main and not _menu_transition_active:
+			_start_level_from_menu(_get_quick_level_entry())
 			get_viewport().set_input_as_handled()
 
 
@@ -1806,14 +1824,6 @@ func _find_first_scroll_container(root: Node) -> ScrollContainer:
 		if found != null:
 			return found
 	return null
-
-
-func _is_main_menu_screen() -> bool:
-	if not panel_main.visible:
-		return false
-	if panel_character.visible or panel_level.visible or panel_online.visible or panel_options.visible or panel_credits.visible:
-		return false
-	return true
 
 
 func _set_pending_level_scene(scene_path: String) -> void:
@@ -3064,9 +3074,8 @@ func _menu_navigation_scope() -> Dictionary:
 		return {"root": panel_character, "default": _character_browser}
 	if panel_level.visible:
 		return {"root": panel_level, "default": _level_browser}
-	for screen: Control in [panel_main, panel_online, panel_credits]:
-		if screen.visible:
-			return {"root": screen}
+	if _active_panel and _active_panel.visible:
+		return {"root": _active_panel}
 	return {}
 
 

@@ -87,7 +87,7 @@ var launch_axis: int = 0
 ## Identity visual pivot rotated toward the trajectory target for the editor preview.
 @export_node_path("Node3D") var trajectory_visual_root_path: NodePath = NodePath("Mesh")
 
-## Uses the spring root for parallel launches or the unsnapped player's position to converge on the target marker.
+## Aim origin for free launches. Generated arcs always end at the target marker.
 @export_enum("Spring Root", "Player Position") var trajectory_aim_origin: int = TrajectoryAimOrigin.SPRING_ROOT
 
 @export_group("Trajectory Arc")
@@ -736,7 +736,7 @@ func _try_start_trajectory_arc(player: Node3D) -> bool:
 
 func _create_trajectory_arc_path(player: Node3D) -> Path3D:
 	var start_position: Vector3 = _get_trajectory_start_position(player)
-	var displacement: Vector3 = _get_trajectory_displacement(player)
+	var displacement: Vector3 = _trajectory_solver.global_position - start_position
 	if displacement.length_squared() <= 0.000001:
 		return null
 	var arc_up: Vector3 = _get_trajectory_arc_up(player)

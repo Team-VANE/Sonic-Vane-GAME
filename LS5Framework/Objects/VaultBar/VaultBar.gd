@@ -63,6 +63,8 @@ enum VerticalArcUpMode {
 @export_enum("Player Grip", "Bar Root") var launch_aim_origin: int = LaunchAimOrigin.PLAYER_GRIP
 ## Scales launch direction along the bar. 0 constrains launch to the swing plane, 1 aims exactly at the marker, and values above 1 exaggerate lateral travel.
 @export_range(0.0, 2.0, 0.01, "or_greater") var lateral_trajectory_influence: float = 1.0
+## Vault bar reached by a guided primary launch. Authored splines and separate opposite launches take priority.
+@export_node_path("Area3D") var linked_launch_target_path: NodePath
 ## Uses a separate free-launch direction when entry travel opposes the primary launch direction.
 @export var opposite_entry_uses_separate_launch_direction: bool = false
 ## Marker that defines the free-launch direction for an opposite entry.
@@ -555,13 +557,14 @@ func _launch_player(player_id: int) -> void:
 	var active_spline: Path3D = null
 	var active_spline_speed: float = 0.0
 	var spline_world_offset: Vector3 = Vector3.ZERO
+	var linked_target: Node3D = _get_linked_launch_target(use_opposite_launch_direction)
 	if _has_valid_launch_spline():
 		active_spline = spline_path
 		active_spline_speed = max(spline_speed, 0.0)
 		var spline_start: Vector3 = spline_path.to_global(spline_path.curve.sample_baked(0.0))
 		spline_world_offset = grip_position - spline_start
-	elif vertical_arc_enabled and launch_speed > 0.001:
-		active_spline = _create_vertical_arc_path(grip_position, use_opposite_launch_direction, player)
+	elif (linked_target or vertical_arc_enabled) and launch_speed > 0.001:
+		active_spline = _create_vertical_arc_path(grip_position, use_opposite_launch_direction, player, linked_target)
 		if active_spline:
 			active_spline_speed = launch_speed
 
@@ -689,7 +692,20 @@ func _get_launch_marker(use_opposite_direction: bool) -> Node3D:
 	return _opposite_launch_direction_marker if use_opposite_direction else _launch_direction_marker
 
 
+func _get_linked_launch_target(use_opposite_direction: bool) -> Node3D:
+	if use_opposite_direction or linked_launch_target_path.is_empty():
+		return null
+	var target: Node3D = get_node_or_null(linked_launch_target_path) as Node3D
+	if target and target != self and target.has_method("_try_attach_player") and target.has_method("get_homing_target_position") and target.get("active"):
+		return target
+	return null
+
+
 func _get_free_launch_displacement(grip_position: Vector3, use_opposite_direction: bool) -> Vector3:
+	var linked_target: Node3D = _get_linked_launch_target(use_opposite_direction)
+	if linked_target:
+		var target_grip: Vector3 = linked_target.call("get_homing_target_position", grip_position)
+		return target_grip - grip_position
 	var selected_marker: Node3D = _get_launch_marker(use_opposite_direction)
 	var selected_fallback: Vector3 = fallback_opposite_launch_direction if use_opposite_direction else fallback_launch_direction
 	var displacement: Vector3 = Vector3.ZERO
@@ -730,10 +746,11 @@ func _get_player_gravity_up(player: Node) -> Vector3:
 func _create_vertical_arc_path(
 	grip_position: Vector3,
 	use_opposite_direction: bool,
-	player: Node
+	player: Node,
+	linked_target: Node3D = null
 ) -> Path3D:
 	var selected_marker: Node3D = _get_launch_marker(use_opposite_direction)
-	if not selected_marker:
+	if not selected_marker and not linked_target:
 		return null
 	var displacement: Vector3 = _get_free_launch_displacement(grip_position, use_opposite_direction)
 	if displacement.length() < 0.001:
@@ -741,11 +758,14 @@ func _create_vertical_arc_path(
 
 	var arc_up: Vector3 = _get_vertical_arc_up(player)
 	var control_offset: Vector3 = displacement * 0.5
-	control_offset += arc_up * max(vertical_arc_height, 0.0) * 2.0
+	if vertical_arc_enabled:
+		control_offset += arc_up * max(vertical_arc_height, 0.0) * 2.0
 
 	var arc_path: Path3D = Path3D.new()
 	arc_path.name = "VaultBarVerticalArc"
 	arc_path.set_meta(&"runtime_trajectory_arc", true)
+	if linked_target:
+		arc_path.set_meta(&"vault_arrival_callback", Callable(linked_target, "_try_attach_player"))
 	var path_parent: Node = get_tree().current_scene
 	if not path_parent:
 		path_parent = self

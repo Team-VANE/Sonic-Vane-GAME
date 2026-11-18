@@ -79,34 +79,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuContainer" type="Panel" parent="Overlay" unique_id=1089317934]
-custom_minimum_size = Vector2(460, 520)
+[node name="MenuContainer" type="ScrollContainer" parent="Overlay" unique_id=1089317934]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -230.0
-offset_top = -260.0
-offset_right = 230.0
-offset_bottom = 260.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxMain" type="VBoxContainer" parent="Overlay/MenuContainer" unique_id=216472867]
-layout_mode = 0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 22.0
-offset_top = 22.0
-offset_right = -22.0
-offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 18
+follow_focus = true
 
-[node name="LabelTitle" type="Label" parent="Overlay/MenuContainer/VBoxMain" unique_id=209000045]
+[node name="Center" type="CenterContainer" parent="Overlay/MenuContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Frame" type="PanelContainer" parent="Overlay/MenuContainer/Center"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="VBoxMain" type="VBoxContainer" parent="Overlay/MenuContainer/Center/Frame" unique_id=216472867]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" unique_id=209000045]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_fonts/font = ExtResource("11_orbitron_900")
@@ -114,40 +108,210 @@ theme_override_font_sizes/font_size = 30
 text = "SONIC VANE"
 horizontal_alignment = 1
 
-[node name="ButtonStart" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=59823394 groups=["MenuButtons"]]
+[node name="ButtonStorySelect" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
-text = "Start Test Level"
+text = "Story Select"
 
-[node name="ButtonOnline" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=461298481 groups=["MenuButtons"]]
+[node name="ButtonFreePlay" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
-text = "Online"
+text = "Free Play"
 
-[node name="ButtonCharacterSelect" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=202681166 groups=["MenuButtons"]]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("12_orbitron_600")
-text = "Character Select"
-
-[node name="ButtonLevelSelect" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=1678577452 groups=["MenuButtons"]]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("12_orbitron_600")
-text = "Level Select"
-
-[node name="ButtonOptions" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=1487230726 groups=["MenuButtons"]]
+[node name="ButtonOptions" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" unique_id=1487230726 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Options"
 
-[node name="ButtonCredits" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=108581880 groups=["MenuButtons"]]
+[node name="ButtonCredits" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" unique_id=108581880 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Credits"
 
-[node name="ButtonQuit" type="Button" parent="Overlay/MenuContainer/VBoxMain" unique_id=246851371 groups=["MenuButtons"]]
+[node name="ButtonQuit" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" unique_id=246851371 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Quit"
+
+[node name="FreePlayPanel" type="ScrollContainer" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="Center" type="CenterContainer" parent="Overlay/FreePlayPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Frame" type="PanelContainer" parent="Overlay/FreePlayPanel/Center"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Overlay/FreePlayPanel/Center/Frame"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Overlay/FreePlayPanel/Center/Frame/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("11_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "Free Play"
+horizontal_alignment = 1
+
+[node name="ButtonStart" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" unique_id=59823394 groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Start Test Level"
+
+[node name="ButtonCharacterSelect" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" unique_id=202681166 groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Character Select"
+
+[node name="ButtonLevelSelect" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" unique_id=1678577452 groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Stage Select"
+
+[node name="ButtonOnline" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" unique_id=461298481 groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Online Mode"
+
+[node name="ButtonBack" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Back"
+
+[node name="StorySelectPanel" type="ScrollContainer" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="Center" type="CenterContainer" parent="Overlay/StorySelectPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Frame" type="PanelContainer" parent="Overlay/StorySelectPanel/Center"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Overlay/StorySelectPanel/Center/Frame"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Overlay/StorySelectPanel/Center/Frame/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("11_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "Story Select"
+horizontal_alignment = 1
+
+[node name="ButtonSonic" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Sonic VANE"
+
+[node name="ButtonShadow" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Sonic VANE: Episode Shadow"
+
+[node name="ButtonBack" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Back"
+
+[node name="SonicStoryPanel" type="ScrollContainer" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="Center" type="CenterContainer" parent="Overlay/SonicStoryPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Frame" type="PanelContainer" parent="Overlay/SonicStoryPanel/Center"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Overlay/SonicStoryPanel/Center/Frame"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Overlay/SonicStoryPanel/Center/Frame/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("11_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "Sonic VANE"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Overlay/SonicStoryPanel/Center/Frame/Content"]
+layout_mode = 2
+text = "Coming Soon?"
+horizontal_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="Overlay/SonicStoryPanel/Center/Frame/Content" groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Back"
+
+[node name="ShadowStoryPanel" type="ScrollContainer" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="Center" type="CenterContainer" parent="Overlay/ShadowStoryPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Frame" type="PanelContainer" parent="Overlay/ShadowStoryPanel/Center"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Overlay/ShadowStoryPanel/Center/Frame"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Overlay/ShadowStoryPanel/Center/Frame/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
+theme_override_fonts/font = ExtResource("11_orbitron_900")
+theme_override_font_sizes/font_size = 26
+text = "Sonic VANE: Episode Shadow"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Overlay/ShadowStoryPanel/Center/Frame/Content"]
+layout_mode = 2
+text = "Coming Soon?"
+horizontal_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="Overlay/ShadowStoryPanel/Center/Frame/Content" groups=["MenuButtons"]]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("12_orbitron_600")
+text = "Back"
 
 [node name="CharacterSelectPanel" type="Control" parent="Overlay" unique_id=1500080966]
 visible = false
@@ -244,7 +408,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_font_sizes/font_size = 26
-text = "Select a Level"
+text = "Select a Stage"
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Overlay/LevelSelectPanel/Panel/VBoxLevels" unique_id=1792843650]
@@ -301,7 +465,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_font_sizes/font_size = 26
-text = "Online"
+text = "Online Mode"
 horizontal_alignment = 1
 
 [node name="HBoxConnectionMethod" type="HBoxContainer" parent="Overlay/OnlinePanel/Panel/VBoxOnline" unique_id=943757079]
@@ -1096,12 +1260,21 @@ bus = &"UI"
 stream = ExtResource("21_title_start")
 bus = &"UI"
 
-[connection signal="pressed" from="Overlay/MenuContainer/VBoxMain/ButtonStart" to="." method="_on_ButtonStart_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/VBoxMain/ButtonCharacterSelect" to="." method="_on_ButtonCharacterSelect_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/VBoxMain/ButtonLevelSelect" to="." method="_on_ButtonLevelSelect_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/VBoxMain/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/VBoxMain/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/VBoxMain/ButtonQuit" to="." method="_on_ButtonQuit_pressed"]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonStorySelect" to="." method="_open_submenu" binds=[NodePath("Overlay/StorySelectPanel")]]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonFreePlay" to="." method="_open_submenu" binds=[NodePath("Overlay/FreePlayPanel")]]
+[connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonStart" to="." method="_on_ButtonStart_pressed"]
+[connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonCharacterSelect" to="." method="_on_ButtonCharacterSelect_pressed"]
+[connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonLevelSelect" to="." method="_on_ButtonLevelSelect_pressed"]
+[connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonOnline" to="." method="_on_ButtonOnline_pressed"]
+[connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonBack" to="." method="_on_mode_back_pressed"]
+[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonSonic" to="." method="_open_submenu" binds=[NodePath("Overlay/SonicStoryPanel")]]
+[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonShadow" to="." method="_open_submenu" binds=[NodePath("Overlay/ShadowStoryPanel")]]
+[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonBack" to="." method="_on_mode_back_pressed"]
+[connection signal="pressed" from="Overlay/SonicStoryPanel/Center/Frame/Content/ButtonBack" to="." method="_on_story_back_pressed"]
+[connection signal="pressed" from="Overlay/ShadowStoryPanel/Center/Frame/Content/ButtonBack" to="." method="_on_story_back_pressed"]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonQuit" to="." method="_on_ButtonQuit_pressed"]
 [connection signal="pressed" from="Overlay/CharacterSelectPanel/Panel/VBoxCharacters/ButtonCharacterBack" to="." method="_on_ButtonCharacterBack_pressed"]
 [connection signal="pressed" from="Overlay/LevelSelectPanel/Panel/VBoxLevels/ButtonLevelBack" to="." method="_on_ButtonLevelBack_pressed"]
 [connection signal="color_changed" from="Overlay/OnlinePanel/Panel/VBoxOnline/HBoxName/ColorName" to="." method="_on_ColorName_color_changed"]

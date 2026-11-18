@@ -62,6 +62,38 @@ func _on_action_initialized() -> void:
 	permits_attack_magnetism = true
 
 
+func get_held_jump_height(gravity: float, step: float) -> float:
+	if gravity <= 0.0 or step <= 0.0:
+		return 0.0
+	var speed: float = maxf(jump_speed, 0.0)
+	var apex_speed: float = maxf(jump_apex_speed_threshold, 0.0)
+	var held_steps: int = maxi(ceili(jump_hold_time_max / step) - 1, 0)
+	var hold_drop: float = gravity * maxf(jump_hold_gravity_scale, 0.0) * step
+	var hold_steps: int = held_steps
+	if hold_drop > 0.0:
+		hold_steps = mini(held_steps, ceili(maxf(speed - apex_speed, 0.0) / hold_drop))
+	elif speed <= apex_speed:
+		hold_steps = 0
+
+	# The launch tick moves at jump speed before airborne gravity applies.
+	var height: float = speed * step + _sum_jump_rise(speed, hold_drop, hold_steps, step)
+	speed = maxf(speed - hold_drop * hold_steps, 0.0)
+	var apex_drop: float = gravity * maxf(jump_apex_gravity_scale, 0.0) * step
+	var apex_steps: int = held_steps - hold_steps
+	height += _sum_jump_rise(speed, apex_drop, apex_steps, step)
+	speed = maxf(speed - apex_drop * apex_steps, 0.0)
+
+	var release_drop: float = gravity * jump_release_gravity_scale * step
+	if release_drop > 0.0:
+		height += _sum_jump_rise(speed, release_drop, floori(speed / release_drop), step)
+	return height
+
+
+func _sum_jump_rise(speed: float, speed_drop: float, steps: int, step: float) -> float:
+	var rising_steps: int = mini(steps, floori(speed / speed_drop)) if speed_drop > 0.0 else steps
+	return step * rising_steps * (speed - speed_drop * (rising_steps + 1) * 0.5)
+
+
 func on_action_pressed() -> void:
 	if owner_player == null:
 		return

@@ -213,6 +213,24 @@ func apply_damage_without_ring_death(_amount: int = 1, source: Node = null, spew
 	_begin_regular_damage(source, up, spew_rings)
 
 
+func start_obstacle_trip(position: Vector3, launch: Vector3, up: Vector3, forward: Vector3) -> bool:
+	if not enabled or not owner_player or not owner_player._network_is_local_authority():
+		return false
+	if is_active or _death_active or owner_player._is_dead:
+		return false
+
+	owner_player.global_position = position
+	_begin_hurt_launch(launch)
+	owner_player._attachment_immunity = maxf(
+		owner_player._attachment_immunity, owner_player.get_physics_process_delta_time() * 2.0
+	)
+	owner_player._is_skidding = false
+	owner_player.snap_model_to_normal(up, forward)
+	_start_moving_hurt()
+	owner_player._sync_hurt_state_from_action()
+	return true
+
+
 func apply_forced_death_damage(source: Node = null, pit_variant: bool = false) -> void:
 	if owner_player == null:
 		return
@@ -270,7 +288,27 @@ func _begin_regular_damage(source: Node, up: Vector3, spew_rings: bool) -> void:
 
 	vertical = max(vertical, max(damage_launch_upward_speed, 0.0))
 
-	owner_player.velocity = compose_gravity_vector(lateral, vertical)
+	_begin_hurt_launch(compose_gravity_vector(lateral, vertical))
+
+	flash_accum = 0.0
+	flash_visible = true
+	_set_flash_visible(true)
+	invuln_timer = max(damage_hit_invuln_time, 0.0)
+	_flash_invulnerability_visual = hurt_invuln_flash_enabled
+
+	if moving_hurt:
+		_start_moving_hurt()
+	else:
+		hurt_type = HurtType.PUSHBACK
+		pushback_dir = hit_dir
+		pushback_speed_locked = max(damage_pushback_speed, 0.0)
+		owner_player._trigger_anim_command(&"CMD_HURT")
+	if owner_player.has_method("play_voice_event"):
+		owner_player.call("play_voice_event", &"hurt")
+
+
+func _begin_hurt_launch(launch: Vector3) -> void:
+	owner_player.velocity = launch
 	owner_player.attached = false
 	owner_player._attachment_immunity = owner_player.launch_immunity_time
 	owner_player._airborne_time = 0.0
@@ -302,25 +340,14 @@ func _begin_regular_damage(source: Node, up: Vector3, spew_rings: bool) -> void:
 
 	is_active = true
 	state_timer = 0.0
-	flash_accum = 0.0
-	flash_visible = true
-	_set_flash_visible(true)
-	invuln_timer = max(damage_hit_invuln_time, 0.0)
-	_flash_invulnerability_visual = hurt_invuln_flash_enabled
 	_anim_retriggered = false
 
-	if moving_hurt:
-		hurt_type = HurtType.MOVING
-		pushback_dir = Vector3.ZERO
-		pushback_speed_locked = 0.0
-		owner_player._trigger_anim_command(&"CMD_HURT_MOVING")
-	else:
-		hurt_type = HurtType.PUSHBACK
-		pushback_dir = hit_dir
-		pushback_speed_locked = max(damage_pushback_speed, 0.0)
-		owner_player._trigger_anim_command(&"CMD_HURT")
-	if owner_player.has_method("play_voice_event"):
-		owner_player.call("play_voice_event", &"hurt")
+
+func _start_moving_hurt() -> void:
+	hurt_type = HurtType.MOVING
+	pushback_dir = Vector3.ZERO
+	pushback_speed_locked = 0.0
+	owner_player._trigger_anim_command(&"CMD_HURT_MOVING")
 
 
 func apply_death_plane_damage(source: Node = null) -> void:

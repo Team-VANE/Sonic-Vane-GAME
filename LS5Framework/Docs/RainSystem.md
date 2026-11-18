@@ -28,12 +28,16 @@ Both layers use world-space particles, so existing drops do not move with the ca
 
 Cover suppression and particle collision solve different problems:
 
-- Wind-aligned physics probes originate around the camera and trace opposite the rain velocity toward the spawn plane. A blocked center probe stops new emission; surrounding probes reduce emission near partial cover. This prevents a camera under a roof or inside a tunnel from generating local rain.
+- The overhead ray starts at the camera and looks up to `Roof Probe Height` above it. Wind-aligned rays sample the route toward the rain spawn plane. Near rain fades with exposure, while far rain stays visible through nearby openings. A roof above the spawn plane can suppress both layers when the camera is at least `Deep Shelter Distance` from sampled open sky.
 - `GPUParticlesCollisionHeightField3D` tracks the active camera in configurable distance steps and captures nearby visual geometry. Both particle layers use `Collision Hide On Contact`, so drops disappear when they reach terrain or roofs.
 
 The cover mask uses physics layers and therefore requires collision bodies. The heightfield mask uses visual layers and only captures matching `MeshInstance3D` geometry. These masks are intentionally separate because gameplay collision and rendered geometry often use different layer layouts.
 
 Heightfields represent the highest surface at each horizontal point and cannot fully represent rooms stacked above rooms. The physics probes provide the indoor/overhang decision, while the heightfield provides efficient per-drop contact over a large outdoor area. For specialized interiors, place the roof on the cover physics mask even if it is excluded from particle heightfield capture.
+
+`RainOccluder.tscn` is a box-shaped roof collider on the Rain Cover physics layer. Instance it at a roof or canopy and edit the box size to fit. The default rain mask includes this layer and the default terrain layer. For a concave roof collider, enable its backface collision if the upward probe needs to hit the underside.
+
+`RainShelterVolume.tscn` is a box-shaped area on the Rain Shelter layer. Place it in the deep interior of a cave or room where outside rain should no longer be visible. Resize its box and keep it away from cave mouths, windows, and skylights that should retain a view of the rain. The camera position inside the area suppresses both rain layers and bypasses the ray grid. The heightfield pauses once existing particles expire and resumes when the camera leaves shelter.
 
 `Collision Recenter Distance` prevents a static level's heightfield from rebuilding for every tiny camera movement. `Collision Update Always` should remain off for static levels. Enable it only when moving meshes must alter rain collision continuously; rebuilding a heightfield every frame is expensive.
 
@@ -60,7 +64,8 @@ rain.transition_to_profile(
 - `Amount Ratio` is used for smooth intensity and cover transitions without restarting the simulation, but Godot still allocates the configured maximum capacity.
 - Lower `Collision Heightfield Resolution` before shrinking its coverage if roof collision is too expensive.
 - Increase `Particle Fixed FPS` only if fast drops tunnel through thin captured geometry. Interpolation and fractional delta remain enabled for smooth motion.
-- Reduce `Cover Grid Size` or increase `Cover Check Interval Seconds` if physics probing is measurable. The default 3 by 3 grid performs 90 rays per second.
+- Open areas use a rotating outer probe to check for partial cover. Mixed cover runs the full grid. Reduce `Cover Grid Size` or increase `Cover Check Interval Seconds` if physics probing is measurable.
+- `Cover Edge Rays per Tick` spreads the open-sky search over multiple physics ticks. A smaller budget reduces per-tick cost and increases the time needed to confirm deep shelter.
 
 ## Technical references
 

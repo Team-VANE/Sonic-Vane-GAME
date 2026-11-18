@@ -1449,10 +1449,6 @@ func _update_spline_spring(delta: float) -> void:
 
 	# End of spline.
 	if p._spline_distance >= p._spline_total_length:
-		var runtime_arc: bool = spline_path.has_meta(&"runtime_trajectory_arc")
-		if not runtime_arc:
-			p._spline_active = false
-			return
 		var end_distance: float = p._spline_total_length
 		var before_distance: float = max(end_distance - 0.1, 0.0)
 		var end_local: Vector3 = curve.sample_baked(end_distance)
@@ -1467,9 +1463,12 @@ func _update_spline_spring(delta: float) -> void:
 			if p.model_root:
 				exit_tangent = -p.model_root.global_transform.basis.z
 		var exit_speed: float = p._spline_speed
+		var arrival: Callable = spline_path.get_meta(&"vault_arrival_callback", Callable())
 		p.global_position = end_world
 		p.velocity = exit_tangent.normalized() * exit_speed
 		cancel_spline_spring()
+		if arrival.is_valid():
+			arrival.call(p)
 		p._refresh_carried_object_target_after_external_motion()
 		return
 

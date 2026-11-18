@@ -774,6 +774,7 @@ bar_length = 10.6
 launch_speed_mode = 1
 fixed_launch_speed = 125.5
 launch_aim_origin = 1
+linked_launch_target_path = NodePath("../VaultBar4")
 movement_lock_time = 0.6
 action_lock_time = 0.6
 
@@ -790,6 +791,7 @@ bar_length = 57.0
 launch_speed_mode = 1
 fixed_launch_speed = 190.0
 launch_aim_origin = 1
+linked_launch_target_path = NodePath("../VaultBar6")
 movement_lock_time = 0.6
 action_lock_time = 0.6
 

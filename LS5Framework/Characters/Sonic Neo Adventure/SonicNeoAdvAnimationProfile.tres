@@ -45,6 +45,8 @@ presentation_commands = Dictionary[StringName, StringName]({
 &"CMD_TRICK_YAW_LEFT": &"Tricks/YawLeft",
 &"CMD_TRICK_YAW_RIGHT": &"Tricks/YawRight",
 &"CMD_UPPERCUT_KICK": &"Air/Uppercut",
+&"CMD_VAULT": &"Air/Vault",
+&"CMD_VAULT_JUMP": &"Air/VaultJump",
 &"CMD_VICTORY": &"Ground/VictoryIntro",
 &"CMD_WALLCLING": &"Parkour/CMD_WALLCLING",
 &"CMD_WALLKICK_CLING": &"Parkour/CMD_WALLKICK_CLING",

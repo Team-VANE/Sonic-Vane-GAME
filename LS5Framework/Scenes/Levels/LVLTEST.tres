@@ -5,10 +5,10 @@
 
 [resource]
 script = ExtResource("1_level_doc")
-level_name = "Niko Test"
+level_name = "Test Level"
 order = 30
 is_test = true
 selection_category = "Test"
 scene = "res://LS5Framework/Scenes/Main.tscn"
-level_scene = "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/VaneTest/test_level.tscn"
 thumbnail = ExtResource("2_0jlb0")

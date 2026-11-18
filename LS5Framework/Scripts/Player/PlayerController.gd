@@ -22,6 +22,7 @@ class_name PlayerController
 
 const SKID_FULL_INPUT_STRENGTH: float = 0.95
 const SKID_ANIMATION_MIN_STRENGTH: float = 0.5
+const SPINDASH_OVERSPEED_RECHARGE_TIME: float = 0.7
 
 const INVINCIBILITY_VISUAL_SCENE: PackedScene = preload(
 	"res://LS5Framework/Scenes/Effects/InvincibilityVisual.tscn"
@@ -1762,6 +1763,8 @@ func reset_gameplay_run_state(reset_timer: bool = true) -> void:
 		return
 	_ensure_modules()
 	_item_effects_module.clear_all_effects()
+	_spindash_overspeed_recovery_active = false
+	_spindash_overspeed_recharge_timer = 0.0
 	reset_rings()
 	reset_score()
 	var h: Node = _get_hud_node()
@@ -3300,6 +3303,7 @@ func _movement_physics_process(delta: float) -> void:
 	_post_ui_unblock_action_suppress_timer = max(_post_ui_unblock_action_suppress_timer - _movement_real_delta, 0.0)
 	_landing_timer = max(_landing_timer - delta, 0.0)
 	_spindash_turn_free_timer = max(_spindash_turn_free_timer - delta, 0.0)
+	_spindash_overspeed_recharge_timer = maxf(_spindash_overspeed_recharge_timer - delta, 0.0)
 	_spindash_roll_route_lockout_timer = max(_spindash_roll_route_lockout_timer - delta, 0.0)
 	_enemy_bounce_cooldown_timer = max(_enemy_bounce_cooldown_timer - delta, 0.0)
 	_tick_enemy_hurt_boundary_exceptions(delta)
@@ -3523,6 +3527,8 @@ func _movement_physics_process(delta: float) -> void:
 
 		_update_spline_spring(motion_delta)
 
+		if _vault_bar_active:
+			return
 		if _spline_active:
 			_pre_slide_velocity = velocity
 			_move_with_movement_time_scale()
@@ -5024,10 +5030,13 @@ func _update_spindash_direction_latch(physics_up: Vector3) -> void:
 		_spindash_latched_direction = input_direction.normalized()
 
 
-func _apply_spindash_release(physics_up: Vector3, lateral: Vector3) -> Vector3:
+func _apply_spindash_release(physics_up: Vector3, lateral: Vector3, grounded_top_speed: float) -> Vector3:
 	var charge_speed: float = max(_spindash_release_speed, 0.0)
 	if water_physics_enabled and _running_on_water_surface:
 		charge_speed *= clamp(water_surface_spindash_release_effectiveness, 0.0, 1.0)
+	var incoming_speed: float = lateral.length()
+	if _spindash_overspeed_recovery_active or _spindash_overspeed_recharge_timer > 0.0:
+		charge_speed = minf(charge_speed, maxf(incoming_speed, grounded_top_speed))
 	var desired_dir: Vector3 = _get_spindash_release_dir(physics_up, lateral)
 	var current_along_release: float = lateral.dot(desired_dir)
 	var cross_release_velocity: Vector3 = lateral - desired_dir * current_along_release
@@ -5037,7 +5046,16 @@ func _apply_spindash_release(physics_up: Vector3, lateral: Vector3) -> Vector3:
 	else:
 		released_along_speed = max(current_along_release, charge_speed)
 
-	return cross_release_velocity + desired_dir * released_along_speed
+	# Keep sideways momentum within the release speed budget.
+	var speed_limit_squared: float = maxf(lateral.length_squared(), charge_speed * charge_speed)
+	var cross_limit_squared: float = maxf(speed_limit_squared - released_along_speed * released_along_speed, 0.0)
+	if cross_release_velocity.length_squared() > cross_limit_squared:
+		cross_release_velocity = cross_release_velocity.limit_length(sqrt(cross_limit_squared))
+	var release_velocity: Vector3 = cross_release_velocity + desired_dir * released_along_speed
+	if release_velocity.length() > maxf(grounded_top_speed, incoming_speed) + 0.001:
+		_spindash_overspeed_recovery_active = true
+		_spindash_overspeed_recharge_timer = SPINDASH_OVERSPEED_RECHARGE_TIME
+	return release_velocity
 
 
 func _apply_spindash_air_release(world_up: Vector3) -> void:
@@ -7616,9 +7634,10 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		vertical = influenced.dot(physics_up)
 
 	var detach_spindash_from_wall: bool = false
+	var spindash_rearm_speed: float = maxf(run_top_speed_used * water_top_speed_mult, 0.0)
 	if spindash_release_now:
 		var release_direction: Vector3 = _get_spindash_release_dir(physics_up, lateral)
-		lateral = _apply_spindash_release(physics_up, lateral)
+		lateral = _apply_spindash_release(physics_up, lateral, spindash_rearm_speed)
 		var uphill: Vector3 = world_up.slide(support_normal).normalized()
 		detach_spindash_from_wall = (
 			not _spindash_release_with_jump
@@ -8143,6 +8162,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			var new_speed: float = lateral_speed_soft - drop
 			lateral = lateral.normalized() * new_speed
 
+	if _spindash_overspeed_recovery_active and soft_cap_attached and lateral.length() <= spindash_rearm_speed + 0.001:
+		_spindash_overspeed_recovery_active = false
 
 	# --------------------------------------------------
 	# Clamp lateral speed to max_speed

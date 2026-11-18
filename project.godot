@@ -560,6 +560,8 @@ photo_camera_fast_right={
 3d_physics/layer_7="No Player Alignment"
 3d_physics/layer_8="Attack Pass-Through Objects"
 3d_physics/layer_9="Movement Correction"
+3d_physics/layer_30="Rain Cover"
+3d_physics/layer_31="Rain Shelter"
 3d_physics/layer_32="Surface Behavior Triggers"
 
 [liminal_editor]
