@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://rdnst8w8yhri"]
+
+[ext_resource type="Script" uid="uid://cdupr030jgwkv" path="res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd" id="4_1amh5"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gravity/GravityModifier.tscn" id="6_criyo"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.tscn" id="7_x5kse"]
+[ext_resource type="PackedScene" uid="uid://dbuip8icw7l7q" path="res://LS5Framework/Scenes/Levels/Tests/PinballTest/SonicPinball.glb" id="8_1amh5"]
+[ext_resource type="PackedScene" uid="uid://e1tkwisehr5p" path="res://LS5Framework/Objects/DashPanels/DashPanel.tscn" id="8_fehik"]
+[ext_resource type="PackedScene" uid="uid://cyglqqs3uhsy0" path="res://LS5Framework/Objects/Camera/CameraConstraint.tscn" id="8_ykfyn"]
+[ext_resource type="Script" uid="uid://ejxv0c1rj01v" path="res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd" id="9_criyo"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Teleporter/TeleporterEntrance.tscn" id="9_x5kse"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Teleporter/TeleporterExit.tscn" id="10_1amh5"]
+[ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="10_x5kse"]
+[ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="11_1amh5"]
+[ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="12_u0b8n"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.tscn" id="13_pinball"]
+[ext_resource type="Script" uid="uid://ct0qqxifr786k" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd" id="14_pinball_movement"]
+[ext_resource type="PackedScene" uid="uid://bilofsgsa4xdm" path="res://LS5Framework/Objects/Pinball/Flipper/Flipper.tscn" id="14_x5kse"]
+
+[sub_resource type="Environment" id="Environment_1vivr"]
+ambient_light_source = 2
+ambient_light_color = Color(0.51488954, 0.4783138, 0.4593475, 1)
+ambient_light_energy = 0.26
+ssr_enabled = true
+glow_enabled = true
+
+[sub_resource type="Resource" id="Resource_u0b8n"]
+resource_name = "Occupancy Volume"
+script = ExtResource("4_1amh5")
+
+[sub_resource type="Resource" id="Resource_y4e7g"]
+resource_name = "Stationary Camera"
+script = ExtResource("9_criyo")
+
+[sub_resource type="Resource" id="Resource_pat1o"]
+resource_name = "Face Player"
+script = ExtResource("10_x5kse")
+mode = 2
+
+[sub_resource type="Resource" id="Resource_g2pal"]
+script = ExtResource("11_1amh5")
+fov = 55.0
+metadata/_custom_type_script = "uid://dyshixousqyx8"
+
+[sub_resource type="Resource" id="Resource_tu4x2"]
+resource_name = "Instant Entry"
+script = ExtResource("12_u0b8n")
+mode = 1
+duration = 0.25
+
+[sub_resource type="Resource" id="Resource_ch26f"]
+resource_name = "Instant Exit"
+script = ExtResource("12_u0b8n")
+phase = 1
+mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fehik"]
+size = Vector3(137, 27.152237, 133.57516)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fpgrq"]
+size = Vector3(11, 8, 1)
+
+[sub_resource type="Resource" id="Resource_pinball_movement"]
+script = ExtResource("14_pinball_movement")
+rolling = 3
+jumping = 3
+pinball = 1
+
+[node name="PinballTest" type="Node3D" unique_id=8420253]
+
+[node name="ENVIRONMENT" type="Node3D" parent="." unique_id=962165829]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="ENVIRONMENT" unique_id=1204667251]
+environment = SubResource("Environment_1vivr")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="ENVIRONMENT" unique_id=1343221324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 54.478874, 0)
+light_color = Color(0.44019485, 0.48610586, 0.5055166, 1)
+light_energy = 6.829
+shadow_enabled = true
+omni_range = 90.95513
+omni_attenuation = 0.086
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=623175128]
+
+[node name="GravityModifier" parent="OBJECTS" unique_id=1424391414 instance=ExtResource("6_criyo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.60335, 1.9999983, 15.274067)
+gravity_up_direction = Vector3(0, 1, -0.575)
+
+[node name="SpawnPoint" parent="OBJECTS" unique_id=902367433 instance=ExtResource("7_x5kse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.84838, 0.9980097, 15.689974)
+
+[node name="CameraConstraint" parent="OBJECTS" unique_id=1501740697 instance=ExtResource("8_ykfyn")]
+activation_traits = Array[ExtResource("4_1amh5")]([SubResource("Resource_u0b8n")])
+position_traits = Array[ExtResource("9_criyo")]([SubResource("Resource_y4e7g")])
+orientation_traits = Array[ExtResource("10_x5kse")]([SubResource("Resource_pat1o")])
+lens_traits = Array[ExtResource("11_1amh5")]([SubResource("Resource_g2pal")])
+transition_traits = Array[ExtResource("12_u0b8n")]([SubResource("Resource_tu4x2"), SubResource("Resource_ch26f")])
+collision_mode = 2
+
+[node name="CollisionShape3D" parent="OBJECTS/CameraConstraint" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.4858932, 10.763077)
+shape = SubResource("BoxShape3D_fehik")
+
+[node name="ConstraintPoint" parent="OBJECTS/CameraConstraint" index="1" unique_id=495541008]
+transform = Transform3D(-1, 7.337884e-08, 4.752145e-08, 3.020286e-08, 0.8000927, -0.5998765, -8.2039776e-08, -0.5998765, -0.8000927, 2.9999948, 38.05266, 67.06016)
+
+[node name="DashPanel" parent="OBJECTS" unique_id=1418350663 instance=ExtResource("8_fehik")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 35.790882, 0.0556023, 19.535473)
+strength = 75.0
+
+[node name="TeleporterEntrance" parent="OBJECTS" unique_id=1987461727 node_paths=PackedStringArray("exit_node") instance=ExtResource("9_x5kse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.498911, -1.7553024, 57.69194)
+keep_velocity = false
+exit_node = NodePath("../TeleporterExit")
+
+[node name="CollisionShape3D" parent="OBJECTS/TeleporterEntrance" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("BoxShape3D_fpgrq")
+
+[node name="TeleporterExit" parent="OBJECTS" unique_id=217170953 instance=ExtResource("10_1amh5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.778526, 3.3072405, 18.832994)
+
+[node name="SonicPinball" parent="." unique_id=1805915054 instance=ExtResource("8_1amh5")]
+
+[node name="PinballSurface" parent="." unique_id=2075812036 instance=ExtResource("13_pinball")]
+target_paths = Array[NodePath]([NodePath("../SonicPinball")])
+movement_traits = Array[ExtResource("14_pinball_movement")]([SubResource("Resource_pinball_movement")])
+
+[node name="Flipper" parent="." unique_id=276876638 instance=ExtResource("14_x5kse")]
+transform = Transform3D(0.93, 0, 0, 0, 0.93, 0, 0, 0, 0.93, -8.160837, -1.7615029e-06, 43.07633)
+momentum_redirect_fraction = null
+
+[node name="Flipper2" parent="." unique_id=413073514 instance=ExtResource("14_x5kse")]
+transform = Transform3D(0.93, 0, 0, 0, 0.93, 0, 0, 0, 0.93, 13.492975, -1.7615029e-06, 43.07633)
+side = 1
+momentum_redirect_fraction = null
+
+[editable path="OBJECTS/CameraConstraint"]
+[editable path="OBJECTS/TeleporterEntrance"]

@@ -76,6 +76,7 @@ func _apply_respawn_transform(
 	p.cancel_rail_grind()
 	p.cancel_spline_spring()
 	p._active_surface_behavior_areas.clear()
+	p._clear_pinball_mode()
 	p._surface_contact_behaviors.clear()
 	p._follow_collider_last = null
 	p._follow_collider_prev = null
@@ -118,7 +119,7 @@ func _apply_respawn_transform(
 	p._cancel_barrier_blast()
 	p.rolling = false
 	p._reset_enemy_targeting_spawn_grace()
-	p._unlock_local_camera_constraints()
+	p._unlock_local_camera_constraints(true)
 	_notify_camera_teleport()
 	p._sync_buddy_after_leader_teleport()
 

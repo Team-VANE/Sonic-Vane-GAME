@@ -7,7 +7,7 @@ enum AirSpindashMode { LEGACY, DROP_DASH }
 
 @export_subgroup("Activation")
 @export var spindash_enabled: bool = true
-## Legacy releases diagonally in midair. Drop-Dash keeps charging until landing or another action cancels it.
+## Legacy releases diagonally in midair. Drop-Dash carries charges into the air and holds them until landing or cancellation.
 @export_enum("Legacy", "Drop-Dash") var spindash_air_mode: int = AirSpindashMode.DROP_DASH
 @export var spindash_charge_time_max: float = 0.9
 @export var spindash_rail_charge_time_max: float = 0.9
@@ -188,6 +188,7 @@ func _update_standard(delta: float) -> void:
 		owner_player._play_spindash_release_sfx()
 
 	if is_charging:
+		transition_to_airborne_charge()
 		if drop_dash_charging and on_ground:
 			_trigger_release(false)
 			return
@@ -289,6 +290,18 @@ func _update_on_rail(delta: float) -> void:
 		return
 	if owner_player.is_ability_binding_triggered(action_id, input_action, &"hold", hold_time) and not _roll_route_locked():
 		_start_charge()
+
+
+func transition_to_airborne_charge() -> bool:
+	if (
+		not is_charging or drop_dash_charging or spindash_air_mode != AirSpindashMode.DROP_DASH
+		or owner_player.attached or owner_player._rail_active
+	):
+		return false
+	var charge_ratio: float = get_charge_ratio()
+	drop_dash_charging = true
+	charge_time = charge_ratio * maxf(drop_dash_charge_time_max, 0.0)
+	return true
 
 
 func _release_drop_dash() -> void:

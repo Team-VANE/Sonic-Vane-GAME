@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://bnfiv8j85dm58"]
 
-[ext_resource type="Texture2D" uid="uid://cruhq61g72bfe" path="res://LS5Framework/Scenes/Levels/MyCoolLevel/textures/prisonLevel_texture_08.png.png" id="1_b6bma"]
+[ext_resource type="Texture2D" uid="uid://fls71iujigxd" path="res://LS5Framework/Scenes/Levels/ArchaicArtery/ArchaicArteryMDL/ArchaicArtery_prisonLevel_texture_08.png" id="1_b6bma"]
 
 [resource]
 transparency = 1

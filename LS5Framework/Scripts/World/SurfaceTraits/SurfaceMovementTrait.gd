@@ -25,6 +25,11 @@ enum JumpMode { INHERIT, BLOCK, BLOCK_COYOTE, ALLOW }
 	set(value):
 		slope_gravity = value
 		emit_changed()
+## Enters pinball mode on contact. Pinball mode persists until the player reaches regular ground.
+@export var pinball: Policy = Policy.INHERIT:
+	set(value):
+		pinball = value
+		emit_changed()
 
 
 func get_surface_metadata() -> Dictionary:
@@ -37,4 +42,5 @@ func get_surface_metadata() -> Dictionary:
 		metadata[SurfaceBehaviorMetadata.NO_COYOTE_JUMP] = jumping in [JumpMode.BLOCK, JumpMode.BLOCK_COYOTE]
 	_set_policy(metadata, SurfaceBehaviorMetadata.NO_DRIFT, drifting, true)
 	_set_policy(metadata, SurfaceBehaviorMetadata.NO_SLOPE_GRAVITY, slope_gravity, true)
+	_set_policy(metadata, SurfaceBehaviorMetadata.PINBALL, pinball)
 	return metadata

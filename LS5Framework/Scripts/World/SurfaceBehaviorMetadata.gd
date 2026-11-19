@@ -11,6 +11,7 @@ const STICKY: StringName = &"surface_sticky"
 const FORCE_CLING: StringName = &"surface_force_cling"
 const INVISIBLE: StringName = &"surface_invisible"
 const FORCE_ROLL: StringName = &"surface_force_roll"
+const PINBALL: StringName = &"surface_pinball"
 const NO_JUMP: StringName = &"surface_no_jump"
 const NO_COYOTE_JUMP: StringName = &"surface_no_coyote_jump"
 const NO_ROLL: StringName = &"surface_no_roll"
@@ -64,6 +65,7 @@ static func get_all_keys() -> Array[StringName]:
 		NO_DETACH,
 		STICKY,
 		FORCE_ROLL,
+		PINBALL,
 		FORCE_CLING,
 		INVISIBLE,
 		NO_JUMP,

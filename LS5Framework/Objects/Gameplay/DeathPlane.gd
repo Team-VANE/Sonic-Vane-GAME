@@ -112,7 +112,9 @@ func _run_death_sequence(player: Node3D, player_id: int) -> void:
 
 	var rig = _resolve_camera_rig(player)
 	if rig != null and is_instance_valid(rig):
-		if rig.has_method("reset_camera_effects"):
+		if rig.has_method("reset_camera_effects_preserving_occupancy"):
+			rig.call("reset_camera_effects_preserving_occupancy")
+		elif rig.has_method("reset_camera_effects"):
 			rig.call("reset_camera_effects", true)
 		elif rig.has_method("clear_camera_constraints"):
 			rig.call("clear_camera_constraints", null, true)

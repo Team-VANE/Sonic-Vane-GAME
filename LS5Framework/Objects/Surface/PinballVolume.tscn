@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/ImportedSurfaceBehaviorArea.gd" id="1_behavior"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pinball"]
+resource_local_to_scene = true
+size = Vector3(12, 4, 12)
+
+[node name="PinballVolume" type="Area3D"]
+editor_description = "Enters pinball mode on contact until the player reaches regular ground."
+collision_layer = 2147483648
+collision_mask = 4294967295
+script = ExtResource("1_behavior")
+metadata/surface_pinball = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_pinball")

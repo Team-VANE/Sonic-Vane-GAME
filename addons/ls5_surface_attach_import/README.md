@@ -26,6 +26,7 @@ Tags are case-insensitive and may be combined with underscores, hyphens, spaces,
 | `forcecling` | Automatically enters wall cling on an eligible wall without holding Parkour. Jump displays a contextual Wall Kick glyph. Requires a Parkour ability. |
 | `invisible` | Hides the tagged mesh and descendant meshes while preserving collisions and triggers. |
 | `forceroll` | Keeps characters with a roll action in the roll state. |
+| `pinball` | Enters pinball mode on contact. The mode persists in the air and clears when the player reaches regular ground. |
 | `nojump` | Blocks ground jumps and coyote jumps. |
 | `nocoyotejump` or `nocoyote` | Blocks coyote jumps while preserving ground jumps. |
 | `noroll` | Prevents rolling while the surface behavior is active. |
@@ -46,6 +47,12 @@ Combine `intangible` with movement tags such as `forceroll`, `noroll`, `nodrift`
 A tagged mesh without collision geometry receives generated geometry during import. Solid behavior meshes use triangle collision; `intangible` meshes use a convex trigger volume. Existing collision settings and shapes are retained when usable. `_invisible` alone does not generate collision.
 
 Existing concave collision shapes tagged `intangible` are converted into convex trigger hulls, and the original solid shapes are disabled persistently. A convex hull fills openings and recesses; use several authored primitive or convex shapes when those spaces should remain empty.
+
+Use `Table_pinball-colonly` for a solid table collider or `Entry_pinball_intangible_GENCOL` for an imported trigger. In Godot, use `surface_pinball = true` on a collider, enable Pinball on a Surface Movement Trait, or instance `res://LS5Framework/Objects/Surface/PinballVolume.tscn` and resize its box shape.
+
+The player can steer along the slope below the configured free-steering speed. At higher speeds, steering adds only sideways motion. Characters with an enabled Roll stay curled and cannot use abilities until they reach regular ground. Future flippers can read `is_pinball_flipper_pressed()` or `is_pinball_flipper_just_pressed()` from the player. The All Flippers input also activates either side when queried.
+
+On the character scene's root node, use **Movement → Pinball** to tune steering. **Pinball Steering Acceleration** controls response to input, and **Pinball Side Speed** sets the target sideways speed at full input. **Pinball Free Steering Speed** sets the threshold for steering along the slope.
 
 Scene-authored Area3D volumes attach `ImportedSurfaceBehaviorArea.gd` and store behavior metadata on the area root. Runtime detection uses layer 32 and the area's mask. Movement flags are shared with solid contacts, and trigger registration is idempotent so damage does not repeat on every overlap refresh. Teleports, volume deletion, and respawn release active contributions.
 

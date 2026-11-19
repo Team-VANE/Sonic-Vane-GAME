@@ -667,7 +667,9 @@ func _start_death_camera_constraint() -> void:
 	_death_camera_rig = _resolve_camera_rig()
 	if _death_camera_rig == null or not is_instance_valid(_death_camera_rig):
 		return
-	if _death_camera_rig.has_method("reset_camera_effects"):
+	if _death_camera_rig.has_method("reset_camera_effects_preserving_occupancy"):
+		_death_camera_rig.call("reset_camera_effects_preserving_occupancy")
+	elif _death_camera_rig.has_method("reset_camera_effects"):
 		_death_camera_rig.call("reset_camera_effects", true)
 	elif _death_camera_rig.has_method("clear_camera_constraints"):
 		_death_camera_rig.call("clear_camera_constraints", null, true)

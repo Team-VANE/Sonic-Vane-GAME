@@ -1187,10 +1187,15 @@ func clear_camera_constraints(except_constraint: Node = null, suppress_exit_smoo
 	_sync_camera_orientation_hud(not suppress_exit_smoothing)
 
 
-func reset_camera_effects(reset_fov: bool = true) -> void:
+func reset_camera_effects_preserving_occupancy() -> void:
+	reset_camera_effects(true, true)
+
+
+func reset_camera_effects(reset_fov: bool = true, preserve_occupancy: bool = false) -> void:
 	_release_dolly_lag_elapsed = -1.0
 	_release_dolly_lag_target = null
-	clear_camera_constraints(null, true)
+	_constraint_driver.clear(null, true, preserve_occupancy)
+	_sync_camera_orientation_hud(false)
 	_restore_camera_local_basis()
 	end_distance_lock()
 	_roll_offset = 0.0

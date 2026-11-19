@@ -38,6 +38,7 @@ func _init() -> void:
 		"nodetach": SURFACE_METADATA.NO_DETACH,
 		"sticky": SURFACE_METADATA.STICKY,
 		"forceroll": SURFACE_METADATA.FORCE_ROLL,
+		"pinball": SURFACE_METADATA.PINBALL,
 		"forcecling": SURFACE_METADATA.FORCE_CLING,
 		"invisible": SURFACE_METADATA.INVISIBLE,
 		"nojump": SURFACE_METADATA.NO_JUMP,

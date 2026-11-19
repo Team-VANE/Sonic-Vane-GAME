@@ -303,12 +303,17 @@ func _on_crossing_entry(body: Node3D, area: Area3D) -> void:
 
 
 func _on_occupancy_exit(body: Node3D) -> void:
-	if body != _active_body:
-		return
-	for area: Variant in _occupancy_areas:
-		if is_instance_valid(area) and area.overlaps_body(body):
-			return
-	deactivate(&"volume_exit")
+	if body == _active_body and not has_occupancy_overlap():
+		deactivate(&"volume_exit")
+
+
+func has_occupancy_overlap() -> bool:
+	if not is_instance_valid(_active_body):
+		return false
+	for area: Area3D in _occupancy_areas:
+		if is_instance_valid(area) and area.overlaps_body(_active_body):
+			return true
+	return false
 
 
 func _on_exit(body: Node3D) -> void:

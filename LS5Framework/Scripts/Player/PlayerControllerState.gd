@@ -271,6 +271,14 @@ var _enemy_targeting_spawn_input_received: bool = false
 ## Global up direction opposite gravity. This can be changed by volumes or gameplay systems.
 @export var gravity_up: Vector3 = Vector3.UP
 
+@export_subgroup("Pinball")
+## Tangential speed below which pinball steering can move along the slope.
+@export_range(0.0, 20.0, 0.1, "or_greater", "suffix:m/s") var pinball_free_steering_speed: float = 5.0
+## Acceleration applied by steering in pinball mode.
+@export_range(0.0, 100.0, 0.5, "or_greater", "suffix:m/s²") var pinball_steering_acceleration: float = 30.0
+## Sideways speed targeted by full steering input in pinball mode.
+@export_range(0.0, 50.0, 0.5, "or_greater", "suffix:m/s") var pinball_side_speed: float = 15.0
+
 @export_subgroup("Grounding/Landing")
 
 ## Global scale on how much of the tangential component is kept.
@@ -3499,6 +3507,9 @@ var _follow_collider_prev: Node3D
 var _follow_collider_shape_last: int = -1
 var _follow_collider_shape_prev: int = -1
 var _active_surface_behavior_areas: Dictionary = {}
+var _pinball_mode: bool = false
+var _pinball_contact_frame: int = -1
+var _pinball_heading: Vector3 = Vector3.ZERO
 var _surface_contact_behaviors: Dictionary = {}
 
 # Debug HUD

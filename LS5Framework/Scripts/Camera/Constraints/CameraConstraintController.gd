@@ -45,7 +45,8 @@ func register(constraint: CameraConstraint) -> void:
 		if not is_instance_valid(entry):
 			_prune_constraints()
 		elif constraint.constraint_priority >= entry.constraint_priority and (entry.release_when_replaced or constraint.override_previous_constraints):
-			unregister(entry as CameraConstraint, &"replaced")
+			if not (constraint is DeathCameraConstraint and entry.has_occupancy_overlap()):
+				unregister(entry as CameraConstraint, &"replaced")
 	constraints.append(constraint)
 	constraint.on_registered(rig)
 
@@ -58,13 +59,13 @@ func unregister(constraint: CameraConstraint, reason: StringName = &"released") 
 		constraint.on_unregistered(reason)
 
 
-func clear(except_constraint: CameraConstraint = null, suppress_transition: bool = true) -> void:
+func clear(except_constraint: CameraConstraint = null, suppress_transition: bool = true, preserve_occupancy: bool = false) -> void:
 	for entry: Variant in constraints.duplicate():
 		if not is_instance_valid(entry):
 			_prune_constraints()
-		elif entry != except_constraint:
+		elif entry != except_constraint and not (preserve_occupancy and entry.has_occupancy_overlap()):
 			unregister(entry as CameraConstraint, &"cleared")
-	if suppress_transition:
+	if suppress_transition and not (preserve_occupancy and is_instance_valid(selected) and constraints.has(selected)):
 		selected = null
 		_selected_id = 0
 		_transitions.clear()

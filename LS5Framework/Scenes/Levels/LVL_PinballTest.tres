@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_level_doc"]
+
+[resource]
+script = ExtResource("1_level_doc")
+level_name = "Pinball Test"
+level_id = "pinball_test"
+order = 31
+is_test = true
+selection_category = "Test"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Tests/PinballTest/pinball_test.tscn"

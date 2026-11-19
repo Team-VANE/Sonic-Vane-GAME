@@ -35,6 +35,11 @@ const CONTROL_CATEGORIES: Array[Dictionary] = [
 		{"action": "VomitCam", "label": "Camera Alignment / Rear View"},
 		{"action": "toggle_mouse_lock", "label": "Toggle Mouse Lock"}
 	]},
+	{"label": "Pinball", "actions": [
+		{"action": "pinball_flipper_left", "label": "Left Flipper"},
+		{"action": "pinball_flipper_right", "label": "Right Flipper"},
+		{"action": "pinball_flipper_all", "label": "All Flippers"}
+	]},
 	{"label": "Photo Mode", "actions": [
 		{"action": "photo_switch_focus", "label": "Switch Photo Mode Focus"},
 		{"action": "photo_camera_raise", "label": "Raise Photo Camera"},

@@ -224,6 +224,8 @@ func cancel_spindash_roll() -> void:
 func physics_update_action(_delta: float) -> void:
 	if owner_player == null:
 		return
+	if owner_player.is_pinball_moveset_locked():
+		return
 	var jump_slot: StringName = owner_player.get_ability_input_slot(&"jump", &"ability_slot_01")
 	if SettingsManager.is_gameplay_action_just_pressed(String(jump_slot)):
 		if process_ability_routes(

@@ -264,6 +264,8 @@ func _get_valid_buddy_instance() -> Node:
 func _is_jump_held() -> bool:
 	if not _network_is_local_authority():
 		return false
+	if is_pinball_moveset_locked():
+		return false
 	if _ui_input_blocked:
 		return false
 	if race_in_countdown:
@@ -1944,7 +1946,7 @@ func leave_race(from_respawn: bool) -> void:
 	if was_racing:
 		_restore_autoplay_music()
 	_cleanup_race_ui_local()
-	_unlock_local_camera_constraints()
+	_unlock_local_camera_constraints(from_respawn)
 	set_ui_input_blocked(false)
 	lock_cursor_to_game = true
 	_update_mouse_lock()
@@ -2055,12 +2057,14 @@ func _set_manual_camera_lock(active: bool) -> void:
 	elif "manual_input_locked" in rig:
 		rig.manual_input_locked = lock_manual_input
 	
-func _unlock_local_camera_constraints() -> void:
+func _unlock_local_camera_constraints(preserve_occupancy: bool = false) -> void:
 	if _is_buddy_actor() or not _network_is_local_authority():
 		return
 	var rig = _resolve_camera_rig()
 	if rig != null:
-		if rig.has_method("reset_camera_effects"):
+		if preserve_occupancy and rig.has_method("reset_camera_effects_preserving_occupancy"):
+			rig.call("reset_camera_effects_preserving_occupancy")
+		elif rig.has_method("reset_camera_effects"):
 			rig.call("reset_camera_effects", true)
 		elif rig.has_method("clear_camera_constraints"):
 			rig.call("clear_camera_constraints", null, true)
@@ -3405,7 +3409,10 @@ func _movement_physics_process(delta: float) -> void:
 	if _ability_input_router != null:
 		_ability_input_router.update(delta)
 	_preemptive_profile_input_consumed = false
-	if _rail_switch_active or (_rail_active and get_animation_director().is_rail_switch_animation_playing()):
+	if is_pinball_moveset_locked():
+		_clear_action_input_requests()
+		_force_surface_roll()
+	elif _rail_switch_active or (_rail_active and get_animation_director().is_rail_switch_animation_playing()):
 		_clear_action_input_requests()
 	else:
 		var spring_input_locked: bool = _spring_action_lock_timer > 0.0 or _spring_movement_lock_timer > 0.0
@@ -3794,8 +3801,13 @@ func _movement_physics_process(delta: float) -> void:
 	_ground_follow_probe(delta)
 	_update_attachment_state_after_move(delta)
 	_reconcile_grounded_state_after_move(world_up)
+	_update_pinball_support(was_attached)
 	_resolve_air_trick_landing_boost(was_attached)
 	if was_attached and not attached:
+		if _spindash_action and _spindash_charging:
+			_sync_spindash_state_to_action()
+			if _spindash_action.transition_to_airborne_charge():
+				_sync_spindash_state_from_action()
 		_ensure_directional_influence_lock_for_detach(detach_fallback_normal, world_up)
 	_update_manual_airborne_torque(motion_delta)
 	_update_air_torque_ground_tracking(delta)
@@ -6129,18 +6141,18 @@ func _recent_surface_has_behavior(metadata_key: StringName) -> bool:
 
 
 func is_surface_jump_blocked() -> bool:
-	return _current_surface_has_behavior(SURFACE_NO_JUMP_META)
+	return is_pinball_moveset_locked() or _current_surface_has_behavior(SURFACE_NO_JUMP_META)
 
 
 func is_surface_coyote_jump_blocked() -> bool:
 	return (
-		_recent_surface_has_behavior(SURFACE_NO_JUMP_META)
+		is_pinball_moveset_locked() or _recent_surface_has_behavior(SURFACE_NO_JUMP_META)
 		or _recent_surface_has_behavior(SURFACE_NO_COYOTE_JUMP_META)
 	)
 
 
 func is_surface_roll_forced() -> bool:
-	return _current_surface_has_behavior(SURFACE_FORCE_ROLL_META)
+	return is_pinball_moveset_locked() or _current_surface_has_behavior(SURFACE_FORCE_ROLL_META)
 
 
 func is_surface_cling_forced() -> bool:
@@ -6152,7 +6164,108 @@ func is_surface_roll_blocked() -> bool:
 
 
 func is_surface_drift_blocked() -> bool:
-	return _current_surface_has_behavior(SURFACE_NO_DRIFT_META)
+	return is_pinball_moveset_locked() or _current_surface_has_behavior(SURFACE_NO_DRIFT_META)
+
+
+func is_pinball_mode() -> bool:
+	return _pinball_mode
+
+
+func is_pinball_moveset_locked() -> bool:
+	return _pinball_mode and is_instance_valid(_roll_action) and _roll_action.enabled and _roll_action.roll_enabled
+
+
+func is_pinball_flipper_pressed(action: StringName) -> bool:
+	if not _can_read_pinball_flippers():
+		return false
+	return SettingsManager.is_gameplay_action_pressed(action) or (
+		action != &"pinball_flipper_all" and SettingsManager.is_gameplay_action_pressed(&"pinball_flipper_all")
+	)
+
+
+func is_pinball_flipper_just_pressed(action: StringName) -> bool:
+	if not _can_read_pinball_flippers():
+		return false
+	return SettingsManager.is_gameplay_action_just_pressed(action) or (
+		action != &"pinball_flipper_all" and SettingsManager.is_gameplay_action_just_pressed(&"pinball_flipper_all")
+	)
+
+
+func _can_read_pinball_flippers() -> bool:
+	return (
+		_pinball_mode and _network_is_local_authority() and not _is_dead
+		and not _local_pause_enabled and not _ui_input_blocked and not _debug_mode and is_inside_tree() and not get_tree().paused
+	)
+
+
+func _enter_pinball_mode() -> void:
+	_pinball_contact_frame = Engine.get_physics_frames()
+	if _pinball_mode:
+		return
+	_pinball_mode = true
+	_pinball_heading = velocity.slide(_get_gravity_up()).normalized()
+	if is_pinball_moveset_locked():
+		_clear_action_input_requests()
+		_clear_coyote_jump_window()
+		_reset_spindash_state()
+		_reset_drift_state()
+		cancel_homing_attack(false)
+		cancel_bounce_stomp_for_action()
+		if _lightspeed_dash_active:
+			_end_lightspeed_dash(false)
+		if _active_action and not _pinball_allows_action(_active_action):
+			clear_active_action()
+		_force_surface_roll()
+
+
+func _pinball_allows_action(action: CharacterAction) -> bool:
+	return action in [_roll_action, _fall_action, _grounded_action, _spring_action, _hurt_action, _drowned_action]
+
+
+func _clear_pinball_mode() -> void:
+	_pinball_mode = false
+	_pinball_contact_frame = -1
+	_pinball_heading = Vector3.ZERO
+
+
+func _update_pinball_support(was_attached: bool) -> void:
+	if not attached or not _follow_hit or not is_instance_valid(_follow_collider_last):
+		return
+	if _surface_metadata_bool(_follow_collider_last, SURFACE_METADATA.PINBALL, _follow_collider_shape_last):
+		_enter_pinball_mode()
+	elif (
+		_pinball_mode and (not was_attached or _pinball_contact_frame != Engine.get_physics_frames())
+		and not _active_surface_area_has_behavior(SURFACE_METADATA.PINBALL)
+	):
+		_clear_pinball_mode()
+
+
+func _apply_pinball_steering(
+	lateral: Vector3, up: Vector3, gravity_up: Vector3, input_strength: float, delta: float
+) -> Vector3:
+	var downhill: Vector3 = (-gravity_up).slide(up)
+	if downhill.length_squared() > 0.0001:
+		_pinball_heading = downhill.normalized()
+	elif lateral.length_squared() > 0.0001 and (
+		_pinball_heading.slide(up).is_zero_approx() or lateral.length() < pinball_free_steering_speed
+	):
+		_pinball_heading = lateral.normalized()
+	if input_strength <= 0.001 or _move_direction.is_zero_approx():
+		return lateral
+	var acceleration_step: float = pinball_steering_acceleration * delta
+	if lateral.length() < pinball_free_steering_speed:
+		var target: Vector3 = _move_direction.slide(up).normalized() * pinball_free_steering_speed * input_strength
+		return lateral.move_toward(target, acceleration_step)
+	var sideways: Vector3 = up.cross(_pinball_heading).normalized()
+	var side_input: float = _move_direction.dot(sideways) * input_strength
+	if absf(side_input) <= 0.001:
+		return lateral
+	var side_speed: float = lateral.dot(sideways)
+	var target_side_speed: float = pinball_side_speed * side_input
+	if side_speed * side_input > 0.0 and absf(side_speed) >= absf(target_side_speed):
+		return lateral
+	var new_side_speed: float = move_toward(side_speed, target_side_speed, acceleration_step * absf(side_input))
+	return lateral + sideways * (new_side_speed - side_speed)
 
 
 func _surface_ignores_slope_gravity() -> bool:
@@ -6240,6 +6353,8 @@ func _process_surface_contact_behavior(
 	if blocks_coyote_jump:
 		_coyote_jump_requested = false
 		_clear_coyote_jump_window()
+	if _surface_metadata_bool(collider, SURFACE_METADATA.PINBALL, collider_shape_index):
+		_enter_pinball_mode()
 	if _surface_metadata_bool(collider, SURFACE_FORCE_ROLL_META, collider_shape_index):
 		_force_surface_roll()
 	if not is_surface_roll_forced() and _surface_metadata_bool(collider, SURFACE_NO_ROLL_META, collider_shape_index):
@@ -6284,6 +6399,9 @@ func _process_slide_collision_surface_behaviors() -> void:
 	for collision: KinematicCollision3D in _get_movement_slide_collisions():
 		if collision:
 			contacts.append({"collider": collision.get_collider(), "shape": collision.get_collider_shape_index()})
+			for index: int in range(1, collision.get_collision_count()):
+				if _surface_metadata_bool(collision.get_collider(index), SURFACE_METADATA.PINBALL, collision.get_collider_shape_index(index)):
+					_enter_pinball_mode()
 	for contact: Dictionary in contacts:
 		_record_surface_contact_behaviors(contact["collider"], int(contact["shape"]))
 	for contact: Dictionary in contacts:
@@ -6839,6 +6957,12 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		if continuous_input_direction.length_squared() >= 0.001:
 			_left_stick_trick_last_input_direction = continuous_input_direction.normalized()
 			_left_stick_trick_last_input_strength = movement_input_strength
+	if _pinball_mode and (
+		is_pinball_moveset_locked() or lateral.length() >= pinball_free_steering_speed
+	):
+		lateral = _apply_pinball_steering(lateral, physics_up, world_up, movement_input_strength, delta)
+		_move_direction = Vector3.ZERO
+		movement_input_strength = 0.0
 	_update_spindash_direction_latch(physics_up)
 
 	# --------------------------------------------------
@@ -8179,7 +8303,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var max_speed_effective: float = _functional_max_speed * water_top_speed_mult
 	if preserve_air_momentum and not max_speed_override_active and not in_water_movement_physics:
 		max_speed_effective = maxf(max_speed_effective, lateral_speed_before_motor)
-	if not is_attached:
+	if not is_attached and not is_pinball_moveset_locked():
 		lateral = _apply_left_stick_trick_momentum(lateral, max_speed_effective, water_accel_mult, delta)
 	var lateral_speed_final: float = lateral.length()
 	if lateral_speed_final > max_speed_effective and lateral_speed_final > 0.0:
@@ -11316,6 +11440,8 @@ func activate_action(action, context: Dictionary = {}) -> bool:
 		return false
 	if action == null or not is_instance_valid(action):
 		return false
+	if is_pinball_moveset_locked() and not _pinball_allows_action(action):
+		return false
 	if action.input_action and _automation_controller and not _automation_controller.motion.allows(action.action_id):
 		return false
 	if action.owner_player != self:
@@ -12252,6 +12378,8 @@ func has_homing_target_for_prompt() -> bool:
 
 
 func _action_input_locked() -> bool:
+	if is_pinball_moveset_locked():
+		return true
 	if _local_pause_enabled or _ui_input_blocked or _debug_mode or _rail_switch_active:
 		return true
 	if _dash_movement_lock_active and _spring_movement_lock_timer > 0.0:
@@ -12269,7 +12397,7 @@ func _clear_action_input_requests() -> void:
 
 
 func can_start_lightspeed_dash() -> bool:
-	if not lightspeed_dash_enabled:
+	if not lightspeed_dash_enabled or is_pinball_moveset_locked():
 		return false
 	if _lightspeed_dash_active:
 		return false
@@ -12409,6 +12537,8 @@ func cancel_bounce_stomp_for_action() -> bool:
 
 
 func queue_stomp_attack() -> void:
+	if is_pinball_moveset_locked():
+		return
 	if should_prioritize_spindash_over_bounce_stomp():
 		return
 	if attached:

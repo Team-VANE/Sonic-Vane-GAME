@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bilofsgsa4xdm"]
+
+[ext_resource type="Script" uid="uid://hkpr5bn05vsf" path="res://LS5Framework/Objects/Pinball/Flipper/Flipper.gd" id="1_flipper"]
+[ext_resource type="PackedScene" uid="uid://b8vtqhbyxo5e3" path="res://LS5Framework/Objects/Pinball/Flipper/Flipper_Left.glb" id="2_left"]
+[ext_resource type="PackedScene" uid="uid://b5ddahume12tj" path="res://LS5Framework/Objects/Pinball/Flipper/Flipper_Right.glb" id="3_right"]
+[ext_resource type="AudioStream" uid="uid://dyl6e4vn71ywx" path="res://LS5Framework/Sounds/Objects/Flipper.wav" id="4_stroke"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_left"]
+points = PackedVector3Array(-0.1853, 4.3398, -1.1493, 8.9706, -0.1496, 6.0658, 9.1347, -0.1496, 5.9013, -1.1845, -0.1496, -0.6495, -1.0204, 4.4369, 1.4798, 8.9706, 4.4369, 5.0824, 0.9448, -0.1496, -1.3054, -1.0204, -0.1496, 1.4798, 8.1517, 4.4369, 6.0658, 0.9448, 4.4369, -1.3054, 8.8064, -0.1496, 4.9179, 8.1517, -0.1496, 6.0658, -1.1615, 4.355, -0.0675, -0.3657, -0.1496, -1.3054, -1.3487, -0.1496, 0.6608, 8.9475, 4.355, 5.7756, 6.3487, 4.4369, 2.9524, 1.6005, -0.1496, -0.8133, -0.8434, 4.3543, -0.6982, 9.1347, -0.1496, 5.4092, 1.6005, 4.4369, -0.8133, -1.3487, -0.1496, -0.1581, 8.8064, 4.4369, 4.9179, 8.7892, 4.355, 5.9342, 6.3487, -0.1496, 2.9524, -1.0032, 4.355, -0.5413, -1.1185, 4.3362, 0.7364, -1.1845, -0.1496, 1.1522, 8.9706, -0.1496, 5.0824, -1.0204, -0.1496, -0.8133)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_right"]
+points = PackedVector3Array(-0.9448, 4.4369, -1.3054, -8.1517, -0.1496, 6.0658, -8.1517, 4.4369, 6.0658, 1.0204, -0.1496, 1.4798, -0.9448, -0.1496, -1.3054, 1.0204, 4.4369, 1.4798, -8.9706, -0.1496, 5.0824, -8.8064, 4.4369, 4.9179, 1.1845, -0.1496, -0.6495, 1.0032, 4.355, -0.5413, -9.1347, -0.1496, 5.9013, 0.3657, -0.1496, -1.3054, 1.3487, -0.1496, 0.6608, -8.9475, 4.355, 5.7756, 0.1853, 4.3398, -1.1493, -6.3487, -0.1496, 2.9524, 1.1615, 4.355, -0.0675, -1.6005, 4.4369, -0.8133, -8.9706, 4.4369, 5.0824, -8.9706, -0.1496, 6.0658, -1.6005, -0.1496, -0.8133, 1.3487, -0.1496, -0.1581, -8.8064, -0.1496, 4.9179, -9.1347, -0.1496, 5.4092, -8.7892, 4.355, 5.9342, -6.3487, 4.4369, 2.9524, 0.8434, 4.3543, -0.6982, 1.1185, 4.3362, 0.7364, 1.1845, -0.1496, 1.1522, 1.0204, -0.1496, -0.8133)
+
+[node name="Flipper" type="AnimatableBody3D" unique_id=1111453600]
+process_physics_priority = -90
+collision_mask = 0
+sync_to_physics = false
+script = ExtResource("1_flipper")
+minimum_assist_speed = 92.0
+contact_aim_weight = null
+momentum_redirect_fraction = 0.93
+metadata/surface_pinball = true
+
+[node name="LeftModel" parent="." unique_id=562564590 instance=ExtResource("2_left")]
+
+[node name="RightModel" parent="." unique_id=593841676 instance=ExtResource("3_right")]
+
+[node name="LeftCollision" type="CollisionShape3D" parent="." unique_id=1122002584]
+shape = SubResource("ConvexPolygonShape3D_left")
+
+[node name="RightCollision" type="CollisionShape3D" parent="." unique_id=938364971]
+shape = SubResource("ConvexPolygonShape3D_right")
+disabled = true
+
+[node name="StrokeAudio" type="AudioStreamPlayer3D" parent="." unique_id=742190130]
+stream = ExtResource("4_stroke")
+bus = &"SFX"
+
+[editable path="LeftModel"]
+[editable path="RightModel"]
