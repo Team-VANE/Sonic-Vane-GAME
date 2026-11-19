@@ -8,8 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://2psk5tt3epwh" path="res://LS5Framework/Images/Effects/Sun_Flare.png" id="5_fmm3p"]
 [ext_resource type="Texture2D" uid="uid://b8g6kgbrudl3v" path="res://LS5Framework/Images/Effects/Sun_Flare_Thin.png" id="6_p60sg"]
 [ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="8_mkokl"]
+[ext_resource type="PackedScene" uid="uid://dt3rtue2c684m" path="res://LS5Framework/Objects/Surface/Examples/IceTest.glb" id="9_kq5e8"]
+[ext_resource type="Material" uid="uid://chsgt2ylebix4" path="res://LS5Framework/Scenes/Levels/VaneTest/Ice.tres" id="10_fmm3p"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mkokl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fmm3p"]
 resource_local_to_scene = true
 shader = ExtResource("3_mkokl")
 shader_parameter/sun_direction = Vector3(0.7071068, 0.7071068, 0)
@@ -67,16 +69,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_kq5e8"]
+[sub_resource type="Sky" id="Sky_p60sg"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_mkokl")
+sky_material = SubResource("ShaderMaterial_fmm3p")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_fmm3p"]
+[sub_resource type="Environment" id="Environment_0bhf6"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 1.0000001
-sky = SubResource("Sky_kq5e8")
+sky = SubResource("Sky_p60sg")
 ambient_light_source = 3
 ambient_light_color = Color(0.18256412, 0.42191362, 0.8746939, 1)
 ambient_light_sky_contribution = 0.82
@@ -104,9 +106,9 @@ fog_sky_affect = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
-adjustment_saturation = 2.3579478
+adjustment_saturation = 2.5937426
 
-[sub_resource type="Resource" id="Resource_p60sg"]
+[sub_resource type="Resource" id="Resource_wd6wu"]
 resource_local_to_scene = true
 script = ExtResource("4_kq5e8")
 texture = ExtResource("5_fmm3p")
@@ -114,7 +116,7 @@ axis_position = 0.55
 diameter = 0.44
 tint = Color(0.75, 0.88, 1, 0.38)
 
-[sub_resource type="Resource" id="Resource_0bhf6"]
+[sub_resource type="Resource" id="Resource_7xjcl"]
 resource_local_to_scene = true
 script = ExtResource("4_kq5e8")
 texture = ExtResource("6_p60sg")
@@ -122,7 +124,7 @@ axis_position = 0.2
 diameter = 0.16
 tint = Color(0.8, 1, 0.9, 0.28)
 
-[sub_resource type="Resource" id="Resource_wd6wu"]
+[sub_resource type="Resource" id="Resource_j5hr3"]
 resource_local_to_scene = true
 script = ExtResource("4_kq5e8")
 texture = ExtResource("5_fmm3p")
@@ -130,7 +132,7 @@ axis_position = 1.05
 diameter = 0.075
 tint = Color(0.65, 0.85, 1, 0.3)
 
-[sub_resource type="Resource" id="Resource_7xjcl"]
+[sub_resource type="Resource" id="Resource_w2w0n"]
 resource_local_to_scene = true
 script = ExtResource("4_kq5e8")
 texture = ExtResource("6_p60sg")
@@ -150,10 +152,10 @@ initial_time_of_day_hours = 8.0
 day_length_minutes = 14.0
 
 [node name="WorldEnvironment" parent="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_fmm3p")
+environment = SubResource("Environment_0bhf6")
 
 [node name="SunFlare" parent="ENVIRONMENT/EnvironmentWeatherSystem" index="2"]
-lens_elements = Array[ExtResource("4_kq5e8")]([SubResource("Resource_p60sg"), SubResource("Resource_0bhf6"), SubResource("Resource_wd6wu"), SubResource("Resource_7xjcl")])
+lens_elements = Array[ExtResource("4_kq5e8")]([SubResource("Resource_wd6wu"), SubResource("Resource_7xjcl"), SubResource("Resource_j5hr3"), SubResource("Resource_w2w0n")])
 
 [node name="OBJECTS" type="Node3D" parent="." unique_id=623175128]
 
@@ -163,5 +165,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.101017, 0.9980097, 22.2596
 [node name="Terminal" parent="OBJECTS" unique_id=107229639 instance=ExtResource("8_mkokl")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, 22)
 
+[node name="IceTest" parent="OBJECTS" unique_id=84339944 instance=ExtResource("9_kq5e8")]
+transform = Transform3D(6.76, 0, 0, 0, 9.295, 0, 0, 0, 5.6, -1039.6825, 3.8146973e-06, -9.300034)
+
+[node name="IceSlope_ice " parent="OBJECTS/IceTest" index="0" unique_id=473860391]
+surface_material_override/0 = ExtResource("10_fmm3p")
+
 [editable path="ENVIRONMENT/EnvironmentWeatherSystem"]
 [editable path="ENVIRONMENT/EnvironmentWeatherSystem/DayNightCycle"]
+[editable path="OBJECTS/IceTest"]

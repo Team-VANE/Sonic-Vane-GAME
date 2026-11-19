@@ -27,6 +27,7 @@ Tags are case-insensitive and may be combined with underscores, hyphens, spaces,
 | `invisible` | Hides the tagged mesh and descendant meshes while preserving collisions and triggers. |
 | `forceroll` | Keeps characters with a roll action in the roll state. |
 | `pinball` | Enters pinball mode on contact. The mode persists in the air and clears when the player reaches regular ground. |
+| `ice` | Reduces traction while the collider supports the player. |
 | `nojump` | Blocks ground jumps and coyote jumps. |
 | `nocoyotejump` or `nocoyote` | Blocks coyote jumps while preserving ground jumps. |
 | `noroll` | Prevents rolling while the surface behavior is active. |
@@ -53,6 +54,8 @@ Use `Table_pinball-colonly` for a solid table collider or `Entry_pinball_intangi
 The player can steer along the slope below the configured free-steering speed. At higher speeds, steering adds only sideways motion. Characters with an enabled Roll stay curled and cannot use abilities until they reach regular ground. Future flippers can read `is_pinball_flipper_pressed()` or `is_pinball_flipper_just_pressed()` from the player. The All Flippers input also activates either side when queried.
 
 On the character scene's root node, use **Movement → Pinball** to tune steering. **Pinball Steering Acceleration** controls response to input, and **Pinball Side Speed** sets the target sideways speed at full input. **Pinball Free Steering Speed** sets the threshold for steering along the slope.
+
+Use `FrozenRamp_ice-colonly` for ice collision or set `surface_ice = true` on a solid collider in Godot. A Surface Behavior with a Surface Movement Trait can also enable or disable Ice for a target collider. Ice requires a supporting solid collider. Tune input acceleration for running and rolling, coasting, braking, and slope response on the character root under **Movement → Ice**.
 
 Scene-authored Area3D volumes attach `ImportedSurfaceBehaviorArea.gd` and store behavior metadata on the area root. Runtime detection uses layer 32 and the area's mask. Movement flags are shared with solid contacts, and trigger registration is idempotent so damage does not repeat on every overlap refresh. Teleports, volume deletion, and respawn release active contributions.
 

@@ -67,6 +67,10 @@ pinball = 1
 
 [node name="PinballTest" type="Node3D" unique_id=8420253]
 
+[node name="SpawnPoint" parent="." unique_id=902367433 instance=ExtResource("7_x5kse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.84838, 4.026421, 15.689974)
+downwarp_enabled = false
+
 [node name="ENVIRONMENT" type="Node3D" parent="." unique_id=962165829]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="ENVIRONMENT" unique_id=1204667251]
@@ -84,10 +88,7 @@ omni_attenuation = 0.086
 
 [node name="GravityModifier" parent="OBJECTS" unique_id=1424391414 instance=ExtResource("6_criyo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.60335, 1.9999983, 15.274067)
-gravity_up_direction = Vector3(0, 1, -0.575)
-
-[node name="SpawnPoint" parent="OBJECTS" unique_id=902367433 instance=ExtResource("7_x5kse")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.84838, 0.9980097, 15.689974)
+gravity_up_direction = Vector3(0, 1, -0.75)
 
 [node name="CameraConstraint" parent="OBJECTS" unique_id=1501740697 instance=ExtResource("8_ykfyn")]
 activation_traits = Array[ExtResource("4_1amh5")]([SubResource("Resource_u0b8n")])
@@ -106,7 +107,7 @@ transform = Transform3D(-1, 7.337884e-08, 4.752145e-08, 3.020286e-08, 0.8000927,
 
 [node name="DashPanel" parent="OBJECTS" unique_id=1418350663 instance=ExtResource("8_fehik")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 35.790882, 0.0556023, 19.535473)
-strength = 75.0
+strength = 92.0
 
 [node name="TeleporterEntrance" parent="OBJECTS" unique_id=1987461727 node_paths=PackedStringArray("exit_node") instance=ExtResource("9_x5kse")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.498911, -1.7553024, 57.69194)
@@ -128,12 +129,16 @@ movement_traits = Array[ExtResource("14_pinball_movement")]([SubResource("Resour
 
 [node name="Flipper" parent="." unique_id=276876638 instance=ExtResource("14_x5kse")]
 transform = Transform3D(0.93, 0, 0, 0, 0.93, 0, 0, 0, 0.93, -8.160837, -1.7615029e-06, 43.07633)
-momentum_redirect_fraction = null
+maximum_strike_speed = 180.0
+minimum_assist_speed = 110.0
+contact_aim_weight = 0.7
 
 [node name="Flipper2" parent="." unique_id=413073514 instance=ExtResource("14_x5kse")]
 transform = Transform3D(0.93, 0, 0, 0, 0.93, 0, 0, 0, 0.93, 13.492975, -1.7615029e-06, 43.07633)
 side = 1
-momentum_redirect_fraction = null
+maximum_strike_speed = 180.0
+minimum_assist_speed = 110.0
+contact_aim_weight = 0.7
 
 [editable path="OBJECTS/CameraConstraint"]
 [editable path="OBJECTS/TeleporterEntrance"]

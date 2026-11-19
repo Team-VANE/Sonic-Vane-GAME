@@ -8,6 +8,7 @@ const LEVEL_TRANSIENT_GROUP: StringName = &"LevelTransient"
 @export var fallback_world_environment_path: NodePath = NodePath("../Lights/WorldEnvironment")
 ## Directory where LVL_*.tres docs live (including LVLTEST.tres).
 @export var level_data_dir: String = "res://LS5Framework/Scenes/Levels"
+## Fallback hub level ID when the freeplay hub document has no level scene.
 @export var hub_level_id: StringName = &"NIKO_TEST"
 @export var auto_load_hub: bool = true
 ## Shows a black overlay while a newly loaded level settles.
@@ -67,7 +68,7 @@ func _ready() -> void:
 			get_tree().remove_meta("pending_level_spawn_path")
 		call_deferred("load_level_by_scene_path", pending_scene)
 		return
-	if auto_load_hub and hub_level_id != &"":
+	if auto_load_hub:
 		call_deferred("_load_hub")
 
 
@@ -76,9 +77,41 @@ func _exit_tree() -> void:
 
 
 func _load_hub() -> void:
-	if _current_level_id != &"":
+	if not _current_level_scene_path.is_empty():
 		return
-	load_level_by_id(hub_level_id)
+	load_freeplay_hub()
+
+
+func load_freeplay_hub() -> void:
+	var doc: LevelDoc = LevelCatalog.get_freeplay_hub_doc()
+	if doc and not doc.level_scene.strip_edges().is_empty():
+		load_level_by_scene_path(doc.level_scene.strip_edges(), StringName(doc.level_id.strip_edges()))
+	elif hub_level_id != &"":
+		load_level_by_id(hub_level_id)
+
+
+func is_current_level_freeplay_hub() -> bool:
+	if _current_level_scene_path.is_empty():
+		return false
+	var doc: LevelDoc = LevelCatalog.get_freeplay_hub_doc()
+	var hub_scene: String = doc.level_scene.strip_edges() if doc else ""
+	if hub_scene.is_empty():
+		hub_scene = _get_scene_path_for_id(hub_level_id)
+	return _current_level_scene_path == hub_scene
+
+
+static func return_to_freeplay_hub(tree: SceneTree) -> void:
+	if not tree:
+		return
+	var manager: LevelManager = tree.get_first_node_in_group(&"LevelManager") as LevelManager
+	if manager:
+		manager.load_freeplay_hub()
+		return
+	var scene_path: String = LevelCatalog.get_freeplay_hub_gameplay_scene()
+	if NetworkManager.is_in_session():
+		NetworkManager.change_scene_keep_session(scene_path)
+	else:
+		tree.change_scene_to_file(scene_path)
 
 
 func get_current_level_id() -> StringName:
@@ -96,7 +129,13 @@ func get_current_spawn_point() -> Node3D:
 		var direct_spawn: Node3D = _current_level.get_node_or_null(_direct_level_spawn_path) as Node3D
 		if direct_spawn:
 			return direct_spawn
-	return _current_level.get_node_or_null("PlayerSpawn") as Node3D
+	var named_spawn: Node3D = _current_level.get_node_or_null("PlayerSpawn") as Node3D
+	if named_spawn:
+		return named_spawn
+	for candidate: Node in get_tree().get_nodes_in_group(SpawnPoint.SPAWN_GROUP):
+		if _current_level.is_ancestor_of(candidate) and not candidate.is_queued_for_deletion():
+			return candidate as SpawnPoint
+	return null
 
 
 func is_level_loading() -> bool:
@@ -1045,9 +1084,7 @@ func _apply_exit_teleport(
 		if n is Node3D:
 			exit_target = n
 	if exit_target == null:
-		var fallback = level_node.get_node_or_null(NodePath("PlayerSpawn"))
-		if fallback is Node3D:
-			exit_target = fallback
+		exit_target = get_current_spawn_point()
 	if exit_target == null:
 		return
 

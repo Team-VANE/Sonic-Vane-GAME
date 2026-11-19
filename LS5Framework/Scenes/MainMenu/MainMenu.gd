@@ -1111,17 +1111,7 @@ func _on_ButtonHost_pressed() -> void:
 		return
 	_play_click()
 	_sync_online_character_settings_from_ui()
-	var test_entry: Dictionary = _get_test_level_entry()
-	var scene_path: String = test_level_scene
-	var level_scene_path: String = ""
-	if not test_entry.is_empty():
-		scene_path = String(test_entry.get("scene", scene_path))
-		level_scene_path = String(test_entry.get("level_scene", ""))
-	if scene_path.strip_edges() == "":
-		_on_network_status_changed("No test_level_scene set.")
-		return
-	if level_scene_path.strip_edges() != "":
-		_set_pending_level_scene(level_scene_path)
+	var scene_path: String = LevelCatalog.get_freeplay_hub_gameplay_scene()
 	var port: int = int(edit_port.text)
 	var max_players: int = 16
 	if spin_max_players != null:

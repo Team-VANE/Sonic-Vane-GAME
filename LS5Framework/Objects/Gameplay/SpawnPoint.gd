@@ -4,6 +4,7 @@ class_name SpawnPoint
 
 const EDITOR_PREVIEW_PATH: String = "res://LS5Framework/Objects/Reference/Sonic_NeoAdventure_REF.glb"
 const GAMEPLAY_SCENE_PATH: String = "res://LS5Framework/Scenes/Main.tscn"
+const SPAWN_GROUP: StringName = &"LevelSpawnPoint"
 const DIRECT_START_GROUP: StringName = &"DirectLevelSpawn"
 
 ## Allows this marker to start gameplay when the level scene is run directly.
@@ -34,7 +35,9 @@ var _editor_preview: Node3D = null
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		_update_editor_preview()
-	elif direct_level_start_enabled:
+		return
+	add_to_group(SPAWN_GROUP)
+	if direct_level_start_enabled:
 		add_to_group(DIRECT_START_GROUP)
 		_start_direct_level.call_deferred()
 

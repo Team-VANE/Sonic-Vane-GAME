@@ -9,6 +9,7 @@ class_name PlayerModel
 var _owner: Node = null
 
 var _attribute_material_sources: Array[Dictionary] = []
+var _ice_visual_heading: Vector3 = Vector3.ZERO
 
 ## Model root masked by character-wide blink visibility.
 var _blink_root: Node3D
@@ -1314,6 +1315,18 @@ func _update_model_orientation(delta: float) -> void:
 
 	# Visual-facing forward can pause yaw correction while airborne torque is active.
 	var visual_forward: Vector3 = gameplay_forward
+	var ice_input_facing: bool = p.is_ice_locomotion_active() and not in_spring_align and not spindash_input_facing and not p.race_in_countdown
+	if ice_input_facing:
+		var ice_input_direction: Vector3 = p._move_direction.slide(up)
+		if not ice_input_direction.is_zero_approx():
+			_ice_visual_heading = ice_input_direction.normalized()
+		elif _ice_visual_heading.is_zero_approx():
+			_ice_visual_heading = (-p.model_root.global_transform.basis.z).slide(up).normalized()
+		var ice_forward: Vector3 = _ice_visual_heading.slide(up)
+		if not ice_forward.is_zero_approx():
+			visual_forward = ice_forward.normalized()
+	else:
+		_ice_visual_heading = Vector3.ZERO
 	var torque_active: bool = p.airborne_torque_enabled and p._air_torque_segment_allowed
 	var external_torque_active: bool = bool(p.get("_external_airborne_torque_active"))
 	var manual_active: bool = bool(p.get("_manual_airborne_torque_active")) or external_torque_active
@@ -1405,7 +1418,7 @@ func _update_model_orientation(delta: float) -> void:
 		p.model_root.global_transform = t
 		p._model_forward = -t.basis.z
 		return
-	if p.attached and not p._prev_attached:
+	if p.attached and not p._prev_attached and not ice_input_facing:
 		t.basis = target_basis
 		p.model_root.global_transform = t
 		return

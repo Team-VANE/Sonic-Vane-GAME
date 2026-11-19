@@ -279,6 +279,22 @@ var _enemy_targeting_spawn_input_received: bool = false
 ## Sideways speed targeted by full steering input in pinball mode.
 @export_range(0.0, 50.0, 0.5, "or_greater", "suffix:m/s") var pinball_side_speed: float = 15.0
 
+@export_subgroup("Ice")
+## Acceleration in the input direction during ground movement on ice.
+@export_range(0.0, 100.0, 0.5, "or_greater", "suffix:m/s²") var ice_input_acceleration: float = 42.0
+## Acceleration in the input direction while rolling on ice, capped at the current roll speed.
+@export_range(0.0, 100.0, 0.5, "or_greater", "suffix:m/s²") var ice_roll_input_acceleration: float = 12.0
+## Coasting and rolling resistance multiplier on ice.
+@export_range(0.0, 1.0, 0.01) var ice_coast_multiplier: float = 0.2
+## Ground braking multiplier for input opposing travel on ice.
+@export_range(0.0, 1.0, 0.01) var ice_brake_multiplier: float = 0.25
+## Input authority retained uphill at slopes of 25 degrees or steeper.
+@export_range(0.0, 1.0, 0.01) var ice_uphill_control_multiplier: float = 0.35
+## Multiplier on gravity projected along the ice surface.
+@export_range(0.0, 5.0, 0.05, "or_greater") var ice_slope_gravity_multiplier: float = 1.5
+## Slope angle above which an idle player begins sliding on ice.
+@export_range(0.0, 90.0, 0.5, "suffix:deg") var ice_slide_start_angle_deg: float = 12.0
+
 @export_subgroup("Grounding/Landing")
 
 ## Global scale on how much of the tangential component is kept.

@@ -5,6 +5,20 @@ const DEBUG_LEVEL_DOCS: bool = true
 const LEVEL_DOC_PREFIX: String = "LVL_"
 const LEVEL_TEST_RESOURCE_NAME: String = "LVLTEST.tres"
 const LEVEL_REGISTRY_PATH: String = "res://LS5Framework/Scenes/Levels/LevelRegistry.tres"
+const FREEPLAY_HUB_DOC_NAME: String = "LVL_FREEPLAY_HUB.tres"
+const FREEPLAY_HUB_DOC_PATH: String = "res://LS5Framework/Scenes/Levels/" + FREEPLAY_HUB_DOC_NAME
+const DEFAULT_GAMEPLAY_SCENE: String = "res://LS5Framework/Scenes/Main.tscn"
+
+
+static func get_freeplay_hub_doc() -> LevelDoc:
+	return load(FREEPLAY_HUB_DOC_PATH) as LevelDoc if ResourceLoader.exists(FREEPLAY_HUB_DOC_PATH) else null
+
+
+static func get_freeplay_hub_gameplay_scene() -> String:
+	var doc: LevelDoc = get_freeplay_hub_doc()
+	if doc and not doc.scene.strip_edges().is_empty():
+		return doc.scene.strip_edges()
+	return DEFAULT_GAMEPLAY_SCENE
 
 
 static func load_level_entries(levels_dir: String) -> Array:
@@ -32,6 +46,8 @@ static func load_level_entries(levels_dir: String) -> Array:
 	_log_debug("load_level_entries: resource_paths_after_test=%d" % resource_paths.size())
 
 	for res_path in resource_paths:
+		if String(res_path).get_file() == FREEPLAY_HUB_DOC_NAME:
+			continue
 		var entry: Dictionary = _load_level_doc_resource(res_path)
 		_append_entry(entries, seen, entry)
 

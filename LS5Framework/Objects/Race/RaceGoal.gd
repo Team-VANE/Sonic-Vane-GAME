@@ -1409,30 +1409,7 @@ func _get_level_key() -> String:
 
 
 func _return_to_hub() -> void:
-	var level_manager = _get_level_manager()
-	if level_manager != null:
-		var hub_id: StringName = &""
-		if level_manager.has_method("get"):
-			var v = level_manager.get("hub_level_id")
-			if v is StringName:
-				hub_id = v
-			elif v is String:
-				hub_id = StringName(v)
-		if hub_id != &"" and level_manager.has_method("load_level_by_id"):
-			level_manager.call("load_level_by_id", hub_id, NodePath("PlayerSpawn"))
-			return
-		if level_manager.has_method("load_level_by_scene_path"):
-			level_manager.call("load_level_by_scene_path", "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn", StringName(""), NodePath("PlayerSpawn"))
-			return
-
-	if get_tree() == null:
-		return
-	get_tree().set_meta("pending_level_scene", "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn")
-	var packed = load("res://LS5Framework/Scenes/Main.tscn")
-	if packed is PackedScene:
-		get_tree().change_scene_to_packed(packed)
-	else:
-		get_tree().change_scene_to_file("res://LS5Framework/Scenes/Main.tscn")
+	LevelManager.return_to_freeplay_hub(get_tree())
 
 
 func _unlock_cursor(player: Node) -> void:

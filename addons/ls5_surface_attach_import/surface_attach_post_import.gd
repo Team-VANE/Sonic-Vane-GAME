@@ -39,6 +39,7 @@ func _init() -> void:
 		"sticky": SURFACE_METADATA.STICKY,
 		"forceroll": SURFACE_METADATA.FORCE_ROLL,
 		"pinball": SURFACE_METADATA.PINBALL,
+		"ice": SURFACE_METADATA.ICE,
 		"forcecling": SURFACE_METADATA.FORCE_CLING,
 		"invisible": SURFACE_METADATA.INVISIBLE,
 		"nojump": SURFACE_METADATA.NO_JUMP,

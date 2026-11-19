@@ -1502,34 +1502,12 @@ func _refresh_return_hub_button() -> void:
 
 
 func _is_in_hub_level() -> bool:
-	var level_manager = _get_level_manager()
-	var hub_id: StringName = &""
-	var current_id: StringName = &""
-	var current_scene: String = ""
-	if level_manager != null:
-		if level_manager.has_method("get"):
-			var v = level_manager.get("hub_level_id")
-			if v is StringName:
-				hub_id = v
-			elif v is String:
-				hub_id = StringName(v)
-		if level_manager.has_method("get_current_level_id"):
-			var v2 = level_manager.call("get_current_level_id")
-			if v2 is StringName:
-				current_id = v2
-			elif v2 is String:
-				current_id = StringName(v2)
-		if level_manager.has_method("get_current_level_scene_path"):
-			current_scene = String(level_manager.call("get_current_level_scene_path"))
-
-	if hub_id != &"" and current_id != &"":
-		return hub_id == current_id
-
-	if current_scene == "":
-		if get_tree() != null and get_tree().current_scene != null:
-			current_scene = String(get_tree().current_scene.scene_file_path)
-
-	return current_scene == "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn"
+	var level_manager: LevelManager = _get_level_manager() as LevelManager
+	if level_manager:
+		return level_manager.is_current_level_freeplay_hub()
+	var doc: LevelDoc = LevelCatalog.get_freeplay_hub_doc()
+	var current_scene: Node = get_tree().current_scene
+	return doc and current_scene and current_scene.scene_file_path == doc.level_scene.strip_edges()
 
 
 func _refresh_quick_restart_button() -> void:
@@ -1917,35 +1895,7 @@ func _execute_ButtonMenu_pressed() -> void:
 
 
 func _return_to_hub() -> void:
-	var level_manager = _get_level_manager()
-	if level_manager != null:
-		var hub_id: StringName = &""
-		if level_manager.has_method("get"):
-			var v = level_manager.get("hub_level_id")
-			if v is StringName:
-				hub_id = v
-			elif v is String:
-				hub_id = StringName(v)
-		if hub_id != &"" and level_manager.has_method("load_level_by_id"):
-			level_manager.call("load_level_by_id", hub_id, NodePath("PlayerSpawn"))
-			return
-		if level_manager.has_method("load_level_by_scene_path"):
-			level_manager.call("load_level_by_scene_path", "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn", StringName(""), NodePath("PlayerSpawn"))
-			return
-
-	if get_tree() == null:
-		return
-	get_tree().set_meta("pending_level_scene", "res://LS5Framework/Scenes/Levels/NikoTest/niko_test.tscn")
-	if _is_online():
-		var net = get_node_or_null("/root/NetworkManager")
-		if net != null and net.has_method("change_scene_keep_session"):
-			net.call("change_scene_keep_session", "res://LS5Framework/Scenes/Main.tscn")
-			return
-	var packed = load("res://LS5Framework/Scenes/Main.tscn")
-	if packed is PackedScene:
-		get_tree().change_scene_to_packed(packed)
-	else:
-		get_tree().change_scene_to_file("res://LS5Framework/Scenes/Main.tscn")
+	LevelManager.return_to_freeplay_hub(get_tree())
 
 
 func _cleanup_race_ui() -> void:

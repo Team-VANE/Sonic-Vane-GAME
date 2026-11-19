@@ -30,6 +30,11 @@ enum JumpMode { INHERIT, BLOCK, BLOCK_COYOTE, ALLOW }
 	set(value):
 		pinball = value
 		emit_changed()
+## Low-traction movement while this collider supports the player.
+@export var ice: Policy = Policy.INHERIT:
+	set(value):
+		ice = value
+		emit_changed()
 
 
 func get_surface_metadata() -> Dictionary:
@@ -43,4 +48,5 @@ func get_surface_metadata() -> Dictionary:
 	_set_policy(metadata, SurfaceBehaviorMetadata.NO_DRIFT, drifting, true)
 	_set_policy(metadata, SurfaceBehaviorMetadata.NO_SLOPE_GRAVITY, slope_gravity, true)
 	_set_policy(metadata, SurfaceBehaviorMetadata.PINBALL, pinball)
+	_set_policy(metadata, SurfaceBehaviorMetadata.ICE, ice)
 	return metadata

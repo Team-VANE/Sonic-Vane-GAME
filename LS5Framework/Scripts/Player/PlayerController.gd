@@ -6171,6 +6171,29 @@ func is_pinball_mode() -> bool:
 	return _pinball_mode
 
 
+func is_ice_locomotion_active() -> bool:
+	return (
+		attached and _follow_hit and not _running_on_water_surface and not _pinball_mode
+		and not _is_dead and not _hurt_active and not _spindash_charging and not _spindash_release_requested
+		and not _drift_active and not _drift_exit_active and _spring_align_timer <= 0.0
+		and not (_automation_active and _automation_timer > 0.0)
+		and not (_automation_controller and _automation_controller.motion.is_guiding())
+		and not _wall_input_projection_active and not _wall_input_push_active and not _loop_control_active
+		and is_instance_valid(_follow_collider_last)
+		and _surface_metadata_bool(_follow_collider_last, SURFACE_METADATA.ICE, _follow_collider_shape_last)
+	)
+
+
+func _apply_ice_input(
+	lateral: Vector3, direction: Vector3, acceleration: float, braking: float,
+	input_strength: float, speed_limit: float, delta: float
+) -> Vector3:
+	var opposition: float = maxf(-lateral.normalized().dot(direction), 0.0)
+	var input_acceleration: float = lerpf(acceleration, braking, opposition)
+	var next_velocity: Vector3 = lateral + direction * (input_acceleration * input_strength * delta)
+	return next_velocity.limit_length(speed_limit)
+
+
 func is_pinball_moveset_locked() -> bool:
 	return _pinball_mode and is_instance_valid(_roll_action) and _roll_action.enabled and _roll_action.roll_enabled
 
@@ -6993,6 +7016,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var starts_spindash_roll: bool = spindash_release_now and not _spindash_release_with_jump and _roll_action != null and not is_surface_roll_blocked()
 	var spindash_roll_protected: bool = is_attached and (starts_spindash_roll or (_roll_action != null and _roll_action.spindash_roll_remaining > 0.0))
 	var is_rolling: bool = (spindash_roll_protected or (rolling and roll_enabled)) and not drop_dash_air_control
+	var ice_active: bool = is_attached and is_ice_locomotion_active()
+	var ice_resistance: float = ice_coast_multiplier if ice_active else 1.0
 
 	# --------------------------------------------------
 	# AUTOMATION SPLINE: optional movement lock + rotation align
@@ -7035,7 +7060,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		# --------------------------------------------------
 		# SKID STATE UPDATE (ground-only, uses enter/exit speeds)
 		# --------------------------------------------------
-		if _wall_input_projection_active or _wall_input_push_active:
+		if ice_active or _wall_input_projection_active or _wall_input_push_active:
 			_is_skidding = false
 		elif _drift_active:
 			# Drift owns course correction; don't allow skid to fight it.
@@ -7124,6 +7149,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	)
 	var slope_reversal_guard_bypass: bool = (
 		is_rolling
+		or ice_active
 		or auto_active
 		or in_spring_state
 		or _hurt_active
@@ -7182,7 +7208,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	elif not passive_slope_context:
 		_slope_passive_sliding = false
 	else:
-		var slide_release_angle: float = max(slope_slide_start_angle_deg, 0.0)
+		var slide_release_angle: float = maxf(ice_slide_start_angle_deg if ice_active else slope_slide_start_angle_deg, 0.0)
 		var slide_recover_angle: float = max(
 			slide_release_angle - max(slope_static_hold_hysteresis_deg, 0.0),
 			0.0
@@ -7234,6 +7260,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		var bypass_intent_smoothing: bool = (
 			_drift_active
 			or _drift_exit_active
+			or ice_active
 			or _is_skidding
 			or auto_active
 			or _wall_input_projection_active
@@ -7280,6 +7307,13 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 					var drop: float = skid_decel * _skid_strength * delta
 					var new_speed_skid: float = max(lateral_speed - drop, 0.0)
 					lateral = final_dir * new_speed_skid
+			elif ice_active:
+				var input_acceleration: float = ice_input_acceleration * water_accel_mult * get_combo_acceleration_multiplier()
+				grounded_motor_accel_used = input_acceleration * movement_input_strength
+				lateral = _apply_ice_input(
+					lateral, move_dir, input_acceleration, ground_brake_decel * ice_brake_multiplier,
+					movement_input_strength, maxf(run_top_speed_used, lateral.length()), delta
+				)
 			else:
 				var used_accel: float = _sample_curve_by_speed(
 					ground_accel_curve_used,
@@ -7611,9 +7645,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 							charge_decel = spindash_charge_decel_unheld
 					lateral = _apply_surface_resistance(
 						lateral,
-						charge_decel,
-						roll_linear_drag,
-						roll_quadratic_drag,
+						charge_decel * ice_resistance,
+						roll_linear_drag * ice_resistance,
+						roll_quadratic_drag * ice_resistance,
 						delta
 					)
 			else:
@@ -7624,7 +7658,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				elif _slope_passive_sliding:
 					pass
 				else:
-					var used_decel: float = ground_decel_effective * water_decel_mult * movement_release_decel_scale
+					var used_decel: float = ground_decel_effective * water_decel_mult * movement_release_decel_scale * ice_resistance
 					if _hurt_active:
 						used_decel *= clamp(hurt_ground_decel_multiplier, 0.0, 1.0)
 					var max_drop: float = used_decel * delta
@@ -7654,7 +7688,14 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		lateral = Vector3.ZERO
 
 	# Rolling: allow limited steering without acceleration.
-	if is_rolling and _move_direction.length() > 0.001 and lateral.length() > 0.01 and roll_turn_deg_per_sec > 0.0:
+	var lateral_before_roll_steering: Vector3 = lateral
+	if is_rolling and ice_active and movement_input_active:
+		var roll_acceleration: float = ice_roll_input_acceleration * water_accel_mult
+		lateral = _apply_ice_input(
+			lateral, slope_control_direction, roll_acceleration, roll_acceleration,
+			movement_input_strength, lateral.length(), delta
+		)
+	elif is_rolling and not ice_active and _move_direction.length() > 0.001 and lateral.length() > 0.01 and roll_turn_deg_per_sec > 0.0:
 		var up_roll: Vector3 = physics_up.normalized()
 		if up_roll.length() < 0.001:
 			up_roll = _get_gravity_up()
@@ -7671,6 +7712,12 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				var t_turn: float = min(1.0, max_turn / ang) if max_turn > 0.0 else 1.0
 				var new_dir: Vector3 = cur_dir.slerp(desired_roll, t_turn).normalized()
 				lateral = new_dir * speed_roll
+
+	if ice_active and has_slope and movement_input_active and (has_input or is_rolling):
+		var motor_entry: Vector3 = lateral_before_roll_steering if is_rolling else lateral_before_ground_motor
+		var uphill_change: float = maxf((motor_entry - lateral).dot(downhill_dir), 0.0)
+		var grade_weight: float = _smoothstep_unit((slope_angle_deg - 8.0) / 17.0)
+		lateral += downhill_dir * (uphill_change * grade_weight * (1.0 - ice_uphill_control_multiplier))
 
 	# --------------------------------------------------
 	# MOVEMENT CORRECTION: predictive terrain, ledge, and guide-surface push
@@ -7788,42 +7835,45 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		and downhill_dir.length() > 0.0
 		and not _surface_ignores_slope_gravity()
 		and not sticky_deceleration_active
-		and not (spindash_roll_protected and lateral.dot(downhill_dir) < 0.0)
+		and (ice_active or not (spindash_roll_protected and lateral.dot(downhill_dir) < 0.0))
 	):
-		var downhill_component: float = lateral.dot(downhill_dir)
-		var slope_sample_speed: float = lateral.length()
 		if slope_static_hold:
 			lateral = Vector3.ZERO
-		var slope_down_mult: float = maxf(slope_downhill_gravity_multiplier, 0.0)
-		var slope_up_mult: float = maxf(slope_uphill_gravity_multiplier, 0.0)
-		if is_rolling:
-			slope_down_mult = max(_sample_curve_by_speed(
-				roll_downhill_accel_multiplier_curve,
-				slope_sample_speed,
-				roll_downhill_accel_multiplier
-			), 0.0) * maxf(roll_slope_downhill_gravity_multiplier, 0.0)
-			slope_up_mult = max(_sample_curve_by_speed(
-				roll_uphill_decel_multiplier_curve,
-				slope_sample_speed,
-				roll_uphill_decel_multiplier
-			), 0.0) * maxf(roll_slope_uphill_gravity_multiplier, 0.0)
+		var slope_acceleration: Vector3 = Vector3.ZERO
+		if ice_active:
+			slope_acceleration = slope_gravity * ice_slope_gravity_multiplier
+		elif not slope_static_hold:
+			var downhill_component: float = lateral.dot(downhill_dir)
+			var slope_sample_speed: float = lateral.length()
+			var slope_down_mult: float = maxf(slope_downhill_gravity_multiplier, 0.0)
+			var slope_up_mult: float = maxf(slope_uphill_gravity_multiplier, 0.0)
+			if is_rolling:
+				slope_down_mult = max(_sample_curve_by_speed(
+					roll_downhill_accel_multiplier_curve,
+					slope_sample_speed,
+					roll_downhill_accel_multiplier
+				), 0.0) * maxf(roll_slope_downhill_gravity_multiplier, 0.0)
+				slope_up_mult = max(_sample_curve_by_speed(
+					roll_uphill_decel_multiplier_curve,
+					slope_sample_speed,
+					roll_uphill_decel_multiplier
+				), 0.0) * maxf(roll_slope_uphill_gravity_multiplier, 0.0)
 
-		var on_rigid_floor: bool = (
-			(_platform_on_floor_last
+			var on_rigid_floor: bool = (
+				(_platform_on_floor_last
 				and _platform_collider_last != null
 				and is_instance_valid(_platform_collider_last)
 				and _platform_collider_last is RigidBody3D)
-			or (_follow_collider_last != null
+				or (_follow_collider_last != null
 				and is_instance_valid(_follow_collider_last)
 				and _follow_collider_last is RigidBody3D)
-		)
-		var rigid_downhill_scale: float = slope_rigid_body_downhill_factor if on_rigid_floor else 1.0
-		if _dbg_dynbody:
-			var fc_name: String = _follow_collider_last.name if (_follow_collider_last != null and is_instance_valid(_follow_collider_last)) else "null"
-			print("[DYN] SLOPE on_rigid=%s scale=%.2f follow=%s slope_ang=%.1f\u00b0" % [on_rigid_floor, rigid_downhill_scale, fc_name, slope_angle_deg])
+			)
+			var rigid_downhill_scale: float = slope_rigid_body_downhill_factor if on_rigid_floor else 1.0
+			if _dbg_dynbody:
+				var fc_name: String = _follow_collider_last.name if (_follow_collider_last != null and is_instance_valid(_follow_collider_last)) else "null"
+				print("[DYN] SLOPE on_rigid=%s scale=%.2f follow=%s slope_ang=%.1f\u00b0" % [on_rigid_floor, rigid_downhill_scale, fc_name, slope_angle_deg])
 
-		# Continuous tangential gravity with blended uphill and downhill response.
-		if not slope_static_hold:
+			# Continuous tangential gravity with blended uphill and downhill response.
 			var baseline_gravity: float = max(gravity_strength, 0.0)
 			if baseline_gravity <= 0.001:
 				baseline_gravity = max(get_effective_gravity_strength(), 0.001)
@@ -7867,7 +7917,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				1.0,
 				uphill_response_weight
 			)
-			var slope_acceleration: Vector3 = (
+			slope_acceleration = (
 				slope_gravity
 				* response_scale
 				* angle_response
@@ -7930,6 +7980,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 						limited_downhill_acceleration
 						/ downhill_acceleration
 					)
+		if not slope_static_hold:
 			if (
 				grounded_motor_accel_used > 0.0
 				and slope_control_uphill_alignment > 0.0
@@ -7953,9 +8004,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 			if _slope_passive_sliding:
 				lateral = _apply_surface_resistance(
 					lateral,
-					slope_slide_resistance,
-					slope_slide_linear_drag,
-					slope_slide_quadratic_drag,
+					slope_slide_resistance * ice_resistance,
+					slope_slide_linear_drag * ice_resistance,
+					slope_slide_quadratic_drag * ice_resistance,
 					delta
 				)
 
