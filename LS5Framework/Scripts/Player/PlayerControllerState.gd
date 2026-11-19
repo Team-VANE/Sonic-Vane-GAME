@@ -281,18 +281,25 @@ var _enemy_targeting_spawn_input_received: bool = false
 
 @export_subgroup("Ice")
 ## Acceleration in the input direction during ground movement on ice.
+## 20 m/s² lets the player slide longer before changing course. 60 m/s² redirects faster.
 @export_range(0.0, 100.0, 0.5, "or_greater", "suffix:m/s²") var ice_input_acceleration: float = 42.0
 ## Acceleration in the input direction while rolling on ice, capped at the current roll speed.
+## 0 disables roll steering on ice. 24 m/s² applies twice the input acceleration of 12 m/s².
 @export_range(0.0, 100.0, 0.5, "or_greater", "suffix:m/s²") var ice_roll_input_acceleration: float = 12.0
 ## Coasting and rolling resistance multiplier on ice.
+## 0.0 removes this resistance, 0.2 applies one fifth, and 1.0 applies full resistance.
 @export_range(0.0, 1.0, 0.01) var ice_coast_multiplier: float = 0.2
 ## Ground braking multiplier for input opposing travel on ice.
+## 0.25 applies one quarter of Ground Brake Decel at full reverse. 1.0 applies the full rate.
 @export_range(0.0, 1.0, 0.01) var ice_brake_multiplier: float = 0.25
 ## Input authority retained uphill at slopes of 25 degrees or steeper.
+## 0.0 removes the uphill input component at full effect. 1.0 keeps the entire component.
 @export_range(0.0, 1.0, 0.01) var ice_uphill_control_multiplier: float = 0.35
 ## Multiplier on gravity projected along the ice surface.
+## 1.0 applies projected gravity at its original strength. 2.0 doubles the pull along the slope.
 @export_range(0.0, 5.0, 0.05, "or_greater") var ice_slope_gravity_multiplier: float = 1.5
 ## Slope angle above which an idle player begins sliding on ice.
+## An idle player slides on a 15° incline with a threshold of 10° and can stand with a threshold of 20°.
 @export_range(0.0, 90.0, 0.5, "suffix:deg") var ice_slide_start_angle_deg: float = 12.0
 
 @export_subgroup("Grounding/Landing")
@@ -543,6 +550,13 @@ var _enemy_targeting_spawn_input_received: bool = false
 @export var fast_fall_horizontal_drag_max_decel: float = 60.0
 
 @export_subgroup("Airborne/Launch Momentum")
+## Base damping rate for airborne momentum. Multiplies the curve when assigned.
+## 0.0 disables damping. With a curve value of 1.0, a rate of 1.0 leaves about 37% of undriven momentum after one second.
+## External launch protection blends this rate back in over one second.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:1/s") var airborne_velocity_damping_rate: float = 0.0
+## X is airborne speed excluding gravity-driven fall speed. Y multiplies the base damping rate.
+## At the sampled speed, 0.0 gives no damping, 1.0 uses the base rate, and 2.0 doubles it. Unassigned uses 1.0.
+@export var airborne_velocity_damping_curve: Curve
 ## Preserves the direction of fast slope launches without removing airborne course correction.
 @export var launch_momentum_control_enabled: bool = true
 ## Detach speed where launch-direction preservation reaches full strength.
@@ -1065,6 +1079,7 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 @export_storage var barrier_blast_ground_turn_free_angle_curve: Curve
 
 ## Minimum ground-turn speed preservation while Barrier Blast is active.
+## 0.0 adds no minimum. 0.9 leaves at most 10% of the turn penalty before other modifiers.
 @export_range(0.0, 1.0, 0.05) var barrier_blast_turn_speed_preservation: float = 0.9
 ## Multiplier for ground, airborne, and water top-speed slowdown while Barrier Blast is active. One retains normal slowdown strength; zero disables this slowdown.
 @export_range(0.0, 2.0, 0.05, "or_greater") var barrier_blast_top_speed_slowdown_multiplier: float = 1.0
@@ -1671,17 +1686,22 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 ## X: lateral speed, Y: degrees per second.
 @export var air_turn_angle_curve: Curve
 ## Maximum turn-rate multiplier reached when input asks for a sharp course change.
+## 1.0 uses the turn curve alone. 1.5 allows up to 50% faster steering in sharp turns.
 @export_range(1.0, 3.0, 0.05) var air_turn_sharp_rate_multiplier: float = 1.2
 ## Fraction of ordinary turn deceleration ignored during sharp airborne turns.
+## 0.0 applies the full turn penalty, 0.5 applies half, and 1.0 skips it.
 @export_range(0.0, 1.0, 0.05) var air_turn_speed_preservation: float = 0.9
 ## Deceleration applied when airborne input opposes the current course.
+## 14 m/s² gives a longer braking distance than 28 m/s² at the same input angle.
 @export var air_brake_decel: float = 28.0
 ## Input angle where airborne steering begins transitioning into a direct pullback.
 ## Sideways and near-sideways input below this angle keeps the normal wide arc.
 @export_range(90.0, 175.0, 1.0) var air_pullback_start_angle_deg: float = 125.0
 ## Fraction of normal turn rate retained during a direct 180-degree airborne pullback.
+## 0.0 brakes along the current course. 0.5 retains half the usual turn rate during the pullback.
 @export_range(0.0, 1.0, 0.05) var air_pullback_turn_rate_multiplier: float = 0.0
 ## Maximum air-brake multiplier reached during a direct 180-degree pullback.
+## 1.0 uses the base Air Brake Decel. 2.0 doubles it during full pullback.
 @export_range(1.0, 4.0, 0.05) var air_pullback_brake_multiplier: float = 2.0
 
 @export_storage var air_turn_free_angle_deg: float = 0.0
@@ -3354,6 +3374,7 @@ var _loop_control_active: bool = false
 
 # Last airborne velocity for landing conversion.
 var _last_air_velocity: Vector3 = Vector3.ZERO
+var _air_damping_gravity_velocity: Vector3 = Vector3.ZERO
 
 # Velocity submitted to the most recent collision sweep.
 var _pre_slide_velocity: Vector3 = Vector3.ZERO

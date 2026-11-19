@@ -8,9 +8,11 @@ extends CharacterAction
 ## Top speed used while walk input is held.
 @export var walk_top_speed: float = 22.0
 ## Ground deceleration used when no curve is assigned.
+## 15 m/s² gives a longer coast and less speed loss in sharp turns than 35 m/s².
 @export var decel: float = 25.0
 ## Optional ground deceleration by lateral speed.
-## X: lateral speed, Y: deceleration (units/sec^2). Overrides decel when assigned.
+## X is lateral speed. Y is deceleration in m/s² and overrides Decel.
+## At the same speed, Y = 15 gives a longer coast and less turn slowdown than Y = 35.
 @export var ground_decel_curve: Curve
 ## Ground acceleration by lateral speed.
 @export var ground_accel_curve: Curve
@@ -19,15 +21,20 @@ extends CharacterAction
 
 @export_subgroup("Turning")
 ## Ground turn rate by lateral speed.
+## At the same speed, Y = 180°/s allows a tighter turn than Y = 90°/s.
 @export var ground_turn_angle_curve: Curve
 ## Ground turn rate by lateral speed while walk input is held.
+## At the same speed, Y = 360°/s redirects walking more quickly than Y = 180°/s.
 @export var walk_turn_angle_curve: Curve
 ## Maximum turn-rate multiplier reached when input asks for a sharp course change.
+## 1.0 uses the turn curve alone. 1.5 allows up to 50% faster steering in sharp turns.
 @export_range(1.0, 3.0, 0.05) var ground_turn_sharp_rate_multiplier: float = 1.35
-## Fraction of ordinary turn deceleration ignored during sharp turns.
-## Deliberate reverse input still brakes normally.
+## Fraction of turn deceleration skipped during sharp turns on regular ground.
+## 0.0 applies the full turn penalty, 0.5 applies half, and 1.0 skips it.
+## Reverse braking and skid deceleration are separate.
 @export_range(0.0, 1.0, 0.05) var ground_turn_speed_preservation: float = 0.65
 ## Deceleration applied when movement input opposes the current course.
+## 35 m/s² softens pullback braking. 70 m/s² applies twice as much at the same angle.
 @export var ground_brake_decel: float = 70.0
 
 @export_storage var ground_turn_free_angle_deg: float = 11.0
@@ -75,6 +82,7 @@ extends CharacterAction
 ## Uphill speed where reversal restrictions fade out to preserve earned momentum.
 @export var slope_reversal_guard_momentum_preserve_speed: float = 160
 ## Multiplier applied to sharp-turn speed preservation at full reversal debt.
+## 0.0 applies the full turn penalty. 1.0 uses normal turn speed preservation.
 @export_range(0.0, 1.0, 0.01) var slope_reversal_guard_turn_preservation: float = 0.0
 ## Input alignment with downhill required to arm a deliberate reversal.
 @export_range(0.0, 1.0, 0.01) var slope_reversal_guard_turn_alignment: float = 0.4
@@ -118,12 +126,19 @@ extends CharacterAction
 @export_storage var slope_max_effect_angle_deg: float = 90.0
 
 @export_subgroup("Skidding")
+## Minimum speed required to enter a skid. 10 m/s allows skids at lower speeds than 20 m/s.
 @export var skid_enter_min_speed: float = 20.0
+## Angle between input and velocity required to start a skid.
+## 140° allows diagonal pullbacks to skid sooner than 160°.
 @export var skid_enter_angle_deg: float = 160.0
+## A skid ends when the input angle falls to this value or lower.
+## 130° keeps the skid active through a wider range of input than 150°.
 @export var skid_exit_angle_deg: float = 150.0
 @export var skid_exit_min_speed: float = 0.0
 ## Full-strength skid deceleration, scaled by input from the stick deadzone to near-full tilt.
+## 65 m/s² gives a longer skid than 130 m/s² at the same input strength.
 @export var skid_decel: float = 130.0
+## Steering rate while skidding. 10°/s allows twice as much steering as 5°/s.
 @export var skid_turn_deg_per_sec: float = 5.0
 @export var skid_max_ground_angle_deg: float = 80.0
 

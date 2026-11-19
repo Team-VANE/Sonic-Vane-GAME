@@ -10,11 +10,15 @@
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Teleporter/TeleporterEntrance.tscn" id="9_x5kse"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Teleporter/TeleporterExit.tscn" id="10_1amh5"]
 [ext_resource type="Script" uid="uid://c3qjp7m108bma" path="res://LS5Framework/Scripts/Camera/Constraints/CameraOrientationTrait.gd" id="10_x5kse"]
+[ext_resource type="AudioStream" uid="uid://bcba3xw2x34nc" path="res://LS5Framework/Sounds/Objects/Pinball/Pinball_Booster.wav" id="10_y4e7g"]
 [ext_resource type="Script" uid="uid://dyshixousqyx8" path="res://LS5Framework/Scripts/Camera/Constraints/CameraLensTrait.gd" id="11_1amh5"]
 [ext_resource type="Script" uid="uid://upi4v3qbppsx" path="res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd" id="12_u0b8n"]
+[ext_resource type="PackedScene" uid="uid://dpqdt82o1f57x" path="res://LS5Framework/Objects/Spring/Spring.tscn" id="12_y4e7g"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Surface/SurfaceBehavior.tscn" id="13_pinball"]
 [ext_resource type="Script" uid="uid://ct0qqxifr786k" path="res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd" id="14_pinball_movement"]
+[ext_resource type="PackedScene" uid="uid://cwsdj34dkp0dx" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn" id="14_vor8t"]
 [ext_resource type="PackedScene" uid="uid://bilofsgsa4xdm" path="res://LS5Framework/Objects/Pinball/Flipper/Flipper.tscn" id="14_x5kse"]
+[ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="15_6jgde"]
 
 [sub_resource type="Environment" id="Environment_1vivr"]
 ambient_light_source = 2
@@ -22,6 +26,39 @@ ambient_light_color = Color(0.51488954, 0.4783138, 0.4593475, 1)
 ambient_light_energy = 0.26
 ssr_enabled = true
 glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u0b8n"]
+size = Vector3(129.2981, 12.417053, 144.64346)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2uejk"]
+size = Vector3(7, 7, 9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fpgrq"]
+size = Vector3(11, 8, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pat1o"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_vor8t"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_6jgde"]
+resource_local_to_scene = true
+radius = 2.0
+
+[sub_resource type="Curve3D" id="Curve3D_dnl3r"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
 
 [sub_resource type="Resource" id="Resource_u0b8n"]
 resource_name = "Occupancy Volume"
@@ -45,19 +82,62 @@ metadata/_custom_type_script = "uid://dyshixousqyx8"
 resource_name = "Instant Entry"
 script = ExtResource("12_u0b8n")
 mode = 1
-duration = 0.25
+duration = 0.45
 
 [sub_resource type="Resource" id="Resource_ch26f"]
 resource_name = "Instant Exit"
 script = ExtResource("12_u0b8n")
 phase = 1
 mode = 1
+duration = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fehik"]
-size = Vector3(137, 27.152237, 133.57516)
+size = Vector3(137, 40.13994, 133.57516)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_fpgrq"]
-size = Vector3(11, 8, 1)
+[sub_resource type="Resource" id="Resource_vor8t"]
+resource_name = "Occupancy Volume"
+script = ExtResource("4_1amh5")
+
+[sub_resource type="Resource" id="Resource_6jgde"]
+script = ExtResource("9_criyo")
+mode = 2
+limit_axes = true
+axis_mask = 6
+metadata/_custom_type_script = "uid://ejxv0c1rj01v"
+
+[sub_resource type="Resource" id="Resource_dnl3r"]
+resource_name = "Stationary Camera"
+script = ExtResource("9_criyo")
+
+[sub_resource type="Resource" id="Resource_e8qx6"]
+resource_name = "Face Player"
+script = ExtResource("10_x5kse")
+
+[sub_resource type="Resource" id="Resource_4fk4q"]
+resource_name = "Instant Entry"
+script = ExtResource("12_u0b8n")
+mode = 1
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_7uhk5"]
+resource_name = "Instant Exit"
+script = ExtResource("12_u0b8n")
+phase = 1
+mode = 1
+duration = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q14el"]
+size = Vector3(72.82361, 31.736588, 10.981705)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y4e7g"]
+size = Vector3(68, 31.736588, 10.981705)
+
+[sub_resource type="Resource" id="Resource_q14el"]
+resource_local_to_scene = true
+script = ExtResource("15_6jgde")
+reward_type = 1
+amount = 10.0
+random_ring_pool = null
 
 [sub_resource type="Resource" id="Resource_pinball_movement"]
 script = ExtResource("14_pinball_movement")
@@ -89,25 +169,28 @@ omni_attenuation = 0.086
 [node name="GravityModifier" parent="OBJECTS" unique_id=1424391414 instance=ExtResource("6_criyo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.60335, 1.9999983, 15.274067)
 gravity_up_direction = Vector3(0, 1, -0.75)
+gravity_multiplier = 1.5
 
-[node name="CameraConstraint" parent="OBJECTS" unique_id=1501740697 instance=ExtResource("8_ykfyn")]
-activation_traits = Array[ExtResource("4_1amh5")]([SubResource("Resource_u0b8n")])
-position_traits = Array[ExtResource("9_criyo")]([SubResource("Resource_y4e7g")])
-orientation_traits = Array[ExtResource("10_x5kse")]([SubResource("Resource_pat1o")])
-lens_traits = Array[ExtResource("11_1amh5")]([SubResource("Resource_g2pal")])
-transition_traits = Array[ExtResource("12_u0b8n")]([SubResource("Resource_tu4x2"), SubResource("Resource_ch26f")])
-collision_mode = 2
+[node name="CollisionShape3D" parent="OBJECTS/GravityModifier" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.598663, 4.2085266, -10.954727)
+shape = SubResource("BoxShape3D_u0b8n")
 
-[node name="CollisionShape3D" parent="OBJECTS/CameraConstraint" index="0" unique_id=1384128833]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.4858932, 10.763077)
-shape = SubResource("BoxShape3D_fehik")
+[node name="GravityModifier2" parent="OBJECTS" unique_id=1440251110 instance=ExtResource("6_criyo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.863686, 44, -35.896362)
 
-[node name="ConstraintPoint" parent="OBJECTS/CameraConstraint" index="1" unique_id=495541008]
-transform = Transform3D(-1, 7.337884e-08, 4.752145e-08, 3.020286e-08, 0.8000927, -0.5998765, -8.2039776e-08, -0.5998765, -0.8000927, 2.9999948, 38.05266, 67.06016)
+[node name="CollisionShape3D" parent="OBJECTS/GravityModifier2" index="0"]
+shape = SubResource("BoxShape3D_2uejk")
+
+[node name="GravityModifier3" parent="OBJECTS" unique_id=874566074 instance=ExtResource("6_criyo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.136314, 44, -35.896362)
+
+[node name="CollisionShape3D" parent="OBJECTS/GravityModifier3" index="0"]
+shape = SubResource("BoxShape3D_2uejk")
 
 [node name="DashPanel" parent="OBJECTS" unique_id=1418350663 instance=ExtResource("8_fehik")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 35.790882, 0.0556023, 19.535473)
-strength = 92.0
+strength = 130.0
+dash_sounds = Array[AudioStream]([ExtResource("10_y4e7g")])
 
 [node name="TeleporterEntrance" parent="OBJECTS" unique_id=1987461727 node_paths=PackedStringArray("exit_node") instance=ExtResource("9_x5kse")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.498911, -1.7553024, 57.69194)
@@ -121,6 +204,118 @@ shape = SubResource("BoxShape3D_fpgrq")
 [node name="TeleporterExit" parent="OBJECTS" unique_id=217170953 instance=ExtResource("10_1amh5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.778526, 3.3072405, 18.832994)
 
+[node name="Spring" parent="OBJECTS" unique_id=1538883451 instance=ExtResource("12_y4e7g")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -49.31145, 43.90732, -38.97852)
+size = 2.0
+rehit_cooldown = 2.0
+strength = 30.0
+spring_sounds = Array[AudioStream]([])
+
+[node name="CollisionShape3D" parent="OBJECTS/Spring" index="0" unique_id=594366491]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.4, 0)
+shape = SubResource("CylinderShape3D_pat1o")
+
+[node name="SplinePath" parent="OBJECTS/Spring" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_vor8t")
+
+[node name="Mesh" parent="OBJECTS/Spring" index="5" unique_id=1922896033]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+visible = false
+
+[node name="Spring2" parent="OBJECTS" unique_id=2053625820 instance=ExtResource("12_y4e7g")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 49.16599, 43.90732, -39.378574)
+size = 2.0
+rehit_cooldown = 2.0
+strength = 30.0
+spring_sounds = Array[AudioStream]([])
+
+[node name="CollisionShape3D" parent="OBJECTS/Spring2" index="0" unique_id=594366491]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.4, 0)
+shape = SubResource("CylinderShape3D_6jgde")
+
+[node name="SplinePath" parent="OBJECTS/Spring2" index="4" unique_id=1818114504]
+curve = SubResource("Curve3D_dnl3r")
+
+[node name="Mesh" parent="OBJECTS/Spring2" index="5" unique_id=1922896033]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+visible = false
+
+[node name="CAMERA" type="Node3D" parent="OBJECTS" unique_id=1009738767]
+
+[node name="CameraConstraint TABLE" parent="OBJECTS/CAMERA" unique_id=1501740697 instance=ExtResource("8_ykfyn")]
+constraint_priority = 5
+activation_traits = Array[ExtResource("4_1amh5")]([SubResource("Resource_u0b8n")])
+position_traits = Array[ExtResource("9_criyo")]([SubResource("Resource_y4e7g")])
+orientation_traits = Array[ExtResource("10_x5kse")]([SubResource("Resource_pat1o")])
+lens_traits = Array[ExtResource("11_1amh5")]([SubResource("Resource_g2pal")])
+transition_traits = Array[ExtResource("12_u0b8n")]([SubResource("Resource_tu4x2"), SubResource("Resource_ch26f")])
+collision_mode = 2
+
+[node name="CollisionShape3D" parent="OBJECTS/CAMERA/CameraConstraint TABLE" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0079575, 10.763077)
+shape = SubResource("BoxShape3D_fehik")
+
+[node name="ConstraintPoint" parent="OBJECTS/CAMERA/CameraConstraint TABLE" index="1" unique_id=495541008]
+transform = Transform3D(-1, 7.337884e-08, 4.752145e-08, 3.020286e-08, 0.8000927, -0.5998765, -8.2039776e-08, -0.5998765, -0.8000927, 2.9999948, 38.05266, 67.06016)
+
+[node name="CameraConstraint RIGHT" parent="OBJECTS/CAMERA" unique_id=965456609 instance=ExtResource("8_ykfyn")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 33, 42, -12)
+constraint_priority = 3
+activation_traits = Array[ExtResource("4_1amh5")]([SubResource("Resource_vor8t")])
+position_traits = Array[ExtResource("9_criyo")]([SubResource("Resource_6jgde"), SubResource("Resource_dnl3r")])
+orientation_traits = Array[ExtResource("10_x5kse")]([SubResource("Resource_e8qx6")])
+transition_traits = Array[ExtResource("12_u0b8n")]([SubResource("Resource_4fk4q"), SubResource("Resource_7uhk5")])
+collision_mode = 2
+
+[node name="CollisionShape3D" parent="OBJECTS/CAMERA/CameraConstraint RIGHT" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.729165, -6.069954, 15.587685)
+shape = SubResource("BoxShape3D_q14el")
+
+[node name="CameraConstraint LEFT" parent="OBJECTS/CAMERA" unique_id=860265772 instance=ExtResource("8_ykfyn")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -34, 42, -12)
+constraint_priority = 3
+activation_traits = Array[ExtResource("4_1amh5")]([SubResource("Resource_vor8t")])
+position_traits = Array[ExtResource("9_criyo")]([SubResource("Resource_6jgde"), SubResource("Resource_dnl3r")])
+orientation_traits = Array[ExtResource("10_x5kse")]([SubResource("Resource_e8qx6")])
+transition_traits = Array[ExtResource("12_u0b8n")]([SubResource("Resource_4fk4q"), SubResource("Resource_7uhk5")])
+collision_mode = 2
+
+[node name="CollisionShape3D" parent="OBJECTS/CAMERA/CameraConstraint LEFT" index="0" unique_id=1384128833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.85903, -6.069954, 15.587685)
+shape = SubResource("BoxShape3D_y4e7g")
+
+[node name="MONITORS" type="Node3D" parent="OBJECTS" unique_id=204779454]
+
+[node name="ItemMonitor" parent="OBJECTS/MONITORS" unique_id=1395552001 instance=ExtResource("14_vor8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 24.39811, 4.1852107)
+size = 1.4000000000000001
+rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
+
+[node name="ItemMonitor6" parent="OBJECTS/MONITORS" unique_id=1178041025 instance=ExtResource("14_vor8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 12.792677, 4.1852107)
+size = 1.4000000000000001
+rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
+
+[node name="ItemMonitor2" parent="OBJECTS/MONITORS" unique_id=1226388241 instance=ExtResource("14_vor8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 32.39811, 4.1852107)
+size = 1.4000000000000001
+rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
+
+[node name="ItemMonitor3" parent="OBJECTS/MONITORS" unique_id=1795714885 instance=ExtResource("14_vor8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 24.39811, 4.1852107)
+size = 1.4000000000000001
+rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
+
+[node name="ItemMonitor5" parent="OBJECTS/MONITORS" unique_id=2021665223 instance=ExtResource("14_vor8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 12.288028, 4.1852107)
+size = 1.4000000000000001
+rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
+
+[node name="ItemMonitor4" parent="OBJECTS/MONITORS" unique_id=140510517 instance=ExtResource("14_vor8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 32.39811, 4.1852107)
+size = 1.4000000000000001
+rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
+
 [node name="SonicPinball" parent="." unique_id=1805915054 instance=ExtResource("8_1amh5")]
 
 [node name="PinballSurface" parent="." unique_id=2075812036 instance=ExtResource("13_pinball")]
@@ -129,16 +324,25 @@ movement_traits = Array[ExtResource("14_pinball_movement")]([SubResource("Resour
 
 [node name="Flipper" parent="." unique_id=276876638 instance=ExtResource("14_x5kse")]
 transform = Transform3D(0.93, 0, 0, 0, 0.93, 0, 0, 0, 0.93, -8.160837, -1.7615029e-06, 43.07633)
-maximum_strike_speed = 180.0
-minimum_assist_speed = 110.0
+maximum_strike_speed = 200.0
+minimum_assist_speed = 172.0
 contact_aim_weight = 0.7
+strong_launch_speed = 180.0
 
 [node name="Flipper2" parent="." unique_id=413073514 instance=ExtResource("14_x5kse")]
 transform = Transform3D(0.93, 0, 0, 0, 0.93, 0, 0, 0, 0.93, 13.492975, -1.7615029e-06, 43.07633)
 side = 1
-maximum_strike_speed = 180.0
-minimum_assist_speed = 110.0
+maximum_strike_speed = 200.0
+minimum_assist_speed = 172.0
 contact_aim_weight = 0.7
+strong_launch_speed = 180.0
 
-[editable path="OBJECTS/CameraConstraint"]
+[editable path="OBJECTS/GravityModifier"]
+[editable path="OBJECTS/GravityModifier2"]
+[editable path="OBJECTS/GravityModifier3"]
 [editable path="OBJECTS/TeleporterEntrance"]
+[editable path="OBJECTS/Spring"]
+[editable path="OBJECTS/Spring2"]
+[editable path="OBJECTS/CAMERA/CameraConstraint TABLE"]
+[editable path="OBJECTS/CAMERA/CameraConstraint RIGHT"]
+[editable path="OBJECTS/CAMERA/CameraConstraint LEFT"]

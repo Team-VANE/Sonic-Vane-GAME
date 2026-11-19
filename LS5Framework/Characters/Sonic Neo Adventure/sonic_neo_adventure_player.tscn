@@ -201,8 +201,13 @@
 [ext_resource type="Script" uid="uid://wgygkpxv2yyp" path="res://LS5Framework/Scripts/Player/wall_bonk_action.gd" id="wall_bonk_script"]
 
 [sub_resource type="Curve" id="Curve_air_top_speed_slowdown"]
-_limits = [0.0, 1.0, 90.0, 265.0]
-_data = [Vector2(110, 0), 0.0, 0.009419263, 0, 0, Vector2(220, 1), 0.0070780935, 0.012090087, 0, 0]
+_limits = [0.0, 1.0, 70.0, 265.0]
+_data = [Vector2(80, 0), 0.0, 0.0, 0, 1, Vector2(221.608, 0), 0.0, 0.012090087, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_hmwv2"]
+_limits = [0.0, 1.0, 0.0, 190.0]
+_data = [Vector2(70, 0), 0.0, 0.005582472, 0, 0, Vector2(190, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_kknf1"]
@@ -463,9 +468,11 @@ fast_fall_horizontal_drag_enabled = false
 fast_fall_horizontal_drag_start_speed = 50.0
 fast_fall_horizontal_drag_full_speed = 150.0
 fast_fall_horizontal_drag_max_decel = 10.0
+airborne_velocity_damping_rate = 0.6
+airborne_velocity_damping_curve = SubResource("Curve_hmwv2")
 launch_momentum_full_speed = 140.0
 launch_momentum_min_control = 0.05
-launch_momentum_recovery_time = 1.2
+launch_momentum_recovery_time = 1.5
 gravity_strength = 70.0
 max_fall_speed = 190.0
 character_visual_profile = ExtResource("5_iatkf")
@@ -714,6 +721,10 @@ lift_speed = 12.0
 
 [node name="Parkour" type="Node" parent="Abilities" unique_id=2084939969]
 script = ExtResource("91_h8d1i")
+run_assistance_min_time = 0.25
+run_assistance_max_time = 0.85
+run_assistance_max_speed = 80.0
+wall_lift_upward_settle_max_time = 0.25
 entry_angle_speed_conversion_limit = 20.0
 landing_roll_enabled = false
 landing_roll_tangential_recovery = 0.2
@@ -725,14 +736,14 @@ wall_cling_kick_entry_upward_multiplier = 1.45
 
 [node name="Grounded" type="Node" parent="Abilities" unique_id=2051000001]
 script = ExtResource("92_eyj1t")
-run_top_speed = 133.0
+run_top_speed = 151.0
 ground_decel_curve = ExtResource("decel_ground")
 ground_accel_curve = ExtResource("93_ows6n")
 walk_ground_accel_curve = ExtResource("94_hlsp5")
 ground_turn_angle_curve = ExtResource("7_qs6n6")
 walk_turn_angle_curve = ExtResource("95_bvsys")
-ground_turn_sharp_rate_multiplier = 1.1
-ground_turn_speed_preservation = 0.15
+ground_turn_sharp_rate_multiplier = 1.0
+ground_turn_speed_preservation = 0.0
 ground_turn_max_penalty_angle_curve = ExtResource("96_n1isw")
 ground_turn_free_angle_curve = ExtResource("97_8ja4f")
 slope_uphill_gravity_multiplier = 0.65
@@ -746,8 +757,8 @@ slope_reversal_guard_recovery_distance = 150.0
 slope_reversal_guard_momentum_preserve_speed = 200.0
 slope_uphill_control_ratio_curve = ExtResource("101_xg20j")
 slope_slide_start_angle_deg = 45.0
-skid_enter_angle_deg = 148.0
-skid_exit_angle_deg = 142.0
+skid_enter_angle_deg = 155.0
+skid_exit_angle_deg = 149.0
 skid_decel = 145.0
 engine_sound_volume_min_db = -55.0
 engine_sound_volume_max_db = -40.0
@@ -795,9 +806,9 @@ drop_dash_air_release_forward_boost = 35.0
 drop_dash_air_release_forward_speed_cap = 165.0
 drop_dash_loop_pitch_range = Vector2(0.8, 1.2)
 spindash_min_launch_speed = 80.0
-spindash_max_launch_speed = 135.0
-drop_dash_max_launch_speed = 148.0
-spindash_rail_max_launch_speed = 110.0
+spindash_max_launch_speed = 148.0
+drop_dash_max_launch_speed = 158.0
+spindash_rail_max_launch_speed = 125.0
 spindash_charge_decel = 15.0
 spindash_barrier_blast_overcharge_enabled = false
 spindash_barrier_blast_overcharge_cap = 0.5

@@ -45,6 +45,9 @@ enum VerticalArcUpMode {
 @export_range(0.0, 5.0, 0.01, "or_greater", "suffix:s") var rehit_cooldown: float = 0.25
 
 @export_group("Launch")
+## Seconds from release before airborne damping can return. Longer trajectory control extends protection.
+## 0 leaves protection tied to trajectory control and the shared recovery ramp.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:s") var damping_grace_time: float = PlayerExternalMotionController.DEFAULT_LAUNCH_DAMPING_GRACE
 ## Chooses between clamped incoming speed and a fixed launch speed.
 @export_enum("Match Incoming Speed", "Fixed Speed") var launch_speed_mode: int = LaunchSpeedMode.MATCH_INCOMING_SPEED
 ## Launch speed used by Fixed Speed mode.
@@ -591,6 +594,8 @@ func _launch_player(player_id: int) -> void:
 			active_spline.queue_free()
 		if player.has_method("cancel_vault_bar"):
 			player.call("cancel_vault_bar", self)
+	elif player is PlayerController:
+		player.set_launch_damping_grace(damping_grace_time)
 
 
 func _get_launch_speed(incoming_speed: float) -> float:

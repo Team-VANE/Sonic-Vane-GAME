@@ -23,4 +23,4 @@ wind_speed = 0.026
 overcast_light_multiplier = 0.68
 overcast_ambient_multiplier = 0.9
 fog_density_multiplier = 0.85
-saturation_multiplier = 1.02
+saturation_multiplier = 0.96

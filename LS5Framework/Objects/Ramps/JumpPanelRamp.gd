@@ -19,6 +19,9 @@ const SIZE_BASE_SCALE_META: StringName = &"_uniform_size_base_scale"
 var _body_cooldowns: Dictionary = {}
 
 @export_group("Impulse")
+## Seconds from launch before airborne damping can return. Longer velocity holds extend protection.
+## 0 leaves protection tied to velocity holds and the shared recovery ramp.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:s") var damping_grace_time: float = PlayerExternalMotionController.DEFAULT_LAUNCH_DAMPING_GRACE
 @export var forward_speed: float = 60.0
 @export var up_speed: float = 18.0
 
@@ -160,6 +163,8 @@ func _on_body_entered(body: Node3D) -> void:
 		hold_forward_time,
 		hold_up_time
 	)
+	if body is PlayerController:
+		body.set_launch_damping_grace(damping_grace_time)
 
 	_body_cooldowns[id] = rehit_cooldown
 	_play_launch_sfx()

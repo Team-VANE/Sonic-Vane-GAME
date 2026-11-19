@@ -75,6 +75,7 @@ func _apply_respawn_transform(
 	p.refresh_traversal_actions()
 	p.cancel_rail_grind()
 	p.cancel_spline_spring()
+	p._external_motion_module.clear_launch_damping_protection()
 	p._active_surface_behavior_areas.clear()
 	p._clear_pinball_mode()
 	p._surface_contact_behaviors.clear()
@@ -86,6 +87,7 @@ func _apply_respawn_transform(
 
 	p._clear_enemy_hurt_boundary_exceptions()
 	p.velocity = Vector3.ZERO
+	p._air_damping_gravity_velocity = Vector3.ZERO
 	var has_checkpoint_vel: bool = false
 	if use_checkpoint_velocity and p._checkpoint_respawn_speed > 0.0 and p._checkpoint_respawn_dir.length() > 0.001:
 		var d: Vector3 = p._checkpoint_respawn_dir.normalized()

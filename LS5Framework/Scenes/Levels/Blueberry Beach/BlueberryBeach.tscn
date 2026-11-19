@@ -169,7 +169,7 @@ shader_parameter/tex_flat = ExtResource("18_eomp1")
 shader_parameter/tex_glow = ExtResource("19_0wwbu")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 49813.565
+shader_parameter/swap_time = 27705.543
 
 [node name="Blueberry_Beach" type="Node3D" unique_id=794803344]
 
@@ -183,16 +183,6 @@ script = ExtResource("2_ktkqb")
 autoplay_stream = ExtResource("3_mhrmh")
 
 [node name="Lights" type="Node3D" parent="." unique_id=1451312442]
-
-[node name="MiddayLight_2" type="DirectionalLight3D" parent="Lights" unique_id=533417132]
-transform = Transform3D(-0.41631773, 0.8217213, -0.38917056, 0.3098098, 0.5306183, 0.7889627, 0.85480845, 0.20789032, -0.47548312, 27.167847, -29.899796, -29.989319)
-visible = false
-light_color = Color(0.92953783, 0.9253411, 0.913914, 1)
-light_indirect_energy = 3.967
-shadow_enabled = true
-directional_shadow_mode = 1
-directional_shadow_split_1 = 0.194
-directional_shadow_max_distance = 300.0
 
 [node name="EnvironmentWeatherSystem" parent="Lights" unique_id=1736747719 instance=ExtResource("4_elt86")]
 day_length_minutes = 8.0

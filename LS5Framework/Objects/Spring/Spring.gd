@@ -43,6 +43,9 @@ enum TrajectoryArcUpMode {
 # IMPULSE
 # -----------------------------------------------------------
 @export_group("Impulse")
+## Seconds from launch before airborne damping can return. Longer trajectory control extends protection.
+## 0 leaves protection tied to trajectory control and the shared recovery ramp.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:s") var damping_grace_time: float = PlayerExternalMotionController.DEFAULT_LAUNCH_DAMPING_GRACE
 
 ## Base strength of the spring impulse.
 @export var strength: float = 35.0
@@ -449,6 +452,8 @@ func _on_body_entered(body: Node3D) -> void:
 
 	if not used_spring:
 		return
+	if player is PlayerController:
+		player.set_launch_damping_grace(damping_grace_time)
 	if player.has_method("register_combo_feat"):
 		player.call("register_combo_feat", &"spring_launch", "Spring Launch", 100.0, 0.75)
 

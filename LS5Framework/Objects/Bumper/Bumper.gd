@@ -25,6 +25,8 @@ var rehit_cooldown: float = 0.15
 @export var override_previous_lock_timers: bool = true
 
 @export_group("Launch")
+## Seconds from launch before airborne damping begins recovering. 0 starts the recovery ramp immediately.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:s") var damping_grace_time: float = PlayerExternalMotionController.DEFAULT_LAUNCH_DAMPING_GRACE
 
 ## Selects how the outward launch direction is calculated.
 @export_enum("Radial", "Surface Normal", "Specified Direction")
@@ -248,6 +250,8 @@ func _try_bounce_body(body: Node3D, launch_direction_override: Vector3 = Vector3
 		detach_from_ground,
 		false
 	)
+	if body is PlayerController:
+		body.set_launch_damping_grace(damping_grace_time)
 	if body.has_method("register_combo_feat"):
 		body.call("register_combo_feat", &"bumper_bounce", "Bumper Bounce", 125.0, 0.8)
 

@@ -1,19 +1,74 @@
 extends RefCounted
 class_name PlayerExternalMotionController
 
+enum LaunchDampingInfluence { NONE, SPRING, SPLINE, RAMP }
+
+const DEFAULT_LAUNCH_DAMPING_GRACE: float = 1.0
+const LAUNCH_DAMPING_RECOVERY_TIME: float = 1.0
+
 # Teleport, automation, spring, dash-panel, ramp, and spline motion.
 var _owner: Node = null
 var _spline_transport_up: Vector3 = Vector3.UP
 var _spline_transport_right: Vector3 = Vector3.RIGHT
 var _spline_transport_valid: bool = false
+var _launch_damping_influence: LaunchDampingInfluence = LaunchDampingInfluence.NONE
+var _launch_damping_remaining: float = 0.0
 
 
 func _init(owner: Node) -> void:
 	_owner = owner
 
 
+func begin_launch_damping_protection(
+	grace_time: float = DEFAULT_LAUNCH_DAMPING_GRACE,
+	influence: LaunchDampingInfluence = LaunchDampingInfluence.NONE
+) -> void:
+	_launch_damping_influence = influence
+	set_launch_damping_grace(grace_time)
+
+
+func set_launch_damping_grace(grace_time: float) -> void:
+	_launch_damping_remaining = maxf(grace_time, 0.0) + LAUNCH_DAMPING_RECOVERY_TIME
+
+
+func start_launch_damping_recovery() -> void:
+	_launch_damping_influence = LaunchDampingInfluence.NONE
+	_launch_damping_remaining = minf(_launch_damping_remaining, LAUNCH_DAMPING_RECOVERY_TIME)
+
+
+func clear_launch_damping_protection() -> void:
+	_launch_damping_influence = LaunchDampingInfluence.NONE
+	_launch_damping_remaining = 0.0
+
+
+func advance_launch_damping_protection(delta: float) -> void:
+	if _launch_damping_remaining <= 0.0:
+		return
+	var protected_time: float = LAUNCH_DAMPING_RECOVERY_TIME if _has_launch_damping_influence() else 0.0
+	_launch_damping_remaining = maxf(_launch_damping_remaining - delta, protected_time)
+
+
+func get_air_damping_effectiveness() -> float:
+	return 1.0 - clampf(_launch_damping_remaining / LAUNCH_DAMPING_RECOVERY_TIME, 0.0, 1.0)
+
+
+func _has_launch_damping_influence() -> bool:
+	var p = _owner
+	match _launch_damping_influence:
+		LaunchDampingInfluence.SPRING, LaunchDampingInfluence.SPLINE:
+			return (
+				(_launch_damping_influence == LaunchDampingInfluence.SPLINE and p._spline_active)
+				or p._spring_align_timer > 0.0
+				or (p._spring_detached and p._spring_movement_lock_timer > 0.0 and not p.is_current_action_flight())
+			)
+		LaunchDampingInfluence.RAMP:
+			return p._ramp_hold_forward_timer > 0.0 or p._ramp_hold_up_timer > 0.0
+	return false
+
+
 func apply_teleport(exit_transform: Transform3D, keep_vel: bool, match_rot: bool, exit_local_offset: Vector3) -> void:
 	var p = _owner
+	clear_launch_damping_protection()
 	p._consume_attack_magnetism_bounce_compensation()
 	p.cancel_homing_attack(false)
 	cancel_spline_spring()
@@ -126,8 +181,10 @@ func apply_teleport_from_exit(exit_node: Node3D, keep_vel: bool, match_rot: bool
 			p.call("_network_publish_teleport_state")
 
 
-func cancel_spline_spring() -> void:
+func cancel_spline_spring(keep_launch_protection: bool = false) -> void:
 	var p = _owner
+	if p._spline_active and _launch_damping_influence == LaunchDampingInfluence.SPLINE and not keep_launch_protection:
+		clear_launch_damping_protection()
 	var previous_path: Variant = p._spline_path
 	p._spline_active = false
 	p._spline_path = null
@@ -158,6 +215,7 @@ func begin_vault_bar(
 			return true
 		cancel_vault_bar()
 
+	clear_launch_damping_protection()
 	p.cancel_rail_grind(false)
 	cancel_spline_spring()
 	p.cancel_homing_attack(false)
@@ -315,6 +373,8 @@ func launch_from_vault_bar(
 		p._spring_lock_sideways = false
 
 	_seed_vault_bar_torque(angular_velocity, pitch_trick_command)
+	var influence: LaunchDampingInfluence = LaunchDampingInfluence.SPLINE if p._spline_active else LaunchDampingInfluence.SPRING
+	begin_launch_damping_protection(DEFAULT_LAUNCH_DAMPING_GRACE, influence)
 	p._pending_anim_command = &""
 	if p.anim_state:
 		p.get_animation_director().resume_movement()
@@ -679,6 +739,7 @@ func apply_spring_impulse(
 			downward_trajectory_landing_forward_pitch_enabled
 		)
 		p._sync_spring_state_from_action()
+		begin_launch_damping_protection(DEFAULT_LAUNCH_DAMPING_GRACE, LaunchDampingInfluence.SPRING)
 		return
 	var effective_align_time: float = align_time
 	var effective_align_model: bool = align_model_during_spring
@@ -806,6 +867,7 @@ func apply_spring_impulse(
 	)
 	if not preserve_flight:
 		p._trigger_anim_command(&"CMD_SPRING")
+	begin_launch_damping_protection(DEFAULT_LAUNCH_DAMPING_GRACE, LaunchDampingInfluence.SPRING)
 
 
 func configure_spring_trajectory_torque(
@@ -1318,6 +1380,7 @@ func apply_ramp_impulse(
 	p._ramp_hold_up_speed = up_speed_used
 	p._ramp_hold_forward_dir = fwd
 	p._ramp_hold_up_dir = up
+	begin_launch_damping_protection(DEFAULT_LAUNCH_DAMPING_GRACE, LaunchDampingInfluence.RAMP)
 	p.refresh_airborne_abilities()
 	p.reset_flight_eligibility()
 	if not p._spindash_charging:
@@ -1361,6 +1424,7 @@ func start_spline_spring(
 	p._spline_allow_input_cancel = allow_input_cancel
 	p._spline_world_offset = world_offset
 	p._spline_active = true
+	begin_launch_damping_protection(DEFAULT_LAUNCH_DAMPING_GRACE, LaunchDampingInfluence.SPLINE)
 	p._update_jump_ball(0.0)
 	p._is_jumping = false
 	p._jump_variable = false
@@ -1466,7 +1530,7 @@ func _update_spline_spring(delta: float) -> void:
 		var arrival: Callable = spline_path.get_meta(&"vault_arrival_callback", Callable())
 		p.global_position = end_world
 		p.velocity = exit_tangent.normalized() * exit_speed
-		cancel_spline_spring()
+		cancel_spline_spring(true)
 		if arrival.is_valid():
 			arrival.call(p)
 		p._refresh_carried_object_target_after_external_motion()

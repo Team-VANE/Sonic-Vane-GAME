@@ -26,6 +26,8 @@ const MAX_GRACE_EXTENSION: float = 0.15
 @export_range(0.0, 240.0, 1.0, "or_greater", "suffix:m/s") var maximum_strike_speed: float = 120.0
 
 @export_subgroup("Launch Assist")
+## Seconds from launch before airborne damping begins recovering. 0 starts the recovery ramp immediately.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:s") var damping_grace_time: float = PlayerExternalMotionController.DEFAULT_LAUNCH_DAMPING_GRACE
 ## Extra reach of each swept-paddle overlap check.
 @export_range(0.0, 1.0, 0.01, "or_greater", "suffix:m") var sweep_margin: float = 0.15
 ## Minimum speed from an assisted strike, including contacts near the hinge.
@@ -245,6 +247,8 @@ func _try_strike(
 	player.velocity = launch_velocity
 	if exit_speed >= strong_launch_speed:
 		_clear_player_from_paddle(player, up)
+	if not player.attached:
+		player.protect_airborne_launch_from_damping(damping_grace_time)
 	return true
 
 

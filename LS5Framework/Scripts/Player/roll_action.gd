@@ -7,12 +7,14 @@ extends CharacterAction
 @export var roll_enabled: bool = true
 
 @export_subgroup("Movement")
+## Constant ground resistance while rolling. 1.5 m/s² coasts longer than 3 m/s².
 @export var roll_decel: float = 3.0
 ## Speed-proportional resistance applied while rolling on a surface.
 @export var roll_linear_drag: float = 0.0
 ## Squared-speed resistance applied while rolling on a surface.
 @export var roll_quadratic_drag: float = 0.0005
 @export var roll_air_decel: float = 2.5
+## Maximum normal roll steering rate. 0 disables steering and 70°/s turns more gradually than 140°/s.
 @export var roll_turn_deg_per_sec: float = 140.0
 ## Applies airborne top-speed soft-cap rules while rolling in air.
 @export var roll_air_top_speed_slowdown_enabled: bool = false

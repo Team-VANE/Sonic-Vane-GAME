@@ -3345,6 +3345,7 @@ func _movement_physics_process(delta: float) -> void:
 	_tick_speed_shoes(delta)
 	_ramp_hold_forward_timer = max(_ramp_hold_forward_timer - delta, 0.0)
 	_ramp_hold_up_timer = max(_ramp_hold_up_timer - delta, 0.0)
+	_external_motion_module.advance_launch_damping_protection(delta)
 
 	# Debug timers – keep values visible for a short time
 	_dbg_radial_hit_timer = max(_dbg_radial_hit_timer - delta, 0.0)
@@ -6598,6 +6599,27 @@ func _apply_launch_from_surface(detach_normal: Vector3, world_up: Vector3) -> vo
 # ===========================================================
 # MOVEMENT / SLOPE PHYSICS
 # ===========================================================
+func _apply_airborne_velocity_damping(incoming: Vector3, up: Vector3, delta: float) -> Vector3:
+	var fall_speed: float = maxf(-incoming.dot(up), 0.0)
+	var gravity_speed: float = clampf(-_air_damping_gravity_velocity.dot(up), 0.0, fall_speed)
+	_air_damping_gravity_velocity = -up * gravity_speed
+	var effectiveness: float = _external_motion_module.get_air_damping_effectiveness()
+	if effectiveness <= 0.0:
+		return incoming
+	var damped_component: Vector3 = incoming - _air_damping_gravity_velocity
+	var curve_multiplier: float = 1.0
+	if airborne_velocity_damping_curve:
+		curve_multiplier = maxf(_sample_curve_by_speed(airborne_velocity_damping_curve, damped_component.length(), 1.0), 0.0)
+	var retained: float = exp(-airborne_velocity_damping_rate * curve_multiplier * effectiveness * delta)
+	return _air_damping_gravity_velocity + damped_component * retained
+
+
+func _integrate_airborne_gravity(vertical: float, up: Vector3, gravity_step: float) -> float:
+	if airborne_velocity_damping_rate > 0.0:
+		_air_damping_gravity_velocity -= up * gravity_step
+	return vertical - gravity_step
+
+
 func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -> void:
 	var inherited_launch_velocity: Vector3 = Vector3.ZERO
 	var magnetism_gravity_step: float = 0.0
@@ -6607,6 +6629,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		physics_up = _get_gravity_up()
 
 	if _is_dead and is_attached:
+		_air_damping_gravity_velocity = Vector3.ZERO
 		velocity = Vector3.ZERO
 		_move_input = Vector2.ZERO
 		_move_direction = Vector3.ZERO
@@ -6614,6 +6637,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		_reset_movement_release_deceleration()
 		return
 	if _current_action_blocks_shared_movement_integration():
+		_air_damping_gravity_velocity = Vector3.ZERO
 		if not is_attached:
 			_last_air_velocity = velocity
 		_reset_movement_release_deceleration()
@@ -6675,6 +6699,10 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		_bounce_state = BounceState.NONE
 
 	var v: Vector3 = velocity
+	if is_attached or airborne_velocity_damping_rate <= 0.0 or _lightspeed_dash_active or _homing_active:
+		_air_damping_gravity_velocity = Vector3.ZERO
+	else:
+		v = _apply_airborne_velocity_damping(v, physics_up, delta)
 	var vertical: float = v.dot(physics_up)
 	var lateral: Vector3 = v - physics_up * vertical
 
@@ -6765,6 +6793,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 				waiting_for_target_scan = true
 			var t: Node3D = homing_request_status.get("target") as Node3D
 			if not waiting_for_target_scan and t != null:
+				_air_damping_gravity_velocity = Vector3.ZERO
 				_homing_active = true
 				_homing_target = t
 				_homing_target_position = _get_homing_candidate_position(t, global_position)
@@ -6820,7 +6849,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		_reset_drift_state()
 		var gravity_scale: float = spring_gravity_scale if in_spring_state else 1.0
 		if _drowned_action == null or not _drowned_action.is_drowned():
-			vertical -= get_effective_gravity_strength() * gravity_scale * delta
+			vertical = _integrate_airborne_gravity(vertical, physics_up, get_effective_gravity_strength() * gravity_scale * delta)
 
 		# Apply water vertical speed limits (multipliers on base speeds)
 		if in_submerged_vertical_physics:
@@ -8101,7 +8130,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 
 		if _drowned_action == null or not _drowned_action.is_drowned():
 			var gravity_step: float = get_effective_gravity_strength() * gravity_scale * delta
-			vertical -= gravity_step
+			vertical = _integrate_airborne_gravity(vertical, physics_up, gravity_step)
 			magnetism_gravity_step = maxf(gravity_step * physics_up.dot(world_up), 0.0)
 
 		# Apply water vertical speed limits (multipliers on base speeds)
@@ -9908,6 +9937,9 @@ func _record_detach_state(
 
 
 func _record_attach_state(attach_normal: Vector3, world_up: Vector3) -> void:
+	_air_damping_gravity_velocity = Vector3.ZERO
+	if _external_motion_module:
+		_external_motion_module.clear_launch_damping_protection()
 	var n: Vector3 = attach_normal.normalized()
 	if n.length() < 0.001:
 		n = world_up
@@ -11512,6 +11544,11 @@ func activate_action(action, context: Dictionary = {}) -> bool:
 		_active_action.on_action_exit(action)
 	_active_action = action
 	_current_action_id = action.action_id
+	if (
+		not attached and _external_motion_module and _current_action_id != &""
+		and action != _fall_action and action != _grounded_action and action != _jump_action and action != _spring_action
+	):
+		_external_motion_module.start_launch_damping_recovery()
 	if not attached and not action.allows_intent_landing_recovery:
 		_intent_landing_recovery_blocked = true
 	action.on_action_enter(context)
@@ -11982,6 +12019,16 @@ func cancel_spline_spring() -> void:
 	_external_motion_module.cancel_spline_spring()
 
 
+func protect_airborne_launch_from_damping(grace_time: float) -> void:
+	_ensure_modules()
+	_external_motion_module.begin_launch_damping_protection(grace_time)
+
+
+func set_launch_damping_grace(grace_time: float) -> void:
+	_ensure_modules()
+	_external_motion_module.set_launch_damping_grace(grace_time)
+
+
 func clear_object_lock_timers() -> void:
 	if _active_action is SpringAction:
 		clear_active_action()
@@ -11989,6 +12036,7 @@ func clear_object_lock_timers() -> void:
 		_pending_anim_command = &""
 		_pending_anim_crossfade = -1.0
 	cancel_spline_spring()
+	_external_motion_module.clear_launch_damping_protection()
 	_spring_movement_lock_timer = 0.0
 	_dash_movement_lock_active = false
 	_spring_action_lock_timer = 0.0
