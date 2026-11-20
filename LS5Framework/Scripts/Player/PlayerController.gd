@@ -3371,6 +3371,8 @@ func _movement_physics_process(delta: float) -> void:
 	# WORLD/GRAVITY UP (single source of truth for airborne gravity frame)
 	# ------------------------------------------------------------------
 	var world_up: Vector3 = _get_gravity_up()
+	if _vault_bar_active or _rail_active or _rail_switch_active or _spline_active:
+		_air_damping_entry_elapsed = 0.0
 
 	# ==========================================================
 	# [VAULT BAR] Override: scripted pivot rotation
@@ -6599,11 +6601,23 @@ func _apply_launch_from_surface(detach_normal: Vector3, world_up: Vector3) -> vo
 # ===========================================================
 # MOVEMENT / SLOPE PHYSICS
 # ===========================================================
-func _apply_airborne_velocity_damping(incoming: Vector3, up: Vector3, delta: float) -> Vector3:
+func _advance_air_damping_entry_ramp(delta: float, supported: bool) -> float:
+	if supported:
+		_air_damping_entry_elapsed = 0.0
+		return 0.0
+	var ramp_time: float = airborne_velocity_damping_entry_ramp_time
+	if ramp_time <= 0.0:
+		return 1.0
+	var effectiveness: float = clampf(_air_damping_entry_elapsed / ramp_time, 0.0, 1.0)
+	_air_damping_entry_elapsed = minf(_air_damping_entry_elapsed + delta, ramp_time)
+	return effectiveness
+
+
+func _apply_airborne_velocity_damping(incoming: Vector3, up: Vector3, delta: float, entry_effectiveness: float) -> Vector3:
 	var fall_speed: float = maxf(-incoming.dot(up), 0.0)
 	var gravity_speed: float = clampf(-_air_damping_gravity_velocity.dot(up), 0.0, fall_speed)
 	_air_damping_gravity_velocity = -up * gravity_speed
-	var effectiveness: float = _external_motion_module.get_air_damping_effectiveness()
+	var effectiveness: float = minf(entry_effectiveness, _external_motion_module.get_air_damping_effectiveness())
 	if effectiveness <= 0.0:
 		return incoming
 	var damped_component: Vector3 = incoming - _air_damping_gravity_velocity
@@ -6628,6 +6642,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	if physics_up.length() < 0.001:
 		physics_up = _get_gravity_up()
 
+	var movement_blocked: bool = _current_action_blocks_shared_movement_integration()
+	var held_by_action: bool = movement_blocked and (is_parkour_active() or _current_action_id == &"ledge_mantle")
+	var damping_entry_effectiveness: float = _advance_air_damping_entry_ramp(timer_delta, is_attached or held_by_action)
 	if _is_dead and is_attached:
 		_air_damping_gravity_velocity = Vector3.ZERO
 		velocity = Vector3.ZERO
@@ -6636,7 +6653,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		_last_air_velocity = Vector3.ZERO
 		_reset_movement_release_deceleration()
 		return
-	if _current_action_blocks_shared_movement_integration():
+	if movement_blocked:
 		_air_damping_gravity_velocity = Vector3.ZERO
 		if not is_attached:
 			_last_air_velocity = velocity
@@ -6702,7 +6719,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	if is_attached or airborne_velocity_damping_rate <= 0.0 or _lightspeed_dash_active or _homing_active:
 		_air_damping_gravity_velocity = Vector3.ZERO
 	else:
-		v = _apply_airborne_velocity_damping(v, physics_up, delta)
+		v = _apply_airborne_velocity_damping(v, physics_up, delta, damping_entry_effectiveness)
 	var vertical: float = v.dot(physics_up)
 	var lateral: Vector3 = v - physics_up * vertical
 
@@ -9938,6 +9955,7 @@ func _record_detach_state(
 
 func _record_attach_state(attach_normal: Vector3, world_up: Vector3) -> void:
 	_air_damping_gravity_velocity = Vector3.ZERO
+	_air_damping_entry_elapsed = 0.0
 	if _external_motion_module:
 		_external_motion_module.clear_launch_damping_protection()
 	var n: Vector3 = attach_normal.normalized()

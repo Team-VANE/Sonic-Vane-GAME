@@ -557,6 +557,9 @@ var _enemy_targeting_spawn_input_received: bool = false
 ## X is airborne speed excluding gravity-driven fall speed. Y multiplies the base damping rate.
 ## At the sampled speed, 0.0 gives no damping, 1.0 uses the base rate, and 2.0 doubles it. Unassigned uses 1.0.
 @export var airborne_velocity_damping_curve: Curve
+## Seconds after leaving support before airborne damping reaches full strength.
+## 0.0 skips the entry ramp. With 0.75, the entry ramp reaches half strength after 0.375 seconds.
+@export_range(0.0, 5.0, 0.01, "or_greater", "suffix:s") var airborne_velocity_damping_entry_ramp_time: float = 0.75
 ## Preserves the direction of fast slope launches without removing airborne course correction.
 @export var launch_momentum_control_enabled: bool = true
 ## Detach speed where launch-direction preservation reaches full strength.
@@ -3375,6 +3378,7 @@ var _loop_control_active: bool = false
 # Last airborne velocity for landing conversion.
 var _last_air_velocity: Vector3 = Vector3.ZERO
 var _air_damping_gravity_velocity: Vector3 = Vector3.ZERO
+var _air_damping_entry_elapsed: float = 0.0
 
 # Velocity submitted to the most recent collision sweep.
 var _pre_slide_velocity: Vector3 = Vector3.ZERO

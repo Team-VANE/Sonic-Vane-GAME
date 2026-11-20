@@ -112,6 +112,19 @@ func resolve_target(cmd: StringName, sm: AnimationNodeStateMachine) -> Dictionar
 	return {}
 
 
+func release_grounded_parkour() -> void:
+	if not _owner.attached or _owner.is_parkour_active() or _owner._is_dead or _owner._hurt_active or not _owner.anim_state:
+		return
+	var parkour = _owner._get_action_by_id(&"parkour")
+	if not parkour:
+		return
+	if parkour.owns_wall_animation(_owner._pending_anim_command):
+		_owner._pending_anim_command = &""
+		_owner._pending_anim_crossfade = -1.0
+	if _owner._pending_anim_command == &"" and parkour.owns_wall_animation(_owner.anim_state.get_current_node()):
+		_owner.get_animation_director().resume_movement()
+
+
 func apply_pending(force_direct: bool = false) -> void:
 	var anim_tree: AnimationTree = _owner.anim_tree
 	var anim_state: AnimationNodeStateMachinePlayback = _owner.anim_state

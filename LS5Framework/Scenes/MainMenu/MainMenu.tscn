@@ -88,12 +88,12 @@ grow_horizontal = 2
 grow_vertical = 2
 follow_focus = true
 
-[node name="Center" type="CenterContainer" parent="Overlay/MenuContainer"]
+[node name="Center" type="CenterContainer" parent="Overlay/MenuContainer" unique_id=537553958]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Frame" type="PanelContainer" parent="Overlay/MenuContainer/Center"]
+[node name="Frame" type="PanelContainer" parent="Overlay/MenuContainer/Center" unique_id=442031595]
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
@@ -108,12 +108,12 @@ theme_override_font_sizes/font_size = 30
 text = "SONIC VANE"
 horizontal_alignment = 1
 
-[node name="ButtonStorySelect" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" groups=["MenuButtons"]]
+[node name="ButtonStorySelect" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" unique_id=1114465560 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Story Select"
 
-[node name="ButtonFreePlay" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" groups=["MenuButtons"]]
+[node name="ButtonFreePlay" type="Button" parent="Overlay/MenuContainer/Center/Frame/VBoxMain" unique_id=73529828 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Free Play"
@@ -133,7 +133,7 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Quit"
 
-[node name="FreePlayPanel" type="ScrollContainer" parent="Overlay"]
+[node name="FreePlayPanel" type="ScrollContainer" parent="Overlay" unique_id=157730024]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -143,19 +143,19 @@ grow_horizontal = 2
 grow_vertical = 2
 follow_focus = true
 
-[node name="Center" type="CenterContainer" parent="Overlay/FreePlayPanel"]
+[node name="Center" type="CenterContainer" parent="Overlay/FreePlayPanel" unique_id=114795334]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Frame" type="PanelContainer" parent="Overlay/FreePlayPanel/Center"]
+[node name="Frame" type="PanelContainer" parent="Overlay/FreePlayPanel/Center" unique_id=177281849]
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
-[node name="Content" type="VBoxContainer" parent="Overlay/FreePlayPanel/Center/Frame"]
+[node name="Content" type="VBoxContainer" parent="Overlay/FreePlayPanel/Center/Frame" unique_id=818942084]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Overlay/FreePlayPanel/Center/Frame/Content"]
+[node name="Title" type="Label" parent="Overlay/FreePlayPanel/Center/Frame/Content" unique_id=819747476]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_fonts/font = ExtResource("11_orbitron_900")
@@ -183,12 +183,12 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Online Mode"
 
-[node name="ButtonBack" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" groups=["MenuButtons"]]
+[node name="ButtonBack" type="Button" parent="Overlay/FreePlayPanel/Center/Frame/Content" unique_id=365830892 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Back"
 
-[node name="StorySelectPanel" type="ScrollContainer" parent="Overlay"]
+[node name="StorySelectPanel" type="ScrollContainer" parent="Overlay" unique_id=1075778373]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -198,19 +198,19 @@ grow_horizontal = 2
 grow_vertical = 2
 follow_focus = true
 
-[node name="Center" type="CenterContainer" parent="Overlay/StorySelectPanel"]
+[node name="Center" type="CenterContainer" parent="Overlay/StorySelectPanel" unique_id=753163365]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Frame" type="PanelContainer" parent="Overlay/StorySelectPanel/Center"]
+[node name="Frame" type="PanelContainer" parent="Overlay/StorySelectPanel/Center" unique_id=1933107531]
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
-[node name="Content" type="VBoxContainer" parent="Overlay/StorySelectPanel/Center/Frame"]
+[node name="Content" type="VBoxContainer" parent="Overlay/StorySelectPanel/Center/Frame" unique_id=762136900]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Overlay/StorySelectPanel/Center/Frame/Content"]
+[node name="Title" type="Label" parent="Overlay/StorySelectPanel/Center/Frame/Content" unique_id=913323442]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_fonts/font = ExtResource("11_orbitron_900")
@@ -218,22 +218,22 @@ theme_override_font_sizes/font_size = 26
 text = "Story Select"
 horizontal_alignment = 1
 
-[node name="ButtonSonic" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" groups=["MenuButtons"]]
+[node name="ButtonSonic" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" unique_id=1481116196 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Sonic VANE"
 
-[node name="ButtonShadow" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" groups=["MenuButtons"]]
+[node name="ButtonShadow" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" unique_id=539855434 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Sonic VANE: Episode Shadow"
 
-[node name="ButtonBack" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" groups=["MenuButtons"]]
+[node name="ButtonBack" type="Button" parent="Overlay/StorySelectPanel/Center/Frame/Content" unique_id=1738856898 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Back"
 
-[node name="SonicStoryPanel" type="ScrollContainer" parent="Overlay"]
+[node name="SonicStoryPanel" type="ScrollContainer" parent="Overlay" unique_id=1689752486]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -243,19 +243,19 @@ grow_horizontal = 2
 grow_vertical = 2
 follow_focus = true
 
-[node name="Center" type="CenterContainer" parent="Overlay/SonicStoryPanel"]
+[node name="Center" type="CenterContainer" parent="Overlay/SonicStoryPanel" unique_id=805836558]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Frame" type="PanelContainer" parent="Overlay/SonicStoryPanel/Center"]
+[node name="Frame" type="PanelContainer" parent="Overlay/SonicStoryPanel/Center" unique_id=490885475]
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
-[node name="Content" type="VBoxContainer" parent="Overlay/SonicStoryPanel/Center/Frame"]
+[node name="Content" type="VBoxContainer" parent="Overlay/SonicStoryPanel/Center/Frame" unique_id=1860085350]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Overlay/SonicStoryPanel/Center/Frame/Content"]
+[node name="Title" type="Label" parent="Overlay/SonicStoryPanel/Center/Frame/Content" unique_id=739569114]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_fonts/font = ExtResource("11_orbitron_900")
@@ -263,17 +263,17 @@ theme_override_font_sizes/font_size = 26
 text = "Sonic VANE"
 horizontal_alignment = 1
 
-[node name="Message" type="Label" parent="Overlay/SonicStoryPanel/Center/Frame/Content"]
+[node name="Message" type="Label" parent="Overlay/SonicStoryPanel/Center/Frame/Content" unique_id=680617284]
 layout_mode = 2
 text = "Coming Soon?"
 horizontal_alignment = 1
 
-[node name="ButtonBack" type="Button" parent="Overlay/SonicStoryPanel/Center/Frame/Content" groups=["MenuButtons"]]
+[node name="ButtonBack" type="Button" parent="Overlay/SonicStoryPanel/Center/Frame/Content" unique_id=931302191 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Back"
 
-[node name="ShadowStoryPanel" type="ScrollContainer" parent="Overlay"]
+[node name="ShadowStoryPanel" type="ScrollContainer" parent="Overlay" unique_id=1105833158]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -283,19 +283,19 @@ grow_horizontal = 2
 grow_vertical = 2
 follow_focus = true
 
-[node name="Center" type="CenterContainer" parent="Overlay/ShadowStoryPanel"]
+[node name="Center" type="CenterContainer" parent="Overlay/ShadowStoryPanel" unique_id=249949773]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Frame" type="PanelContainer" parent="Overlay/ShadowStoryPanel/Center"]
+[node name="Frame" type="PanelContainer" parent="Overlay/ShadowStoryPanel/Center" unique_id=1263199872]
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
-[node name="Content" type="VBoxContainer" parent="Overlay/ShadowStoryPanel/Center/Frame"]
+[node name="Content" type="VBoxContainer" parent="Overlay/ShadowStoryPanel/Center/Frame" unique_id=1348493727]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Overlay/ShadowStoryPanel/Center/Frame/Content"]
+[node name="Title" type="Label" parent="Overlay/ShadowStoryPanel/Center/Frame/Content" unique_id=529166]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.78, 1, 1)
 theme_override_fonts/font = ExtResource("11_orbitron_900")
@@ -303,12 +303,12 @@ theme_override_font_sizes/font_size = 26
 text = "Sonic VANE: Episode Shadow"
 horizontal_alignment = 1
 
-[node name="Message" type="Label" parent="Overlay/ShadowStoryPanel/Center/Frame/Content"]
+[node name="Message" type="Label" parent="Overlay/ShadowStoryPanel/Center/Frame/Content" unique_id=1672675210]
 layout_mode = 2
 text = "Coming Soon?"
 horizontal_alignment = 1
 
-[node name="ButtonBack" type="Button" parent="Overlay/ShadowStoryPanel/Center/Frame/Content" groups=["MenuButtons"]]
+[node name="ButtonBack" type="Button" parent="Overlay/ShadowStoryPanel/Center/Frame/Content" unique_id=1400436728 groups=["MenuButtons"]]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("12_orbitron_600")
 text = "Back"
@@ -696,6 +696,12 @@ Level Design:
 LinkSonic5
 Astral Sylverex
 Aidan Kelley
+
+Writing:
+SonicNerd
+
+Cutscene animation:
+SonicNerd
 
 Voice Cast:
 Sonic: Jordy Murchison (Reeseimental)
@@ -1260,21 +1266,21 @@ bus = &"UI"
 stream = ExtResource("21_title_start")
 bus = &"UI"
 
-[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonStorySelect" to="." method="_open_submenu" binds=[NodePath("Overlay/StorySelectPanel")]]
-[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonFreePlay" to="." method="_open_submenu" binds=[NodePath("Overlay/FreePlayPanel")]]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonStorySelect" to="." method="_open_submenu" binds= [NodePath("Overlay/StorySelectPanel")]]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonFreePlay" to="." method="_open_submenu" binds= [NodePath("Overlay/FreePlayPanel")]]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
+[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonQuit" to="." method="_on_ButtonQuit_pressed"]
 [connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonStart" to="." method="_on_ButtonStart_pressed"]
 [connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonCharacterSelect" to="." method="_on_ButtonCharacterSelect_pressed"]
 [connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonLevelSelect" to="." method="_on_ButtonLevelSelect_pressed"]
 [connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonOnline" to="." method="_on_ButtonOnline_pressed"]
 [connection signal="pressed" from="Overlay/FreePlayPanel/Center/Frame/Content/ButtonBack" to="." method="_on_mode_back_pressed"]
-[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonSonic" to="." method="_open_submenu" binds=[NodePath("Overlay/SonicStoryPanel")]]
-[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonShadow" to="." method="_open_submenu" binds=[NodePath("Overlay/ShadowStoryPanel")]]
+[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonSonic" to="." method="_open_submenu" binds= [NodePath("Overlay/SonicStoryPanel")]]
+[connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonShadow" to="." method="_open_submenu" binds= [NodePath("Overlay/ShadowStoryPanel")]]
 [connection signal="pressed" from="Overlay/StorySelectPanel/Center/Frame/Content/ButtonBack" to="." method="_on_mode_back_pressed"]
 [connection signal="pressed" from="Overlay/SonicStoryPanel/Center/Frame/Content/ButtonBack" to="." method="_on_story_back_pressed"]
 [connection signal="pressed" from="Overlay/ShadowStoryPanel/Center/Frame/Content/ButtonBack" to="." method="_on_story_back_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonOptions" to="." method="_on_ButtonOptions_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
-[connection signal="pressed" from="Overlay/MenuContainer/Center/Frame/VBoxMain/ButtonQuit" to="." method="_on_ButtonQuit_pressed"]
 [connection signal="pressed" from="Overlay/CharacterSelectPanel/Panel/VBoxCharacters/ButtonCharacterBack" to="." method="_on_ButtonCharacterBack_pressed"]
 [connection signal="pressed" from="Overlay/LevelSelectPanel/Panel/VBoxLevels/ButtonLevelBack" to="." method="_on_ButtonLevelBack_pressed"]
 [connection signal="color_changed" from="Overlay/OnlinePanel/Panel/VBoxOnline/HBoxName/ColorName" to="." method="_on_ColorName_color_changed"]

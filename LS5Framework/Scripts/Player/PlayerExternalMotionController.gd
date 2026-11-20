@@ -69,6 +69,7 @@ func _has_launch_damping_influence() -> bool:
 func apply_teleport(exit_transform: Transform3D, keep_vel: bool, match_rot: bool, exit_local_offset: Vector3) -> void:
 	var p = _owner
 	clear_launch_damping_protection()
+	p._air_damping_entry_elapsed = 0.0
 	p._consume_attack_magnetism_bounce_compensation()
 	p.cancel_homing_attack(false)
 	cancel_spline_spring()

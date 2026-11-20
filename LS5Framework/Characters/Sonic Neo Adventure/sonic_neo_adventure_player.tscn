@@ -268,6 +268,11 @@ shader_parameter/tail_fade_length = 1.35
 shader_parameter/tail_min_alpha = 0.08
 shader_parameter/rim_strength = 0.22
 
+[sub_resource type="Curve" id="Curve_wall_run_damping"]
+_limits = [0.0, 1.0, 0.0, 180.0]
+_data = [Vector2(60, 0), 0.0, 0.008333333, 0, 0, Vector2(180, 1), 0.008333333, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="Resource" id="AbilityRoute_sonic_fall_homing"]
 script = ExtResource("103_gr7o4")
 route_id = &"homing"
@@ -470,6 +475,7 @@ fast_fall_horizontal_drag_full_speed = 150.0
 fast_fall_horizontal_drag_max_decel = 10.0
 airborne_velocity_damping_rate = 0.6
 airborne_velocity_damping_curve = SubResource("Curve_hmwv2")
+airborne_velocity_damping_entry_ramp_time = 0.5
 launch_momentum_full_speed = 140.0
 launch_momentum_min_control = 0.05
 launch_momentum_recovery_time = 1.5
@@ -721,6 +727,8 @@ lift_speed = 12.0
 
 [node name="Parkour" type="Node" parent="Abilities" unique_id=2084939969]
 script = ExtResource("91_h8d1i")
+wall_run_damping_rate = 1.0
+wall_run_damping_curve = SubResource("Curve_wall_run_damping")
 run_assistance_min_time = 0.25
 run_assistance_max_time = 0.85
 run_assistance_max_speed = 80.0
@@ -736,7 +744,7 @@ wall_cling_kick_entry_upward_multiplier = 1.45
 
 [node name="Grounded" type="Node" parent="Abilities" unique_id=2051000001]
 script = ExtResource("92_eyj1t")
-run_top_speed = 151.0
+run_top_speed = 144.0
 ground_decel_curve = ExtResource("decel_ground")
 ground_accel_curve = ExtResource("93_ows6n")
 walk_ground_accel_curve = ExtResource("94_hlsp5")

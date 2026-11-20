@@ -88,6 +88,7 @@ func _apply_respawn_transform(
 	p._clear_enemy_hurt_boundary_exceptions()
 	p.velocity = Vector3.ZERO
 	p._air_damping_gravity_velocity = Vector3.ZERO
+	p._air_damping_entry_elapsed = 0.0
 	var has_checkpoint_vel: bool = false
 	if use_checkpoint_velocity and p._checkpoint_respawn_speed > 0.0 and p._checkpoint_respawn_dir.length() > 0.001:
 		var d: Vector3 = p._checkpoint_respawn_dir.normalized()

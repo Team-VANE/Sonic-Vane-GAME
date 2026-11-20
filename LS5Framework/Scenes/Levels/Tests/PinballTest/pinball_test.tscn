@@ -208,6 +208,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.778526, 3.3072405, 18.8329
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -49.31145, 43.90732, -38.97852)
 size = 2.0
 rehit_cooldown = 2.0
+damping_grace_time = null
 strength = 30.0
 spring_sounds = Array[AudioStream]([])
 
@@ -226,6 +227,7 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 49.16599, 43.90732, -39.378574)
 size = 2.0
 rehit_cooldown = 2.0
+damping_grace_time = null
 strength = 30.0
 spring_sounds = Array[AudioStream]([])
 
@@ -288,32 +290,32 @@ shape = SubResource("BoxShape3D_y4e7g")
 
 [node name="ItemMonitor" parent="OBJECTS/MONITORS" unique_id=1395552001 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 24.39811, 4.1852107)
-size = 1.4000000000000001
+size = 1.2
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 
 [node name="ItemMonitor6" parent="OBJECTS/MONITORS" unique_id=1178041025 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 12.792677, 4.1852107)
-size = 1.4000000000000001
+size = 1.2
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 
 [node name="ItemMonitor2" parent="OBJECTS/MONITORS" unique_id=1226388241 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 32.39811, 4.1852107)
-size = 1.4000000000000001
+size = 1.2
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 
 [node name="ItemMonitor3" parent="OBJECTS/MONITORS" unique_id=1795714885 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 24.39811, 4.1852107)
-size = 1.4000000000000001
+size = 1.2
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 
 [node name="ItemMonitor5" parent="OBJECTS/MONITORS" unique_id=2021665223 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 12.288028, 4.1852107)
-size = 1.4000000000000001
+size = 1.2
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 
 [node name="ItemMonitor4" parent="OBJECTS/MONITORS" unique_id=140510517 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 32.39811, 4.1852107)
-size = 1.4000000000000001
+size = 1.2
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 
 [node name="SonicPinball" parent="." unique_id=1805915054 instance=ExtResource("8_1amh5")]

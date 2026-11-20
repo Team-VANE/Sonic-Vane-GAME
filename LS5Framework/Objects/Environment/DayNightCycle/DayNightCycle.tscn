@@ -16,7 +16,7 @@ shader_parameter/ground_color = Color(0.30360106, 0.45174468, 0.71891415, 1)
 shader_parameter/ground_visibility = 0.6
 shader_parameter/sun_color = Color(1, 0.8066667, 0.57, 1)
 shader_parameter/moon_color = Color(0.55, 0.63, 0.78, 1)
-shader_parameter/cloud_light_color = Color(1, 0.8466667, 0.7066667, 1)
+shader_parameter/cloud_light_color = Color(1, 0.8318876, 0.8245775, 1)
 shader_parameter/cloud_shadow_color = Color(0.29625002, 0.3375, 0.42499998, 1)
 shader_parameter/rayleigh_strength = 2.0
 shader_parameter/mie_strength = 0.08
@@ -98,7 +98,7 @@ fog_sky_affect = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
-adjustment_saturation = 1.1
+adjustment_saturation = 1.056
 
 [node name="DayNightCycle" type="Node3D" unique_id=905397325]
 script = ExtResource("1_cycle")

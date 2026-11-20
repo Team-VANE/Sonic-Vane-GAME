@@ -118,6 +118,7 @@ func update(delta: float) -> void:
 	_owner._anim_module._update_animation(delta)
 	if not _remote_playback:
 		_motion.update(delta)
+		_legacy.release_grounded_parkour()
 	flush_requests(delta)
 	_owner._update_carry_animation(delta)
 	_owner._update_pending_carry_put_down_release()

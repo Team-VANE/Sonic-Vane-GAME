@@ -352,6 +352,18 @@ func after_advance() -> void:
 			_owner.get_animation_director().get_motion_backend().prepare_resume()
 			_owner.anim_state.travel(&"Motion")
 		return
+	if (
+		_owner.attached and not _owner.is_parkour_active() and allows_body_request()
+		and _owner._current_action_id not in [&"ledge_hang", &"ledge_mantle"]
+	):
+		if String(_pending_target).begins_with("Parkour/"):
+			var token: int = _pending_owner
+			_pending_target = &""
+			_pending_owner = 0
+			_finish_owner(token, &"landed")
+		if _family == &"Parkour" and _target != &"" and _pending_target == &"":
+			resume_motion(&"landed")
+			return
 	if _owner.anim_state.get_current_node() != &"Actions" or _pending_target != &"":
 		return
 	var playback: AnimationNodeStateMachinePlayback = _playback(_family)

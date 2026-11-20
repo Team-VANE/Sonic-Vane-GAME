@@ -81,8 +81,12 @@ enum WallLiftPhase { NONE, SETTLING, HOLD, RELEASE }
 @export var wall_run_dash_panel_mode_hold_time: float = 0.35
 ## Optional entry speed top-up. Zero disables it; faster momentum is preserved.
 @export var run_entry_speed_target: float = 0.0
-## Ground-deceleration multiplier for wall-parallel speed above the character's run top speed. Zero disables slowdown.
-@export_range(0.0, 2.0, 0.01, "or_greater") var run_top_speed_slowdown_strength: float = 0.1
+## Base damping rate along the wall during a wall run. Multiplies the curve when assigned.
+## 0.0 disables damping. With a curve value of 1.0, a rate of 1.0 leaves about 37% of speed after one second.
+@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:1/s") var wall_run_damping_rate: float = 0.1
+## X is speed along the wall. Y multiplies the damping rate.
+## 0.0 gives no damping at that speed, 1.0 uses the base rate, and 2.0 doubles it. Unassigned uses 1.0.
+@export var wall_run_damping_curve: Curve
 ## Fractional wall-parallel speed boost granted on fresh wall-run entry.
 @export_range(0.0, 1.0, 0.01) var entry_forward_boost: float = 0.12
 ## Maximum additional wall-parallel speed granted on fresh wall-run entry.
@@ -1624,7 +1628,7 @@ func physics_update_action(delta: float) -> void:
 		else:
 			var progress: float = clamp(_elapsed / max(_assistance_duration, 0.001), 0.0, 1.0)
 			gravity_scale = lerp(1.0 - (1.0 - run_initial_gravity_scale) * _entry_strength, 1.0, smoothstep(0.0, 1.0, progress))
-		parallel = _apply_wall_run_top_speed_slowdown(parallel, motion_delta)
+		parallel = _apply_wall_run_damping(parallel, motion_delta)
 		_run_parallel_speed = parallel
 	else:
 		_cling_elapsed += delta
@@ -1660,20 +1664,13 @@ func physics_update_action(delta: float) -> void:
 			owner_player.velocity -= pressure_normal * max(contact_pressure_speed, 0.0)
 
 
-func _apply_wall_run_top_speed_slowdown(parallel_speed: float, delta: float) -> float:
-	if not owner_player or run_top_speed_slowdown_strength <= 0.0 or delta <= 0.0:
+func _apply_wall_run_damping(parallel_speed: float, delta: float) -> float:
+	if not owner_player or wall_run_damping_rate <= 0.0 or delta <= 0.0:
 		return parallel_speed
 	if _dash_panel_run_lock_remaining > 0.0 or owner_player.is_speed_shoes_active():
 		return parallel_speed
-	var top_speed: float = maxf(owner_player.run_top_speed, 0.0) * maxf(owner_player.get_active_top_speed_multiplier(), 0.0)
-	var speed: float = absf(parallel_speed)
-	if top_speed <= 0.0 or speed <= top_speed:
-		return parallel_speed
-	var deceleration: float = maxf(owner_player._sample_curve_by_speed(
-		owner_player.ground_decel_curve, speed, owner_player.decel
-	), 0.0)
-	var drop: float = minf(speed - top_speed, deceleration * run_top_speed_slowdown_strength * delta)
-	return signf(parallel_speed) * (speed - drop)
+	var curve_multiplier: float = maxf(PlayerMath.sample_curve_by_speed(wall_run_damping_curve, absf(parallel_speed), 1.0), 0.0)
+	return parallel_speed * exp(-wall_run_damping_rate * curve_multiplier * delta)
 
 
 func _update_wall_lift(delta: float, vertical: float, parallel_speed: float) -> float:
@@ -2384,6 +2381,14 @@ func _start_wall_exit_animation(command: StringName, duration: float) -> void:
 		owner_player._trigger_anim_command(command)
 	if _wall_exit_animation_duration <= 0.0:
 		_update_wall_exit_animation(0.0)
+
+
+func owns_wall_animation(command: StringName) -> bool:
+	return command != &"" and command in [
+		wall_run_animation_command, wall_run_left_animation_command, wall_run_right_animation_command,
+		wall_cling_animation_command, wall_kick_run_left_animation_command, wall_kick_run_right_animation_command,
+		wall_kick_cling_animation_command, wall_detach_animation_command
+	]
 
 
 func _update_wall_exit_animation(delta: float) -> void:
