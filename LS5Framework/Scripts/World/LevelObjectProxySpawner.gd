@@ -103,7 +103,7 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 		return false
 	var proxy_index: int = proxy.get_index()
 	parent_node.add_child(instance)
-	parent_node.move_child(instance, proxy_index)
+	parent_node.move_child(instance, mini(proxy_index, parent_node.get_child_count() - 1))
 	_free_proxy(proxy)
 	return true
 

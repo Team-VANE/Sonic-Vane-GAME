@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CutsceneActorProfile" format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/CutsceneActorProfile.gd" id="1_profile"]
+[ext_resource type="AudioStream" uid="uid://cx5yhmp6pnth3" path="res://LS5Framework/Characters/Sonic Neo Adventure/Voice/Reeseimental/Hello_Shakin_02.ogg" id="2_shakin"]
+
+[resource]
+script = ExtResource("1_profile")
+dialogue_cues = Dictionary[StringName, AudioStream]({&"hello_shakin": ExtResource("2_shakin")})

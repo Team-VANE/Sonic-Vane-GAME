@@ -31,6 +31,9 @@ class_name LevelDoc
 ## Level content scene (the actual playable level).
 @export var level_scene: String = ""
 
+## Placement JSON for the playable level scene.
+@export_file("*.json") var placements_file: String = ""
+
 @export_group("Attributes")
 ## Optional key/value metadata parsed by gameplay systems.
 @export var attributes: Dictionary = {}

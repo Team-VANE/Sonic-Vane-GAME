@@ -25,6 +25,7 @@ Each `LVL_*.tres` sets these properties:
 - `is_test`: Marks a test entry.
 - `scene`: Main scene (usually `res://LS5Framework/Scenes/Main.tscn`).
 - `level_scene`: Playable level scene path.
+- `placements_file`: Optional path to the Blender placement JSON. The JSON `level_id` must match this document's `level_id`.
 - `attributes`: Optional key/value metadata.
 
 ## XML Files
@@ -35,5 +36,8 @@ Each `LVL_*.tres` sets these properties:
 
 When exporting level packs, ensure the matching `LVL_*.tres` is included in the
 selected resources list so Level Select can find it at runtime.
+
+Include the placement JSON in the level pack's non-resource include filter. The
+shared placement object catalog is included in `objects.pck`.
 
 No per-pack level manifest is required. New packs and mods can add `LVL_*.tres` files directly under the level document directory without editing a master list.

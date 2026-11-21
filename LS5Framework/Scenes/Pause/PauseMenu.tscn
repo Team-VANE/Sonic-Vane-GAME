@@ -59,6 +59,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="CutscenePanel" type="CenterContainer" parent="Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Frame" type="PanelContainer" parent="Overlay/CutscenePanel"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Overlay/CutscenePanel/Frame"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Buttons" type="VBoxContainer" parent="Overlay/CutscenePanel/Frame/Margin"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Resume" type="Button" parent="Overlay/CutscenePanel/Frame/Margin/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Resume"
+
+[node name="SkipCutscene" type="Button" parent="Overlay/CutscenePanel/Frame/Margin/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Skip Cutscene"
+
 [node name="OnlinePanel" type="Panel" parent="Overlay"]
 visible = false
 custom_minimum_size = Vector2(360, 520)

@@ -1,0 +1,12 @@
+schema_version = "1.0.0"
+id = "sonic_vane_placements"
+version = "0.3.1"
+name = "Sonic Vane Placements"
+tagline = "Author and export Sonic Vane gameplay placements"
+maintainer = "Sonic Vane"
+type = "add-on"
+blender_version_min = "4.2.0"
+license = ["SPDX:GPL-3.0-or-later"]
+
+[permissions]
+files = "Write placement JSON to the selected export folder"

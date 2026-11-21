@@ -1,6 +1,8 @@
 extends Resource
 class_name CharacterSettingsProfile
 
+const CutsceneProfile = preload("res://LS5Framework/Scripts/World/CutsceneActorProfile.gd")
+
 ## Namespace used to keep profiles from separate character packs distinct.
 @export var package_id: StringName = &"ls5framework"
 ## Stable character identifier used for user profile persistence.
@@ -15,6 +17,8 @@ class_name CharacterSettingsProfile
 @export var selection_category: String = "Main"
 ## Supplies character-specific emote voices and cooldowns. An empty profile produces no voice.
 @export var emote_voice_profile: EmoteVoiceProfile
+## Supplies reusable animation, action, and dialogue cues for this character in cutscenes.
+@export var cutscene_profile: CutsceneProfile
 
 @export_group("Loadout")
 ## Abilities displayed in the per-character loadout menu.

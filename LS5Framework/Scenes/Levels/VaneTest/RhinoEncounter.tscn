@@ -1,0 +1,68 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Cutscenes/LevelCutscene.tscn" id="1_cutscene"]
+[ext_resource type="PackedScene" uid="uid://b0cc4nybn8pdw" path="res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTank.tscn" id="2_rhino"]
+[ext_resource type="AnimationLibrary" uid="uid://dtam8swo40w6k" path="res://LS5Framework/Scenes/Levels/VaneTest/RhinoEncounterAnimations.tres" id="3_sequence"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/CutsceneActorProfile.gd" id="4_actor_profile"]
+
+[sub_resource type="Resource" id="Resource_encounter_cues"]
+resource_name = "Rhino Encounter Cues"
+script = ExtResource("4_actor_profile")
+animation_cues = Dictionary[StringName, PackedStringArray]({
+&"idle_wait": PackedStringArray("Idle_Wait_1"),
+&"victory": PackedStringArray("Goal_Victory_1")
+})
+
+[sub_resource type="Curve3D" id="Curve3D_departure"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 1, -4.3, 0, 0, 0, 0, 0, 0, 0, 1, -250),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="RhinoEncounter" unique_id=624970742 node_paths=PackedStringArray("gameplay_route", "gameplay_skip_pose") instance=ExtResource("1_cutscene")]
+sequence = &"RhinoEncounter"
+actor_paths = Dictionary[StringName, NodePath]({&"rhino": NodePath("RhinoMotion/RhinoTank")})
+staged_roles = Array[StringName]([&"rhino"])
+gameplay_route = NodePath("DepartureRoute")
+gameplay_skip_pose = NodePath("DepartureEnd")
+
+[node name="ActorHandler" parent="." index="0"]
+fallback_profile = SubResource("Resource_encounter_cues")
+
+[node name="ShotCamera" parent="." index="3"]
+transform = Transform3D(0.92786306, -0.08693881, 0.36264557, 0, 0.9724458, 0.23312923, -0.3729211, -0.216312, 0.90229654, 6.8, 4, 8.2)
+fov = 80.0
+
+[node name="AnimationPlayer" parent="." index="4"]
+libraries/ = ExtResource("3_sequence")
+
+[node name="RhinoMotion" type="Node3D" parent="." index="5" unique_id=278695950]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 9, 1, -5)
+
+[node name="RhinoTank" parent="RhinoMotion" unique_id=845003512 instance=ExtResource("2_rhino")]
+process_mode = 4
+enabled = false
+active = false
+
+[node name="AnimationPlayer" parent="RhinoMotion/RhinoTank" index="2" unique_id=1647615813]
+process_mode = 1
+
+[node name="Targetable" parent="RhinoMotion/RhinoTank" index="3" unique_id=1856964671]
+homing_target_enabled = false
+thrown_object_targeting_enabled = false
+attack_magnetism_enabled = false
+
+[node name="Approach" type="Marker3D" parent="." index="6"]
+editor_description = "Player's stopping point for the gameplay approach to the Rhino Tank."
+position = Vector3(0, 1, -4.3)
+
+[node name="DepartureRoute" type="Path3D" parent="."]
+editor_description = "Steering route for the player's departure. Player physics supplies elevation."
+curve = SubResource("Curve3D_departure")
+
+[node name="DepartureEnd" type="Marker3D" parent="."]
+editor_description = "Departure handoff point and grounded destination when skipping."
+transform = Transform3D(1, 0, 0, 0, 0.962095, 0.272714, 0, -0.272714, 0.962095, 0, 9.15977, -250)
+
+[editable path="RhinoMotion/RhinoTank"]

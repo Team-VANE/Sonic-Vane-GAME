@@ -1,0 +1,211 @@
+[gd_resource type="AnimationLibrary" format=3 uid="uid://dtam8swo40w6k"]
+
+[sub_resource type="Animation" id="Animation_22leg"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerPose")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerPose")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:player_motion")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("RhinoMotion")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 9, 1, -5)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("RhinoMotion")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0.70710677, 0, 0.70710677)
+tracks/5/type = "position_3d"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ShotCamera")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0, 1, 6.8, 4, 8.2)
+tracks/6/type = "rotation_3d"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("ShotCamera")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, -0.11523975, 0.1886042, 0.022291694, 0.9750135)
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("ShotCamera:fov")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [80.0]
+}
+
+[sub_resource type="Animation" id="Animation_42rso"]
+resource_name = "Rhino Encounter"
+length = 10.0
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerPose")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, 0.55, 1, 0, 1, 0, 2.8, 1, 0, 1, -4.3, 7.233333, 1, 0, 1, -4.3, 10, 1, 0, 9.15977, -250)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerPose")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 2.6, 1, 0, 0, 0, 1, 3.35, 1, 0, -0.6556174, 0, 0.7550933, 7.0333333, 1, 0, -0.6556174, 0, 0.7550933, 7.233333, 1, 0, 0, 0, 1)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:player_motion")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.55, 2.8, 7.233333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 0, 1]
+}
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("RhinoMotion")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 9, 1, -5, 0.8, 1, 9, 1, -5, 3.1, 1, 4.35, 1, -5, 5.4, 1, 4.35, 1, -5)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("RhinoMotion")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0.70710677, 0, 0.70710677, 2.85, 1, 0, 0.70710677, 0, 0.70710677, 3.6, 1, 0, 0.7770717, 0, 0.62941206)
+tracks/5/type = "animation"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("RhinoMotion/RhinoTank/AnimationPlayer")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"clips": PackedStringArray("Patrol", "RevUp"),
+"times": PackedFloat32Array(0.03, 3.3)
+}
+tracks/6/type = "position_3d"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("ShotCamera")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, 6.8, 4, 8.2, 1, 1, 10.550154, 4.1863866, 3.8110294, 2.4333334, 1, 5.215805, 2.527661, -13.705148, 4, 1, 5.286358, 2.1467288, -9.692246, 7.0333333, 1, 5.286358, 2.1467288, -9.692246, 8, 1, 5.286356, 2.1467288, -9.692246)
+tracks/7/type = "rotation_3d"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("ShotCamera")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0, 1, -0.11523975, 0.1886042, 0.022291694, 0.9750135, 1, 1, -0.12313566, 0.3361412, 0.04437891, 0.9326721, 2.4333334, 1, -0.0129028205, 0.96014917, 0.04496029, 0.27554607, 4, 1, -0.012493088, 0.928201, 0.031294275, 0.37055016, 7.0333333, 1, -0.012493088, 0.928201, 0.031294275, 0.37055016, 8, 1, 0.009893251, 0.086934425, -0.0008633755, 0.99616456)
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("ShotCamera:fov")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1, 2.4333334, 4, 7.0333333, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [80.0, 82.0, 85.0, 64.5, 64.5, 81.0]
+}
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("ActorHandler")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(2.8, 2.8333333),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [&"player", &"hello_shakin"],
+"method": &"play_dialogue"
+}, {
+"args": [&"player", &"idle_wait"],
+"method": &"play_animation"
+}]
+}
+tracks/10/type = "method"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath(".")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0.53333336, 0.55, 1.2, 1.2166667, 2.45, 7.1, 7.2166667, 7.233333, 9.966667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [true],
+"method": &"set_player_gameplay_movement"
+}, {
+"args": [NodePath("Approach"), 5.0],
+"method": &"move_player_to"
+}, {
+"args": [NodePath("Approach"), 0.9, 2.0],
+"method": &"wait_for_player_marker"
+}, {
+"args": [],
+"method": &"stop_player_movement"
+}, {
+"args": [&"rhino", 300.0],
+"method": &"face_player_actor"
+}, {
+"args": [0.0, 0.12],
+"method": &"fade_player_overlay"
+}, {
+"args": [],
+"method": &"clear_player_facing"
+}, {
+"args": [100.0, 8.0],
+"method": &"follow_player_route"
+}, {
+"args": [NodePath("DepartureEnd"), 2.0, 6.0],
+"method": &"wait_for_player_marker"
+}]
+}
+
+[resource]
+_data = {
+&"RESET": SubResource("Animation_22leg"),
+&"RhinoEncounter": SubResource("Animation_42rso")
+}

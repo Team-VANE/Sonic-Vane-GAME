@@ -6,6 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="8_mkokl"]
 [ext_resource type="PackedScene" uid="uid://dt3rtue2c684m" path="res://LS5Framework/Objects/Surface/Examples/IceTest.glb" id="9_kq5e8"]
 [ext_resource type="Material" uid="uid://chsgt2ylebix4" path="res://LS5Framework/Scenes/Levels/VaneTest/Ice.tres" id="10_fmm3p"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Levels/VaneTest/RhinoEncounter.tscn" id="11_cutscene"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Cutscenes/Examples/PlayerTraversalCutscene.tscn" id="12_traversal"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mkokl"]
+resource_local_to_scene = true
+size = Vector3(4, 3, 2.4)
 
 [node name="TestLevel" type="Node3D" unique_id=8420253]
 
@@ -29,4 +35,43 @@ transform = Transform3D(6.76, 0, 0, 0, 9.295, 0, 0, 0, 5.6, -1039.6825, 3.814697
 [node name="IceSlope_ice " parent="OBJECTS/IceTest" index="0" unique_id=473860391]
 surface_material_override/0 = ExtResource("10_fmm3p")
 
+[node name="Cutscenes" type="Node3D" parent="." unique_id=1484069131]
+
+[node name="RhinoEncounter" parent="Cutscenes" unique_id=624970742 node_paths=PackedStringArray("gameplay_skip_pose") instance=ExtResource("11_cutscene")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.1, 0, 17.5)
+gameplay_skip_pose = NodePath("PlayerPose")
+
+[node name="Trigger" parent="Cutscenes/RhinoEncounter" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.2, 81)
+
+[node name="CollisionShape3D" parent="Cutscenes/RhinoEncounter/Trigger" index="0"]
+shape = SubResource("BoxShape3D_mkokl")
+
+[node name="PlayerPose" parent="Cutscenes/RhinoEncounter" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="ShotCamera" parent="Cutscenes/RhinoEncounter" index="3"]
+transform = Transform3D(0.927863, -0.086938806, 0.36264554, 0, 0.9724457, 0.23312922, -0.37292108, -0.21631199, 0.9022965, 6.8, 4, 8.2)
+
+[node name="Approach" parent="Cutscenes/RhinoEncounter" index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4.3)
+
+[node name="Label3D" type="Label3D" parent="Cutscenes/RhinoEncounter" unique_id=900436313]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 15.085592, 8.405531, 81.774086)
+pixel_size = 0.05
+text = "Cutscene Test
+		v"
+
+[node name="PlayerTraversalCutscene" parent="Cutscenes" unique_id=38180637 instance=ExtResource("12_traversal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 22)
+
+[node name="JSON Import Label" type="Node3D" parent="." unique_id=676195109]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 388, 34, 57)
+
+[node name="Label3D" type="Label3D" parent="JSON Import Label" unique_id=880854949]
+pixel_size = 0.15
+text = ".JSON Import Test"
+
 [editable path="OBJECTS/IceTest"]
+[editable path="Cutscenes/RhinoEncounter"]
+[editable path="Cutscenes/RhinoEncounter/RhinoMotion/RhinoTank"]

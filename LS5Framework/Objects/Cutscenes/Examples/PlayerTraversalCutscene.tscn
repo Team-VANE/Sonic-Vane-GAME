@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Cutscenes/LevelCutscene.tscn" id="1_cutscene"]
+
+[sub_resource type="Curve3D" id="Curve3D_route"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -30),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_traverse"]
+resource_name = "Traverse"
+length = 0.58
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/keys = {
+"times": PackedFloat32Array(0.03, 0.1, 0.2, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"values": [{
+"args": [12.0, 2.5],
+"method": &"follow_player_route"
+}, {
+"args": [NodePath("Takeoff"), 1.0, 3.0],
+"method": &"wait_for_player_marker"
+}, {
+"args": [0.18],
+"method": &"jump_player"
+}, {
+"args": [2.5],
+"method": &"wait_for_player_landing"
+}, {
+"args": [NodePath("Finish"), 1.25, 3.0],
+"method": &"wait_for_player_marker"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_route"]
+_data = {&"Traverse": SubResource("Animation_traverse")}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_course"]
+albedo_color = Color(0.23, 0.46, 0.52, 1)
+roughness = 0.86
+
+[node name="PlayerTraversalCutscene" node_paths=PackedStringArray("gameplay_route", "gameplay_skip_pose") instance=ExtResource("1_cutscene")]
+sequence = &"Traverse"
+play_once = false
+gameplay_movement = true
+gameplay_route = NodePath("Route")
+gameplay_skip_pose = NodePath("Finish")
+
+[node name="ShotCamera" parent="." index="3"]
+position = Vector3(16, 11, 1)
+rotation = Vector3(-0.31, 0.83, 0)
+fov = 78.0
+
+[node name="AnimationPlayer" parent="." index="4"]
+libraries/ = SubResource("AnimationLibrary_route")
+
+[node name="Route" type="Path3D" parent="."]
+curve = SubResource("Curve3D_route")
+
+[node name="Takeoff" type="Marker3D" parent="."]
+position = Vector3(0, 2.1, -9)
+
+[node name="Finish" type="Marker3D" parent="."]
+position = Vector3(0, 2.15, -23)
+
+[node name="Terrain" type="CSGPolygon3D" parent="."]
+position = Vector3(4, 0, 0)
+rotation = Vector3(0, 1.5707964, 0)
+use_collision = true
+material = SubResource("StandardMaterial3D_course")
+polygon = PackedVector2Array(-2, -0.4, 32, -0.4, 32, 0.02, 29, 0.02, 26, 1.1, 17, 1.1, 13, 1.65, 9, 1.05, 6, 1.3, 3, 0.02, -2, 0.02)
+depth = 8.0
+
+[node name="Label3D" type="Label3D" parent="."]
+position = Vector3(0, 3, 0)
+billboard = 1
+font_size = 42
+pixel_size = 0.015
+text = "Cutscene Traversal"

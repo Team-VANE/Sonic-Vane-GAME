@@ -1,0 +1,54 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Cutscenes/LevelCutscene.tscn" id="1_cutscene"]
+
+[sub_resource type="Animation" id="Animation_reset"]
+resource_local_to_scene = true
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/path = NodePath("PlayerPose")
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0)
+tracks/1/type = "position_3d"
+tracks/1/path = NodePath("ShotCamera")
+tracks/1/keys = PackedFloat32Array(0, 1, 4, 2.7, 5.2)
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:player_motion")
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_walk"]
+resource_local_to_scene = true
+resource_name = "Player Walk"
+length = 3.0
+tracks/0/type = "position_3d"
+tracks/0/path = NodePath("PlayerPose")
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 0, 0.45, 1, 0, 1, 0, 2.35, 1, 0, 1, -4, 3, 1, 0, 1, -4)
+tracks/1/type = "position_3d"
+tracks/1/path = NodePath("ShotCamera")
+tracks/1/keys = PackedFloat32Array(0, 1, 4, 2.7, 5.2, 0.45, 1, 4, 2.7, 5.2, 2.35, 1, 4, 2.7, 1.2, 3, 1, 4, 2.7, 1.2)
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:player_motion")
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.45, 2.35),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_walk"]
+resource_local_to_scene = true
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"PlayerWalk": SubResource("Animation_walk")
+}
+
+[node name="PlayerWalkCutscene" instance=ExtResource("1_cutscene")]
+sequence = &"PlayerWalk"
+play_once = false
+
+[node name="AnimationPlayer" parent="." index="4"]
+libraries/ = SubResource("AnimationLibrary_walk")

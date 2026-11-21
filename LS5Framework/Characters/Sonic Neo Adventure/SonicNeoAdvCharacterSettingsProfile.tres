@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" uid="uid://cg665frckn63u" path="res://LS5Framework/Scripts/Settings/CharacterSettingsProfile.gd" id="1_c1gcp"]
 [ext_resource type="Resource" uid="uid://sdsi07ril7y6" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvEmoteVoiceProfile.tres" id="emote_voice"]
+[ext_resource type="Resource" path="res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvCutsceneProfile.tres" id="cutscene_profile"]
 
 [resource]
 script = ExtResource("1_c1gcp")
 character_id = &"sonic_neo_adventure"
 profile_version = 15
 emote_voice_profile = ExtResource("emote_voice")
+cutscene_profile = ExtResource("cutscene_profile")
 ability_catalog = Array[Dictionary]([{
 "ability_id": &"uppercut_kick",
 "description": "Press Spin Kick and Jump together to trade horizontal speed for an upward kick. Ground launch is stronger; the air use refreshes on landing or bounce.",

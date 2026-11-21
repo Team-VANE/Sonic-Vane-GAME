@@ -2,6 +2,7 @@ extends Node
 class_name LevelManager
 
 const DeathPlaneScript := preload("res://LS5Framework/Objects/Gameplay/DeathPlane.gd")
+const LevelPlacementsScript := preload("res://LS5Framework/Scripts/World/LevelPlacements.gd")
 const LEVEL_TRANSIENT_GROUP: StringName = &"LevelTransient"
 
 @export var level_root_path: NodePath = NodePath("../LevelRoot")
@@ -342,6 +343,36 @@ func load_level_by_scene_path(
 	else:
 		preparation_generation = LevelPreparationManager.begin_level_preparation(scene_path)
 	var cache_enabled: bool = LevelPreparationManager.is_cache_enabled()
+	var pack_start_usec: int = Time.get_ticks_usec()
+	var pack_manager = _get_pack_manager()
+	if pack_manager != null and pack_manager.has_method("ensure_pack_for_scene"):
+		if pack_manager.call("ensure_pack_for_scene", scene_path):
+			_level_doc_entries.clear()
+	if loading_transition != null:
+		loading_transition.record_loading_phase(
+			"Ensuring level content pack",
+			float(Time.get_ticks_usec() - pack_start_usec) / 1000000.0
+		)
+
+	var placements: Array[Dictionary] = []
+	var entry: Dictionary = _get_loading_level_entry(scene_path, &"")
+	var placements_file: String = entry.get("placements_file", "")
+	if not placements_file.is_empty():
+		var placements_level_id: String = entry.get("id", "")
+		var placement_result: Dictionary = LevelPlacementsScript.read(placements_file, placements_level_id)
+		if placement_result.has("error"):
+			var error_message: String = placement_result["error"]
+			push_warning(error_message)
+			LevelPreparationManager.fail_level_preparation(preparation_generation, error_message)
+			_pending_teleport.clear()
+			if loading_transition != null:
+				await _finish_loading_transition(loading_transition)
+			_level_load_in_progress = false
+			return
+		placements = placement_result["placements"]
+		if level_id == &"":
+			level_id = StringName(placements_level_id)
+
 	var session_prep_start_usec: int = Time.get_ticks_usec()
 	var network_time_suspended: bool = _suspend_network_time_for_level_load()
 	if end_race_for_scene_change:
@@ -356,16 +387,6 @@ func load_level_by_scene_path(
 		loading_transition.record_loading_phase(
 			"Preparing session for level change",
 			float(Time.get_ticks_usec() - session_prep_start_usec) / 1000000.0
-		)
-
-	var pack_start_usec: int = Time.get_ticks_usec()
-	var pack_manager = _get_pack_manager()
-	if pack_manager != null and pack_manager.has_method("ensure_pack_for_scene"):
-		pack_manager.call("ensure_pack_for_scene", scene_path)
-	if loading_transition != null:
-		loading_transition.record_loading_phase(
-			"Ensuring level content pack",
-			float(Time.get_ticks_usec() - pack_start_usec) / 1000000.0
 		)
 
 	var level_root = _get_level_root()
@@ -461,6 +482,7 @@ func load_level_by_scene_path(
 			await get_tree().process_frame
 	var instantiate_start_usec: int = Time.get_ticks_usec()
 	var inst: Node = (packed as PackedScene).instantiate()
+	LevelPlacementsScript.add_proxies(inst, placements)
 	if loading_transition != null:
 		loading_transition.record_loading_phase(
 			"Instantiating scene objects",

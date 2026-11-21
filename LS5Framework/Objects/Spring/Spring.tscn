@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cr7fu80oepmw6" path="res://LS5Framework/Objects/Spring/Spring.gd" id="1_wa56o"]
 [ext_resource type="AudioStream" uid="uid://b60nnl17j0200" path="res://LS5Framework/Sounds/Objects/Spring.wav" id="2_eykro"]
-[ext_resource type="PackedScene" uid="uid://c3b0uf3d4425d" path="res://LS5Framework/Objects/Spring/Spring_NextGen/Spring.glb" id="3_vbxi4"]
+[ext_resource type="PackedScene" uid="uid://0vp0etmntwby" path="res://LS5Framework/Objects/Spring/Spring_Adventure/Spring_Adventure.glb" id="3_vbxi4"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ql8kk"]
 resource_local_to_scene = true
+height = 2.0004883
 radius = 2.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_solver"]
@@ -40,7 +41,7 @@ mesh_bounce_peak_scale = 1.95
 mesh_bounce_duration = 0.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=594366491]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0010253936, 0)
 shape = SubResource("CylinderShape3D_ql8kk")
 metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
@@ -71,5 +72,4 @@ curve = SubResource("Curve3D_default")
 metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
-[node name="Spring" parent="Mesh" unique_id=1216628405 instance=ExtResource("3_vbxi4")]
-transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, -0.83, 0)
+[node name="Spring_Adventure" parent="Mesh" unique_id=108009743 instance=ExtResource("3_vbxi4")]

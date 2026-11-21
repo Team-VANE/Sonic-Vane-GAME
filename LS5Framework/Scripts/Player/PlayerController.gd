@@ -72,6 +72,7 @@ class ClearanceMemo extends RefCounted:
 	var support_up: Vector3 = Vector3.ZERO
 
 signal air_trick_boost_applied(score: float, speed_bonus: float, direction: Vector3, reason: StringName)
+signal cutscene_pose_interrupted
 
 func clear_air_trick_bank() -> void:
 	if _trick_system != null:
@@ -266,6 +267,8 @@ func _is_jump_held() -> bool:
 		return false
 	if is_pinball_moveset_locked():
 		return false
+	if _cutscene_gameplay_motion:
+		return _cutscene_jump_hold_time > 0.0
 	if _ui_input_blocked:
 		return false
 	if race_in_countdown:
@@ -1261,6 +1264,135 @@ func stop_all_momentum_and_special_movement() -> void:
 ## Gameplay suspension owned by the goal sequence, independent of its animation playback.
 var _goal_sequence_frozen: bool = false
 var _goal_pose_transform: Transform3D = Transform3D.IDENTITY
+var _cutscene_pose_owner: Node
+var _cutscene_tree_was_active: bool = false
+var _cutscene_gameplay_motion: bool = false
+var _cutscene_move_direction: Vector3 = Vector3.ZERO
+var _cutscene_move_speed: float = 0.0
+var _cutscene_facing_target: Node3D
+var _cutscene_turn_speed: float = 0.0
+var _cutscene_jump_pending: bool = false
+var _cutscene_jump_hold_time: float = 0.0
+
+
+func acquire_cutscene_pose(source: Node, gameplay_motion: bool = false) -> bool:
+	if not source or _cutscene_pose_owner or _network_is_active() or _is_buddy_actor():
+		return false
+	if _is_dead or (not gameplay_motion and not attached) or _local_pause_enabled or _level_load_suspended or _goal_sequence_frozen or _debug_mode:
+		return false
+	_cutscene_pose_owner = source
+	_cutscene_gameplay_motion = gameplay_motion
+	_refresh_ui_input_blocked()
+	if anim_tree:
+		_cutscene_tree_was_active = anim_tree.active
+	if not gameplay_motion:
+		_freeze_cutscene_pose()
+	return true
+
+
+func _freeze_cutscene_pose() -> void:
+	clear_active_action()
+	if _automation_controller:
+		_automation_controller.clear(&"cutscene")
+	stop_all_momentum_and_special_movement()
+	rolling = false
+	_stop_level_load_audio()
+	if anim_tree:
+		anim_tree.active = false
+
+
+func set_cutscene_gameplay_motion(source: Node, enabled: bool) -> bool:
+	if not owns_cutscene_pose(source):
+		return false
+	if _cutscene_gameplay_motion == enabled:
+		return true
+	_cutscene_gameplay_motion = enabled
+	_clear_cutscene_motion_input()
+	if enabled:
+		_restore_cutscene_locomotion()
+	else:
+		get_animation_director().clear_cutscene_overlay()
+		_freeze_cutscene_pose()
+	return true
+
+
+func owns_cutscene_pose(source: Node) -> bool:
+	return _cutscene_pose_owner == source and not _is_dead and not _level_load_suspended
+
+
+func set_cutscene_movement_intent(source: Node, direction: Vector3, speed: float) -> void:
+	if owns_cutscene_pose(source) and _cutscene_gameplay_motion:
+		_cutscene_move_direction = direction.normalized()
+		_cutscene_move_speed = maxf(speed, 0.0)
+
+
+func set_cutscene_facing_target(source: Node, target: Node3D, degrees_per_second: float = 360.0) -> void:
+	if owns_cutscene_pose(source) and _cutscene_gameplay_motion:
+		_cutscene_facing_target = target
+		_cutscene_turn_speed = deg_to_rad(maxf(degrees_per_second, 0.0))
+
+
+func request_cutscene_jump(source: Node, hold_time: float) -> bool:
+	if not owns_cutscene_pose(source) or not _cutscene_gameplay_motion or not attached or is_surface_jump_blocked():
+		return false
+	if _spring_action_lock_timer > 0.0 or not is_automation_action_allowed(&"jump"):
+		return false
+	_cutscene_jump_pending = true
+	_cutscene_jump_hold_time = clampf(hold_time, 0.0, jump_hold_time_max)
+	return true
+
+
+func _clear_cutscene_motion_input() -> void:
+	_cutscene_move_direction = Vector3.ZERO
+	_cutscene_move_speed = 0.0
+	_cutscene_facing_target = null
+	_cutscene_turn_speed = 0.0
+	_cutscene_jump_pending = false
+	_cutscene_jump_hold_time = 0.0
+	_clear_action_input_requests()
+
+
+func get_cutscene_animation_player() -> AnimationPlayer:
+	if anim_tree:
+		return anim_tree.get_node_or_null(anim_tree.anim_player) as AnimationPlayer
+	return _find_animation_player()
+
+
+func apply_cutscene_pose(source: Node, pose: Transform3D) -> bool:
+	if not owns_cutscene_pose(source) or _cutscene_gameplay_motion:
+		return false
+	global_position = pose.origin
+	snap_model_to_normal(pose.basis.y, -pose.basis.z)
+	return true
+
+
+func release_cutscene_pose(source: Node) -> void:
+	if _cutscene_pose_owner != source:
+		return
+	var used_gameplay_motion: bool = _cutscene_gameplay_motion
+	_cutscene_pose_owner = null
+	_cutscene_gameplay_motion = false
+	_clear_cutscene_motion_input()
+	get_animation_director().clear_cutscene_overlay()
+	_reset_standing_clearance_state()
+	_refresh_ui_input_blocked()
+	if not used_gameplay_motion:
+		velocity = Vector3.ZERO
+		_restore_cutscene_locomotion()
+
+
+func _restore_cutscene_locomotion() -> void:
+	if anim_tree:
+		anim_tree.active = _cutscene_tree_was_active
+		get_animation_director().reset(&"cutscene")
+		get_animation_director().restart_movement()
+
+
+func _interrupt_cutscene_pose() -> void:
+	if _cutscene_pose_owner:
+		cutscene_pose_interrupted.emit()
+		if _cutscene_pose_owner:
+			release_cutscene_pose(_cutscene_pose_owner)
 
 func set_goal_sequence_frozen(frozen: bool) -> void:
 	_goal_sequence_frozen = frozen
@@ -1345,6 +1477,7 @@ func prepare_for_goal_sequence() -> void:
 
 
 func prepare_for_level_change() -> void:
+	_interrupt_cutscene_pose()
 	set_goal_sequence_frozen(false)
 	_ensure_modules()
 	_respawn_module.stop_all_momentum_and_special_movement()
@@ -1798,6 +1931,8 @@ func set_local_pause_enabled(value: bool) -> void:
 func set_level_load_suspended(value: bool) -> void:
 	if _level_load_suspended == value:
 		return
+	if value:
+		_interrupt_cutscene_pose()
 	_level_load_suspended = value
 	if value:
 		clear_air_trick_bank()
@@ -1849,7 +1984,7 @@ func set_chat_input_blocked(value: bool) -> void:
 
 func _refresh_ui_input_blocked() -> void:
 	var was_blocked: bool = _ui_input_blocked
-	_ui_input_blocked = _goal_sequence_frozen or _ui_input_legacy_blocked or _chat_input_blocked or _is_chat_input_active()
+	_ui_input_blocked = is_instance_valid(_cutscene_pose_owner) or _goal_sequence_frozen or _ui_input_legacy_blocked or _chat_input_blocked or _is_chat_input_active()
 	if _ui_input_blocked:
 		_move_input = Vector2.ZERO
 		_move_direction = Vector3.ZERO
@@ -2365,7 +2500,7 @@ func get_model_relative_vertical_momentum() -> float:
 
 func _process(delta: float) -> void:
 	_tick_ui(delta)
-	if _level_load_suspended:
+	if _level_load_suspended or (_cutscene_pose_owner and not _cutscene_gameplay_motion):
 		return
 	get_animation_director().update_render(delta)
 	_debug_module.update_day_night_scrub(delta)
@@ -2492,6 +2627,8 @@ func get_gameplay_timer_delta(fallback_delta: float) -> float:
 
 
 func _physics_process(delta: float) -> void:
+	if _cutscene_pose_owner and not _cutscene_gameplay_motion:
+		return
 	if _goal_sequence_frozen and _network_is_local_authority():
 		_tick_goal_pose(delta)
 		return
@@ -2499,7 +2636,7 @@ func _physics_process(delta: float) -> void:
 	_end_standing_clearance_batch()
 	_movement_real_delta = delta
 	_ensure_modules()
-	_automation_controller.advance(delta)
+	_automation_controller.advance(delta, _cutscene_move_direction)
 	if not _level_load_suspended and not _local_pause_enabled:
 		_targeting_module.tick_bounce_magnetism_recovery(delta)
 		_water_module.refresh_submersion_state()
@@ -3409,7 +3546,7 @@ func _movement_physics_process(delta: float) -> void:
 
 	_read_input()
 	_automation_controller.motion.capture_input(_move_input, _control_forward * _move_input.y + _control_right * _move_input.x)
-	if _ability_input_router != null:
+	if _ability_input_router != null and not _cutscene_gameplay_motion:
 		_ability_input_router.update(delta)
 	_preemptive_profile_input_consumed = false
 	if is_pinball_moveset_locked():
@@ -3427,6 +3564,14 @@ func _movement_physics_process(delta: float) -> void:
 			_update_spindash_state(delta)
 			_process_action_inputs()
 	_update_action_runtime(delta)
+	if _cutscene_gameplay_motion:
+		if _cutscene_jump_pending:
+			_cutscene_jump_pending = false
+			if attached:
+				_automation_controller.motion.jump_requested()
+				_jump_requested = true
+		else:
+			_cutscene_jump_hold_time = maxf(0.0, _cutscene_jump_hold_time - delta)
 	if _buddy_jump_mimic_active:
 		var jump_slot: StringName = get_ability_input_slot(&"jump", &"ability_slot_01")
 		if SettingsManager.is_gameplay_action_just_released(String(jump_slot)) or not SettingsManager.is_gameplay_action_pressed(String(jump_slot)):
@@ -3966,7 +4111,7 @@ func _read_input() -> void:
 		_move_input = Vector2.ZERO
 		_walk_input_held = false
 		return
-	if _ui_input_blocked:
+	if _ui_input_blocked and not _cutscene_gameplay_motion:
 		_move_input = Vector2.ZERO
 		_walk_input_held = false
 		return
@@ -3981,6 +4126,11 @@ func _read_input() -> void:
 
 	if race_in_countdown:
 		_move_input = Vector2.ZERO
+		_walk_input_held = false
+		return
+
+	if _cutscene_gameplay_motion:
+		_move_input = Vector2.DOWN if _cutscene_move_speed > 0.0 and _cutscene_move_direction else Vector2.ZERO
 		_walk_input_held = false
 		return
 
@@ -5360,6 +5510,9 @@ func _get_max_speed_override_state(automation_active: bool) -> Dictionary:
 	if _timed_max_speed_override_timer > 0.0:
 		override_active = true
 		override_target = _timed_max_speed_override
+	if _cutscene_gameplay_motion and _cutscene_move_speed > 0.0:
+		override_target = minf(override_target, _cutscene_move_speed) if override_active else _cutscene_move_speed
+		override_active = true
 	return {
 		"active": override_active,
 		"target": max(override_target, 0.0),
@@ -6747,6 +6900,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var item_top_speed_multiplier: float = get_active_top_speed_multiplier()
 	run_top_speed_used *= item_top_speed_multiplier
 	air_top_speed_effective *= item_top_speed_multiplier
+	if _cutscene_gameplay_motion and _cutscene_move_speed > 0.0:
+		run_top_speed_used = _cutscene_move_speed
+		air_top_speed_effective = _cutscene_move_speed
 	if preserve_air_momentum:
 		air_top_speed_effective = maxf(air_top_speed_effective, lateral.length())
 
@@ -6968,6 +7124,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 
 	_update_control_basis(physics_up, is_attached, is_loop_surface, lateral)
 	_compute_move_direction()
+	if _cutscene_gameplay_motion:
+		_move_direction = _cutscene_move_direction.slide(physics_up).normalized() if _move_input else Vector3.ZERO
 	if _automation_controller and _automation_controller.motion.has_input_effects():
 		_automation_controller.motion.capture_input(_move_input, _move_direction * _move_input.length())
 		var guided_input: Vector3 = _automation_controller.motion.adjust_input(_move_direction, physics_up)
@@ -9807,7 +9965,25 @@ func _update_model_orientation(delta: float) -> void:
 		_update_lightspeed_dash_model_orientation()
 		return
 	if _model_module != null:
+		if is_instance_valid(_cutscene_facing_target) and model_root:
+			var previous_forward: Vector3 = -model_root.global_basis.z
+			_model_module._update_model_orientation(delta)
+			_update_cutscene_facing(previous_forward, delta)
+			return
 		_model_module._update_model_orientation(delta)
+
+
+func _update_cutscene_facing(previous_forward: Vector3, delta: float) -> void:
+	var up: Vector3 = model_root.global_basis.y.normalized()
+	var target: Vector3 = (_cutscene_facing_target.global_position - global_position).slide(up).normalized()
+	if target.is_zero_approx():
+		return
+	var forward: Vector3 = previous_forward.slide(up).normalized()
+	if forward.is_zero_approx():
+		forward = target
+	var angle: float = forward.signed_angle_to(target, up)
+	var step: float = _cutscene_turn_speed * delta
+	snap_model_to_normal(up, forward.rotated(up, clampf(angle, -step, step)))
 
 
 func _update_lightspeed_dash_model_orientation() -> void:
@@ -12709,6 +12885,7 @@ func is_post_race_protected() -> bool:
 
 
 func begin_death_sequence(death_type: StringName = &"generic") -> void:
+	_interrupt_cutscene_pose()
 	_ensure_modules()
 	_combat_module.begin_death_sequence(death_type)
 
@@ -13082,6 +13259,8 @@ func _on_player_hurt() -> void:
 	_combat_module._on_player_hurt()
 
 func set_death_state(dead: bool) -> void:
+	if dead:
+		_interrupt_cutscene_pose()
 	_ensure_modules()
 	_combat_module.set_death_state(dead)
 

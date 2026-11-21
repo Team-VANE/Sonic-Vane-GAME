@@ -6,9 +6,11 @@
 [resource]
 script = ExtResource("1_level_doc")
 level_name = "Test Level"
+level_id = "vanetest"
 order = 30
 is_test = true
 selection_category = "Test"
 scene = "res://LS5Framework/Scenes/Main.tscn"
 level_scene = "res://LS5Framework/Scenes/Levels/VaneTest/test_level.tscn"
+placements_file = "res://LS5Framework/Scenes/Levels/VaneTest/test_level.placements.json"
 thumbnail = ExtResource("2_0jlb0")

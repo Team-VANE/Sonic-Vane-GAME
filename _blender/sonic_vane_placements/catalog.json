@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "types": {
+    "spring": {
+      "label": "Spring",
+      "scene": "res://LS5Framework/Objects/Spring/Spring.tscn",
+      "properties": {
+        "active": {
+          "label": "Active",
+          "description": "Enable this spring's launch behavior",
+          "group": "Spring",
+          "type": "bool",
+          "default": true
+        },
+        "size": {
+          "label": "Size",
+          "description": "Uniform size multiplier for the gameplay spring and its trigger",
+          "group": "Spring",
+          "type": "float",
+          "default": 1,
+          "min": 0.01,
+          "always_export": true
+        },
+        "snap_to_center": {
+          "label": "Snap to Center",
+          "description": "Start the launch at the spring origin",
+          "group": "Spring",
+          "type": "bool",
+          "default": true
+        },
+        "rehit_cooldown": {
+          "label": "Rehit Cooldown",
+          "description": "Seconds before the same body can trigger this spring again",
+          "group": "Spring",
+          "type": "float",
+          "default": 0.15,
+          "min": 0
+        },
+        "strength": {
+          "label": "Strength",
+          "description": "Base launch speed in meters per second",
+          "group": "Impulse",
+          "type": "float",
+          "default": 35,
+          "min": 0,
+          "always_export": true
+        },
+        "stop_momentum": {
+          "label": "Stop Momentum",
+          "description": "Replace existing velocity during an impulse launch",
+          "group": "Impulse",
+          "type": "bool",
+          "default": true
+        },
+        "additive_mode": {
+          "label": "Additive Mode",
+          "description": "How existing velocity is combined when Stop Momentum is off",
+          "group": "Impulse",
+          "type": "enum",
+          "default": "ignore_prior_vertical",
+          "options": {
+            "ignore_prior_vertical": {
+              "label": "Ignore Prior Vertical",
+              "value": 0
+            },
+            "fully_additive": {
+              "label": "Fully Additive with Minimum Launch",
+              "value": 1
+            }
+          },
+          "requires": {
+            "stop_momentum": false
+          }
+        },
+        "min_additive_launch_speed": {
+          "label": "Minimum Additive Launch Speed",
+          "description": "Minimum speed in the launch direction when Stop Momentum is off",
+          "group": "Impulse",
+          "type": "float",
+          "default": 10,
+          "min": 0,
+          "requires": {
+            "stop_momentum": false
+          }
+        },
+        "max_additive_launch_speed": {
+          "label": "Maximum Additive Launch Speed",
+          "description": "Cap on impulse speed along the launch direction. Zero disables the cap",
+          "group": "Impulse",
+          "type": "float",
+          "default": 0,
+          "min": 0
+        },
+        "additive_mirrored_bounce_ratio": {
+          "label": "Mirrored Bounce Ratio",
+          "description": "Blend inward motion toward a mirrored bounce during an impulse",
+          "group": "Impulse",
+          "type": "float",
+          "default": 0,
+          "min": 0
+        },
+        "damping_grace_time": {
+          "label": "Damping Grace Time",
+          "description": "Seconds before airborne launch damping can return",
+          "group": "Impulse",
+          "type": "float",
+          "default": 1,
+          "min": 0
+        },
+        "detach_from_ground": {
+          "label": "Detach From Ground",
+          "description": "Release ground adhesion when the spring launches the player",
+          "group": "Impulse",
+          "type": "bool",
+          "default": true
+        },
+        "launch_axis": {
+          "label": "Launch Axis",
+          "description": "Spring-local impulse axis when the trajectory solver is off",
+          "group": "Direction and Arc",
+          "type": "enum",
+          "default": "positive_y",
+          "options": {
+            "positive_y": {
+              "label": "Up (Blender +Z)",
+              "value": 0
+            },
+            "negative_y": {
+              "label": "Down (Blender -Z)",
+              "value": 1
+            },
+            "positive_z": {
+              "label": "Blender -Y",
+              "value": 2
+            },
+            "negative_z": {
+              "label": "Blender +Y",
+              "value": 3
+            }
+          }
+        },
+        "use_trajectory_solver": {
+          "label": "Use Trajectory Target",
+          "description": "Aim at the spring-local target and enable generated arcs",
+          "group": "Direction and Arc",
+          "type": "bool",
+          "default": false
+        },
+        "trajectory_target_offset": {
+          "label": "Target Offset",
+          "description": "Endpoint relative to the spring, in Blender local axes and meters",
+          "group": "Direction and Arc",
+          "type": "local_offset",
+          "default": [
+            0,
+            10,
+            0
+          ],
+          "marker": "TrajectorySolver",
+          "marker_label": "Arc Target",
+          "requires": {
+            "use_trajectory_solver": true
+          }
+        },
+        "trajectory_aim_origin": {
+          "label": "Impulse Aim Origin",
+          "description": "Aiming origin for an impulse. Player Position requires Snap to Center to be off",
+          "group": "Direction and Arc",
+          "type": "enum",
+          "default": "spring_root",
+          "options": {
+            "spring_root": {
+              "label": "Spring Root",
+              "value": 0
+            },
+            "player_position": {
+              "label": "Player Position",
+              "value": 1
+            }
+          },
+          "requires": {
+            "use_trajectory_solver": true,
+            "snap_to_center": false,
+            "trajectory_arc_enabled": false
+          }
+        },
+        "trajectory_arc_enabled": {
+          "label": "Follow Arc",
+          "description": "Follow a generated curve to the target. Requires Use Trajectory Target",
+          "group": "Direction and Arc",
+          "type": "bool",
+          "default": false,
+          "requires": {
+            "use_trajectory_solver": true
+          }
+        },
+        "trajectory_arc_height": {
+          "label": "Arc Height",
+          "description": "Maximum curve offset in meters along the selected up direction",
+          "group": "Direction and Arc",
+          "type": "float",
+          "default": 10,
+          "min": 0,
+          "requires": {
+            "use_trajectory_solver": true,
+            "trajectory_arc_enabled": true
+          }
+        },
+        "trajectory_arc_speed": {
+          "label": "Arc Speed",
+          "description": "Travel speed in meters per second. Zero uses Strength",
+          "group": "Direction and Arc",
+          "type": "float",
+          "default": 0,
+          "min": 0,
+          "requires": {
+            "use_trajectory_solver": true,
+            "trajectory_arc_enabled": true
+          }
+        },
+        "trajectory_arc_up_mode": {
+          "label": "Arc Up",
+          "description": "Reference direction for the arc's height",
+          "group": "Direction and Arc",
+          "type": "enum",
+          "default": "player_gravity_up",
+          "options": {
+            "player_gravity_up": {
+              "label": "Player Gravity Up",
+              "value": 0
+            },
+            "spring_local_up": {
+              "label": "Spring Local Up",
+              "value": 1
+            },
+            "world_up": {
+              "label": "World Up",
+              "value": 2
+            }
+          },
+          "requires": {
+            "use_trajectory_solver": true,
+            "trajectory_arc_enabled": true
+          }
+        },
+        "trajectory_arc_allow_input_cancel": {
+          "label": "Arc Input Cancel",
+          "description": "Allow movement input to release the player from the arc",
+          "group": "Direction and Arc",
+          "type": "bool",
+          "default": false,
+          "requires": {
+            "use_trajectory_solver": true,
+            "trajectory_arc_enabled": true
+          }
+        },
+        "movement_lock_time": {
+          "label": "Movement Lock",
+          "description": "Seconds to lock steering. The player continues to travel",
+          "group": "Locks and Alignment",
+          "type": "float",
+          "default": 0,
+          "min": 0
+        },
+        "action_lock_time": {
+          "label": "Action Lock",
+          "description": "Seconds to lock actions after triggering the spring",
+          "group": "Locks and Alignment",
+          "type": "float",
+          "default": 0,
+          "min": 0
+        },
+        "align_time": {
+          "label": "Alignment Time",
+          "description": "Seconds to constrain an impulse launch to the launch direction",
+          "group": "Locks and Alignment",
+          "type": "float",
+          "default": 0,
+          "min": 0
+        },
+        "override_previous_lock_timers": {
+          "label": "Override Previous Locks",
+          "description": "Clear earlier movement, action and alignment locks when triggered",
+          "group": "Locks and Alignment",
+          "type": "bool",
+          "default": true
+        },
+        "clear_movement_lock_on_ground": {
+          "label": "Clear Movement Lock on Ground",
+          "description": "Allow landing to end the spring's movement lock",
+          "group": "Locks and Alignment",
+          "type": "bool",
+          "default": true
+        },
+        "clear_action_lock_on_ground": {
+          "label": "Clear Action Lock on Ground",
+          "description": "Allow landing to end the spring's action lock",
+          "group": "Locks and Alignment",
+          "type": "bool",
+          "default": true
+        },
+        "lock_horizontal_during_align": {
+          "label": "Lock Sideways Motion",
+          "description": "Constrain sideways velocity while the impulse alignment timer is active",
+          "group": "Locks and Alignment",
+          "type": "bool",
+          "default": true
+        },
+        "sideways_gravity_influence": {
+          "label": "Sideways Gravity Influence",
+          "description": "Amount of sideways motion allowed during impulse alignment",
+          "group": "Locks and Alignment",
+          "type": "float",
+          "default": 0,
+          "min": 0,
+          "max": 1
+        },
+        "align_model_during_spring": {
+          "label": "Align Player Model",
+          "description": "Orient the character model along the spring launch or path",
+          "group": "Locks and Alignment",
+          "type": "bool",
+          "default": true
+        },
+        "homing_target_enabled": {
+          "label": "Homing Target",
+          "description": "Register the spring as a homing attack target",
+          "group": "Homing and Flight",
+          "type": "bool",
+          "default": true
+        },
+        "homing_target_max_distance": {
+          "label": "Homing Range",
+          "description": "Maximum homing distance in meters. Zero uses the character's range",
+          "group": "Homing and Flight",
+          "type": "float",
+          "default": 0,
+          "min": 0,
+          "requires": {
+            "homing_target_enabled": true
+          }
+        },
+        "preserve_active_flight": {
+          "label": "Preserve Active Flight",
+          "description": "Keep an already-active flight ability during an impulse launch",
+          "group": "Homing and Flight",
+          "type": "bool",
+          "default": false
+        },
+        "preserved_flight_time_bonus": {
+          "label": "Flight Time Bonus",
+          "description": "Seconds added when the current flight ability is preserved",
+          "group": "Homing and Flight",
+          "type": "float",
+          "default": 1,
+          "min": 0,
+          "requires": {
+            "preserve_active_flight": true
+          }
+        },
+        "mesh_bounce_enabled": {
+          "label": "Mesh Bounce",
+          "description": "Animate the spring mesh when triggered in Godot",
+          "group": "Mesh Bounce",
+          "type": "bool",
+          "default": true
+        },
+        "mesh_bounce_axis": {
+          "label": "Bounce Axis",
+          "description": "Local axis scaled by the mesh bounce",
+          "group": "Mesh Bounce",
+          "type": "enum",
+          "default": "y",
+          "options": {
+            "x": {
+              "label": "Blender X",
+              "value": 0
+            },
+            "y": {
+              "label": "Blender Z",
+              "value": 1
+            },
+            "z": {
+              "label": "Blender Y",
+              "value": 2
+            }
+          },
+          "requires": {
+            "mesh_bounce_enabled": true
+          }
+        },
+        "mesh_bounce_peak_scale": {
+          "label": "Peak Bounce Scale",
+          "description": "Maximum multiplier along the bounce axis",
+          "group": "Mesh Bounce",
+          "type": "float",
+          "default": 1.95,
+          "min": 1,
+          "max": 3,
+          "requires": {
+            "mesh_bounce_enabled": true
+          }
+        },
+        "mesh_bounce_duration": {
+          "label": "Bounce Duration",
+          "description": "Seconds for the native bounce animation. Zero disables the animation",
+          "group": "Mesh Bounce",
+          "type": "float",
+          "default": 0.8,
+          "min": 0,
+          "requires": {
+            "mesh_bounce_enabled": true
+          }
+        }
+      }
+    }
+  }
+}

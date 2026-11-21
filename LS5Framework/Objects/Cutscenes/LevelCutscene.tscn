@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://dioo0mf3amqfg" path="res://LS5Framework/Scripts/World/LevelCutscene.gd" id="1_cutscene"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/CutsceneActorHandler.gd" id="2_handler"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trigger"]
+resource_local_to_scene = true
+size = Vector3(4, 3, 2.4)
+
+[sub_resource type="Animation" id="Animation_cutscene"]
+resource_local_to_scene = true
+resource_name = "Cutscene"
+length = 1.5
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cutscene"]
+resource_local_to_scene = true
+_data = {&"Cutscene": SubResource("Animation_cutscene")}
+
+[node name="LevelCutscene" type="Node3D" node_paths=PackedStringArray("timeline", "actor_handler", "trigger", "shot_camera", "player_pose") groups=["cutscene_director"]]
+script = ExtResource("1_cutscene")
+timeline = NodePath("AnimationPlayer")
+actor_handler = NodePath("ActorHandler")
+sequence = &"Cutscene"
+trigger = NodePath("Trigger")
+shot_camera = NodePath("ShotCamera")
+player_pose = NodePath("PlayerPose")
+
+[node name="ActorHandler" type="Node" parent="."]
+editor_description = "Role, character, and fallback cue profiles."
+script = ExtResource("2_handler")
+
+[node name="Trigger" type="Area3D" parent="."]
+editor_description = "Entry volume for the live player. Can be placed separately from the shot."
+position = Vector3(0, 1.2, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trigger"]
+shape = SubResource("BoxShape3D_trigger")
+debug_color = Color(0.26, 0.68, 0.93, 0.4)
+
+[node name="PlayerPose" type="Marker3D" parent="."]
+editor_description = "Live player's staging transform. Key this marker to move the player."
+position = Vector3(0, 1, 0)
+
+[node name="ShotCamera" type="Camera3D" parent="."]
+editor_description = "Camera used during the cutscene."
+position = Vector3(4, 2.7, 5.2)
+rotation = Vector3(-0.25, 0.655, 0)
+keep_aspect = 0
+fov = 65.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+editor_description = "Native timeline. Target ActorHandler for role-based dialogue, animation, and action calls."
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_cutscene")

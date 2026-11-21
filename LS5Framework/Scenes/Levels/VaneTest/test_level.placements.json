@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "level_id": "vanetest",
+  "placements": [
+    {
+      "id": "d07b8db7-65ab-466e-81af-ef2a2f812f73",
+      "type": "spring",
+      "label": "Spring.001",
+      "position": [
+        480.0,
+        4.0,
+        80.0
+      ],
+      "rotation": [
+        -0.0061210705898702145,
+        -0.05008704587817192,
+        0.027044618502259254,
+        0.9983598589897156
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 120.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -2.49196720123291,
+          10.37328052520752,
+          -24.872692108154297
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 25.0
+      }
+    },
+    {
+      "id": "fbb5a4f4-2f0d-4927-bbfe-f713c35ea649",
+      "type": "spring",
+      "label": "Spring",
+      "position": [
+        480.0,
+        1.0,
+        90.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 1.5,
+        "strength": 60.0,
+        "movement_lock_time": 0.5,
+        "action_lock_time": 0.5
+      }
+    }
+  ]
+}

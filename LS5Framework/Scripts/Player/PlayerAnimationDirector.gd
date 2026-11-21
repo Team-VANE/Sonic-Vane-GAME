@@ -81,6 +81,7 @@ func _init(owner: Node) -> void:
 
 func dispose() -> void:
 	end_debug_preview()
+	clear_cutscene_overlay()
 	_resetting = true
 	_actions.clear()
 	_events.clear()
@@ -139,6 +140,108 @@ func update_render(delta: float) -> void:
 func update_physics(delta: float) -> void:
 	if not uses_render_clock():
 		update(delta)
+
+
+var _cutscene_overlay_root: AnimationNodeBlendTree
+var _cutscene_overlay_library: AnimationLibrary
+var _cutscene_overlay_library_name: StringName
+var _cutscene_overlay_player: AnimationPlayer
+var _cutscene_overlay_tween: Tween
+
+
+func play_cutscene_overlay(player: AnimationPlayer, animation: StringName, filter: Array[NodePath], blend: float) -> bool:
+	var tree: AnimationTree = _owner.anim_tree
+	if not tree or not tree.active or not tree.tree_root is AnimationNodeBlendTree or tree.get_node_or_null(tree.anim_player) != player:
+		return false
+	if not player.has_animation(animation):
+		return false
+	if not _cutscene_overlay_library and not _install_cutscene_overlay(tree, player):
+		return false
+	var clip: Animation = player.get_animation(animation).duplicate()
+	for index: int in range(clip.get_track_count() - 1, -1, -1):
+		if clip.track_get_type(index) in [Animation.TYPE_METHOD, Animation.TYPE_AUDIO, Animation.TYPE_ANIMATION]:
+			clip.remove_track(index)
+	var root: AnimationNodeBlendTree = tree.tree_root
+	var layer: AnimationNodeBlend2 = root.get_node(&"CutsceneOverlay")
+	var clip_node: AnimationNodeAnimation = root.get_node(&"CutsceneAnimation")
+	for track: int in clip.get_track_count():
+		var path: NodePath = clip.track_get_path(track)
+		layer.set_filter_path(path, path in filter)
+	layer.filter_enabled = not filter.is_empty()
+	if _cutscene_overlay_library.has_animation(&"Clip"):
+		_cutscene_overlay_library.remove_animation(&"Clip")
+	_cutscene_overlay_library.add_animation(&"Clip", clip)
+	clip_node.animation = StringName("%s/Clip" % _cutscene_overlay_library_name)
+	tree.set("parameters/CutsceneSeek/seek_request", 0.0)
+	set_cutscene_overlay_weight(1.0, blend)
+	return true
+
+
+func set_cutscene_overlay_weight(weight: float, blend: float = 0.12) -> void:
+	if not _cutscene_overlay_library or not is_instance_valid(_owner.anim_tree):
+		return
+	if _cutscene_overlay_tween and _cutscene_overlay_tween.is_valid():
+		_cutscene_overlay_tween.kill()
+	var tree: AnimationTree = _owner.anim_tree
+	var target: float = clampf(weight, 0.0, 1.0)
+	if blend <= 0.0:
+		tree.set("parameters/CutsceneOverlay/blend_amount", target)
+	else:
+		_cutscene_overlay_tween = tree.create_tween()
+		_cutscene_overlay_tween.tween_property(tree, ^"parameters/CutsceneOverlay/blend_amount", target, blend)
+
+
+func _install_cutscene_overlay(tree: AnimationTree, player: AnimationPlayer) -> bool:
+	var root: AnimationNodeBlendTree = tree.tree_root
+	var connections: Array = root.get("node_connections")
+	var output: StringName
+	for index: int in range(0, connections.size(), 3):
+		if connections[index] == &"output":
+			output = connections[index + 2]
+			break
+	if output == &"" or root.has_node(&"CutsceneOverlay") or root.has_node(&"CutsceneAnimation") or root.has_node(&"CutsceneSeek"):
+		return false
+	_cutscene_overlay_root = root
+	_cutscene_overlay_player = player
+	_cutscene_overlay_library_name = &"CutsceneOverlay"
+	while tree.has_animation_library(_cutscene_overlay_library_name) or player.has_animation_library(_cutscene_overlay_library_name):
+		_cutscene_overlay_library_name = StringName(String(_cutscene_overlay_library_name) + "_")
+	_cutscene_overlay_library = AnimationLibrary.new()
+	player.add_animation_library(_cutscene_overlay_library_name, _cutscene_overlay_library)
+	if not tree.has_animation_library(_cutscene_overlay_library_name):
+		tree.add_animation_library(_cutscene_overlay_library_name, _cutscene_overlay_library)
+	var graph: AnimationNodeBlendTree = root.duplicate()
+	graph.add_node(&"CutsceneAnimation", AnimationNodeAnimation.new())
+	graph.add_node(&"CutsceneSeek", AnimationNodeTimeSeek.new())
+	graph.add_node(&"CutsceneOverlay", AnimationNodeBlend2.new())
+	graph.disconnect_node(&"output", 0)
+	graph.connect_node(&"CutsceneSeek", 0, &"CutsceneAnimation")
+	graph.connect_node(&"CutsceneOverlay", 0, output)
+	graph.connect_node(&"CutsceneOverlay", 1, &"CutsceneSeek")
+	graph.connect_node(&"output", 0, &"CutsceneOverlay")
+	tree.tree_root = graph
+	_owner._anim_module._refresh_owner_playbacks(tree)
+	return true
+
+
+func clear_cutscene_overlay() -> void:
+	if not _cutscene_overlay_library:
+		return
+	if _cutscene_overlay_tween and _cutscene_overlay_tween.is_valid():
+		_cutscene_overlay_tween.kill()
+	var tree: AnimationTree = _owner.anim_tree
+	if is_instance_valid(tree):
+		tree.tree_root = _cutscene_overlay_root
+		if tree.has_animation_library(_cutscene_overlay_library_name):
+			tree.remove_animation_library(_cutscene_overlay_library_name)
+		if _owner._anim_module:
+			_owner._anim_module._refresh_owner_playbacks(tree)
+	if is_instance_valid(_cutscene_overlay_player) and _cutscene_overlay_player.has_animation_library(_cutscene_overlay_library_name):
+		_cutscene_overlay_player.remove_animation_library(_cutscene_overlay_library_name)
+	_cutscene_overlay_root = null
+	_cutscene_overlay_player = null
+	_cutscene_overlay_library = null
+	_cutscene_overlay_tween = null
 
 
 func begin_debug_preview() -> bool:

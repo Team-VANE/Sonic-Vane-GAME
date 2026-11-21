@@ -173,6 +173,7 @@ static func _load_level_doc_resource(doc_path: String) -> Dictionary:
 	var level_id: String = ""
 	var scene_path: String = ""
 	var level_scene_path: String = ""
+	var placements_file: String = ""
 	var order_value: int = 0
 	var is_test: bool = false
 	var selection_category: String = "Main"
@@ -184,6 +185,7 @@ static func _load_level_doc_resource(doc_path: String) -> Dictionary:
 		level_id = doc.level_id.strip_edges()
 		scene_path = doc.scene.strip_edges()
 		level_scene_path = doc.level_scene.strip_edges()
+		placements_file = doc.placements_file.strip_edges()
 		order_value = int(doc.order)
 		is_test = doc.is_test
 		selection_category = doc.selection_category.strip_edges()
@@ -203,6 +205,9 @@ static func _load_level_doc_resource(doc_path: String) -> Dictionary:
 		var raw_level_scene = res.get("level_scene")
 		if raw_level_scene is String:
 			level_scene_path = raw_level_scene.strip_edges()
+		var raw_placements_file: Variant = res.get("placements_file")
+		if raw_placements_file is String:
+			placements_file = raw_placements_file.strip_edges()
 		var raw_order = res.get("order")
 		if raw_order is int:
 			order_value = raw_order
@@ -232,6 +237,8 @@ static func _load_level_doc_resource(doc_path: String) -> Dictionary:
 	entry["selection_category"] = selection_category
 	if level_scene_path != "":
 		entry["level_scene"] = level_scene_path
+	if not placements_file.is_empty():
+		entry["placements_file"] = placements_file
 	if is_test:
 		entry["is_test"] = true
 	if not attributes.is_empty():

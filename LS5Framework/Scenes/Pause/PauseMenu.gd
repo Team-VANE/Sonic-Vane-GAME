@@ -107,6 +107,12 @@ var _character_settings_menu: CharacterSettingsMenu = null
 ## Contains all pause panels hidden during pause previews.
 @onready var overlay: Control = $Overlay
 @onready var panel_pause: Control   = $Overlay/PausePanel
+## Compact pause panel used during cutscene playback.
+@onready var _cutscene_panel: Control = $Overlay/CutscenePanel
+## Default keyboard and controller focus in the cutscene pause panel.
+@onready var _cutscene_resume: Button = %Resume
+## Completes a skippable cutscene from the pause panel.
+@onready var _cutscene_skip: Button = %SkipCutscene
 @onready var panel_options: Control = $Overlay/OptionsPanel
 
 @onready var online_panel: Control = $Overlay/OnlinePanel
@@ -354,6 +360,8 @@ func _set_hud_visible(value: bool) -> void:
 
 
 func _ready() -> void:
+	_cutscene_resume.pressed.connect(_resume_game)
+	_cutscene_skip.pressed.connect(_skip_paused_cutscene)
 	_wire_audio_controls()
 	if not button_options_back.pressed.is_connected(_on_ButtonOptionsBack_pressed):
 		button_options_back.pressed.connect(_on_ButtonOptionsBack_pressed)
@@ -419,6 +427,10 @@ func _wire_online_signals() -> void:
 
 
 func _process(delta: float) -> void:
+	if _is_open and _cutscene_panel.visible:
+		if not _active_cutscene():
+			_resume_game()
+		return
 	if _is_open and _pause_online != _is_online():
 		_resume_game()
 		return
@@ -645,6 +657,8 @@ func _open_pause() -> void:
 	else:
 		get_tree().paused = true
 		SettingsManager.sync_audio_pause()
+	if _cutscene_panel.visible:
+		return
 	_refresh_race_leave_button()
 	_refresh_return_hub_button()
 	_refresh_quick_restart_button()
@@ -732,6 +746,7 @@ func _resume_game(lock_cursor: bool = true) -> void:
 	if _deadzone_visual != null:
 		_deadzone_visual.visible = false
 	visible = false
+	_cutscene_panel.hide()
 	panel_options.visible = false
 	_is_open = false
 	_set_hud_visible(true)
@@ -754,6 +769,17 @@ func _resume_game(lock_cursor: bool = true) -> void:
 	if p != null and p.has_method("restore_input_after_pause"):
 		p.call_deferred("restore_input_after_pause")
 	_play_sfx(sfx_unpause)
+
+
+func _active_cutscene() -> Node:
+	return get_tree().get_first_node_in_group(&"ActiveCutscene")
+
+
+func _skip_paused_cutscene() -> void:
+	var cutscene: Node = _active_cutscene()
+	if cutscene and cutscene.get("skippable"):
+		_resume_game()
+		cutscene.skip()
 
 
 func _get_network_session() -> Node:
@@ -1578,6 +1604,16 @@ func _execute_ButtonReturnHub_pressed() -> void:
 
 
 func _show_pause_panel() -> void:
+	var cutscene: Node = _active_cutscene()
+	_cutscene_panel.visible = cutscene != null
+	if cutscene:
+		panel_pause.hide()
+		panel_options.hide()
+		online_panel.hide()
+		_cutscene_skip.visible = bool(cutscene.get("skippable"))
+		MenuNavigation.forget_focus(_cutscene_panel)
+		call_deferred("_focus_visible_panel")
+		return
 	_refresh_exit_action()
 	_stop_camera_preview()
 	if _deadzone_visual != null:
@@ -2809,6 +2845,8 @@ func _on_CheckRememberEmotePage_toggled(pressed: bool) -> void:
 func _menu_navigation_scope() -> Dictionary:
 	if not _is_open or _pause_preview_hidden:
 		return {}
+	if _cutscene_panel.visible:
+		return {"root": _cutscene_panel, "default": _cutscene_resume}
 	if _photo_mode.visible:
 		return _photo_mode.navigation_scope()
 	if reset_defaults_dialog.visible:

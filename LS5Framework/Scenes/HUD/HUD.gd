@@ -29,9 +29,19 @@ extends CanvasLayer
 
 var elapsed_time: float = 0.0
 var running: bool = true
+var _visible_before_cutscene: bool = true
 
 func _ready() -> void:
 	visible = SettingsManager.hud_visible
+
+
+func set_cutscene_hidden(hidden: bool) -> void:
+	var content: Control = $HUDRoot
+	if hidden:
+		_visible_before_cutscene = content.visible
+		content.hide()
+	else:
+		content.visible = _visible_before_cutscene
 
 
 func _ensure_nodes() -> void:
