@@ -1,4 +1,7 @@
+@tool
 extends Area3D
+
+const CheckpointVisual = preload("res://LS5Framework/Objects/Gameplay/CheckpointVisual.gd")
 
 @export var active: bool = true
 
@@ -9,6 +12,38 @@ extends Area3D
 
 var _body_cooldowns: Dictionary = {}
 
+@export_group("Gate")
+## Distance between post centers in meters. The minimum fits the inward-folded poles.
+@export_range(6.0, 100.0, 0.01, "or_greater", "suffix:m") var width: float = 6.006:
+	set(value):
+		width = maxf(6.0, value)
+		if is_node_ready():
+			_sync_width()
+## Matches the trigger's local X span to the post spacing.
+@export var fit_trigger_to_width: bool = false:
+	set(value):
+		fit_trigger_to_width = value
+		if is_node_ready():
+			_sync_width()
+## Local X size when Match Post Spacing is off. Zero uses the authored collider.
+@export_range(0.0, 100.0, 0.05, "or_greater", "suffix:m") var trigger_width: float = 0.0:
+	set(value):
+		trigger_width = value
+		if is_node_ready():
+			_sync_width()
+## Local Y size of the trigger. Zero uses the authored collider.
+@export_range(0.0, 100.0, 0.05, "or_greater", "suffix:m") var trigger_height: float = 0.0:
+	set(value):
+		trigger_height = value
+		if is_node_ready():
+			_sync_width()
+## Local Z size of the trigger. Zero uses the authored collider.
+@export_range(0.0, 100.0, 0.05, "or_greater", "suffix:m") var trigger_depth: float = 0.0:
+	set(value):
+		trigger_depth = value
+		if is_node_ready():
+			_sync_width()
+
 @export_group("Respawn")
 @export var respawn_speed: float = 0.0
 @export_enum("PositiveX", "NegativeX", "PositiveZ", "NegativeZ")
@@ -18,11 +53,63 @@ var respawn_axis: int = 2
 @export var sfx_player: AudioStreamPlayer3D
 @export var activate_sounds: Array[AudioStream] = []
 var _last_sound_index: int = -1
+var _selected_players: Dictionary = {}
+var _authored_trigger_size: Vector3
+
+## Skinned model driven by checkpoint selection and approach motion.
+@onready var _visual: CheckpointVisual = get_node_or_null("CheckpointVisual") as CheckpointVisual
+
+## Trigger used for the optional width-matched gate.
+@onready var _trigger: CollisionShape3D = get_node_or_null("CollisionShape3D") as CollisionShape3D
 
 
 func _ready() -> void:
+	if _trigger and _trigger.shape is BoxShape3D:
+		_authored_trigger_size = (_trigger.shape as BoxShape3D).size
+	_sync_width()
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+		return
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
+
+
+func _sync_width() -> void:
+	if _visual:
+		_visual.set_width(width)
+	if _trigger and _trigger.shape is BoxShape3D:
+		var box: BoxShape3D = _trigger.shape
+		var size: Vector3 = _authored_trigger_size
+		size.x = width if fit_trigger_to_width else (trigger_width if trigger_width > 0.0 else size.x)
+		if trigger_height > 0.0:
+			size.y = trigger_height
+		if trigger_depth > 0.0:
+			size.z = trigger_depth
+		if not size.is_equal_approx(box.size):
+			var resized: BoxShape3D = box.duplicate() as BoxShape3D
+			resized.size = size
+			_trigger.shape = resized
+
+
+func set_checkpoint_selected(body: CharacterBody3D, selected: bool) -> void:
+	var id: int = body.get_instance_id()
+	if selected:
+		if not _selected_players.has(id):
+			_selected_players[id] = true
+			body.tree_exiting.connect(_remove_selected_player.bind(id), CONNECT_ONE_SHOT)
+		if _visual:
+			_visual.set_selected(true, body.velocity, body.global_position)
+		return
+	var on_exit: Callable = _remove_selected_player.bind(id)
+	if body.tree_exiting.is_connected(on_exit):
+		body.tree_exiting.disconnect(on_exit)
+	_remove_selected_player(id)
+
+
+func _remove_selected_player(id: int) -> void:
+	_selected_players.erase(id)
+	if _visual and _selected_players.is_empty():
+		_visual.set_selected(false, Vector3.ZERO, Vector3.ZERO)
 
 
 func _physics_process(delta: float) -> void:

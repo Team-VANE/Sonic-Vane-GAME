@@ -30,6 +30,7 @@ class_name ActorTargetable3D
 @export var spatial_update_rate_hz: float = 20.0
 
 var _registered: bool = false
+var _distance_culled: bool = false
 var _cell_timer: float = 0.0
 ## Actor owning the target point and its incoming-impact settings.
 var _actor: Node3D = null
@@ -50,8 +51,12 @@ func set_enabled(value: bool) -> void:
 	_set_registered(value)
 
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+
+
 func physics_tick(delta: float, moved: bool) -> void:
-	if not _registered or not moved:
+	if _distance_culled or not _registered or not moved:
 		return
 	if spatial_update_rate_hz > 0.0:
 		_cell_timer = max(_cell_timer - delta, 0.0)

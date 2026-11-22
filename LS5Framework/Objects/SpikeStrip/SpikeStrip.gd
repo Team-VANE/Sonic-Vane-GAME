@@ -77,6 +77,7 @@ enum Phase { DOWN_LOOP, RISING, UP_LOOP, FALLING }
 
 var _phase: Phase = Phase.DOWN_LOOP
 var _phase_remaining: float = 0.0
+var _distance_culled: bool = false
 
 func _get_owned_reference(path: NodePath, fallback: NodePath) -> Node:
 	var candidate: Node = get_node_or_null(path)
@@ -102,11 +103,15 @@ func _ready() -> void:
 	_animation_player.callback_mode_method = AnimationMixer.ANIMATION_CALLBACK_MODE_METHOD_IMMEDIATE
 	_enter_phase(Phase.UP_LOOP if start_raised else Phase.DOWN_LOOP)
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+
+
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	_advance_cycle(delta)
-	if is_damage_active():
+	if not _distance_culled and is_damage_active():
 		for body: Node3D in _damage_area.get_overlapping_bodies():
 			_try_damage_body(body)
 
@@ -142,7 +147,8 @@ func _advance_cycle(delta: float) -> void:
 	var remaining: float = maxf(delta, 0.0)
 	while remaining > 0.0:
 		if stay_up and _phase == Phase.UP_LOOP:
-			_animation_player.advance(remaining)
+			if not _distance_culled:
+				_animation_player.advance(remaining)
 			return
 		var step: float = minf(remaining, _phase_remaining)
 		_animation_player.advance(step)
@@ -176,7 +182,7 @@ func _enter_phase(phase: Phase) -> void:
 	_animation_player.advance(0.0)
 
 func _play_up_sound() -> void:
-	if not Engine.is_editor_hint() and _up_audio:
+	if not Engine.is_editor_hint() and not _distance_culled and _up_audio:
 		_up_audio.play()
 
 func _try_damage_body(body: Node3D) -> bool:

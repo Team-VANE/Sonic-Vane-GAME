@@ -117,6 +117,7 @@ var _fall_damage_cooldown_timer: float = 0.0
 var _level_prepared: bool = false
 var _gameplay_activated: bool = false
 var _managed_preparation: bool = false
+var _distance_culled: bool = false
 
 
 func _ready() -> void:
@@ -156,6 +157,26 @@ func activate_for_gameplay(_context: Dictionary) -> bool:
 	return true
 
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+	if value:
+		if _perception:
+			_perception.clear()
+		if _audio:
+			_audio.set_idle_active(false)
+	for component: EnemyOptionalComponent in _optional_components:
+		if is_instance_valid(component):
+			component.set_distance_culled(value)
+
+
+func get_distance_cull_activity_range() -> float:
+	if not _perception or not _perception.detection_enabled:
+		return 0.0
+	if _perception.detection_radius <= 0.0:
+		return INF
+	return maxf(_perception.detection_radius, _perception.loss_radius) + 60.0
+
+
 func _physics_process(delta: float) -> void:
 	if not enabled:
 		velocity = Vector3.ZERO
@@ -186,12 +207,15 @@ func _physics_process(delta: float) -> void:
 		return
 	if _attacks:
 		_attacks.physics_tick(delta)
-	if active and _perception and (not _brain or _brain.wants_perception()):
-		_perception.physics_tick(delta)
-	elif _perception:
-		_perception.clear()
-	var target: Node3D = _perception.get_target() if _perception else null
-	if active and _brain:
+	var simulate_ai: bool = active and (not _distance_culled or (_attacks and _attacks.is_attacking()))
+	var target: Node3D = null
+	if not _distance_culled and _perception:
+		if active and (not _brain or _brain.wants_perception()):
+			_perception.physics_tick(delta)
+		else:
+			_perception.clear()
+		target = _perception.get_target()
+	if simulate_ai and _brain:
 		_brain.physics_tick(delta, self, target, _spawn_transform.origin, _attacks, _intent)
 	else:
 		_intent.clear()
@@ -210,7 +234,7 @@ func _physics_process(delta: float) -> void:
 		_process_fall_impact_damage()
 	if _targetable:
 		_targetable.physics_tick(delta, velocity.length_squared() > 0.000001)
-	if _audio:
+	if _audio and not _distance_culled:
 		var movement: Vector3 = (global_position - movement_start).slide(get_gravity_up())
 		var movement_speed: float = movement.length() / delta if delta > 0.0 else 0.0
 		_audio.set_idle_active(active, movement_speed)
@@ -404,7 +428,7 @@ func _initialize_components() -> void:
 		_animation.setup(self)
 	if _audio:
 		_audio.setup()
-		_audio.set_idle_active(active)
+		_audio.set_idle_active(active and not _distance_culled)
 	if _defeat_effects:
 		_defeat_effects.setup(self)
 	for component: EnemyOptionalComponent in _optional_components:
@@ -552,7 +576,7 @@ func _reset_components(gravity_reason: StringName) -> void:
 	if _score_award:
 		_score_award.reset_award()
 	if _audio:
-		_audio.set_idle_active(active)
+		_audio.set_idle_active(active and not _distance_culled)
 	for component: EnemyOptionalComponent in _optional_components:
 		if component != null and is_instance_valid(component):
 			component.reset_component(gravity_reason)

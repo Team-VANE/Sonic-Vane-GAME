@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Rings/Ring.tscn" id="1_ring"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Objects/CollectionItem_Grab.wav" id="2_pickup"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue"]
+albedo_color = Color(0.035, 0.28, 0.88, 1)
+metallic = 0.45
+roughness = 0.34
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_blue"]
+top_radius = 0.96
+bottom_radius = 0.96
+height = 0.24
+radial_segments = 32
+rings = 0
+
+[node name="RingBlue" instance=ExtResource("1_ring")]
+ring_value = 3
+pickup_sound = ExtResource("2_pickup")
+pickup_light_color = Color(0.24, 0.61, 1, 1)
+
+[node name="Mesh" parent="." index="0"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_blue")
+mesh = SubResource("CylinderMesh_blue")
+metadata/_uniform_size_base_position = Vector3(0, 0, 0)
+metadata/_uniform_size_base_scale = Vector3(1, 1, 1)

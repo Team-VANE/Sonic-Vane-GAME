@@ -101,7 +101,9 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 		instance.set_meta(&"placement_id", proxy.get_meta(&"placement_id"))
 	if instance is Node3D and proxy is Node3D:
 		(instance as Node3D).transform = (proxy as Node3D).transform
-	_apply_property_overrides(proxy, instance)
+	if not _apply_property_overrides(proxy, instance):
+		instance.free()
+		return false
 	_copy_curve_data(proxy, instance)
 	_copy_transform_markers(proxy, instance)
 	var parent_override: Node = _resolve_parent_override(level_root, proxy)
@@ -125,7 +127,7 @@ static func _resolve_parent_override(level_root: Node, proxy: Node) -> Node:
 	return level_root.get_node_or_null(parent_path)
 
 
-static func _apply_property_overrides(proxy: Node, target: Node) -> void:
+static func _apply_property_overrides(proxy: Node, target: Node) -> bool:
 	var overrides: Array = _read_proxy_array(proxy, "property_overrides")
 	var override_map: Dictionary = {}
 	for entry_value: Variant in overrides:
@@ -136,11 +138,20 @@ static func _apply_property_overrides(proxy: Node, target: Node) -> void:
 		if property_name == "":
 			continue
 		var value: Variant = _resolve_override_value(entry)
+		var target_path: NodePath = _read_dict_node_path(entry, "target_node")
+		if not target_path.is_empty():
+			var component: Node = target.get_node_or_null(target_path)
+			if not component or not target.is_ancestor_of(component) or not _object_has_property(component, property_name):
+				push_warning("LevelObjectProxySpawner: %s cannot apply %s to %s." % [proxy.name, property_name, target_path])
+				return false
+			component.set(property_name, value)
+			continue
 		override_map[property_name] = value
 		if _object_has_property(target, property_name):
 			target.set(property_name, value)
 	if target.has_method("apply_spawn_overrides"):
 		target.call("apply_spawn_overrides", override_map, proxy)
+	return true
 
 
 static func _copy_curve_data(proxy: Node, target: Node) -> void:

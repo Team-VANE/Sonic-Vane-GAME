@@ -26,9 +26,18 @@ static func read(path: String, level_id: String) -> Dictionary:
 	if not catalog is Dictionary or catalog.get("schema_version") != SCHEMA_VERSION or not catalog.get("types") is Dictionary:
 		return {"error": "Could not read the placement object catalog: %s" % CATALOG_PATH}
 	var object_types: Dictionary = catalog["types"]
+	var variants: Dictionary = catalog.get("variants", {})
+	var variant_defaults: Variant = document.get("variant_defaults", {})
+	if not variant_defaults is Dictionary:
+		return {"error": "Variant defaults must be an object in %s." % path}
+	for family: String in variant_defaults:
+		var default_id: Variant = variant_defaults[family]
+		if not default_id is String or not variants.get(family, {}).has(default_id):
+			return {"error": "%s has an unknown default variant for %s: %s." % [path, family, default_id]}
 	var uuid_pattern: RegEx = RegEx.create_from_string("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 	var types_by_id: Dictionary = {}
 	var placements: Array[Dictionary] = []
+	var has_player_spawn: bool = false
 	for index: int in records.size():
 		var record: Variant = records[index]
 		var location: String = "%s placements[%d]" % [path, index]
@@ -44,9 +53,23 @@ static func read(path: String, level_id: String) -> Dictionary:
 		var type: Variant = record.get("type")
 		if not type is String or not object_types.has(type):
 			return {"error": "%s has an unknown object type: %s." % [location, type]}
+		if type == "player_spawn":
+			if has_player_spawn:
+				return {"error": "%s contains more than one Player Spawn." % path}
+			has_player_spawn = true
 		types_by_id[id] = type
 		var definition: Dictionary = object_types[type]
 		var scene_path: String = definition["scene"]
+		var variant_family: String = definition.get("variant_family", type)
+		var variant_id: Variant = record.get(
+			"variant", variant_defaults.get(variant_family, definition.get("default_variant", ""))
+		)
+		var variant_scene: String = ""
+		if record.has("variant") or variant_id != "":
+			var family_variants: Dictionary = variants.get(variant_family, {})
+			if not variant_id is String or not family_variants.has(variant_id):
+				return {"error": "%s has an unknown %s variant: %s." % [location, variant_family, variant_id]}
+			variant_scene = family_variants[variant_id]["scene"]
 		var position_values: Variant = record.get("position")
 		var rotation_values: Variant = record.get("rotation")
 		if not _is_finite_array(position_values, 3) or not _is_finite_array(rotation_values, 4):
@@ -68,6 +91,8 @@ static func read(path: String, level_id: String) -> Dictionary:
 			if not fields.has(key):
 				return {"error": "%s has an unknown property: %s." % [location, key]}
 			var field: Dictionary = fields[key]
+			if field.has("for_variants") and not field["for_variants"].has(variant_id):
+				return {"error": "%s property %s is unavailable for variant %s." % [location, key, variant_id]}
 			var value: Variant = _decode_property(properties[key], field)
 			if value == null:
 				return {"error": "%s has an invalid value for %s." % [location, key]}
@@ -77,8 +102,23 @@ static func read(path: String, level_id: String) -> Dictionary:
 			elif field["type"] == "local_offset":
 				markers.append({"target": field["marker"], "position": value})
 			else:
-				overrides.append({"name": field.get("target_property", key), "value": value})
+				var property_override: Dictionary = {"name": field.get("target_property", key), "value": value}
+				if field.has("target_node"):
+					property_override["target_node"] = field["target_node"]
+				overrides.append(property_override)
 
+		if not variant_scene.is_empty():
+			var variant_scene_property: String = definition.get("variant_scene_property", "")
+			if variant_scene_property.is_empty():
+				scene_path = variant_scene
+			else:
+				if not ResourceLoader.exists(variant_scene, "PackedScene"):
+					return {"error": "%s requires an unavailable variant scene: %s." % [location, variant_scene]}
+				overrides.append({
+					"name": variant_scene_property,
+					"value": variant_scene,
+					"value_type": "resource_path",
+				})
 		if not ResourceLoader.exists(scene_path, "PackedScene"):
 			return {"error": "%s requires an unavailable scene: %s." % [location, scene_path]}
 		var placement: Dictionary = {
@@ -124,6 +164,7 @@ static func add_proxies(level_root: Node, placements: Array[Dictionary]) -> void
 		var proxy: LevelObjectProxy = LevelObjectProxy.new()
 		proxy.name = "Object_" + id
 		proxy.target_scene_path = placement["scene_path"]
+		proxy.set_meta(ID_META, id)
 		if placement.has("rail_id"):
 			var rail_id: String = placement["rail_id"]
 			var parent_path: String = "%s/Placement_%s/Object_%s/%s" % [
@@ -131,7 +172,6 @@ static func add_proxies(level_root: Node, placements: Array[Dictionary]) -> void
 			]
 			proxy.spawn_parent_path = NodePath(parent_path)
 			proxy.spawn_parent_required = true
-			proxy.set_meta(ID_META, id)
 		else:
 			var holder: Node3D = Node3D.new()
 			holder.name = "Placement_" + id

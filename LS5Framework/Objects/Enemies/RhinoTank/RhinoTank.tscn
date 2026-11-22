@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://b0ccc80ra6yt3" path="res://LS5Framework/Sounds/Objects/Enemies/RhinoTank_RevUp.wav" id="snd_rev"]
 
 [ext_resource type="Script" path="res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTankBurners.gd" id="burners"]
+[ext_resource type="Script" path="res://LS5Framework/Scripts/World/ObjectDistanceCull3D.gd" id="distance_cull"]
 
 [sub_resource type="BoxShape3D" id="BodyShape"]
 size = Vector3(3.6, 3.4, 4.2)
@@ -45,6 +46,12 @@ defeat_delay_sec = 0.45
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 shape = SubResource("BodyShape")
 metadata/_enemy_size_base_position = Vector3(0, 0.7, 0)
+
+[node name="DistanceCull" type="Node" parent="."]
+script = ExtResource("distance_cull")
+visual_distance = 300.0
+visual_root_paths = Array[NodePath]([NodePath("Visual")])
+cosmetic_animation_paths = Array[NodePath]([NodePath("AnimationPlayer")])
 metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
 
 [node name="Visual" type="Node3D" parent="." unique_id=1198429774]
@@ -105,6 +112,7 @@ target_memory_sec = 0.0
 
 [node name="Brain" type="Node" parent="Components" unique_id=2010842342]
 script = ExtResource("5_brain")
+patrol_activation_distance = 200.0
 
 [node name="Collision" type="Node" parent="Components" unique_id=1822937000]
 script = ExtResource("6_collision")

@@ -1,30 +1,82 @@
 extends Node
 
+enum Registration { HOMING = 1, MAGNETISM = 2, RING = 4, RAIL = 8 }
+
 @export var cell_size: float = 64.0
 ## Cell size used for the lightspeed dash ring spatial grid. Rings are static so a smaller cell is fine.
 @export var ring_cell_size: float = 32.0
 ## Cell size used for nearby rail snap queries.
 @export var rail_cell_size: float = 32.0
 
-var _targets: Array[Node3D] = []
+var _targets: Dictionary[int, Node3D] = {}
 var _target_cells: Dictionary = {}
 var _cells: Dictionary = {}
 
-var _attack_magnetism_targets: Array[Node3D] = []
 var _attack_magnetism_target_cells: Dictionary = {}
 var _attack_magnetism_cells: Dictionary = {}
 
 # ---------------------------------------------------------------------------
 # Lightspeed dash ring registry
 # ---------------------------------------------------------------------------
-var _rings: Array[Node3D] = []
 var _ring_cells: Dictionary = {}
 var _ring_grid: Dictionary = {}
 
-var _rails: Array[Node3D] = []
 var _rail_cells: Dictionary = {}
 var _rail_grid: Dictionary = {}
 var _rail_bounds: Dictionary = {}
+var _suspended_targets: Dictionary[int, int] = {}
+
+
+func set_distance_suspended(target: Node3D, suspended: bool) -> void:
+	var id: int = target.get_instance_id()
+	if suspended == _suspended_targets.has(id):
+		return
+	if suspended:
+		var registrations: int = 0
+		if _target_cells.has(id):
+			unregister(target)
+			registrations |= Registration.HOMING
+		if _attack_magnetism_target_cells.has(id):
+			unregister_attack_magnetism_target(target)
+			registrations |= Registration.MAGNETISM
+		if _ring_cells.has(id):
+			unregister_ring(target)
+			registrations |= Registration.RING
+		if _rail_bounds.has(id):
+			unregister_rail(target)
+			registrations |= Registration.RAIL
+		_suspended_targets[id] = registrations
+		var cleanup: Callable = _forget_suspended_target.bind(id)
+		if not target.tree_exited.is_connected(cleanup):
+			target.tree_exited.connect(cleanup, CONNECT_ONE_SHOT)
+		return
+	var registrations: int = _suspended_targets[id]
+	_suspended_targets.erase(id)
+	if not target.is_inside_tree() or target.is_queued_for_deletion():
+		return
+	if registrations & Registration.HOMING:
+		register(target)
+	if registrations & Registration.MAGNETISM:
+		register_attack_magnetism_target(target)
+	if registrations & Registration.RING:
+		register_ring(target)
+	if registrations & Registration.RAIL:
+		register_rail(target)
+
+
+func _forget_suspended_target(id: int) -> void:
+	_suspended_targets.erase(id)
+
+
+func _defer_registration(target: Node, registration: Registration, enabled: bool) -> bool:
+	var id: int = target.get_instance_id()
+	if not _suspended_targets.has(id):
+		return false
+	if enabled:
+		_suspended_targets[id] |= registration
+	else:
+		_suspended_targets[id] &= ~registration
+	return true
 
 func register(target: Node) -> void:
 	if target == null:
@@ -33,21 +85,25 @@ func register(target: Node) -> void:
 		return
 	if not (target is Node3D):
 		return
-	if target in _targets:
+	if _defer_registration(target, Registration.HOMING, true):
+		return
+	var id: int = target.get_instance_id()
+	if _targets.has(id):
 		return
 	var node: Node3D = target as Node3D
-	_targets.append(node)
+	_targets[id] = node
 	var cells: Array[Vector3i] = _get_target_cells(node)
-	_target_cells[node.get_instance_id()] = cells
+	_target_cells[id] = cells
 	for cell in cells:
 		_add_to_cell(node, cell)
 
 func unregister(target: Node) -> void:
 	if target == null:
 		return
-	if target in _targets:
-		_targets.erase(target)
+	if _defer_registration(target, Registration.HOMING, false):
+		return
 	var id: int = target.get_instance_id()
+	_targets.erase(id)
 	if _target_cells.has(id):
 		var cells: Array = _target_cells[id]
 		for cell in cells:
@@ -57,7 +113,7 @@ func unregister(target: Node) -> void:
 
 func get_targets() -> Array:
 	var out: Array = []
-	for t in _targets:
+	for t: Variant in _targets.values():
 		if t != null and is_instance_valid(t):
 			out.append(t)
 	return out
@@ -175,12 +231,14 @@ func register_attack_magnetism_target(target: Node) -> void:
 		return
 	if not (target is Node3D):
 		return
-	if target in _attack_magnetism_targets:
+	if _defer_registration(target, Registration.MAGNETISM, true):
+		return
+	var id: int = target.get_instance_id()
+	if _attack_magnetism_target_cells.has(id):
 		return
 	var node: Node3D = target as Node3D
-	_attack_magnetism_targets.append(node)
 	var cells: Array[Vector3i] = _get_target_cells(node)
-	_attack_magnetism_target_cells[node.get_instance_id()] = cells
+	_attack_magnetism_target_cells[id] = cells
 	for cell in cells:
 		_attack_magnetism_add_to_cell(node, cell)
 
@@ -188,8 +246,8 @@ func register_attack_magnetism_target(target: Node) -> void:
 func unregister_attack_magnetism_target(target: Node) -> void:
 	if target == null:
 		return
-	if target in _attack_magnetism_targets:
-		_attack_magnetism_targets.erase(target)
+	if _defer_registration(target, Registration.MAGNETISM, false):
+		return
 	var id: int = target.get_instance_id()
 	if _attack_magnetism_target_cells.has(id):
 		var cells: Array = _attack_magnetism_target_cells[id]
@@ -287,20 +345,22 @@ func register_ring(ring: Node) -> void:
 		return
 	if not (ring is Node3D):
 		return
-	if ring in _rings:
+	if _defer_registration(ring, Registration.RING, true):
+		return
+	var id: int = ring.get_instance_id()
+	if _ring_cells.has(id):
 		return
 	var node: Node3D = ring as Node3D
-	_rings.append(node)
 	var cell: Vector3i = _get_ring_cell_key(node.global_position)
-	_ring_cells[node.get_instance_id()] = cell
+	_ring_cells[id] = cell
 	_ring_add_to_cell(node, cell)
 
 
 func unregister_ring(ring: Node) -> void:
 	if ring == null:
 		return
-	if ring in _rings:
-		_rings.erase(ring)
+	if _defer_registration(ring, Registration.RING, false):
+		return
 	var id: int = ring.get_instance_id()
 	if _ring_cells.has(id):
 		var cell: Vector3i = _ring_cells[id]
@@ -359,19 +419,20 @@ func _ring_remove_from_cell(ring: Node, cell: Vector3i) -> void:
 func register_rail(rail: Node) -> void:
 	if rail == null or not is_instance_valid(rail) or not (rail is Node3D):
 		return
-	if rail in _rails:
+	if _defer_registration(rail, Registration.RAIL, true):
+		return
+	if _rail_bounds.has(rail.get_instance_id()):
 		update_rail(rail)
 		return
 	var node: Node3D = rail as Node3D
-	_rails.append(node)
 	_store_rail_spatial_data(node)
 
 
 func unregister_rail(rail: Node) -> void:
 	if rail == null:
 		return
-	if rail in _rails:
-		_rails.erase(rail)
+	if _defer_registration(rail, Registration.RAIL, false):
+		return
 	var rail_id: int = rail.get_instance_id()
 	_remove_rail_from_cells(rail, rail_id)
 	_rail_bounds.erase(rail_id)
@@ -380,9 +441,9 @@ func unregister_rail(rail: Node) -> void:
 func update_rail(rail: Node) -> void:
 	if rail == null or not is_instance_valid(rail) or not (rail is Node3D):
 		return
+	if _defer_registration(rail, Registration.RAIL, true):
+		return
 	var node: Node3D = rail as Node3D
-	if not (node in _rails):
-		_rails.append(node)
 	var rail_id: int = node.get_instance_id()
 	_remove_rail_from_cells(node, rail_id)
 	_store_rail_spatial_data(node)

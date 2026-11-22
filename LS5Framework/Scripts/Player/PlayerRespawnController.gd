@@ -243,6 +243,12 @@ func activate_checkpoint(respawn_transform: Transform3D, respawn_speed: float, r
 		return
 	if not p.checkpoint_enabled:
 		return
+	_update_checkpoint_source(null)
+	_store_checkpoint(respawn_transform, respawn_speed, respawn_dir)
+
+
+func _store_checkpoint(respawn_transform: Transform3D, respawn_speed: float, respawn_dir: Vector3) -> void:
+	var p = _owner
 	p._checkpoint_active = true
 	p._checkpoint_transform = respawn_transform
 	p._checkpoint_respawn_speed = max(respawn_speed, 0.0)
@@ -250,22 +256,26 @@ func activate_checkpoint(respawn_transform: Transform3D, respawn_speed: float, r
 
 
 func activate_checkpoint_from(source: Node, respawn_transform: Transform3D, respawn_speed: float, respawn_dir: Vector3) -> void:
+	if not can_activate_checkpoint_source(source):
+		return
+	_store_checkpoint(respawn_transform, respawn_speed, respawn_dir)
+	_update_checkpoint_source(source)
+
+
+func _update_checkpoint_source(source: Node) -> void:
 	var p = _owner
-	if not p._network_is_local_authority():
-		return
-	if not p.checkpoint_enabled:
-		return
-	if source != null and is_instance_valid(source):
-		var sid: int = int(source.get_instance_id())
-		if sid != 0 and sid == p._checkpoint_last_source_id:
-			return
-		p._checkpoint_last_source_id = sid
-	activate_checkpoint(respawn_transform, respawn_speed, respawn_dir)
+	var previous_id: int = p._checkpoint_last_source_id
+	var previous: Node = instance_from_id(previous_id) as Node if previous_id else null
+	if previous and previous.has_method("set_checkpoint_selected"):
+		previous.call("set_checkpoint_selected", p, false)
+	p._checkpoint_last_source_id = source.get_instance_id() if is_instance_valid(source) else 0
+	if is_instance_valid(source) and source.has_method("set_checkpoint_selected"):
+		source.call("set_checkpoint_selected", p, true)
 
 
 func can_activate_checkpoint_source(source: Node) -> bool:
 	var p = _owner
-	if not p.checkpoint_enabled:
+	if not p.checkpoint_enabled or not p._network_is_local_authority():
 		return false
 	if source == null or not is_instance_valid(source):
 		return true
@@ -302,7 +312,7 @@ func clear_checkpoint_data() -> void:
 	p._checkpoint_transform = Transform3D.IDENTITY
 	p._checkpoint_respawn_speed = 0.0
 	p._checkpoint_respawn_dir = Vector3.ZERO
-	p._checkpoint_last_source_id = 0
+	_update_checkpoint_source(null)
 
 
 func reset_race_debug_usage() -> void:

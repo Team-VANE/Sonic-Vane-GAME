@@ -38,6 +38,10 @@ func _exit_tree() -> void:
 		mgr.unregister_attack_magnetism_target(self)
 
 
+func set_distance_culled(value: bool) -> void:
+	set_physics_process(not value and attack_magnetism_enabled and attack_magnetism_update_cell_each_physics_frame)
+
+
 func _physics_process(delta: float) -> void:
 	if not attack_magnetism_enabled:
 		return

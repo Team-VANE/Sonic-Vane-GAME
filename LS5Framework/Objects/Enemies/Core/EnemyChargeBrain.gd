@@ -5,6 +5,8 @@ enum ChargePhase { PATROL, WINDUP, CHARGE, RECOVER, HURT }
 
 ## Distance travelled forward from home before patrolling back.
 @export var patrol_distance: float = 12.0
+## Maximum distance from a player for untargeted patrol movement. Zero allows patrols at any distance.
+@export_range(0.0, 1000.0, 1.0, "or_greater", "suffix:m") var patrol_activation_distance: float = 0.0
 ## Patrol movement as a fraction of locomotion speed.
 @export_range(0.0, 1.0, 0.01) var patrol_speed_ratio: float = 0.2
 ## Time spent aiming and telegraphing before committing to a heading.
@@ -49,6 +51,8 @@ func physics_tick(delta: float, actor: CharacterBody3D, target: Node3D, home: Ve
 			if is_instance_valid(target):
 				_enter_phase(ChargePhase.WINDUP)
 			else:
+				if not _can_patrol_near_player(actor):
+					return
 				var destination: Vector3 = home if _returning else home + _patrol_forward * maxf(patrol_distance, 0.0)
 				var offset: Vector3 = (destination - actor.global_position).slide(up)
 				if offset.length() < 1.0:
@@ -107,6 +111,17 @@ func physics_tick(delta: float, actor: CharacterBody3D, target: Node3D, home: Ve
 		intent.move_direction = heading
 		intent.face_direction = heading
 		intent.speed_ratio = 1.0
+
+
+func _can_patrol_near_player(actor: CharacterBody3D) -> bool:
+	if patrol_activation_distance <= 0.0:
+		return true
+	var origin: Vector3 = actor.global_position
+	var distance_squared: float = patrol_activation_distance * patrol_activation_distance
+	for candidate: Node in actor.get_tree().get_nodes_in_group(&"player"):
+		if candidate is Node3D and origin.distance_squared_to(candidate.global_position) <= distance_squared:
+			return true
+	return false
 
 
 func get_state_tag() -> StringName:

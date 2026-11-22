@@ -86,6 +86,10 @@ func _process(delta: float) -> void:
 		queue_free()
 
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+
+
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return

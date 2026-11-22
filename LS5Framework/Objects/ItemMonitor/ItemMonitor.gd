@@ -155,6 +155,7 @@ var _level_prepared: bool = false
 var _gameplay_activated: bool = false
 var _managed_preparation: bool = false
 var _cosmetics_activated: bool = false
+var _distance_culled: bool = false
 var _touching_players: Array[Node3D] = []
 ## Owned-object overlap candidates awaiting sufficient impact speed.
 var _touching_objects: Array[ObjectPhysicsBody3D] = []
@@ -376,8 +377,13 @@ func _physics_process(_delta: float) -> void:
 		set_physics_process(false)
 
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+	_update_cosmetic_processing()
+
+
 func _update_cosmetic_processing() -> void:
-	var display_active: bool = _cosmetics_activated and not _broken and _icon_display and _icon_display.visible
+	var display_active: bool = not _distance_culled and _cosmetics_activated and not _broken and _icon_display and _icon_display.visible
 	if _display_visibility:
 		display_active = display_active and _display_visibility.is_on_screen()
 	var dynamic_quantity: bool = (

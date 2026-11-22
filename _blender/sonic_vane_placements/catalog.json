@@ -1,6 +1,669 @@
 {
   "schema_version": 1,
+  "variants": {
+    "ring": {
+      "core:ring": {
+        "label": "Standard Ring",
+        "blender_index": 1,
+        "scene": "res://LS5Framework/Objects/Rings/Ring.tscn",
+        "preview_file": "Traversal Objects.blend",
+        "preview_mesh": "Torus",
+        "ring_value": 1
+      },
+      "core:blue_ring": {
+        "label": "Blue Ring",
+        "blender_index": 2,
+        "scene": "res://LS5Framework/Objects/Rings/RingBlue.tscn",
+        "preview_file": "Blue Ring.blend",
+        "preview_mesh": "Blue Ring",
+        "ring_value": 3
+      }
+    },
+    "enemy": {
+      "core:rhino_tank": {
+        "label": "Rhino Tank", "blender_index": 1,
+        "scene": "res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTank.tscn",
+        "preview_file": "Enemies and Hazards.blend", "preview_mesh": "Rhino Tank", "preview_revision": 2
+      },
+      "core:gun_beetle": {
+        "label": "GUN Beetle", "blender_index": 2,
+        "scene": "res://LS5Framework/Objects/Enemies/MonoBeetle_SA2/FlyingEnemy_SA2MonoBeetle.tscn",
+        "preview_file": "Enemies and Hazards.blend", "preview_mesh": "GUN Beetle"
+      }
+    }
+  },
   "types": {
+    "player_spawn": {
+      "label": "Player Spawn",
+      "scene": "res://LS5Framework/Objects/Gameplay/SpawnPoint.tscn",
+      "properties": {
+        "downwarp_enabled": {
+          "label": "Snap Down to Ground", "description": "Search along local down for a surface when spawning",
+          "type": "bool", "default": true, "group": "Player Spawn"
+        },
+        "downwarp_distance": {
+          "label": "Ground Search Distance", "description": "Maximum downward search distance in meters",
+          "type": "float", "default": 150, "min": 0, "group": "Player Spawn",
+          "requires": { "downwarp_enabled": true }
+        },
+        "downwarp_offset": {
+          "label": "Ground Clearance", "description": "Extra clearance above the detected surface in meters",
+          "type": "float", "default": 0.05, "min": 0, "group": "Player Spawn",
+          "requires": { "downwarp_enabled": true }
+        }
+      }
+    },
+    "enemy": {
+      "label": "Enemy",
+      "scene": "res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTank.tscn",
+      "default_variant": "core:rhino_tank",
+      "properties": {
+        "size": {
+          "label": "Size", "description": "Uniform scale of the enemy model and collision",
+          "type": "float", "default": 1, "group": "Enemy", "min": 0.01
+        },
+        "enemy_enabled": {
+          "label": "Enabled", "description": "Enable enemy processing and interactions",
+          "type": "bool", "default": true, "group": "Enemy", "target_property": "enabled"
+        },
+        "enemy_active": {
+          "label": "Active", "description": "Allow the enemy to move and act",
+          "type": "bool", "default": true, "group": "Enemy", "target_property": "active"
+        },
+        "die_in_death_planes": {
+          "label": "Die in Death Planes", "description": "Defeat this enemy on contact with death planes",
+          "type": "bool", "default": true, "group": "Enemy"
+        },
+        "die_in_water": {
+          "label": "Die in Water", "description": "Defeat this enemy on water entry",
+          "type": "bool", "default": true, "group": "Enemy"
+        },
+        "detection_enabled": {
+          "label": "Detection Enabled", "description": "Allow the enemy to acquire targets",
+          "type": "bool", "default": true, "group": "Perception",
+          "target_node": "Components/Perception"
+        },
+        "detection_radius": {
+          "label": "Detection Radius", "description": "Maximum distance for acquiring a target",
+          "type": "float", "default": 50, "group": "Perception",
+          "target_node": "Components/Perception",
+          "min": 0, "requires": {"detection_enabled": true}, "variant_defaults": {"core:gun_beetle": 42}
+        },
+        "loss_radius": {
+          "label": "Loss Radius", "description": "Distance at which a tracked target is lost",
+          "type": "float", "default": 80, "group": "Perception",
+          "target_node": "Components/Perception",
+          "min": 0, "requires": {"detection_enabled": true}, "variant_defaults": {"core:gun_beetle": 50}
+        },
+        "field_of_view_deg": {
+          "label": "Field of View", "description": "Horizontal field of view in degrees",
+          "type": "float", "default": 135, "group": "Perception",
+          "target_node": "Components/Perception",
+          "min": 0, "max": 360, "requires": {"detection_enabled": true}, "variant_defaults": {"core:gun_beetle": 260}
+        },
+        "vertical_tolerance": {
+          "label": "Vertical Tolerance", "description": "Maximum target height difference for acquisition",
+          "type": "float", "default": 12, "group": "Perception",
+          "target_node": "Components/Perception",
+          "min": 0, "requires": {"detection_enabled": true}, "variant_defaults": {"core:gun_beetle": 20}
+        },
+        "scan_interval_sec": {
+          "label": "Scan Interval", "description": "Seconds between target scans",
+          "type": "float", "default": 0.12, "group": "Perception",
+          "target_node": "Components/Perception",
+          "min": 0, "requires": {"detection_enabled": true}
+        },
+        "target_memory_sec": {
+          "label": "Target Memory", "description": "Seconds to remember a target after losing sight",
+          "type": "float", "default": 0, "group": "Perception",
+          "target_node": "Components/Perception",
+          "min": 0, "requires": {"detection_enabled": true}, "variant_defaults": {"core:gun_beetle": 0.6}
+        },
+        "line_of_sight_enabled": {
+          "label": "Require Line of Sight", "description": "Check for level geometry blocking sight",
+          "type": "bool", "default": true, "group": "Perception",
+          "target_node": "Components/Perception",
+          "requires": {"detection_enabled": true}
+        },
+        "enemy_acceleration": {
+          "label": "Acceleration", "description": "Acceleration toward movement speed",
+          "type": "float", "default": 100, "group": "Movement",
+          "target_node": "Locomotion", "target_property": "acceleration",
+          "min": 0, "variant_defaults": {"core:gun_beetle": 21}
+        },
+        "enemy_deceleration": {
+          "label": "Deceleration", "description": "Deceleration when movement stops",
+          "type": "float", "default": 130, "group": "Movement",
+          "target_node": "Locomotion", "target_property": "deceleration",
+          "min": 0, "variant_defaults": {"core:gun_beetle": 25}
+        },
+        "facing_speed_deg": {
+          "label": "Facing Speed", "description": "Maximum turn speed in degrees per second",
+          "type": "float", "default": 240, "group": "Movement",
+          "target_node": "Locomotion",
+          "min": 0, "variant_defaults": {"core:gun_beetle": 300}
+        },
+        "enemy_ground_speed": {
+          "label": "Ground Speed", "description": "Maximum ground movement speed",
+          "type": "float", "default": 38, "group": "Movement",
+          "target_node": "Locomotion", "target_property": "movement_speed",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "adhesion_enabled": {
+          "label": "Surface Adhesion", "description": "Allow grounded movement to attach to traversable surfaces",
+          "type": "bool", "default": true, "group": "Movement",
+          "target_node": "Locomotion",
+          "for_variants": ["core:rhino_tank"]
+        },
+        "maximum_surface_angle_deg": {
+          "label": "Maximum Surface Angle", "description": "Steepest traversable surface angle in degrees",
+          "type": "float", "default": 70, "group": "Movement",
+          "target_node": "Locomotion",
+          "min": 0, "max": 180, "requires": {"adhesion_enabled": true}, "for_variants": ["core:rhino_tank"]
+        },
+        "align_to_surface": {
+          "label": "Align to Surface", "description": "Orient the enemy to the ground normal",
+          "type": "bool", "default": true, "group": "Movement",
+          "target_node": "Locomotion",
+          "for_variants": ["core:rhino_tank"]
+        },
+        "alignment_speed_deg": {
+          "label": "Alignment Speed", "description": "Rate of alignment to the ground normal in degrees per second",
+          "type": "float", "default": 540, "group": "Movement",
+          "target_node": "Locomotion",
+          "min": 0, "requires": {"align_to_surface": true}, "for_variants": ["core:rhino_tank"]
+        },
+        "ledge_probe_distance": {
+          "label": "Ledge Probe Distance", "description": "Distance checked ahead for ground support",
+          "type": "float", "default": 3, "group": "Movement",
+          "target_node": "Locomotion",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "horizontal_speed": {
+          "label": "Horizontal Speed", "description": "Maximum horizontal flight speed",
+          "type": "float", "default": 7.5, "group": "Movement",
+          "target_node": "Locomotion",
+          "min": 0, "for_variants": ["core:gun_beetle"]
+        },
+        "vertical_speed": {
+          "label": "Vertical Speed", "description": "Maximum vertical flight speed",
+          "type": "float", "default": 4.5, "group": "Movement",
+          "target_node": "Locomotion",
+          "min": 0, "for_variants": ["core:gun_beetle"]
+        },
+        "facing_enabled": {
+          "label": "Turn Toward Movement or Target", "description": "Enable turning during flight",
+          "type": "bool", "default": true, "group": "Movement",
+          "target_node": "Locomotion",
+          "for_variants": ["core:gun_beetle"]
+        },
+        "face_pitch": {
+          "label": "Pitch Toward Target", "description": "Allow the beetle to tilt up or down while aiming",
+          "type": "bool", "default": true, "group": "Movement",
+          "target_node": "Locomotion",
+          "requires": {"facing_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "patrol_distance": {
+          "label": "Patrol Distance", "description": "Distance from spawn before reversing patrol",
+          "type": "float", "default": 12, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "patrol_speed_ratio": {
+          "label": "Patrol Speed Ratio", "description": "Fraction of ground speed used while patrolling",
+          "type": "float", "default": 0.2, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "max": 1, "for_variants": ["core:rhino_tank"]
+        },
+        "windup_time": {
+          "label": "Charge Windup", "description": "Seconds spent aiming before charging",
+          "type": "float", "default": 0.8833333, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "charge_time": {
+          "label": "Maximum Charge Time", "description": "Maximum seconds spent charging",
+          "type": "float", "default": 1.5, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "charge_distance": {
+          "label": "Maximum Charge Distance", "description": "Distance limit for a single charge",
+          "type": "float", "default": 55, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "recovery_time": {
+          "label": "Charge Recovery", "description": "Seconds before detecting targets after a charge",
+          "type": "float", "default": 1, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "hurt_time": {
+          "label": "Hurt Recovery", "description": "Seconds movement and detection pause after nonlethal damage",
+          "type": "float", "default": 0.45, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:rhino_tank"]
+        },
+        "follow_target": {
+          "label": "Follow Target", "description": "Chase an acquired target",
+          "type": "bool", "default": true, "group": "Brain",
+          "target_node": "Components/Brain",
+          "for_variants": ["core:gun_beetle"]
+        },
+        "return_home_when_idle": {
+          "label": "Return Home When Idle", "description": "Return to the spawn position after losing a target",
+          "type": "bool", "default": true, "group": "Brain",
+          "target_node": "Components/Brain",
+          "for_variants": ["core:gun_beetle"]
+        },
+        "alert_duration_sec": {
+          "label": "Alert Duration", "description": "Seconds spent in the alert state",
+          "type": "float", "default": 0.45, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:gun_beetle"]
+        },
+        "maximum_leash_distance": {
+          "label": "Leash Distance", "description": "Maximum pursuit distance from spawn",
+          "type": "float", "default": 50, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:gun_beetle"]
+        },
+        "home_arrival_distance": {
+          "label": "Home Arrival Distance", "description": "Distance considered close enough to the spawn position",
+          "type": "float", "default": 5, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "for_variants": ["core:gun_beetle"]
+        },
+        "chase_speed_ratio": {
+          "label": "Chase Speed Ratio", "description": "Fraction of flight speed used during pursuit",
+          "type": "float", "default": 1, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "max": 1, "requires": {"follow_target": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "return_speed_ratio": {
+          "label": "Return Speed Ratio", "description": "Fraction of flight speed used while returning home",
+          "type": "float", "default": 0.7, "group": "Brain",
+          "target_node": "Components/Brain",
+          "min": 0, "max": 1, "requires": {"return_home_when_idle": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "attacks_enabled": {
+          "label": "Allow Attacks", "description": "Let the brain request projectile attacks",
+          "type": "bool", "default": true, "group": "Brain",
+          "target_node": "Components/Brain",
+          "for_variants": ["core:gun_beetle"]
+        },
+        "max_health": {
+          "label": "Maximum Health", "description": "Health at spawn and after respawn",
+          "type": "int", "default": 1, "group": "Health",
+          "target_node": "Components/Health",
+          "min": 1, "max": 1000000
+        },
+        "enemy_invulnerable": {
+          "label": "Invulnerable", "description": "Prevent incoming damage",
+          "type": "bool", "default": false, "group": "Health",
+          "target_node": "Components/Health", "target_property": "invulnerable"
+        },
+        "repeated_source_cooldown_sec": {
+          "label": "Repeat Hit Cooldown", "description": "Seconds before the same source can deal damage again",
+          "type": "float", "default": 0.08, "group": "Health",
+          "target_node": "Components/Health",
+          "min": 0
+        },
+        "enemy_respawns": {
+          "label": "Respawn", "description": "Allow defeated enemies to return",
+          "type": "bool", "default": true, "group": "Respawn",
+          "target_node": "Components/Respawn", "target_property": "respawn_enabled"
+        },
+        "enemy_respawn_delay": {
+          "label": "Respawn Delay", "description": "Seconds before a defeated enemy returns",
+          "type": "float", "default": 8, "group": "Respawn",
+          "target_node": "Components/Respawn", "target_property": "respawn_delay_sec",
+          "min": 0, "requires": {"enemy_respawns": true}, "variant_defaults": {"core:gun_beetle": 5}
+        },
+        "gravity_enabled": {
+          "label": "Gravity Enabled", "description": "Allow this actor to participate in the gravity system",
+          "type": "bool", "default": true, "group": "Gravity",
+          "target_node": "Components/Gravity"
+        },
+        "base_up_is_local": {
+          "label": "Use Local Up", "description": "Use the placed enemy's up axis as the base gravity frame",
+          "type": "bool", "default": false, "group": "Gravity",
+          "target_node": "Components/Gravity",
+          "requires": {"gravity_enabled": true}
+        },
+        "gravity_strength": {
+          "label": "Gravity Strength", "description": "Base gravity strength used by ground locomotion",
+          "type": "float", "default": 38, "group": "Gravity",
+          "target_node": "Components/Gravity",
+          "min": 0, "requires": {"gravity_enabled": true}, "for_variants": ["core:rhino_tank"]
+        },
+        "enemy_homing_target": {
+          "label": "Homing Target", "description": "Allow the player to target the enemy with a Homing Attack",
+          "type": "bool", "default": true, "group": "Targeting",
+          "target_node": "Targetable", "target_property": "homing_target_enabled"
+        },
+        "enemy_homing_distance": {
+          "label": "Homing Target Distance", "description": "Maximum targeting distance. Zero uses the player limit",
+          "type": "float", "default": 0, "group": "Targeting",
+          "target_node": "Targetable", "target_property": "homing_target_max_distance",
+          "min": 0, "requires": {"enemy_homing_target": true}
+        },
+        "attack_magnetism_enabled": {
+          "label": "Attack Magnetism", "description": "Allow attacks to pull the player toward this enemy",
+          "type": "bool", "default": true, "group": "Targeting",
+          "target_node": "Targetable"
+        },
+        "attack_magnetism_override_player_settings": {
+          "label": "Override Player Magnetism", "description": "Use this enemy's magnetism settings",
+          "type": "bool", "default": false, "group": "Targeting",
+          "target_node": "Targetable", "requires": { "attack_magnetism_enabled": true }
+        },
+        "attack_magnetism_range": {
+          "label": "Magnetism Range", "description": "Range within which attack magnetism can apply",
+          "type": "float", "default": 24, "group": "Targeting",
+          "target_node": "Targetable",
+          "min": 0, "variant_defaults": { "core:gun_beetle": 30 },
+          "requires": { "attack_magnetism_enabled": true, "attack_magnetism_override_player_settings": true }
+        },
+        "contact_damage_enabled": {
+          "label": "Contact Damage", "description": "Let the body hurt the player on collision",
+          "type": "bool", "default": false, "group": "Contact",
+          "target_node": "Hurtbox",
+          "variant_defaults": {"core:gun_beetle": true}
+        },
+        "contact_damage_amount": {
+          "label": "Contact Damage Amount", "description": "Damage value passed to the player on contact",
+          "type": "int", "default": 1, "group": "Contact",
+          "target_node": "Hurtbox",
+          "min": 1, "requires": {"contact_damage_enabled": true}
+        },
+        "bounce_airborne_players": {
+          "label": "Bounce Airborne Players", "description": "Bounce an airborne player after a successful hit",
+          "type": "bool", "default": true, "group": "Contact",
+          "target_node": "Hurtbox"
+        },
+        "bounce_player_speed": {
+          "label": "Bounce Speed", "description": "Speed applied when an airborne player bounces",
+          "type": "float", "default": 12, "group": "Contact",
+          "target_node": "Hurtbox",
+          "min": 0, "requires": {"bounce_airborne_players": true}, "variant_defaults": {"core:gun_beetle": 14}
+        },
+        "horn_enabled": {
+          "label": "Horn Attack", "description": "Enable the Rhino Tank's horn hitbox during a charge",
+          "type": "bool", "default": true, "group": "Attack",
+          "target_node": "Attacks/Horn", "target_property": "enabled",
+          "for_variants": ["core:rhino_tank"]
+        },
+        "horn_damage": {
+          "label": "Horn Damage", "description": "Damage value passed to the player on a horn hit",
+          "type": "int", "default": 1, "group": "Attack",
+          "target_node": "Attacks/Horn", "target_property": "damage_amount",
+          "min": 1, "requires": {"horn_enabled": true}, "for_variants": ["core:rhino_tank"]
+        },
+        "projectile_minimum_range": {
+          "label": "Minimum Range", "description": "Closest distance at which a shot can start",
+          "type": "float", "default": 4, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile", "target_property": "minimum_range",
+          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectile_maximum_range": {
+          "label": "Maximum Range", "description": "Farthest distance at which a shot can start",
+          "type": "float", "default": 15, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile", "target_property": "maximum_range",
+          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectile_windup": {
+          "label": "Shot Windup", "description": "Seconds between committing to a shot and firing",
+          "type": "float", "default": 0.55, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile", "target_property": "windup_duration_sec",
+          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectile_cooldown": {
+          "label": "Shot Cooldown", "description": "Seconds between one shot ending and the next becoming available",
+          "type": "float", "default": 1.8, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile", "target_property": "cooldown_duration_sec",
+          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectile_speed": {
+          "label": "Projectile Speed", "description": "Speed of the fired projectiles",
+          "type": "float", "default": 28, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile",
+          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectile_lifetime_sec": {
+          "label": "Projectile Lifetime", "description": "Maximum seconds a fired projectile stays active",
+          "type": "float", "default": 7, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile",
+          "min": 0.01, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectile_homing_turn_speed_deg": {
+          "label": "Projectile Homing", "description": "Projectile homing turn speed in degrees per second. Zero disables homing",
+          "type": "float", "default": 0, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile",
+          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "projectiles_per_shot": {
+          "label": "Projectiles per Shot", "description": "Number of projectiles fired in a shot",
+          "type": "int", "default": 3, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile",
+          "min": 1, "max": 32, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "spread_angle_deg": {
+          "label": "Projectile Spread", "description": "Angle between the outer projectiles in degrees",
+          "type": "float", "default": 10, "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile",
+          "min": 0, "max": 180, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "score_amount": {
+          "label": "Score Award", "description": "Score awarded when this enemy is defeated",
+          "type": "int", "default": 250, "group": "Rewards",
+          "target_node": "ScoreAward",
+          "min": 0, "max": 1000000, "variant_defaults": {"core:gun_beetle": 300}
+        },
+        "defeat_delay_sec": {
+          "label": "Defeat Delay", "description": "Seconds between being defeated and finishing the defeat sequence",
+          "type": "float", "default": 0.45, "group": "Enemy",
+          "min": 0, "variant_defaults": {"core:gun_beetle": 0}
+        }
+      }
+    },
+    "spike_strip": {
+      "label": "Spike Strip",
+      "scene": "res://LS5Framework/Objects/SpikeStrip/spike_strip.tscn",
+      "properties": {
+        "size": {
+          "label": "Size", "description": "Uniform scale of the strip and its collision",
+          "type": "float", "default": 1, "group": "Spike Strip", "min": 0.01
+        },
+        "start_raised": {
+          "label": "Start Raised", "description": "Begin with the spikes extended",
+          "type": "bool", "default": false, "group": "Spike Strip"
+        },
+        "stay_up": {
+          "label": "Stay Up", "description": "Keep the spikes raised after the first rise",
+          "type": "bool", "default": false, "group": "Spike Strip"
+        },
+        "damage_amount": {
+          "label": "Damage", "description": "Damage per hit. Zero disables contact damage",
+          "type": "int", "default": 1, "group": "Spike Strip", "min": 0, "max": 1000
+        },
+        "hide_base_plate": {
+          "label": "Hide Base Plate", "description": "Hide the base plate and lower the spikes",
+          "type": "bool", "default": false, "group": "Base Plate"
+        },
+        "disable_base_collision": {
+          "label": "Disable Base Collision", "description": "Disable solid plate collision independently of visibility",
+          "type": "bool", "default": false, "group": "Base Plate"
+        },
+        "hidden_base_offset": {
+          "label": "Hidden Base Offset", "description": "Lowering distance when the plate is hidden, before Size is applied",
+          "type": "float", "default": 0.55, "group": "Base Plate", "min": 0, "requires": {"hide_base_plate": true}
+        },
+        "down_loop_duration": {
+          "label": "Retracted Duration", "description": "Seconds between rises",
+          "type": "float", "default": 2, "group": "Cycle", "min": 0.01
+        },
+        "up_transition_duration": {
+          "label": "Rise Duration", "description": "Seconds to raise the spikes",
+          "type": "float", "default": 1, "group": "Cycle", "min": 0.01
+        },
+        "up_loop_duration": {
+          "label": "Raised Duration", "description": "Seconds spent raised before lowering",
+          "type": "float", "default": 2, "group": "Cycle", "min": 0.01, "requires": {"stay_up": false}
+        }
+      }
+    },
+    "spike_ball": {
+      "label": "Spike Ball",
+      "scene": "res://LS5Framework/Objects/Enemies/SpikeBall/SpikeBall.tscn",
+      "properties": {
+        "size": {
+          "label": "Size", "description": "Uniform scale of the spike ball and its collision",
+          "type": "float", "default": 1, "group": "Spike Ball", "min": 0.01
+        },
+        "movement_mode": {
+          "label": "Movement", "description": "Choose how the spike ball moves",
+          "type": "enum", "default": "floating",
+          "group": "Spike Ball",
+          "options": {
+            "floating": { "label": "Floating", "value": 0 },
+            "crash_down": { "label": "Crash Down", "value": 1 },
+            "physical": { "label": "Physical", "value": 2 }
+          }
+        },
+        "intangible": {
+          "label": "Disable Contact Damage", "description": "Retain solid collision while disabling contact damage",
+          "type": "bool", "default": false, "group": "Spike Ball"
+        },
+        "spike_ball_damage_amount": {
+          "label": "Damage", "description": "Damage value passed to the player on contact",
+          "type": "int", "default": 1, "group": "Spike Ball", "min": 1, "max": 1000,
+          "target_property": "damage_amount", "requires": { "intangible": false }
+        },
+        "collision_radius": {
+          "label": "Collision Radius", "description": "Radius of the solid collision at Size 1",
+          "type": "float", "default": 1.9, "group": "Spike Ball", "min": 0.01
+        },
+        "damage_contact_margin": {
+          "label": "Damage Contact Margin", "description": "Extra contact radius at Size 1",
+          "type": "float", "default": 0.2, "group": "Spike Ball", "min": 0, "requires": { "intangible": false }
+        },
+        "crash_top_hold_duration": {
+          "label": "Raised Hold", "description": "Seconds to wait before each fall",
+          "type": "float", "default": 0.7, "group": "Crash Down", "min": 0, "requires": {"movement_mode": "crash_down"}
+        },
+        "crash_ground_hold_duration": {
+          "label": "Ground Hold", "description": "Seconds to wait after landing",
+          "type": "float", "default": 0.7, "group": "Crash Down", "min": 0, "requires": {"movement_mode": "crash_down"}
+        },
+        "crash_initial_fall_speed": {
+          "label": "Initial Fall Speed", "description": "Speed at the start of each fall",
+          "type": "float", "default": 0, "group": "Crash Down", "min": 0, "requires": {"movement_mode": "crash_down"}
+        },
+        "crash_fall_acceleration": {
+          "label": "Fall Acceleration", "description": "Acceleration along the spike ball's local down axis",
+          "type": "float", "default": 65, "group": "Crash Down", "min": 0, "requires": {"movement_mode": "crash_down"}
+        },
+        "crash_max_fall_speed": {
+          "label": "Maximum Fall Speed", "description": "Speed limit when falling",
+          "type": "float", "default": 80, "group": "Crash Down", "min": 0.01, "requires": {"movement_mode": "crash_down"}
+        },
+        "crash_rise_speed": {
+          "label": "Rise Speed", "description": "Speed when returning toward the placement",
+          "type": "float", "default": 20, "group": "Crash Down", "min": 0.01, "requires": {"movement_mode": "crash_down"}
+        },
+        "physical_mass": {
+          "label": "Mass", "description": "Mass in Physical mode",
+          "type": "float", "default": 15, "group": "Physical", "min": 0.01, "requires": {"movement_mode": "physical"}
+        },
+        "physical_friction": {
+          "label": "Friction", "description": "Surface friction in Physical mode",
+          "type": "float", "default": 0.35, "group": "Physical", "min": 0, "max": 1, "requires": {"movement_mode": "physical"}
+        },
+        "physical_bounce": {
+          "label": "Bounce", "description": "Surface bounce in Physical mode",
+          "type": "float", "default": 0.15, "group": "Physical", "min": 0, "max": 1, "requires": {"movement_mode": "physical"}
+        },
+        "physical_linear_damp": {
+          "label": "Linear Damping", "description": "Resistance to linear motion in Physical mode",
+          "type": "float", "default": 0.05, "group": "Physical", "min": 0, "requires": { "movement_mode": "physical" }
+        },
+        "physical_angular_damp": {
+          "label": "Angular Damping", "description": "Resistance to spinning in Physical mode",
+          "type": "float", "default": 0.05, "group": "Physical", "min": 0, "requires": { "movement_mode": "physical" }
+        },
+        "physical_gravity_scale": {
+          "label": "Gravity Scale", "description": "Multiplier on gravity strength",
+          "type": "float", "default": 4, "group": "Physical", "min": 0, "requires": {"movement_mode": "physical"}
+        },
+        "follow_gravity_systems": {
+          "label": "Follow Gravity Systems", "description": "Use gravity modifiers and planetary fields in Physical mode",
+          "type": "bool", "default": true, "group": "Physical", "requires": {"movement_mode": "physical"}
+        }
+      }
+    },
+    "checkpoint": {
+      "label": "Checkpoint",
+      "scene": "res://LS5Framework/Objects/Gameplay/CheckpointGate.tscn",
+      "properties": {
+        "checkpoint_width": {
+          "label": "Width", "description": "Distance between post centers in meters",
+          "type": "float", "default": 6.006, "min": 6, "always_export": true,
+          "target_property": "width", "group": "Checkpoint"
+        },
+        "active": {
+          "label": "Active", "description": "Allow the gate to become the player's checkpoint",
+          "type": "bool", "default": true, "group": "Checkpoint"
+        },
+        "checkpoint_rehit_cooldown": {
+          "label": "Rehit Cooldown", "description": "Seconds before the same player can trigger this gate again",
+          "type": "float", "default": 0.25, "min": 0,
+          "target_property": "rehit_cooldown", "group": "Checkpoint"
+        },
+        "fit_trigger_to_width": {
+          "label": "Match Post Spacing", "description": "Use the post spacing as the trigger width",
+          "type": "bool", "default": true, "group": "Trigger"
+        },
+        "trigger_width": {
+          "label": "Trigger Width", "description": "Local X size of the trigger",
+          "type": "float", "default": 6.006, "min": 0.05, "group": "Trigger",
+          "requires": { "fit_trigger_to_width": false }
+        },
+        "trigger_depth": {
+          "label": "Trigger Depth", "description": "Local Y size of the trigger in Blender",
+          "type": "float", "default": 2, "min": 0.05, "group": "Trigger"
+        },
+        "trigger_height": {
+          "label": "Trigger Height", "description": "Local Z size of the trigger in Blender",
+          "type": "float", "default": 6, "min": 0.05, "group": "Trigger"
+        },
+        "checkpoint_trigger_offset": {
+          "label": "Trigger Center", "description": "Center of the trigger relative to the checkpoint",
+          "type": "local_offset", "default": [0, 2, 0], "marker": "CollisionShape3D",
+          "marker_label": "Checkpoint Trigger Center", "group": "Trigger"
+        },
+        "checkpoint_respawn_offset": {
+          "label": "Respawn Point", "description": "Position of the respawn point relative to the checkpoint",
+          "type": "local_offset", "default": [0, 1.33, 2], "marker": "RespawnPoint",
+          "marker_label": "Checkpoint Respawn", "group": "Checkpoint"
+        },
+        "respawn_axis": {
+          "label": "Respawn Facing", "description": "Direction the player faces on respawn",
+          "type": "enum", "default": "positive_z", "group": "Checkpoint",
+          "options": {
+            "positive_x": { "label": "Blender +X", "value": 0 },
+            "negative_x": { "label": "Blender -X", "value": 1 },
+            "positive_z": { "label": "Blender -Y", "value": 2 },
+            "negative_z": { "label": "Blender +Y", "value": 3 }
+          }
+        },
+        "respawn_speed": {
+          "label": "Respawn Speed", "description": "Starting speed after respawn in meters per second",
+          "type": "float", "default": 0, "min": 0, "group": "Checkpoint"
+        }
+      }
+    },
     "item_monitor": {
       "label": "Item Monitor",
       "scene": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn",
@@ -599,6 +1262,8 @@
     "ring_spline": {
       "label": "Ring Trail",
       "scene": "res://LS5Framework/Objects/Rings/RingSpline.tscn",
+      "variant_family": "ring",
+      "variant_scene_property": "ring_scene",
       "curve_target": "Path3D",
       "properties": {
         "ring_spacing": {

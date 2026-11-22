@@ -14,7 +14,7 @@ from bpy.props import BoolProperty, EnumProperty, FloatProperty, FloatVectorProp
 from bpy.types import Operator, Panel, PropertyGroup
 from bpy_extras.io_utils import ExportHelper
 from mathutils import Matrix, Vector
-from . import booster_preview, dash_preview, rail_preview, spring_preview
+from . import booster_preview, checkpoint_preview, dash_preview, model_preview, rail_preview, ring_preview, spring_preview
 from .spring_preview import MARKER_FIELD_KEY, placement_marker
 
 
@@ -34,12 +34,21 @@ SPRING_STYLES = CATALOG["types"]["spring"]["properties"]["spring_style"]["option
 SPRING_VARIANT_BOOLS = {key for style in SPRING_STYLES.values() for key in style.get("bool_defaults", {})}
 RAIL_VARIANT_KEY = "sonic_vane_rail_variant"
 RAIL_SEGMENT_KEY = "sonic_vane_rail_preview_segment"
-PREVIEW_SOURCE_KEY = "sonic_vane_placement_preview_source"
+PREVIEW_SOURCE_KEY = ring_preview.PREVIEW_SOURCE_KEY
 MONITOR_STYLE_KEY = "sonic_vane_monitor_style"
 MONITOR_MATERIAL_KEY = "sonic_vane_monitor_material"
 MONITOR_TEXTURE_KEY = "sonic_vane_monitor_texture"
 MONITOR_STYLES = CATALOG["types"]["item_monitor"]["properties"]["monitor_style"]["options"]
 RING_TRAIL_GROUP = "Sonic Vane Ring Trail"
+VARIANTS = CATALOG["variants"]
+RING_VARIANTS = VARIANTS["ring"]
+STANDARD_RING = "core:ring"
+STANDARD_ENEMY = CATALOG["types"]["enemy"]["default_variant"]
+DEFAULT_VARIANTS = {"ring": STANDARD_RING, "enemy": STANDARD_ENEMY}
+RING_KINDS = {"ring", "ring_spline"}
+SIZED_HAZARD_KINDS = {"enemy", "spike_strip", "spike_ball"}
+ENEMY_HAZARD_LIBRARY = "Enemies and Hazards.blend"
+USE_LEVEL_DEFAULT = "LEVEL_DEFAULT"
 RAIL_VARIANTS = CATALOG["types"]["rail"]["properties"]["rail_variant"]["options"]
 GAMEPLAY_COLLECTION_NAME = "Sonic Vane Gameplay"
 MARKER_FIELDS = {
@@ -51,6 +60,30 @@ Y_UP = Matrix(((1, 0, 0), (0, 0, 1), (0, -1, 0)))
 rail_guides_handler = None
 dash_direction_handler = None
 spring_trajectory_handler = None
+checkpoint_trigger_handler = None
+known_object_ids = set()
+tracking_new_objects = False
+
+
+def variant_items(family):
+    return (
+        (USE_LEVEL_DEFAULT, "Use Level Default", f"Use the level's {family} variant", 0),
+        *((key, entry["label"], key, entry["blender_index"]) for key, entry in VARIANTS[family].items()),
+    )
+
+
+VARIANT_ITEMS = {family: variant_items(family) for family in DEFAULT_VARIANTS}
+
+
+def variant_family(kind):
+    return CATALOG["types"][kind].get("variant_family", kind)
+
+
+def effective_variant(placement, family, scene):
+    variant = getattr(placement, f"{family}_variant")
+    if variant != USE_LEVEL_DEFAULT:
+        return variant
+    return getattr(scene, f"sonic_vane_{family}_default") if scene else DEFAULT_VARIANTS[family]
 
 
 def export_bezier(obj, world):
@@ -78,7 +111,22 @@ def export_bezier(obj, world):
     return {"closed": spline.use_cyclic_u, "points": points}
 
 
-def field_enabled(placement, field):
+def field_enabled(placement, field, scene=None):
+    if placement.kind == "enemy":
+        scene = scene if scene is not None else bpy.context.scene
+        variant = effective_variant(placement, "enemy", scene)
+        if "for_variants" in field and variant not in field["for_variants"]:
+            return False
+        properties = CATALOG["types"]["enemy"]["properties"]
+        for key, required in field.get("requires", {}).items():
+            control = properties[key]
+            if placement.is_property_set(key):
+                value = getattr(placement, key)
+            else:
+                value = control.get("variant_defaults", {}).get(variant, control["default"])
+            if value != required:
+                return False
+        return True
     return all(
         getattr(placement, key) == value for key, value in field.get("requires", {}).items()
     )
@@ -119,6 +167,10 @@ def sync_loaded_markers(*_):
                 booster_preview.sync_preview(placement)
             if placement.kind == "dash_panel":
                 dash_preview.sync_model(placement)
+            if placement.kind in RING_KINDS:
+                sync_ring_preview(placement, None, scene)
+            if placement.kind in SIZED_HAZARD_KINDS:
+                sync_enemy_hazard_preview(placement, scene)
 
 
 def update_marker_offset(key):
@@ -139,6 +191,7 @@ def build_placement_document(scene, depsgraph):
 
     records = []
     names_by_id = {}
+    spawn_name = None
     for obj in scene.objects:
         placement = obj.sonic_vane_placement
         if placement.kind == "NONE":
@@ -150,6 +203,10 @@ def build_placement_document(scene, depsgraph):
         if placement_id in names_by_id:
             raise ValueError(f"{obj.name} and {names_by_id[placement_id]} share a placement UUID.")
         names_by_id[placement_id] = obj.name
+        if placement.kind == "player_spawn":
+            if spawn_name is not None:
+                raise ValueError(f"{spawn_name} and {obj.name} are both marked as Player Spawn. Keep one per level.")
+            spawn_name = obj.name
 
         world = obj.evaluated_get(depsgraph).matrix_world
         position = Y_UP @ world.translation
@@ -163,6 +220,8 @@ def build_placement_document(scene, depsgraph):
 
         values = {}
         for key, field in CATALOG["types"][placement.kind]["properties"].items():
+            if placement.kind == "enemy" and not field_enabled(placement, field, scene):
+                continue
             marker = None
             if field["type"] == "local_offset":
                 if not field_enabled(placement, field):
@@ -193,6 +252,11 @@ def build_placement_document(scene, depsgraph):
             "rotation": list(xyzw),
             "properties": values,
         }
+        family = variant_family(placement.kind)
+        if family in VARIANTS:
+            variant = getattr(placement, f"{family}_variant")
+            if variant != USE_LEVEL_DEFAULT:
+                record["variant"] = variant
         if "curve_target" in CATALOG["types"][placement.kind]:
             record["curve"] = export_bezier(obj, world)
         if placement.kind == "rail_booster":
@@ -207,7 +271,15 @@ def build_placement_document(scene, depsgraph):
         records.append(record)
 
     records.sort(key=lambda record: record["id"])
-    return {"schema_version": CATALOG["schema_version"], "level_id": level_id, "placements": records}
+    document = {"schema_version": CATALOG["schema_version"], "level_id": level_id, "placements": records}
+    defaults = {}
+    for family, standard in DEFAULT_VARIANTS.items():
+        variant = getattr(scene, f"sonic_vane_{family}_default")
+        if variant != standard:
+            defaults[family] = variant
+    if defaults:
+        document["variant_defaults"] = defaults
+    return document
 
 
 def write_placements(path, scene, depsgraph):
@@ -261,30 +333,72 @@ def sync_rail_preview(placement, _context):
     modifier.node_group = group
 
 
-def sync_ring_trail_preview(placement, _context):
+def sync_ring_preview(placement, context, scene=None):
     obj = placement.id_data
-    if placement.kind != "ring_spline" or obj.type != "CURVE" or not obj.is_editable:
+    if not obj.is_editable or placement.kind not in RING_KINDS:
         return
+    variant = effective_variant(placement, "ring", scene if scene else (context or bpy.context).scene)
+    if placement.kind == "ring" and obj.type == "MESH":
+        mesh = model_preview.load_mesh(ASSET_DIRECTORY, variant, RING_VARIANTS[variant])
+        if mesh is None:
+            mesh = model_preview.load_mesh(ASSET_DIRECTORY, STANDARD_RING, RING_VARIANTS[STANDARD_RING])
+        if mesh is not None and obj.data != mesh:
+            obj.data = mesh
+    elif placement.kind == "ring_spline" and obj.type == "CURVE":
+        sync_ring_trail_preview(placement, variant)
+
+
+def sync_level_ring_default(scene, _context):
+    for obj in scene.objects:
+        if obj.sonic_vane_placement.kind in RING_KINDS:
+            sync_ring_preview(obj.sonic_vane_placement, None, scene)
+
+
+def update_ring_preview(placement, context):
+    sync_ring_preview(placement, context)
+
+
+def sync_ring_trail_preview(placement, variant):
+    obj = placement.id_data
     modifier = obj.modifiers.get("Ring Trail Preview")
     if modifier is None:
         modifier = obj.modifiers.new("Ring Trail Preview", "NODES")
     if modifier.type != "NODES":
         return
-    if not modifier.node_group:
+    group = modifier.node_group
+    if not group or group.get(ring_preview.VARIANT_KEY):
         group = bpy.data.node_groups.get(RING_TRAIL_GROUP)
         if group is None:
             with bpy.data.libraries.load(str(ASSET_DIRECTORY / "Traversal Objects.blend")) as (_, imported):
                 imported.node_groups = [RING_TRAIL_GROUP]
             group = imported.node_groups[0]
+    if variant != STANDARD_RING:
+        mesh = model_preview.load_mesh(ASSET_DIRECTORY, variant, RING_VARIANTS[variant])
+        if mesh is not None:
+            group = ring_preview.trail_group(group, variant, mesh)
+    if modifier.node_group != group:
         modifier.node_group = group
+    set_preview_input(obj, modifier, "Ring Spacing", placement.ring_spacing)
+
+
+def set_preview_input(obj, modifier, name, value):
     for socket in modifier.node_group.interface.items_tree:
-        if socket.item_type == "SOCKET" and socket.in_out == "INPUT" and socket.name == "Ring Spacing":
+        if socket.item_type == "SOCKET" and socket.in_out == "INPUT" and socket.name == name:
             if hasattr(modifier, "properties"):
-                getattr(modifier.properties.inputs, socket.identifier).value = placement.ring_spacing
+                getattr(modifier.properties.inputs, socket.identifier).value = value
             else:
-                modifier[socket.identifier] = placement.ring_spacing
+                modifier[socket.identifier] = value
             obj.update_tag()
             break
+
+
+def sync_checkpoint_width(placement, _context):
+    obj = placement.id_data
+    if placement.kind != "checkpoint" or obj.type != "MESH" or not obj.is_editable:
+        return
+    modifier = obj.modifiers.get("Checkpoint Width")
+    if modifier and modifier.type == "NODES" and modifier.node_group:
+        set_preview_input(obj, modifier, "Width", placement.checkpoint_width)
 
 
 def sync_monitor_preview(placement, _context):
@@ -345,6 +459,46 @@ def sync_dash_panel_size(placement, _context):
 def sync_size_preview(placement, context):
     sync_monitor_preview(placement, context)
     sync_dash_panel_size(placement, context)
+    update_enemy_hazard_preview(placement, context)
+
+
+def update_enemy_hazard_preview(placement, context):
+    sync_enemy_hazard_preview(placement, (context or bpy.context).scene)
+
+
+def sync_enemy_hazard_preview(placement, scene):
+    obj = placement.id_data
+    kind = placement.kind
+    if kind not in SIZED_HAZARD_KINDS or obj.type != "MESH" or not obj.is_editable:
+        return
+    obj.delta_scale = (placement.size,) * 3
+    if kind == "enemy":
+        variant = effective_variant(placement, "enemy", scene)
+        variants = VARIANTS["enemy"]
+        mesh = model_preview.load_mesh(ASSET_DIRECTORY, variant, variants[variant])
+        if mesh is None:
+            mesh = model_preview.load_mesh(ASSET_DIRECTORY, STANDARD_ENEMY, variants[STANDARD_ENEMY])
+    else:
+        name = "Spike Ball"
+        if kind == "spike_strip":
+            pose = "Raised" if placement.start_raised else "Retracted"
+            name = f"Spike Strip {pose}" + (" No Plate" if placement.hide_base_plate else "")
+        mesh = model_preview.load_mesh(
+            ASSET_DIRECTORY, name, {"preview_file": ENEMY_HAZARD_LIBRARY, "preview_mesh": name}
+        )
+    if mesh is not None and obj.data != mesh:
+        obj.data = mesh
+
+    if kind == "spike_strip" and placement.hide_base_plate:
+        model_preview.set_rotation(obj, "Spike Strip Offset", (0, 0, 0), (0, 0, -placement.hidden_base_offset))
+    else:
+        model_preview.set_rotation(obj, "Spike Strip Offset", None)
+
+
+def sync_level_enemy_default(scene, _context):
+    for obj in scene.objects:
+        if obj.sonic_vane_placement.kind == "enemy":
+            sync_enemy_hazard_preview(obj.sonic_vane_placement, scene)
 
 
 def spring_variant_default(key):
@@ -369,8 +523,11 @@ def cleanup_monitor_previews(*_):
 
 
 def update_placement_kind(placement, context):
+    if placement.kind != "spike_strip" and placement.id_data.is_editable:
+        model_preview.set_rotation(placement.id_data, "Spike Strip Offset", None)
     sync_placement_markers(placement, context)
-    sync_ring_trail_preview(placement, context)
+    sync_ring_preview(placement, context)
+    sync_checkpoint_width(placement, context)
     sync_size_preview(placement, context)
     sync_spring_preview(placement, context)
     dash_preview.sync_model(placement)
@@ -379,6 +536,8 @@ def update_placement_kind(placement, context):
 
 def placement_property(key, field):
     settings = {"name": field["label"], "description": field["description"], "default": field["default"]}
+    if "variant_defaults" in field and bpy.app.version >= (5, 1, 0):
+        settings["get_transform"] = enemy_property_default(field)
     if field["type"] == "bool":
         if key in MARKER_CONTROLS:
             settings["update"] = sync_placement_markers
@@ -386,6 +545,8 @@ def placement_property(key, field):
             settings["get_transform"] = spring_variant_default(key)
         if key == "trajectory_arc_enabled":
             settings["update"] = spring_preview.sync_model
+        if key in {"start_raised", "hide_base_plate"}:
+            settings["update"] = update_enemy_hazard_preview
         return BoolProperty(**settings)
     if field["type"] == "enum":
         items = [(key, option["label"], "", option["value"]) for key, option in field["options"].items()]
@@ -408,28 +569,54 @@ def placement_property(key, field):
     if "max" in field:
         settings["max"] = field["max"]
     if field["type"] == "int":
+        if key == "ring_value" and bpy.app.version >= (5, 1, 0):
+            settings["get_transform"] = ring_value_default
         return IntProperty(**settings)
     if key == "ring_spacing":
-        settings["update"] = sync_ring_trail_preview
+        settings["update"] = update_ring_preview
         settings["unit"] = "LENGTH"
     if key == "size":
         settings["update"] = sync_size_preview
     if key == "trajectory_arc_height":
         settings["update"] = spring_preview.sync_model
+    if key == "checkpoint_width":
+        settings["update"] = sync_checkpoint_width
+    if key == "hidden_base_offset":
+        settings["update"] = update_enemy_hazard_preview
+    if key in {"checkpoint_width", "trigger_width", "trigger_height", "trigger_depth",
+               "hidden_base_offset", "collision_radius", "damage_contact_margin"}:
+        settings["unit"] = "LENGTH"
     return FloatProperty(**settings)
 
 
-def scene_placement_ids(scene):
-    used = set()
-    for obj in scene.objects:
-        placement = obj.sonic_vane_placement
-        if placement.kind == "NONE" or not placement.placement_id.strip():
-            continue
+def ring_value_default(placement, value, is_set):
+    if is_set or placement.kind != "ring":
+        return value
+    variant = effective_variant(placement, "ring", bpy.context.scene)
+    return RING_VARIANTS[variant].get("ring_value", value)
+
+
+def enemy_property_default(field):
+    def get(placement, value, is_set):
+        if is_set or placement.kind != "enemy":
+            return value
+        variant = effective_variant(placement, "enemy", bpy.context.scene)
+        return field["variant_defaults"].get(variant, value)
+
+    return get
+
+
+def canonical_placement_id(placement):
+    if placement.kind != "NONE":
         try:
-            used.add(str(uuid.UUID(placement.placement_id.strip())))
+            return str(uuid.UUID(placement.placement_id.strip()))
         except ValueError:
-            continue
-    return used
+            pass
+    return None
+
+
+def scene_placement_ids(scene):
+    return {key for obj in scene.objects if (key := canonical_placement_id(obj.sonic_vane_placement))}
 
 
 def reserve_placement_id(used):
@@ -438,6 +625,64 @@ def reserve_placement_id(used):
         placement_id = str(uuid.uuid4())
     used.add(placement_id)
     return placement_id
+
+
+@persistent
+def pause_object_tracking(*_):
+    global tracking_new_objects
+    tracking_new_objects = False
+
+
+@persistent
+def reset_object_tracking(*_):
+    global tracking_new_objects
+    known_object_ids.clear()
+    known_object_ids.update(obj.session_uid for obj in bpy.data.objects)
+    tracking_new_objects = True
+
+
+@persistent
+def assign_duplicate_placement_ids(_scene, depsgraph):
+    if not tracking_new_objects or not depsgraph.id_type_updated("OBJECT"):
+        return
+    if len(known_object_ids) == len(bpy.data.objects) and not any(
+        isinstance(update.id, bpy.types.Object) and update.id.original.session_uid not in known_object_ids
+        for update in depsgraph.updates
+    ):
+        return
+    current_ids = set()
+    existing = set()
+    new_placements = []
+    for obj in bpy.data.objects:
+        current_ids.add(obj.session_uid)
+        placement = obj.sonic_vane_placement
+        if placement.kind == "NONE":
+            continue
+        key = canonical_placement_id(placement)
+        if obj.session_uid in known_object_ids or not obj.is_editable:
+            if key:
+                existing.add(key)
+        else:
+            new_placements.append((placement, key))
+    known_object_ids.clear()
+    known_object_ids.update(current_ids)
+    used = existing | {key for _, key in new_placements if key}
+    for placement, key in new_placements:
+        if not key or key in existing:
+            placement.placement_id = reserve_placement_id(used)
+        else:
+            existing.add(key)
+
+
+OBJECT_TRACKING_HANDLERS = (
+    (bpy.app.handlers.load_pre, pause_object_tracking),
+    (bpy.app.handlers.load_post, reset_object_tracking),
+    (bpy.app.handlers.undo_pre, pause_object_tracking),
+    (bpy.app.handlers.undo_post, reset_object_tracking),
+    (bpy.app.handlers.redo_pre, pause_object_tracking),
+    (bpy.app.handlers.redo_post, reset_object_tracking),
+    (bpy.app.handlers.depsgraph_update_post, assign_duplicate_placement_ids),
+)
 
 
 @persistent
@@ -462,6 +707,14 @@ def initialize_appended_gameplay_assets(import_context):
             continue
 
         placement = obj.sonic_vane_placement
+        family = variant_family(kind)
+        if family in VARIANTS:
+            variant = obj.get(model_preview.VARIANT_KEY)
+            if variant in VARIANTS[family]:
+                setattr(placement, f"{family}_variant", variant)
+                del obj[model_preview.VARIANT_KEY]
+            if obj.type == "MESH":
+                obj.data[model_preview.VARIANT_KEY] = variant or DEFAULT_VARIANTS[family]
         if kind == "item_monitor":
             style = obj.get(MONITOR_STYLE_KEY)
             if isinstance(style, str) and style in MONITOR_STYLES:
@@ -509,6 +762,11 @@ class SonicVanePlacement(PropertyGroup):
             ("rail_booster", CATALOG["types"]["rail_booster"]["label"], "Place a boost along a grind rail", 5),
             ("item_monitor", CATALOG["types"]["item_monitor"]["label"], "Place a reward monitor", 6),
             ("dash_panel", CATALOG["types"]["dash_panel"]["label"], "Place a directional dash panel", 7),
+            ("checkpoint", CATALOG["types"]["checkpoint"]["label"], "Place a checkpoint gate", 8),
+            ("enemy", CATALOG["types"]["enemy"]["label"], "Place an enemy", 9),
+            ("spike_strip", CATALOG["types"]["spike_strip"]["label"], "Place a timed spike strip", 10),
+            ("spike_ball", CATALOG["types"]["spike_ball"]["label"], "Place a spike ball hazard", 11),
+            ("player_spawn", CATALOG["types"]["player_spawn"]["label"], "Set the level's starting position and facing", 12),
         ),
         default="NONE",
         update=update_placement_kind,
@@ -516,6 +774,14 @@ class SonicVanePlacement(PropertyGroup):
     placement_id: StringProperty(
         name="Placement UUID",
         description="Stable identity shared by all exports of this placement",
+    )
+    ring_variant: EnumProperty(
+        name="Variant", description="Pickup appearance and behavior",
+        items=VARIANT_ITEMS["ring"], default=USE_LEVEL_DEFAULT, update=update_ring_preview,
+    )
+    enemy_variant: EnumProperty(
+        name="Variant", description="Enemy type and behavior",
+        items=VARIANT_ITEMS["enemy"], default=USE_LEVEL_DEFAULT, update=update_enemy_hazard_preview,
     )
     spring_original_mesh: PointerProperty(type=bpy.types.Mesh, options={"HIDDEN"})
     booster_rail: PointerProperty(
@@ -597,6 +863,38 @@ class SONICVANE_OT_assign_missing_placement_ids(Operator):
         return {"FINISHED"} if assigned else {"CANCELLED"}
 
 
+class SONICVANE_OT_repair_duplicate_placement_ids(Operator):
+    bl_idname = "sonic_vane.repair_duplicate_placement_ids"
+    bl_label = "Find and Replace Duplicate UUIDs"
+    bl_description = "Keep one placement per UUID and replace duplicate IDs in this scene"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        seen = set()
+        used = scene_placement_ids(context.scene)
+        repaired = 0
+        read_only = 0
+        for obj in sorted(context.scene.objects, key=lambda item: (item.is_editable, item.name)):
+            placement = obj.sonic_vane_placement
+            key = canonical_placement_id(placement)
+            if not key:
+                continue
+            if key not in seen:
+                seen.add(key)
+            elif obj.is_editable:
+                placement.placement_id = reserve_placement_id(used)
+                repaired += 1
+            else:
+                read_only += 1
+        if read_only:
+            self.report({"WARNING"}, f"Replaced {repaired} duplicate UUIDs. {read_only} read-only duplicates remain.")
+        elif repaired:
+            self.report({"INFO"}, f"Replaced {repaired} duplicate UUIDs.")
+        else:
+            self.report({"INFO"}, "No duplicate UUIDs found.")
+        return {"FINISHED"} if repaired else {"CANCELLED"}
+
+
 class SONICVANE_OT_export_placements(Operator, ExportHelper):
     bl_idname = "sonic_vane.export_placements"
     bl_label = "Export Placements"
@@ -640,12 +938,17 @@ class SONICVANE_PT_object_placement(Panel):
         identity.enabled = False
         identity.prop(placement, "placement_id")
         details.operator(SONICVANE_OT_new_placement_id.bl_idname)
+        family = variant_family(placement.kind)
+        if family in VARIANTS:
+            details.prop(placement, f"{family}_variant")
         if placement.kind == "rail":
             details.prop(context.object, "sonic_vane_rail_guides")
         elif placement.kind == "dash_panel":
             details.prop(context.object, "sonic_vane_dash_direction")
         elif placement.kind == "spring" and placement.use_trajectory_solver:
             details.prop(context.object, "sonic_vane_show_trajectory")
+        elif placement.kind == "checkpoint":
+            details.prop(context.object, "sonic_vane_show_trigger")
         elif placement.kind == "rail_booster":
             details.prop(placement, "booster_rail")
             position_row = details.row()
@@ -658,7 +961,9 @@ class SONICVANE_PT_object_placement(Panel):
                 groups.setdefault(field["group"], []).append((key, field))
         for group, fields in groups.items():
             header, body = layout.panel(group, default_closed=group not in {
-                "Spring", "Rail", "Ring", "Ring Trail", "Rail Booster", "Item Monitor", "Dash Panel"
+                "Spring", "Rail", "Ring", "Ring Trail", "Rail Booster", "Item Monitor", "Dash Panel",
+                "Checkpoint", "Trigger", "Enemy", "Spike Strip", "Base Plate", "Cycle",
+                "Spike Ball", "Crash Down", "Physical", "Player Spawn"
             })
             header.label(text=group)
             if body is None:
@@ -681,8 +986,11 @@ class SONICVANE_PT_scene_placements(Panel):
 
     def draw(self, context):
         self.layout.prop(context.scene, "sonic_vane_level_id")
+        self.layout.prop(context.scene, "sonic_vane_ring_default")
+        self.layout.prop(context.scene, "sonic_vane_enemy_default")
         self.layout.operator(SONICVANE_OT_register_asset_library.bl_idname)
         self.layout.operator(SONICVANE_OT_assign_missing_placement_ids.bl_idname)
+        self.layout.operator(SONICVANE_OT_repair_duplicate_placement_ids.bl_idname)
         self.layout.operator(SONICVANE_OT_export_placements.bl_idname)
 
 
@@ -691,6 +999,7 @@ CLASSES = (
     SONICVANE_OT_register_asset_library,
     SONICVANE_OT_new_placement_id,
     SONICVANE_OT_assign_missing_placement_ids,
+    SONICVANE_OT_repair_duplicate_placement_ids,
     SONICVANE_OT_export_placements,
     SONICVANE_PT_object_placement,
     SONICVANE_PT_scene_placements,
@@ -702,7 +1011,7 @@ def export_menu(self, context):
 
 
 def register():
-    global rail_guides_handler, dash_direction_handler, spring_trajectory_handler
+    global rail_guides_handler, dash_direction_handler, spring_trajectory_handler, checkpoint_trigger_handler
     for cls in CLASSES:
         bpy.utils.register_class(cls)
     bpy.types.Object.sonic_vane_placement = PointerProperty(type=SonicVanePlacement)
@@ -715,24 +1024,41 @@ def register():
     bpy.types.Object.sonic_vane_show_trajectory = BoolProperty(
         name="Show Trajectory", description="Show the aim line or arc of the selected spring or dash ring", default=True
     )
+    bpy.types.Object.sonic_vane_show_trigger = BoolProperty(
+        name="Show Trigger", description="Show the checkpoint's trigger bounds in the viewport", default=True
+    )
     if not bpy.app.background:
         rail_guides_handler = bpy.types.SpaceView3D.draw_handler_add(rail_preview.draw, (), "WINDOW", "POST_VIEW")
         dash_direction_handler = bpy.types.SpaceView3D.draw_handler_add(dash_preview.draw, (), "WINDOW", "POST_VIEW")
         spring_trajectory_handler = bpy.types.SpaceView3D.draw_handler_add(spring_preview.draw, (), "WINDOW", "POST_VIEW")
+        checkpoint_trigger_handler = bpy.types.SpaceView3D.draw_handler_add(
+            checkpoint_preview.draw, (), "WINDOW", "POST_VIEW"
+        )
     bpy.types.Scene.sonic_vane_level_id = StringProperty(
         name="Level ID", description="Stable lowercase identifier for this level"
+    )
+    bpy.types.Scene.sonic_vane_ring_default = EnumProperty(
+        name="Default Ring Variant", description="Pickup variant used by this level's rings and ring trails",
+        items=VARIANT_ITEMS["ring"][1:], default=STANDARD_RING, update=sync_level_ring_default,
+    )
+    bpy.types.Scene.sonic_vane_enemy_default = EnumProperty(
+        name="Default Enemy Variant", description="Enemy used by placements set to Use Level Default",
+        items=VARIANT_ITEMS["enemy"][1:], default=STANDARD_ENEMY, update=sync_level_enemy_default,
     )
     bpy.app.handlers.blend_import_post.append(initialize_appended_gameplay_assets)
     bpy.app.handlers.load_post.append(sync_loaded_markers)
     bpy.app.handlers.save_pre.append(cleanup_monitor_previews)
     bpy.app.handlers.depsgraph_update_post.append(booster_preview.sync_moved_rails)
     bpy.app.handlers.depsgraph_update_post.append(spring_preview.sync_moved_targets)
+    reset_object_tracking()
+    for handlers, callback in OBJECT_TRACKING_HANDLERS:
+        handlers.append(callback)
     bpy.app.timers.register(sync_loaded_markers)
     bpy.types.TOPBAR_MT_file_export.append(export_menu)
 
 
 def unregister():
-    global rail_guides_handler, dash_direction_handler, spring_trajectory_handler
+    global rail_guides_handler, dash_direction_handler, spring_trajectory_handler, checkpoint_trigger_handler
     if rail_guides_handler is not None:
         bpy.types.SpaceView3D.draw_handler_remove(rail_guides_handler, "WINDOW")
         rail_guides_handler = None
@@ -742,18 +1068,28 @@ def unregister():
     if spring_trajectory_handler is not None:
         bpy.types.SpaceView3D.draw_handler_remove(spring_trajectory_handler, "WINDOW")
         spring_trajectory_handler = None
+    if checkpoint_trigger_handler is not None:
+        bpy.types.SpaceView3D.draw_handler_remove(checkpoint_trigger_handler, "WINDOW")
+        checkpoint_trigger_handler = None
     bpy.types.TOPBAR_MT_file_export.remove(export_menu)
     bpy.app.handlers.blend_import_post.remove(initialize_appended_gameplay_assets)
     bpy.app.handlers.load_post.remove(sync_loaded_markers)
     bpy.app.handlers.save_pre.remove(cleanup_monitor_previews)
     bpy.app.handlers.depsgraph_update_post.remove(booster_preview.sync_moved_rails)
     bpy.app.handlers.depsgraph_update_post.remove(spring_preview.sync_moved_targets)
+    for handlers, callback in OBJECT_TRACKING_HANDLERS:
+        handlers.remove(callback)
+    pause_object_tracking()
+    known_object_ids.clear()
     if bpy.app.timers.is_registered(sync_loaded_markers):
         bpy.app.timers.unregister(sync_loaded_markers)
     del bpy.types.Scene.sonic_vane_level_id
+    del bpy.types.Scene.sonic_vane_ring_default
+    del bpy.types.Scene.sonic_vane_enemy_default
     del bpy.types.Object.sonic_vane_placement
     del bpy.types.Object.sonic_vane_rail_guides
     del bpy.types.Object.sonic_vane_dash_direction
     del bpy.types.Object.sonic_vane_show_trajectory
+    del bpy.types.Object.sonic_vane_show_trigger
     for cls in reversed(CLASSES):
         bpy.utils.unregister_class(cls)

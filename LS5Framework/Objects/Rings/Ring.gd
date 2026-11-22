@@ -65,6 +65,7 @@ static var _pickup_audio_pan_left: bool = true
 @export var rotate_speed_deg: float = 120.0
 
 var _collected: bool = false
+var _distance_culled: bool = false
 var _respawn_timer: float = 0.0
 var _network_respawn_timers: Array[Timer] = []
 var _mesh: MeshInstance3D = null
@@ -161,13 +162,19 @@ func _lsd_register(active: bool) -> void:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-	if _mesh != null and rotate_speed_deg != 0.0 and not _collected:
+	if not _distance_culled and _mesh != null and rotate_speed_deg != 0.0 and not _collected:
 		_mesh.rotation.y = fmod(_mesh.rotation.y + deg_to_rad(rotate_speed_deg) * delta, TAU)
 
 	if _respawn_timer > 0.0:
 		_respawn_timer = max(_respawn_timer - delta, 0.0)
 		if _respawn_timer <= 0.0:
 			_set_collected(false)
+			set_process(not _distance_culled)
+
+
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+	set_process(not value or _respawn_timer > 0.0)
 
 
 func _on_body_entered(body: Node3D) -> void:
@@ -215,6 +222,8 @@ func _collect_local(play_particles: bool = true) -> void:
 	_set_collected(true, play_particles)
 	if respawn_enabled:
 		_respawn_timer = max(respawn_delay_sec, 0.0)
+		if _respawn_timer > 0.0:
+			set_process(true)
 
 
 func reset_for_race_restart() -> void:

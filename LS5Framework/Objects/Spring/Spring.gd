@@ -225,6 +225,7 @@ var downward_trajectory_gravity_yaw_full_angle_deg: float = 90.0
 var _last_sound_index: int = -1
 
 var _body_cooldowns: Dictionary = {}  # instance_id -> remaining_time
+var _distance_culled: bool = false
 
 @export_group("Homing Attack")
 @export var homing_target_enabled: bool = true
@@ -367,10 +368,14 @@ func on_homing_hit(player: Node, _jump_held: bool) -> bool:
 	# Signal to the player that the spring handled the impact (no homing pop).
 	return true
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+
+
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-	if use_trajectory_solver:
+	if use_trajectory_solver and not _distance_culled:
 		_update_trajectory_solver_preview()
 	if _body_cooldowns.is_empty():
 		return

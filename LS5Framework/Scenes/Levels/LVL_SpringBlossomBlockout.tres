@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://db5tcrkb3qibv"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_5r3ua"]
+
+[resource]
+script = ExtResource("1_5r3ua")
+level_name = "Spring Blossom Blockout (Physics Test)"
+level_id = "spring_blossom_blockout"
+order = 50
+selection_category = "Test"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Tests/SpringBlossomBlockout_PipelineTest/SpringBlossomBlockout_PipelineTest.tscn"
+placements_file = "res://LS5Framework/Scenes/Levels/Tests/SpringBlossomBlockout_PipelineTest/Spring Blossom Zone blockout CUSTOM SCALED VANE 03.placements.json"

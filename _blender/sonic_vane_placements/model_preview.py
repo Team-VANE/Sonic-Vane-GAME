@@ -4,6 +4,36 @@ from mathutils import Vector
 
 ROTATION_GROUP = "Sonic Vane Preview Rotation"
 ROTATION_KEY = "sonic_vane_preview_rotation"
+VARIANT_KEY = "sonic_vane_object_variant"
+PREVIEW_REVISION = "sonic_vane_preview_revision"
+
+
+def load_mesh(directory, preview_id, definition):
+    filename = definition.get("preview_file")
+    mesh_name = definition.get("preview_mesh")
+    if not filename or not mesh_name:
+        return None
+    revision = definition.get("preview_revision", 0)
+    mesh = next(
+        (mesh for mesh in bpy.data.meshes if mesh.get(VARIANT_KEY) == preview_id and
+         mesh.get(PREVIEW_REVISION, 0) == revision),
+        None,
+    )
+    if mesh is not None:
+        return mesh
+    path = directory / filename
+    if not path.is_file():
+        return None
+    with bpy.data.libraries.load(str(path)) as (available, imported):
+        if mesh_name in available.meshes:
+            imported.meshes = [mesh_name]
+    if not imported.meshes or imported.meshes[0] is None:
+        return None
+    mesh = imported.meshes[0]
+    mesh[VARIANT_KEY] = preview_id
+    if revision:
+        mesh[PREVIEW_REVISION] = revision
+    return mesh
 
 
 def rotation_group():

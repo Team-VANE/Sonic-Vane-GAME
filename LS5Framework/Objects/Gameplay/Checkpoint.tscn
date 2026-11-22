@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b8ueekslolhqd" path="res://LS5Framework/Objects/Gameplay/Checkpoint.gd" id="1_checkpoint"]
 [ext_resource type="AudioStream" uid="uid://fq1xu1h7aijn" path="res://LS5Framework/Sounds/Objects/SA_Checkpoint_Sound.ogg" id="2_t7qt2"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gameplay/CheckpointVisual.gd" id="3_visual"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gameplay/Checkpoint SA2/CheckpointGate.glb" id="4_model"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qulj2"]
 size = Vector3(70, 60, 70)
@@ -31,6 +33,7 @@ editor_description = "Respawn position and facing for this checkpoint instance."
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.3286277, 2)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=613359843]
+visible = false
 transform = Transform3D(0.5, 0, 0, 0, 2, 0, 0, 0, 0.5, 0, 2, 0)
 mesh = SubResource("CylinderMesh_checkpoint")
 surface_material_override/0 = SubResource("StandardMaterial3D_checkpoint")
@@ -40,3 +43,8 @@ volume_db = 5.0
 max_distance = 100.0
 bus = &"SFX"
 attenuation_filter_cutoff_hz = 10000.0
+
+[node name="CheckpointVisual" type="Node3D" parent="."]
+script = ExtResource("3_visual")
+
+[node name="Model" parent="CheckpointVisual" instance=ExtResource("4_model")]

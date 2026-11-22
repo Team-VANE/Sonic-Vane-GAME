@@ -11,7 +11,7 @@ const PROXY_GROUP: StringName = &"LevelObjectProxy"
 @export_node_path("Node") var spawn_parent_path: NodePath = NodePath("")
 ## Resolves the spawn parent after ordinary proxies have been replaced.
 @export var spawn_parent_required: bool = false
-## Property values applied to the instantiated scene.
+## Property values applied to the instantiated scene root or a child at target_node.
 @export var property_overrides: Array[Dictionary] = []
 ## Copies a Curve3D from the proxy hierarchy to the instantiated scene.
 @export var curve_copy_enabled: bool = false

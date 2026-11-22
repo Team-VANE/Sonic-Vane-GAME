@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="2_3q8r2"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.tscn" id="2_ajan3"]
 [ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="8_mkokl"]
+[ext_resource type="PackedScene" uid="uid://c1g10s7pyb8t3" path="res://LS5Framework/Objects/Gameplay/Checkpoint.tscn" id="9_fmm3p"]
 [ext_resource type="PackedScene" uid="uid://dt3rtue2c684m" path="res://LS5Framework/Objects/Surface/Examples/IceTest.glb" id="9_kq5e8"]
 [ext_resource type="Material" uid="uid://chsgt2ylebix4" path="res://LS5Framework/Scenes/Levels/VaneTest/Ice.tres" id="10_fmm3p"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Levels/VaneTest/RhinoEncounter.tscn" id="11_cutscene"]
@@ -12,6 +13,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_mkokl"]
 resource_local_to_scene = true
 size = Vector3(4, 3, 2.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p60sg"]
+size = Vector3(29, 17, 2)
 
 [node name="TestLevel" type="Node3D" unique_id=8420253]
 
@@ -72,6 +76,24 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 388,
 pixel_size = 0.15
 text = ".JSON Import Test"
 
+[node name="Checkpoint" parent="." unique_id=1208036193 instance=ExtResource("9_fmm3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.202385, 5.567086e-08, -163.42438)
+width = 30.0
+
+[node name="CollisionShape3D" parent="Checkpoint" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+shape = SubResource("BoxShape3D_p60sg")
+
+[node name="Checkpoint2" parent="." unique_id=769065311 instance=ExtResource("9_fmm3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.202385, 5.567086e-08, -216.42438)
+width = 30.0
+
+[node name="CollisionShape3D" parent="Checkpoint2" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+shape = SubResource("BoxShape3D_p60sg")
+
 [editable path="OBJECTS/IceTest"]
 [editable path="Cutscenes/RhinoEncounter"]
 [editable path="Cutscenes/RhinoEncounter/RhinoMotion/RhinoTank"]
+[editable path="Checkpoint"]
+[editable path="Checkpoint2"]

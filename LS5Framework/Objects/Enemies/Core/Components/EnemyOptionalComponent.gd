@@ -12,6 +12,10 @@ func physics_tick(_delta: float) -> void:
 	pass
 
 
+func set_distance_culled(_value: bool) -> void:
+	pass
+
+
 func reset_component(_reason: StringName) -> void:
 	pass
 

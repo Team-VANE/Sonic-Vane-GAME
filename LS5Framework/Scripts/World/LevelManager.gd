@@ -126,17 +126,19 @@ func get_current_level() -> Node:
 func get_current_spawn_point() -> Node3D:
 	if not is_instance_valid(_current_level):
 		return null
+	var fallback_spawn: Node3D = null
 	if _current_level_scene_path == _direct_level_scene_path and not _direct_level_spawn_path.is_empty():
-		var direct_spawn: Node3D = _current_level.get_node_or_null(_direct_level_spawn_path) as Node3D
-		if direct_spawn:
-			return direct_spawn
-	var named_spawn: Node3D = _current_level.get_node_or_null("PlayerSpawn") as Node3D
-	if named_spawn:
-		return named_spawn
-	for candidate: Node in get_tree().get_nodes_in_group(SpawnPoint.SPAWN_GROUP):
-		if _current_level.is_ancestor_of(candidate) and not candidate.is_queued_for_deletion():
-			return candidate as SpawnPoint
-	return null
+		fallback_spawn = _current_level.get_node_or_null(_direct_level_spawn_path) as Node3D
+	if not fallback_spawn:
+		fallback_spawn = _current_level.get_node_or_null("PlayerSpawn") as Node3D
+	for spawn: Node in get_tree().get_nodes_in_group(SpawnPoint.SPAWN_GROUP):
+		if not _current_level.is_ancestor_of(spawn) or spawn.is_queued_for_deletion():
+			continue
+		if spawn.has_meta(LevelPlacementsScript.ID_META):
+			return spawn as SpawnPoint
+		if not fallback_spawn:
+			fallback_spawn = spawn as SpawnPoint
+	return fallback_spawn
 
 
 func is_level_loading() -> bool:

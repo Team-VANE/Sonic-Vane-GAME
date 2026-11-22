@@ -61,6 +61,7 @@ var _paddle_tip: Vector3 = Vector3.ZERO
 var _paddle_bottom: float = 0.0
 var _sweep_query: PhysicsShapeQueryParameters3D = PhysicsShapeQueryParameters3D.new()
 var _strike_candidates: Array[PlayerController] = []
+var _distance_culled: bool = false
 var _struck_players: Dictionary[int, bool] = {}
 var _collision_grace: Dictionary[int, Dictionary] = {}
 
@@ -95,10 +96,21 @@ func _apply_side() -> void:
 				_paddle_tip = planar
 
 
+func set_distance_culled(value: bool) -> void:
+	_distance_culled = value
+
+
+func get_distance_cull_activity_range() -> float:
+	return input_range + 60.0 if input_range > 0.0 else INF
+
+
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint() or delta <= 0.0:
 		return
 	_update_collision_grace(delta)
+	if _distance_culled:
+		_advance_stroke(delta, false, false)
+		return
 	var action: StringName = &"pinball_flipper_left" if side == FlipperSide.LEFT else &"pinball_flipper_right"
 	var held: bool = false
 	var pressed: bool = false
