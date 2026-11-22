@@ -9,6 +9,8 @@ const PROXY_GROUP: StringName = &"LevelObjectProxy"
 @export_file("*.tscn") var target_scene_path: String = ""
 ## Optional parent within the loaded level for the instantiated scene.
 @export_node_path("Node") var spawn_parent_path: NodePath = NodePath("")
+## Resolves the spawn parent after ordinary proxies have been replaced.
+@export var spawn_parent_required: bool = false
 ## Property values applied to the instantiated scene.
 @export var property_overrides: Array[Dictionary] = []
 ## Copies a Curve3D from the proxy hierarchy to the instantiated scene.

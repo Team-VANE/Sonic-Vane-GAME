@@ -1,20 +1,179 @@
 {
   "schema_version": 1,
   "types": {
+    "item_monitor": {
+      "label": "Item Monitor",
+      "scene": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn",
+      "properties": {
+        "monitor_style": {
+          "label": "Monitor Style", "description": "Choose the grounded or floating housing",
+          "type": "enum", "default": "grounded",
+          "options": {
+            "grounded": {
+              "label": "Grounded", "value": 0, "preview_mesh": "Sonic Vane Monitor Grounded",
+              "scene": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn"
+            },
+            "floating": {
+              "label": "Floating", "value": 1, "preview_mesh": "Sonic Vane Monitor Floating",
+              "scene": "res://LS5Framework/Objects/ItemMonitor/ItemMonitorFloating.tscn"
+            }
+          },
+          "group": "Item Monitor"
+        },
+        "monitor_reward": {
+          "label": "Reward", "description": "Item granted when the monitor breaks",
+          "type": "enum", "default": "rings", "always_export": true,
+          "options": {
+            "rings": { "label": "Rings", "value": 1 },
+            "random_rings": { "label": "Random Rings", "value": 7 },
+            "speed_shoes": { "label": "Speed Shoes", "value": 6 },
+            "invincibility": { "label": "Invincibility", "value": 8 }
+          },
+          "group": "Item Monitor"
+        },
+        "monitor_ring_amount": {
+          "label": "Ring Count", "description": "Rings awarded by a fixed ring monitor",
+          "type": "int", "default": 10, "min": 1, "max": 9999, "group": "Item Monitor",
+          "requires": { "monitor_reward": "rings" }
+        },
+        "size": {
+          "label": "Size", "description": "Uniform size multiplier for the object and its collision",
+          "type": "float", "default": 1, "min": 0.01, "group": "Item Monitor"
+        },
+        "allow_player_pass_through": {
+          "label": "Break on Contact", "description": "Allow the player through the monitor and break it on contact",
+          "type": "bool", "default": false, "group": "Interaction"
+        },
+        "homing_target_enabled": {
+          "label": "Homing Target", "description": "Allow the player to target this monitor with homing attacks",
+          "type": "bool", "default": true, "group": "Interaction"
+        },
+        "respawn_enabled": {
+          "label": "Respawn", "description": "Restore the monitor after its reward is collected",
+          "type": "bool", "default": true, "group": "Item Monitor"
+        },
+        "respawn_delay_sec": {
+          "label": "Respawn Delay", "description": "Seconds before the monitor regenerates",
+          "type": "float", "default": 60, "min": 0, "group": "Item Monitor",
+          "requires": { "respawn_enabled": true }
+        }
+      }
+    },
+    "dash_panel": {
+      "label": "Dash Panel",
+      "scene": "res://LS5Framework/Objects/DashPanels/DashPanel.tscn",
+      "properties": {
+        "active": {
+          "label": "Active", "description": "Enable the dash panel",
+          "type": "bool", "default": true, "group": "Dash Panel"
+        },
+        "size": {
+          "label": "Size", "description": "Uniform size multiplier for the object and its collision",
+          "type": "float", "default": 1, "min": 0.01, "group": "Dash Panel"
+        },
+        "dash_launch_axis": {
+          "label": "Launch Axis", "description": "Panel-local axis used for the dash",
+          "type": "enum", "default": "positive_z", "target_property": "launch_axis",
+          "options": {
+            "positive_x": { "label": "Blender +X", "value": 0 },
+            "negative_x": { "label": "Blender -X", "value": 1 },
+            "positive_z": { "label": "Blender -Y", "value": 2 },
+            "negative_z": { "label": "Blender +Y", "value": 3 }
+          },
+          "group": "Dash Panel"
+        },
+        "dash_strength": {
+          "label": "Strength", "description": "Base dash speed in meters per second",
+          "type": "float", "default": 40, "min": 0, "target_property": "strength", "group": "Dash Panel"
+        },
+        "match_y_position": {
+          "label": "Match Panel Height", "description": "Snap to the panel height when dashing on the ground",
+          "type": "bool", "default": false, "group": "Dash Panel"
+        },
+        "stop_momentum": {
+          "label": "Stop Momentum", "description": "Replace prior movement with the dash impulse",
+          "type": "bool", "default": true, "group": "Impulse"
+        },
+        "additive_mode": {
+          "label": "Additive Mode", "description": "How existing velocity is combined when Stop Momentum is off",
+          "type": "enum", "default": "ignore_prior_vertical",
+          "options": {
+            "ignore_prior_vertical": { "label": "Ignore Prior Vertical", "value": 0 },
+            "fully_additive": { "label": "Fully Additive with Minimum Launch", "value": 1 }
+          },
+          "group": "Impulse", "requires": { "stop_momentum": false }
+        },
+        "min_additive_launch_speed": {
+          "label": "Minimum Additive Launch Speed", "description": "Minimum speed along the dash when using the fully additive impulse",
+          "type": "float", "default": 10, "min": 0, "group": "Impulse",
+          "requires": { "stop_momentum": false, "additive_mode": "fully_additive" }
+        },
+        "dash_rehit_cooldown": {
+          "label": "Rehit Cooldown", "description": "Seconds before the same body can trigger this panel again",
+          "type": "float", "default": 0.15, "min": 0, "target_property": "rehit_cooldown", "group": "Impulse"
+        },
+        "override_previous_lock_timers": {
+          "label": "Override Previous Locks", "description": "Clear prior movement, action and alignment locks",
+          "type": "bool", "default": true, "group": "Locks and Camera"
+        },
+        "movement_lock_time": {
+          "label": "Movement Lock", "description": "Seconds to lock steering",
+          "type": "float", "default": 0, "min": 0, "group": "Locks and Camera"
+        },
+        "action_lock_time": {
+          "label": "Action Lock", "description": "Seconds to lock actions",
+          "type": "float", "default": 0, "min": 0, "group": "Locks and Camera"
+        },
+        "align_camera_yaw_roll": {
+          "label": "Align Camera", "description": "Align the camera to the dash direction",
+          "type": "bool", "default": true, "group": "Locks and Camera"
+        },
+        "lock_speed_enabled": {
+          "label": "Lock Speed", "description": "Hold the player at a fixed speed after activation",
+          "type": "bool", "default": false, "group": "Locks and Camera"
+        },
+        "dash_lock_speed_value": {
+          "label": "Locked Speed", "description": "Speed held along the dash in meters per second",
+          "type": "float", "default": 60, "min": 0, "target_property": "lock_speed_value",
+          "group": "Locks and Camera", "requires": { "lock_speed_enabled": true }
+        },
+        "lock_speed_duration": {
+          "label": "Speed Lock Duration", "description": "Seconds to maintain the locked speed",
+          "type": "float", "default": 0.5, "min": 0, "group": "Locks and Camera",
+          "requires": { "lock_speed_enabled": true }
+        }
+      }
+    },
     "spring": {
       "label": "Spring",
       "scene": "res://LS5Framework/Objects/Spring/Spring.tscn",
       "properties": {
+        "spring_style": {
+          "label": "Spring Variant", "description": "Choose the spring or dash ring housing and native behavior",
+          "type": "enum", "default": "standard",
+          "options": {
+            "standard": {
+              "label": "Spring", "value": 0, "asset": "Spring.blend", "preview_mesh": "Spring Adventure Preview",
+              "scene": "res://LS5Framework/Objects/Spring/Spring.tscn"
+            },
+            "dash_ring": {
+              "label": "Dash Ring", "value": 1, "asset": "Dash Objects.blend", "preview_mesh": "Sonic Vane Dash Ring",
+              "scene": "res://LS5Framework/Objects/Spring/DashRing.tscn",
+              "bool_defaults": { "homing_target_enabled": false, "preserve_active_flight": true }
+            }
+          },
+          "group": "Spring"
+        },
         "active": {
           "label": "Active",
-          "description": "Enable this spring's launch behavior",
+          "description": "Enable the object's launch behavior",
           "group": "Spring",
           "type": "bool",
           "default": true
         },
         "size": {
           "label": "Size",
-          "description": "Uniform size multiplier for the gameplay spring and its trigger",
+          "description": "Uniform size multiplier for the object and its collision",
           "group": "Spring",
           "type": "float",
           "default": 1,
@@ -30,7 +189,7 @@
         },
         "rehit_cooldown": {
           "label": "Rehit Cooldown",
-          "description": "Seconds before the same body can trigger this spring again",
+          "description": "Seconds before the same body can trigger this object again",
           "group": "Spring",
           "type": "float",
           "default": 0.15,
@@ -220,7 +379,7 @@
         },
         "trajectory_arc_up_mode": {
           "label": "Arc Up",
-          "description": "Reference direction for the arc's height",
+          "description": "Reference direction for arc height. Blender uses world up for Player Gravity Up",
           "group": "Direction and Arc",
           "type": "enum",
           "default": "player_gravity_up",
@@ -264,7 +423,7 @@
         },
         "action_lock_time": {
           "label": "Action Lock",
-          "description": "Seconds to lock actions after triggering the spring",
+          "description": "Seconds to lock actions after triggering the object",
           "group": "Locks and Alignment",
           "type": "float",
           "default": 0,
@@ -324,7 +483,7 @@
         },
         "homing_target_enabled": {
           "label": "Homing Target",
-          "description": "Register the spring as a homing attack target",
+          "description": "Register this object as a homing attack target",
           "group": "Homing and Flight",
           "type": "bool",
           "default": true
@@ -411,6 +570,181 @@
           "requires": {
             "mesh_bounce_enabled": true
           }
+        }
+      }
+    },
+    "ring": {
+      "label": "Ring",
+      "scene": "res://LS5Framework/Objects/Rings/Ring.tscn",
+      "properties": {
+        "ring_value": {
+          "label": "Ring Value", "description": "Rings awarded on pickup",
+          "type": "int", "default": 1, "min": 1, "max": 999, "group": "Ring"
+        },
+        "allow_light_speed_dash": {
+          "label": "Light Speed Dash", "description": "Allow this ring to guide Light Speed Dash",
+          "type": "bool", "default": true, "group": "Ring"
+        },
+        "respawn_enabled": {
+          "label": "Respawn", "description": "Regenerate after pickup",
+          "type": "bool", "default": true, "group": "Ring"
+        },
+        "respawn_delay_sec": {
+          "label": "Respawn Delay", "description": "Seconds before the ring regenerates",
+          "type": "float", "default": 60, "min": 0, "group": "Ring",
+          "requires": { "respawn_enabled": true }
+        }
+      }
+    },
+    "ring_spline": {
+      "label": "Ring Trail",
+      "scene": "res://LS5Framework/Objects/Rings/RingSpline.tscn",
+      "curve_target": "Path3D",
+      "properties": {
+        "ring_spacing": {
+          "label": "Ring Spacing", "description": "Distance along the spline between rings",
+          "type": "float", "default": 8, "min": 0.1, "always_export": true, "group": "Ring Trail"
+        },
+        "ring_respawn_delay": {
+          "label": "Respawn Delay", "description": "Seconds before a ring regenerates. Zero disables respawn",
+          "type": "float", "default": 60, "min": 0, "group": "Ring Trail"
+        }
+      }
+    },
+    "rail_booster": {
+      "label": "Rail Booster",
+      "scene": "res://LS5Framework/Objects/Rail/RailBooster.tscn",
+      "attach_to": "rail",
+      "properties": {
+        "boost_mode": {
+          "label": "Boost Mode", "description": "Set the grind speed or add to the current speed",
+          "type": "enum", "default": "fixed",
+          "options": {
+            "fixed": { "label": "Fixed", "value": 0 },
+            "additive": { "label": "Additive", "value": 1 }
+          },
+          "group": "Rail Booster"
+        },
+        "boost_speed": {
+          "label": "Boost Speed", "description": "Fixed speed or speed added in meters per second",
+          "type": "float", "default": 80, "min": -400, "max": 400, "group": "Rail Booster"
+        },
+        "additive_min_speed": {
+          "label": "Minimum Speed", "description": "Minimum speed after an additive boost",
+          "type": "float", "default": 0, "min": -400, "max": 400, "group": "Rail Booster",
+          "requires": { "boost_mode": "additive" }
+        },
+        "rehit_cooldown": {
+          "label": "Rehit Cooldown", "description": "Seconds before the player can trigger this booster again",
+          "type": "float", "default": 0.2, "min": 0, "group": "Rail Booster"
+        }
+      }
+    },
+    "rail": {
+      "label": "Rail",
+      "scene": "res://LS5Framework/Objects/Rail/Rail.tscn",
+      "curve_target": "Path3D",
+      "properties": {
+        "rail_variant": {
+          "label": "Rail Variant",
+          "description": "Visual style for this rail",
+          "type": "enum",
+          "default": "standard",
+          "options": {
+            "standard": {
+              "label": "Standard",
+              "value": 0,
+              "asset": "Rail.blend",
+              "preview_group": "Sonic Vane Rail Profile",
+              "scene": "res://LS5Framework/Objects/Rail/Rail.tscn"
+            },
+            "ark_yellow": {
+              "label": "ARK Yellow",
+              "value": 1,
+              "asset": "Rail ARK Yellow.blend",
+              "preview_group": "Sonic Vane Rail ARK Yellow",
+              "scene": "res://LS5Framework/Objects/Rail/RailARKYellow.tscn"
+            }
+          },
+          "group": "Rail"
+        },
+        "path_interval": {
+          "label": "Path Interval",
+          "description": "Sampling interval for grinding and the rail mesh, in meters",
+          "type": "float",
+          "default": 3.5,
+          "min": 0.05,
+          "max": 20,
+          "always_export": true,
+          "group": "Rail"
+        },
+        "player_height_offset": {
+          "label": "Rider Height",
+          "description": "Distance along rail up from the centerline to the player origin",
+          "type": "float",
+          "default": 1.5,
+          "min": 0,
+          "max": 4,
+          "always_export": true,
+          "group": "Rail"
+        },
+        "align_to_path_tilt": {
+          "label": "Align to Rail Tilt",
+          "description": "Use the banked rail orientation for the rider",
+          "type": "bool",
+          "default": true,
+          "group": "Rail"
+        },
+        "allow_reverse": {
+          "label": "Allow Reverse",
+          "description": "Allow grinding in either direction",
+          "type": "bool",
+          "default": true,
+          "group": "Rail"
+        },
+        "allow_jump_exit": {
+          "label": "Allow Jump Exit",
+          "description": "Allow the rider to jump off the rail",
+          "type": "bool",
+          "default": true,
+          "group": "Rail"
+        },
+        "min_speed": {
+          "label": "Minimum Grind Speed",
+          "description": "Minimum grind speed in meters per second",
+          "type": "float",
+          "default": 0,
+          "min": 0,
+          "max": 200,
+          "group": "Rail"
+        },
+        "lock_speed_enabled": {
+          "label": "Lock Grind Speed",
+          "description": "Maintain a fixed speed",
+          "type": "bool",
+          "default": false,
+          "group": "Rail"
+        },
+        "lock_speed_value": {
+          "label": "Locked Grind Speed",
+          "description": "Fixed grind speed in meters per second",
+          "type": "float",
+          "default": 40,
+          "min": 0,
+          "max": 400,
+          "requires": {
+            "lock_speed_enabled": true
+          },
+          "group": "Rail"
+        },
+        "gravity_scale": {
+          "label": "Gravity Scale",
+          "description": "Multiplier for gravity along the rail",
+          "type": "float",
+          "default": 1,
+          "min": 0,
+          "max": 4,
+          "group": "Rail"
         }
       }
     }

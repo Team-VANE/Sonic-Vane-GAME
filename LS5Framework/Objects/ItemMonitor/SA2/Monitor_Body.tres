@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://LS5Framework/Objects/ItemMonitor/SA2/Item_Monitor_SA2_sikake_01_128.png" id="1_atlas"]
+
+[resource]
+resource_name = "Monitor Body"
+cull_mode = 2
+albedo_texture = ExtResource("1_atlas")
+roughness = 0.5

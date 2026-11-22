@@ -6,12 +6,30 @@ const ATTACK_PASS_THROUGH_COLLISION_LAYER: int = 1 << 7
 const SIZE_BASE_POSITION_META: StringName = &"_uniform_size_base_position"
 const SIZE_BASE_SCALE_META: StringName = &"_uniform_size_base_scale"
 const QUANTITY_RACE_REFRESH_INTERVAL: float = 0.25
+const MONITOR_MODELS: Array[String] = [
+	"res://LS5Framework/Objects/ItemMonitor/SA2/Item_Monitor_SA2.glb",
+	"res://LS5Framework/Objects/ItemMonitor/SA2/Floating/FloatingMonitor.glb",
+]
+const MONITOR_BODY: Material = preload("res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Body.tres")
+const MONITOR_GLASS: Material = preload("res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass.tres")
+const FLOATING_DISPLAY_HEIGHT: float = 2.46
+const DEFAULT_BREAK_PARTICLE_OFFSET: Vector3 = Vector3(0.0, 1.6, 0.0)
+
+enum MonitorVariant { GROUNDED, FLOATING }
 
 signal monitor_broken(player: Node)
 signal rewards_collected(player: Node)
 signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 
 @export_group("Monitor")
+## Housing style and collision layout for this monitor.
+@export var monitor_variant: MonitorVariant = MonitorVariant.GROUNDED:
+	set(value):
+		if monitor_variant == value:
+			return
+		monitor_variant = value
+		if is_node_ready():
+			_apply_monitor_variant.call_deferred()
 ## Uniform scale applied to the monitor visuals, collisions, and break effect.
 @export_range(0.01, 100.0, 0.01, "or_greater") var size: float = 1.0:
 	set(value):
@@ -72,7 +90,7 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 ## Particle scene spawned when the monitor breaks.
 @export var break_particle_scene: PackedScene = preload("res://LS5Framework/Objects/ItemMonitor/ItemMonitorBreakDust.tscn")
 ## Local offset used as the break particle spawn point.
-@export var break_particle_offset: Vector3 = Vector3(0.0, 1.6, 0.0)
+@export var break_particle_offset: Vector3 = DEFAULT_BREAK_PARTICLE_OFFSET
 ## Cleanup time for particle scenes that do not free themselves.
 @export_range(0.05, 30.0, 0.05, "or_greater", "suffix:s") var break_particle_lifetime: float = 2.0
 
@@ -101,9 +119,7 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 ## Contains the complete authored monitor model.
 @onready var _visual_root: Node3D = $VisualRoot
 ## Contains the imported model parts used by the break state.
-@onready var _monitor_model: Node3D = $VisualRoot/MonitorModel
-## Authored base mesh retained independently of the glass and top.
-@onready var _base_mesh: MeshInstance3D = get_node_or_null(base_mesh_path) as MeshInstance3D
+@onready var _monitor_model: Node3D = get_node_or_null("VisualRoot/MonitorModel") as Node3D
 ## Contains reward displays inside the glass.
 @onready var _item_display_root: Node3D = $VisualRoot/ItemDisplays
 ## Displays the first configured reward with a matching item icon association.
@@ -127,6 +143,12 @@ var _state_generation: int = 0
 var _solid_collision_layer: int = 0
 var _solid_collision_mask: int = 0
 var _monitor_part_visibility: Dictionary = {}
+## Model part retained when Leave Base After Break is active.
+var _base_mesh: MeshInstance3D
+var _applied_variant: int = -1
+var _variant_model_scene: PackedScene
+var _variant_parts: Array[MeshInstance3D] = []
+var _grounded_layout: Dictionary = {}
 var _display_reward: ItemMonitorReward = null
 var _quantity_race_refresh_remaining: float = 0.0
 var _level_prepared: bool = false
@@ -143,6 +165,7 @@ static var _looping_audio_cache: Dictionary = {}
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
+		_apply_monitor_variant()
 		_apply_size_preview()
 		set_process(false)
 		set_physics_process(false)
@@ -159,12 +182,23 @@ func prepare_for_level(context: Dictionary) -> bool:
 	if _level_prepared:
 		return true
 	_resolve_preparation_nodes()
+	_apply_monitor_variant()
 	_apply_size_preview()
 	_cache_intact_state()
 	_display_reward = _find_display_reward()
 	_setup_audio()
 	_level_prepared = true
 	return true
+
+
+func apply_spawn_overrides(overrides: Dictionary, _proxy: Node) -> void:
+	if not overrides.has("monitor_reward"):
+		return
+	var reward: ItemMonitorReward = ItemMonitorReward.new()
+	reward.reward_type = int(overrides["monitor_reward"])
+	if reward.reward_type == ItemMonitorReward.RewardType.RINGS:
+		reward.amount = float(overrides.get("monitor_ring_amount", 10))
+	rewards = [reward]
 
 
 func activate_for_gameplay(_context: Dictionary) -> bool:
@@ -223,6 +257,75 @@ func _resolve_preparation_nodes() -> void:
 	_break_audio = get_node_or_null("BreakAudio") as AudioStreamPlayer3D
 	_score_award = get_node_or_null("ScoreAward") as ScoreAward
 	_display_visibility = get_node_or_null("VisualRoot/DisplayVisibility") as VisibleOnScreenNotifier3D
+
+
+func _apply_monitor_variant() -> void:
+	if not _monitor_model or _applied_variant == monitor_variant:
+		return
+	var model_scene: PackedScene = load(MONITOR_MODELS[monitor_variant]) as PackedScene
+	if not model_scene:
+		return
+	var model: Node = model_scene.instantiate()
+	if not model:
+		return
+	for mesh: MeshInstance3D in _variant_parts:
+		_monitor_model.remove_child(mesh)
+		mesh.free()
+	_variant_parts.clear()
+	for child: Node in model.get_children():
+		var mesh: MeshInstance3D = child as MeshInstance3D
+		if not mesh:
+			continue
+		model.remove_child(mesh)
+		if String(mesh.name).begins_with("GlassCylinder"):
+			mesh.material_override = MONITOR_GLASS
+			if monitor_variant == MonitorVariant.FLOATING:
+				mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		else:
+			mesh.material_override = MONITOR_BODY
+		_monitor_model.add_child(mesh)
+		_variant_parts.append(mesh)
+	model.free()
+	_variant_model_scene = model_scene
+	_applied_variant = monitor_variant
+	_base_mesh = get_node_or_null(base_mesh_path) as MeshInstance3D
+	if not _base_mesh and monitor_variant == MonitorVariant.FLOATING:
+		_base_mesh = _monitor_model.get_node_or_null("Bottom_Floating") as MeshInstance3D
+	if not Engine.is_editor_hint():
+		_apply_variant_layout()
+		if _level_prepared:
+			_apply_size_preview()
+			_cache_monitor_parts()
+			if _broken:
+				_set_broken_visual_state()
+
+
+func _apply_variant_layout() -> void:
+	if _grounded_layout.is_empty():
+		_grounded_layout = {
+			"touch_shape": _touch_shape.shape,
+			"touch_position": _touch_shape.get_meta(SIZE_BASE_POSITION_META, _touch_shape.position),
+			"solid_shape": _solid_shape.shape,
+			"solid_position": _solid_shape.get_meta(SIZE_BASE_POSITION_META, _solid_shape.position),
+			"item_transform": _item_display_root.transform,
+		}
+	if monitor_variant == MonitorVariant.FLOATING:
+		var capsule: CapsuleShape3D = CapsuleShape3D.new()
+		capsule.radius = 2.0
+		capsule.height = 4.9
+		var box: BoxShape3D = BoxShape3D.new()
+		box.size = Vector3(3.85, 4.55, 3.45)
+		_touch_shape.shape = capsule
+		_touch_shape.set_meta(SIZE_BASE_POSITION_META, Vector3(0.0, 2.29, 0.0))
+		_solid_shape.shape = box
+		_solid_shape.set_meta(SIZE_BASE_POSITION_META, Vector3(0.0, 2.16, 0.0))
+		_item_display_root.transform = Transform3D(Basis.IDENTITY, Vector3.UP * FLOATING_DISPLAY_HEIGHT)
+	else:
+		_touch_shape.shape = _grounded_layout["touch_shape"]
+		_touch_shape.set_meta(SIZE_BASE_POSITION_META, _grounded_layout["touch_position"])
+		_solid_shape.shape = _grounded_layout["solid_shape"]
+		_solid_shape.set_meta(SIZE_BASE_POSITION_META, _grounded_layout["solid_position"])
+		_item_display_root.transform = _grounded_layout["item_transform"]
 
 
 func _exit_tree() -> void:
@@ -566,9 +669,13 @@ func _cache_intact_state() -> void:
 		if _solid_collision_layer == 0:
 			_solid_collision_layer = ATTACK_PASS_THROUGH_COLLISION_LAYER
 		_solid_collision_mask = _solid_body.collision_mask
+	_cache_monitor_parts()
+
+
+func _cache_monitor_parts() -> void:
+	_monitor_part_visibility.clear()
 	if _monitor_model == null:
 		return
-	_monitor_part_visibility.clear()
 	for child: Node in _monitor_model.get_children():
 		if child is Node3D:
 			_monitor_part_visibility[child] = (child as Node3D).visible
@@ -833,15 +940,20 @@ func _spawn_break_particles() -> void:
 	if particle_instance is Node3D:
 		var particle_3d: Node3D = particle_instance as Node3D
 		var uniform_size: float = max(size, 0.01)
+		var particle_offset: Vector3 = break_particle_offset
+		if monitor_variant == MonitorVariant.FLOATING and particle_offset == DEFAULT_BREAK_PARTICLE_OFFSET:
+			particle_offset = Vector3.UP * FLOATING_DISPLAY_HEIGHT
 		particle_3d.global_transform = Transform3D(
 			global_basis.scaled(Vector3.ONE * uniform_size),
-			global_transform * (break_particle_offset * uniform_size)
+			global_transform * (particle_offset * uniform_size)
 		)
 	_start_particles_recursive(particle_instance)
 	var cleanup_timer: SceneTreeTimer = get_tree().create_timer(max(break_particle_lifetime, 0.05))
+	var particle_reference: WeakRef = weakref(particle_instance)
 	cleanup_timer.timeout.connect(func() -> void:
-		if particle_instance != null and is_instance_valid(particle_instance):
-			particle_instance.queue_free()
+		var particles: Node = particle_reference.get_ref() as Node
+		if particles:
+			particles.queue_free()
 	)
 
 

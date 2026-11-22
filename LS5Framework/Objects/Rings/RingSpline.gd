@@ -55,6 +55,7 @@ func _regenerate() -> void:
 	# Clear any previously generated rings owned by this spline.
 	for child in get_children():
 		if child is Ring:
+			remove_child(child)
 			child.queue_free()
 
 	if path_node == null:
@@ -70,11 +71,12 @@ func _regenerate() -> void:
 	if length <= 0.0:
 		return
 
-	var count: int = int(length / maxf(ring_spacing, 0.01))
-	for i: int in range(count + 1):
-		var dist: float = i * ring_spacing
-		var t: float = clampf(dist / length, 0.0, 1.0)
-		var pos: Vector3 = curve.sample_baked(t * length)
+	var spacing: float = maxf(ring_spacing, 0.01)
+	var count: int = floori(length / spacing) + 1
+	if curve.closed and count > 1 and is_equal_approx((count - 1) * spacing, length):
+		count -= 1
+	for i: int in count:
+		var pos: Vector3 = curve.sample_baked(i * spacing)
 		var world_pos: Vector3 = path_node.to_global(pos)
 
 		pos = to_local(world_pos)
@@ -92,6 +94,8 @@ func _regenerate() -> void:
 			var ring: Ring = ring_3d as Ring
 			if ring_respawn_delay >= 0.0:
 				ring.respawn_delay_sec = ring_respawn_delay
+				if is_zero_approx(ring_respawn_delay):
+					ring.respawn_enabled = false
 			ring.configure_terrain_warp(
 				terrain_warp_enabled,
 				terrain_warp_height_offset,

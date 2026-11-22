@@ -60,7 +60,14 @@ static func replace_proxies_in_level(
 	if resolved_proxies.is_empty():
 		resolved_proxies = collect_proxies(level_root, proxy_group_name)
 	var succeeded: bool = true
+	var attached: Array[Node] = []
 	for proxy: Node in resolved_proxies:
+		if is_instance_valid(proxy) and _read_proxy_bool(proxy, "spawn_parent_required", false):
+			attached.append(proxy)
+			continue
+		if not _replace_proxy(level_root, proxy):
+			succeeded = false
+	for proxy: Node in attached:
 		if not _replace_proxy(level_root, proxy):
 			succeeded = false
 	return succeeded
@@ -90,6 +97,8 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 		push_warning("LevelObjectProxySpawner: failed to instantiate scene: %s" % scene_path)
 		return false
 	instance.name = proxy.name
+	if proxy.has_meta(&"placement_id"):
+		instance.set_meta(&"placement_id", proxy.get_meta(&"placement_id"))
 	if instance is Node3D and proxy is Node3D:
 		(instance as Node3D).transform = (proxy as Node3D).transform
 	_apply_property_overrides(proxy, instance)
@@ -97,7 +106,8 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 	_copy_transform_markers(proxy, instance)
 	var parent_override: Node = _resolve_parent_override(level_root, proxy)
 	var parent_node: Node = parent_override if parent_override != null else proxy.get_parent()
-	if parent_node == null or parent_node == proxy or proxy.is_ancestor_of(parent_node):
+	if (not parent_node or parent_node == proxy or proxy.is_ancestor_of(parent_node)
+			or (not parent_override and _read_proxy_bool(proxy, "spawn_parent_required", false))):
 		instance.free()
 		push_warning("LevelObjectProxySpawner: proxy has an invalid spawn parent: %s" % proxy.name)
 		return false

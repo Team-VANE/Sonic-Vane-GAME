@@ -1,6 +1,8 @@
 @tool
 extends Node3D
 
+const RailSegmentMesh = preload("res://LS5Framework/Objects/Rail/RailSegmentMesh.gd")
+
 @export_group("Rail")
 @export var active: bool = true
 @export var require_group: StringName = "player"
@@ -77,6 +79,8 @@ var entry_direction_mode: int = 0
 @export var update_visual: bool = true
 @export var rail_mesh: Mesh
 @export var rail_material: Material
+## Scene containing the textured mesh segment repeated along the grind spline.
+@export var rail_segment: PackedScene
 
 ## Transient editor mesh for spline up-vector arrows.
 var _up_vector_preview: MeshInstance3D
@@ -815,7 +819,12 @@ func _find_closest_offset_on_path_line(aim_origin: Vector3, aim_dir: Vector3, cu
 
 
 func _update_path_visual() -> void:
-	if _path_visual == null or path == null or not is_instance_valid(path):
+	if not is_instance_valid(path):
+		return
+	if rail_segment:
+		_update_segment_visual()
+		return
+	if not _path_visual:
 		return
 
 	var relative_path := _path_visual.get_path_to(path)
@@ -836,20 +845,44 @@ func _update_path_visual() -> void:
 	_sync_path_interval()
 
 
+func _update_segment_visual() -> void:
+	if not path.curve:
+		return
+	var source: Node = rail_segment.instantiate()
+	var section: MeshInstance3D = source as MeshInstance3D
+	if not section:
+		var instances: Array[Node] = source.find_children("*", "MeshInstance3D", true, false)
+		if not instances.is_empty():
+			section = instances[0] as MeshInstance3D
+	var segment: Mesh = section.mesh if section else null
+	source.free()
+	if not segment:
+		push_warning("%s: Rail segment has no mesh." % name)
+		return
+	var mesh: ArrayMesh = RailSegmentMesh.build(path.curve, segment)
+	if not mesh:
+		return
+	var visual: MeshInstance3D = MeshInstance3D.new()
+	visual.name = &"SegmentMesh"
+	visual.mesh = mesh
+	visual.material_override = rail_material
+	path.add_child(visual)
+
+
 func _sync_path_interval() -> void:
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() or not is_inside_tree():
 		return
 	if not override_path_interval:
 		return
 
 	var interval: float = max(path_interval, 0.05)
-	if path == null and is_inside_tree():
+	if not path:
 		path = get_node_or_null("Path3D")
 	if path != null and path.curve != null:
 		path.curve.bake_interval = interval
 	_rebuild_path_targeting_cache()
 
-	if _path_visual == null and is_inside_tree():
+	if not _path_visual:
 		_path_visual = get_node_or_null("PathMesh")
 		if _path_visual == null:
 			_path_visual = get_node_or_null("RailMesh")
@@ -863,12 +896,11 @@ func _sync_path_interval() -> void:
 		if child is Node:
 			_sync_interval_on_tree(child, interval)
 
-	if is_inside_tree() and not Engine.is_editor_hint():
-		var mgr = get_node_or_null("/root/HomingTargetManager")
-		if mgr and mgr.has_method("update_target"):
-			mgr.update_target(self)
-		if mgr and mgr.has_method("update_rail"):
-			mgr.update_rail(self)
+	var mgr: Node = get_node_or_null("/root/HomingTargetManager")
+	if mgr and mgr.has_method("update_target"):
+		mgr.update_target(self)
+	if mgr and mgr.has_method("update_rail"):
+		mgr.update_rail(self)
 
 
 func _ensure_path_targeting_cache() -> void:

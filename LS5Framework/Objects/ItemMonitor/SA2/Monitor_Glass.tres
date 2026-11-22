@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://d32rjgd8s8c7o"]
 
 [ext_resource type="Shader" uid="uid://cnxinaoslrtg8" path="res://LS5Framework/Shaders/SphericalEnvironment.gdshader" id="1_e2wdc"]
-[ext_resource type="Texture2D" uid="uid://ce5b6afj7i2ox" path="res://LS5Framework/Images/Level Shared/SphericalMap_Metal_Pale.png" id="2_cp7sw"]
+[ext_resource type="Texture2D" uid="uid://c6be5ak6cdrj5" path="res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass_Environment.png" id="2_cp7sw"]
 
 [resource]
 render_priority = 0

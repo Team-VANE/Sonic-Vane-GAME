@@ -2,3 +2,7 @@
 .godot/
 /android/
 LS5Engine3_CodexFiles/
+
+# Local Spring Blossom test levels
+/LS5Framework/Scenes/Levels/Tests/SpringBlossomBlockout/
+/LS5Framework/Scenes/Levels/Tests/SpringBlossomBlockout_PipelineTest/

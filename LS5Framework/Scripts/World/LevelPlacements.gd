@@ -27,7 +27,7 @@ static func read(path: String, level_id: String) -> Dictionary:
 		return {"error": "Could not read the placement object catalog: %s" % CATALOG_PATH}
 	var object_types: Dictionary = catalog["types"]
 	var uuid_pattern: RegEx = RegEx.create_from_string("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
-	var seen_ids: Dictionary = {}
+	var types_by_id: Dictionary = {}
 	var placements: Array[Dictionary] = []
 	for index: int in records.size():
 		var record: Variant = records[index]
@@ -38,17 +38,15 @@ static func read(path: String, level_id: String) -> Dictionary:
 		var id: String = raw_id.to_lower() if raw_id is String else ""
 		if not uuid_pattern.search(id):
 			return {"error": "%s has an invalid UUID." % location}
-		if seen_ids.has(id):
+		if types_by_id.has(id):
 			return {"error": "%s repeats placement UUID %s." % [location, id]}
-		seen_ids[id] = true
 
 		var type: Variant = record.get("type")
 		if not type is String or not object_types.has(type):
 			return {"error": "%s has an unknown object type: %s." % [location, type]}
+		types_by_id[id] = type
 		var definition: Dictionary = object_types[type]
 		var scene_path: String = definition["scene"]
-		if not ResourceLoader.exists(scene_path, "PackedScene"):
-			return {"error": "%s requires an unavailable scene: %s." % [location, scene_path]}
 		var position_values: Variant = record.get("position")
 		var rotation_values: Variant = record.get("rotation")
 		if not _is_finite_array(position_values, 3) or not _is_finite_array(rotation_values, 4):
@@ -73,18 +71,45 @@ static func read(path: String, level_id: String) -> Dictionary:
 			var value: Variant = _decode_property(properties[key], field)
 			if value == null:
 				return {"error": "%s has an invalid value for %s." % [location, key]}
-			if field["type"] == "local_offset":
+			var option: Dictionary = field.get("options", {}).get(properties[key], {}) if field["type"] == "enum" else {}
+			if option.has("scene"):
+				scene_path = option["scene"]
+			elif field["type"] == "local_offset":
 				markers.append({"target": field["marker"], "position": value})
 			else:
-				overrides.append({"name": key, "value": value})
+				overrides.append({"name": field.get("target_property", key), "value": value})
 
-		placements.append({
+		if not ResourceLoader.exists(scene_path, "PackedScene"):
+			return {"error": "%s requires an unavailable scene: %s." % [location, scene_path]}
+		var placement: Dictionary = {
 			"id": id,
 			"transform": Transform3D(Basis(rotation.normalized()), position),
 			"scene_path": scene_path,
 			"overrides": overrides,
 			"markers": markers,
-		})
+		}
+		if definition.has("curve_target"):
+			var curve: Curve3D = _decode_curve(record.get("curve"))
+			if not curve:
+				return {"error": "%s has an invalid Bézier curve." % location}
+			placement["curve"] = curve
+			placement["curve_target"] = definition["curve_target"]
+		if definition.has("attach_to"):
+			var attachment: Variant = record.get("attachment")
+			if not attachment is Dictionary or not attachment.get("rail_id") is String or not _is_finite_number(attachment.get("fraction")):
+				return {"error": "%s needs a rail UUID and position." % location}
+			var rail_id: String = attachment["rail_id"].to_lower()
+			var fraction: float = float(attachment["fraction"])
+			if not uuid_pattern.search(rail_id) or fraction < 0.0 or fraction > 1.0:
+				return {"error": "%s has an invalid rail attachment." % location}
+			placement["rail_id"] = rail_id
+			placement["attach_to"] = definition["attach_to"]
+			placement["curve_target"] = object_types[definition["attach_to"]]["curve_target"]
+			overrides.append({"name": "placement_progress", "value": fraction})
+		placements.append(placement)
+	for placement: Dictionary in placements:
+		if placement.has("rail_id") and types_by_id.get(placement["rail_id"]) != placement["attach_to"]:
+			return {"error": "%s placement %s references a missing rail: %s." % [path, placement["id"], placement["rail_id"]]}
 	return {"placements": placements}
 
 
@@ -96,17 +121,33 @@ static func add_proxies(level_root: Node, placements: Array[Dictionary]) -> void
 	level_root.add_child(container, true)
 	for placement: Dictionary in placements:
 		var id: String = placement["id"]
-		var holder: Node3D = Node3D.new()
-		holder.name = "Placement_" + id
-		holder.transform = placement["transform"]
-		holder.set_meta(ID_META, id)
-		container.add_child(holder)
-
 		var proxy: LevelObjectProxy = LevelObjectProxy.new()
 		proxy.name = "Object_" + id
 		proxy.target_scene_path = placement["scene_path"]
-		proxy.spawn_parent_path = level_root.get_path_to(holder)
+		if placement.has("rail_id"):
+			var rail_id: String = placement["rail_id"]
+			var parent_path: String = "%s/Placement_%s/Object_%s/%s" % [
+				level_root.get_path_to(container), rail_id, rail_id, placement["curve_target"]
+			]
+			proxy.spawn_parent_path = NodePath(parent_path)
+			proxy.spawn_parent_required = true
+			proxy.set_meta(ID_META, id)
+		else:
+			var holder: Node3D = Node3D.new()
+			holder.name = "Placement_" + id
+			holder.transform = placement["transform"]
+			holder.set_meta(ID_META, id)
+			container.add_child(holder)
+			proxy.spawn_parent_path = level_root.get_path_to(holder)
 		proxy.property_overrides = placement["overrides"]
+		if placement.has("curve"):
+			var curve_source: Path3D = Path3D.new()
+			curve_source.name = &"SourceCurve"
+			curve_source.curve = placement["curve"]
+			proxy.add_child(curve_source)
+			proxy.curve_copy_enabled = true
+			proxy.curve_source_path = NodePath(curve_source.name)
+			proxy.curve_target_path = NodePath(placement["curve_target"])
 		for entry: Dictionary in placement.get("markers", []):
 			var marker: Marker3D = Marker3D.new()
 			marker.name = "Marker_%d" % proxy.get_child_count()
@@ -114,6 +155,32 @@ static func add_proxies(level_root: Node, placements: Array[Dictionary]) -> void
 			proxy.add_child(marker)
 			proxy.transform_copies.append({"from": NodePath(marker.name), "to": NodePath(entry["target"])})
 		container.add_child(proxy)
+
+
+static func _decode_curve(raw: Variant) -> Curve3D:
+	if not raw is Dictionary or not raw.get("closed") is bool or not raw.get("points") is Array:
+		return null
+	var points: Array = raw["points"]
+	var closed: bool = raw["closed"]
+	if points.size() < (3 if closed else 2):
+		return null
+	var curve: Curve3D = Curve3D.new()
+	for point: Variant in points:
+		if not point is Dictionary or not _is_finite_number(point.get("tilt")):
+			return null
+		var coordinates: Array[Vector3] = []
+		for key: String in ["position", "in", "out"]:
+			var values: Variant = point.get(key)
+			if not _is_finite_array(values, 3):
+				return null
+			var vector: Vector3 = Vector3(values[0], values[1], values[2])
+			if not vector.is_finite():
+				return null
+			coordinates.append(vector)
+		curve.add_point(coordinates[0], coordinates[1], coordinates[2])
+		curve.set_point_tilt(curve.point_count - 1, float(point["tilt"]))
+	curve.closed = closed
+	return curve if curve.get_baked_length() > 0.001 else null
 
 
 static func _decode_property(raw: Variant, field: Dictionary) -> Variant:
@@ -124,11 +191,14 @@ static func _decode_property(raw: Variant, field: Dictionary) -> Variant:
 			var options: Dictionary = field["options"]
 			if raw is String and options.has(raw):
 				return int(options[raw]["value"])
-		"float":
+		"float", "int":
 			if _is_finite_number(raw):
 				var value: float = float(raw)
 				if value >= float(field["min"]) and value <= float(field.get("max", INF)):
-					return value
+					if field["type"] == "float":
+						return value
+					if value == floorf(value):
+						return int(value)
 		"local_offset":
 			if _is_finite_array(raw, 3):
 				var offset: Vector3 = Vector3(raw[0], raw[1], raw[2])

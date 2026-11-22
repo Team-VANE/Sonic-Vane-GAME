@@ -51,7 +51,7 @@ shape = SubResource("BoxShape3D_mkokl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="ShotCamera" parent="Cutscenes/RhinoEncounter" index="3"]
-transform = Transform3D(0.927863, -0.086938806, 0.36264554, 0, 0.9724457, 0.23312922, -0.37292108, -0.21631199, 0.9022965, 6.8, 4, 8.2)
+transform = Transform3D(0.927863, -0.086938806, 0.36264557, 0, 0.9724457, 0.23312923, -0.37292108, -0.21631199, 0.90229654, 6.8, 4, 8.2)
 
 [node name="Approach" parent="Cutscenes/RhinoEncounter" index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4.3)

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dsbo5rxn7yoc8"
+path="res://.godot/imported/Blue Star - For Casinopolis.ogg-2750fde24d22ff118657a18bbf79c169.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Blue Star - For Casinopolis.ogg"
+dest_files=["res://.godot/imported/Blue Star - For Casinopolis.ogg-2750fde24d22ff118657a18bbf79c169.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=2.0
+bpm=121.0
+beat_count=0
+bar_beats=4
