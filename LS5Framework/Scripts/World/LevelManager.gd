@@ -357,6 +357,7 @@ func load_level_by_scene_path(
 		)
 
 	var placements: Array[Dictionary] = []
+	var placement_environment: Dictionary = {}
 	var entry: Dictionary = _get_loading_level_entry(scene_path, &"")
 	var placements_file: String = entry.get("placements_file", "")
 	if not placements_file.is_empty():
@@ -372,6 +373,7 @@ func load_level_by_scene_path(
 			_level_load_in_progress = false
 			return
 		placements = placement_result["placements"]
+		placement_environment = placement_result["environment"]
 		if level_id == &"":
 			level_id = StringName(placements_level_id)
 
@@ -528,7 +530,10 @@ func load_level_by_scene_path(
 	if loading_transition != null:
 		loading_transition.show_loading_phase("Replacing level object proxies...")
 	var proxy_start_usec: int = Time.get_ticks_usec()
-	var proxies_replaced: bool = LevelObjectProxySpawner.replace_proxies_in_level(inst, proxies)
+	var environment_error: String = LevelPlacementsScript.apply_environment(inst, placement_environment)
+	if not environment_error.is_empty():
+		push_warning(environment_error)
+	var proxies_replaced: bool = environment_error.is_empty() and LevelObjectProxySpawner.replace_proxies_in_level(inst, proxies)
 	if loading_transition != null:
 		loading_transition.record_loading_phase(
 			"Replacing level object proxies",
@@ -537,7 +542,7 @@ func load_level_by_scene_path(
 	if not proxies_replaced:
 		LevelPreparationManager.fail_level_preparation(
 			preparation_generation,
-			"One or more level object proxies could not be replaced."
+			environment_error if not environment_error.is_empty() else "One or more level object proxies could not be replaced."
 		)
 		inst.free()
 		if loading_transition != null:

@@ -1425,6 +1425,29 @@ func get_goal_ground_offset(pose: Transform3D, normal: Vector3) -> float:
 	return maxf((radius - support.dot(center_offset)) / vertical, 0.0)
 
 
+func get_downwarp_ground_offset(pose: Transform3D, support: Vector3, up: Vector3) -> float:
+	var alignment: float = support.dot(up)
+	var clearance: float = maxf(collision_ground_distance, 0.0)
+	var has_main_sphere: bool = _ensure_main_sphere_configured()
+	for node: Node in get_children():
+		if not node is CollisionShape3D or node.disabled or not node.shape:
+			continue
+		var shape: Shape3D = node.shape
+		var shape_world: Transform3D = pose * node.transform
+		if has_main_sphere and node == main_collision_shape:
+			shape_world = pose * _main_sphere_base_transform
+		var local_normal: Vector3 = shape_world.basis.transposed() * support
+		var extent: float = 0.0
+		if shape is SphereShape3D:
+			extent = shape.radius * local_normal.length()
+		elif shape is CapsuleShape3D:
+			extent = shape.radius * local_normal.length() + maxf(shape.height * 0.5 - shape.radius, 0.0) * absf(local_normal.y)
+		elif shape is BoxShape3D:
+			extent = shape.size.dot(local_normal.abs()) * 0.5
+		clearance = maxf(clearance, extent - (shape_world.origin - pose.origin).dot(support))
+	return (clearance + safe_margin) / maxf(alignment, 0.001)
+
+
 func _tick_goal_pose(delta: float) -> void:
 	global_transform = _goal_pose_transform
 	velocity = Vector3.ZERO
@@ -3949,7 +3972,7 @@ func _movement_physics_process(delta: float) -> void:
 	_ground_follow_probe(delta)
 	_update_attachment_state_after_move(delta)
 	_reconcile_grounded_state_after_move(world_up)
-	_update_pinball_support(was_attached)
+	_update_pinball_support()
 	_resolve_air_trick_landing_boost(was_attached)
 	if was_attached and not attached:
 		if _spindash_action and _spindash_charging:
@@ -4178,6 +4201,11 @@ func _read_input() -> void:
 
 
 func _update_roll_state() -> void:
+	if _rail_active or _rail_switch_active:
+		if _roll_action:
+			_roll_action.clear_for_rail()
+		rolling = false
+		return
 	if _spline_active or (_spring_detached and (_spring_align_timer > 0.0 or _spring_movement_lock_timer > 0.0)):
 		return
 	if _automation_controller and not _automation_controller.motion.allows(&"roll"):
@@ -4241,7 +4269,7 @@ func _can_start_roll() -> bool:
 		return false
 	if _spring_align_timer > 0.0:
 		return false
-	if _rail_active or _spline_active:
+	if _rail_active or _rail_switch_active or _spline_active:
 		return false
 	if _homing_active:
 		return false
@@ -4881,7 +4909,7 @@ func _start_spindash_charge() -> void:
 	_spindash_latched_direction = Vector3.ZERO
 	_spindash_ground_hold_timer = 0.0
 	_spindash_ground_action1_press_valid = false
-	if not rolling:
+	if not _rail_active and not _rail_switch_active and not rolling:
 		rolling = true
 		_notify_buddy_leader_roll_changed(true)
 	var up: Vector3 = _physics_up_last.normalized()
@@ -5127,9 +5155,6 @@ func _update_spindash_state_on_rail(delta: float) -> void:
 		_play_spindash_release_sfx()
 
 	if _spindash_charging:
-		if not rolling:
-			rolling = true
-			_notify_buddy_leader_roll_changed(true)
 		if action1_released or not action1_held:
 			_trigger_spindash_release(false)
 			return
@@ -6377,7 +6402,7 @@ func _can_read_pinball_flippers() -> bool:
 	)
 
 
-func _enter_pinball_mode() -> void:
+func enter_pinball_mode() -> void:
 	_pinball_contact_frame = Engine.get_physics_frames()
 	if _pinball_mode:
 		return
@@ -6407,13 +6432,13 @@ func _clear_pinball_mode() -> void:
 	_pinball_heading = Vector3.ZERO
 
 
-func _update_pinball_support(was_attached: bool) -> void:
+func _update_pinball_support() -> void:
 	if not attached or not _follow_hit or not is_instance_valid(_follow_collider_last):
 		return
 	if _surface_metadata_bool(_follow_collider_last, SURFACE_METADATA.PINBALL, _follow_collider_shape_last):
-		_enter_pinball_mode()
+		enter_pinball_mode()
 	elif (
-		_pinball_mode and (not was_attached or _pinball_contact_frame != Engine.get_physics_frames())
+		_pinball_mode and _pinball_contact_frame != Engine.get_physics_frames()
 		and not _active_surface_area_has_behavior(SURFACE_METADATA.PINBALL)
 	):
 		_clear_pinball_mode()
@@ -6533,7 +6558,7 @@ func _process_surface_contact_behavior(
 		_coyote_jump_requested = false
 		_clear_coyote_jump_window()
 	if _surface_metadata_bool(collider, SURFACE_METADATA.PINBALL, collider_shape_index):
-		_enter_pinball_mode()
+		enter_pinball_mode()
 	if _surface_metadata_bool(collider, SURFACE_FORCE_ROLL_META, collider_shape_index):
 		_force_surface_roll()
 	if not is_surface_roll_forced() and _surface_metadata_bool(collider, SURFACE_NO_ROLL_META, collider_shape_index):
@@ -6580,7 +6605,7 @@ func _process_slide_collision_surface_behaviors() -> void:
 			contacts.append({"collider": collision.get_collider(), "shape": collision.get_collider_shape_index()})
 			for index: int in range(1, collision.get_collision_count()):
 				if _surface_metadata_bool(collision.get_collider(index), SURFACE_METADATA.PINBALL, collision.get_collider_shape_index(index)):
-					_enter_pinball_mode()
+					enter_pinball_mode()
 	for contact: Dictionary in contacts:
 		_record_surface_contact_behaviors(contact["collider"], int(contact["shape"]))
 	for contact: Dictionary in contacts:
@@ -7217,7 +7242,10 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	var has_input: bool = movement_input_strength > 0.001
 	var is_spindash_charging: bool = _spindash_charging and spindash_enabled and not drop_dash_air_control
 	var spindash_release_now: bool = _spindash_release_requested and is_attached
-	var starts_spindash_roll: bool = spindash_release_now and not _spindash_release_with_jump and _roll_action != null and not is_surface_roll_blocked()
+	var starts_spindash_roll: bool = (
+		spindash_release_now and not _spindash_release_with_jump and _roll_action != null
+		and not _rail_active and not _rail_switch_active and not is_surface_roll_blocked()
+	)
 	var spindash_roll_protected: bool = is_attached and (starts_spindash_roll or (_roll_action != null and _roll_action.spindash_roll_remaining > 0.0))
 	var is_rolling: bool = (spindash_roll_protected or (rolling and roll_enabled)) and not drop_dash_air_control
 	var ice_active: bool = is_attached and is_ice_locomotion_active()
@@ -12865,6 +12893,10 @@ func queue_stomp_attack() -> void:
 func is_attack_active() -> bool:
 	_ensure_modules()
 	return _combat_module.is_attack_active()
+
+func get_attack_hitbox_multiplier(speed: float) -> float:
+	var speed_ratio: float = clampf(speed / maxf(attack_hitbox_full_scale_speed, 0.1), 0.0, 1.0)
+	return lerpf(1.0, maxf(attack_hitbox_max_multiplier, 1.0), speed_ratio)
 
 func is_hurt_active() -> bool:
 	_ensure_modules()

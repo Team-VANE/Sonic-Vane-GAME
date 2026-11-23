@@ -179,7 +179,9 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 		if not live_ids.has(id):
 			_boundary_states.erase(id)
 	for id: int in _sessions.keys():
-		var session: AutomationSession = _sessions[id] as AutomationSession
+		var session: AutomationSession = _sessions.get(id) as AutomationSession
+		if not session:
+			continue
 		var source: AutomationSplineCore = session.get_source() as AutomationSplineCore
 		if not is_instance_valid(source) or not source.accepts(body):
 			unregister_source(id, &"source_unavailable")
@@ -214,7 +216,9 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 			unregister_source(source.get_instance_id(), &"endpoint_exit")
 			_blocked_sources.erase(source.get_instance_id())
 	for id: int in _sessions.keys():
-		var session: AutomationSession = _sessions[id] as AutomationSession
+		var session: AutomationSession = _sessions.get(id) as AutomationSession
+		if not session:
+			continue
 		var source: AutomationSplineCore = session.get_source() as AutomationSplineCore
 		if source and source.beyond_open_end(position, session.sample):
 			unregister_source(id, &"path_end")

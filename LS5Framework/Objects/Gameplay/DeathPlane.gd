@@ -21,6 +21,8 @@ extends WorldObject
 @export_flags_3d_physics var carryable_collision_mask: int = 2
 ## Collision mask added at runtime for enemies affected by death planes.
 @export_flags_3d_physics var enemy_collision_mask: int = 128
+## Placement box dimensions. Zero uses the scene's authored collision shape.
+@export var placement_size: Vector3 = Vector3.ZERO
 
 static var _death_sequence_in_progress: bool = false
 static var _death_sequence_owner_id: int = 0
@@ -30,6 +32,12 @@ var _active_players: Dictionary = {}
 
 
 func _ready() -> void:
+	if placement_size != Vector3.ZERO:
+		var collision: CollisionShape3D = get_node_or_null("CollisionShape3D") as CollisionShape3D
+		if collision and collision.shape is BoxShape3D:
+			var box: BoxShape3D = collision.shape.duplicate() as BoxShape3D
+			box.size = placement_size.max(Vector3(0.01, 0.01, 0.01))
+			collision.shape = box
 	if carryable_collision_mask > 0:
 		collision_mask = collision_mask | carryable_collision_mask
 	if enemy_collision_mask > 0:

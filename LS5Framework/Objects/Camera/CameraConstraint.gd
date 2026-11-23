@@ -76,6 +76,8 @@ const LiveEdit = preload("res://LS5Framework/Scripts/Camera/Constraints/CameraCo
 var _camera_rig: Node3D = null
 ## Player associated with the current registration.
 var _active_body: Node3D = null
+## Level loader used to defer crossing detection until the initial spawn is complete.
+var _level_manager: Node = null
 var _registered: bool = false
 var _blocked: bool = false
 var _elapsed: float = 0.0
@@ -86,6 +88,8 @@ var _entry_areas: Array[Area3D] = []
 ## Entry volumes requiring an observed crossing after spawn or teleport.
 var _crossing_areas: Array[Area3D] = []
 var _entry_states: Dictionary = {}
+var _placement_sweep_boxes: Dictionary[StringName, CollisionShape3D] = {}
+var _placement_sweep_samples: Dictionary = {}
 var _activation_connections: Array[Dictionary] = []
 var _occupancy_areas: Array[Area3D] = []
 var _rearm_areas: Array[Area3D] = []
@@ -93,9 +97,41 @@ var _locked_transform: Transform3D = Transform3D.IDENTITY
 var _has_locked_transform: bool = false
 
 
+func apply_spawn_overrides(overrides: Dictionary, _proxy: Node) -> void:
+	if overrides.get("placement_camera_path", false):
+		var path: Path3D = Path3D.new()
+		path.name = &"CameraPath"
+		add_child(path)
+	var gates: Dictionary = overrides.get("placement_camera_gates", {})
+	for helper_name: String in overrides.get("placement_camera_helpers", []):
+		var marker: Marker3D = Marker3D.new()
+		marker.name = helper_name
+		add_child(marker)
+	var host_area: Area3D = (self as Node) as Area3D
+	for gate_name: String in gates:
+		var entry: Dictionary = gates[gate_name]
+		var gate: Area3D = Area3D.new()
+		gate.name = gate_name
+		gate.transform = entry["transform"]
+		gate.collision_layer = 0
+		gate.collision_mask = host_area.collision_mask if host_area else 4
+		gate.monitoring = false
+		gate.monitorable = false
+		var shape: BoxShape3D = BoxShape3D.new()
+		shape.size = entry["size"]
+		var collider: CollisionShape3D = CollisionShape3D.new()
+		collider.name = &"CollisionShape3D"
+		collider.shape = shape
+		gate.add_child(collider)
+		add_child(gate)
+		if gate_name in ["EntryGate", "ExitGate"]:
+			_placement_sweep_boxes[StringName(gate_name)] = collider
+
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	_level_manager = get_tree().get_first_node_in_group(&"LevelManager")
 	if OS.has_feature("editor") and EngineDebugger.is_active():
 		add_to_group(&"LiveCameraConstraints")
 		if not EngineDebugger.has_capture(LiveEdit.PREFIX):
@@ -121,6 +157,7 @@ func _refresh_activation_connections() -> void:
 	_occupancy_areas.clear()
 	_rearm_areas.clear()
 	_entry_states.clear()
+	_placement_sweep_samples.clear()
 	var host_area: Area3D = (self as Node) as Area3D
 	for component: CameraActivationTrait in activation_traits:
 		if not component or component.event in [CameraActivationTrait.Event.DURATION, CameraActivationTrait.Event.DISTANCE_EXIT]:
@@ -271,6 +308,10 @@ func _on_entry(body: Node3D) -> void:
 func _update_entry_states() -> void:
 	if _crossing_areas.is_empty():
 		return
+	if _is_waiting_for_level_spawn():
+		_entry_states.clear()
+		_placement_sweep_samples.clear()
+		return
 	for candidate: Node in get_tree().get_nodes_in_group("CameraRig"):
 		var body: Node3D = candidate.get("target") as Node3D
 		if not is_instance_valid(body):
@@ -287,9 +328,48 @@ func _update_entry_states() -> void:
 			elif Engine.get_physics_frames() >= int(state["settle_frame"]) and not area.overlaps_body(body):
 				state["armed"] = true
 			bodies[body.get_instance_id()] = state
+		if not _placement_sweep_boxes.is_empty():
+			_update_placement_gate_sweep(body, revision)
+
+
+func _update_placement_gate_sweep(body: Node3D, revision: int) -> void:
+	var body_id: int = body.get_instance_id()
+	var current: Vector3 = body.call("get_main_collision_world_center") if body.has_method("get_main_collision_world_center") else body.global_position
+	var sample: Dictionary = _placement_sweep_samples.get(body_id, {})
+	_placement_sweep_samples[body_id] = {"position": current, "revision": revision}
+	if sample.get("revision", -1) != revision:
+		return
+	var previous: Vector3 = sample["position"]
+	if previous.is_equal_approx(current):
+		return
+	var entry_shape: CollisionShape3D = _placement_sweep_boxes.get(&"EntryGate")
+	var exit_shape: CollisionShape3D = _placement_sweep_boxes.get(&"ExitGate")
+	var entry_hit: float = _gate_sweep_distance_squared(entry_shape, previous, current)
+	var exit_hit: float = _gate_sweep_distance_squared(exit_shape, previous, current)
+	if exit_hit < entry_hit:
+		_on_exit(body)
+	if entry_hit < INF:
+		_on_crossing_entry(body, entry_shape.get_parent() as Area3D)
+	if exit_hit < INF and exit_hit >= entry_hit:
+		_on_exit(body)
+
+
+func _gate_sweep_distance_squared(collider: CollisionShape3D, previous: Vector3, current: Vector3) -> float:
+	if not is_instance_valid(collider) or collider.disabled or not collider.shape is BoxShape3D:
+		return INF
+	var shape: BoxShape3D = collider.shape as BoxShape3D
+	var local_previous: Vector3 = collider.to_local(previous)
+	var local_current: Vector3 = collider.to_local(current)
+	var bounds: AABB = AABB(-shape.size * 0.5, shape.size)
+	if bounds.has_point(local_previous) or bounds.has_point(local_current):
+		return INF
+	var hit: Variant = bounds.intersects_segment(local_previous, local_current)
+	return previous.distance_squared_to(collider.to_global(hit)) if hit is Vector3 else INF
 
 
 func _on_crossing_entry(body: Node3D, area: Area3D) -> void:
+	if _is_waiting_for_level_spawn():
+		return
 	var bodies: Dictionary = _entry_states.get(area.get_instance_id(), {})
 	var state: Dictionary = bodies.get(body.get_instance_id(), {})
 	if not state.get("armed", false):
@@ -300,6 +380,13 @@ func _on_crossing_entry(body: Node3D, area: Area3D) -> void:
 			if state.get("revision", -1) == int(candidate.call("get_teleport_revision")):
 				activate(body, candidate as Node3D)
 			return
+
+
+func _is_waiting_for_level_spawn() -> bool:
+	return (
+		is_instance_valid(_level_manager) and _level_manager.has_method("is_level_loading")
+		and _level_manager.call("is_level_loading")
+	)
 
 
 func _on_occupancy_exit(body: Node3D) -> void:

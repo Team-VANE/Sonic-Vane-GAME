@@ -10,6 +10,9 @@ var _owner: Node = null
 
 var _attribute_material_sources: Array[Dictionary] = []
 var _ice_visual_heading: Vector3 = Vector3.ZERO
+var _ground_model_lean: Quaternion = Quaternion.IDENTITY
+var _ground_model_local_basis: Basis = Basis.IDENTITY
+var _ground_facing_up: Vector3 = Vector3.ZERO
 
 ## Model root masked by character-wide blink visibility.
 var _blink_root: Node3D
@@ -508,7 +511,7 @@ func _collect_mesh_instances(node: Node, out: Array) -> void:
 		_collect_mesh_instances(c, out)
 
 
-func _step_visual_up_toward(target: Vector3, speed_deg: float, delta: float) -> void:
+func _step_visual_up_toward(target: Vector3, speed_deg: float, delta: float, max_lag_deg: float = 180.0) -> void:
 	# SUMMARY: Smooth visual_up toward a target by a max angular step.
 	# STEPS:
 	# - Step 1: Normalize inputs and early-out when aligned.
@@ -536,7 +539,7 @@ func _step_visual_up_toward(target: Vector3, speed_deg: float, delta: float) -> 
 		return
 
 	var speed_used: float = max(speed_deg, 0.0)
-	var max_step: float = deg_to_rad(speed_used) * delta
+	var max_step: float = maxf(deg_to_rad(speed_used) * delta, angle - deg_to_rad(max_lag_deg))
 	if max_step <= 0.0:
 		return
 
@@ -948,7 +951,10 @@ func _update_visual_up(delta: float) -> void:
 
 	if p.attached:
 		p._reset_air_torque_airborne_state(true)
-		_step_visual_up_toward(target, p.visual_up_lerp_speed_deg, delta)
+		if _uses_ground_visual_alignment():
+			_step_visual_up_toward(p.surface_normal, p.visual_up_lerp_speed_deg, delta, p.ground_visual_max_lag_deg)
+		else:
+			_step_visual_up_toward(target, p.visual_up_lerp_speed_deg, delta)
 		return
 	if trajectory_torque_active:
 		if p._manual_airborne_torque_active or p._air_landing_align_active:
@@ -1177,8 +1183,16 @@ func _update_model_orientation(delta: float) -> void:
 	if p == null or not is_instance_valid(p):
 		return
 	if p.model_root == null:
+		_ground_model_lean = Quaternion.IDENTITY
+		_ground_facing_up = Vector3.ZERO
 		return
 
+	var previous_facing_up: Vector3 = _ground_facing_up
+	_ground_facing_up = Vector3.ZERO
+	var previous_lean: Quaternion = Quaternion.IDENTITY
+	if _ground_model_lean != Quaternion.IDENTITY and p.model_root.basis.is_equal_approx(_ground_model_local_basis):
+		previous_lean = _ground_model_lean
+	_ground_model_lean = Quaternion.IDENTITY
 	if p._active_action != null and p._active_action.apply_visual_orientation():
 		return
 	if (p._rail_active or p._rail_switch_active) and p._rail_align_model and p._rail_model_basis_valid:
@@ -1238,9 +1252,12 @@ func _update_model_orientation(delta: float) -> void:
 	var up: Vector3
 	var forward_src: Vector3
 	var spindash_input_facing: bool = p._spindash_charging
+	var use_ground_frame: bool = _uses_ground_visual_alignment() and not trajectory_torque_active
+	var facing_up: Vector3
 
 	if in_spring_align:
 		up = p._spring_align_dir.normalized()
+		facing_up = up
 		var v: Vector3 = p.velocity
 		var v_tangent: Vector3 = v - up * v.dot(up)
 		if v_tangent.length() > 0.05:
@@ -1262,19 +1279,26 @@ func _update_model_orientation(delta: float) -> void:
 				up = p.surface_normal.normalized()
 			if up.length() < 0.001:
 				up = _get_owner_gravity_up()
+		facing_up = p.surface_normal.normalized() if use_ground_frame else up
+		if use_ground_frame:
+			_ground_facing_up = facing_up
+			if p._prev_attached and not previous_facing_up.is_zero_approx():
+				var support_rotation: Quaternion = _get_up_transport(previous_facing_up, facing_up, p._model_forward.cross(previous_facing_up))
+				p._model_forward = support_rotation * p._model_forward
+				_ice_visual_heading = support_rotation * _ice_visual_heading
 		var use_input_facing: bool = spindash_input_facing or (p.race_in_countdown and not p.race_active)
 		var has_input_facing_direction: bool = p._move_direction.length() > 0.001
 		if spindash_input_facing and p._spindash_latched_direction.length() > 0.001:
 			has_input_facing_direction = true
 		if p._is_dead:
-			p._model_forward = p._model_forward - up * p._model_forward.dot(up)
+			p._model_forward = p._model_forward.slide(facing_up)
 			if p._model_forward.length() > 0.001:
 				p._model_forward = p._model_forward.normalized()
 			else:
-				p._model_forward = (-Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)).normalized()
+				p._model_forward = (-Vector3.FORWARD).slide(facing_up).normalized()
 			forward_src = p._model_forward
 		elif use_input_facing and has_input_facing_direction:
-			var input_up: Vector3 = up
+			var input_up: Vector3 = facing_up
 			if spindash_input_facing:
 				input_up = p._physics_up_last.normalized()
 				if p.attached and p.surface_normal.length() > 0.001:
@@ -1291,25 +1315,25 @@ func _update_model_orientation(delta: float) -> void:
 			else:
 				forward_src = p._model_forward
 		else:
-			var move_dir: Vector3 = p.velocity - up * p.velocity.dot(up)
+			var move_dir: Vector3 = p.velocity.slide(facing_up)
 			var min_turn_speed: float = max(p.model_turn_min_speed, 0.0)
 			if move_dir.length() > min_turn_speed:
 				forward_src = move_dir.normalized()
 				p._model_forward = forward_src
 			else:
-				p._model_forward = p._model_forward - up * p._model_forward.dot(up)
+				p._model_forward = p._model_forward.slide(facing_up)
 				if p._model_forward.length() > 0.001:
 					p._model_forward = p._model_forward.normalized()
 				else:
-					p._model_forward = (-Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)).normalized()
+					p._model_forward = (-Vector3.FORWARD).slide(facing_up).normalized()
 				forward_src = p._model_forward
 
 	# Gameplay-facing forward stays driven by movement/input.
-	var gameplay_forward: Vector3 = forward_src - up * forward_src.dot(up)
+	var gameplay_forward: Vector3 = forward_src.slide(facing_up)
 	if gameplay_forward.length() < 0.001:
-		gameplay_forward = -Vector3.FORWARD - up * (-Vector3.FORWARD).dot(up)
+		gameplay_forward = (-Vector3.FORWARD).slide(facing_up)
 	if gameplay_forward.length() < 0.001:
-		gameplay_forward = -Vector3.FORWARD
+		gameplay_forward = Vector3.RIGHT.slide(facing_up) if use_ground_frame else -Vector3.FORWARD
 	gameplay_forward = gameplay_forward.normalized()
 	p._model_forward = gameplay_forward
 
@@ -1317,16 +1341,18 @@ func _update_model_orientation(delta: float) -> void:
 	var visual_forward: Vector3 = gameplay_forward
 	var ice_input_facing: bool = p.is_ice_locomotion_active() and not in_spring_align and not spindash_input_facing and not p.race_in_countdown
 	if ice_input_facing:
-		var ice_input_direction: Vector3 = p._move_direction.slide(up)
+		var ice_input_direction: Vector3 = p._move_direction.slide(facing_up)
 		if not ice_input_direction.is_zero_approx():
 			_ice_visual_heading = ice_input_direction.normalized()
 		elif _ice_visual_heading.is_zero_approx():
-			_ice_visual_heading = (-p.model_root.global_transform.basis.z).slide(up).normalized()
-		var ice_forward: Vector3 = _ice_visual_heading.slide(up)
+			_ice_visual_heading = (-p.model_root.global_transform.basis.z).slide(facing_up).normalized()
+		var ice_forward: Vector3 = _ice_visual_heading.slide(facing_up)
 		if not ice_forward.is_zero_approx():
 			visual_forward = ice_forward.normalized()
 	else:
 		_ice_visual_heading = Vector3.ZERO
+	if use_ground_frame:
+		visual_forward = _get_up_transport(facing_up, up, visual_forward.cross(facing_up)) * visual_forward
 	var torque_active: bool = p.airborne_torque_enabled and p._air_torque_segment_allowed
 	var external_torque_active: bool = bool(p.get("_external_airborne_torque_active"))
 	var manual_active: bool = bool(p.get("_manual_airborne_torque_active")) or external_torque_active
@@ -1382,7 +1408,8 @@ func _update_model_orientation(delta: float) -> void:
 	right = right.normalized()
 
 	var forward: Vector3 = up.cross(right).normalized()
-	var target_basis: Basis = Basis(right, up, -forward)
+	var unleaned_target: Basis = Basis(right, up, -forward)
+	var target_basis: Basis = unleaned_target
 	p._update_drift_visual_influence(delta)
 	var drift_visual_angles: Vector3 = p._get_drift_visual_angles_deg()
 	if not trajectory_torque_active and not external_torque_active and not p._air_landing_align_active and drift_visual_angles.length_squared() > 0.000001:
@@ -1418,48 +1445,87 @@ func _update_model_orientation(delta: float) -> void:
 		p.model_root.global_transform = t
 		p._model_forward = -t.basis.z
 		return
-	if p.attached and not p._prev_attached and not ice_input_facing:
-		t.basis = target_basis
-		p.model_root.global_transform = t
-		return
-
-	if not p.attached:
-		var air_time: float = max(p._airborne_time, 0.0)
-		var yaw_ramp: float = _get_air_turn_ramp_t(
-			air_time,
-			p.model_turn_speed_air_yaw_delay,
-			p.model_turn_speed_air_yaw_ramp_speed
-		)
-		var pitch_ramp: float = _get_air_turn_ramp_t(
-			air_time,
-			p.model_turn_speed_air_pitch_delay,
-			p.model_turn_speed_air_pitch_ramp_speed
-		)
-		var roll_ramp: float = _get_air_turn_ramp_t(
-			air_time,
-			p.model_turn_speed_air_roll_delay,
-			p.model_turn_speed_air_roll_ramp_speed
-		)
-		t.basis = _apply_air_turn_axis_smoothing(
-			t.basis,
-			target_basis,
-			delta,
-			p.model_turn_speed_air_yaw,
-			p.model_turn_speed_air_pitch,
-			p.model_turn_speed_air_roll,
-			yaw_ramp,
-			pitch_ramp,
-			roll_ramp
-		)
-	else:
-		if p.model_turn_speed <= 0.0:
+	if p.attached:
+		var snap_on_landing: bool = not p._prev_attached and not ice_input_facing
+		var blend: float = 1.0 if snap_on_landing or p.model_turn_speed <= 0.0 else p.model_turn_speed * delta
+		if use_ground_frame:
+			t.basis = _smooth_ground_model(
+				t.basis, unleaned_target, target_basis, previous_lean,
+				previous_facing_up, facing_up, clampf(blend, 0.0, 1.0)
+			)
+		elif blend == 1.0:
 			t.basis = target_basis
 		else:
 			var current_q: Quaternion = t.basis.get_rotation_quaternion()
-			var target_q: Quaternion = target_basis.get_rotation_quaternion()
-			var new_q: Quaternion = current_q.slerp(target_q, p.model_turn_speed * delta)
-			t.basis = Basis(new_q)
+			t.basis = Basis(current_q.slerp(target_basis.get_rotation_quaternion(), blend))
+		p.model_root.global_transform = t
+		if _ground_model_lean != Quaternion.IDENTITY:
+			_ground_model_local_basis = p.model_root.basis
+		return
+
+	var air_time: float = max(p._airborne_time, 0.0)
+	var yaw_ramp: float = _get_air_turn_ramp_t(
+		air_time, p.model_turn_speed_air_yaw_delay, p.model_turn_speed_air_yaw_ramp_speed
+	)
+	var pitch_ramp: float = _get_air_turn_ramp_t(
+		air_time, p.model_turn_speed_air_pitch_delay, p.model_turn_speed_air_pitch_ramp_speed
+	)
+	var roll_ramp: float = _get_air_turn_ramp_t(
+		air_time, p.model_turn_speed_air_roll_delay, p.model_turn_speed_air_roll_ramp_speed
+	)
+	t.basis = _apply_air_turn_axis_smoothing(
+		t.basis, target_basis, delta,
+		p.model_turn_speed_air_yaw, p.model_turn_speed_air_pitch, p.model_turn_speed_air_roll,
+		yaw_ramp, pitch_ramp, roll_ramp
+	)
 	p.model_root.global_transform = t
+
+
+func _uses_ground_visual_alignment() -> bool:
+	var p = _owner
+	return (
+		p.attached and not p.surface_normal.is_zero_approx() and not p._spindash_charging
+		and p._spring_align_timer <= 0.0 and not p._spline_active and not p._rail_active and not p._rail_switch_active
+		and p._bounce_state == p.BounceState.NONE and not p.is_parkour_active() and not p.is_action_id_active(&"skydive")
+	)
+
+
+func _get_up_transport(from_up: Vector3, to_up: Vector3, right_hint: Vector3) -> Quaternion:
+	var axis: Vector3 = from_up.cross(to_up)
+	var sine: float = axis.length()
+	var cosine: float = from_up.dot(to_up)
+	if sine > 0.00001:
+		return Quaternion(axis / sine, atan2(sine, cosine))
+	if cosine >= 0.0:
+		return Quaternion.IDENTITY
+	var right: Vector3 = right_hint.slide(from_up).normalized()
+	if right.is_zero_approx():
+		right = (Vector3.RIGHT if absf(from_up.x) < 0.9 else Vector3.FORWARD).slide(from_up).normalized()
+	return Quaternion(right, PI)
+
+
+func _smooth_ground_model(
+	current: Basis, target: Basis, leaned_target: Basis, previous_lean: Quaternion,
+	previous_surface_up: Vector3, surface_up: Vector3, blend: float
+) -> Basis:
+	var heading_basis: Basis = target
+	if blend < 1.0:
+		var unleaned: Basis = Basis(current.get_rotation_quaternion() * previous_lean.inverse())
+		var transported: Basis = unleaned
+		if not previous_surface_up.is_zero_approx():
+			transported = Basis(_get_up_transport(transported.y, previous_surface_up, transported.x)) * transported
+			transported = Basis(_get_up_transport(previous_surface_up, surface_up, transported.x)) * transported
+		transported = Basis(_get_up_transport(transported.y, target.y, transported.x)) * transported
+		var yaw: float = (-transported.z).signed_angle_to(-target.z, target.y)
+		heading_basis = Basis(target.y, yaw * blend) * transported
+	if previous_lean == Quaternion.IDENTITY and target == leaned_target:
+		return heading_basis
+	var target_lean: Quaternion = target.get_rotation_quaternion().inverse() * leaned_target.get_rotation_quaternion()
+	_ground_model_lean = previous_lean.slerp(target_lean, blend)
+	if _ground_model_lean.is_equal_approx(Quaternion.IDENTITY) or _ground_model_lean.is_equal_approx(-Quaternion.IDENTITY):
+		_ground_model_lean = Quaternion.IDENTITY
+		return heading_basis
+	return heading_basis * Basis(_ground_model_lean)
 
 
 func snap_model_to_normal(normal: Vector3, forward_hint: Vector3 = Vector3.FORWARD) -> void:
@@ -1474,6 +1540,8 @@ func snap_model_to_normal(normal: Vector3, forward_hint: Vector3 = Vector3.FORWA
 		return
 	if p.model_root == null:
 		return
+	_ground_facing_up = Vector3.ZERO
+	_ground_model_lean = Quaternion.IDENTITY
 
 	var up: Vector3 = normal.normalized()
 	if up.length() < 0.001:

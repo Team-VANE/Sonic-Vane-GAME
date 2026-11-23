@@ -1,5 +1,40 @@
 {
   "schema_version": 1,
+  "environment": {
+    "sky_profile": {"label":"Sky Profile", "description":"Atmosphere and lighting profile", "type":"enum", "default":"earth_like", "options": {
+      "earth_like": {"label":"Earth Like", "value":0, "path":"res://LS5Framework/Objects/Environment/DayNightCycle/Profiles/EarthLikeDayNight.tres"},
+      "desert_haze": {"label":"Desert Haze", "value":1, "path":"res://LS5Framework/Objects/Environment/DayNightCycle/Profiles/DesertHaze.tres"},
+      "deep_space": {"label":"Deep Space", "value":2, "path":"res://LS5Framework/Objects/Environment/DayNightCycle/Profiles/DeepSpace.tres"},
+      "dense_starfield": {"label":"Dense Starfield", "value":3, "path":"res://LS5Framework/Objects/Environment/DayNightCycle/Profiles/DenseStarfield.tres"},
+      "cosmic_violet": {"label":"Cosmic Violet", "value":4, "path":"res://LS5Framework/Objects/Environment/DayNightCycle/Profiles/CosmicViolet.tres"}
+    }},
+    "start_time_mode": {"label":"Starting Time Mode", "description":"Choose a fixed or random starting hour when a shared clock is unavailable", "type":"enum", "default":"fixed", "options": {
+      "fixed": {"label":"Fixed", "value":0},
+      "random": {"label":"Random", "value":1}
+    }},
+    "start_hour": {"label":"Starting Hour", "description":"Initial solar time in decimal hours. 6.5 is 06:30", "type":"float", "default":6.5, "min":0, "max":24},
+    "time_progression": {"label":"Time Progression", "description":"Advance solar time during gameplay", "type":"bool", "default":true},
+    "day_length_minutes": {"label":"Day Length (Minutes)", "description":"Real-time minutes in a complete in-game day", "type":"float", "default":24, "min":0.1, "max":1440},
+    "starting_weather": {"label":"Starting Weather", "description":"Weather preset used at level entry", "type":"enum", "default":"clear", "options": {
+      "clear": {"label":"Clear", "value":0, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/Clear.tres"},
+      "partly_cloudy": {"label":"Partly Cloudy", "value":1, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/PartlyCloudy.tres"},
+      "overcast": {"label":"Overcast", "value":2, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/Overcast.tres"},
+      "heavy_fog": {"label":"Heavy Fog", "value":3, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/HeavyFog.tres"},
+      "light_rain": {"label":"Light Rain", "value":4, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/LightRain.tres"},
+      "steady_rain": {"label":"Steady Rain", "value":5, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/SteadyRain.tres"},
+      "heavy_rain": {"label":"Heavy Rain", "value":6, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/HeavyRain.tres"},
+      "wind_driven_rain": {"label":"Wind Driven Rain", "value":7, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/WindDrivenRain.tres"},
+      "thunderstorm": {"label":"Thunderstorm", "value":8, "path":"res://LS5Framework/Objects/Environment/WeatherSystem/Presets/Thunderstorm.tres"},
+      "random": {"label":"Random", "value":9}
+    }},
+    "dynamic_weather": {"label":"Dynamic Weather", "description":"Let the weather system select new presets during gameplay", "type":"bool", "default":true},
+    "allowed_weather": {"label":"Allowed Weather", "description":"Restrict startup and runtime weather to these presets", "type":"weather_list"},
+    "precipitation": {"label":"Precipitation", "description":"Allow rain from the active weather preset", "type":"bool", "default":true},
+    "persistent_time": {"label":"Persist Time", "description":"Restore and share the solar clock across levels using the same time channel", "type":"bool", "default":true},
+    "time_channel": {"label":"Time Channel", "description":"Shared clock channel. Use letters, digits, or underscores", "type":"string", "default":"default", "plain_string":true},
+    "persistent_weather": {"label":"Persist Weather", "description":"Restore and share dynamic weather across levels using the same weather channel", "type":"bool", "default":true},
+    "weather_channel": {"label":"Weather Channel", "description":"Shared dynamic weather channel. Use letters, digits, or underscores", "type":"string", "default":"default"}
+  },
   "variants": {
     "ring": {
       "core:ring": {
@@ -32,7 +67,1021 @@
       }
     }
   },
+  "automation_extensions": {
+    "junction": {
+      "enabled": {"label": "Enabled", "description": "Enabled", "type": "bool", "default": true},
+      "source_progress": {"label": "Source Progress", "description": "Normalized distance along the source route", "type": "float", "default": 1, "min": 0, "max": 1},
+      "source_direction": {"label": "Source Direction", "description": "Source Direction", "type": "enum", "default": "forward", "options": {"forward": {"label": "Forward", "value": 1}, "reverse": {"label": "Reverse", "value": -1}}},
+      "destination_progress": {"label": "Destination Progress", "description": "Normalized distance along the destination route", "type": "float", "default": 0, "min": 0, "max": 1},
+      "destination_direction": {"label": "Destination Direction", "description": "Destination Direction", "type": "enum", "default": "forward", "options": {"forward": {"label": "Forward", "value": 1}, "reverse": {"label": "Reverse", "value": -1}}},
+      "choice": {"label": "Branch Choice", "description": "Branch Choice", "type": "enum", "default": "default", "options": {"default": {"label": "Default", "value": 0}, "left": {"label": "Left", "value": 1}, "right": {"label": "Right", "value": 2}}},
+      "buffer_seconds": {"label": "Choice Buffer", "description": "Choice Buffer", "type": "float", "default": 0.4, "min": 0, "max": 3},
+      "input_threshold": {"label": "Input Threshold", "description": "Input Threshold", "type": "float", "default": 0.6, "min": 0.1, "max": 1},
+      "maximum_gap": {"label": "Maximum Gap", "description": "Maximum distance between transfer points. Transfers never snap the player", "type": "float", "default": 2, "min": 0.01, "max": 20},
+      "maximum_angle": {"label": "Maximum Angle", "description": "Maximum Angle", "type": "float", "default": 60, "min": 0, "max": 180},
+      "minimum_up_dot": {"label": "Minimum Up Alignment", "description": "Minimum dot product between the route up vectors", "type": "float", "default": 0.5, "min": -1, "max": 1}
+    },
+    "event": {
+      "enabled": {"label": "Enabled", "description": "Enabled", "type": "bool", "default": true},
+      "event_id": {"label": "Event ID", "description": "Signal identifier emitted at this progress marker", "type": "string", "default": "marker"},
+      "progress": {"label": "Progress", "description": "Normalized distance along the route", "type": "float", "default": 0.5, "min": 0, "max": 1},
+      "direction": {"label": "Crossing Direction", "description": "Crossing Direction", "type": "enum", "default": "both", "options": {"both": {"label": "Both", "value": 0}, "forward": {"label": "Forward", "value": 1}, "reverse": {"label": "Reverse", "value": 2}}},
+      "retrigger": {"label": "Retrigger", "description": "Retrigger", "type": "enum", "default": "once", "options": {"once": {"label": "Once per Activation", "value": 0}, "rearm": {"label": "After Rearm Distance", "value": 1}}},
+      "rearm_distance": {"label": "Rearm Distance", "description": "Rearm Distance", "type": "float", "default": 2, "min": 0.01, "max": 1000}
+    }
+  },
   "types": {
+    "adventure_water": {
+      "label": "Adventure Water Volume",
+      "scene": "res://LS5Framework/Objects/Water/Water_Volume_Adventure.tscn",
+      "properties": {
+        "water_geometry": {
+          "label": "Shape", "description": "Shape", "type": "enum", "default": "box", "group": "Water Geometry", "options": {"box": {"label": "Box", "value": 0}, "sphere": {"label": "Sphere / Ellipsoid", "value": 1}, "cylinder": {"label": "Cylinder", "value": 2}}, "target_property": "geometry"
+        },
+        "water_dimensions": {
+          "label": "Dimensions", "description": "Full volume dimensions. The origin is at the top of the water", "type": "local_dimensions", "default": [300,60,300], "group": "Water Geometry", "min": 0.01, "target_property": "size"
+        },
+        "surface_y_offset": {
+          "label": "Surface Offset", "description": "Height of the water top relative to the object origin along its local up axis", "type": "float", "default": 0, "group": "Water Geometry", "min": -1000000
+        },
+        "visible_surface": {
+          "label": "Visible Surface", "description": "Visible Surface", "type": "enum", "default": "top", "group": "Water Geometry", "options": {"top": {"label": "Top Only", "value": 0}, "closed": {"label": "Closed Surface", "value": 1}}
+        },
+        "runnable_surface": {
+          "label": "Runnable Surface", "description": "Runnable Surface", "type": "enum", "default": "top", "group": "Water Geometry", "options": {"top": {"label": "Local Top", "value": 0}, "all": {"label": "All Faces", "value": 1}, "none": {"label": "None", "value": 2}}
+        },
+        "top_face_angle": {
+          "label": "Top Face Angle", "description": "Top Face Angle", "type": "float", "default": 45, "group": "Water Geometry", "min": 0
+        },
+        "run_alignment_angle": {
+          "label": "Run Alignment Angle", "description": "Run Alignment Angle", "type": "float", "default": 55, "group": "Water Geometry", "min": 0
+        },
+        "water_color": {
+          "label": "Water Color", "description": "Water Color", "type": "color", "default": [0.035,0.43,0.65,1], "group": "Water Surface", "max": 1
+        },
+        "wave_color": {
+          "label": "Wave Color", "description": "Wave Color", "type": "color", "default": [0.65,0.94,1,1], "group": "Water Surface", "max": 1
+        },
+        "transparency": {
+          "label": "Transparency", "description": "Transparency", "type": "float", "default": 0.6, "group": "Water Surface", "min": 0, "max": 1
+        },
+        "wave_opacity": {
+          "label": "Wave Opacity", "description": "Wave Opacity", "type": "float", "default": 0.55, "group": "Water Surface", "min": 0, "max": 1
+        },
+        "surface_fps": {
+          "label": "Surface Animation FPS", "description": "Surface Animation FPS", "type": "float", "default": 18.5, "group": "Water Surface", "min": 0
+        },
+        "refraction_enabled": {
+          "label": "Refraction", "description": "Refraction", "type": "bool", "default": true, "group": "Water Surface"
+        },
+        "refraction_strength": {
+          "label": "Refraction Strength", "description": "Refraction Strength", "type": "float", "default": 0.055, "group": "Water Surface", "min": 0, "requires": {"refraction_enabled": true}
+        },
+        "depth_effect_enabled": {
+          "label": "Depth Effect", "description": "Depth Effect", "type": "bool", "default": false, "group": "Water Surface"
+        },
+        "depth_color": {
+          "label": "Depth Color", "description": "Depth Color", "type": "color", "default": [0.02,0.16,0.28,1], "group": "Water Surface", "requires": {"depth_effect_enabled": true}, "max": 1
+        },
+        "depth_visibility_distance": {
+          "label": "Depth Visibility Distance", "description": "Depth Visibility Distance", "type": "float", "default": 300, "group": "Water Surface", "min": 0.1, "requires": {"depth_effect_enabled": true}
+        },
+        "depth_strength": {
+          "label": "Depth Strength", "description": "Depth Strength", "type": "float", "default": 1, "group": "Water Surface", "min": 0, "requires": {"depth_effect_enabled": true}
+        },
+        "caustics_enabled": {
+          "label": "Caustics", "description": "Caustics", "type": "bool", "default": true, "group": "Water Surface"
+        },
+        "caustic_intensity": {
+          "label": "Caustic Intensity", "description": "Caustic Intensity", "type": "float", "default": 0.45, "group": "Water Surface", "min": 0, "requires": {"caustics_enabled": true}
+        },
+        "caustic_max_distance": {
+          "label": "Caustic Max Distance", "description": "Caustic Max Distance", "type": "float", "default": 300, "group": "Water Surface", "min": 0, "requires": {"caustics_enabled": true}
+        },
+        "prop_water_enabled": {
+          "label": "Prop Buoyancy", "description": "Prop Buoyancy", "type": "bool", "default": true, "group": "Water Physics"
+        },
+        "prop_water_density": {
+          "label": "Water Density", "description": "Water Density", "type": "float", "default": 1000, "group": "Water Physics", "min": 0, "requires": {"prop_water_enabled": true}
+        },
+        "prop_water_velocity": {
+          "label": "Water Current", "description": "World-space water velocity applied to buoyant props", "type": "local_vector", "default": [0,0,0], "group": "Water Physics", "requires": {"prop_water_enabled": true}
+        },
+        "prop_water_priority": {
+          "label": "Buoyancy Priority", "description": "Priority when buoyant props overlap multiple water volumes", "type": "int", "default": 0, "group": "Water Physics", "min": -2147483648, "requires": {"prop_water_enabled": true}
+        },
+        "prop_water_gravity_override": {
+          "label": "Override Buoyancy Gravity", "description": "Override Buoyancy Gravity", "type": "bool", "default": false, "group": "Water Physics", "requires": {"prop_water_enabled": true}
+        },
+        "prop_water_gravity": {
+          "label": "Buoyancy Gravity", "description": "World-space gravity used by buoyant props in this volume", "type": "local_vector", "default": [0,-65,0], "group": "Water Physics", "requires": {"prop_water_enabled": true, "prop_water_gravity_override": true}
+        },
+        "weather_influence_enabled": {
+          "label": "Weather Influence", "description": "Weather Influence", "type": "bool", "default": true, "group": "Water Physics"
+        },
+        "weather_affects_motion": {
+          "label": "Weather Affects Motion", "description": "Weather Affects Motion", "type": "bool", "default": false, "group": "Water Physics", "requires": {"weather_influence_enabled": true}
+        },
+        "override_tint": {
+          "label": "Override Underwater Tint", "description": "Override Underwater Tint", "type": "bool", "default": false, "group": "Water Physics"
+        },
+        "tint_color_override": {
+          "label": "Underwater Tint", "description": "Underwater Tint", "type": "color", "default": [0.04,0.3,0.5,0.25], "group": "Water Physics", "requires": {"override_tint": true}, "max": 1
+        }
+      }
+    },
+    "flipper": {
+      "label": "Flipper",
+      "scene": "res://LS5Framework/Objects/Pinball/Flipper/Flipper.tscn",
+      "properties": {
+        "flipper_side": {
+          "label": "Side", "description": "Swaps the model, collider, input action and stroke direction", "type": "enum", "default": "left", "group": "Flipper", "options": {"left": {"label": "Left", "value": 0}, "right": {"label": "Right", "value": 1}}, "target_property": "side"
+        },
+        "stroke_angle": {
+          "label": "Stroke Angle", "description": "Stroke Angle", "type": "float", "default": 55, "group": "Flipper", "min": 1
+        },
+        "stroke_speed": {
+          "label": "Stroke Speed", "description": "Stroke Speed", "type": "float", "default": 720, "group": "Flipper", "min": 1
+        },
+        "return_speed": {
+          "label": "Return Speed", "description": "Return Speed", "type": "float", "default": 480, "group": "Flipper", "min": 1
+        },
+        "input_range": {
+          "label": "Input Range", "description": "Maximum distance for pinball input. Zero removes the limit", "type": "float", "default": 100, "group": "Flipper", "min": 0
+        },
+        "maximum_strike_speed": {
+          "label": "Maximum Strike Speed", "description": "Maximum Strike Speed", "type": "float", "default": 120, "group": "Launch Assist", "min": 0
+        },
+        "minimum_assist_speed": {
+          "label": "Minimum Assist Speed", "description": "Minimum Assist Speed", "type": "float", "default": 92, "group": "Launch Assist", "min": 0
+        },
+        "contact_aim_weight": {
+          "label": "Contact Aim Weight", "description": "Contact Aim Weight", "type": "float", "default": 0.7, "group": "Launch Assist", "min": 0, "max": 1
+        },
+        "momentum_redirect_fraction": {
+          "label": "Redirected Momentum", "description": "Redirected Momentum", "type": "float", "default": 0.93, "group": "Launch Assist", "min": 0, "max": 1
+        },
+        "strike_follow_through": {
+          "label": "Strike Follow-Through", "description": "Strike Follow-Through", "type": "float", "default": 0.08, "group": "Launch Assist", "min": 0
+        },
+        "strong_launch_speed": {
+          "label": "Strong Launch Threshold", "description": "Strong Launch Threshold", "type": "float", "default": 20, "group": "Launch Assist", "min": 0
+        },
+        "launch_lift_speed": {
+          "label": "Launch Lift Speed", "description": "Launch Lift Speed", "type": "float", "default": 8, "group": "Launch Assist", "min": 0
+        },
+        "collision_grace_time": {
+          "label": "Collision Grace Time", "description": "Collision Grace Time", "type": "float", "default": 0.12, "group": "Launch Assist", "min": 0
+        },
+        "sweep_margin": {
+          "label": "Sweep Margin", "description": "Sweep Margin", "type": "float", "default": 0.15, "group": "Launch Assist", "min": 0
+        },
+        "flipper_damping_grace": {
+          "label": "Damping Grace", "description": "Damping Grace", "type": "float", "default": 1, "group": "Launch Assist", "min": 0, "target_property": "damping_grace_time"
+        }
+      }
+    },
+    "death_plane": {
+      "label": "Death Plane",
+      "scene": "res://LS5Framework/Objects/Gameplay/DeathPlane.tscn",
+      "properties": {
+        "death_plane_enabled": {
+          "label": "Enabled", "description": "Enabled", "type": "bool", "default": true, "group": "Death Plane", "target_property": "enabled"
+        },
+        "death_plane_dimensions": {
+          "label": "Dimensions", "description": "Full dimensions of the death trigger box", "type": "local_dimensions", "default": [350,3,350], "group": "Death Plane", "min": 0.01, "target_property": "placement_size"
+        },
+        "death_delay": {
+          "label": "Death Delay", "description": "Death Delay", "type": "float", "default": 3, "group": "Death Plane", "min": 0
+        },
+        "freeze_camera_at_death": {
+          "label": "Freeze Camera", "description": "Freeze Camera", "type": "bool", "default": true, "group": "Death Plane"
+        },
+        "disable_player_input_during_death": {
+          "label": "Disable Player Input", "description": "Disable Player Input", "type": "bool", "default": true, "group": "Death Plane"
+        },
+        "death_camera_distance_fov_enabled": {
+          "label": "Distance-Based Camera FOV", "description": "Distance-Based Camera FOV", "type": "bool", "default": false, "group": "Death Presentation"
+        },
+        "death_camera_fov_max_reduction": {
+          "label": "Maximum FOV Reduction", "description": "Maximum FOV Reduction", "type": "float", "default": 20, "group": "Death Presentation", "min": 0, "requires": {"death_camera_distance_fov_enabled": true}
+        },
+        "death_camera_fov_reduction_start_distance": {
+          "label": "FOV Reduction Start", "description": "FOV Reduction Start", "type": "float", "default": 0, "group": "Death Presentation", "min": 0, "requires": {"death_camera_distance_fov_enabled": true}
+        },
+        "death_camera_fov_reduction_full_distance": {
+          "label": "FOV Reduction End", "description": "FOV Reduction End", "type": "float", "default": 30, "group": "Death Presentation", "min": 0, "requires": {"death_camera_distance_fov_enabled": true}
+        },
+        "fade_enabled": {
+          "label": "Fade", "description": "Fade", "type": "bool", "default": true, "group": "Death Presentation"
+        },
+        "fade_out_duration": {
+          "label": "Fade Out Duration", "description": "Fade Out Duration", "type": "float", "default": 0.35, "group": "Death Presentation", "min": 0, "requires": {"fade_enabled": true}
+        },
+        "fade_hold_duration": {
+          "label": "Fade Hold Duration", "description": "Fade Hold Duration", "type": "float", "default": 0.05, "group": "Death Presentation", "min": 0, "requires": {"fade_enabled": true}
+        },
+        "fade_in_duration": {
+          "label": "Fade In Duration", "description": "Fade In Duration", "type": "float", "default": 0.35, "group": "Death Presentation", "min": 0, "requires": {"fade_enabled": true}
+        }
+      }
+    },
+    "teleporter_entrance": {
+      "label": "Teleporter Entrance",
+      "scene": "res://LS5Framework/Objects/Teleporter/TeleporterEntrance.tscn",
+      "properties": {
+        "teleporter_enabled": {
+          "label": "Enabled", "description": "Enabled", "type": "bool", "default": true, "group": "Teleporter Entrance", "target_property": "enabled"
+        },
+        "teleporter_one_shot": {
+          "label": "One Shot", "description": "One Shot", "type": "bool", "default": false, "group": "Teleporter Entrance", "target_property": "one_shot"
+        },
+        "teleporter_radius": {
+          "label": "Trigger Radius", "description": "Trigger Radius", "type": "float", "default": 0.5, "group": "Teleporter Entrance", "min": 0.01, "target_property": "placement_radius"
+        },
+        "keep_velocity": {
+          "label": "Keep Velocity", "description": "Preserve player velocity on a same-level teleport", "type": "bool", "default": true, "group": "Teleporter Entrance", "local_destination_only": true
+        },
+        "match_exit_rotation": {
+          "label": "Match Exit Rotation", "description": "Match Exit Rotation", "type": "bool", "default": false, "group": "Teleporter Entrance"
+        },
+        "teleporter_rehit_cooldown": {
+          "label": "Rehit Cooldown", "description": "Rehit Cooldown", "type": "float", "default": 0.2, "group": "Teleporter Entrance", "min": 0, "target_property": "rehit_cooldown"
+        },
+        "teleporter_exit_offset": {
+          "label": "Exit Offset", "description": "Offset relative to the destination marker’s local axes", "type": "local_vector", "default": [0,0,0], "group": "Teleporter Entrance", "target_property": "exit_local_offset"
+        }
+      }
+    },
+    "teleporter_exit": {
+      "label": "Teleporter Exit",
+      "scene": "res://LS5Framework/Objects/Teleporter/TeleporterExit.tscn",
+      "properties": {
+        "teleporter_downwarp_enabled": {
+          "label": "Snap Down to Ground", "description": "Snap Down to Ground", "type": "bool", "default": false, "group": "Teleporter Exit", "target_property": "downwarp_enabled"
+        },
+        "teleporter_downwarp_distance": {
+          "label": "Ground Search Distance", "description": "Ground Search Distance", "type": "float", "default": 50, "group": "Teleporter Exit", "min": 0, "target_property": "downwarp_distance", "requires": {"teleporter_downwarp_enabled": true}
+        },
+        "teleporter_downwarp_offset": {
+          "label": "Ground Clearance", "description": "Ground Clearance", "type": "float", "default": 0.05, "group": "Teleporter Exit", "min": 0, "target_property": "downwarp_offset", "requires": {"teleporter_downwarp_enabled": true}
+        }
+      }
+    },
+    "goal_ring": {
+      "label": "Goal Ring",
+      "scene": "res://LS5Framework/Objects/Race/RaceGoal.tscn",
+      "properties": {
+        "goal_ring_active": {"label": "Active", "description": "Active", "type": "bool", "default": true, "group": "Goal Ring", "target_property": "active"},
+        "goal_ring_one_shot": {"label": "One Shot", "description": "One Shot", "type": "bool", "default": false, "group": "Goal Ring", "target_property": "one_shot"},
+        "goal_ring_size": {"label": "Trigger Dimensions", "description": "Trigger Dimensions", "type": "local_dimensions", "default": [20,20,20], "group": "Goal Ring", "target_property": "size", "min": 0.01, "placement_box": true},
+        "goal_ring_visual_enabled": {"label": "Show Ring", "description": "Show Ring", "type": "bool", "default": true, "group": "Goal Ring", "target_property": "visual_enabled"},
+        "goal_ring_pose": {"label": "Goal Pose", "description": "Goal Pose", "type": "local_offset", "default": [0,0,0], "group": "Goal Ring", "target_property": "pose", "marker": "GoalPose", "marker_label": "Goal Pose"},
+        "goal_ring_player_face_camera": {"label": "Face Player Toward Camera", "description": "Face Player Toward Camera", "type": "bool", "default": true, "group": "Goal Ring", "target_property": "player_face_camera"},
+        "goal_ring_downwarp_enabled": {"label": "Snap Goal Pose to Ground", "description": "Snap Goal Pose to Ground", "type": "bool", "default": true, "group": "Goal Ring", "target_property": "downwarp_enabled"},
+        "goal_ring_downwarp_distance": {"label": "Ground Search Distance", "description": "Ground Search Distance", "type": "float", "default": 50, "group": "Goal Ring", "target_property": "downwarp_distance", "min": 0, "requires": {"goal_ring_downwarp_enabled": true}},
+        "goal_ring_downwarp_offset": {"label": "Ground Clearance", "description": "Ground Clearance", "type": "float", "default": 0.05, "group": "Goal Ring", "target_property": "downwarp_offset", "min": 0, "requires": {"goal_ring_downwarp_enabled": true}},
+        "goal_ring_goal_camera_mode": {"label": "Goal Camera Mode", "description": "Goal Camera Mode", "type": "enum", "default": "static", "group": "Goal Camera", "target_property": "goal_camera_mode", "options": {"static": {"label": "Static Goal Camera", "value": 0}, "player": {"label": "Player Victory Camera", "value": 1}, "legacy": {"label": "Legacy Pivot", "value": 2}}},
+        "goal_ring_camera_point": {"label": "Goal Camera", "description": "Goal Camera", "type": "local_offset", "default": [-7.1074862,0.23,0], "group": "Goal Camera", "target_property": "camera_point", "marker": "GoalCamera", "marker_label": "Goal Camera"},
+        "goal_ring_face_player": {"label": "Aim at Player", "description": "Aim at Player", "type": "bool", "default": true, "group": "Goal Camera", "target_property": "face_player"},
+        "goal_ring_fov_override_enabled": {"label": "Override FOV", "description": "Override FOV", "type": "bool", "default": false, "group": "Goal Camera", "target_property": "fov_override_enabled"},
+        "goal_ring_fov_override": {"label": "Field of View", "description": "Field of View", "type": "float", "default": 70, "group": "Goal Camera", "target_property": "fov_override", "min": 1, "max": 179, "requires": {"goal_ring_fov_override_enabled": true}},
+        "goal_ring_results_delay": {"label": "Results Delay (s)", "description": "Results Delay (s)", "type": "float", "default": 5, "group": "Goal Ring", "target_property": "results_delay", "min": 0}
+      }
+    },
+    "collection_item": {
+      "label": "Emerald Shard",
+      "scene": "res://LS5Framework/Objects/Race/RaceCollectionItem.tscn",
+      "properties": {
+        "collection_item_enabled": {"label": "Enabled", "description": "Enabled", "type": "bool", "default": true, "group": "Collection Item", "target_property": "enabled"},
+        "collection_item_display_name": {"label": "Display Name", "description": "Display Name", "type": "string", "default": "Emerald Piece", "group": "Collection Item", "target_property": "display_name", "plain_string": true},
+        "collection_item_collection_radius": {"label": "Collection Radius", "description": "Collection Radius", "type": "float", "default": 3, "group": "Collection Item", "target_property": "collection_radius", "min": 0.1, "max": 100},
+        "collection_item_collection_count_timing": {"label": "Count Pickup", "description": "Count Pickup", "type": "enum", "default": "home_completed", "group": "Collection Item", "target_property": "collection_count_timing", "options": {"home_completed": {"label": "After Homing In", "value": 0}, "radius_entered": {"label": "On Radius Enter", "value": 1}}},
+        "collection_item_home_duration": {"label": "Home-in Duration (s)", "description": "Home-in Duration (s)", "type": "float", "default": 0.75, "group": "Collection Item", "target_property": "home_duration", "min": 0, "max": 2},
+        "collection_item_home_target_offset": {"label": "Home-in Target Offset", "description": "Home-in Target Offset", "type": "local_vector", "default": [0,0.5,0], "group": "Collection Item", "target_property": "home_target_offset"},
+        "collection_item_rotation_speed_degrees": {"label": "Spin (deg/s)", "description": "Spin (deg/s)", "type": "local_vector", "default": [0,120,0], "group": "Collection Item", "target_property": "rotation_speed_degrees"}
+      }
+    },
+    "race_start": {
+      "label": "Race Start",
+      "scene": "res://LS5Framework/Objects/Race/RaceStart.tscn",
+      "properties": {
+        "race_start_active": {"label": "Active", "description": "Active", "type": "bool", "default": true, "group": "Race Start", "target_property": "active"},
+        "race_start_one_shot": {"label": "One Shot", "description": "One Shot", "type": "bool", "default": false, "group": "Race Start", "target_property": "one_shot"},
+        "race_start_race_id": {"label": "Race ID", "description": "One to eight letters or digits. Leave empty to use the first eight characters of the placement UUID", "type": "string", "default": "", "group": "Race Start", "target_property": "race_id", "plain_string": true, "allow_empty": true},
+        "race_start_level_name": {"label": "Race Display Name", "description": "Race Display Name", "type": "string", "default": "LEVEL", "group": "Race Start", "target_property": "level_name", "plain_string": true},
+        "race_start_race_type": {"label": "Race Type", "description": "Race Type", "type": "enum", "default": "classic", "group": "Race Start", "target_property": "race_type", "options": {"classic": {"label": "Classic Race", "value": 0}, "collection": {"label": "Collection Race", "value": 1}, "rings": {"label": "Ring Race", "value": 2}}},
+        "race_start_collection_required_count": {"label": "Shards Required", "description": "Shards Required", "type": "int", "default": 1, "group": "Race Start", "target_property": "collection_required_count", "min": 1, "max": 999, "requires": {"race_start_race_type": "collection"}},
+        "race_start_ring_required_count": {"label": "Rings Required", "description": "Rings Required", "type": "int", "default": 100, "group": "Race Start", "target_property": "ring_required_count", "min": 1, "max": 9999, "requires": {"race_start_race_type": "rings"}},
+        "race_start_offline_requires_interact": {"label": "Require Interact Offline", "description": "Require Interact Offline", "type": "bool", "default": true, "group": "Race Start", "target_property": "offline_requires_interact"},
+        "race_start_online_requires_interact": {"label": "Require Interact Online", "description": "Require Interact Online", "type": "bool", "default": true, "group": "Race Start", "target_property": "online_requires_interact"},
+        "race_start_starting_line_offset": {"label": "Starting Line Offset", "description": "Starting Line Offset", "type": "local_vector", "default": [0,0,0], "group": "Race Start", "target_property": "starting_line_offset"},
+        "race_start_countdown_start_delay": {"label": "Before Countdown (s)", "description": "Before Countdown (s)", "type": "float", "default": 2, "group": "Race Start", "target_property": "countdown_start_delay", "min": 0},
+        "race_start_countdown_seconds": {"label": "Countdown Seconds", "description": "Countdown Seconds", "type": "int", "default": 3, "group": "Race Start", "target_property": "countdown_seconds", "min": 0},
+        "race_start_use_ready_set_go_countdown": {"label": "Use Ready, Set, Go", "description": "Use Ready, Set, Go", "type": "bool", "default": false, "group": "Race Start", "target_property": "use_ready_set_go_countdown"},
+        "race_start_go_duration": {"label": "Go Display (s)", "description": "Go Display (s)", "type": "float", "default": 1, "group": "Race Start", "target_property": "go_duration", "min": 0},
+        "race_start_lock_controls_during_countdown": {"label": "Lock Controls in Countdown", "description": "Lock Controls in Countdown", "type": "bool", "default": true, "group": "Race Start", "target_property": "lock_controls_during_countdown"},
+        "race_start_reset_hud_timer_on_start": {"label": "Reset Timer on Start", "description": "Reset Timer on Start", "type": "bool", "default": true, "group": "Race Start", "target_property": "reset_hud_timer_on_start"},
+        "race_start_race_label_enabled": {"label": "Show Race Label", "description": "Show Race Label", "type": "bool", "default": true, "group": "Race Start", "target_property": "race_label_enabled"}
+      }
+    },
+    "homing_target": {
+      "label": "Homing Target",
+      "scene": "res://LS5Framework/Objects/Homing/HomingTarget.tscn",
+      "properties": {
+        "homing_target_enabled": {"label": "Enabled", "description": "Enabled", "type": "bool", "default": true, "group": "Homing Target", "target_property": "enabled"},
+        "homing_target_thrown_object_targeting_enabled": {"label": "Targetable by Thrown Props", "description": "Targetable by Thrown Props", "type": "bool", "default": true, "group": "Homing Target", "target_property": "thrown_object_targeting_enabled"},
+        "homing_target_homing_target_max_distance": {"label": "Homing Range", "description": "Zero inherits the player's homing range", "type": "float", "default": 0, "group": "Homing Target", "target_property": "homing_target_max_distance", "min": 0},
+        "homing_target_pop_up_speed_override": {"label": "Pop-up Speed", "description": "Minus one inherits the player's pop-up speed", "type": "float", "default": -1, "group": "Homing Target", "target_property": "pop_up_speed_override", "min": -1},
+        "homing_target_pass_through": {"label": "Pass Through", "description": "Pass Through", "type": "bool", "default": false, "group": "Homing Target", "target_property": "pass_through"},
+        "homing_target_attack_magnetism_enabled": {"label": "Attack Magnetism", "description": "Attack Magnetism", "type": "bool", "default": true, "group": "Homing Target", "target_property": "attack_magnetism_enabled"},
+        "homing_target_attack_magnetism_override_player_settings": {"label": "Override Player Magnetism", "description": "Override Player Magnetism", "type": "bool", "default": false, "group": "Homing Target", "target_property": "attack_magnetism_override_player_settings", "requires": {"homing_target_attack_magnetism_enabled": true}},
+        "homing_target_attack_magnetism_range": {"label": "Magnetism Range", "description": "Magnetism Range", "type": "float", "default": 22, "group": "Homing Target", "target_property": "attack_magnetism_range", "min": 0, "requires": {"homing_target_attack_magnetism_enabled": true, "homing_target_attack_magnetism_override_player_settings": true}},
+        "homing_target_attack_magnetism_detection_angle_deg": {"label": "Detection Angle", "description": "Detection Angle", "type": "float", "default": 38, "group": "Homing Target", "target_property": "attack_magnetism_detection_angle_deg", "min": 0, "requires": {"homing_target_attack_magnetism_enabled": true, "homing_target_attack_magnetism_override_player_settings": true}},
+        "homing_target_attack_magnetism_strength": {"label": "Magnetism Strength", "description": "Magnetism Strength", "type": "float", "default": 42, "group": "Homing Target", "target_property": "attack_magnetism_strength", "min": 0, "requires": {"homing_target_attack_magnetism_enabled": true, "homing_target_attack_magnetism_override_player_settings": true}},
+        "homing_target_attack_magnetism_min_speed": {"label": "Minimum Speed", "description": "Minimum Speed", "type": "float", "default": 0, "group": "Homing Target", "target_property": "attack_magnetism_min_speed", "min": 0, "requires": {"homing_target_attack_magnetism_enabled": true, "homing_target_attack_magnetism_override_player_settings": true}},
+        "homing_target_attack_magnetism_strength_multiplier": {"label": "Magnetism Multiplier", "description": "Magnetism Multiplier", "type": "float", "default": 1, "group": "Homing Target", "target_property": "attack_magnetism_strength_multiplier", "min": 0, "requires": {"homing_target_attack_magnetism_enabled": true}},
+        "homing_target_attack_magnetism_update_cell_each_physics_frame": {"label": "Track Moving Target", "description": "Update the spatial index while this target moves. Stationary targets can leave this off", "type": "bool", "default": false, "group": "Homing Target", "target_property": "attack_magnetism_update_cell_each_physics_frame", "always_export": true, "requires": {"homing_target_attack_magnetism_enabled": true}}
+      }
+    },
+    "gravity_modifier": {
+      "label": "Gravity Modifier",
+      "scene": "res://LS5Framework/Objects/Gravity/GravityModifier.tscn",
+      "properties": {
+        "gravity_modifier_active": {"label": "Active", "description": "Active", "type": "bool", "default": true, "group": "Gravity Modifier", "target_property": "active"},
+        "gravity_modifier_size": {"label": "Trigger Dimensions", "description": "Trigger Dimensions", "type": "local_dimensions", "default": [6,4,6], "group": "Gravity Modifier", "target_property": "size", "min": 0.01, "placement_box": true},
+        "gravity_modifier_gravity_up_direction": {"label": "Gravity Up", "description": "Direction opposite the gravity pull. The preview arrow points along the pull", "type": "local_vector", "default": [0,1,0], "group": "Gravity Modifier", "target_property": "gravity_up_direction"},
+        "gravity_modifier_direction_is_local": {"label": "Use Local Direction", "description": "Rotate the authored gravity direction with this trigger", "type": "bool", "default": true, "group": "Gravity Modifier", "target_property": "direction_is_local"},
+        "gravity_modifier_gravity_multiplier": {"label": "Gravity Multiplier", "description": "Gravity Multiplier", "type": "float", "default": 1, "group": "Gravity Modifier", "target_property": "gravity_multiplier", "min": 0},
+        "gravity_modifier_timed": {"label": "Timed Modifier", "description": "Timed Modifier", "type": "bool", "default": false, "group": "Gravity Modifier", "target_property": "timed", "authoring_only": true},
+        "gravity_modifier_duration": {"label": "Duration (s)", "description": "Time the modifier remains active after contact", "type": "float", "default": 3, "group": "Gravity Modifier", "target_property": "duration", "min": 0.01, "always_export": true, "requires": {"gravity_modifier_timed": true}},
+        "gravity_modifier_gravity_priority": {"label": "Priority", "description": "Priority", "type": "int", "default": 0, "group": "Gravity Modifier", "target_property": "gravity_priority", "min": -2147483648, "max": 2147483647},
+        "gravity_modifier_blend_with_planetary_gravity": {"label": "Blend with Planetary Gravity", "description": "Blend with Planetary Gravity", "type": "bool", "default": false, "group": "Gravity Modifier", "target_property": "blend_with_planetary_gravity"},
+        "gravity_modifier_affects_all_players": {"label": "Affect All Players", "description": "Affect All Players", "type": "bool", "default": false, "group": "Gravity Modifier", "target_property": "affects_all_players"},
+        "gravity_modifier_rehit_cooldown": {"label": "Rehit Cooldown (s)", "description": "Rehit Cooldown (s)", "type": "float", "default": 0.25, "group": "Gravity Modifier", "target_property": "rehit_cooldown", "min": 0},
+        "gravity_modifier_gravity_follower_collision_mask": {"label": "Follower Layers", "description": "Follower Layers", "type": "physics_mask", "default": 130, "group": "Gravity Filters", "target_property": "gravity_follower_collision_mask"},
+        "gravity_modifier_require_group_primary": {"label": "Primary Player Group", "description": "Primary Player Group", "type": "string", "default": "Player", "group": "Gravity Filters", "target_property": "require_group_primary", "allow_empty": true},
+        "gravity_modifier_require_group_secondary": {"label": "Secondary Player Group", "description": "Secondary Player Group", "type": "string", "default": "player", "group": "Gravity Filters", "target_property": "require_group_secondary", "allow_empty": true},
+        "gravity_modifier_clear_on_death": {"label": "Clear on Death", "description": "Clear on Death", "type": "bool", "default": true, "group": "Gravity Filters", "target_property": "clear_on_death"},
+        "gravity_modifier_clear_on_respawn": {"label": "Clear on Respawn", "description": "Clear on Respawn", "type": "bool", "default": true, "group": "Gravity Filters", "target_property": "clear_on_respawn"},
+        "gravity_modifier_clear_on_level_restart": {"label": "Clear on Level Restart", "description": "Clear on Level Restart", "type": "bool", "default": true, "group": "Gravity Filters", "target_property": "clear_on_level_restart"},
+        "gravity_modifier_clear_on_race_cleanup": {"label": "Clear on Race Cleanup", "description": "Clear on Race Cleanup", "type": "bool", "default": true, "group": "Gravity Filters", "target_property": "clear_on_race_cleanup"}
+      }
+    },
+    "rain_occluder": {
+      "label": "Rain Occluder",
+      "scene": "res://LS5Framework/Objects/Environment/Rain/RainOccluder.tscn",
+      "properties": {
+        "rain_occluder_size": {"label": "Cover Dimensions", "description": "Full dimensions of the box that blocks rain cover rays", "type": "local_dimensions", "default": [12,0.5,12], "group": "Volume", "min": 0.01, "placement_box": true, "target_node": "Roof"}
+      }
+    },
+    "environment_transition": {
+      "label": "Environment Transition",
+      "scene": "res://LS5Framework/Objects/Environment/EnvironmentTransition.tscn",
+      "properties": {
+        "environment_transition_size": {"label":"Trigger Dimensions", "description":"Full dimensions of the entry volume", "type":"local_dimensions", "default":[8,8,8], "group":"Volume", "target_property":"shape", "min":0.01, "placement_box":true},
+        "environment_transition_enabled": {"label":"Active", "description":"Enable this transition when a player enters", "type":"bool", "default":true, "group":"Volume", "target_property":"enabled"},
+        "environment_transition_one_shot": {"label":"One Shot", "description":"Disable after a successful transition until the level reloads", "type":"bool", "default":false, "group":"Volume", "target_property":"one_shot"},
+        "environment_transition_time": {"label":"Override Time", "description":"Change the solar hour on entry", "type":"bool", "default":true, "group":"Time Transition", "target_property":"transition_time", "always_export":true},
+        "environment_transition_hour": {"label":"Target Hour", "description":"Target local solar hour in decimal hours", "type":"float", "default":18.5, "group":"Time Transition", "target_property":"target_time_hours", "min":0, "max":24, "requires":{"environment_transition_time":true}},
+        "environment_transition_time_blend": {"label":"Time Blend (Seconds)", "description":"Duration of the solar time blend", "type":"float", "default":2, "group":"Time Transition", "target_property":"time_transition_seconds", "min":0, "max":600, "requires":{"environment_transition_time":true}},
+        "environment_transition_shortest": {"label":"Shortest Time Path", "description":"Use the shorter direction around the 24-hour clock", "type":"bool", "default":true, "group":"Time Transition", "target_property":"shortest_time_path", "requires":{"environment_transition_time":true}},
+        "environment_transition_weather": {"label":"Override Weather", "description":"Apply a combined sky weather and precipitation preset", "type":"bool", "default":false, "group":"Weather Transition", "authoring_only":true},
+        "environment_transition_weather_id": {"label":"Weather Preset", "description":"Choose a preset allowed by the level", "type":"enum", "default":"clear", "group":"Weather Transition", "target_property":"target_weather_id", "environment_preset":"starting_weather", "always_export":true, "requires":{"environment_transition_weather":true}},
+        "environment_transition_weather_blend": {"label":"Weather Blend (Seconds)", "description":"Duration of the combined weather blend", "type":"float", "default":5, "group":"Weather Transition", "target_property":"weather_transition_seconds", "min":0, "max":600, "requires":{"environment_transition_weather":true}},
+        "environment_transition_sky": {"label":"Override Sky", "description":"Blend to a different atmosphere and lighting profile", "type":"bool", "default":false, "group":"Sky Transition", "authoring_only":true},
+        "environment_transition_sky_id": {"label":"Sky Profile", "description":"Choose the target atmosphere and lighting profile", "type":"enum", "default":"earth_like", "group":"Sky Transition", "target_property":"target_profile", "environment_preset":"sky_profile", "always_export":true, "requires":{"environment_transition_sky":true}},
+        "environment_transition_sky_blend": {"label":"Sky Blend (Seconds)", "description":"Duration of the sky and lighting blend", "type":"float", "default":5, "group":"Sky Transition", "target_property":"profile_transition_seconds", "min":0, "max":600, "requires":{"environment_transition_sky":true}}
+      }
+    },
+    "rain_shelter": {
+      "label": "Rain Shelter",
+      "scene": "res://LS5Framework/Objects/Environment/Rain/RainShelterVolume.tscn",
+      "properties": {
+        "rain_shelter_size": {"label": "Interior Dimensions", "description": "Full dimensions of the interior where the rain system detects shelter", "type": "local_dimensions", "default": [20,10,20], "group": "Volume", "min": 0.01, "placement_box": true, "target_node": "Interior"}
+      }
+    },
+    "carryable_respawn": {
+      "label": "Carryable Respawn Volume",
+      "scene": "res://LS5Framework/Objects/Carry/CarryableRespawnPlane.tscn",
+      "properties": {
+        "carryable_respawn_size": {"label": "Trigger Dimensions", "description": "Full dimensions of the box that returns eligible carryables to their own spawn", "type": "local_dimensions", "default": [50,3,50], "group": "Volume", "min": 0.01, "placement_box": true},
+        "carryable_respawn_active": {"label": "Active", "description": "Enable carryable respawning in this volume", "type": "bool", "default": true, "group": "Volume", "target_property": "active"},
+        "carryable_respawn_one_shot": {"label": "One Shot", "description": "Deactivate after successfully respawning a carryable", "type": "bool", "default": false, "group": "Volume", "target_property": "one_shot"},
+        "carryable_respawn_mask": {"label": "Carryable Layers", "description": "Physics layers checked for bodies that support carryable respawning", "type": "physics_mask", "default": 2, "group": "Volume", "target_property": "carryable_collision_mask"}
+      }
+    },
+    "surface_behavior": {
+      "label": "Surface Behavior",
+      "scene": "res://LS5Framework/Objects/Surface/SurfaceBehavior.tscn",
+      "properties": {
+        "surface_behavior_enabled": {"label": "Enabled", "description": "Apply the rolling policy to the selected targets or volume", "type": "bool", "default": true, "group": "Surface Behavior", "target_property": "enabled"},
+        "surface_behavior_mode": {"label": "Apply To", "description": "Apply on contact with imported track colliders or while inside this box", "type": "enum", "default": "targets", "group": "Surface Behavior", "always_export": true, "options": {"targets": {"label": "Track Targets", "value": 0}, "volume": {"label": "Volume", "value": 1, "scene": "res://LS5Framework/Objects/Surface/SurfaceTrigger.tscn"}}},
+        "surface_behavior_rolling": {"label": "Rolling", "description": "Force, block, or explicitly allow rolling", "type": "enum", "default": "force", "group": "Surface Movement", "surface_trait": "movement", "target_property": "rolling", "options": {"inherit": {"label": "Inherit", "value": 0}, "force": {"label": "Force Roll", "value": 1}, "block": {"label": "Block Roll", "value": 2}, "allow": {"label": "Allow Roll", "value": 3}}},
+        "surface_behavior_jumping": {"label": "Jumping", "description": "Block all jumps or only the coyote jump window", "type": "enum", "default": "inherit", "group": "Surface Movement", "surface_trait": "movement", "target_property": "jumping", "options": {"inherit": {"label": "Inherit", "value": 0}, "block": {"label": "Block Jump", "value": 1}, "block_coyote": {"label": "Block Coyote Jump", "value": 2}, "allow": {"label": "Allow Jump", "value": 3}}},
+        "surface_behavior_drifting": {"label": "Drifting", "description": "Allow or disallow drifting while the behavior applies", "type": "enum", "default": "inherit", "group": "Surface Movement", "surface_trait": "movement", "target_property": "drifting", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_slope_gravity": {"label": "Slope Gravity", "description": "Allow or suppress gravity along the supporting slope", "type": "enum", "default": "inherit", "group": "Surface Movement", "surface_trait": "movement", "target_property": "slope_gravity", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_pinball": {"label": "Pinball", "description": "Enable or disable pinball behavior. The native rig clears pinball on regular ground", "type": "enum", "default": "inherit", "group": "Surface Movement", "surface_trait": "movement", "target_property": "pinball", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_ice": {"label": "Ice", "description": "Change traction while supported by a target collider", "type": "enum", "default": "inherit", "group": "Surface Movement", "surface_trait": "movement", "target_property": "ice", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}, "surface_targets_only": true, "requires": {"surface_behavior_mode": "targets"}},
+        "surface_behavior_force_cling": {"label": "Force Cling", "description": "Allow an eligible player to cling to a nearby wall", "type": "enum", "default": "inherit", "group": "Surface Attachment", "surface_trait": "attachment", "target_property": "force_cling", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_sticky": {"label": "Sticky", "description": "Adhere to the surface to prevent geometry-driven launches", "type": "enum", "default": "inherit", "group": "Surface Attachment", "surface_trait": "attachment", "target_property": "sticky", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_prevent_detach": {"label": "Prevent Detach", "description": "Prevent ordinary detachment while preserving intentional jumps", "type": "enum", "default": "inherit", "group": "Surface Attachment", "surface_trait": "attachment", "target_property": "prevent_detach", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_preserve_momentum": {"label": "Preserve Momentum", "description": "Preserve momentum on the supporting collider", "type": "enum", "default": "inherit", "group": "Surface Attachment", "surface_trait": "attachment", "target_property": "preserve_momentum", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}, "surface_targets_only": true, "requires": {"surface_behavior_mode": "targets"}},
+        "surface_behavior_alignment": {"label": "Surface Alignment", "description": "Set a maximum alignment angle or disable attachment to target colliders", "type": "enum", "default": "inherit", "group": "Surface Attachment", "surface_trait": "attachment", "target_property": "alignment", "surface_targets_only": true, "requires": {"surface_behavior_mode": "targets"}, "options": {"inherit": {"label": "Inherit", "value": 0}, "limit": {"label": "Limit Angle", "value": 1}, "disabled": {"label": "Disable Attachment", "value": 2}}},
+        "surface_behavior_maximum_angle": {"label": "Maximum Angle", "description": "Maximum alignment angle from gravity up, in degrees", "type": "float", "default": 90, "group": "Surface Attachment", "surface_trait": "attachment", "target_property": "maximum_angle", "surface_targets_only": true, "requires": {"surface_behavior_mode": "targets", "surface_behavior_alignment": "limit"}, "min": 0, "max": 180},
+        "surface_behavior_override_damage": {"label": "Override Damage", "description": "Set a contact damage value. Volumes apply damage on entry", "type": "bool", "default": false, "group": "Surface Hazard", "surface_trait": "hazard", "target_property": "override_damage"},
+        "surface_behavior_damage_amount": {"label": "Damage Amount", "description": "Zero clears inherited contact damage", "type": "int", "default": 1, "group": "Surface Hazard", "surface_trait": "hazard", "target_property": "damage_amount", "min": 0, "max": 1000, "requires": {"surface_behavior_override_damage": true}},
+        "surface_behavior_death": {"label": "Pit Death", "description": "Enable or explicitly suppress pit death. Death takes precedence over damage", "type": "enum", "default": "inherit", "group": "Surface Hazard", "surface_trait": "hazard", "target_property": "death", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}},
+        "surface_behavior_visibility": {"label": "Visibility", "description": "Hide or show target meshes while leaving their collision intact", "type": "enum", "default": "inherit", "group": "Surface Visibility", "surface_trait": "visibility", "target_property": "visibility", "surface_targets_only": true, "requires": {"surface_behavior_mode": "targets"}, "options": {"inherit": {"label": "Inherit", "value": 0}, "show": {"label": "Show Meshes", "value": 1}, "hide": {"label": "Hide Meshes", "value": 2}}},
+        "surface_behavior_priority": {"label": "Priority", "description": "Higher priority wins when policies apply to the same collider", "type": "int", "default": 0, "group": "Surface Behavior", "min": -2147483648, "max": 2147483647, "target_property": "behavior_priority"},
+        "surface_behavior_size": {"label": "Volume Dimensions", "description": "Full dimensions of the box centered on the placement origin", "type": "local_dimensions", "default": [12,6,12], "group": "Surface Behavior", "min": 0.1, "placement_box": true, "requires": {"surface_behavior_mode": "volume"}}
+      }
+    },
+    "camera_constraint": {
+      "label": "Camera Constraint",
+      "scene": "res://LS5Framework/Objects/Camera/CameraConstraint.tscn",
+      "properties": {
+        "camera_constraint_enabled": {
+          "label": "Enabled", "description": "Allow this shot to activate when the player enters the box", "type": "bool", "default": true, "group": "Camera Activation", "target_property": "enabled"
+        },
+        "camera_constraint_priority": {
+          "label": "Priority", "description": "Higher priority wins when camera constraints overlap", "type": "int", "default": 0, "group": "Camera Activation", "min": -2147483648, "max": 2147483647, "target_property": "constraint_priority"
+        },
+        "camera_activation_mode": {
+          "label": "Activation", "description": "Occupancy follows the box overlap. Entry Gate latches the shot after an outside-to-inside crossing", "type": "enum", "default": "occupancy", "group": "Camera Activation", "camera_shot": true, "options": {"occupancy": {"label": "Occupancy", "value": 0}, "entry_gate": {"label": "Entry Gate", "value": 1}}
+        },
+        "camera_volume_size": {
+          "label": "Box Dimensions", "description": "Full dimensions of the occupancy box centered on the constraint origin", "type": "local_dimensions", "default": [24,12,24], "group": "Camera Activation", "min": 0.1, "camera_shot": true, "requires": {"camera_activation_mode": "occupancy"}
+        },
+        "camera_exit_gate_enabled": {
+          "label": "Exit Gate", "description": "Release the active shot when the player enters the exit gate", "type": "bool", "default": false, "group": "Camera Release", "authoring_only": true, "requires": {"camera_activation_mode": "entry_gate"}
+        },
+        "camera_rearm_gate_enabled": {
+          "label": "Rearm Boundary", "description": "After release, block another activation while the player is inside this boundary", "type": "bool", "default": false, "group": "Camera Release", "authoring_only": true, "requires": {"camera_activation_mode": "entry_gate"}
+        },
+        "camera_duration_enabled": {
+          "label": "Timed Release", "description": "Release the shot after a set time, at or after the end of the entry blend", "type": "bool", "default": false, "group": "Camera Release", "camera_shot": true, "requires": {"camera_activation_mode": "entry_gate"}
+        },
+        "camera_duration": {
+          "label": "Lifetime (s)", "description": "Time from activation until release. Zero lets the entry blend complete before releasing", "type": "float", "default": 0.35, "group": "Camera Release", "min": 0, "max": 60, "camera_shot": true, "requires": {"camera_activation_mode": "entry_gate", "camera_duration_enabled": true}
+        },
+        "camera_distance_enabled": {
+          "label": "Distance Release", "description": "Release the shot when the player moves beyond a radius", "type": "bool", "default": false, "group": "Camera Release", "camera_shot": true, "requires": {"camera_activation_mode": "entry_gate"}
+        },
+        "camera_exit_distance": {
+          "label": "Release Radius", "description": "Distance beyond which the constraint releases", "type": "float", "default": 100, "group": "Camera Release", "min": 0.01, "camera_shot": true, "requires": {"camera_activation_mode": "entry_gate", "camera_distance_enabled": true}
+        },
+        "camera_distance_reference": {
+          "label": "Distance Center", "description": "Measure from the constraint origin or a movable release reference", "type": "enum", "default": "origin", "group": "Camera Release", "camera_shot": true, "options": {"origin": {"label": "Constraint Origin", "value": 0}, "marker": {"label": "Release Reference", "value": 1}}, "requires": {"camera_activation_mode": "entry_gate", "camera_distance_enabled": true}
+        },
+        "camera_release_offset": {
+          "label": "Release Reference", "description": "Position of the distance release center relative to the constraint origin", "type": "local_offset", "default": [0,0,0], "group": "Camera Release", "marker": "ReleaseReference", "marker_label": "Release Reference", "requires": {"camera_activation_mode": "entry_gate", "camera_distance_enabled": true, "camera_distance_reference": "marker"}
+        },
+        "camera_override_position": {
+          "label": "Override Position", "description": "Use this shot’s Position instead of the regular camera setting", "type": "bool", "default": true, "group": "Camera Framing", "camera_shot": true
+        },
+        "camera_position_mode": {
+          "label": "Position Mode", "description": "Choose how to place the camera or its orbit pivot", "type": "enum", "default": "fixed_camera", "group": "Camera Framing", "camera_shot": true, "options": {"fixed_camera": {"label": "Fixed Camera", "value": 0}, "fixed_pivot": {"label": "Fixed Pivot", "value": 1}, "player_camera": {"label": "Player-relative Camera", "value": 2}, "player_pivot": {"label": "Player-relative Pivot", "value": 3}, "path_camera": {"label": "Path Camera", "value": 6}}, "requires": {"camera_override_position": true}
+        },
+        "camera_point_offset": {
+          "label": "Camera Point", "description": "Local anchor for the fixed camera or fixed orbit pivot", "type": "local_offset", "default": [0,5,18], "group": "Camera Framing", "marker": "ConstraintPoint", "marker_label": "Camera Point", "requires": {"camera_position_mode": ["fixed_camera", "fixed_pivot"], "camera_override_position": true}
+        },
+        "camera_position_offset": {
+          "label": "Position Offset", "description": "Offset from the camera point or from the player, depending on Position Mode", "type": "local_vector", "default": [0,0,0], "group": "Camera Framing", "camera_shot": true, "requires": {"camera_override_position": true}
+        },
+        "camera_offset_space": {
+          "label": "Position Offset Space", "description": "Coordinate frame used by Position Offset", "type": "enum", "default": "world", "group": "Camera Framing", "camera_shot": true, "options": {"world": {"label": "World", "value": 0}, "gravity": {"label": "Gravity Up", "value": 1}, "player": {"label": "Player Up", "value": 2}, "constraint": {"label": "Constraint Local", "value": 3}}, "requires": {"camera_override_position": true}
+        },
+        "camera_position_response": {
+          "label": "Position Tracking", "description": "Position tracking response per second. Zero applies immediately", "type": "float", "default": 0, "group": "Camera Framing", "camera_shot": true, "min": 0, "requires": {"camera_override_position": true}
+        },
+        "camera_override_orbit_distance": {
+          "label": "Override Orbit Distance", "description": "Use this shot’s Orbit Distance instead of the regular camera setting", "type": "bool", "default": true, "group": "Camera Framing", "camera_shot": true, "requires": {"camera_override_position": true, "camera_position_mode": ["fixed_pivot", "player_pivot"]}
+        },
+        "camera_orbit_distance": {
+          "label": "Orbit Distance", "description": "Distance behind the pivot for pivot modes", "type": "float", "default": 16, "group": "Camera Framing", "camera_shot": true, "requires": {"camera_position_mode": ["fixed_pivot", "player_pivot"], "camera_override_position": true, "camera_override_orbit_distance": true}, "min": 0
+        },
+        "camera_orbit_aim": {
+          "label": "Aim the Orbit", "description": "Use the desired aim to rotate the orbit before placing the camera", "type": "bool", "default": false, "group": "Camera Framing", "camera_shot": true, "requires": {"camera_position_mode": ["fixed_pivot", "player_pivot"], "camera_override_position": true, "camera_override_aim": true}
+        },
+        "camera_override_aim": {
+          "label": "Override Aim", "description": "Use this shot’s Aim instead of the regular camera setting", "type": "bool", "default": true, "group": "Camera Aim", "camera_shot": true
+        },
+        "camera_aim_mode": {
+          "label": "Aim Mode", "description": "Aim at the player or a movable target marker", "type": "enum", "default": "player", "group": "Camera Aim", "camera_shot": true, "options": {"player": {"label": "Face Player", "value": 0}, "marker": {"label": "Face Aim Target", "value": 1}}, "requires": {"camera_override_aim": true}
+        },
+        "camera_aim_target_offset": {
+          "label": "Aim Target", "description": "Local position of the target for Face Aim Target", "type": "local_offset", "default": [0,0,0], "group": "Camera Aim", "marker": "AimTarget", "marker_label": "Aim Target", "requires": {"camera_aim_mode": "marker", "camera_override_aim": true}
+        },
+        "camera_aim_offset": {
+          "label": "Aim Offset", "description": "Offset from the player or aim target. Horizontal components are world-space", "type": "local_vector", "default": [0,1.5,0], "group": "Camera Aim", "camera_shot": true, "requires": {"camera_override_aim": true}
+        },
+        "camera_aim_player_offset": {
+          "label": "Offset Uses Player Up", "description": "Use the player's up direction for the vertical aim offset", "type": "bool", "default": false, "group": "Camera Aim", "camera_shot": true, "requires": {"camera_override_aim": true}
+        },
+        "camera_aim_up": {
+          "label": "Aim Up", "description": "Up frame used for look-at rotation", "type": "enum", "default": "gravity", "group": "Camera Aim", "camera_shot": true, "options": {"camera": {"label": "Camera Rig", "value": 0}, "world": {"label": "World", "value": 1}, "gravity": {"label": "Gravity", "value": 2}, "player": {"label": "Player", "value": 3}}, "requires": {"camera_override_aim": true}
+        },
+        "camera_aim_response": {
+          "label": "Aim Tracking", "description": "Rotation tracking response per second. Zero applies immediately", "type": "float", "default": 14, "group": "Camera Aim", "camera_shot": true, "min": 0, "requires": {"camera_override_aim": true}
+        },
+        "camera_aim_strength": {
+          "label": "Aim Strength", "description": "Fraction of the desired aim applied", "type": "float", "default": 1, "group": "Camera Aim", "camera_shot": true, "min": 0, "max": 1, "requires": {"camera_override_aim": true}
+        },
+        "camera_position_limit": {
+          "label": "Position Axis Limits", "description": "Restrict position changes to selected axes", "type": "bool", "default": false, "group": "Camera Axis Limits", "camera_shot": true, "requires": {"camera_override_position": true}
+        },
+        "camera_position_axes": {
+          "label": "Position Axes", "description": "Axes the constraint may change. The other axes retain the underlying camera", "type": "axis_mask", "default": 7, "group": "Camera Axis Limits", "camera_shot": true, "requires": {"camera_position_limit": true, "camera_override_position": true}
+        },
+        "camera_position_frame": {
+          "label": "Position Axis Frame", "description": "Evaluate position axis limits in world or constraint-local axes", "type": "enum", "default": "world", "group": "Camera Axis Limits", "camera_shot": true, "requires": {"camera_position_limit": true, "camera_override_position": true}, "options": {"world": {"label": "World", "value": 0}, "constraint": {"label": "Constraint Local", "value": 1}}
+        },
+        "camera_aim_limit": {
+          "label": "Aim Axis Limits", "description": "Restrict aim changes to selected axes", "type": "bool", "default": false, "group": "Camera Axis Limits", "camera_shot": true, "requires": {"camera_override_aim": true}
+        },
+        "camera_aim_axes": {
+          "label": "Aim Axes", "description": "Axes the constraint may change. The other axes retain the underlying camera", "type": "axis_mask", "default": 7, "group": "Camera Axis Limits", "camera_shot": true, "requires": {"camera_aim_limit": true, "camera_override_aim": true}, "axis_labels": ["Pitch", "Yaw", "Roll"]
+        },
+        "camera_aim_frame": {
+          "label": "Aim Axis Frame", "description": "Evaluate aim axis limits in world or constraint-local axes", "type": "enum", "default": "world", "group": "Camera Axis Limits", "camera_shot": true, "requires": {"camera_aim_limit": true, "camera_override_aim": true}, "options": {"world": {"label": "World", "value": 0}, "constraint": {"label": "Constraint Local", "value": 1}}
+        },
+        "camera_influence_enabled": {
+          "label": "Distance Influence", "description": "Blend selected camera channels as the player moves away from the influence center", "type": "bool", "default": false, "group": "Camera Influence", "camera_shot": true
+        },
+        "camera_influence_center": {
+          "label": "Influence Center", "description": "Measure influence from the constraint origin or a movable reference", "type": "enum", "default": "origin", "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}, "options": {"origin": {"label": "Constraint Origin", "value": 0}, "marker": {"label": "Influence Reference", "value": 1}}
+        },
+        "camera_influence_offset": {
+          "label": "Influence Reference", "description": "Local position of the distance influence center", "type": "local_offset", "default": [0,0,0], "group": "Camera Influence", "marker": "InfluenceReference", "marker_label": "Influence Reference", "requires": {"camera_influence_enabled": true, "camera_influence_center": "marker"}
+        },
+        "camera_influence_axes": {
+          "label": "Distance Axes", "description": "Axes that contribute to the measured distance", "type": "axis_mask", "default": 7, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}
+        },
+        "camera_influence_frame": {
+          "label": "Distance Axis Frame", "description": "Evaluate measured axes in world or constraint-local axes", "type": "enum", "default": "world", "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}, "options": {"world": {"label": "World", "value": 0}, "constraint": {"label": "Constraint Local", "value": 1}}
+        },
+        "camera_influence_full": {
+          "label": "Full Influence Radius", "description": "Distance at or below which the affected channels have full influence", "type": "float", "default": 0, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}, "min": 0
+        },
+        "camera_influence_zero": {
+          "label": "Zero Influence Radius", "description": "Distance at or beyond which the affected channels have no influence", "type": "float", "default": 24, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}, "min": 0.01
+        },
+        "camera_influence_falloff": {
+          "label": "Falloff", "description": "Curve between full and zero influence", "type": "enum", "default": "smoothstep", "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}, "options": {"linear": {"label": "Linear", "value": 0}, "smoothstep": {"label": "Smoothstep", "value": 1}}
+        },
+        "camera_influence_power": {
+          "label": "Falloff Power", "description": "Exponent applied to the falloff. Values above one concentrate the effect near the center", "type": "float", "default": 1, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}, "min": 0.01
+        },
+        "camera_influence_position": {
+          "label": "Affect Position", "description": "Apply distance influence to the camera position channel", "type": "bool", "default": true, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}
+        },
+        "camera_influence_orientation": {
+          "label": "Affect Aim", "description": "Apply distance influence to the camera aim channel", "type": "bool", "default": true, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}
+        },
+        "camera_influence_lens": {
+          "label": "Affect Lens", "description": "Apply distance influence to the camera lens channel", "type": "bool", "default": true, "group": "Camera Influence", "camera_shot": true, "requires": {"camera_influence_enabled": true}
+        },
+        "camera_manual_mode": {
+          "label": "Manual Look", "description": "Choose how camera input interacts with an active shot", "type": "enum", "default": "offset", "group": "Camera Controls", "camera_shot": true, "options": {"offset": {"label": "Offset and Soften", "value": 0}, "suppress": {"label": "Temporarily Release", "value": 1}, "cancel": {"label": "Cancel Shot", "value": 2}, "ignore": {"label": "Ignore Manual Look", "value": 3}}
+        },
+        "camera_lock": {
+          "label": "Lock Orbit and Zoom", "description": "Disable regular orbit and zoom controls while the shot is active", "type": "bool", "default": true, "group": "Camera Controls", "target_property": "disable_camera_controls"
+        },
+        "camera_controller_only": {
+          "label": "Controller Only", "description": "Suspend the shot while keyboard or mouse is the active input device", "type": "bool", "default": false, "group": "Camera Controls", "target_property": "controller_only"
+        },
+        "camera_speed_effects": {
+          "label": "Disable Speed Camera Effects", "description": "Suppress speed-driven changes to distance, height, FOV, and radial blur", "type": "bool", "default": true, "group": "Camera Controls", "target_property": "suppress_speed_effects"
+        },
+        "camera_retain_heading": {
+          "label": "Retain Heading on Release", "description": "Keep the displayed heading when the shot releases", "type": "bool", "default": true, "group": "Camera Controls", "target_property": "retain_heading_on_release"
+        },
+        "camera_mouse_offset": {
+          "label": "Mouse Offset", "description": "Allow the mouse to offset aim before the shot releases", "type": "bool", "default": true, "group": "Camera Controls", "target_property": "mouse_offset_enabled", "requires": {"camera_manual_mode": "offset"}
+        },
+        "camera_stick_offset": {
+          "label": "Controller Offset", "description": "Allow the right stick to offset aim before the shot releases", "type": "bool", "default": true, "group": "Camera Controls", "target_property": "controller_offset_enabled", "requires": {"camera_manual_mode": "offset"}
+        },
+        "camera_collision": {
+          "label": "Camera Collision", "description": "Inherit the camera rig setting or override collision for this shot", "type": "enum", "default": "inherit", "group": "Camera Controls", "target_property": "collision_mode", "options": {"inherit": {"label": "Inherit", "value": 0}, "enabled": {"label": "Enabled", "value": 1}, "disabled": {"label": "Disabled", "value": 2}}
+        },
+        "camera_manual_delay": {
+          "label": "Manual Release Delay (s)", "description": "Delay after manual look before gameplay input can restore the shot", "type": "float", "default": 1.5, "group": "Camera Controls", "target_property": "manual_suppression_duration", "min": 0, "requires": {"camera_manual_mode": ["offset", "suppress"]}
+        },
+        "camera_manual_blend": {
+          "label": "Manual Release Blend (s)", "description": "Blend duration when manual look temporarily releases or restores a shot", "type": "float", "default": 0.35, "group": "Camera Controls", "target_property": "manual_suppression_blend_duration", "min": 0.01, "requires": {"camera_manual_mode": ["offset", "suppress"]}
+        },
+        "camera_override_fov": {
+          "label": "Override FOV", "description": "Use this shot’s FOV instead of the regular camera setting", "type": "bool", "default": true, "group": "Camera Framing", "camera_shot": true
+        },
+        "camera_shot_fov": {
+          "label": "Field of View", "description": "Fixed field of view in degrees", "type": "float", "default": 60, "group": "Camera Framing", "min": 1, "max": 179, "camera_shot": true, "requires": {"camera_override_fov": true}
+        },
+        "camera_blend_in": {
+          "label": "Entry Blend", "description": "Seconds to blend from the displayed camera into this shot. Zero cuts immediately", "type": "float", "default": 0.35, "group": "Camera Blends", "min": 0, "camera_shot": true
+        },
+        "camera_blend_out": {
+          "label": "Exit Blend", "description": "Seconds to blend back to the normal camera when no other constraint takes over. Zero cuts immediately", "type": "float", "default": 0.35, "group": "Camera Blends", "min": 0, "camera_shot": true
+        },
+        "camera_constraint_guides": {
+          "label": "Show Camera Guides", "description": "Show the occupancy box and sample framing when this shot is selected", "type": "bool", "default": true, "group": "Camera Framing", "authoring_only": true
+        },
+        "camera_preview_aspect": {
+          "label": "Preview Aspect", "description": "Frustum aspect ratio in the Blender viewport. The game uses its viewport aspect ratio", "type": "enum", "default": "16_9", "group": "Camera Framing", "authoring_only": true, "requires": {"camera_constraint_guides": true}, "options": {"16_9": {"label": "16:9", "value": 0}, "21_9": {"label": "21:9", "value": 1}, "32_9": {"label": "32:9", "value": 2}}
+        }
+      }
+    },
+    "planetary_gravity": {
+      "label": "Planetary Gravity",
+      "scene": "res://LS5Framework/Objects/Gravity/PlanetaryGravity.tscn",
+      "properties": {
+        "planetary_preset": {
+          "label": "Preset", "description": "Selects the default gravity strength, radii, and planet appearance", "type": "enum", "default": "standard", "group": "Gravity Field",
+          "options": {
+            "standard": {"label": "Standard", "value": 0, "scene": "res://LS5Framework/Objects/Gravity/PlanetaryGravity.tscn"},
+            "strong": {"label": "Strong", "value": 1, "scene": "res://LS5Framework/Objects/Gravity/PlanetaryGravityStrong.tscn"}
+          }
+        },
+        "planetary_active": {
+          "label": "Active", "description": "Apply planetary gravity to bodies in range", "type": "bool", "default": true, "group": "Gravity Field", "target_property": "active"
+        },
+        "planetary_radius": {
+          "label": "Influence Radius", "description": "Maximum distance from the object origin at which the field affects eligible bodies", "type": "float", "default": 40, "planet_defaults": {"strong": 60}, "group": "Gravity Field", "min": 0.01, "target_property": "influence_radius"
+        },
+        "planetary_strength": {
+          "label": "Gravity Multiplier", "description": "Scales each affected body's base gravity strength", "type": "float", "default": 1, "planet_defaults": {"strong": 2}, "group": "Gravity Field", "min": 0, "target_property": "gravity_multiplier"
+        },
+        "planetary_falloff": {
+          "label": "Falloff", "description": "Controls how gravity strength changes with distance from the center", "type": "enum", "default": "constant", "group": "Gravity Field", "target_property": "falloff_mode",
+          "options": {"constant": {"label": "Constant", "value": 0}, "linear": {"label": "Linear", "value": 1}, "inverse_square": {"label": "Inverse Square", "value": 2}}
+        },
+        "planetary_linear_edge": {
+          "label": "Edge Multiplier", "description": "Fraction of full gravity remaining at the edge of the field", "type": "float", "default": 0, "group": "Gravity Field", "min": 0, "max": 1, "target_property": "linear_edge_multiplier", "requires": {"planetary_falloff": "linear"}
+        },
+        "planetary_reference_distance": {
+          "label": "Reference Distance", "description": "Distance from the center where inverse-square falloff starts weakening gravity", "type": "float", "default": 8, "planet_defaults": {"strong": 12}, "group": "Gravity Field", "min": 0.01, "target_property": "inverse_square_reference_distance", "requires": {"planetary_falloff": "inverse_square"}
+        },
+        "planetary_show_influence": {
+          "label": "Show Influence Guide", "description": "Show the outer field bounds in the Blender viewport", "type": "bool", "default": true, "group": "Gravity Field", "authoring_only": true
+        },
+        "planetary_field_only": {
+          "label": "Field Only", "description": "Use center-point gravity without a built-in planet mesh or collider", "type": "bool", "default": false, "group": "Planet Surface", "target_property": "placement_field_only"
+        },
+        "planetary_surface_radius": {
+          "label": "Surface Radius", "description": "Radius of the built-in spherical planet mesh and collider", "type": "float", "default": 8, "planet_defaults": {"strong": 12}, "group": "Planet Surface", "min": 0.01, "target_property": "placement_surface_radius", "requires": {"planetary_field_only": false}
+        },
+        "planetary_prefer_surface": {
+          "label": "Prefer Surface Normals", "description": "Use the built-in planet's collision normals when a ray hits its surface", "type": "bool", "default": true, "group": "Planet Surface", "target_property": "prefer_surface_raycast", "requires": {"planetary_field_only": false}
+        },
+        "planetary_surface_mask": {
+          "label": "Surface Raycast Layers", "description": "Physics layers checked by the planet's surface raycast", "type": "physics_mask", "default": 1, "group": "Planet Surface", "target_property": "surface_raycast_mask", "requires": {"planetary_field_only": false, "planetary_prefer_surface": true}
+        },
+        "planetary_surface_extra": {
+          "label": "Raycast Extension", "description": "Extra raycast distance past the planet center", "type": "float", "default": 0.5, "group": "Planet Surface", "min": 0, "target_property": "surface_raycast_extra_distance", "requires": {"planetary_field_only": false, "planetary_prefer_surface": true}
+        },
+        "planetary_group_primary": {
+          "label": "Primary Group", "description": "Primary group that can receive the field. Clear both groups to accept any eligible body on the collision layers", "type": "string", "default": "Player", "group": "Affected Bodies", "allow_empty": true, "target_property": "require_group_primary"
+        },
+        "planetary_group_secondary": {
+          "label": "Secondary Group", "description": "Alternate group that can receive the field", "type": "string", "default": "player", "group": "Affected Bodies", "allow_empty": true, "target_property": "require_group_secondary"
+        },
+        "planetary_follower_mask": {
+          "label": "Follower Layers", "description": "Additional physics layers for bodies that support planetary gravity", "type": "physics_mask", "default": 130, "group": "Affected Bodies", "target_property": "gravity_follower_collision_mask"
+        }
+      }
+    },
+    "automation_spline": {
+      "label": "Automation Spline",
+      "scene": "res://LS5Framework/Objects/Automation/Presets/SoftRouteGuide.tscn",
+      "curve_target": "Path3D",
+      "properties": {
+        "automation_preset": {
+          "label": "Preset", "description": "Behavior and starting settings for this route", "type": "enum", "default": "soft_route", "group": "Route", "always_export": true, "options": {"soft_route": {"label": "Soft Route Guide", "value": 0, "scene": "res://LS5Framework/Objects/Automation/Presets/SoftRouteGuide.tscn"}, "guided_run": {"label": "Guided Run", "value": 1, "scene": "res://LS5Framework/Objects/Automation/Presets/GuidedRun.tscn"}, "scripted_run": {"label": "Scripted Run", "value": 2, "scene": "res://LS5Framework/Objects/Automation/Presets/ScriptedRun.tscn"}, "loop_assist": {"label": "Loop Assist", "value": 3, "scene": "res://LS5Framework/Objects/Automation/Presets/LoopAssist.tscn"}, "side_view": {"label": "Side View Ribbon", "value": 4, "scene": "res://LS5Framework/Objects/Automation/Presets/SideViewRibbon.tscn"}, "lanes": {"label": "Lane Section", "value": 5, "scene": "res://LS5Framework/Objects/Automation/Presets/LaneSection.tscn"}}
+        },
+        "automation_enabled": {
+          "label": "Enabled", "description": "Allow new sessions on this route", "type": "bool", "default": true, "group": "Route", "target_property": "enabled"
+        },
+        "automation_priority": {
+          "label": "Priority", "description": "Higher-priority routes take precedence when they overlap", "type": "int", "default": 0, "group": "Route", "min": -2147483648, "max": 2147483647, "target_property": "priority"
+        },
+        "automation_direction": {
+          "label": "Travel Direction", "description": "Allowed travel relative to the first and last control points", "type": "enum", "default": "both", "group": "Route", "options": {"both": {"label": "Bidirectional", "value": 0}, "forward": {"label": "Forward Only", "value": 1}, "reverse": {"label": "Reverse Only", "value": 2}}, "target_property": "direction_policy"
+        },
+        "automation_activation": {
+          "label": "Activation", "description": "Choose how the player enters or leaves this route", "type": "enum", "default": "endpoints", "group": "Activation", "options": {"occupancy": {"label": "Occupancy Volume", "value": 0}, "endpoints": {"label": "Endpoint Planes", "value": 1}, "script_only": {"label": "Script Only", "value": 2}, "area_crossings": {"label": "Gate Volume Crossings", "value": 3}}, "target_property": "activation_mode"
+        },
+        "automation_trigger_layout": {
+          "label": "Trigger Layout", "description": "Build triggers along the route or edit the boxes directly", "type": "enum", "default": "generated", "group": "Activation", "options": {"generated": {"label": "Follow Spline", "value": 0}, "custom": {"label": "Custom Boxes", "value": 1}}, "authoring_only": true, "activation_modes": ["occupancy", "endpoints", "area_crossings"]
+        },
+        "automation_trigger_width": {
+          "label": "Width", "description": "Full width across the path", "type": "float", "default": 8, "group": "Activation", "min": 0.1, "target_property": "trigger_width", "activation_modes": ["occupancy", "endpoints", "area_crossings"], "requires": {"automation_trigger_layout": "generated"}
+        },
+        "automation_trigger_height": {
+          "label": "Height", "description": "Full height along the path frame’s up axis", "type": "float", "default": 8, "group": "Activation", "min": 0.1, "target_property": "trigger_height", "activation_modes": ["occupancy", "endpoints", "area_crossings"], "requires": {"automation_trigger_layout": "generated"}
+        },
+        "automation_trigger_gate_depth": {
+          "label": "Depth", "description": "Endpoint thickness or overlap between adjacent occupancy boxes", "type": "float", "default": 2, "group": "Activation", "min": 0.1, "target_property": "trigger_gate_depth", "activation_modes": ["occupancy", "endpoints", "area_crossings"], "requires": {"automation_trigger_layout": "generated"}
+        },
+        "automation_trigger_spacing": {
+          "label": "Volume Sample Spacing", "description": "Maximum desired centerline distance between occupancy segments", "type": "float", "default": 8, "group": "Activation", "min": 0.1, "target_property": "trigger_spacing", "activation_modes": ["occupancy"], "requires": {"automation_trigger_layout": "generated"}
+        },
+        "automation_crossing_deadband": {
+          "label": "Endpoint Deadband", "description": "Distance past an endpoint plane required to count a crossing", "type": "float", "default": 0.02, "group": "Activation", "min": 0.001, "max": 2, "target_property": "crossing_deadband", "activation_modes": ["endpoints"]
+        },
+        "automation_bidirectional_crossings": {
+          "label": "Bidirectional Gate Crossings", "description": "Use the player’s travel direction at each gate", "type": "bool", "default": true, "group": "Activation", "target_property": "area_crossings_bidirectional", "activation_modes": ["area_crossings"]
+        },
+        "automation_capture_distance": {
+          "label": "Capture Distance", "description": "Maximum separation from the path before releasing", "type": "float", "default": 12, "group": "Tracking", "min": 0, "target_property": "capture_distance", "preset_defaults": {"side_view": 100}
+        },
+        "automation_tracking_window": {
+          "label": "Tracking Window", "description": "Base search window along the route", "type": "float", "default": 6, "group": "Tracking", "min": 0.01, "target_property": "tracking_window"
+        },
+        "automation_travel_window_multiplier": {
+          "label": "Travel Window Multiplier", "description": "Expand the tracking window with distance traveled", "type": "float", "default": 2, "group": "Tracking", "min": 1, "target_property": "travel_window_multiplier"
+        },
+        "automation_recovery_distance": {
+          "label": "Recovery Distance", "description": "Distance before tracking can recover outside the local window", "type": "float", "default": 8, "group": "Tracking", "min": 0, "target_property": "recovery_distance"
+        },
+        "automation_sample_lookahead": {
+          "label": "Sample Lookahead", "description": "Distance ahead of the current tracking sample", "type": "float", "default": 0, "group": "Tracking", "min": 0, "target_property": "sample_lookahead"
+        },
+        "automation_maximum_tracking_window": {
+          "label": "Maximum Tracking Window", "description": "Upper limit on the expanded window. Zero leaves it uncapped", "type": "float", "default": 0, "group": "Tracking", "min": 0, "target_property": "maximum_tracking_window"
+        },
+        "automation_release_at_path_ends": {
+          "label": "Release at Path Ends", "description": "Release when traveling outward beyond an open route", "type": "bool", "default": true, "group": "Tracking", "target_property": "release_at_path_ends"
+        },
+        "automation_heading_strength": {
+          "label": "Heading Strength", "description": "How strongly input is steered along the path", "type": "float", "default": 0.3, "group": "Steering", "min": 0, "target_property": "strength", "trait_targets": {"soft_route": ["steering_traits", "Soft heading"], "guided_run": ["steering_traits", "Guided heading"]}, "preset_defaults": {"guided_run": 0.65}, "max": 1
+        },
+        "automation_turn_rate": {
+          "label": "Momentum Turn Rate", "description": "Maximum turn rate toward the route in degrees per second", "type": "float", "default": 350, "group": "Steering", "min": 0, "target_property": "turn_rate", "trait_targets": {"guided_run": ["steering_traits", "Momentum alignment"], "loop_assist": ["steering_traits", "Momentum alignment"], "scripted_run": ["steering_traits", "Scripted alignment"]}, "preset_defaults": {"loop_assist": 240, "scripted_run": 720}
+        },
+        "automation_free_radius": {
+          "label": "Free Radius", "description": "Distance the player may drift before position guidance applies", "type": "float", "default": 2, "group": "Position", "min": 0, "target_property": "free_radius", "trait_targets": {"soft_route": ["position_traits", "Wide corridor"], "guided_run": ["position_traits", "Guided corridor"], "loop_assist": ["position_traits", "Loop corridor"], "scripted_run": ["position_traits", "Collision-tested corridor"]}, "preset_defaults": {"guided_run": 1, "loop_assist": 1.5, "scripted_run": 0.4}
+        },
+        "automation_spring_strength": {
+          "label": "Centering Strength", "description": "Restoring force outside the free corridor", "type": "float", "default": 12, "group": "Position", "min": 0, "target_property": "spring_strength", "trait_targets": {"soft_route": ["position_traits", "Wide corridor"], "guided_run": ["position_traits", "Guided corridor"], "loop_assist": ["position_traits", "Loop corridor"], "scripted_run": ["position_traits", "Collision-tested corridor"]}, "preset_defaults": {"loop_assist": 16, "scripted_run": 24}
+        },
+        "automation_max_acceleration": {
+          "label": "Maximum Centering Acceleration", "description": "Cap on the corridor correction", "type": "float", "default": 24, "group": "Position", "min": 0, "target_property": "max_acceleration", "trait_targets": {"soft_route": ["position_traits", "Wide corridor"], "guided_run": ["position_traits", "Guided corridor"], "loop_assist": ["position_traits", "Loop corridor"], "scripted_run": ["position_traits", "Collision-tested corridor"]}, "preset_defaults": {"guided_run": 60, "loop_assist": 40, "scripted_run": 80}
+        },
+        "automation_target_speed": {
+          "label": "Target Speed", "description": "Target speed for assistance or propulsion", "type": "float", "default": 45, "group": "Speed", "min": 0, "target_property": "target_speed", "trait_targets": {"guided_run": ["speed_traits", "Input speed assistance"], "scripted_run": ["speed_traits", "Automatic propulsion"]}
+        },
+        "automation_speed_acceleration": {
+          "label": "Speed Acceleration", "description": "Rate of acceleration toward target speed", "type": "float", "default": 25, "group": "Speed", "min": 0, "target_property": "acceleration", "trait_targets": {"guided_run": ["speed_traits", "Input speed assistance"], "scripted_run": ["speed_traits", "Automatic propulsion"]}, "preset_defaults": {"scripted_run": 40}
+        },
+        "automation_affect_rolling": {
+          "label": "Affect Rolling", "description": "Apply speed assistance while rolling", "type": "bool", "default": false, "group": "Speed", "target_property": "affect_rolling", "trait_targets": {"guided_run": ["speed_traits", "Input speed assistance"], "scripted_run": ["speed_traits", "Automatic propulsion"]}, "preset_defaults": {"scripted_run": true}
+        },
+        "automation_release_on_jump": {
+          "label": "Release on Jump", "description": "Leave the route when the player jumps", "type": "bool", "default": true, "group": "Input", "target_property": "release_on_jump", "trait_targets": {"soft_route": ["input_traits", "Jump breakaway"], "guided_run": ["input_traits", "Jump breakaway"], "loop_assist": ["input_traits", "Jump breakaway"], "scripted_run": ["input_traits", "Scripted permissions"], "side_view": ["input_traits", "Ribbon actions"]}, "preset_defaults": {"side_view": false}
+        },
+        "automation_block_movement": {
+          "label": "Block Movement Input", "description": "Restrict this input while the route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_movement", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+        },
+        "automation_block_roll_spindash": {
+          "label": "Block Roll and Spindash", "description": "Restrict this input while the route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_roll_spindash", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+        },
+        "automation_block_drift": {
+          "label": "Block Drift", "description": "Restrict this input while the route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_drift", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+        },
+        "automation_block_abilities": {
+          "label": "Block Abilities", "description": "Restrict this input while the route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_abilities", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+        },
+        "automation_influence_weight": {
+          "label": "Influence Weight", "description": "Strength of the preset’s endpoint-ramped channels", "type": "float", "default": 1, "group": "Transitions", "min": 0, "target_property": "weight", "trait_targets": {"soft_route": ["influence_traits", "Endpoint ramps"], "guided_run": ["influence_traits", "Endpoint ramps"], "loop_assist": ["influence_traits", "Endpoint ramps"], "scripted_run": ["influence_traits", "Endpoint ramps"]}, "max": 1
+        },
+        "automation_start_ramp": {
+          "label": "Entry Ramp Distance", "description": "Distance used to blend influence along the path", "type": "float", "default": 2, "group": "Transitions", "min": 0, "target_property": "start_ramp", "trait_targets": {"soft_route": ["influence_traits", "Endpoint ramps"], "guided_run": ["influence_traits", "Endpoint ramps"], "loop_assist": ["influence_traits", "Endpoint ramps"], "scripted_run": ["influence_traits", "Endpoint ramps"]}
+        },
+        "automation_end_ramp": {
+          "label": "Exit Ramp Distance", "description": "Distance used to blend influence along the path", "type": "float", "default": 2, "group": "Transitions", "min": 0, "target_property": "end_ramp", "trait_targets": {"soft_route": ["influence_traits", "Endpoint ramps"], "guided_run": ["influence_traits", "Endpoint ramps"], "loop_assist": ["influence_traits", "Endpoint ramps"], "scripted_run": ["influence_traits", "Endpoint ramps"]}
+        },
+        "automation_entry_duration": {
+          "label": "Entry Duration", "description": "Seconds to blend the transition", "type": "float", "default": 0.25, "group": "Transitions", "min": 0, "target_property": "duration", "trait_targets": {"soft_route": ["transition_traits", "Entry"], "guided_run": ["transition_traits", "Entry"], "loop_assist": ["transition_traits", "Entry"], "scripted_run": ["transition_traits", "Entry"]}
+        },
+        "automation_exit_duration": {
+          "label": "Exit Duration", "description": "Seconds to blend the transition", "type": "float", "default": 0.25, "group": "Transitions", "min": 0, "target_property": "duration", "trait_targets": {"soft_route": ["transition_traits", "Exit"], "guided_run": ["transition_traits", "Exit"], "loop_assist": ["transition_traits", "Exit"], "scripted_run": ["transition_traits", "Exit"]}
+        },
+        "automation_lane_count": {
+          "label": "Lane Count", "description": "Number of lateral lanes", "type": "int", "default": 3, "group": "Lanes", "min": 1, "target_property": "lane_count", "trait_targets": {"lanes": ["position_traits", "Three lanes"]}, "max": 16
+        },
+        "automation_lane_spacing": {
+          "label": "Lane Spacing", "description": "Distance between lanes in meters", "type": "float", "default": 2, "group": "Lanes", "min": 0.1, "target_property": "lane_spacing", "trait_targets": {"lanes": ["position_traits", "Three lanes"]}
+        },
+        "automation_initial_lane": {
+          "label": "Initial Lane", "description": "Zero-based lane selected on entry", "type": "int", "default": 1, "group": "Lanes", "min": 0, "target_property": "initial_lane", "trait_targets": {"lanes": ["position_traits", "Three lanes"]}, "max": 15
+        },
+        "automation_strict_position_lock": {
+          "label": "Strict Position Lock", "description": "Keep the player on the ribbon plane", "type": "bool", "default": true, "group": "Ribbon", "target_property": "strict_position_lock", "trait_targets": {"side_view": ["position_traits", "Terrain-cooperative ribbon"]}
+        },
+        "automation_strict_velocity_lock": {
+          "label": "Strict Velocity Lock", "description": "Remove velocity perpendicular to the ribbon", "type": "bool", "default": true, "group": "Ribbon", "target_property": "strict_velocity_lock", "trait_targets": {"side_view": ["position_traits", "Terrain-cooperative ribbon"]}
+        },
+        "automation_adaptive_centerline": {
+          "label": "Adaptive Centerline", "description": "Let ground contact adjust the centerline", "type": "bool", "default": true, "group": "Ribbon", "target_property": "adaptive_centerline_enabled", "trait_targets": {"side_view": ["position_traits", "Terrain-cooperative ribbon"]}
+        },
+        "automation_camera_enabled": {
+          "label": "Enable Camera", "description": "Apply the side-view camera while on this route", "type": "bool", "default": true, "group": "Camera", "target_property": "camera_enabled", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}
+        },
+        "automation_camera_priority": {
+          "label": "Camera Priority", "description": "Higher camera priority wins when the side-view camera overlaps another camera constraint", "type": "int", "default": 10, "group": "Camera", "min": -2147483648, "max": 2147483647, "target_property": "constraint_priority", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}, "requires": {"automation_camera_enabled": true}
+        },
+        "automation_camera_replace": {
+          "label": "Replace Previous Cameras", "description": "Release active constraints of equal or lower priority when this side-view camera activates", "type": "bool", "default": false, "group": "Camera", "target_property": "override_previous_camera_constraints", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}, "requires": {"automation_camera_enabled": true}
+        },
+        "automation_camera_distance": {
+          "label": "Camera Distance", "description": "Distance of the side-view camera from the route", "type": "float", "default": 18, "group": "Camera", "min": 0.01, "target_property": "distance_override", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}, "requires": {"automation_camera_enabled": true}
+        },
+        "automation_camera_height": {
+          "label": "Camera Height", "description": "Vertical offset of the side-view camera", "type": "float", "default": 2, "group": "Camera", "min": -1000, "target_property": "camera_vertical_offset", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}, "requires": {"automation_camera_enabled": true}
+        },
+        "automation_camera_lead": {
+          "label": "Camera Look Ahead", "description": "Distance the camera leads the player along the path", "type": "float", "default": 2, "group": "Camera", "min": -1000, "target_property": "camera_path_lead_distance", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}, "requires": {"automation_camera_enabled": true}
+        },
+        "automation_camera_lock_controls": {
+          "label": "Lock Camera Controls", "description": "Disable camera controls during side view", "type": "bool", "default": true, "group": "Camera", "target_property": "disable_camera_controls", "trait_targets": {"side_view": ["camera_traits", "Side-view camera"]}, "requires": {"automation_camera_enabled": true}
+        }
+      }
+    },
+    "ramp": {
+      "label": "Ramp",
+      "scene": "res://LS5Framework/Objects/Ramps/JumpPanelRamp.tscn",
+      "properties": {
+        "active": {
+          "label": "Active", "description": "Active", "type": "bool", "default": true, "group": "Ramp"
+        },
+        "size": {
+          "label": "Size", "description": "Size", "type": "float", "default": 1, "group": "Ramp", "min": 0.01
+        },
+        "ramp_forward_speed": {
+          "label": "Forward Speed", "description": "Forward Speed", "type": "float", "default": 60, "group": "Ramp", "min": 0, "target_property": "forward_speed"
+        },
+        "ramp_up_speed": {
+          "label": "Up Speed", "description": "Up Speed", "type": "float", "default": 18, "group": "Ramp", "min": -500, "target_property": "up_speed"
+        },
+        "ramp_additive_launch": {
+          "label": "Additive Launch", "description": "Additive Launch", "type": "bool", "default": false, "group": "Ramp", "target_property": "additive_launch"
+        },
+        "ramp_additive_min_speed": {
+          "label": "Minimum Additive Forward Speed", "description": "Minimum Additive Forward Speed", "type": "float", "default": 0, "group": "Ramp", "min": 0, "target_property": "additive_min_forward_speed", "requires": {"ramp_additive_launch": true}
+        },
+        "hold_forward_time": {
+          "label": "Forward Hold Time", "description": "Forward Hold Time", "type": "float", "default": 0, "group": "Ramp", "min": 0
+        },
+        "hold_up_time": {
+          "label": "Up Hold Time", "description": "Up Hold Time", "type": "float", "default": 0, "group": "Ramp", "min": 0
+        },
+        "ramp_launch_axis": {
+          "label": "Launch Direction", "description": "Launch Direction", "type": "enum", "default": "positive_z", "group": "Ramp", "options": {"positive_x": {"label": "Blender +X", "value": 0}, "negative_x": {"label": "Blender -X", "value": 1}, "positive_z": {"label": "Blender -Y", "value": 2}, "negative_z": {"label": "Blender +Y", "value": 3}}, "target_property": "launch_axis"
+        },
+        "ramp_movement_lock": {
+          "label": "Movement Lock Time", "description": "Movement Lock Time", "type": "float", "default": 0, "group": "Ramp", "min": 0, "target_property": "movement_lock_time"
+        },
+        "ramp_action_lock": {
+          "label": "Action Lock Time", "description": "Action Lock Time", "type": "float", "default": 0, "group": "Ramp", "min": 0, "target_property": "action_lock_time"
+        },
+        "ramp_camera_align": {
+          "label": "Align Camera", "description": "Align Camera", "type": "bool", "default": true, "group": "Ramp", "target_property": "align_camera_yaw_roll"
+        },
+        "ramp_damping_grace": {
+          "label": "Damping Grace", "description": "Damping Grace", "type": "float", "default": 1, "group": "Ramp", "min": 0, "target_property": "damping_grace_time"
+        }
+      }
+    },
+    "bumper": {
+      "label": "Bumper",
+      "scene": "res://LS5Framework/Objects/Bumper/Bumper.tscn",
+      "properties": {
+        "active": {
+          "label": "Active", "description": "Active", "type": "bool", "default": true, "group": "Bumper"
+        },
+        "bumper_launch_mode": {
+          "label": "Launch Mode", "description": "Launch Mode", "type": "enum", "default": "radial", "group": "Bumper", "options": {"radial": {"label": "Radial", "value": 0}, "surface_normal": {"label": "Surface Normal", "value": 1}, "specified_direction": {"label": "Specified Direction", "value": 2}}, "target_property": "launch_mode"
+        },
+        "bumper_direction": {
+          "label": "Specified Local Direction", "description": "Local direction in Specified Direction mode", "type": "local_vector", "default": [0,1,0], "group": "Bumper", "target_property": "specified_launch_direction", "requires": {"bumper_launch_mode": "specified_direction"}
+        },
+        "mirrored_bounce_ratio": {
+          "label": "Mirrored Bounce Ratio", "description": "Mirrored Bounce Ratio", "type": "float", "default": 1, "group": "Bumper", "min": 0
+        },
+        "bumper_min_impulse": {
+          "label": "Minimum Impulse", "description": "Minimum Impulse", "type": "float", "default": 35, "group": "Bumper", "min": 0, "target_property": "minimum_impulse"
+        },
+        "bumper_max_impulse": {
+          "label": "Maximum Impulse", "description": "Maximum Impulse", "type": "float", "default": 100, "group": "Bumper", "min": 0, "target_property": "maximum_impulse"
+        },
+        "bumper_tangent": {
+          "label": "Preserve Tangential Velocity", "description": "Preserve Tangential Velocity", "type": "bool", "default": true, "group": "Bumper", "target_property": "preserve_tangential_velocity"
+        },
+        "bumper_rehit_cooldown": {
+          "label": "Rehit Cooldown", "description": "Rehit Cooldown", "type": "float", "default": 0.15, "group": "Bumper", "min": 0, "target_property": "rehit_cooldown"
+        },
+        "bumper_detach": {
+          "label": "Detach From Ground", "description": "Detach From Ground", "type": "bool", "default": true, "group": "Bumper", "target_property": "detach_from_ground"
+        },
+        "visual_spin_speed_deg": {
+          "label": "Clockwise Spin Speed", "description": "Clockwise rotation speed in degrees per second", "type": "float", "default": 90, "group": "Bumper", "min": 0
+        },
+        "flash_energy": {
+          "label": "Hit Flash Energy", "description": "Emission energy added per flash", "type": "float", "default": 2.5, "group": "Bumper", "min": 0
+        },
+        "flash_pulse_duration": {
+          "label": "Flash Pulse Duration", "description": "Seconds for each flash and the gap between flashes", "type": "float", "default": 0.05, "group": "Bumper", "min": 0.01
+        },
+        "visual_bounce_enabled": {
+          "label": "Visual Bounce", "description": "Visual Bounce", "type": "bool", "default": true, "group": "Bumper"
+        },
+        "visual_bounce_peak_scale": {
+          "label": "Peak Bounce Scale", "description": "Peak Bounce Scale", "type": "float", "default": 1.2, "group": "Bumper", "min": 1, "requires": {"visual_bounce_enabled": true}
+        },
+        "visual_bounce_duration": {
+          "label": "Bounce Duration", "description": "Bounce Duration", "type": "float", "default": 0.16, "group": "Bumper", "min": 0, "requires": {"visual_bounce_enabled": true}
+        }
+      }
+    },
+    "vault_bar": {
+      "label": "Vault Bar",
+      "scene": "res://LS5Framework/Objects/VaultBar/VaultBar.tscn",
+      "properties": {
+        "active": {
+          "label": "Active", "description": "Active", "type": "bool", "default": true, "group": "Vault Bar"
+        },
+        "bar_length": {
+          "label": "Bar Length", "description": "Bar Length", "type": "float", "default": 8, "group": "Vault Bar", "min": 0.5
+        },
+        "bar_radius": {
+          "label": "Bar Radius", "description": "Bar Radius", "type": "float", "default": 0.15, "group": "Vault Bar", "min": 0.05
+        },
+        "vault_collision_radius": {
+          "label": "Grab Radius", "description": "Half-width of the grab volume perpendicular to the bar", "type": "float", "default": 3, "group": "Vault Bar", "min": 0.05, "target_property": "collision_radius"
+        },
+        "spins_before_launch": {
+          "label": "Spins Before Launch", "description": "Spins Before Launch", "type": "int", "default": 1, "group": "Vault Bar", "min": 0
+        },
+        "swing_direction": {
+          "label": "Swing Direction", "description": "Swing Direction", "type": "enum", "default": "under", "group": "Vault Bar", "options": {"under": {"label": "Under", "value": 0}, "over": {"label": "Over", "value": 1}}
+        },
+        "manual_swing_speed_enabled": {
+          "label": "Manual Swing Speed", "description": "Manual Swing Speed", "type": "bool", "default": false, "group": "Vault Bar"
+        },
+        "rotation_speed_deg": {
+          "label": "Swing Speed", "description": "Swing Speed", "type": "float", "default": 540, "group": "Vault Bar", "min": 1, "requires": {"manual_swing_speed_enabled": true}
+        },
+        "automatic_swing_speed_multiplier": {
+          "label": "Automatic Swing Speed Multiplier", "description": "Automatic Swing Speed Multiplier", "type": "float", "default": 10, "group": "Vault Bar", "min": 0.01, "requires": {"manual_swing_speed_enabled": false}
+        },
+        "vault_rehit_cooldown": {
+          "label": "Rehit Cooldown", "description": "Rehit Cooldown", "type": "float", "default": 0.25, "group": "Vault Bar", "min": 0, "target_property": "rehit_cooldown"
+        },
+        "vault_launch_speed_mode": {
+          "label": "Launch Speed Mode", "description": "Launch Speed Mode", "type": "enum", "default": "incoming", "group": "Vault Bar", "options": {"incoming": {"label": "Match Incoming Speed", "value": 0}, "fixed": {"label": "Fixed Speed", "value": 1}}, "target_property": "launch_speed_mode"
+        },
+        "fixed_launch_speed": {
+          "label": "Fixed Launch Speed", "description": "Fixed Launch Speed", "type": "float", "default": 55, "group": "Vault Bar", "min": 0, "requires": {"vault_launch_speed_mode": "fixed"}
+        },
+        "incoming_to_outgoing_speed_ratio": {
+          "label": "Incoming Speed Ratio", "description": "Incoming Speed Ratio", "type": "float", "default": 1, "group": "Vault Bar", "min": 0, "requires": {"vault_launch_speed_mode": "incoming"}
+        },
+        "minimum_launch_impulse": {
+          "label": "Minimum Launch Speed", "description": "Minimum Launch Speed", "type": "float", "default": 35, "group": "Vault Bar", "min": 0, "requires": {"vault_launch_speed_mode": "incoming"}
+        },
+        "maximum_launch_impulse": {
+          "label": "Maximum Launch Speed", "description": "Maximum Launch Speed", "type": "float", "default": 120, "group": "Vault Bar", "min": 0, "requires": {"vault_launch_speed_mode": "incoming"}
+        },
+        "vault_launch_aim_origin": {
+          "label": "Launch Aim Origin", "description": "Player Grip converges on the target. Bar Root gives each grip point a parallel trajectory", "type": "enum", "default": "player_grip", "group": "Vault Bar", "options": {"player_grip": {"label": "Player Grip", "value": 0}, "bar_root": {"label": "Bar Root", "value": 1}}, "target_property": "launch_aim_origin"
+        },
+        "vault_launch_target": {
+          "label": "Launch Target", "description": "Launch direction target relative to the bar", "type": "local_offset", "default": [0,5,-5], "group": "Vault Bar", "marker": "LaunchDirection", "marker_label": "Launch Target"
+        },
+        "opposite_entry_uses_separate_launch_direction": {
+          "label": "Separate Opposite Launch Target", "description": "Separate Opposite Launch Target", "type": "bool", "default": false, "group": "Vault Bar"
+        },
+        "vault_opposite_target": {
+          "label": "Opposite Launch Target", "description": "Launch target when approaching from the opposite side", "type": "local_offset", "default": [0,5,5], "group": "Vault Bar", "marker": "OppositeLaunchDirection", "marker_label": "Opposite Launch Target", "requires": {"opposite_entry_uses_separate_launch_direction": true}
+        },
+        "vertical_arc_enabled": {
+          "label": "Vertical Arc", "description": "Vertical Arc", "type": "bool", "default": false, "group": "Vault Bar"
+        },
+        "vertical_arc_height": {
+          "label": "Arc Height", "description": "Arc Height", "type": "float", "default": 10, "group": "Vault Bar", "min": 0, "requires": {"vertical_arc_enabled": true}
+        },
+        "vault_arc_up": {
+          "label": "Arc Up Direction", "description": "Arc Up Direction", "type": "enum", "default": "player", "group": "Vault Bar", "options": {"player": {"label": "Player Gravity Up", "value": 0}, "bar": {"label": "Bar Local Up", "value": 1}, "world": {"label": "World Up", "value": 2}}, "target_property": "vertical_arc_up_mode", "requires": {"vertical_arc_enabled": true}
+        },
+        "vault_movement_lock": {
+          "label": "Movement Lock Time", "description": "Movement Lock Time", "type": "float", "default": 0.35, "group": "Vault Bar", "min": 0, "target_property": "movement_lock_time"
+        },
+        "vault_action_lock": {
+          "label": "Action Lock Time", "description": "Action Lock Time", "type": "float", "default": 0.35, "group": "Vault Bar", "min": 0, "target_property": "action_lock_time"
+        }
+      }
+    },
     "player_spawn": {
       "label": "Player Spawn",
       "scene": "res://LS5Framework/Objects/Gameplay/SpawnPoint.tscn",
@@ -125,173 +1174,233 @@
           "target_node": "Components/Perception",
           "requires": {"detection_enabled": true}
         },
+        "enemy_locomotion_enabled": {
+          "label": "Locomotion Enabled",
+          "description": "Allow the enemy to move, turn, and respond to gravity",
+          "type": "bool",
+          "default": true,
+          "group": "Movement",
+          "target_property": "locomotion_enabled"
+        },
         "enemy_acceleration": {
           "label": "Acceleration", "description": "Acceleration toward movement speed",
           "type": "float", "default": 100, "group": "Movement",
           "target_node": "Locomotion", "target_property": "acceleration",
-          "min": 0, "variant_defaults": {"core:gun_beetle": 21}
+          "min": 0, "variant_defaults": {"core:gun_beetle": 21},
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "enemy_deceleration": {
           "label": "Deceleration", "description": "Deceleration when movement stops",
           "type": "float", "default": 130, "group": "Movement",
           "target_node": "Locomotion", "target_property": "deceleration",
-          "min": 0, "variant_defaults": {"core:gun_beetle": 25}
+          "min": 0, "variant_defaults": {"core:gun_beetle": 25},
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "facing_speed_deg": {
           "label": "Facing Speed", "description": "Maximum turn speed in degrees per second",
           "type": "float", "default": 240, "group": "Movement",
           "target_node": "Locomotion",
-          "min": 0, "variant_defaults": {"core:gun_beetle": 300}
+          "min": 0, "variant_defaults": {"core:gun_beetle": 300},
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "enemy_ground_speed": {
           "label": "Ground Speed", "description": "Maximum ground movement speed",
           "type": "float", "default": 38, "group": "Movement",
           "target_node": "Locomotion", "target_property": "movement_speed",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "adhesion_enabled": {
           "label": "Surface Adhesion", "description": "Allow grounded movement to attach to traversable surfaces",
           "type": "bool", "default": true, "group": "Movement",
           "target_node": "Locomotion",
-          "for_variants": ["core:rhino_tank"]
+          "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "maximum_surface_angle_deg": {
           "label": "Maximum Surface Angle", "description": "Steepest traversable surface angle in degrees",
           "type": "float", "default": 70, "group": "Movement",
           "target_node": "Locomotion",
-          "min": 0, "max": 180, "requires": {"adhesion_enabled": true}, "for_variants": ["core:rhino_tank"]
+          "min": 0, "max": 180, "requires": {"enemy_locomotion_enabled": true, "adhesion_enabled": true}, "for_variants": ["core:rhino_tank"]
         },
         "align_to_surface": {
           "label": "Align to Surface", "description": "Orient the enemy to the ground normal",
           "type": "bool", "default": true, "group": "Movement",
           "target_node": "Locomotion",
-          "for_variants": ["core:rhino_tank"]
+          "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "alignment_speed_deg": {
           "label": "Alignment Speed", "description": "Rate of alignment to the ground normal in degrees per second",
           "type": "float", "default": 540, "group": "Movement",
           "target_node": "Locomotion",
-          "min": 0, "requires": {"align_to_surface": true}, "for_variants": ["core:rhino_tank"]
+          "min": 0, "requires": {"enemy_locomotion_enabled": true, "align_to_surface": true}, "for_variants": ["core:rhino_tank"]
+        },
+        "stop_at_ledges": {
+          "label": "Stop at Ledges",
+          "description": "Check for ground ahead during movement and charges",
+          "type": "bool",
+          "default": true,
+          "group": "Movement",
+          "target_node": "Locomotion",
+          "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_locomotion_enabled":true}
         },
         "ledge_probe_distance": {
           "label": "Ledge Probe Distance", "description": "Distance checked ahead for ground support",
           "type": "float", "default": 3, "group": "Movement",
           "target_node": "Locomotion",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"stop_at_ledges": true, "enemy_locomotion_enabled": true}
         },
         "horizontal_speed": {
           "label": "Horizontal Speed", "description": "Maximum horizontal flight speed",
           "type": "float", "default": 7.5, "group": "Movement",
           "target_node": "Locomotion",
-          "min": 0, "for_variants": ["core:gun_beetle"]
+          "min": 0, "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "vertical_speed": {
           "label": "Vertical Speed", "description": "Maximum vertical flight speed",
           "type": "float", "default": 4.5, "group": "Movement",
           "target_node": "Locomotion",
-          "min": 0, "for_variants": ["core:gun_beetle"]
+          "min": 0, "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "facing_enabled": {
           "label": "Turn Toward Movement or Target", "description": "Enable turning during flight",
           "type": "bool", "default": true, "group": "Movement",
           "target_node": "Locomotion",
-          "for_variants": ["core:gun_beetle"]
+          "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_locomotion_enabled": true}
         },
         "face_pitch": {
           "label": "Pitch Toward Target", "description": "Allow the beetle to tilt up or down while aiming",
           "type": "bool", "default": true, "group": "Movement",
           "target_node": "Locomotion",
-          "requires": {"facing_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "requires": {"enemy_locomotion_enabled": true, "facing_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "enemy_brain_enabled": {
+          "label": "Brain Enabled",
+          "description": "Allow the enemy to make movement and attack decisions",
+          "type": "bool",
+          "default": true,
+          "group": "Brain",
+          "target_property": "brain_enabled"
+        },
+        "enemy_patrol_enabled": {
+          "label": "Patrol Enabled",
+          "description": "Allow the Rhino Tank to patrol when it has no target",
+          "type": "bool",
+          "default": true,
+          "group": "Brain",
+          "target_node": "Components/Brain",
+          "target_property": "patrol_enabled",
+          "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_brain_enabled":true}
         },
         "patrol_distance": {
           "label": "Patrol Distance", "description": "Distance from spawn before reversing patrol",
           "type": "float", "default": 12, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_patrol_enabled": true, "enemy_brain_enabled": true}
         },
         "patrol_speed_ratio": {
           "label": "Patrol Speed Ratio", "description": "Fraction of ground speed used while patrolling",
           "type": "float", "default": 0.2, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "max": 1, "for_variants": ["core:rhino_tank"]
+          "min": 0, "max": 1, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_patrol_enabled": true, "enemy_brain_enabled": true}
         },
         "windup_time": {
           "label": "Charge Windup", "description": "Seconds spent aiming before charging",
           "type": "float", "default": 0.8833333, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "charge_time": {
           "label": "Maximum Charge Time", "description": "Maximum seconds spent charging",
           "type": "float", "default": 1.5, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "charge_distance": {
           "label": "Maximum Charge Distance", "description": "Distance limit for a single charge",
           "type": "float", "default": 55, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "recovery_time": {
           "label": "Charge Recovery", "description": "Seconds before detecting targets after a charge",
           "type": "float", "default": 1, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "hurt_time": {
           "label": "Hurt Recovery", "description": "Seconds movement and detection pause after nonlethal damage",
           "type": "float", "default": 0.45, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:rhino_tank"]
+          "min": 0, "for_variants": ["core:rhino_tank"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "follow_target": {
           "label": "Follow Target", "description": "Chase an acquired target",
           "type": "bool", "default": true, "group": "Brain",
           "target_node": "Components/Brain",
-          "for_variants": ["core:gun_beetle"]
+          "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "return_home_when_idle": {
           "label": "Return Home When Idle", "description": "Return to the spawn position after losing a target",
           "type": "bool", "default": true, "group": "Brain",
           "target_node": "Components/Brain",
-          "for_variants": ["core:gun_beetle"]
+          "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "alert_duration_sec": {
           "label": "Alert Duration", "description": "Seconds spent in the alert state",
           "type": "float", "default": 0.45, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:gun_beetle"]
+          "min": 0, "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "maximum_leash_distance": {
           "label": "Leash Distance", "description": "Maximum pursuit distance from spawn",
           "type": "float", "default": 50, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:gun_beetle"]
+          "min": 0, "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "home_arrival_distance": {
           "label": "Home Arrival Distance", "description": "Distance considered close enough to the spawn position",
           "type": "float", "default": 5, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "for_variants": ["core:gun_beetle"]
+          "min": 0, "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "chase_speed_ratio": {
           "label": "Chase Speed Ratio", "description": "Fraction of flight speed used during pursuit",
           "type": "float", "default": 1, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "max": 1, "requires": {"follow_target": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "max": 1, "requires": {"enemy_brain_enabled": true, "follow_target": true}, "for_variants": ["core:gun_beetle"]
         },
         "return_speed_ratio": {
           "label": "Return Speed Ratio", "description": "Fraction of flight speed used while returning home",
           "type": "float", "default": 0.7, "group": "Brain",
           "target_node": "Components/Brain",
-          "min": 0, "max": 1, "requires": {"return_home_when_idle": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "max": 1, "requires": {"enemy_brain_enabled": true, "return_home_when_idle": true}, "for_variants": ["core:gun_beetle"]
         },
         "attacks_enabled": {
-          "label": "Allow Attacks", "description": "Let the brain request projectile attacks",
+          "label": "Request Attacks", "description": "Allow the brain to request available attacks",
           "type": "bool", "default": true, "group": "Brain",
           "target_node": "Components/Brain",
-          "for_variants": ["core:gun_beetle"]
+          "for_variants": ["core:gun_beetle"],
+          "requires": {"enemy_brain_enabled": true}
         },
         "max_health": {
           "label": "Maximum Health", "description": "Health at spawn and after respawn",
@@ -401,65 +1510,85 @@
           "target_node": "Attacks/Horn", "target_property": "damage_amount",
           "min": 1, "requires": {"horn_enabled": true}, "for_variants": ["core:rhino_tank"]
         },
+        "projectiles_enabled": {
+          "label": "Projectile Attack",
+          "description": "Enable the GUN Beetle's projectile attack component",
+          "type": "bool",
+          "default": true,
+          "group": "Attack",
+          "target_node": "Attacks/PrimaryProjectile",
+          "target_property": "enabled",
+          "for_variants": ["core:gun_beetle"]
+        },
         "projectile_minimum_range": {
           "label": "Minimum Range", "description": "Closest distance at which a shot can start",
           "type": "float", "default": 4, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile", "target_property": "minimum_range",
-          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectile_maximum_range": {
           "label": "Maximum Range", "description": "Farthest distance at which a shot can start",
           "type": "float", "default": 15, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile", "target_property": "maximum_range",
-          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectile_windup": {
           "label": "Shot Windup", "description": "Seconds between committing to a shot and firing",
           "type": "float", "default": 0.55, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile", "target_property": "windup_duration_sec",
-          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectile_cooldown": {
           "label": "Shot Cooldown", "description": "Seconds between one shot ending and the next becoming available",
           "type": "float", "default": 1.8, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile", "target_property": "cooldown_duration_sec",
-          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectile_speed": {
           "label": "Projectile Speed", "description": "Speed of the fired projectiles",
           "type": "float", "default": 28, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile",
-          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectile_lifetime_sec": {
           "label": "Projectile Lifetime", "description": "Maximum seconds a fired projectile stays active",
           "type": "float", "default": 7, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile",
-          "min": 0.01, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0.01, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectile_homing_turn_speed_deg": {
           "label": "Projectile Homing", "description": "Projectile homing turn speed in degrees per second. Zero disables homing",
           "type": "float", "default": 0, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile",
-          "min": 0, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "projectiles_per_shot": {
           "label": "Projectiles per Shot", "description": "Number of projectiles fired in a shot",
           "type": "int", "default": 3, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile",
-          "min": 1, "max": 32, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 1, "max": 32, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
         },
         "spread_angle_deg": {
           "label": "Projectile Spread", "description": "Angle between the outer projectiles in degrees",
           "type": "float", "default": 10, "group": "Attack",
           "target_node": "Attacks/PrimaryProjectile",
-          "min": 0, "max": 180, "requires": {"attacks_enabled": true}, "for_variants": ["core:gun_beetle"]
+          "min": 0, "max": 180, "requires": {"projectiles_enabled": true}, "for_variants": ["core:gun_beetle"]
+        },
+        "enemy_score_enabled": {
+          "label": "Award Score",
+          "description": "Grant score when the enemy is defeated",
+          "type": "bool",
+          "default": true,
+          "group": "Rewards",
+          "target_node": "ScoreAward",
+          "target_property": "enabled"
         },
         "score_amount": {
           "label": "Score Award", "description": "Score awarded when this enemy is defeated",
           "type": "int", "default": 250, "group": "Rewards",
           "target_node": "ScoreAward",
-          "min": 0, "max": 1000000, "variant_defaults": {"core:gun_beetle": 300}
+          "min": 0, "max": 1000000, "variant_defaults": {"core:gun_beetle": 300},
+          "requires": {"enemy_score_enabled": true}
         },
         "defeat_delay_sec": {
           "label": "Defeat Delay", "description": "Seconds between being defeated and finishing the defeat sequence",
@@ -669,7 +1798,7 @@
       "scene": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.tscn",
       "properties": {
         "monitor_style": {
-          "label": "Monitor Style", "description": "Choose the grounded or floating housing",
+          "label": "Monitor Style", "description": "Choose the grounded, floating, or balloon style",
           "type": "enum", "default": "grounded",
           "options": {
             "grounded": {
@@ -679,6 +1808,10 @@
             "floating": {
               "label": "Floating", "value": 1, "preview_mesh": "Sonic Vane Monitor Floating",
               "scene": "res://LS5Framework/Objects/ItemMonitor/ItemMonitorFloating.tscn"
+            },
+            "balloon": {
+              "label": "Balloon", "value": 2, "preview_mesh": "Sonic Vane Monitor Balloon",
+              "preview_file": "Item Balloon.blend", "scene": "res://LS5Framework/Objects/ItemBalloon/ItemBalloon.tscn"
             }
           },
           "group": "Item Monitor"
@@ -753,12 +1886,16 @@
           "label": "Match Panel Height", "description": "Snap to the panel height when dashing on the ground",
           "type": "bool", "default": false, "group": "Dash Panel"
         },
+        "dash_additive_launch": {
+          "label": "Additive Launch", "description": "Combine the dash impulse with the incoming velocity",
+          "type": "bool", "default": false, "group": "Impulse", "authoring_only": true
+        },
         "stop_momentum": {
           "label": "Stop Momentum", "description": "Replace prior movement with the dash impulse",
-          "type": "bool", "default": true, "group": "Impulse"
+          "type": "bool", "default": true, "group": "Impulse", "authoring_hidden": true
         },
         "additive_mode": {
-          "label": "Additive Mode", "description": "How existing velocity is combined when Stop Momentum is off",
+          "label": "Additive Mode", "description": "How incoming velocity is combined with the dash impulse",
           "type": "enum", "default": "ignore_prior_vertical",
           "options": {
             "ignore_prior_vertical": { "label": "Ignore Prior Vertical", "value": 0 },
@@ -774,6 +1911,10 @@
         "dash_rehit_cooldown": {
           "label": "Rehit Cooldown", "description": "Seconds before the same body can trigger this panel again",
           "type": "float", "default": 0.15, "min": 0, "target_property": "rehit_cooldown", "group": "Impulse"
+        },
+        "dash_dynamic_object_mask": {
+          "label": "Dynamic Object Layers", "description": "Physics layers of props this panel can launch. Clear all layers for player-only activation",
+          "type": "physics_mask", "default": 2, "group": "Dash Panel", "target_property": "dynamic_object_collision_mask"
         },
         "override_previous_lock_timers": {
           "label": "Override Previous Locks", "description": "Clear prior movement, action and alignment locks",
@@ -804,6 +1945,20 @@
           "label": "Speed Lock Duration", "description": "Seconds to maintain the locked speed",
           "type": "float", "default": 0.5, "min": 0, "group": "Locks and Camera",
           "requires": { "lock_speed_enabled": true }
+        },
+        "dash_override_max_speed": {
+          "label": "Override Player Max Speed", "description": "Temporarily change the player's maximum speed after activation",
+          "type": "bool", "default": false, "group": "Locks and Camera", "target_property": "override_player_max_speed"
+        },
+        "dash_max_speed_override": {
+          "label": "Player Max Speed", "description": "Maximum player speed during the override",
+          "type": "float", "default": 60, "min": 0, "max": 1000, "group": "Locks and Camera",
+          "target_property": "player_max_speed_override", "requires": { "dash_override_max_speed": true }
+        },
+        "dash_max_speed_override_duration": {
+          "label": "Max Speed Override Duration", "description": "Seconds to use the temporary maximum speed",
+          "type": "float", "default": 0.5, "min": 0, "max": 60, "group": "Locks and Camera",
+          "target_property": "max_speed_override_duration", "requires": { "dash_override_max_speed": true }
         }
       }
     },
@@ -1270,9 +2425,13 @@
           "label": "Ring Spacing", "description": "Distance along the spline between rings",
           "type": "float", "default": 8, "min": 0.1, "always_export": true, "group": "Ring Trail"
         },
+        "ring_trail_respawn_enabled": {
+          "label": "Respawn", "description": "Allow collected rings on this trail to regenerate",
+          "type": "bool", "default": true, "group": "Ring Trail"
+        },
         "ring_respawn_delay": {
           "label": "Respawn Delay", "description": "Seconds before a ring regenerates. Zero disables respawn",
-          "type": "float", "default": 60, "min": 0, "group": "Ring Trail"
+          "type": "float", "default": 60, "min": 0, "group": "Ring Trail", "requires": {"ring_trail_respawn_enabled": true}
         }
       }
     },

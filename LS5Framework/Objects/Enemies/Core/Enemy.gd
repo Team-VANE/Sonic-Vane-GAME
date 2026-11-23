@@ -59,6 +59,10 @@ const SURFACE_METADATA = preload("res://LS5Framework/Scripts/World/SurfaceBehavi
 @export_range(0.0, 10.0, 0.01) var defeat_delay_sec: float = 0.0
 
 @export_group("Components")
+## Allows the brain to make movement and attack decisions independently of target detection.
+@export var brain_enabled: bool = true
+## Allows locomotion to move and turn the actor, including gravity-driven movement.
+@export var locomotion_enabled: bool = true
 ## Health component used for damage and defeat state.
 @export var health_component_path: NodePath = NodePath("Components/Health")
 ## Gravity receiver used by locomotion and external gravity systems.
@@ -210,12 +214,12 @@ func _physics_process(delta: float) -> void:
 	var simulate_ai: bool = active and (not _distance_culled or (_attacks and _attacks.is_attacking()))
 	var target: Node3D = null
 	if not _distance_culled and _perception:
-		if active and (not _brain or _brain.wants_perception()):
+		if active and (not brain_enabled or not _brain or _brain.wants_perception()):
 			_perception.physics_tick(delta)
 		else:
 			_perception.clear()
 		target = _perception.get_target()
-	if simulate_ai and _brain:
+	if simulate_ai and brain_enabled and _brain:
 		_brain.physics_tick(delta, self, target, _spawn_transform.origin, _attacks, _intent)
 	else:
 		_intent.clear()
@@ -228,10 +232,12 @@ func _physics_process(delta: float) -> void:
 			_intent.move_direction = Vector3.ZERO
 			_intent.speed_ratio = 0.0
 	var movement_start: Vector3 = global_position
-	if _locomotion:
+	if locomotion_enabled and _locomotion:
 		_locomotion.capture_impact_contacts = fall_damage_enabled
 		_locomotion.physics_tick(delta, _intent)
 		_process_fall_impact_damage()
+	elif not locomotion_enabled:
+		velocity = Vector3.ZERO
 	if _targetable:
 		_targetable.physics_tick(delta, velocity.length_squared() > 0.000001)
 	if _audio and not _distance_culled:
@@ -437,7 +443,7 @@ func _initialize_components() -> void:
 
 
 func _on_damaged(_amount: int, _source: Node) -> void:
-	if _brain:
+	if brain_enabled and _brain:
 		_brain.notify_hurt()
 	for component: EnemyOptionalComponent in _optional_components:
 		if component != null and is_instance_valid(component):
@@ -703,8 +709,8 @@ func _on_attack_started(_attack: EnemyAttack) -> void:
 func _update_presentation(delta: float) -> void:
 	if _animation == null:
 		return
-	var brain_state: StringName = _brain.get_state_tag() if _brain else &"idle"
-	var locomotion_state: StringName = _locomotion.get_state_tag() if _locomotion else &"idle"
+	var brain_state: StringName = _brain.get_state_tag() if brain_enabled and _brain else &"idle"
+	var locomotion_state: StringName = _locomotion.get_state_tag() if locomotion_enabled and _locomotion else &"idle"
 	var attack_state: StringName = _attacks.get_animation_tag() if _attacks else &""
 	_animation.physics_tick(delta, brain_state, locomotion_state, attack_state, _dead, velocity.length())
 

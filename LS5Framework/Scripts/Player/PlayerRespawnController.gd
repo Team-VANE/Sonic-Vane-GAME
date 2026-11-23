@@ -22,26 +22,11 @@ func _respawn() -> void:
 	var downwarp_normal: Vector3 = p._get_gravity_up()
 	if resolved_respawn != null:
 		target_transform = resolved_respawn.global_transform
-		var downwarp_info: Dictionary = DownwarpUtil.apply_downwarp_from_node_with_hit(
-			resolved_respawn,
-			target_transform,
-			[p]
-		)
-		if p._is_surface_alignment_rejected(
-			downwarp_info.get("collider"),
-			downwarp_info.get("normal", downwarp_normal),
-			p._get_gravity_up(),
-			int(downwarp_info.get("shape", -1))
-		):
-			downwarp_info.clear()
-		if downwarp_info.has("xform") and downwarp_info["xform"] is Transform3D:
-			target_transform = downwarp_info["xform"]
-		if downwarp_info.has("hit"):
-			downwarp_hit = bool(downwarp_info["hit"])
-		if downwarp_info.has("point") and downwarp_info["point"] is Vector3:
-			downwarp_point = downwarp_info["point"]
-		if downwarp_info.has("normal") and downwarp_info["normal"] is Vector3:
-			downwarp_normal = downwarp_info["normal"]
+		var downwarp_info: Dictionary = p._external_motion_module.resolve_downwarp(resolved_respawn, target_transform, target_transform.basis)
+		target_transform = downwarp_info["xform"]
+		downwarp_hit = downwarp_info["hit"]
+		downwarp_point = downwarp_info["point"]
+		downwarp_normal = downwarp_info["normal"]
 	_apply_respawn_transform(target_transform, false, downwarp_hit, downwarp_point, downwarp_normal)
 
 

@@ -2,6 +2,9 @@ extends Node
 class_name LevelObjectProxySpawner
 
 const DEFAULT_PROXY_GROUP: StringName = &"LevelObjectProxy"
+const HIDDEN_META: StringName = &"placement_presentation_hidden"
+const MUTED_META: StringName = &"placement_presentation_muted"
+const SILENT_BUS: StringName = &"Vane Placement Silent"
 
 static var _property_names_by_type: Dictionary = {}
 
@@ -99,6 +102,14 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 	instance.name = proxy.name
 	if proxy.has_meta(&"placement_id"):
 		instance.set_meta(&"placement_id", proxy.get_meta(&"placement_id"))
+	var hide_presentation: bool = _read_proxy_bool(proxy, "presentation_hidden", false)
+	var mute_presentation: bool = _read_proxy_bool(proxy, "presentation_muted", false)
+	if hide_presentation:
+		instance.set_meta(HIDDEN_META, true)
+		if instance is Node3D:
+			(instance as Node3D).hide()
+	if mute_presentation:
+		instance.set_meta(MUTED_META, true)
 	if instance is Node3D and proxy is Node3D:
 		(instance as Node3D).transform = (proxy as Node3D).transform
 	if not _apply_property_overrides(proxy, instance):
@@ -106,6 +117,7 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 		return false
 	_copy_curve_data(proxy, instance)
 	_copy_transform_markers(proxy, instance)
+	_add_volume_boxes(proxy, instance)
 	var parent_override: Node = _resolve_parent_override(level_root, proxy)
 	var parent_node: Node = parent_override if parent_override != null else proxy.get_parent()
 	if (not parent_node or parent_node == proxy or proxy.is_ancestor_of(parent_node)
@@ -114,10 +126,67 @@ static func _replace_proxy(level_root: Node, proxy: Node) -> bool:
 		push_warning("LevelObjectProxySpawner: proxy has an invalid spawn parent: %s" % proxy.name)
 		return false
 	var proxy_index: int = proxy.get_index()
+	if hide_presentation and parent_node is Node3D and proxy.has_meta(&"placement_id") and parent_node.get_meta(&"placement_id", "") == proxy.get_meta(&"placement_id"):
+		(parent_node as Node3D).hide()
+	if mute_presentation:
+		_ensure_silent_bus()
+		_route_muted_audio(instance)
 	parent_node.add_child(instance)
 	parent_node.move_child(instance, mini(proxy_index, parent_node.get_child_count() - 1))
 	_free_proxy(proxy)
 	return true
+
+
+static func is_presentation_hidden(source: Node) -> bool:
+	return _has_presentation_flag(source, HIDDEN_META)
+
+
+static func _add_volume_boxes(proxy: Node, instance: Node) -> void:
+	if not instance is CollisionObject3D:
+		return
+	for box: Dictionary in _read_proxy_array(proxy, "extra_volume_boxes"):
+		var shape: BoxShape3D = BoxShape3D.new()
+		shape.size = box["size"]
+		var collider: CollisionShape3D = CollisionShape3D.new()
+		collider.name = &"VolumeBox"
+		collider.transform = box["transform"]
+		collider.shape = shape
+		instance.add_child(collider, true)
+
+
+static func is_presentation_muted(source: Node) -> bool:
+	return _has_presentation_flag(source, MUTED_META)
+
+
+static func _has_presentation_flag(source: Node, flag: StringName) -> bool:
+	var node: Node = source
+	while node:
+		if node.has_meta(flag):
+			return true
+		node = node.get_parent()
+	return false
+
+
+static func _ensure_silent_bus() -> void:
+	var index: int = AudioServer.get_bus_index(SILENT_BUS)
+	if index < 0:
+		AudioServer.add_bus()
+		index = AudioServer.bus_count - 1
+		AudioServer.set_bus_name(index, SILENT_BUS)
+	AudioServer.set_bus_mute(index, true)
+
+
+static func _route_muted_audio(node: Node) -> void:
+	if node is AudioStreamPlayer or node is AudioStreamPlayer2D or node is AudioStreamPlayer3D:
+		node.set("bus", SILENT_BUS)
+		node.set_deferred("bus", SILENT_BUS)
+		if node is AudioStreamPlayer2D or node is AudioStreamPlayer3D:
+			node.set("area_mask", 0)
+	var route: Callable = _route_muted_audio
+	if not node.child_entered_tree.is_connected(route):
+		node.child_entered_tree.connect(route)
+		for child: Node in node.get_children():
+			_route_muted_audio(child)
 
 
 static func _resolve_parent_override(level_root: Node, proxy: Node) -> Node:
@@ -130,6 +199,7 @@ static func _resolve_parent_override(level_root: Node, proxy: Node) -> Node:
 static func _apply_property_overrides(proxy: Node, target: Node) -> bool:
 	var overrides: Array = _read_proxy_array(proxy, "property_overrides")
 	var override_map: Dictionary = {}
+	var local_traits: Dictionary = {}
 	for entry_value: Variant in overrides:
 		if not (entry_value is Dictionary):
 			continue
@@ -138,6 +208,27 @@ static func _apply_property_overrides(proxy: Node, target: Node) -> bool:
 		if property_name == "":
 			continue
 		var value: Variant = _resolve_override_value(entry)
+		if entry.has("target_trait"):
+			var binding: Array = entry["target_trait"]
+			var array_name: String = binding[0]
+			var resource_name: String = binding[1]
+			var resource_key: String = array_name + "/" + resource_name
+			var component_resource: Resource = local_traits.get(resource_key)
+			if not component_resource:
+				var resources: Array = target.get(array_name)
+				for index: int in resources.size():
+					var existing: Resource = resources[index]
+					if existing and existing.resource_name == resource_name:
+						component_resource = existing.duplicate()
+						resources[index] = component_resource
+						target.set(array_name, resources)
+						local_traits[resource_key] = component_resource
+						break
+			if not component_resource or not _object_has_property(component_resource, property_name):
+				push_warning("LevelObjectProxySpawner: %s cannot apply %s to %s." % [proxy.name, property_name, resource_key])
+				return false
+			component_resource.set(property_name, value)
+			continue
 		var target_path: NodePath = _read_dict_node_path(entry, "target_node")
 		if not target_path.is_empty():
 			var component: Node = target.get_node_or_null(target_path)

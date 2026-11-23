@@ -267,10 +267,6 @@ func _update_on_rail(delta: float) -> void:
 		if drop_dash_charging:
 			_trigger_release(false)
 			return
-		var roll_action = _get_roll_action()
-		if roll_action != null and not roll_action.is_rolling:
-			roll_action.is_rolling = true
-			roll_action._notify_roll_changed(true)
 		if _process_countdown_release_buffer(action1_released):
 			return
 		if action1_released or not action1_held:
@@ -439,7 +435,7 @@ func _start_charge() -> void:
 	countdown_release_queued = false
 
 	var roll_action = _get_roll_action()
-	if roll_action != null and not roll_action.is_rolling:
+	if not owner_player._rail_active and not owner_player._rail_switch_active and roll_action != null and not roll_action.is_rolling:
 		roll_action.is_rolling = true
 		roll_action._notify_roll_changed(true)
 

@@ -15,8 +15,12 @@ enum Phase {
 }
 
 @export_group("Attack")
-## Enables this attack for selection by an attack controller.
-@export var enabled: bool = true
+## Enables this attack. Disabling it cancels the current attack window.
+@export var enabled: bool = true:
+	set(value):
+		enabled = value
+		if not enabled and phase != Phase.READY:
+			cancel()
 ## Higher-priority valid attacks are selected first.
 @export var priority: int = 0
 ## Minimum target distance accepted by this attack.
@@ -111,6 +115,8 @@ func animation_close_active_window() -> void:
 
 
 func _open_active_window() -> void:
+	if not enabled:
+		return
 	phase = Phase.ACTIVE
 	_phase_timer = max(active_duration_sec, 0.0)
 	_on_active_window_opened()

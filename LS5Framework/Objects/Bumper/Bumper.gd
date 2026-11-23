@@ -93,10 +93,28 @@ var visual_bounce_peak_scale: float = 1.2
 @export_range(0.0, 2.0, 0.01, "or_greater", "suffix:s")
 var visual_bounce_duration: float = 0.16
 
+## Clockwise rotation of Visual Root about its local up axis, viewed from above.
+@export_range(0.0, 720.0, 1.0, "or_greater", "suffix:°/s")
+var visual_spin_speed_deg: float = 0.0
+
+## Mesh whose first material surface flashes after a successful bounce.
+@export var flash_mesh: MeshInstance3D
+
+## Emission energy added during each hit flash.
+@export_range(0.0, 10.0, 0.1, "or_greater")
+var flash_energy: float = 1.25
+
+## Duration of each flash and the gap between flashes.
+@export_range(0.01, 0.5, 0.01, "or_greater", "suffix:s")
+var flash_pulse_duration: float = 0.05
+
 var _body_cooldowns: Dictionary = {}
 var _tracked_bodies: Dictionary = {}
 var _visual_base_scale: Vector3 = Vector3.ONE
 var _visual_tween: Tween
+var _flash_tween: Tween
+var _flash_material: BaseMaterial3D
+var _base_emission_energy: float
 
 
 func _ready() -> void:
@@ -109,6 +127,33 @@ func _ready() -> void:
 		body_exited.connect(_on_body_exited)
 	if visual_root:
 		_visual_base_scale = visual_root.scale
+	set_process(visual_root != null and visual_spin_speed_deg > 0.0)
+	_setup_flash_material()
+
+
+func _process(delta: float) -> void:
+	if visual_root.is_visible_in_tree():
+		visual_root.rotate_object_local(Vector3.UP, -deg_to_rad(visual_spin_speed_deg) * delta)
+
+
+func _setup_flash_material() -> void:
+	if not flash_mesh or not flash_mesh.mesh or flash_mesh.mesh.get_surface_count() == 0:
+		return
+	var material: BaseMaterial3D = flash_mesh.get_active_material(0) as BaseMaterial3D
+	if not material:
+		return
+	_flash_material = material.duplicate() as BaseMaterial3D
+	if material.emission_enabled:
+		_base_emission_energy = material.emission_energy_multiplier
+	else:
+		_flash_material.emission_enabled = true
+		_flash_material.emission = Color.WHITE
+		_flash_material.emission_texture = material.albedo_texture
+		_flash_material.emission_energy_multiplier = 0.0
+	if flash_mesh.material_override:
+		flash_mesh.material_override = _flash_material
+	else:
+		flash_mesh.set_surface_override_material(0, _flash_material)
 
 
 func _setup_trimesh_collision() -> void:
@@ -258,6 +303,7 @@ func _try_bounce_body(body: Node3D, launch_direction_override: Vector3 = Vector3
 	_body_cooldowns[body_id] = rehit_cooldown
 	_play_sound()
 	_play_visual_bounce()
+	_play_hit_flash()
 	return true
 
 
@@ -562,3 +608,23 @@ func _play_visual_bounce() -> void:
 	_visual_tween = create_tween()
 	_visual_tween.tween_property(visual_root, "scale", peak_scale, visual_bounce_duration * 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_visual_tween.tween_property(visual_root, "scale", _visual_base_scale, visual_bounce_duration * 0.65).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+
+
+func _play_hit_flash() -> void:
+	if not _flash_material or flash_energy <= 0.0:
+		return
+	if _flash_tween:
+		_flash_tween.kill()
+	var peak: float = _base_emission_energy + flash_energy
+	_set_flash_energy(peak)
+	_flash_tween = create_tween()
+	_flash_tween.tween_interval(flash_pulse_duration)
+	_flash_tween.tween_callback(_set_flash_energy.bind(_base_emission_energy))
+	_flash_tween.tween_interval(flash_pulse_duration)
+	_flash_tween.tween_callback(_set_flash_energy.bind(peak))
+	_flash_tween.tween_interval(flash_pulse_duration)
+	_flash_tween.tween_callback(_set_flash_energy.bind(_base_emission_energy))
+
+
+func _set_flash_energy(energy: float) -> void:
+	_flash_material.emission_energy_multiplier = energy

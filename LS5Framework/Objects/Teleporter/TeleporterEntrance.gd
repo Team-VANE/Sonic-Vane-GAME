@@ -10,6 +10,8 @@ class_name TeleporterEntrance
 @export var match_exit_rotation: bool = false
 @export var rehit_cooldown: float = 0.20
 @export var exit_local_offset: Vector3 = Vector3.ZERO
+## Placement trigger radius. Zero uses the scene's authored collision shape.
+@export_range(0.0, 100.0, 0.01, "or_greater", "suffix:m") var placement_radius: float = 0.0
 
 @export_group("Level")
 ## LVL_*.tres doc name used by the level catalog (example: LVL_GreenHillOcean.tres).
@@ -27,6 +29,12 @@ var _body_cooldowns: Dictionary = {}
 
 
 func _ready() -> void:
+	if placement_radius > 0.0:
+		var collision: CollisionShape3D = get_node_or_null("CollisionShape3D") as CollisionShape3D
+		if collision and collision.shape is SphereShape3D:
+			var sphere: SphereShape3D = collision.shape.duplicate() as SphereShape3D
+			sphere.radius = placement_radius
+			collision.shape = sphere
 	monitoring = true
 	monitorable = true
 	if not body_entered.is_connected(_on_body_entered):
@@ -66,52 +74,49 @@ func _on_body_entered(body: Node) -> void:
 		if body.has_method("is_multiplayer_authority") and not body.is_multiplayer_authority():
 			return
 
-	var exit_target: Node3D = _resolve_exit()
-	if exit_target == null or not is_instance_valid(exit_target):
-		push_warning("%s: TeleporterExit not found (assign exit_node or set exit_id)." % name)
-		return
-
-	var id = body.get_instance_id()
+	var id: int = body.get_instance_id()
 	var remaining: float = float(_body_cooldowns.get(id, 0.0))
 	if remaining > 0.0:
 		return
 
 	if _has_level_target():
-		var level_manager = _get_level_manager()
-		if level_manager != null:
-			if target_level_doc_name.strip_edges() != "" and level_manager.has_method("request_level_change_from_doc"):
-				level_manager.call(
-					"request_level_change_from_doc",
-					target_level_doc_name,
-					target_exit_path,
-					body,
-					keep_velocity,
-					match_exit_rotation,
-					exit_local_offset
-				)
-			elif level_manager.has_method("request_level_change"):
-				level_manager.call(
-					"request_level_change",
-					target_level_id,
-					target_level_scene_path,
-					target_exit_path,
-					body,
-					keep_velocity,
-					match_exit_rotation,
-					exit_local_offset
-				)
-		_body_cooldowns[id] = rehit_cooldown
-		if one_shot:
-			enabled = false
-			monitoring = false
-		return
-
-	_apply_teleport_to_body(body as Node3D, exit_target)
+		var level_manager: Node = _get_level_manager()
+		if not level_manager:
+			return
+		if target_level_doc_name.strip_edges() != "" and level_manager.has_method("request_level_change_from_doc"):
+			level_manager.call(
+				"request_level_change_from_doc",
+				target_level_doc_name,
+				target_exit_path,
+				body,
+				keep_velocity,
+				match_exit_rotation,
+				exit_local_offset
+			)
+		elif level_manager.has_method("request_level_change"):
+			level_manager.call(
+				"request_level_change",
+				target_level_id,
+				target_level_scene_path,
+				target_exit_path,
+				body,
+				keep_velocity,
+				match_exit_rotation,
+				exit_local_offset
+			)
+		else:
+			return
+	else:
+		var exit_target: Node3D = _resolve_exit()
+		if not is_instance_valid(exit_target):
+			push_warning("%s: TeleporterExit not found (assign exit_node or set exit_id)." % name)
+			return
+		_apply_teleport_to_body(body as Node3D, exit_target)
 	_body_cooldowns[id] = rehit_cooldown
 
 	if one_shot:
 		enabled = false
-		monitoring = false
+		set_deferred("monitoring", false)
 
 
 func _resolve_exit() -> Node3D:
@@ -141,6 +146,7 @@ func _apply_teleport_to_body(body: Node3D, exit_target: Node3D) -> void:
 	# Preferred integration hook: if your player has a dedicated teleport method, use it.
 	if body.has_method("apply_teleport_from_exit"):
 		body.call("apply_teleport_from_exit", exit_target, keep_velocity, match_exit_rotation, exit_local_offset)
+		return
 	elif body.has_method("apply_teleport"):
 		body.call("apply_teleport", exit_target.global_transform, keep_velocity, match_exit_rotation, exit_local_offset)
 		return

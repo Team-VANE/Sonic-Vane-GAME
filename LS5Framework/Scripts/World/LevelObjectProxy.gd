@@ -13,6 +13,12 @@ const PROXY_GROUP: StringName = &"LevelObjectProxy"
 @export var spawn_parent_required: bool = false
 ## Property values applied to the instantiated scene root or a child at target_node.
 @export var property_overrides: Array[Dictionary] = []
+## Hides the instantiated object's world visuals while leaving gameplay active.
+@export var presentation_hidden: bool = false
+## Silences the instantiated object's local audio while leaving gameplay active.
+@export var presentation_muted: bool = false
+## Additional local collision boxes for a compound placement volume.
+@export var extra_volume_boxes: Array[Dictionary] = []
 ## Copies a Curve3D from the proxy hierarchy to the instantiated scene.
 @export var curve_copy_enabled: bool = false
 ## Path3D within the proxy hierarchy that supplies the curve.

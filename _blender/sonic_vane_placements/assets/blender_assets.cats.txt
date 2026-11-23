@@ -1,3 +1,11 @@
 VERSION 1
 
 af85e810-424a-46cd-a0a3-b073c96a93bd:Gameplay:Gameplay
+1edbca57-4ae8-5c03-b586-8cf6431b4f30:Gameplay/Traversal:Traversal
+4d7291e3-4e32-54d8-9b9c-8c61b85705b6:Gameplay/Collectibles and Rewards:Collectibles and Rewards
+6914b1c3-152d-5d23-b71e-d469a7cf98db:Gameplay/Enemies and Hazards:Enemies and Hazards
+63d98408-7b07-56cc-a225-74716ca3369f:Gameplay/Environment and Surfaces:Environment and Surfaces
+343e533a-321b-5ef9-a163-922282e2ebd4:Gameplay/Level Flow:Level Flow
+9b917183-f5fc-588b-a2ed-82ea41d41413:Gameplay/Racing:Racing
+87eb7277-d837-54c0-bebb-5cc00f3bf7fc:Gameplay/Pinball:Pinball
+46180f5c-dae4-5301-98a1-0980a875e269:Gameplay/Camera and Automation:Camera and Automation

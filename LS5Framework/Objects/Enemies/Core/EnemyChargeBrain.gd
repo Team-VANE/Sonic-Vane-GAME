@@ -3,6 +3,8 @@ class_name EnemyChargeBrain
 
 enum ChargePhase { PATROL, WINDUP, CHARGE, RECOVER, HURT }
 
+## Allows untargeted patrol movement. Target detection and charging remain available.
+@export var patrol_enabled: bool = true
 ## Distance travelled forward from home before patrolling back.
 @export var patrol_distance: float = 12.0
 ## Maximum distance from a player for untargeted patrol movement. Zero allows patrols at any distance.
@@ -51,7 +53,7 @@ func physics_tick(delta: float, actor: CharacterBody3D, target: Node3D, home: Ve
 			if is_instance_valid(target):
 				_enter_phase(ChargePhase.WINDUP)
 			else:
-				if not _can_patrol_near_player(actor):
+				if not patrol_enabled or not _can_patrol_near_player(actor):
 					return
 				var destination: Vector3 = home if _returning else home + _patrol_forward * maxf(patrol_distance, 0.0)
 				var offset: Vector3 = (destination - actor.global_position).slide(up)
@@ -60,7 +62,7 @@ func physics_tick(delta: float, actor: CharacterBody3D, target: Node3D, home: Ve
 				else:
 					intent.move_direction = offset.normalized()
 					var locomotion: GroundedEnemyLocomotion = actor._locomotion as GroundedEnemyLocomotion
-					if locomotion and not locomotion.has_support_in_direction(intent.move_direction):
+					if locomotion and locomotion.stop_at_ledges and not locomotion.has_support_in_direction(intent.move_direction):
 						_returning = true
 						intent.move_direction = Vector3.ZERO
 					intent.face_direction = intent.move_direction
@@ -97,7 +99,7 @@ func physics_tick(delta: float, actor: CharacterBody3D, target: Node3D, home: Ve
 			):
 				blocked = true
 		var heading: Vector3 = _heading.slide(up).normalized()
-		if locomotion:
+		if locomotion and locomotion.stop_at_ledges:
 			var speed: float = actor.velocity.slide(up).length()
 			var stopping_distance: float = speed * speed / maxf(2.0 * locomotion.deceleration, 0.001)
 			var lookahead: float = locomotion.ledge_probe_distance + stopping_distance + speed * delta
@@ -130,7 +132,7 @@ func get_state_tag() -> StringName:
 		ChargePhase.CHARGE: return &"charge"
 		ChargePhase.RECOVER: return &"recover"
 		ChargePhase.HURT: return &"hurt"
-		_: return &"patrol"
+		_: return &"patrol" if patrol_enabled else &"idle"
 
 
 func reset_brain() -> void:

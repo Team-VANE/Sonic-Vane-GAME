@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dwyt84y3jksea"
+path="res://.godot/imported/Spring Stadium.ogg-224c2cabf3044b538994f17b263055e7.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Spring Stadium.ogg"
+dest_files=["res://.godot/imported/Spring Stadium.ogg-224c2cabf3044b538994f17b263055e7.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

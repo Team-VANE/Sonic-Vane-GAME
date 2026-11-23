@@ -1,6 +1,8 @@
 extends Area3D
 class_name ActorHurtbox3D
 
+const BODY_ATTACK_TARGET_LAYER: int = 1 << 9
+
 signal contact_damage_applied(target: Node, amount: int)
 
 @export_group("Player Interaction")
@@ -47,6 +49,10 @@ var _impact_cooldown: float = 0.0
 var _pending_dynamic_impacts: Dictionary = {}
 
 
+func _ready() -> void:
+	collision_layer |= BODY_ATTACK_TARGET_LAYER
+
+
 func setup(actor: Node3D) -> void:
 	_actor = actor
 	if not body_entered.is_connected(_on_body_entered):
@@ -90,7 +96,7 @@ func _on_body_entered(body: Node) -> void:
 	if not _is_player(body) or (_is_player_invulnerable(body) and not _is_player_invincible(body)):
 		return
 	if _is_player_attacking(body):
-		receive_player_attack(body)
+		receive_player_attack(body, true)
 		return
 	if contact_damage_enabled and body.has_method("apply_damage"):
 		var applied_amount: int = max(contact_damage_amount, 1)
@@ -204,7 +210,7 @@ func _object_has_property(object: Object, property_name: StringName) -> bool:
 	return false
 
 
-func receive_player_attack(body: Node) -> bool:
+func receive_player_attack(body: Node, body_contact: bool = false) -> bool:
 	if not _actor or not is_instance_valid(_actor) or _is_actor_dead() or not _is_player(body) or not _is_player_attacking(body):
 		return false
 	if _is_player_invulnerable(body) and not _is_player_invincible(body):
@@ -213,6 +219,10 @@ func receive_player_attack(body: Node) -> bool:
 		return false
 	if body.has_method("claim_kick_contact") and not bool(body.call("claim_kick_contact", _actor)):
 		return false
+	if body_contact:
+		var contacts: Node = body.get_node_or_null(^"PropContacts")
+		if contacts and not contacts.claim_body_attack_contact(self):
+			return false
 	var destroyed: bool = bool(_actor.call("apply_damage", max(incoming_player_attack_damage, 1), body))
 	if _is_player_airborne(body):
 		if body.has_method("apply_enemy_attack_bounce"):

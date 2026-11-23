@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorBase.tscn" id="1_base"]
+
+[node name="ItemBalloon" instance=ExtResource("1_base")]
+monitor_variant = 2
+allow_player_pass_through = true
+break_particle_offset = Vector3(0, 0, 0)

@@ -197,6 +197,8 @@ func on_action_exit(next_action: CharacterAction) -> void:
 
 
 func begin_spindash_roll() -> void:
+	if owner_player._rail_active or owner_player._rail_switch_active:
+		return
 	spindash_roll_remaining = SPINDASH_ROLL_DURATION
 	_set_rolling(true)
 
@@ -241,6 +243,9 @@ func physics_update_action(_delta: float) -> void:
 
 func continuous_physics_update(_delta: float) -> void:
 	if owner_player == null:
+		return
+	if owner_player._rail_active or owner_player._rail_switch_active:
+		clear_for_rail()
 		return
 	if not owner_player._network_is_local_authority():
 		_end_roll_if_active()
@@ -310,7 +315,7 @@ func _can_start_roll() -> bool:
 		return false
 	if owner_player._spring_align_timer > 0.0:
 		return false
-	if owner_player._rail_active or owner_player._spline_active:
+	if owner_player._rail_active or owner_player._rail_switch_active or owner_player._spline_active:
 		return false
 	if owner_player._homing_active:
 		return false
@@ -326,7 +331,7 @@ func _can_continue_roll() -> bool:
 		return false
 	if owner_player._spring_align_timer > 0.0:
 		return false
-	if owner_player._rail_active or owner_player._spline_active:
+	if owner_player._rail_active or owner_player._rail_switch_active or owner_player._spline_active:
 		return false
 	if owner_player._homing_active:
 		return false
@@ -336,6 +341,8 @@ func _can_continue_roll() -> bool:
 
 
 func _set_rolling(rolling_now: bool, action_transition: bool = false) -> void:
+	if rolling_now and owner_player and (owner_player._rail_active or owner_player._rail_switch_active):
+		return
 	if not rolling_now:
 		spindash_roll_remaining = 0.0
 	if rolling_now or action_transition:
@@ -369,6 +376,12 @@ func _end_roll_if_active() -> void:
 	if not is_rolling:
 		return
 	_set_rolling(false)
+	_clear_active_roll()
+
+
+func clear_for_rail() -> void:
+	routed_toggle_active = false
+	_set_rolling(false, true)
 	_clear_active_roll()
 
 

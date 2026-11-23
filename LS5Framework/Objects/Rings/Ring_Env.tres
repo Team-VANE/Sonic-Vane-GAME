@@ -2,13 +2,12 @@
 
 [ext_resource type="Shader" uid="uid://cnxinaoslrtg8" path="res://LS5Framework/Shaders/SphericalEnvironment.gdshader" id="1_mgj21"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_37oqk"]
-load_path = "res://.godot/imported/SphericalMap_Metal_Pale.png-c657249023599ac116d070e70bde321c.s3tc.ctex"
+[ext_resource type="Texture2D" uid="uid://ce5b6afj7i2ox" path="res://LS5Framework/Images/Level Shared/SphericalMap_Metal_Pale.png" id="2_environment"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_mgj21")
-shader_parameter/environment_texture = SubResource("CompressedTexture2D_37oqk")
+shader_parameter/environment_texture = ExtResource("2_environment")
 shader_parameter/reflection_tint = Color(0.9131761, 0.66334903, 7.70092e-07, 1)
 shader_parameter/reflection_strength = 0.999999977648
 shader_parameter/reflection_exposure = 0.7500001303854997

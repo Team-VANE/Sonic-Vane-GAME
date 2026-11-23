@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c74j32531devn" path="res://LS5Framework/Scenes/Levels/VaneTest/TestLevel.glb" id="1_g8gcw"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="2_3q8r2"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gameplay/SpawnPoint.tscn" id="2_ajan3"]
+[ext_resource type="PackedScene" uid="uid://c7pdpfing03al" path="res://LS5Framework/Objects/Bumper/Bumper.tscn" id="7_fmm3p"]
 [ext_resource type="PackedScene" uid="uid://b6t3r2nak1q0p" path="res://LS5Framework/Objects/Terminal/Terminal.tscn" id="8_mkokl"]
 [ext_resource type="PackedScene" uid="uid://c1g10s7pyb8t3" path="res://LS5Framework/Objects/Gameplay/Checkpoint.tscn" id="9_fmm3p"]
 [ext_resource type="PackedScene" uid="uid://dt3rtue2c684m" path="res://LS5Framework/Objects/Surface/Examples/IceTest.glb" id="9_kq5e8"]
@@ -10,12 +11,12 @@
 [ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Levels/VaneTest/RhinoEncounter.tscn" id="11_cutscene"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Cutscenes/Examples/PlayerTraversalCutscene.tscn" id="12_traversal"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mkokl"]
-resource_local_to_scene = true
-size = Vector3(4, 3, 2.4)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_p60sg"]
 size = Vector3(29, 17, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fmm3p"]
+resource_local_to_scene = true
+size = Vector3(4, 3, 2.4)
 
 [node name="TestLevel" type="Node3D" unique_id=8420253]
 
@@ -39,6 +40,25 @@ transform = Transform3D(6.76, 0, 0, 0, 9.295, 0, 0, 0, 5.6, -1039.6825, 3.814697
 [node name="IceSlope_ice " parent="OBJECTS/IceTest" index="0" unique_id=473860391]
 surface_material_override/0 = ExtResource("10_fmm3p")
 
+[node name="Bumper" parent="OBJECTS" unique_id=46049576 instance=ExtResource("7_fmm3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 91.0397, 2.4997578, -65.823456)
+
+[node name="Checkpoint" parent="OBJECTS" unique_id=1208036193 instance=ExtResource("9_fmm3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.202385, 5.567086e-08, -163.42438)
+width = 30.0
+
+[node name="CollisionShape3D" parent="OBJECTS/Checkpoint" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+shape = SubResource("BoxShape3D_p60sg")
+
+[node name="Checkpoint2" parent="OBJECTS" unique_id=769065311 instance=ExtResource("9_fmm3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.202385, 5.567086e-08, -216.42438)
+width = 30.0
+
+[node name="CollisionShape3D" parent="OBJECTS/Checkpoint2" index="0" unique_id=371043241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+shape = SubResource("BoxShape3D_p60sg")
+
 [node name="Cutscenes" type="Node3D" parent="." unique_id=1484069131]
 
 [node name="RhinoEncounter" parent="Cutscenes" unique_id=624970742 node_paths=PackedStringArray("gameplay_skip_pose") instance=ExtResource("11_cutscene")]
@@ -49,13 +69,16 @@ gameplay_skip_pose = NodePath("PlayerPose")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.2, 81)
 
 [node name="CollisionShape3D" parent="Cutscenes/RhinoEncounter/Trigger" index="0"]
-shape = SubResource("BoxShape3D_mkokl")
+shape = SubResource("BoxShape3D_fmm3p")
 
 [node name="PlayerPose" parent="Cutscenes/RhinoEncounter" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="ShotCamera" parent="Cutscenes/RhinoEncounter" index="3"]
 transform = Transform3D(0.927863, -0.086938806, 0.36264557, 0, 0.9724457, 0.23312923, -0.37292108, -0.21631199, 0.90229654, 6.8, 4, 8.2)
+
+[node name="CollisionShape3D" parent="Cutscenes/RhinoEncounter/RhinoMotion/RhinoTank" parent_id_path=PackedInt32Array(624970742, 845003512) index="0" unique_id=2095941330]
+metadata/_enemy_size_base_scale = Vector3(1, 1, 1)
 
 [node name="Approach" parent="Cutscenes/RhinoEncounter" index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4.3)
@@ -76,24 +99,8 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 388,
 pixel_size = 0.15
 text = ".JSON Import Test"
 
-[node name="Checkpoint" parent="." unique_id=1208036193 instance=ExtResource("9_fmm3p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.202385, 5.567086e-08, -163.42438)
-width = 30.0
-
-[node name="CollisionShape3D" parent="Checkpoint" index="0" unique_id=371043241]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
-shape = SubResource("BoxShape3D_p60sg")
-
-[node name="Checkpoint2" parent="." unique_id=769065311 instance=ExtResource("9_fmm3p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.202385, 5.567086e-08, -216.42438)
-width = 30.0
-
-[node name="CollisionShape3D" parent="Checkpoint2" index="0" unique_id=371043241]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
-shape = SubResource("BoxShape3D_p60sg")
-
 [editable path="OBJECTS/IceTest"]
+[editable path="OBJECTS/Checkpoint"]
+[editable path="OBJECTS/Checkpoint2"]
 [editable path="Cutscenes/RhinoEncounter"]
 [editable path="Cutscenes/RhinoEncounter/RhinoMotion/RhinoTank"]
-[editable path="Checkpoint"]
-[editable path="Checkpoint2"]

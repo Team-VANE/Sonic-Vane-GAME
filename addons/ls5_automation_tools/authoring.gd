@@ -115,62 +115,7 @@ static func preview(source: AutomationSplineCore) -> Dictionary:
 
 
 static func build_triggers(source: AutomationSplineCore) -> Node3D:
-	source.sampler.configure(source.get_node_or_null(source.path_path) as Path3D)
-	if not source.sampler.refresh():
-		return null
-	var existing: Node = source.get_node_or_null(NodePath(GENERATED))
-	if existing and not existing.get_meta(MARKER, false):
-		return null
-	var container: Node3D = Node3D.new()
-	container.name = GENERATED
-	container.set_meta(MARKER, true)
-	var frame: Transform3D = Transform3D(Basis.IDENTITY, source.global_position)
-	container.transform = source.global_transform.affine_inverse() * frame
-	container.set_meta(&"automation_basis", source.global_basis)
-	var inverse: Transform3D = frame.affine_inverse()
-	var width: float = maxf(source.trigger_width, 0.1)
-	var height: float = maxf(source.trigger_height, 0.1)
-	for index: int in 2:
-		var value: AutomationSample = source.sampler.sample(0.0 if index == 0 else source.sampler.length)
-		var gate: Area3D = _area("Start" if index == 0 else "End")
-		container.add_child(gate)
-		gate.transform = inverse * value.get_transform()
-		_box(gate, Vector3(width, height, maxf(source.trigger_gate_depth, 0.1)), Transform3D.IDENTITY)
-	var volume: Area3D = _area("Volume")
-	container.add_child(volume)
-	var step: float = maxf(minf(source.trigger_spacing, width * 0.5), 0.1)
-	var count: int = clampi(int(ceil(source.sampler.length / step)), 1, 2048)
-	for index: int in count:
-		var start: AutomationSample = source.sampler.sample(source.sampler.length * float(index) / float(count))
-		var finish: AutomationSample = source.sampler.sample(source.sampler.length * float(index + 1) / float(count))
-		var middle: AutomationSample = source.sampler.sample(source.sampler.length * (float(index) + 0.5) / float(count))
-		var tangent: Vector3 = (finish.position - start.position).normalized()
-		if not tangent:
-			tangent = middle.tangent
-		var up: Vector3 = middle.up.slide(tangent).normalized()
-		var side: Vector3 = tangent.cross(up).normalized()
-		var pose: Transform3D = Transform3D(Basis(side, side.cross(tangent), -tangent), (start.position + finish.position) * 0.5)
-		_box(volume, Vector3(width, height, start.position.distance_to(finish.position) + source.trigger_gate_depth), inverse * pose)
-	return container
-
-
-static func _area(label: String) -> Area3D:
-	var area: Area3D = Area3D.new()
-	area.name = label
-	area.collision_layer = 0
-	area.collision_mask = 4
-	return area
-
-
-static func _box(area: Area3D, size: Vector3, pose: Transform3D) -> void:
-	var collision: CollisionShape3D = CollisionShape3D.new()
-	collision.name = "Shape%d" % area.get_child_count()
-	var shape: BoxShape3D = BoxShape3D.new()
-	shape.resource_local_to_scene = true
-	shape.size = size
-	collision.shape = shape
-	collision.transform = pose
-	area.add_child(collision)
+	return source.build_trigger_geometry()
 
 
 static func replace_triggers(source: AutomationSplineCore, remove: Node3D, add: Node3D, owner: Node, paths: Dictionary) -> void:

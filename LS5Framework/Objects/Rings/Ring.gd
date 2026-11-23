@@ -259,7 +259,7 @@ func is_light_speed_dash_ready() -> bool:
 
 
 func _play_pickup_particles() -> void:
-	if pickup_particle_scene == null:
+	if pickup_particle_scene == null or LevelObjectProxySpawner.is_presentation_hidden(self):
 		return
 	var parent = get_parent()
 	if parent == null:
@@ -294,7 +294,7 @@ func _play_pickup_particles() -> void:
 
 
 func _play_pickup_light() -> void:
-	if pickup_light_scene == null:
+	if pickup_light_scene == null or LevelObjectProxySpawner.is_presentation_hidden(self):
 		return
 	var p: Node = pickup_light_scene.instantiate()
 	if p == null:
@@ -363,7 +363,7 @@ func _get_pickup_particle_radial_direction(index: int, count: int) -> Vector3:
 	return radial
 
 func _play_pickup_sound() -> void:
-	if pickup_sound == null:
+	if pickup_sound == null or LevelObjectProxySpawner.is_presentation_muted(self):
 		return
 	var p = AudioStreamPlayer3D.new()
 	p.add_to_group(&"LevelTransient")

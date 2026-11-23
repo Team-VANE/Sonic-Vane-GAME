@@ -66,7 +66,10 @@ func _has_launch_damping_influence() -> bool:
 	return false
 
 
-func apply_teleport(exit_transform: Transform3D, keep_vel: bool, match_rot: bool, exit_local_offset: Vector3) -> void:
+func apply_teleport(
+	exit_transform: Transform3D, keep_vel: bool, match_rot: bool, exit_local_offset: Vector3,
+	downwarp_hit: Dictionary = {}
+) -> void:
 	var p = _owner
 	clear_launch_damping_protection()
 	p._air_damping_entry_elapsed = 0.0
@@ -115,7 +118,13 @@ func apply_teleport(exit_transform: Transform3D, keep_vel: bool, match_rot: bool
 	p._airborne_time = 0.0
 	p._platform_on_floor_last = false
 	p._platform_collider_last = null
+	p._follow_collider_last = null
+	p._follow_collider_prev = null
+	p._follow_collider_shape_last = -1
+	p._follow_collider_shape_prev = -1
 	p._reset_spindash_state()
+	if downwarp_hit.get("hit", false):
+		_apply_grounded_from_downwarp(downwarp_hit["point"], downwarp_hit["normal"])
 	print("[TP-APPLY] vel=%v last_air=%v jump_req=%s plat_on=%s" % [p.velocity, p._last_air_velocity, p._jump_requested, p._platform_on_floor_last])
 	p._dbg_tp_trace = 8
 	p._notify_camera_teleport()
@@ -145,6 +154,8 @@ func _apply_grounded_from_downwarp(grounded_point: Vector3, grounded_normal: Vec
 	p._is_falling = false
 	p._is_jumping = false
 	p._attachment_immunity = 0.0
+	if p.velocity.dot(n) < 0.0:
+		p.velocity = p.velocity.slide(n)
 	p._record_attach_state(n, p._get_gravity_up())
 
 
@@ -155,31 +166,36 @@ func apply_teleport_from_exit(exit_node: Node3D, keep_vel: bool, match_rot: bool
 	var exit_xform: Transform3D = exit_node.global_transform
 	var world_offset: Vector3 = exit_xform.basis * exit_local_offset
 	var base_xform: Transform3D = Transform3D(exit_xform.basis, exit_xform.origin + world_offset)
-	var downwarp_info: Dictionary = DownwarpUtil.apply_downwarp_from_node_with_hit(exit_node, base_xform, [p])
-	var downwarp_hit: bool = false
-	var downwarp_point: Vector3 = Vector3.ZERO
-	var downwarp_normal: Vector3 = p._get_gravity_up()
-	if p._is_surface_alignment_rejected(
-		downwarp_info.get("collider"),
-		downwarp_info.get("normal", downwarp_normal),
-		p._get_gravity_up(),
-		int(downwarp_info.get("shape", -1))
-	):
-		downwarp_info.clear()
-	if downwarp_info.has("xform") and downwarp_info["xform"] is Transform3D:
-		base_xform = downwarp_info["xform"]
-	if downwarp_info.has("hit"):
-		downwarp_hit = bool(downwarp_info["hit"])
-	if downwarp_info.has("point") and downwarp_info["point"] is Vector3:
-		downwarp_point = downwarp_info["point"]
-	if downwarp_info.has("normal") and downwarp_info["normal"] is Vector3:
-		downwarp_normal = downwarp_info["normal"]
+	var placement_basis: Basis = exit_xform.basis.orthonormalized() if match_rot else p.global_basis
+	var downwarp_info: Dictionary = resolve_downwarp(exit_node, base_xform, placement_basis)
+	apply_teleport(downwarp_info["xform"], keep_vel, match_rot, Vector3.ZERO, downwarp_info)
 
-	apply_teleport(base_xform, keep_vel, match_rot, Vector3.ZERO)
-	if downwarp_hit:
-		_apply_grounded_from_downwarp(downwarp_point, downwarp_normal)
-		if p.has_method("_network_publish_teleport_state"):
-			p.call("_network_publish_teleport_state")
+
+func resolve_downwarp(exit_node: Node3D, exit_transform: Transform3D, placement_basis: Basis) -> Dictionary:
+	var p = _owner
+	var up: Vector3 = p._get_gravity_up()
+	var mask: int = p.collision_mask
+	if p._level_load_suspended:
+		mask = p._level_load_saved_collision_mask
+	if p._debug_mode and not mask:
+		mask = p._debug_saved_collision_mask
+	var info: Dictionary = DownwarpUtil.apply_downwarp_from_node_with_hit(
+		exit_node, exit_transform, [p], up, _can_downwarp_to_surface.bind(up), mask
+	)
+	if info["hit"]:
+		var pose: Transform3D = info["xform"]
+		var normal: Vector3 = info["normal"]
+		pose.origin += up * p.get_downwarp_ground_offset(Transform3D(placement_basis, pose.origin), normal, up)
+		info["xform"] = pose
+	return info
+
+
+func _can_downwarp_to_surface(hit: Dictionary, up: Vector3) -> bool:
+	var normal: Vector3 = hit["normal"]
+	var minimum_alignment: float = cos(deg_to_rad(clampf(_owner.walkable_from_up_max_angle_deg, 0.0, 89.0)))
+	return normal.dot(up) >= minimum_alignment - 0.0001 and not _owner._is_surface_alignment_rejected(
+		hit.get("collider"), normal, up, int(hit.get("shape", -1))
+	)
 
 
 func cancel_spline_spring(keep_launch_protection: bool = false) -> void:

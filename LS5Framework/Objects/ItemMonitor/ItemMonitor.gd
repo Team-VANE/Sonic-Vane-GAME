@@ -9,13 +9,16 @@ const QUANTITY_RACE_REFRESH_INTERVAL: float = 0.25
 const MONITOR_MODELS: Array[String] = [
 	"res://LS5Framework/Objects/ItemMonitor/SA2/Item_Monitor_SA2.glb",
 	"res://LS5Framework/Objects/ItemMonitor/SA2/Floating/FloatingMonitor.glb",
+	"res://LS5Framework/Objects/ItemBalloon/ItemBalloon.glb",
 ]
 const MONITOR_BODY: Material = preload("res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Body.tres")
 const MONITOR_GLASS: Material = preload("res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass.tres")
+const DEFAULT_BREAK_SOUND: AudioStream = preload("res://LS5Framework/Sounds/Objects/Item_Monitor_Break.wav")
+const BALLOON_BREAK_SOUND: AudioStream = preload("res://LS5Framework/Sounds/Objects/Balloon_Pop.wav")
 const FLOATING_DISPLAY_HEIGHT: float = 2.46
 const DEFAULT_BREAK_PARTICLE_OFFSET: Vector3 = Vector3(0.0, 1.6, 0.0)
 
-enum MonitorVariant { GROUNDED, FLOATING }
+enum MonitorVariant { GROUNDED, FLOATING, BALLOON }
 
 signal monitor_broken(player: Node)
 signal rewards_collected(player: Node)
@@ -53,8 +56,12 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 @export_range(0.0, 720.0, 0.1, "or_greater", "suffix:deg/s") var icon_rotation_speed_degrees: float = 90.0
 
 @export_group("Interaction")
-## Allows homing attacks to target this monitor while it is intact.
-@export var homing_target_enabled: bool = true
+## Allows homing attacks to target this monitor while intact. Balloons default to disabled.
+@export var homing_target_enabled: bool:
+	get:
+		return bool(_homing_target_override) if _homing_target_override != null else monitor_variant != MonitorVariant.BALLOON
+	set(value):
+		_homing_target_override = value
 ## Allows the player's existing airborne attack magnetism to pull toward this monitor while intact.
 @export var attack_magnetism_enabled: bool = true
 ## Maximum distance from the player for homing targeting. Zero uses the player targeting range.
@@ -99,8 +106,8 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 @export var intact_idle_sound: AudioStream
 ## Looping sound played after the monitor breaks. Empty disables the sound.
 @export var broken_idle_sound: AudioStream
-## One-shot sound played when the monitor breaks.
-@export var break_sound: AudioStream = preload("res://LS5Framework/Sounds/Objects/Item_Monitor_Break.wav")
+## Break sound override. The default monitor sound is replaced by a pop on balloons.
+@export var break_sound: AudioStream = DEFAULT_BREAK_SOUND
 ## Audio bus used by the monitor sounds.
 @export var sound_bus: StringName = &"SFX"
 ## Volume applied to the monitor sounds.
@@ -146,6 +153,9 @@ var _monitor_part_visibility: Dictionary = {}
 ## Model part retained when Leave Base After Break is active.
 var _base_mesh: MeshInstance3D
 var _applied_variant: int = -1
+var _homing_target_override: Variant = null
+var _balloon_rest_transform: Transform3D
+var _balloon_phase: float = 0.0
 var _variant_model_scene: PackedScene
 var _variant_parts: Array[MeshInstance3D] = []
 var _grounded_layout: Dictionary = {}
@@ -207,6 +217,7 @@ func activate_for_gameplay(_context: Dictionary) -> bool:
 		return true
 	monitoring = true
 	monitorable = true
+	collision_layer |= ActorHurtbox3D.BODY_ATTACK_TARGET_LAYER
 	if object_impact_enabled:
 		collision_mask |= object_impact_collision_mask
 	if not body_entered.is_connected(_on_body_entered):
@@ -269,6 +280,8 @@ func _apply_monitor_variant() -> void:
 	var model: Node = model_scene.instantiate()
 	if not model:
 		return
+	if _applied_variant == MonitorVariant.BALLOON:
+		_monitor_model.transform = _balloon_rest_transform
 	for mesh: MeshInstance3D in _variant_parts:
 		_monitor_model.remove_child(mesh)
 		mesh.free()
@@ -277,8 +290,11 @@ func _apply_monitor_variant() -> void:
 		var mesh: MeshInstance3D = child as MeshInstance3D
 		if not mesh:
 			continue
+		mesh.owner = null
 		model.remove_child(mesh)
-		if String(mesh.name).begins_with("GlassCylinder"):
+		if monitor_variant == MonitorVariant.BALLOON:
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		elif String(mesh.name).begins_with("GlassCylinder"):
 			mesh.material_override = MONITOR_GLASS
 			if monitor_variant == MonitorVariant.FLOATING:
 				mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -289,16 +305,20 @@ func _apply_monitor_variant() -> void:
 	model.free()
 	_variant_model_scene = model_scene
 	_applied_variant = monitor_variant
+	if monitor_variant == MonitorVariant.BALLOON:
+		_balloon_rest_transform = _monitor_model.transform
+		_balloon_phase = 0.0
 	_base_mesh = get_node_or_null(base_mesh_path) as MeshInstance3D
 	if not _base_mesh and monitor_variant == MonitorVariant.FLOATING:
 		_base_mesh = _monitor_model.get_node_or_null("Bottom_Floating") as MeshInstance3D
-	if not Engine.is_editor_hint():
-		_apply_variant_layout()
-		if _level_prepared:
-			_apply_size_preview()
-			_cache_monitor_parts()
-			if _broken:
-				_set_broken_visual_state()
+	_apply_variant_layout()
+	_apply_size_preview()
+	if _level_prepared:
+		_cache_monitor_parts()
+		_configure_icon_display()
+		if _broken:
+			_set_broken_visual_state()
+		_update_cosmetic_processing()
 
 
 func _apply_variant_layout() -> void:
@@ -309,7 +329,11 @@ func _apply_variant_layout() -> void:
 			"solid_shape": _solid_shape.shape,
 			"solid_position": _solid_shape.get_meta(SIZE_BASE_POSITION_META, _solid_shape.position),
 			"item_transform": _item_display_root.transform,
+			"visibility_bounds": _display_visibility.aabb if _display_visibility else AABB(),
 		}
+	_item_display_root.visible = monitor_variant != MonitorVariant.BALLOON
+	if _display_visibility:
+		_display_visibility.aabb = AABB(Vector3(-4.0, -5.0, -4.0), Vector3(8.0, 9.0, 8.0)) if monitor_variant == MonitorVariant.BALLOON else _grounded_layout["visibility_bounds"]
 	if monitor_variant == MonitorVariant.FLOATING:
 		var capsule: CapsuleShape3D = CapsuleShape3D.new()
 		capsule.radius = 2.0
@@ -321,6 +345,13 @@ func _apply_variant_layout() -> void:
 		_solid_shape.shape = box
 		_solid_shape.set_meta(SIZE_BASE_POSITION_META, Vector3(0.0, 2.16, 0.0))
 		_item_display_root.transform = Transform3D(Basis.IDENTITY, Vector3.UP * FLOATING_DISPLAY_HEIGHT)
+	elif monitor_variant == MonitorVariant.BALLOON:
+		var sphere: SphereShape3D = SphereShape3D.new()
+		sphere.radius = 3.3
+		_touch_shape.shape = sphere
+		_touch_shape.set_meta(SIZE_BASE_POSITION_META, Vector3.ZERO)
+		_solid_shape.shape = sphere
+		_solid_shape.set_meta(SIZE_BASE_POSITION_META, -_solid_body.position)
 	else:
 		_touch_shape.shape = _grounded_layout["touch_shape"]
 		_touch_shape.set_meta(SIZE_BASE_POSITION_META, _grounded_layout["touch_position"])
@@ -338,6 +369,9 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	if not _broken and monitor_variant == MonitorVariant.BALLOON:
+		_animate_balloon(delta)
+		return
 	if _broken or _icon_display == null or not _icon_display.visible:
 		return
 	if (
@@ -351,6 +385,15 @@ func _process(delta: float) -> void:
 			_configure_monitor_quantity(_display_reward)
 	var rotation_step: float = deg_to_rad(icon_rotation_speed_degrees) * delta
 	_icon_display.rotate_y(rotation_step)
+
+
+func _animate_balloon(delta: float) -> void:
+	_balloon_phase = fposmod(_balloon_phase + delta * TAU / 4.6, TAU)
+	var stretch: float = sin(_balloon_phase * 2.0 + 0.6) * 0.035
+	var scale_factor: Vector3 = Vector3(1.0 - stretch * 0.5, 1.0 + stretch, 1.0 - stretch * 0.5)
+	var sway: Vector3 = Vector3(cos(_balloon_phase) * 0.035, sin(_balloon_phase) * 0.055, sin(_balloon_phase) * 0.045)
+	var pose: Transform3D = Transform3D(Basis.from_euler(sway) * Basis.from_scale(scale_factor), Vector3.UP * sin(_balloon_phase) * 0.28)
+	_monitor_model.transform = _balloon_rest_transform * pose
 
 
 func _physics_process(_delta: float) -> void:
@@ -383,9 +426,13 @@ func set_distance_culled(value: bool) -> void:
 
 
 func _update_cosmetic_processing() -> void:
-	var display_active: bool = not _distance_culled and _cosmetics_activated and not _broken and _icon_display and _icon_display.visible
+	var display_active: bool = not _distance_culled and _cosmetics_activated and not _broken
 	if _display_visibility:
 		display_active = display_active and _display_visibility.is_on_screen()
+	if monitor_variant == MonitorVariant.BALLOON:
+		set_process(display_active)
+		return
+	display_active = display_active and _icon_display and _icon_display.visible
 	var dynamic_quantity: bool = (
 		_display_reward
 		and _display_reward.reward_type == ItemMonitorReward.RewardType.RANDOM_RINGS
@@ -691,7 +738,7 @@ func _restore_intact_visual_state() -> void:
 	if _visual_root != null:
 		_visual_root.visible = true
 	if _item_display_root != null:
-		_item_display_root.visible = true
+		_item_display_root.visible = monitor_variant != MonitorVariant.BALLOON
 	for part: Variant in _monitor_part_visibility:
 		if part is Node3D and is_instance_valid(part):
 			(part as Node3D).visible = bool(_monitor_part_visibility[part])
@@ -765,7 +812,7 @@ func _configure_icon_display() -> void:
 	_icon_display.visible = false
 	_set_monitor_quantity_text("")
 	_display_reward = _find_display_reward()
-	if _display_reward == null:
+	if monitor_variant == MonitorVariant.BALLOON or _display_reward == null:
 		return
 	var icon_texture: Texture2D = _find_item_icon(_display_reward.get_item_id())
 	if icon_texture == null or icon_background_texture == null:
@@ -911,7 +958,7 @@ func _play_break_sound() -> void:
 	if _break_audio == null or break_sound == null:
 		return
 	_break_audio.stop()
-	_break_audio.stream = break_sound
+	_break_audio.stream = BALLOON_BREAK_SOUND if monitor_variant == MonitorVariant.BALLOON and break_sound == DEFAULT_BREAK_SOUND else break_sound
 	_break_audio.play()
 
 
@@ -930,7 +977,7 @@ func _queue_free_after_break_sound() -> void:
 
 
 func _spawn_break_particles() -> void:
-	if break_particle_scene == null or get_tree() == null:
+	if break_particle_scene == null or get_tree() == null or LevelObjectProxySpawner.is_presentation_hidden(self):
 		return
 	var particle_instance: Node = break_particle_scene.instantiate()
 	if particle_instance == null:
@@ -986,6 +1033,10 @@ func _object_has_property(object: Object, property_name: StringName) -> bool:
 
 
 func receive_kick_attack(player: Node3D) -> bool:
+	return receive_player_attack(player)
+
+
+func receive_player_attack(player: Node3D) -> bool:
 	if _broken or not _is_supported_player(player) or not _is_player_attacking(player):
 		return false
 	_break_monitor(player)

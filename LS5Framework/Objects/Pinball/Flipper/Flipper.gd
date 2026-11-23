@@ -117,7 +117,7 @@ func _physics_process(delta: float) -> void:
 	_strike_candidates.clear()
 	for node: Node in get_tree().get_nodes_in_group(&"player"):
 		var player: PlayerController = node as PlayerController
-		if not _can_strike(player):
+		if not _can_use_flipper(player) or not player.is_pinball_mode():
 			continue
 		_strike_candidates.append(player)
 		if input_range > 0.0 and global_position.distance_squared_to(player.global_position) > input_range * input_range:
@@ -158,7 +158,10 @@ func _stroke_sign() -> float:
 
 func resolve_player_collision_contact(body: Node3D, incoming_velocity: Vector3, contact_normal: Vector3) -> bool:
 	var player: PlayerController = body as PlayerController
-	if not _can_strike_this_tick() or not _can_strike(player):
+	if not _can_use_flipper(player):
+		return false
+	player.enter_pinball_mode()
+	if not _can_strike_this_tick():
 		return false
 	return _try_strike(
 		player, global_transform, _angle, player.get_main_collision_world_center(), incoming_velocity, contact_normal
@@ -169,10 +172,10 @@ func _can_strike_this_tick() -> bool:
 	return _stroke_angular_speed > 0.0 or _strike_follow_through_remaining > 0.0
 
 
-func _can_strike(player: PlayerController) -> bool:
+func _can_use_flipper(player: PlayerController) -> bool:
 	return (
 		player and not player._is_buddy_actor() and not player._is_dead
-		and player.is_pinball_mode() and player._network_is_local_authority()
+		and player._network_is_local_authority()
 		and bool(player.collision_mask & collision_layer)
 	)
 

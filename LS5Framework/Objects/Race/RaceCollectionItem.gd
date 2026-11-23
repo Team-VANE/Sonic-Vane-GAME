@@ -305,6 +305,9 @@ func _configure_collection_shape() -> void:
 	if sphere == null:
 		sphere = SphereShape3D.new()
 		_collision_shape.shape = sphere
+	elif not is_equal_approx(sphere.radius, collection_radius) and not sphere.resource_local_to_scene:
+		sphere = sphere.duplicate() as SphereShape3D
+		_collision_shape.shape = sphere
 	sphere.radius = max(collection_radius, 0.1)
 
 
@@ -358,7 +361,7 @@ func _set_visual_visible(is_visible: bool) -> void:
 
 
 func _spawn_touched_particles(player: Node3D, spawn_position: Vector3) -> void:
-	if touched_particle_scene == null:
+	if touched_particle_scene == null or LevelObjectProxySpawner.is_presentation_hidden(self):
 		return
 	if player == null or not is_instance_valid(player):
 		return
@@ -398,7 +401,7 @@ func _start_particles_recursive(node: Node) -> void:
 
 
 func _play_local_sound(player: Node, stream: AudioStream, volume_db: float) -> void:
-	if stream == null or not _is_local_player_authority(player):
+	if stream == null or not _is_local_player_authority(player) or LevelObjectProxySpawner.is_presentation_muted(self):
 		return
 	var parent: Node = null
 	if player != null and is_instance_valid(player):

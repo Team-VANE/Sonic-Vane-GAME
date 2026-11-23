@@ -156,6 +156,9 @@ func _ensure_mesh_collision(node: Node, metadata: Dictionary) -> void:
 	if collision_ancestor and not collision_ancestor.get_shape_owners().is_empty():
 		return
 	var requires_collision: bool = String(node.name).to_upper().contains(GENERATE_COLLISION_KEYWORD)
+	var extras: Variant = node.get_meta(&"extras", {})
+	if extras is Dictionary and extras.get("vane_surface_target_id") is String:
+		requires_collision = true
 	for metadata_key: Variant in metadata:
 		if metadata_key != SURFACE_METADATA.INVISIBLE:
 			requires_collision = true

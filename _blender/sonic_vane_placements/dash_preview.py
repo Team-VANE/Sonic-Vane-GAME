@@ -18,7 +18,8 @@ MODIFIER = "Sonic Vane Dash Facing"
 
 
 def panel_direction(obj):
-    axis = Vector(AXES[obj.sonic_vane_placement.dash_launch_axis])
+    placement = obj.sonic_vane_placement
+    axis = Vector(AXES[placement.ramp_launch_axis if placement.kind == "ramp" else placement.dash_launch_axis])
     return (obj.matrix_world.to_3x3() @ axis).normalized()
 
 
@@ -41,7 +42,7 @@ def set_panel_axis(obj, axis):
 
 def draw():
     obj = bpy.context.object
-    if not obj or obj.sonic_vane_placement.kind != "dash_panel":
+    if not obj or obj.sonic_vane_placement.kind not in {"dash_panel", "ramp"}:
         return
     if not obj.sonic_vane_dash_direction or not obj.visible_get():
         return

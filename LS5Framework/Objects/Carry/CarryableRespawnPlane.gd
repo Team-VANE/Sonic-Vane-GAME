@@ -17,11 +17,14 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node3D) -> void:
-	if not active:
-		return
-	if not body.has_method("respawn_carryable"):
+	if active and body.has_method("respawn_carryable"):
+		_respawn_body.call_deferred(body)
+
+
+func _respawn_body(body: Node3D) -> void:
+	if not active or not is_instance_valid(body):
 		return
 	var did_respawn: bool = body.call("respawn_carryable", self) == true
 	if one_shot and did_respawn:
 		active = false
-		monitoring = false
+		set_deferred("monitoring", false)

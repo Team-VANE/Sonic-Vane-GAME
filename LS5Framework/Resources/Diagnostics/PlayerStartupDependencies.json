@@ -9,6 +9,12 @@
     "res://LS5Framework/Scripts/Player/PlayerActionCompatibility.gd",
     "res://LS5Framework/Scripts/Player/PlayerActionPromptResolver.gd",
     "res://LS5Framework/Scripts/Player/PlayerAnimation.gd",
+    "res://LS5Framework/Scripts/Player/PlayerAnimationActionBackend.gd",
+    "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+    "res://LS5Framework/Scripts/Player/PlayerAnimationLegacyAdapter.gd",
+    "res://LS5Framework/Scripts/Player/PlayerAnimationMotionBackend.gd",
+    "res://LS5Framework/Scripts/Player/PlayerAnimationOverlayBackend.gd",
+    "res://LS5Framework/Scripts/Player/PlayerAnimationProfile.gd",
     "res://LS5Framework/Scripts/Player/PlayerAudio.gd",
     "res://LS5Framework/Scripts/Player/PlayerBuddyController.gd",
     "res://LS5Framework/Scripts/Player/PlayerCarryController.gd",
@@ -34,6 +40,7 @@
     "res://LS5Framework/Scripts/Player/PlayerUI.gd",
     "res://LS5Framework/Scripts/Player/PlayerWaterController.gd",
     "res://LS5Framework/Scripts/Player/SonicPlayer.gd",
+    "res://LS5Framework/Scripts/Player/ThrownObjectTargeting.gd",
     "res://LS5Framework/Scripts/Player/TrickDetector.gd",
     "res://LS5Framework/Scripts/Player/TrickSystem.gd",
     "res://LS5Framework/Scripts/Player/ability.gd",
@@ -63,7 +70,9 @@
     "res://LS5Framework/Scripts/Player/spindash_action.gd",
     "res://LS5Framework/Scripts/Player/spring_action.gd",
     "res://LS5Framework/Scripts/Player/stomp_action.gd",
-    "res://LS5Framework/Scripts/Player/uppercut_kick_ability.gd"
+    "res://LS5Framework/Scripts/Player/uppercut_kick_ability.gd",
+    "res://LS5Framework/Scripts/Player/vault_action.gd",
+    "res://LS5Framework/Scripts/Player/wall_bonk_action.gd"
   ],
   "required_resources": [
     {
@@ -105,7 +114,16 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "abd10d929985a0b8c1d54ec78f20862570622f24e56ae3e82653aca92286167c"
+      "source_sha256": "2b82a6d99537c702f0b2a37fdab4f53f7999c03c7a4a201b12bc7f8b4ce695a8"
+    },
+    {
+      "path": "res://LS5Framework/Images/Homing_Reticle.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerUI.gd",
+          "kind": "Preload"
+        }
+      ]
     },
     {
       "path": "res://LS5Framework/Images/Icons/ItemMonitor_Icon_Background.png",
@@ -148,6 +166,15 @@
       ]
     },
     {
+      "path": "res://LS5Framework/Images/Level Shared/SphericalMap_Metal_Pale.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Rings/Ring_Env.tres",
+          "kind": "Resource"
+        }
+      ]
+    },
+    {
       "path": "res://LS5Framework/Images/Particles/Floater.png",
       "owners": [
         {
@@ -169,6 +196,51 @@
         },
         {
           "path": "res://LS5Framework/Objects/Rings/Ring_Particle.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Images/Throw_Reticle.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerUI.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Images/UI/MENU_Arrow_Left.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Images/UI/MENU_Arrow_Right.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Images/UI/MENU_Selection_Placeholder.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Images/UI/RESULTS_Star.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Race/RaceUI.gd",
           "kind": "Preload"
         }
       ]
@@ -199,6 +271,130 @@
           "kind": "Preload"
         }
       ]
+    },
+    {
+      "path": "res://LS5Framework/Objects/Automation/AutomationDepthProfile.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationDepthProfile.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "e47113c177a4633e126999c245ad5d23aca69749994cdd688604abf01cd857d9"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Automation/AutomationProgressMarker.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationProgressMarker.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationLiveEdit.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationLiveEdit.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "562a2706f71363f7ecad23cbdb6146cab742a7867664f2a20934c8915baf9f3f"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Automation/AutomationRouteConnection.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationRouteConnection.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationLiveEdit.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationLiveEdit.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "a37222a50f87a3fefc0a8af953688b501203b58ef097d882737c0ab422ce961d"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationDepthProfile.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationProgressMarker.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationRouteConnection.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInfluenceTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "232367c0ae061a21352b0bb851c8ca7dc0280c9ff6db16132f57d3fa2c3bf57b"
     },
     {
       "path": "res://LS5Framework/Objects/Base/WorldObject.gd",
@@ -238,7 +434,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "2c8bdb33c903834756804559716bc0705849efa54bfefeefa710963cd7347e24"
+      "source_sha256": "1b528d4558ba551beebde3ceac599eb2acd2d93813a394f7daf7138fefa6d5a9"
     },
     {
       "path": "res://LS5Framework/Objects/Camera/CameraConstraint.gd",
@@ -264,11 +460,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Race/RaceCameraConstraint.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "861eae6c2314753c9abd4b1dcc70a06717d3fb88c42d54cb02cba750b58fd3d0"
+      "source_sha256": "b9af8687349ccf8cf31e9c98a0a190de7a23ce5832dbb162a51e813702ef01a9"
     },
     {
       "path": "res://LS5Framework/Objects/Carry/CarryableObject.gd",
@@ -296,7 +496,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "82c691d0588d92dd2ecf98763be6c135a7c7b5b54733de9403d296d151779fad"
+      "source_sha256": "7ff4d1fc80678d38eed06474cfaf00884a32e3629f53d2fe7795941b9ab96f00"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttack.gd",
@@ -326,7 +526,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "ec19026d091634f3d6d6411de4f51d670ea8b79fc0283d5a0ce741deb19a188f"
+      "source_sha256": "b0d87921f2c7a80320cca035e513772b8d36336e5f3ac6a4f42b0f84634e8309"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttackController.gd",
@@ -345,6 +545,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd",
           "kind": "Script class"
         }
       ],
@@ -398,7 +602,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "9a9db321530d783292943817720c5744ec1e2d5434a409a334b0d425da09f050"
+      "source_sha256": "62bb76a5de8a46bdc75790e36dc3d10d7c899bb56803812b93a3898960b5752a"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/Components/EnemySelfDestructOnContactDamage.gd",
@@ -430,7 +634,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "ed7d1879d1001c4a161f6d4ebf3a8b071a7e982550d2aeba306d77b961f24471"
+      "source_sha256": "b10731440cc74229d9ef0431e9ad31111aa974aeefa5d88a827d1019c6557145"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/EnemyAnimationDriver.gd",
@@ -446,9 +650,13 @@
         {
           "path": "res://LS5Framework/Objects/Enemies/Core/EnemyAnimationDriver.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTankVisuals.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "3e3c7e752e83aad3d9757241bc33b80d59036c4263bcb6f7b951454cd1f642a6"
+      "source_sha256": "0d10d8b87fc57535a90004f92c1f71c2017d72473af9cc5d2a2e577988497bc8"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd",
@@ -464,9 +672,27 @@
         {
           "path": "res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "670295271b33cfb95488b177f0fdf3d0a8521fb944a460805105b3bef684ac95"
+      "source_sha256": "c8b8e4953290b52872ce3c95fecc2a27b37f7afb9ae3ecd87147eddeadc38027"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "12dfa14eb3b9ed29de003c99f6cdec07dc4f9e66a91b1ddb318bec3f6ca49143"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/EnemyIntent.gd",
@@ -481,6 +707,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Enemies/Core/EnemyBrain.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd",
           "kind": "Script class"
         },
         {
@@ -558,7 +788,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "a6a3d8cbe1a62c4cc09fff85d78289b0f81ef1745f8cee104ddb0bba84928f67"
+      "source_sha256": "ca274a2a791da749402abb19895e86bb60000376e696db1cc35b5750fbd617b4"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/Locomotion/FlyingEnemyLocomotion.gd",
@@ -572,7 +802,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "ee17980d445c0d93762bb6a9470587780dc0ebb5c7b392ed3d226020e62a75af"
+      "source_sha256": "d6d17306c0ddca165eaa4e4167beefa26587264605736b00d3fb8612501d3f93"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/Locomotion/GroundedEnemyLocomotion.gd",
@@ -582,11 +812,25 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Objects/Enemies/Core/EnemyChargeBrain.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Objects/Enemies/Core/Locomotion/GroundedEnemyLocomotion.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "2353e1aa0e030c4b850d0a69579968e88f2dad9a089a7f86e6a392717bb78242"
+      "source_sha256": "4037d4e446326ad4afb964b627c8e9058c42bf6182cd7556ece8ddcce2ea8d26"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Enemies/RhinoTank/RhinoTankVisuals.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "9e738028fe02089a0b35782f3d6e26158e1a2ba9b45f59139bba79d2ff03650f"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/SpikeBall/SpikeBall.gd",
@@ -618,11 +862,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Net/NetworkSession.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "63f818abbdf4cb53c284cf2a5d7278096b39c41ddd8c29db1a215c05cf009b14"
+      "source_sha256": "b5294f4b478798ae759694a88f71432977fcea8f70c7fe316002a6fd32349589"
     },
     {
       "path": "res://LS5Framework/Objects/Environment/DayNightCycle/DayNightProfile.gd",
@@ -641,6 +889,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         }
       ],
@@ -710,7 +962,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d7052f44831f62056bb53eadbd8f34ac1903e9bcb7ce2c1b9d41586a2ef187e4"
+      "source_sha256": "96554f6f89d185935cf9fc4d623e5dadb7ee02b156e53dd980e5eb7c747d3e61"
     },
     {
       "path": "res://LS5Framework/Objects/Environment/WeatherSystem/DynamicWeatherPreset.gd",
@@ -740,9 +992,17 @@
         {
           "path": "res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "715cf7c58a645b4d366941ad455c78a39816d8d20d9f8d9f32399d1ecc0e21f8"
+      "source_sha256": "9b11a16a4e299570a13a69fbdfd30716d26973204653f3bfad372f0f2c17133d"
     },
     {
       "path": "res://LS5Framework/Objects/Gameplay/Checkpoint.gd",
@@ -752,7 +1012,21 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "f5110311c24db6aa70bc8e29eeefef8cc5fe4291c024f09b9cd7b6e9cc9d5c6f"
+      "source_sha256": "a24b377993b39b87f018bbe3c2907908ce92dc22ad72f5c36ea39bf789ec0547"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Gameplay/CheckpointVisual.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Gameplay/Checkpoint.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "c92b21747b883d4942cbc4f0c6ff9493ba4e4aa16dc932e3e3c7fad15989bb5a"
     },
     {
       "path": "res://LS5Framework/Objects/Gameplay/DeathPlane.gd",
@@ -760,6 +1034,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
         },
         {
           "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
@@ -770,7 +1048,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "98b164a3f94f32811c20f135c089181ab6655994aeebc2797c4351acba5fb819"
+      "source_sha256": "2c2bf6b6d9f03835cbb0b57989e96dcbfba694e49d079f0397459b9068a4c8c2"
     },
     {
       "path": "res://LS5Framework/Objects/Gameplay/MovementCorrectionSurface.gd",
@@ -864,9 +1142,13 @@
         {
           "path": "res://LS5Framework/Objects/Gameplay/SpawnPoint.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "e056d3c026c9e60c6606877427fb21c85644f0b4ccdb9ea0798504374c251d8e"
+      "source_sha256": "4e15c9e1f617a8bc9b4e8ef139253c3838db5760a9574a66a0aa9328ea031dba"
     },
     {
       "path": "res://LS5Framework/Objects/Gravity/GravityModifier.gd",
@@ -894,7 +1176,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "bf288c506d72487a8253c1a0d09021bef8b4ed2d627ffb5a256d84c6518a384b"
+      "source_sha256": "38db3ffbf7cf0b4512b48a97481aa25136e5f27fc24df8c0125ab6100a6664c4"
     },
     {
       "path": "res://LS5Framework/Objects/Homing/AttackMagnetismTarget.gd",
@@ -908,7 +1190,29 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "91e39e63d6c5fe997c24919f7100093f961ce61e70b17ff47dfda710b5c43553"
+      "source_sha256": "e41663b3eb9a0b8d6d5b65b35603493ce1c07a643d4b86fb1c3dff0908b336ba"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Homing/CollectionRibbon.gdshader",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Homing/CollectionRibbonTrail.tscn",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Homing/FlatHomingTrail.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Objects/Homing/CollectionRibbonTrail.tscn",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceCollectionItem.gd",
+          "kind": "Preload"
+        }
+      ]
     },
     {
       "path": "res://LS5Framework/Objects/Homing/FlatHomingTrail.gd",
@@ -918,24 +1222,15 @@
           "kind": "Root"
         },
         {
-          "path": "res://LS5Framework/Objects/Homing/FlatHomingTrail.gd",
-          "kind": "Script class"
+          "path": "res://LS5Framework/Objects/Homing/CollectionRibbonTrail.tscn",
+          "kind": "Resource"
         },
         {
-          "path": "res://LS5Framework/Objects/Homing/FlatHomingTrail.tscn",
-          "kind": "Resource"
+          "path": "res://LS5Framework/Objects/Homing/FlatHomingTrail.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "07947a4668e69c97947438bc832cc986ca52a539bae0059721c7b8ccf0f24ca5"
-    },
-    {
-      "path": "res://LS5Framework/Objects/Homing/FlatHomingTrail.tscn",
-      "owners": [
-        {
-          "path": "res://LS5Framework/Objects/Race/RaceCollectionItem.gd",
-          "kind": "Preload"
-        }
-      ]
+      "source_sha256": "9dc18fa593bfd7eef6cde541ebeb0f4e48f59c89c07592f65013f008b57944d3"
     },
     {
       "path": "res://LS5Framework/Objects/Homing/HomingTarget.gd",
@@ -945,7 +1240,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "59afd9d36eab3ce9bec736c417549ffa4d9066b7defc3b51a4fd38c906011449"
+      "source_sha256": "4b28ad2b48935365ba9b8171a08bfeb34ef0886268c7f05d479f0a6294acf902"
     },
     {
       "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
@@ -957,9 +1252,13 @@
         {
           "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerPropContact3D.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "f94bfa17486591abc7d243782c8926399b506fecbdb9f75c848c308bcfeb488d"
+      "source_sha256": "1198f37dbd947bbc0a650482a93856bcb573603e3e6bd69aab2ec3ae440657e2"
     },
     {
       "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitorBreakDust.tscn",
@@ -987,6 +1286,42 @@
         }
       ],
       "source_sha256": "065e58606e0ed1fe1838e06981cd39c81be225563f5f3bd122eae1d35159779d"
+    },
+    {
+      "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Item_Monitor_SA2_sikake_01_128.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Body.tres",
+          "kind": "Resource"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Body.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass_Environment.png",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass.tres",
+          "kind": "Resource"
+        }
+      ]
     },
     {
       "path": "res://LS5Framework/Objects/MetadataExamples/MetadataVolumePreview.gd",
@@ -1124,6 +1459,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Objects/Props/ThrownObjectFlight.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Objects/Rings/ObjectRingSpew3D.gd",
           "kind": "Script class"
         },
@@ -1136,11 +1475,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/ThrownObjectTargeting.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://addons/ls5_surface_attach_import/fracture_post_import.gd",
           "kind": "Preload"
         }
       ],
-      "source_sha256": "b6c93eba4f1c6153caaaa1fb269aff839837b36b3ae3c75aebe6d4ffcaaf1e41"
+      "source_sha256": "5006667649c28e56226845db0344b1f56dcb62838041f2d4e5023929bd766bf4"
     },
     {
       "path": "res://LS5Framework/Objects/Props/PropAttackProfile.gd",
@@ -1189,6 +1532,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Props/PropBody3D.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Props/PropTarget3D.gd",
           "kind": "Script class"
         },
         {
@@ -1346,6 +1693,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Objects/Props/PropTarget3D.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Objects/Rings/ObjectRingSpew3D.gd",
           "kind": "Script class"
         },
@@ -1375,6 +1726,34 @@
       "source_sha256": "238ef847b40fe9373d6038389056e2cd59e61e8838d9c5077f8d27623e741a08"
     },
     {
+      "path": "res://LS5Framework/Objects/Props/PropTarget3D.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Props/PropTarget3D.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/ThrownObjectTargeting.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "776fb82a1a8800b9c3375ad3ef232da64c341669ac37a1d13f5194b7d2925bcc"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Props/ThrownObjectFlight.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "21bc86c1b6467508fd67ed6687624f34cdb3764c44b9f1c0bd9848774964dc47"
+    },
+    {
       "path": "res://LS5Framework/Objects/Race/RaceBoundaryVisual.gd",
       "owners": [
         {
@@ -1396,7 +1775,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "05566e7bdcb681116c15ec3cf46e5cc4e47d4c901b6667672911d13fadc1e8d4"
+      "source_sha256": "5417f13049d009e418b19ac626d722f35204ae1636f484ab75d2747fc014153b"
     },
     {
       "path": "res://LS5Framework/Objects/Race/RaceCollectionParticle.gd",
@@ -1454,6 +1833,16 @@
       "source_sha256": "a42ce098f7b454143365b52751528556cca7718769d462209c64f4a335884ccd"
     },
     {
+      "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "600f5dcfaafc4b9f3b513b709b554f41f56591430b47d677659ff459209af529"
+    },
+    {
       "path": "res://LS5Framework/Objects/Rail/Rail.gd",
       "owners": [
         {
@@ -1465,7 +1854,31 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "0475fd2cc2d203588533232cd893466c38d5d2c8b99d659c74af1c9ce6b4bf27"
+      "source_sha256": "5de7c5a0fdcf7ef048e731e61a77b85afb48662c63ab2c566e70304a691800b6"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Rail/RailBooster.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "aba4f16c3c2a1c6ad5533942571b980148de5b80766286fca352429fdc91f1d3"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Rail/RailSegmentMesh.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Rail/Rail.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "4da26e54715e0da33fbe243fe739d8f74abbf1485ff7349f727014ceb1fa0c90"
     },
     {
       "path": "res://LS5Framework/Objects/Rings/DroppedRing.gd",
@@ -1487,7 +1900,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "ea8b9e53a071784fa1238877af8e6b50fad564edb2d47ae0cc2419a72b419c71"
+      "source_sha256": "a72c99e734f254a1ea5e5cca3890548709e26fd6d87f26648820429fc4098289"
     },
     {
       "path": "res://LS5Framework/Objects/Rings/DroppedRing.tscn",
@@ -1544,7 +1957,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "49e5fe20f443b0e212b728ad98dbdb8173f2c1ea2cecad184810aa81fc74de47"
+      "source_sha256": "cc82ca21355f88cd8df093ecb0da1aaeadfe3f3b32b8cf90ab27ce3e7340c17b"
     },
     {
       "path": "res://LS5Framework/Objects/Rings/Ring.tscn",
@@ -1567,7 +1980,20 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "9c44089f83e18b5556246d9375a96983b52ee4ff744dce3431e27d2b90148f57"
+      "source_sha256": "ba1cf33b9d4c50544931fb53152496a33579fb31f6e269ad14e52e0d56f9ab4d"
+    },
+    {
+      "path": "res://LS5Framework/Objects/Rings/Ring_Env.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Rings/DroppedRing.tscn",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Rings/Ring.tscn",
+          "kind": "Resource"
+        }
+      ]
     },
     {
       "path": "res://LS5Framework/Objects/Rings/Ring_Light.gd",
@@ -1624,6 +2050,20 @@
       ]
     },
     {
+      "path": "res://LS5Framework/Objects/SpikeStrip/SpikeStrip.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/SpikeStrip/SpikeStrip.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "8573b629337bb92d1036c7dca3b3615e191994bd2965d038b8389f61607a10ff"
+    },
+    {
       "path": "res://LS5Framework/Objects/Surface/Examples/ExistingAreaScript.gd",
       "owners": [
         {
@@ -1673,7 +2113,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "0fc28ae722201b5a7d774b76e6b7834ab7ef97579b0bf085c7ea577e8a0d77bd"
+      "source_sha256": "c500d6528dabc89bbdccfdf2f2c9938cbb3f8e13aff654b2805e93ef0c936905"
     },
     {
       "path": "res://LS5Framework/Objects/Teleporter/TeleporterExit.gd",
@@ -1701,13 +2141,58 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "617776aeb9332093df2ea90cbdc0301ea9bfab45551bb1c4fa1a3e03f952ace0"
+      "source_sha256": "fc47c786ecd8b6616b0e7f23c516ff901c42dcedff6a5280e362b67d09e22af9"
     },
     {
       "path": "res://LS5Framework/Particles/FootstepDustBurst.tscn",
       "owners": [
         {
           "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Resources/Audio/Ambience.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Resources/Audio/LaunchEffects.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Resources/Audio/MovementDetails.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Resources/Audio/Voices.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Resources/Audio/WorldEffects.tres",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
           "kind": "Preload"
         }
       ]
@@ -2039,6 +2524,42 @@
       ]
     },
     {
+      "path": "res://LS5Framework/Scenes/Effects/CameraFlare/CameraFlare3D.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Effects/CameraFlare/CameraFlare3D.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "633d7bed6d32e8330c94e25551db2c3eca020ce0a6266942f0c549eb5363e7e9"
+    },
+    {
+      "path": "res://LS5Framework/Scenes/Effects/CameraFlare/CameraFlareElement.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Effects/CameraFlare/CameraFlare3D.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Effects/CameraFlare/CameraFlareElement.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "177c82ce1981a24fbf990675db17898c1805823ac48f3092ca3fa8e92cc3a07a"
+    },
+    {
       "path": "res://LS5Framework/Scenes/Effects/InvincibilityVisual.tscn",
       "owners": [
         {
@@ -2055,7 +2576,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "146c19cf8e5209909b8cd3b9bd0ecef4085e8f2fa02e3270a014479579616108"
+      "source_sha256": "189e677b4f1757c517d19701408603026b21b9b8694a76d53cc42aed3a00c532"
     },
     {
       "path": "res://LS5Framework/Scenes/HUD/HUD.gd",
@@ -2065,7 +2586,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "65a804f98d3c781e60150f3cafddc6661794666d3594b4f1bd4336b388cd1cfe"
+      "source_sha256": "3beb5825e13dd6b5f277eea3d1b9e05df7cc806ec161ce7254f1cc0523a4a370"
     },
     {
       "path": "res://LS5Framework/Scenes/HUD/HUDAbilityMeter.gd",
@@ -2121,9 +2642,26 @@
         {
           "path": "res://LS5Framework/Scenes/HUD/HUDContextualPrompts.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/HUD/HUDContextualPrompts.tscn",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Race/RaceVictoryPresentation.gd",
+          "kind": "Script class"
         }
       ],
       "source_sha256": "331d0a8b4cb75a215a6e3bcbcc597cc115a47add41c9b0a88c240e4348d11c7e"
+    },
+    {
+      "path": "res://LS5Framework/Scenes/HUD/HUDContextualPrompts.tscn",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Race/RaceVictoryPresentation.gd",
+          "kind": "Preload"
+        }
+      ]
     },
     {
       "path": "res://LS5Framework/Scenes/HUD/HUDItemNotificationEntry.gd",
@@ -2172,7 +2710,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "6f6d29aeca19e36a1f59978b25669cc137f5439923387eaefba1de39ec90d617"
+      "source_sha256": "a5bc0612198abbbf59d3160657c06f0f9aef3535d7489b10ba952096fd4dba41"
     },
     {
       "path": "res://LS5Framework/Scenes/HUD/HUDMusicTrackDisplay.gd",
@@ -2180,6 +2718,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scenes/HUD/HUD.gd",
@@ -2191,6 +2733,10 @@
         },
         {
           "path": "res://LS5Framework/Scenes/MainMenu/MainMenu.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
           "kind": "Script class"
         },
         {
@@ -2274,7 +2820,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "ff989d9ea08bbc1ae9db9e20c163d4b2fbe6a1223a6682c2689442f799279944"
+      "source_sha256": "b142f9b7b6c21082a64a307be1e15bed9f611ab740ad7a874600fdbf3953aae6"
     },
     {
       "path": "res://LS5Framework/Scenes/MainMenu/MenuBlue_DarkContainers.tres",
@@ -2311,7 +2857,35 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "9bb01ea6574db4e6924da76bdf64d8b993158e75e8a89e6c0b4b5e85272a65ad"
+      "source_sha256": "b3f738aaf053ba7d8647fda09b52f5ea8ab3d7aac0d77bcddf5162adf8763e4b"
+    },
+    {
+      "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "5cd32f44a9dde66fb512cda203c8b2c861c08d4ba50130072afb897acf7eefba"
+    },
+    {
+      "path": "res://LS5Framework/Scenes/PhotoMode/PhotoPlayerPanel.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "b7a291b9a42435fd672824767b5fc15479ce9cdda0f94be555e5067684cd2785"
     },
     {
       "path": "res://LS5Framework/Scenes/Race/GhostSelectionDialog.tscn",
@@ -2359,6 +2933,10 @@
         {
           "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
           "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelCutscene.gd",
+          "kind": "Preload"
         }
       ]
     },
@@ -2401,7 +2979,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "20b98832871b975644c53338ccc339a6db02e9d6a2a834e7efb956e3c3a6e519"
+      "source_sha256": "236cbae9083dab0e07e66b6548b05487f1a97be522114f03a9c94c0566969470"
     },
     {
       "path": "res://LS5Framework/Scripts/AI/RivalActorPlayer.gd",
@@ -2412,6 +2990,10 @@
         },
         {
           "path": "res://LS5Framework/Scripts/AI/RivalActorPlayer.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Managers/ObjectDistanceManager.gd",
           "kind": "Script class"
         }
       ],
@@ -2451,7 +3033,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "85c8358ad9a04764589ed89eaa947d7a4d05b472e21ef9aacd2e6edf067136cb"
+      "source_sha256": "3897fc974ae480fe982cdd5b72ae204b3f966658fc883f52989144abe1e4944b"
     },
     {
       "path": "res://LS5Framework/Scripts/Actors/ActorCollisionController3D.gd",
@@ -2545,15 +3127,27 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Actors/ActorHurtbox3D.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Actors/ActorTargetable3D.gd",
           "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/Player/KickContactController.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerPropContact3D.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "627a91d038049e0676e711975af733955aa7f9471a7c751bd8e92f52dfa7522a"
+      "source_sha256": "d029c2d664acdf540a7699a7e2302ee2aac6c0c20e70c73d4bdf41af4cd44f28"
     },
     {
       "path": "res://LS5Framework/Scripts/Actors/ActorRespawnComponent3D.gd",
@@ -2585,11 +3179,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Objects/Props/PropTarget3D.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Actors/ActorTargetable3D.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "ba1e52e00c0d0699e321b85718c6fbe593a47f77dbff5c6bd291dcaed54905b6"
+      "source_sha256": "55ab5f0264f5ca6e1e6bc1a5f940200c60838158fd0306230dd1de9e95531afe"
     },
     {
       "path": "res://LS5Framework/Scripts/Animation/AdditivePhysicsController.gd",
@@ -2603,7 +3201,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "befbd4d18af4b46b4bf9c24768100af96b923901cbb0940bdbddd1c4d8e9a2a3"
+      "source_sha256": "25bb8af03140413268bdeb4160ee86f30c4f52137b2243cd669b829bf55fa063"
     },
     {
       "path": "res://LS5Framework/Scripts/Animation/AdditivePhysicsSet.gd",
@@ -2622,6 +3220,50 @@
         }
       ],
       "source_sha256": "9571858d8076352563959a3d8ed67b27463ac6b126412c6707fb86328af31b56"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Animation/AnimationTreePresentationRoutes.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Animation/AdditivePhysicsController.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Animation/CameraAngleOverlay3D.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Animation/PlayerGazeController.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Effects/SpeedAfterImageController.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "0cbbe1ea029e80db30a5cad0c779e86b58624855debc36180e9d68a7ae4dbd22"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Animation/CameraAngleOverlay3D.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Animation/CameraAngleOverlay3D.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "32a836480f0e3c8cdb342b3c602be020c0b4ad50e0042c03bd94bc62021ed8dc"
     },
     {
       "path": "res://LS5Framework/Scripts/Animation/CharacterEyeProjection.gd",
@@ -2667,6 +3309,10 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoPlayerPanel.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Animation/GazeTrackingModifier3D.gd",
           "kind": "Script class"
         },
@@ -2675,7 +3321,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d1dd1f311e2b0d4faafa5250daf129709e14fa3d02efb93c1f055de7a6ea0075"
+      "source_sha256": "73a980cf8d5712e9e444b5aa3b70bb4d565f639f83fbc2de8c668b4a09880549"
     },
     {
       "path": "res://LS5Framework/Scripts/Animation/PlayerGazeController.gd",
@@ -2689,7 +3335,29 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "54d809b533c1cecd849861967cec967dac816bd06d3750d1e2fdc53700a76a85"
+      "source_sha256": "f678c9a40af4356180ef4391b7863ae2f33a06a55b838569ea9185decfdb0513"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Audio/AudioClipSelector.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Audio/AudioClipSelector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAudio.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/CharacterUIVoicePlayer.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "d9c989a1135f94cba5ff9a7c10fbbf07320d4bbc42c0286652af45dee879728b"
     },
     {
       "path": "res://LS5Framework/Scripts/Audio/MusicController.gd",
@@ -2700,6 +3368,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Music/MusicTrigger.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
           "kind": "Script class"
         },
         {
@@ -2742,6 +3414,66 @@
       "source_sha256": "274585dc6a2aa1904dd53c7e8650e0bae179cdbd149f6445f260692c15faae2b"
     },
     {
+      "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Actors/ActorAudioCues3D.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAudio.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "6b5081eaf246172d889b776a7a7673dbf8180e14b77969486196f58ef6af105d"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Audio/SpatialAudioProfile.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Resources/Audio/Ambience.tres",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Resources/Audio/LaunchEffects.tres",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Resources/Audio/MovementDetails.tres",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Resources/Audio/Voices.tres",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Resources/Audio/WorldEffects.tres",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioPolicy.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Audio/SpatialAudioProfile.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "c8d608f1bf142acde783b3aef8cabc71b823551f1f3939ede0f5ed77c48bc666"
+    },
+    {
       "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd",
       "owners": [
         {
@@ -2754,6 +3486,10 @@
         },
         {
           "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraActivationTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         }
       ],
@@ -2783,7 +3519,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "43a9425c16f12b698a13e95f7bfc3261cee36af1390f1f879673920d477c6691"
+      "source_sha256": "d22abb6c28a2e7756c6e9dc517194d16eb0d93e6d1329672c845da556a60e4ea"
     },
     {
       "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraConstraintLiveEdit.gd",
@@ -2812,6 +3548,10 @@
         },
         {
           "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraInfluenceTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         }
       ],
@@ -2845,7 +3585,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/hurt_action.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         }
       ],
@@ -2889,11 +3637,19 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Race/RaceCameraConstraint.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "dd0a3ac31288c7aefb33c0ae0b33b7957fce81713436bbcfe8e3d2b04227af7f"
+      "source_sha256": "e757a1badf51c04f32f471cfb12912709d33dabbc12837f5c5b8d440abe619b0"
     },
     {
       "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraPositionTrait.gd",
@@ -2919,7 +3675,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Race/RaceCameraConstraint.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         }
       ],
@@ -2943,6 +3707,14 @@
         {
           "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraTransitionTrait.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+          "kind": "Script class"
         }
       ],
       "source_sha256": "5a5d5037b0c8cd8a65cf3c9cfc18f2384550d344bde8f25798f26c9aebe4f57c"
@@ -2956,6 +3728,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Gameplay/DeathPlane.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Camera/Constraints/CameraConstraintController.gd",
           "kind": "Script class"
         },
         {
@@ -2977,7 +3753,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "89b1b137637909aaf796ef6d75d0cde9b3f0e57613f73dabc4d88ce3203b579e"
+      "source_sha256": "0439c88d3199b2b7decb53aa35d3fcffd7c2c397802bd3e2b5bdb250b43cb824"
     },
     {
       "path": "res://LS5Framework/Scripts/Camera/SpeedRadialBlurEffect.gd",
@@ -2987,11 +3763,19 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Camera/SonicCameraRig.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Camera/SpeedRadialBlurEffect.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "2b20e1527776a715d90fe340af383d317fe373a0e285d2d32bdbea40212c5eea"
+      "source_sha256": "4f05d632c404fd86cbe165b6fecddbf5b85b6a6678fa95d78a87307f7fac4788"
     },
     {
       "path": "res://LS5Framework/Scripts/Camera/UnderwaterEffect.gd",
@@ -3001,11 +3785,15 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Scripts/Camera/SonicCameraRig.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Camera/UnderwaterEffect.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4795b1cb2d74123dc99b09a023af0fbe2d1e3d55eee26e3cb43f199facf320f7"
+      "source_sha256": "2bf9d02b7d3ae65c33c446e746c63599762cf64a7c5ad3a23a5a20f7abd348aa"
     },
     {
       "path": "res://LS5Framework/Scripts/Debug/DebugDraw3d.gd",
@@ -3055,7 +3843,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "51786201f72c15fa7b00d08e430eb55542cd12a286dc8295dc2ec14e2ef717c8"
+      "source_sha256": "c8f0aad53f39b7d08e0d3cded88d33bb06eae4059d315d0dcb43f0c361d72f70"
     },
     {
       "path": "res://LS5Framework/Scripts/Effects/InvincibilityRibbon.gdshader",
@@ -3109,7 +3897,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "2f6e725230e055b5ed110917e0411adab2aba6ef6f3faf883b8d1e175ecb4396"
+      "source_sha256": "d5f55184120f8670daf334ca862dcc2a4cb8e83d26481d02ddcd70cc92e86051"
     },
     {
       "path": "res://LS5Framework/Scripts/Effects/SpeedAfterImageController.gd",
@@ -3121,9 +3909,27 @@
         {
           "path": "res://LS5Framework/Scripts/Effects/SpeedAfterImageController.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Effects/SpinBallVisuals.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "f2f381ce3a73efce5e18535ab362e7fdccad44a54ea780b1335be569e1bd767e"
+      "source_sha256": "fd5bf9c21f0500b2e80e75ec3a760ec4efc46e5805b4b7badf4805b02455f49f"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Effects/SpinBallVisuals.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Effects/SpinBallVisuals.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "d541969a2482cae9c436a9369f720eec04d314798363d1ab8405e713ea02b0d2"
     },
     {
       "path": "res://LS5Framework/Scripts/Effects/barrier_foot_trail.gdshader",
@@ -3166,7 +3972,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "8aa31f04652a085ac05276a92322fb280aa84c531504cd1219fd3bf3f92bd31f"
+      "source_sha256": "0d0dfb7b84967c0340f4a1f4c5317546901634895d32e160ad177fc27a4266eb"
     },
     {
       "path": "res://LS5Framework/Scripts/Managers/LevelPreparationManager.gd",
@@ -3177,6 +3983,16 @@
         }
       ],
       "source_sha256": "c98d3fa8dff8bc8033ac6588e489a15a32ef33498f5d9f85ad2815296701ae77"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Managers/ObjectDistanceManager.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "c7266a76faa00d1896b77423ef8f1f22a5011ce9c934b7f92c64c63bc1db7ae5"
     },
     {
       "path": "res://LS5Framework/Scripts/Managers/PlayerScriptValidation.gd",
@@ -3224,7 +4040,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "3c3fb1c104c4e5484e40b14c31517cd00f1a707bb81da143f28b5a41496f3112"
+      "source_sha256": "240fb199e4e228fd7bc747c24b8337a0a6c680570e0ec13af86efad4923ff45a"
     },
     {
       "path": "res://LS5Framework/Scripts/Net/NetworkManager.gd",
@@ -3244,7 +4060,551 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "adf5330999ad730f7997a97107831d69d08f9fcdc7914ed2109e091196b8a9e1"
+      "source_sha256": "ae888f66873947240dcd952bc5466e34ec1b898abf82f37165fa1630fcad8e31"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "edd381a9dd03bd5041c35278a5b5499fa138f11c99b126b10d9a2b9821f9ff28"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationDebugOverlay.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "fb799d22b7acd6429e8bdd01fa688f94a39b882c86d3a6df53c8d5ec381e9b0a"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationGateSweep.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationDepthProfile.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "22a8b07ff1ae9ccaf5c9eaec5873cba51c0512b3b6968f295d90e3189f735bec"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationLiveEdit.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "f1cdbc14a7d4beb7f1e5641937d318e4980b6218ca016d90603b2764f0d7d14a"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationPathSampler.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationPathSampler.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationSession.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "42f5de6170d8161a7553e16e62a6d4bf97103b7227f59244410540f9193fe469"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "2f8ecbf0d7535e28567a931bc9745b36298ec59368cfd598ad2fce4e54a81aac"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "dba49f03e754ebf51f40dea76bb1e33348cf6ae5c0cb027e0a47d2bd80f609c8"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationSample.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationDepthProfile.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationRouteConnection.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationPathSampler.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationSample.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationSession.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "6eb07aef2a3b16ef13ec246c566674e26b1bec8b3cd68b0a72963876b858911b"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/AutomationSession.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationSession.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInfluenceTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "8205fe053a1ccbf343ae9027ed25378d004e351d382f05f7841d57549b2360a6"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "defc334aaf955354f8dfce4ff095eb6768814064991ea1a2c019b00b2b2ed67f"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "d39d014ab3e2b7d5434ccdac7543866846f6d033022c4f993364b60f93d2a2f9"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationCameraTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationCameraTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "90aabb33e0b6eaa1e21da7b0cc713269ab81b0365fda9e5b538f456deba693fe"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInfluenceTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInfluenceTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "a330700ae41e17a407ce1318922a41ba301b607ae57b04b946763c55d1379826"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInputTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInputTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "edddb0b1b674b16a5ce119201edf7eccbbf10daf77557efd28aee161c91be3d4"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationLaneTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationLaneTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "d3d76d8a8203985a25aa67c07d297e69631b30750675b87b24da9aff438948f0"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationPositionTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRouteRuntime.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationLaneTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationPositionTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationRibbonTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "93c127be8d8930d8a79bbb955b1ac5226c31582ee24431e8ac78f2b9b3317650"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationRibbonTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationRibbonTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "df908a8a38640e687d38779d24c86c9e663342bd675e8da7f1f289bae174c8de"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSpeedTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSpeedTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "0e58ca17ddc9c0d59ad5b466035273dda7a446d7f859095c8f6d8cd45eecf21e"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSteeringTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSteeringTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "1d578ef2b0777b05304f80c8da474dd128edf0e7b8df503c4331302add6cb43d"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSurfaceTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSurfaceTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "e0e7a825da45332e3830f8f756f6dc167144a8d203585c90558c50774328058f"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationInputTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationPositionTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSpeedTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSteeringTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationSurfaceTrait.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "c3974d23676df3ff4aac71c530004646cd7da0f307bf1767dcca0d22438d9afd"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationTransitionTrait.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Automation/AutomationSplineCore.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationTransitionTrait.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "467043d30e44d2468fb3463793e784f3b22a247c55dc06404e4419ba1c9964a4"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/CharacterColorMaterialEntry.gd",
@@ -3266,7 +4626,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "3c243ac83d955c946175216414b491c8bc396d15c29484ab72d358dc42438c7f"
+      "source_sha256": "27d6f89f07e4fe7cdfbef4f33df0dbb818deb2465cc0fc18cad4674b7e480a2d"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/FootstepDustBurst.gd",
@@ -3332,7 +4692,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "01dbc89b92ea522a63a64f0064b21b044f8cde5c9618106854e6349cd033e2e6"
+      "source_sha256": "50f4dfec18d2cfed7c67e8089e11a0a25be72be260f57f119722990862221359"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerAbilityInputRouter.gd",
@@ -3376,7 +4736,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "bd38ec4c6be98e5f9ca89335889b5a30993e3ecf37b401d1f8bc510fd5b44904"
+      "source_sha256": "de32217c3e9f319330ce26fe15cbb0be4c6cfa795408063a3fd57f0c7b4cf89f"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerActionPromptResolver.gd",
@@ -3408,6 +4768,18 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationLegacyAdapter.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationMotionBackend.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
           "kind": "Script class"
         },
@@ -3416,7 +4788,131 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4543a9163cc3b3483e755157f26d59f7786a30800fed93d55d29fd9c1a242886"
+      "source_sha256": "45805bf2e7ab7fb4a37443820f78c14fa549e815eeaa53be8e07dde28a11ea8c"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/PlayerAnimationActionBackend.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationActionBackend.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "ea258240a9f26b324405669e43c24a6ac69b4bdeeb84b864e3724efc6aa578a4"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/parkour_ability.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "8599bffcc971f3bb75dfcb6115f4f7c515ad1b49ab0573a9cd5fd3c2e19639fb"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/PlayerAnimationLegacyAdapter.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationLegacyAdapter.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "7227eb0e5ac50ab3a0c7a99bc818b923d7d273f0e84a5d1d9934e4c41fc45ce4"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/PlayerAnimationMotionBackend.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimation.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationMotionBackend.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "20523094c249f741dfe639ca4b4887d4c01c3e60eea9019e6cc6e77a08c57672"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/PlayerAnimationOverlayBackend.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationOverlayBackend.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "f229c3631bb661594074f6e074104c10b2d0af83856796b80a31960b4f876e2e"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/PlayerAnimationProfile.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationDirector.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAnimationProfile.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "bae649e00f1ec080fbe4b9d4834d79636af6effa78f219914ae273233ca2bf63"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerAudio.gd",
@@ -3440,9 +4936,17 @@
         {
           "path": "res://LS5Framework/Scripts/Player/PlayerDebugController.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/CutsceneActorHandler.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "0a63892228a0e4354e31fce03eeb5c2b37862932307c0afa7b2f6c803690e4d7"
+      "source_sha256": "4ee789c3ca9145f98ad605987594b33e75e01305a05722cd61946dc97ca3e99a"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerBuddyController.gd",
@@ -3478,7 +4982,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "2dd15555c885c116397ce5a48603429f9e4c9ac445a1ab9c4dd96cbf17ccba7b"
+      "source_sha256": "678c4496f3066fed30cabeadbbf189e7cb7f93e1493a98c8c5b2398072e09719"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerCharacterAttributes.gd",
@@ -3548,7 +5052,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d6168d58d8586a3a4f627a953fc634c466c8be57b7ff193e39f952f42c3f6f09"
+      "source_sha256": "8ef8ae6413ea6f7c41197dd2fc22f0aef8c57d7f19564662d380de1cbc9d3ed5"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
@@ -3558,15 +5062,27 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Objects/Bumper/Bumper.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
           "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/Player/SonicPlayer.gd",
           "kind": "Inheritance"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/CutsceneActorHandler.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelCutscene.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "fa8a6391eaba4d680910ef1814b03e586e16ff63d21f13a52051a3bb4ea99a99"
+      "source_sha256": "89b15cf7797456926f9031e2b9b0544068d70379b0bd1f1f3063780199d96814"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
@@ -3574,6 +5090,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Managers/ObjectDistanceManager.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
@@ -3584,7 +5104,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "7276647df3bfaaa465f250d008d3d4779fc306a3e2925a538ac7224b1480e98e"
+      "source_sha256": "2c2e2fbea583c6d72c606f59f17c8d29a80afdfda88a43bc7adf6e3b029b08ff"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerDebugController.gd",
@@ -3602,7 +5122,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "65b21aa04903e92c36927db270f658efdf1fdaba893ff25cb8c0d114c978bdcc"
+      "source_sha256": "1d703fbcbff351375ec16bbd224234c70e90547da6bc3a0c0ac282f5193e21e4"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerEffectsController.gd",
@@ -3620,7 +5140,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "1d4fc5d602f7d864676032ca98e3c188dff340752279b4f70092061466c0538d"
+      "source_sha256": "7b54e08244e8df79ce6752b76e8cf97701e81f95dbf4b5e58d7101d7b5a1ed18"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerExternalMotionController.gd",
@@ -3628,6 +5148,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Bumper/Bumper.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
@@ -3638,7 +5162,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "3c47d0f5f9e3a2e4b83b79fe84d0511bd33c2dc2b6c311d55a3e6e6104e5c57e"
+      "source_sha256": "5640e28e85c6aa6bba4ec31fbbf648223d5ced6259ee8614a98d999c79386f77"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerGravityController.gd",
@@ -3742,7 +5266,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "6f8ed9591da2743cf5708ac8dacc67afff363b7d146a28289b72d356535e3ce7"
+      "source_sha256": "37c813ee1f69e9686159121f36db098f044fda586fd1f0a124e5a5eeb6eecd1b"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerMovementCorrection.gd",
@@ -3778,7 +5302,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "25b27109c1aa091dd18bbb61a2e48ed9ca3e41085e75830f824ae5e82ba18fd9"
+      "source_sha256": "2e006242b1c5498b2916b9ddd12029b683cbc46b8389eb7fd284a7bcda866b1f"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerPropContact3D.gd",
@@ -3786,6 +5310,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Props/PropTarget3D.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/Player/PlayerCombatController.gd",
@@ -3800,7 +5328,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "06a58b61dff55cb06b9dd2056a29cdac1e2c5de208e752fb5948e65241dd1db2"
+      "source_sha256": "de5858e8ae9db1aae237aacd0df8802df225eb598e99a4da5a79fbb06f8e0e7a"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerRailController.gd",
@@ -3818,7 +5346,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "b1fd72140ad80139aed2b4536497bc4782614f0c7838b3940b74218dd12037e0"
+      "source_sha256": "6c0f342581404495fa58ffb99a6d34ad6cda962ea0c9df13ef9e6e032050e945"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerRespawnController.gd",
@@ -3836,7 +5364,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8f3ac2647cb9911e721cabfc8f8faebb5507138a59fe342a4e4b26a54a9f6798"
+      "source_sha256": "3a803a270eeac5c63e83519ce0d2c313f45c67cc91a110ddef694ef8a0d1faf5"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerSurfaceController.gd",
@@ -3854,7 +5382,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "9a0757cfbd929c406af94f8170f334b213d30f155c67d9a4380848e16d9f95af"
+      "source_sha256": "aa4f8910c715d51a971bce21db1977aae8ab68cf640cd32c0f47a6b2072c7fff"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerTargetingController.gd",
@@ -3872,7 +5400,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "71887e63262522fa16b9707f7dbd9da2254ded03aa1ff3806e72869f6f65b069"
+      "source_sha256": "734a05d2e5274eb6dc72b6931e35f958deed85a7256b668b56d983400934dedf"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerUI.gd",
@@ -3890,7 +5418,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "f181accb97199c784a9b7e3a4570a6c6d0e252757530a0a8e52637f317a0c043"
+      "source_sha256": "15268112372923bf6da0e9cfa990a6ed3e59c2893acaf798f8e99206efe9b133"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerWaterController.gd",
@@ -3908,7 +5436,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "71db86d1a79bc1e1823d09ee7c0d5def8d4445c9c254730abed8bf539888a215"
+      "source_sha256": "e117548c25a039d8ce037f4d0688c9fd5ac2524c718e1d6551d27ab6c739a436"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/SonicPlayer.gd",
@@ -3933,6 +5461,24 @@
       "source_sha256": "11977dcc4f72051797daa7ecce768c96215f5b51cac717db71fb0242eec238b0"
     },
     {
+      "path": "res://LS5Framework/Scripts/Player/ThrownObjectTargeting.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Props/ThrownObjectFlight.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerCarryController.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "9f83cac11f26724988243ace7bc503fa067c5a81aa23bd21d1057b7006fcda52"
+    },
+    {
       "path": "res://LS5Framework/Scripts/Player/TrickDetector.gd",
       "owners": [
         {
@@ -3952,7 +5498,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "84977f3aa6fd9a0890875c0841db4c32aa7014edcab47f3e576feb0c90e54430"
+      "source_sha256": "a5e17d893dae46570e2975affa1f1d0ba8e383859a6f140286896e4089d3c082"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/TrickSystem.gd",
@@ -3986,7 +5532,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8caefefe7680cc7bd1efbfb96ac28db6e4e0702bb4257049e3753e123890e194"
+      "source_sha256": "ccde6f8f4eceeb3b14dd82d3c03e04d4eaf306290ee7adc773b218049938077f"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/ability.gd",
@@ -4096,7 +5642,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "42756fc88a2fef1ea2b178440df27f342a3fc008958a48085320baa795fcb573"
+      "source_sha256": "6567f7ca7e9edd3b3bdc124c1f6ffd4a1da88221dd46a874a2fd9e9b0fceb18e"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/bounce_rebound_action.gd",
@@ -4248,9 +5794,17 @@
         {
           "path": "res://LS5Framework/Scripts/Player/uppercut_kick_ability.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/vault_action.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/wall_bonk_action.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "27700d6cb2523d0e16ae6052df70d7dfb713e6e04bba72aab0ec0ea699350cfc"
+      "source_sha256": "2b7f92aecf611a0cb7495c9228bc6536ec107201d8c83ee0a66d48b0b3a02831"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/drift_action.gd",
@@ -4272,7 +5826,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "7c48548b29c4f1412817c5adea677443c2de1d3b5bd3d69f9f634eeabcb0d04a"
+      "source_sha256": "b9a71cefad345568a429426881efa1c08cbab9f69c74f8a7aad6035566931929"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/drift_action_legacy.gd",
@@ -4286,7 +5840,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8f8c04a13dec119527331fc0f67112938c75a488a96638fd62f5c1e4bb7bc4fe"
+      "source_sha256": "7daf631f6bb91b0032d7b88efb36456dd26aae7f66ea0bc1c247602c4c2eb63a"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/drowned_action.gd",
@@ -4326,7 +5880,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "f005917e0532c84ad949d309b613e5b0289dfd9cc13b50dcbc4cdab3b1217dc1"
+      "source_sha256": "7341d30b87972d2812285d6e59ff003ca73d20a0c03d1d69e50f0eec7540005a"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/grounded_action.gd",
@@ -4348,7 +5902,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "118a21c882f39a54fe1a87e011cf4ea430aec689f40b8a95489eebc01c783bc7"
+      "source_sha256": "da69d1e1ddce6393c3e42a5f56a27aeb5704c235e9495551a2b02d9c0d845cb0"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/homing_ability.gd",
@@ -4366,11 +5920,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/PlayerTargetingController.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/homing_ability.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "dcfcdfd4a4517b75a0a618712d5e75fb6e49989e64ef176d8c648efc2e2dea25"
+      "source_sha256": "6c7135b983c0e250907139bee4a11fb98807d2394b133d569d692bff58eb2dc3"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/hurt_action.gd",
@@ -4394,9 +5952,13 @@
         {
           "path": "res://LS5Framework/Scripts/Player/hurt_action.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/wall_bonk_action.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "9258031f6624749937c2fa54e44a84dd6f2b98e8ffa2e6f3c6ae34c8f5bc9ab3"
+      "source_sha256": "d42f762fe8b6550b3985be6c291b798a570ee0e335e56d6a94c24735597037da"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/insta_shield_action.gd",
@@ -4422,7 +5984,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "989fe89d0a1bab62c90c95e8b9ace32db9cdf4ca780addedc983ff6f3ba6fe3e"
+      "source_sha256": "695d46a58a52cedcc4af54fd1c364f0f1273f1cb402a6c733a2cffc74882e78d"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/jump_ability.gd",
@@ -4442,9 +6004,13 @@
         {
           "path": "res://LS5Framework/Scripts/Player/jump_ability.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/vault_action.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "89427b97fa6612c2f2bbc82802b7ba628bb7e42d06a5a4ced5d00f6a4a16b113"
+      "source_sha256": "d12314056219d57ddad90b93d1f57b96cc491f450e6e98932936b2755505d8cf"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/jump_dash_ability.gd",
@@ -4466,7 +6032,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4e86c3ad774fb9e47d97371a035b9a6ccbe4ec400de6c156d78948e1b81a1281"
+      "source_sha256": "ff50eb9bc70d0eba891d83e259a12969f882a4aacf7739ef6010f1b68e61b578"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/ledge_mantle_ability.gd",
@@ -4480,7 +6046,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "eb73b002051eb340537dcc95cc57ec9ceac94518a5ec64957b1f7fd58c02ef9a"
+      "source_sha256": "4c057238332fbbaee48ed705aa3244b1340b0ac75333d947b3c9d59b331a33c0"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/lightspeed_dash_ability.gd",
@@ -4522,9 +6088,13 @@
         {
           "path": "res://LS5Framework/Scripts/Player/parkour_ability.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/vault_action.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "1c4f394947b774bba38ebea8811e43b614b7beef47b8d27639a4a0467bf90328"
+      "source_sha256": "8e196242fbf3872151aa3e9483c0baefa22a923899fa1c78739ef8faeb1a9166"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/player_speed_line.gdshader",
@@ -4583,6 +6153,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Effects/SpinBallVisuals.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
           "kind": "Script class"
         },
@@ -4615,7 +6189,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d475cefa5b232ff36d0ff43cd9fa159683a4fc0184d6c9c90aa3b8f58171d701"
+      "source_sha256": "0cc2a387729a519391f7ebb1fb690b664d3cf3fbccc1b989ddb548db0b533be8"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/skydive_action.gd",
@@ -4627,9 +6201,13 @@
         {
           "path": "res://LS5Framework/Scripts/Player/skydive_action.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/spindash_action.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "5a0551dbc6ba04f465f1b51729aa19894c1114007251f1a58d4e14c750df3849"
+      "source_sha256": "192e7c4eea225b85bb4aa105a3d8190a0a1c40c9be763fd60b42e61d31eecf71"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/spin_kick_ability.gd",
@@ -4647,7 +6225,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "6febafda4b9f9a31c5ec8f9ef66cedd2f3159930860e56b636a8cb13d8f6b0f3"
+      "source_sha256": "44c20686f1a1c6c00e6adcc8e92a973e539df6bcbe9cbd9ddc19eb8878f4dfc3"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/spindash_action.gd",
@@ -4658,6 +6236,10 @@
         },
         {
           "path": "res://LS5Framework/Scripts/AI/RivalActorPlayer.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerAudio.gd",
           "kind": "Script class"
         },
         {
@@ -4689,7 +6271,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "b4ea7234b567e246fd1457db54818b5a11a9dc025272d13ce23d89b042b7a58d"
+      "source_sha256": "c97934d566d030b293088ed364fda673ddb9b250d0bae2da6a630fb48c5dd1b1"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/spring_action.gd",
@@ -4737,7 +6319,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "3d7101acca84e9ddf2231142a33eb9b4ae3c1f747783b2df2f1c2b18800608d9"
+      "source_sha256": "4f9474e4da39c5c85bb4271554353da3b0be717921d6dbbcd4d90e51998c8ddb"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/uppercut_kick_ability.gd",
@@ -4751,7 +6333,39 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "cc64ad238ab0e146ddea8c38c3a689feeb475da4cbaf0b2edd5806859e475f53"
+      "source_sha256": "43b1d25c4628ade6b8969b077c3dd8c3dfe9f1d88eec1e4d548e08d2a043ebee"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/vault_action.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/vault_action.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/wall_bonk_action.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "4a9623b5c3bed9b43f689facbcc5d5fa211cafe42bd479154650f749ef8505e6"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/Player/wall_bonk_action.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/wall_bonk_action.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "ec6831eb9810d6e7367661bd8bc6d1729a3c32320a5d28d689afe69ff2543eaf"
     },
     {
       "path": "res://LS5Framework/Scripts/Race/GhostDataManager.gd",
@@ -4769,6 +6383,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Race/GhostDataManager.gd",
           "kind": "Script class"
         },
@@ -4782,10 +6400,6 @@
         },
         {
           "path": "res://LS5Framework/Scripts/Race/RaceStartMenu.gd",
-          "kind": "Script class"
-        },
-        {
-          "path": "res://LS5Framework/Scripts/Race/RaceUI.gd",
           "kind": "Script class"
         }
       ],
@@ -4803,7 +6417,7 @@
           "kind": "Resource"
         }
       ],
-      "source_sha256": "83bfefcaf196eabbf200323f6e1660afbed0dc9f5d8a3a4b9ed76496649441c5"
+      "source_sha256": "151120a4ecd9b3e0c4a9f0cab8737f6d502a91538da485ec29056f844f74d65a"
     },
     {
       "path": "res://LS5Framework/Scripts/Race/RaceCameraConstraint.gd",
@@ -4889,7 +6503,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "dc9910473067cf47851be19b53ce54340b905efd46b39bd070a0d112b29ee1e4"
+      "source_sha256": "bf628aa6669d322f3ecda3e70d715d848573fa5ccc66f4fc8b2fe19e9ef68861"
     },
     {
       "path": "res://LS5Framework/Scripts/Race/RaceTransitionHelper.gd",
@@ -4917,7 +6531,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "9f1c61a63eb803d7283f1fe3b815dadd4e66bce371c8a86994a1975d17a8846f"
+      "source_sha256": "2fc3792646baeac9e725143e6d913d6274a943b7d2bc750037b549c1c847d7be"
     },
     {
       "path": "res://LS5Framework/Scripts/Race/RaceVictoryPresentation.gd",
@@ -4931,7 +6545,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "681feb31c41b12ccc0ae7a1ee233fc23ae009814fefda2f3f7188cebbf7aa8d2"
+      "source_sha256": "6db7f43f035835ce8eaee1d6039487869995c3a38ecfdfa504e20a71b3a33d32"
     },
     {
       "path": "res://LS5Framework/Scripts/Settings/CharacterAttributeResolver.gd",
@@ -5021,7 +6635,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "5412fe2f4df7ed88ad8170e8d278a40161e409bd7f2d480ed1e37af8c525291c"
+      "source_sha256": "b6213a65d007e0e025b87f0f2b3841725987c92db38c57408d7e72ccc9770d72"
     },
     {
       "path": "res://LS5Framework/Scripts/Settings/GraphicsSettingsBinder.gd",
@@ -5051,7 +6665,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "d5307816f698096e0e8ed8d6671eed74420b0b645e24f7cedbbcd0218f66e321"
+      "source_sha256": "a88ee574c3667c1c243ad16dde585d915df6c121f65da3c09a2bcb022043e50b"
     },
     {
       "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
@@ -5061,7 +6675,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "1c834c0ccff49c2c2b25253cf0d670a475cf80d2e120bd6d13966f28e0fee9fb"
+      "source_sha256": "dea2f67dd33b2a3399c4e6a0307b89d87464a5711b6e7d0c0dd4bf82f131c944"
     },
     {
       "path": "res://LS5Framework/Scripts/TextureEffects.gd",
@@ -5089,7 +6703,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "1b2ab5ab8f6907b24a55b60d2a9a9bc67da0a49e2fe2ae8602f7b4b159d5343f"
+      "source_sha256": "409536ada48bde1b224945e018c0e772b05add6f2061d7da2b2d1122b820fc09"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd",
@@ -5119,7 +6733,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "c325006edea517533ca058a52595fed25773b748acfbf012ecfdaf85444cc564"
+      "source_sha256": "59717eb1fa698c150cbfaa0e5343aa90e47526836aeb84b2e15bdaea549d3e7d"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CenterReticleDot.gd",
@@ -5138,6 +6752,28 @@
         }
       ],
       "source_sha256": "6c2f914520187af268610f8856396aa5227de47d93d578a7f6a52bd725862d96"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/MainMenu/MainMenu.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "a5469867183874b3f18e1ba405fc4821d99e63af9938b11ef9fc425b07108877"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CharacterSettingsMenu.gd",
@@ -5163,7 +6799,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d61abc18686ffd9d09e5674867c467ae10652cbec90f07340f7b5a99dee6076b"
+      "source_sha256": "d0de5c61dc837a76aa55af347e9464706be728b19729c4a261ccd23891813ee5"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CharacterUIVoicePlayer.gd",
@@ -5181,7 +6817,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "10110189e812668f3bbd9083ceaa5506302e59b3dd670930125802f2a75ab04c"
+      "source_sha256": "5ef556b2e80cbcafaec09597154487d664121b1d5fa5a6be4332b72807f87dd5"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CharacterUIVoiceProfile.gd",
@@ -5301,9 +6937,13 @@
         {
           "path": "res://LS5Framework/Scripts/UI/HeldButtonPrompt.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelCutscene.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "dbad97795c0e8e13776bd6c8b9f0e8c5bb8519d99f601899da542cde76bec806"
+      "source_sha256": "629727f412a60369f96d1fed7190bd6eb54a945aa1d17bb34f0dcec77d3bad32"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/InputBindingGlyphs.gd",
@@ -5321,11 +6961,31 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/UI/BindingsTab.gd",
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/UI/InputBindingGlyphs.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuPresentation.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/OptionsPanelLayout.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelCutscene.gd",
           "kind": "Script class"
         }
       ],
@@ -5355,7 +7015,95 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8a4864e747bbb7b706975af3c86a4bf1d19b159b22ed8c5d8eb20ee56c40878c"
+      "source_sha256": "670e70950301f7e05ccca1c8ef14757e0d965d1b7b1b75fb96dfa573f59526dd"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuActionConfirmation.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "87b1968171d009489a6bef527935158f8914c266fa47c9379006e432175d70ec"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuAudioFeedback.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "642bb96605b7d6655b2543acfcf9e9e5931b41da6068ba0beb583a808b30ac89"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuFocusFrame.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuNavigation.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "1c7e25a706a31caf453e534b147d3a226ec5374d30cf9aba26cdc8c07e78158b"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuNavigation.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "f768597f284d63aa9c1a342e101b838c4fdfee7d13979de27d8fa03c20c939ad"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuPanelViewport.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuNavigation.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "b34adbf2b661cfcb6bffce60503061c84afc48627b8c43a3ff7dad3d656b5b27"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuPresentation.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoMode.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuNavigation.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/UI/OptionsPanelLayout.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "27d7edd7e0deed3f9023d559c1a1368534b68df64a71626bbffb54ca5cc650fc"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/MenuSelectList.gd",
@@ -5369,7 +7117,7 @@
           "kind": "Script class"
         },
         {
-          "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
+          "path": "res://LS5Framework/Scripts/UI/CenteredMenuBrowser.gd",
           "kind": "Script class"
         },
         {
@@ -5378,6 +7126,16 @@
         }
       ],
       "source_sha256": "d63e5383bfeef7ab91db02d768f28be2c786fb453fa63714e379fc4c98a803de"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/UI/MenuTextEntry.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "5bbd4fe8b0bd433524755e1809b8e1e06a12db0fcce1bd1f3ec6c1a2e27ce8ab"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/OptionsPanelLayout.gd",
@@ -5391,7 +7149,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "6c5a7ff098902907d0d5df0677a9aae23d3dce0ca312c2f720a96ba203adeff3"
+      "source_sha256": "dd5e31d38d7ec953306741761efd05e821c16a3c9a6345d75369216033e8b53d"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/SceneDiagnosticOverlay.gd",
@@ -5416,6 +7174,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Gameplay/DeathPlane.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
           "kind": "Script class"
         },
         {
@@ -5449,7 +7211,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "e6393ef950ea5b28878de3620c2c4b449b6dbb5016e9be8ea7a2dc6de85d5f8d"
+      "source_sha256": "95b4907c74e0747210b05b37af522704f5f255c07ba1bdc6ad14dd06103fdc0e"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/Speedometer_Legacy.gd",
@@ -5459,7 +7221,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "07b207c08ac22e854bf867059e3e664461d3b2e3de9ed70ca168a08bbd3ea377"
+      "source_sha256": "7ce5cc9fec02d4fc51212bda5b884986387687dbe4a5af51667ac22894c72c97"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/TrickUI.gd",
@@ -5481,7 +7243,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "39522b6a036dc06fe61cf6b4af433b6a53669944d690dc407bd3f9d968e9b0b4"
+      "source_sha256": "b971d412609d7219020ac6cf4438ca28d338c04a54f718893ca68302b4a21692"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/UIExcitementEffects.gd",
@@ -5492,6 +7254,10 @@
         },
         {
           "path": "res://LS5Framework/Scenes/HUD/HUDNotificationEntry.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/MainMenu/MainMenu.gd",
           "kind": "Script class"
         },
         {
@@ -5511,7 +7277,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "23c6629641e67f697bb3e9f0ef4bd68bfd24cb0c3d92bcb39d1aa99a9525227a"
+      "source_sha256": "32af395ea53ca723458a110030e42156780834f2d8cf272b423eb976d147d8b5"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/YawBillboardTextModel.gd",
@@ -5521,11 +7287,15 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/PlayerUI.gd",
           "kind": "Preload"
         }
       ],
-      "source_sha256": "9dd28dce3ecb83d37d52ad945981ad514bd4d801f4c594d65826cccbe3dab0b6"
+      "source_sha256": "33c64b8ae145709ed657703d2299852e8edbd9dbb76f4e876aac25cdc593c13e"
     },
     {
       "path": "res://LS5Framework/Scripts/World/AdventureWaterRefractionCapture.gd",
@@ -5539,7 +7309,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "f834f4586445e582eb3102ec752904afa52460420d03e50b33c16a8bf739c1e2"
+      "source_sha256": "1bc9c18e70a17d3083a84eb49cb357aa412e41dade5890b1c26962209cff13be"
     },
     {
       "path": "res://LS5Framework/Scripts/World/AdventureWaterRefractionEffect.gd",
@@ -5553,7 +7323,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "55972ad21ab583ce73d23a876f0b9eeeaf424841c45ee73dbbacffe01c9e2458"
+      "source_sha256": "41c07cd67dacb0e2fc11839159d1376bd41bc19dd9e3a611bf23666a1f905027"
     },
     {
       "path": "res://LS5Framework/Scripts/World/AdventureWaterShowcase.gd",
@@ -5581,7 +7351,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "bc55856eb4639b4b1664c6f67a66b9ebf5f0ccbed494b9e227b9f2f0fcad8d3e"
+      "source_sha256": "19e4dc9e568d960d3fcc75f440531880395168ceedc3fc66ea88e30abc00b3ca"
     },
     {
       "path": "res://LS5Framework/Scripts/World/AudioPreparationManifest.gd",
@@ -5645,7 +7415,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "90332d3a7b5e99613e3e20294514ee7d696ba0ff96c3a9bd45bcdcd8323915b2"
+      "source_sha256": "86b99979530885d32649fc6090d69e5b50af5b22055c0d45b38a110938d1c223"
     },
     {
       "path": "res://LS5Framework/Scripts/World/CharacterDoc.gd",
@@ -5663,7 +7433,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4d42a189a79c5294774fbd383cade1b3979321f01cdf6e9d38fdd59022d20c6a"
+      "source_sha256": "853b1be59af842947d1121bb28ec6eac7485013ee049601df9f6713029c8fbd7"
     },
     {
       "path": "res://LS5Framework/Scripts/World/CharacterPackManifest.gd",
@@ -5700,6 +7470,46 @@
         }
       ],
       "source_sha256": "b964b26464ee112107bb8b0147acf52408d1909abe405f96dffb703d03c47360"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/World/CutsceneActorHandler.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/CutsceneActorHandler.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelCutscene.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "b7c5c971566c46d45a4cee8e8ac37dfc8fadfabb30279a3cc9487d65c27a697e"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/World/CutsceneActorProfile.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Settings/CharacterSettingsProfile.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/CutsceneActorHandler.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/CutsceneActorProfile.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "67b2c66699b66d8e130c0215ec13f33b58f7c147ee03f8a6bf57f4937bdbdcc1"
     },
     {
       "path": "res://LS5Framework/Scripts/World/DistanceMeshLOD.gd",
@@ -5747,10 +7557,6 @@
           "kind": "Script class"
         },
         {
-          "path": "res://LS5Framework/Scripts/Player/PlayerRespawnController.gd",
-          "kind": "Script class"
-        },
-        {
           "path": "res://LS5Framework/Scripts/World/DownwarpUtil.gd",
           "kind": "Script class"
         },
@@ -5759,7 +7565,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "22e55272272ac04844b5a63210621999ed0da1d34e0a5f5d3e7f370813410565"
+      "source_sha256": "f881ae53f79462720a7367827882c507d63aaeb587747aebc62ae4acd5460985"
     },
     {
       "path": "res://LS5Framework/Scripts/World/HighScoreManager.gd",
@@ -5769,7 +7575,15 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Net/NetworkSession.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Race/RaceUI.gd",
           "kind": "Script class"
         },
         {
@@ -5777,7 +7591,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "67ad203da6bf8690040a02bbf619c2dcf88e267391da08cae4b6e010e78ffcc0"
+      "source_sha256": "0fec6b1b3536b4c5987572260b86153de8bb7a9038961d5a672b03bb6e94750d"
     },
     {
       "path": "res://LS5Framework/Scripts/World/ImportedSurfaceBehaviorArea.gd",
@@ -5813,6 +7627,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
           "kind": "Script class"
         },
@@ -5825,7 +7643,17 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8018588c45efde634d2a2530eef529943fbdc2deb1148054982f7ab2a2e9f396"
+      "source_sha256": "1cfccf04ffd5d9d15749d1b81cb4507b242c8e1bc3c54e911064fe3da8a8ed27"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/World/LevelCutscene.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "fa855b2e8a259b042a0065b630ee0bdf868d3ccdc694a55db39773e72a0fc1b7"
     },
     {
       "path": "res://LS5Framework/Scripts/World/LevelDoc.gd",
@@ -5835,15 +7663,23 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/World/LevelCatalog.gd",
           "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/World/LevelDoc.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "c026c428b9cc88a6bf1c1455d6b6048447a4fc00f664f2d9a53746ac506d5d05"
+      "source_sha256": "944919355cebe93e0df8d442038e81b00992bc497ec3887fad9c389ec52ae46c"
     },
     {
       "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
@@ -5853,11 +7689,19 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Net/NetworkSession.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "591e50eeec2a8d4b16d748d7d9e91028502c13ceaf6bf03175e4d1571247b435"
+      "source_sha256": "48b1c31a63530ef47fe7b588bce68937b75817e5fd072cb2a5c9aad40048293a"
     },
     {
       "path": "res://LS5Framework/Scripts/World/LevelObjectProxy.gd",
@@ -5869,9 +7713,13 @@
         {
           "path": "res://LS5Framework/Scripts/World/LevelObjectProxy.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+          "kind": "Script class"
         }
       ],
-      "source_sha256": "0b5ca5f8628e85810bace765121573f745c1d578057ff37078e9b5c4349f3ace"
+      "source_sha256": "95c8b37d9b5b0ae5b5c1ac1cfb7c486cce20a299f7d60f1f7e903786bcadba0d"
     },
     {
       "path": "res://LS5Framework/Scripts/World/LevelObjectProxySpawner.gd",
@@ -5879,6 +7727,18 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceCollectionItem.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Rings/Ring.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
@@ -5889,7 +7749,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "b1970ddee094e33a8acce7c32a1463aeca1eb98175006a53bba006f3cfdbc3e7"
+      "source_sha256": "61e29bf0866693394ca6b1737a987701f68dee2bb591afb826eb639dae815b24"
     },
     {
       "path": "res://LS5Framework/Scripts/World/LevelPackManifest.gd",
@@ -5908,6 +7768,42 @@
         }
       ],
       "source_sha256": "a463033336c768e4d0401e99e2129461c4ab30287aeed82c835a3ead12f8eb98"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "96c604c71aeb240ef4a5c21bc48639aed8790847af303dbb8bd9008e374521f7"
+    },
+    {
+      "path": "res://LS5Framework/Scripts/World/ObjectDistanceCull3D.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Managers/ObjectDistanceManager.gd",
+          "kind": "Preload"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Managers/ObjectDistanceManager.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/ObjectDistanceCull3D.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "27e64cc8057271f7ec41767932ff48a9ce0e1340e7dc4b9846766ea53911397c"
     },
     {
       "path": "res://LS5Framework/Scripts/World/SurfaceBehaviorMetadata.gd",
@@ -5965,7 +7861,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "d2ac6588d108804d83d2e413ead008bb91dcb9ffd90e37da1768e87dec5cf913"
+      "source_sha256": "e3bcfbe339fd05e61f5778df23bcf4d878fbde3df7080ae0b8e9bf7cb497f025"
     },
     {
       "path": "res://LS5Framework/Scripts/World/SurfaceBehaviorRegistry.gd",
@@ -6005,6 +7901,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceAttachmentTrait.gd",
           "kind": "Script class"
         }
@@ -6020,6 +7920,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Surface/SurfaceBehavior.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         },
         {
@@ -6057,6 +7961,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceHazardTrait.gd",
           "kind": "Script class"
         }
@@ -6075,11 +7983,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceMovementTrait.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4e237e79f69e69ea2f5501b2797942b8567127755d53a9a30e445c5a4e23043f"
+      "source_sha256": "df290399453fe0066a59d604a660b67c5517acfb81074ab0eb02717bafe7e325"
     },
     {
       "path": "res://LS5Framework/Scripts/World/SurfaceTraits/SurfaceVisibilityTrait.gd",
@@ -6090,6 +8002,10 @@
         },
         {
           "path": "res://LS5Framework/Objects/Surface/SurfaceBehavior.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/World/LevelPlacements.gd",
           "kind": "Script class"
         },
         {
@@ -6165,6 +8081,15 @@
       ]
     },
     {
+      "path": "res://LS5Framework/Shaders/AdventureWaterMSAACopy.glsl",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/World/AdventureWaterRefractionEffect.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
       "path": "res://LS5Framework/Shaders/AdventureWaterMask.glsl",
       "owners": [
         {
@@ -6179,6 +8104,19 @@
         {
           "path": "res://LS5Framework/Scripts/World/AdventureWaterVolume.gd",
           "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Shaders/SphericalEnvironment.gdshader",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/SA2/Monitor_Glass.tres",
+          "kind": "Resource"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Rings/Ring_Env.tres",
+          "kind": "Resource"
         }
       ]
     },
@@ -6214,6 +8152,24 @@
         {
           "path": "res://LS5Framework/Shaders/adventure_water_surface.gdshaderinc",
           "kind": "Shader include"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Abilities/DropDash_Airborne_Release.ogg",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Player/spindash_action.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Abilities/DropDash_Airborne_Released_Loop.ogg",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/Player/spindash_action.gd",
+          "kind": "Preload"
         }
       ]
     },
@@ -7265,10 +9221,55 @@
       ]
     },
     {
+      "path": "res://LS5Framework/Sounds/Menu/Countdown.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/Countdown_GO.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
       "path": "res://LS5Framework/Sounds/Menu/Pause.wav",
       "owners": [
         {
           "path": "res://LS5Framework/Scenes/Pause/PauseMenu.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/Race_SonicR_Go.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/Race_SonicR_Ready.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/Race_SonicR_Set.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
           "kind": "Preload"
         }
       ]
@@ -7300,6 +9301,42 @@
         },
         {
           "path": "res://LS5Framework/Scripts/Net/NetworkSession.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/titlecard.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/Race/RaceStart.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/ui_down.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuAudioFeedback.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/ui_hover.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuAudioFeedback.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Menu/ui_release.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Scripts/UI/MenuAudioFeedback.gd",
           "kind": "Preload"
         }
       ]
@@ -7340,6 +9377,15 @@
       "owners": [
         {
           "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
+          "kind": "Preload"
+        }
+      ]
+    },
+    {
+      "path": "res://LS5Framework/Sounds/Objects/Balloon_Pop.wav",
+      "owners": [
+        {
+          "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitor.gd",
           "kind": "Preload"
         }
       ]
@@ -7502,6 +9548,20 @@
       ]
     },
     {
+      "path": "res://addons/ls5_lipsync/editor/lip_sync_alignment.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://addons/ls5_lipsync/editor/lip_sync_draft.gd",
+          "kind": "Preload"
+        }
+      ],
+      "source_sha256": "441224a238882a1c9cfb5fb85f517abdfad506518caa4692b69d0ff977330fcd"
+    },
+    {
       "path": "res://addons/ls5_lipsync/editor/lip_sync_draft.gd",
       "owners": [
         {
@@ -7513,7 +9573,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "e51e0c663d02ed618eefa8554d11f84092210aeb64648e71ba3c7f132e5fda31"
+      "source_sha256": "b83d396dd1111530f897156239a08a4d1c8b79ac64e3a00cbf4be3811f913d21"
     },
     {
       "path": "res://addons/ls5_lipsync/editor/lip_sync_screen.gd",
@@ -7523,7 +9583,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "6c14480911dc3fa07c894c27a7c96a891464d7d9bd5efeaba59e252aa0be4af9"
+      "source_sha256": "8850ce34c6cabd2e25330dfa0968323e9ca61768910cd08990c5f0638a0871f7"
     },
     {
       "path": "res://addons/ls5_lipsync/editor/lip_sync_timeline.gd",
@@ -7545,7 +9605,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "551651781f0e45b389c4b379853c323ab3889e2ec6c23f0b6d35640be4535925"
+      "source_sha256": "c3baa10ff1f85f9fdbbf1d3681e737f5d37c93949b14700269b9fc7d03a492de"
     },
     {
       "path": "res://addons/ls5_lipsync/editor/lip_sync_waveform.gd",
@@ -7553,6 +9613,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://addons/ls5_lipsync/editor/lip_sync_alignment.gd",
+          "kind": "Preload"
         },
         {
           "path": "res://addons/ls5_lipsync/editor/lip_sync_screen.gd",
@@ -7563,7 +9627,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "a30c0886b3466a659ce614b9ddc15440d411cd9710302ecc1f4267e390a58742"
+      "source_sha256": "4987388971d08600abeb56773c9025c30a19760e4dd3739c6b9f6be60e1e152e"
     },
     {
       "path": "res://addons/ls5_lipsync/runtime/lip_sync_clip.gd",
@@ -7597,7 +9661,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "56b3a2a37a468d787f309b0bd134f84018ece72714b2931abc796af92f6c161f"
+      "source_sha256": "d13ed90ea5ee547bb30156a2de1d14db62d9dd1196646b876f25b7bd8e7c9915"
     },
     {
       "path": "res://addons/ls5_lipsync/runtime/lip_sync_cue.gd",
@@ -7605,6 +9669,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://addons/ls5_lipsync/editor/lip_sync_alignment.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://addons/ls5_lipsync/editor/lip_sync_draft.gd",
@@ -7631,7 +9699,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "623280f3a80cfc945684ff008b10d9447ffedaaedadb040e159fa87d3b5b2a29"
+      "source_sha256": "303a1ffbb928d086e795fa38be1cebeab1a6a49b4d4ff025f9c2a79424e52809"
     },
     {
       "path": "res://addons/ls5_lipsync/runtime/lip_sync_driver.gd",
@@ -7639,6 +9707,10 @@
         {
           "path": "Bootstrap script",
           "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoPlayerPanel.gd",
+          "kind": "Script class"
         },
         {
           "path": "res://addons/ls5_lipsync/editor/lip_sync_screen.gd",
@@ -7653,7 +9725,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "bc2473146d7d5069c01d35221b25f21d0a0191c5b6d8ffb86dfed6679a12680e"
+      "source_sha256": "9d67ccae38dd6b4642808fef3e3b30441f7c2d13b2532464847172bd7e3e6352"
     },
     {
       "path": "res://addons/ls5_lipsync/runtime/lip_sync_pose.gd",
@@ -7663,11 +9735,19 @@
           "kind": "Root"
         },
         {
+          "path": "res://LS5Framework/Scenes/PhotoMode/PhotoPlayerPanel.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://addons/ls5_lipsync/editor/lip_sync_draft.gd",
           "kind": "Script class"
         },
         {
           "path": "res://addons/ls5_lipsync/editor/lip_sync_screen.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://addons/ls5_lipsync/runtime/lip_sync_cue.gd",
           "kind": "Script class"
         },
         {
@@ -7683,7 +9763,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "bf2e70ae1bd679d2769cc136c59913be4bda540bcccc8f03724559258e21edc8"
+      "source_sha256": "4355937b400ee0b417dad9590259a34e14fdf95d61bf35164458b11c8a568d37"
     },
     {
       "path": "res://addons/ls5_lipsync/runtime/lip_sync_profile.gd",
@@ -7713,7 +9793,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "6980fc601fa5f5e1faa3035827b80f120ac785114f258e0462db4c76d6b22135"
+      "source_sha256": "33b8f7f57a45c6cd14e1f65395dde1abf1d254b150c2065c51f797c1fd936cee"
     },
     {
       "path": "res://addons/ls5_surface_attach_import/fracture_post_import.gd",
@@ -7747,7 +9827,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "1d045d5203bd2cec7538c2c175fd6b399df345b1a819d893916ecf90219601f8"
+      "source_sha256": "2b3f2ce23df0e63d4fd1a735057992f66534c274a9aafd08d099cc5f12ca1a45"
     },
     {
       "path": "res://addons/netfox.internals/bimap.gd",

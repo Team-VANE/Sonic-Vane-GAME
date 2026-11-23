@@ -24,7 +24,8 @@ var _camera_lead_direction: float = 0.0
 
 
 func update(body: Node3D, value: AutomationSample, delta: float, path_frame: Transform3D = Transform3D.IDENTITY) -> void:
-	if not config or not config.camera_enabled or not body.is_multiplayer_authority():
+	var network: MultiplayerAPI = body.multiplayer
+	if not config or not config.camera_enabled or (network and network.has_multiplayer_peer() and not body.is_multiplayer_authority()):
 		release()
 		return
 	var rig: Node = null

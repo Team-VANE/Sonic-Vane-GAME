@@ -68,7 +68,6 @@ func begin_kick(kind: StringName, up: Vector3) -> void:
 	_kick_up = up.normalized()
 	_hit_targets.clear()
 	_has_previous_position = false
-	_shape.radius = max(uppercut_radius if kind == &"uppercut" else (tornado_radius if kind == &"tornado" else spin_radius), 0.01)
 	_contact_active = true
 	set_physics_process(true)
 
@@ -106,6 +105,9 @@ func _physics_process(_delta: float) -> void:
 	if _player._is_dead or _player._hurt_active or not _player.is_attack_active():
 		end_kick()
 		return
+	var base_radius: float = uppercut_radius if _kick_kind == &"uppercut" else (tornado_radius if _kick_kind == &"tornado" else spin_radius)
+	var speed: float = maxf(_player.velocity.length(), _player._pre_slide_velocity.length())
+	_shape.radius = maxf(base_radius, 0.01) * _player.get_attack_hitbox_multiplier(speed)
 	var position_now: Vector3 = _sensor.global_position
 	var start: Vector3 = _previous_position if _has_previous_position else position_now
 	var distance: float = start.distance_to(position_now)

@@ -109,6 +109,7 @@ func _apply_size_preview() -> void:
 		NodePath("CollisionShape3D"),
 		NodePath("TempMesh"),
 		NodePath("RampMesh"),
+		NodePath("Ramp"),
 	]
 	for node_path: NodePath in size_node_paths:
 		_apply_size_to_node(get_node_or_null(node_path) as Node3D, uniform_size)

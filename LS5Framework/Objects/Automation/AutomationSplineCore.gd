@@ -101,6 +101,8 @@ enum DirectionPolicy { BIDIRECTIONAL, FORWARD_ONLY, REVERSE_ONLY }
 @export var debug_overlay_enabled: bool = false
 
 var sampler: AutomationPathSampler = AutomationPathSampler.new()
+var placement_triggers: Dictionary = {}
+var placement_extensions: Array[Dictionary] = []
 var activation_revision: int = 0
 ## Path currently watched for curve edits.
 var _path: Path3D
@@ -111,6 +113,10 @@ var _controllers: Array[WeakRef] = []
 
 
 func _ready() -> void:
+	if not placement_triggers.is_empty():
+		_install_placement_triggers()
+	if not placement_extensions.is_empty():
+		_install_placement_extensions()
 	if Engine.is_editor_hint():
 		return
 	add_to_group(&"AutomationSplineSources")
@@ -118,6 +124,114 @@ func _ready() -> void:
 	_bind_path()
 	_bind_volume()
 	process_physics_priority = -100
+
+
+func _install_placement_extensions() -> void:
+	for configuration: Dictionary in placement_extensions:
+		var extension: Node3D
+		if configuration["kind"] == "junction":
+			var junction: AutomationRouteConnection = AutomationRouteConnection.new()
+			var destination: String = configuration["destination"]
+			junction.destination_path = NodePath("../../../Placement_%s/Object_%s" % [destination, destination])
+			junction.name = "Junction"
+			extension = junction
+		else:
+			extension = AutomationProgressMarker.new()
+			extension.name = "ProgressEvent"
+		for key: String in configuration["properties"]:
+			extension.set(key, configuration["properties"][key])
+		add_child(extension, true)
+
+
+func _install_placement_triggers() -> void:
+	var container: Node3D = build_trigger_geometry(true, placement_triggers.get("boxes", {}))
+	if not container:
+		return
+	for path: NodePath in [volume_path, start_gate_path, end_gate_path]:
+		var area: Area3D = get_node_or_null(path) as Area3D
+		if area and area.get_parent() == self:
+			remove_child(area)
+			area.queue_free()
+	add_child(container)
+	volume_path = NodePath("_AutomationVolumes/Volume")
+	start_gate_path = NodePath("_AutomationVolumes/Start")
+	end_gate_path = NodePath("_AutomationVolumes/End")
+
+
+func build_trigger_geometry(active_only: bool = false, boxes: Dictionary = {}) -> Node3D:
+	sampler.configure(get_node_or_null(path_path) as Path3D)
+	if not sampler.refresh():
+		return null
+	var existing: Node = get_node_or_null("_AutomationVolumes")
+	if existing and not existing.get_meta(&"automation_generated", false):
+		return null
+	var container: Node3D = Node3D.new()
+	container.name = "_AutomationVolumes"
+	container.set_meta(&"automation_generated", true)
+	container.set_meta(&"automation_basis", global_basis)
+	var frame: Transform3D = Transform3D(Basis.IDENTITY, global_position)
+	container.transform = global_transform.affine_inverse() * frame
+	var inverse: Transform3D = frame.affine_inverse()
+	var width: float = maxf(trigger_width, 0.1)
+	var height: float = maxf(trigger_height, 0.1)
+	var depth: float = maxf(trigger_gate_depth, 0.1)
+	if not active_only or activation_mode in [ActivationMode.ENDPOINTS, ActivationMode.AREA_CROSSINGS]:
+		for index: int in 2:
+			var label: String = "Start" if index == 0 else "End"
+			var gate: Area3D = _add_trigger_area(container, label, not active_only)
+			if boxes.has(label):
+				_add_custom_trigger_box(gate, boxes[label], inverse)
+				continue
+			var value: AutomationSample = sampler.sample(0.0 if index == 0 else sampler.length)
+			gate.transform = inverse * value.get_transform()
+			_add_trigger_box(gate, Vector3(width, height, depth), Transform3D.IDENTITY)
+	if active_only and activation_mode != ActivationMode.OCCUPANCY:
+		return container
+	var volume: Area3D = _add_trigger_area(container, "Volume", true)
+	if boxes.has("Volume"):
+		_add_custom_trigger_box(volume, boxes["Volume"], inverse)
+		return container
+	var step: float = maxf(minf(trigger_spacing, width * 0.5), 0.1)
+	var count: int = clampi(ceili(sampler.length / step), 1, 2048)
+	for index: int in count:
+		var start: AutomationSample = sampler.sample(sampler.length * float(index) / float(count))
+		var finish: AutomationSample = sampler.sample(sampler.length * float(index + 1) / float(count))
+		var middle: AutomationSample = sampler.sample(sampler.length * (float(index) + 0.5) / float(count))
+		var tangent: Vector3 = (finish.position - start.position).normalized()
+		if not tangent:
+			tangent = middle.tangent
+		var up: Vector3 = middle.up.slide(tangent).normalized()
+		var side: Vector3 = tangent.cross(up).normalized()
+		var pose: Transform3D = Transform3D(Basis(side, side.cross(tangent), -tangent), (start.position + finish.position) * 0.5)
+		_add_trigger_box(volume, Vector3(width, height, start.position.distance_to(finish.position) + depth), inverse * pose)
+	return container
+
+
+func _add_custom_trigger_box(area: Area3D, box: Dictionary, inverse: Transform3D) -> void:
+	area.transform = inverse * global_transform * (box["transform"] as Transform3D)
+	_add_trigger_box(area, box["size"], Transform3D.IDENTITY)
+
+
+func _add_trigger_area(container: Node3D, label: String, monitors_bodies: bool) -> Area3D:
+	var area: Area3D = Area3D.new()
+	area.name = label
+	area.collision_layer = 0
+	area.collision_mask = 4
+	area.monitoring = monitors_bodies
+	area.monitorable = monitors_bodies
+	container.add_child(area)
+	return area
+
+
+func _add_trigger_box(area: Area3D, size: Vector3, pose: Transform3D) -> void:
+	var collision: CollisionShape3D = CollisionShape3D.new()
+	collision.name = "Shape%d" % area.get_child_count()
+	var shape: BoxShape3D = BoxShape3D.new()
+	shape.resource_local_to_scene = true
+	shape.size = size
+	collision.shape = shape
+	collision.transform = pose
+	area.add_child(collision)
 
 
 func _bind_volume() -> void:
@@ -217,6 +331,7 @@ func boundary_events(body: Node3D, previous: Vector3, current: Vector3, state: D
 		return events
 	var sides: Array = state.get("sides", [0, 0])
 	var armed: Array = state.get("armed", [false, false])
+	var pending: Dictionary = state.get("plane_crossings", {})
 	for index: int in 2:
 		var gate: Area3D = get_node_or_null(start_gate_path if index == 0 else end_gate_path) as Area3D
 		if not gate or (body is CollisionObject3D and not (body as CollisionObject3D).collision_layer & gate.collision_mask):
@@ -227,20 +342,28 @@ func boundary_events(body: Node3D, previous: Vector3, current: Vector3, state: D
 		var after: float = (current - gate.global_position).dot(axis)
 		var side: int = 1 if after > crossing_deadband else (-1 if after < -crossing_deadband else 0)
 		var old_side: int = int(sides[index])
-		if initialized and side and old_side and side != old_side and absf(after - before) > 0.000001:
-			var fraction: float = clampf(-before / (after - before), 0.0, 1.0)
-			var crossing: Vector3 = previous.lerp(current, fraction)
-			if contains_gate_point(gate, crossing):
+		var fraction: float = 0.0
+		if initialized and old_side:
+			if after * float(old_side) >= 0.0:
+				pending.erase(index)
+			elif before * float(old_side) >= 0.0:
+				fraction = clampf(-before / (after - before), 0.0, 1.0)
+				pending[index] = previous.lerp(current, fraction)
+		if side and old_side and side != old_side:
+			if pending.has(index):
+				var crossing: Vector3 = pending[index]
 				var inward: bool = side > 0 if index == 0 else side < 0
-				if not inward or armed[index]:
+				if contains_gate_point(gate, crossing) and (not inward or armed[index]):
 					events.append({"fraction": fraction, "inward": inward, "direction": 1 if index == 0 else -1, "position": crossing})
 					armed[index] = false
+			pending.erase(index)
 		if side:
 			sides[index] = side
 		if not contains_gate_point(gate, current):
 			armed[index] = true
 	state["sides"] = sides
 	state["armed"] = armed
+	state["plane_crossings"] = pending
 	events.sort_custom(func(first: Dictionary, second: Dictionary) -> bool: return float(first.fraction) < float(second.fraction))
 	return events
 
@@ -425,20 +548,20 @@ func _area_crossings(body: Node3D, previous: Vector3, current: Vector3, state: D
 			continue
 		var key: String = "inside_%d" % index
 		var inside: bool = contains_gate_point(gate, current)
-		var fraction: float = -1.0
-		if initialized and not bool(state.get(key, false)):
-			fraction = preload("res://LS5Framework/Scripts/Player/Automation/AutomationGateSweep.gd")._gate_entry(gate, previous, current)
-		if initialized and not bool(state.get(key, false)) and fraction >= 0.0:
+		var was_inside: bool = bool(state[key]) if state.has(key) else contains_gate_point(gate, previous)
+		state[key] = inside
+		if not initialized or was_inside:
+			continue
+		var fraction: float = preload("res://LS5Framework/Scripts/Player/Automation/AutomationGateSweep.gd")._gate_entry(gate, previous, current)
+		if fraction >= 0.0:
 			var point: Vector3 = previous.lerp(current, fraction)
 			var inward: bool = index == 0
 			if area_crossings_bidirectional:
 				var value: AutomationSample = sampler.closest(point)
 				var speed: float = (current - previous).dot(value.tangent)
 				if absf(speed) < 0.000001:
-					state[key] = inside
 					continue
 				inward = speed > 0.0 if index == 0 else speed < 0.0
 			events.append({"fraction": fraction, "inward": inward, "direction": 1 if index == 0 else -1, "position": point})
-		state[key] = inside
 	events.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.fraction) < float(b.fraction))
 	return events

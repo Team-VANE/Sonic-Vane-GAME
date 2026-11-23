@@ -36,7 +36,7 @@ var _activity_culled: bool = false
 var _visual_culled: bool = false
 var _animations: Array[AnimationMixer] = []
 var _paused_animations: Array[AnimationMixer] = []
-var _geometry_ranges: Dictionary[GeometryInstance3D, Vector2] = {}
+var _geometry_ranges: Dictionary[int, Vector2] = {}
 
 
 func _ready() -> void:
@@ -123,10 +123,10 @@ func _update_visibility_ranges() -> void:
 
 
 func _restore_visibility_ranges() -> void:
-	for entry: Variant in _geometry_ranges:
-		if is_instance_valid(entry):
-			var geometry: GeometryInstance3D = entry
-			var previous: Vector2 = _geometry_ranges[geometry]
+	for instance_id: int in _geometry_ranges:
+		var geometry: GeometryInstance3D = instance_from_id(instance_id) as GeometryInstance3D
+		if geometry:
+			var previous: Vector2 = _geometry_ranges[instance_id]
 			geometry.visibility_range_end = previous.x
 			geometry.visibility_range_end_margin = previous.y
 	_geometry_ranges.clear()
@@ -144,7 +144,7 @@ func _limit_geometry_range(geometry: GeometryInstance3D) -> void:
 		return
 	if geometry.visibility_range_end > 0.0:
 		return
-	_geometry_ranges[geometry] = Vector2(geometry.visibility_range_end, geometry.visibility_range_end_margin)
+	_geometry_ranges[geometry.get_instance_id()] = Vector2(geometry.visibility_range_end, geometry.visibility_range_end_margin)
 	geometry.visibility_range_end_margin = minf(VISIBILITY_MARGIN, visual_distance * 0.2)
 	geometry.visibility_range_end = visual_distance
 

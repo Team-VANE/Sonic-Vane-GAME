@@ -1192,6 +1192,8 @@ func can_start_rail_grind() -> bool:
 
 func _clear_attack_state_for_rail_landing() -> void:
 	var p = _owner
+	if p._roll_action:
+		p._roll_action.clear_for_rail()
 	if p._active_action != null and is_instance_valid(p._active_action):
 		p.clear_active_action()
 	p._attack_sources = 0

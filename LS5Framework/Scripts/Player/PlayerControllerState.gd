@@ -553,7 +553,7 @@ var _enemy_targeting_spawn_input_received: bool = false
 ## Base damping rate for airborne momentum. Multiplies the curve when assigned.
 ## 0.0 disables damping. With a curve value of 1.0, a rate of 1.0 leaves about 37% of undriven momentum after one second.
 ## External launch protection blends this rate back in over one second.
-@export_range(0.0, 10.0, 0.05, "or_greater", "suffix:1/s") var airborne_velocity_damping_rate: float = 0.0
+@export_range(0.0, 10.0, 0.01, "or_greater", "suffix:1/s") var airborne_velocity_damping_rate: float = 0.0
 ## X is airborne speed excluding gravity-driven fall speed. Y multiplies the base damping rate.
 ## At the sampled speed, 0.0 gives no damping, 1.0 uses the base rate, and 2.0 doubles it. Unassigned uses 1.0.
 @export var airborne_velocity_damping_curve: Curve
@@ -648,6 +648,8 @@ var _enemy_targeting_spawn_input_received: bool = false
 ## Character-specific visual and presentation settings.
 @export var character_visual_profile: PlayerCharacterVisualProfile
 @export var model_turn_speed: float = 37.0
+## Maximum grounded model tilt lag from the surface normal, before drift lean. Lower values follow tight loops more closely. 180 disables the limit.
+@export_range(0.0, 180.0, 0.1, "suffix:°") var ground_visual_max_lag_deg: float = 20.0
 ## Airborne model turn speeds (per-axis, used when not attached). 0.0 = snap on that axis.
 ## Yaw = around local up, Pitch = around local right, Roll = around local forward.
 @export var model_turn_speed_air_yaw: float = 20.0
@@ -1347,6 +1349,12 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 ## Max time to stay in homing without hitting anything (auto-cancel).
 @export_storage var homing_fail_timeout: float = 4.0
 @export_storage var homing_post_attack_time: float = 0.2
+
+@export_subgroup("Attack Hitbox")
+## Maximum radius multiplier for body attacks and kicks. 1 keeps the base radius at all speeds. 3 triples it at the full-scale speed.
+@export_range(1.0, 10.0, 0.05, "or_greater") var attack_hitbox_max_multiplier: float = 3.0
+## Speed at which the attack radius reaches its maximum multiplier. Lower values reach the maximum sooner.
+@export_range(0.1, 1000.0, 1.0, "or_greater") var attack_hitbox_full_scale_speed: float = 190.0
 
 @export_subgroup("Attack Magnetism")
 ## Enables gentle target assist while an attacking action permits it.

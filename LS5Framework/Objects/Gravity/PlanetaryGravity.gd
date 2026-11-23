@@ -37,6 +37,12 @@ enum FalloffMode {
 ## Extra distance added past the gravity center for surface raycasts.
 @export var surface_raycast_extra_distance: float = 0.5
 
+@export_group("Planet Surface")
+## Omits the built-in planet mesh and collider for a radial field around level geometry.
+@export var placement_field_only: bool = false
+## Overrides the built-in planet's mesh and collider radius. Zero preserves the scene's authored radius.
+@export_range(0.0, 100.0, 0.01, "or_greater", "suffix:m") var placement_surface_radius: float = 0.0
+
 @export_group("Nodes")
 ## Node used as the planetary gravity center. The area origin is used when empty.
 @export var gravity_center_path: NodePath = NodePath("GravityCenter")
@@ -57,6 +63,7 @@ func _ready() -> void:
 	_gravity_center = get_node_or_null(gravity_center_path) as Node3D
 	_gravity_surface = get_node_or_null(gravity_surface_path) as Node3D
 	_influence_shape = get_node_or_null(influence_shape_path) as CollisionShape3D
+	_configure_planet_surface()
 	_update_influence_shape()
 	monitoring = true
 	if not body_entered.is_connected(_on_body_entered):
@@ -222,6 +229,31 @@ func _update_influence_shape() -> void:
 		return
 	if _influence_shape.shape is SphereShape3D:
 		(_influence_shape.shape as SphereShape3D).radius = max(influence_radius, 0.001)
+
+
+func _configure_planet_surface() -> void:
+	var built_in_surface: Node3D = get_node_or_null("GravitySurface") as Node3D
+	if not built_in_surface:
+		return
+	if placement_field_only:
+		if _gravity_surface == built_in_surface:
+			_gravity_surface = null
+		remove_child(built_in_surface)
+		built_in_surface.queue_free()
+		return
+	if placement_surface_radius <= 0.0:
+		return
+	var collider: CollisionShape3D = built_in_surface.get_node_or_null("CollisionShape3D") as CollisionShape3D
+	if collider and collider.shape is SphereShape3D:
+		var shape: SphereShape3D = collider.shape.duplicate() as SphereShape3D
+		shape.radius = placement_surface_radius
+		collider.shape = shape
+	var model: MeshInstance3D = built_in_surface.get_node_or_null("PlanetMesh") as MeshInstance3D
+	if model and model.mesh is SphereMesh:
+		var mesh: SphereMesh = model.mesh.duplicate() as SphereMesh
+		mesh.radius = placement_surface_radius
+		mesh.height = placement_surface_radius * 2.0
+		model.mesh = mesh
 
 
 func _is_gravity_body(body: Node) -> bool:

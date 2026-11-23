@@ -16,7 +16,9 @@ static func apply_downwarp_from_node_with_hit(
 	node: Node3D,
 	xform: Transform3D,
 	exclude: Array = [],
-	gravity_up: Vector3 = Vector3.ZERO
+	gravity_up: Vector3 = Vector3.ZERO,
+	surface_filter: Callable = Callable(),
+	body_mask: int = 0xFFFFFFFF
 ) -> Dictionary:
 	var up: Vector3 = _resolve_gravity_up(gravity_up, exclude)
 	var result: Dictionary = {}
@@ -56,11 +58,25 @@ static func apply_downwarp_from_node_with_hit(
 	var from_pos: Vector3 = xform.origin + up * 0.1
 	var to_pos: Vector3 = xform.origin - up * max(distance, 0.0)
 	var params: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from_pos, to_pos)
-	params.collision_mask = mask
-	if not exclude.is_empty():
-		params.exclude = exclude
+	params.collision_mask = mask & body_mask
+	params.hit_back_faces = false
+	var exclusions: Array[RID] = []
+	for item: Variant in exclude:
+		if item is RID:
+			exclusions.append(item)
+		elif item is CollisionObject3D and is_instance_valid(item):
+			exclusions.append(item.get_rid())
+	params.exclude = exclusions
 
-	var hit: Dictionary = world.direct_space_state.intersect_ray(params)
+	var hit: Dictionary = {}
+	for attempt: int in range(16):
+		hit = world.direct_space_state.intersect_ray(params)
+		if hit.is_empty() or not surface_filter.is_valid() or surface_filter.call(hit):
+			break
+		params.from = (hit["position"] as Vector3) - up * 0.001
+		hit.clear()
+		if (params.from - to_pos).dot(up) <= 0.0:
+			break
 	if hit:
 		var p: Vector3 = hit.position
 		var n: Vector3 = hit.normal

@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://bbqjenpejk0mi" path="res://LS5Framework/Objects/ItemMonitor/ItemMonitorReward.gd" id="15_6jgde"]
 [ext_resource type="Script" uid="uid://buvn8yqlhmsl6" path="res://LS5Framework/Scripts/Audio/MusicController.gd" id="20_dnl3r"]
 [ext_resource type="AudioStream" uid="uid://dsbo5rxn7yoc8" path="res://LS5Framework/Sounds/Music/Blue Star - For Casinopolis.ogg" id="21_e8qx6"]
+[ext_resource type="PackedScene" uid="uid://c7pdpfing03al" path="res://LS5Framework/Objects/Bumper/Bumper.tscn" id="22_e8qx6"]
 
 [sub_resource type="Environment" id="Environment_1vivr"]
 ambient_light_source = 2
@@ -38,11 +39,11 @@ size = Vector3(7, 7, 9)
 [sub_resource type="BoxShape3D" id="BoxShape3D_fpgrq"]
 size = Vector3(11, 8, 1)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_vor8t"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_g2pal"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_6jgde"]
+[sub_resource type="Curve3D" id="Curve3D_tu4x2"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -50,11 +51,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_dnl3r"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ch26f"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_e8qx6"]
+[sub_resource type="Curve3D" id="Curve3D_4fk4q"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -182,6 +183,10 @@ rolling = 3
 jumping = 3
 pinball = 1
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nphmf"]
+height = 2.1279297
+radius = 2.4804688
+
 [node name="PinballTest" type="Node3D" unique_id=8420253]
 
 [node name="SpawnPoint" parent="." unique_id=902367433 instance=ExtResource("7_x5kse")]
@@ -250,10 +255,10 @@ spring_sounds = Array[AudioStream]([])
 
 [node name="CollisionShape3D" parent="OBJECTS/Spring" index="0" unique_id=594366491]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.4, 0)
-shape = SubResource("CylinderShape3D_vor8t")
+shape = SubResource("CylinderShape3D_g2pal")
 
 [node name="SplinePath" parent="OBJECTS/Spring" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_6jgde")
+curve = SubResource("Curve3D_tu4x2")
 
 [node name="Mesh" parent="OBJECTS/Spring" index="5" unique_id=1922896033]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -268,10 +273,10 @@ spring_sounds = Array[AudioStream]([])
 
 [node name="CollisionShape3D" parent="OBJECTS/Spring2" index="0" unique_id=594366491]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.4, 0)
-shape = SubResource("CylinderShape3D_dnl3r")
+shape = SubResource("CylinderShape3D_ch26f")
 
 [node name="SplinePath" parent="OBJECTS/Spring2" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_e8qx6")
+curve = SubResource("Curve3D_4fk4q")
 
 [node name="Mesh" parent="OBJECTS/Spring2" index="5" unique_id=1922896033]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -326,7 +331,7 @@ shape = SubResource("BoxShape3D_y4e7g")
 [node name="ItemMonitor" parent="OBJECTS/MONITORS" unique_id=1395552001 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 24.39811, 4.1852107)
 monitor_variant = 1
-size = 1.4000000000000001
+size = 1.4
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_q14el")])
 attack_magnetism_enabled = false
 allow_player_pass_through = true
@@ -336,7 +341,7 @@ respawn_delay_sec = 25.0
 [node name="ItemMonitor6" parent="OBJECTS/MONITORS" unique_id=1178041025 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 12.792677, 4.1852107)
 monitor_variant = 1
-size = 1.4000000000000001
+size = 1.4
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_cg47y")])
 attack_magnetism_enabled = false
 allow_player_pass_through = true
@@ -346,7 +351,7 @@ respawn_delay_sec = 25.0
 [node name="ItemMonitor2" parent="OBJECTS/MONITORS" unique_id=1226388241 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.77907, 32.39811, 4.1852107)
 monitor_variant = 1
-size = 1.4000000000000001
+size = 1.4
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_ju8ge")])
 attack_magnetism_enabled = false
 allow_player_pass_through = true
@@ -356,7 +361,7 @@ respawn_delay_sec = 25.0
 [node name="ItemMonitor3" parent="OBJECTS/MONITORS" unique_id=1795714885 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 24.39811, 4.1852107)
 monitor_variant = 1
-size = 1.4000000000000001
+size = 1.4
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_f02rn")])
 attack_magnetism_enabled = false
 allow_player_pass_through = true
@@ -366,7 +371,7 @@ respawn_delay_sec = 25.0
 [node name="ItemMonitor5" parent="OBJECTS/MONITORS" unique_id=2021665223 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 12.288028, 4.1852107)
 monitor_variant = 1
-size = 1.4000000000000001
+size = 1.4
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_y87x6")])
 attack_magnetism_enabled = false
 allow_player_pass_through = true
@@ -376,7 +381,7 @@ respawn_delay_sec = 25.0
 [node name="ItemMonitor4" parent="OBJECTS/MONITORS" unique_id=140510517 instance=ExtResource("14_vor8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.867577, 32.39811, 4.1852107)
 monitor_variant = 1
-size = 1.4000000000000001
+size = 1.4
 rewards = Array[ExtResource("15_6jgde")]([SubResource("Resource_2hk3y")])
 attack_magnetism_enabled = false
 allow_player_pass_through = true
@@ -409,6 +414,84 @@ script = ExtResource("20_dnl3r")
 autoplay_stream = ExtResource("21_e8qx6")
 autoplay_fade_in = 0.1
 
+[node name="Bumper" parent="." unique_id=46049576 instance=ExtResource("22_e8qx6")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, -28.647196, 0.9937742, -20.39598)
+mirrored_bounce_ratio = 1.2
+maximum_impulse = 120.0
+
+[node name="CollisionShape3D" parent="Bumper" index="0" unique_id=1369850383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7114258, 0)
+shape = SubResource("CylinderShape3D_nphmf")
+
+[node name="Visual" parent="Bumper" index="2" unique_id=1598553867]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Bumper2" parent="." unique_id=2036131136 instance=ExtResource("22_e8qx6")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, -14.433935, 0.9937742, -26.701283)
+mirrored_bounce_ratio = 1.2
+maximum_impulse = 120.0
+
+[node name="CollisionShape3D" parent="Bumper2" index="0" unique_id=1369850383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7114258, 0)
+shape = SubResource("CylinderShape3D_nphmf")
+
+[node name="Visual" parent="Bumper2" index="2" unique_id=1598553867]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Bumper3" parent="." unique_id=515047650 instance=ExtResource("22_e8qx6")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, -17.433935, 0.9937742, -11.91013)
+mirrored_bounce_ratio = 1.2
+maximum_impulse = 120.0
+
+[node name="CollisionShape3D" parent="Bumper3" index="0" unique_id=1369850383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06396496, 0)
+shape = SubResource("CylinderShape3D_nphmf")
+
+[node name="Visual" parent="Bumper3" index="2" unique_id=1598553867]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Bumper4" parent="." unique_id=469504742 instance=ExtResource("22_e8qx6")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, 49.1721, 37.68018, -25.208323)
+launch_mode = 2
+minimum_impulse = 20.0
+maximum_impulse = 50.0
+specified_launch_direction = Vector3(0, 1, 0.2)
+
+[node name="CollisionShape3D" parent="Bumper4" index="0" unique_id=1369850383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06396496, 0)
+shape = SubResource("CylinderShape3D_nphmf")
+
+[node name="Visual" parent="Bumper4" index="2" unique_id=1598553867]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Bumper5" parent="." unique_id=1531129439 instance=ExtResource("22_e8qx6")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, 49.1721, 37.68018, -15.740454)
+launch_mode = 2
+minimum_impulse = 20.0
+maximum_impulse = 50.0
+specified_launch_direction = Vector3(0, 1, 0.2)
+
+[node name="CollisionShape3D" parent="Bumper5" index="0" unique_id=1369850383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06396496, 0)
+shape = SubResource("CylinderShape3D_nphmf")
+
+[node name="Visual" parent="Bumper5" index="2" unique_id=1598553867]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Bumper6" parent="." unique_id=373302966 instance=ExtResource("22_e8qx6")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, 49.1721, 37.68018, -6.2083225)
+launch_mode = 2
+minimum_impulse = 20.0
+maximum_impulse = 50.0
+specified_launch_direction = Vector3(0, 1, 0.2)
+
+[node name="CollisionShape3D" parent="Bumper6" index="0" unique_id=1369850383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06396496, 0)
+shape = SubResource("CylinderShape3D_nphmf")
+
+[node name="Visual" parent="Bumper6" index="2" unique_id=1598553867]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0)
+
 [editable path="OBJECTS/GravityModifier"]
 [editable path="OBJECTS/GravityModifier2"]
 [editable path="OBJECTS/GravityModifier3"]
@@ -418,3 +501,9 @@ autoplay_fade_in = 0.1
 [editable path="OBJECTS/CAMERA/CameraConstraint TABLE"]
 [editable path="OBJECTS/CAMERA/CameraConstraint RIGHT"]
 [editable path="OBJECTS/CAMERA/CameraConstraint LEFT"]
+[editable path="Bumper"]
+[editable path="Bumper2"]
+[editable path="Bumper3"]
+[editable path="Bumper4"]
+[editable path="Bumper5"]
+[editable path="Bumper6"]

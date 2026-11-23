@@ -15,7 +15,7 @@ const SIZE_BASE_SCALE_META: StringName = &"_uniform_size_base_scale"
 		size = max(value, 0.01)
 		if is_node_ready():
 			_apply_size_preview()
-## Additional collision mask for dynamic physics objects that can be launched by this dash panel.
+## Physics layers of dynamic physics objects this panel can launch. Zero disables prop activation.
 @export_flags_3d_physics var dynamic_object_collision_mask: int = 2
 @export var rehit_cooldown: float = 0.15
 ## Also snaps the player to the panel's grounded Y position. Disabled follows the player's current surface height.
@@ -182,6 +182,8 @@ func _on_body_entered(body: Node3D) -> void:
 	if not active:
 		return
 	if not body.has_method("apply_dash_panel_impulse"):
+		return
+	if body is ObjectPhysicsBody3D and (body.collision_layer & dynamic_object_collision_mask) == 0:
 		return
 	if _is_carried_object(body):
 		return

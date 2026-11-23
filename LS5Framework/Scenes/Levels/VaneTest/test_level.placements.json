@@ -3,6 +3,30 @@
   "level_id": "vanetest",
   "placements": [
     {
+      "id": "0d1465ff-4b21-4600-8f4f-b1fde3fe59b6",
+      "type": "dash_panel",
+      "label": "Dash Panel.002",
+      "position": [
+        150.87393188476562,
+        0.05560412257909775,
+        84.68488311767578
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "size": 1.5,
+        "dash_strength": 190.0,
+        "match_y_position": false,
+        "dash_rehit_cooldown": 0.15000000596046448,
+        "movement_lock_time": 0.10000000149011612,
+        "action_lock_time": 0.10000000149011612
+      }
+    },
+    {
       "id": "11d7d642-bb19-44e7-91c6-f87acaab83f5",
       "type": "spring",
       "label": "Dash Ring",
@@ -21,6 +45,46 @@
         "spring_style": "dash_ring",
         "size": 1.0,
         "strength": 80.0
+      }
+    },
+    {
+      "id": "13539a05-c414-4721-8306-2801dd58af48",
+      "type": "bumper",
+      "label": "Bumper",
+      "position": [
+        438.10955810546875,
+        2.4997634887695312,
+        71.19987487792969
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    {
+      "id": "15a1f89c-8245-4384-8271-207f701eab35",
+      "type": "rain_shelter",
+      "label": "Rain Shelter",
+      "position": [
+        465.88909912109375,
+        32.23173522949219,
+        -396.5912170410156
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "rain_shelter_size": [
+          39.97999954223633,
+          10.0,
+          43.189998626708984
+        ]
       }
     },
     {
@@ -47,6 +111,28 @@
       }
     },
     {
+      "id": "1a1046f8-f0ae-41b9-a894-f20c9678d744",
+      "type": "teleporter_entrance",
+      "label": "Teleporter Entrance",
+      "position": [
+        440.3896179199219,
+        5.499994277954102,
+        104.68716430664062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "teleporter_radius": 3.0
+      },
+      "teleporter_link": {
+        "exit": "fc706bff-84d1-4e3c-9380-5e0e1dc2c8be"
+      }
+    },
+    {
       "id": "1c8b1932-dcdb-42c2-af06-3f79cadac7a6",
       "type": "spike_strip",
       "label": "Spike Strip.003",
@@ -66,6 +152,29 @@
         "down_loop_duration": 0.10000000149011612,
         "up_transition_duration": 0.07000000029802322,
         "up_loop_duration": 0.5
+      }
+    },
+    {
+      "id": "1d1d81a7-3687-447c-b6bc-2a7f24f371af",
+      "type": "adventure_water",
+      "label": "Water Box",
+      "position": [
+        0.0,
+        -9.814529418945312,
+        -300.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "water_dimensions": [
+          3500.0,
+          100.0,
+          3500.0
+        ]
       }
     },
     {
@@ -109,6 +218,51 @@
         "rail_id": "91235e3f-05b1-4203-8e2e-8fa2458de12a",
         "fraction": 0.2827475929260254
       }
+    },
+    {
+      "id": "3c7be336-7727-4f35-8ed6-43c57467b0b1",
+      "type": "death_plane",
+      "label": "Death Plane",
+      "position": [
+        3.281907558441162,
+        -28.296260833740234,
+        -319.9859619140625
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "death_plane_dimensions": [
+          5000.0,
+          10.0,
+          5000.0
+        ]
+      }
+    },
+    {
+      "id": "3d0d0b22-71e4-4f63-a70b-fafd38e2277b",
+      "type": "surface_behavior",
+      "label": "Surface Behavior",
+      "position": [
+        479.2379150390625,
+        0.2750000059604645,
+        -384.8225402832031
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "surface_behavior_mode": "targets"
+      },
+      "surface_targets": [
+        "4ce9e30b-545e-45e5-8ede-78abbdf3b9c2"
+      ]
     },
     {
       "id": "3fce823d-df42-4f5c-adc2-43a7a511db97",
@@ -205,6 +359,157 @@
             "tilt": 0.0
           }
         ]
+      }
+    },
+    {
+      "id": "407364c0-4541-4ba1-a620-d12cb2b842d5",
+      "type": "spring",
+      "label": "Spring.002",
+      "position": [
+        320.0,
+        44.00141525268555,
+        114.11894226074219
+      ],
+      "rotation": [
+        -0.70710688829422,
+        -0.0,
+        -1.5700921671149912e-16,
+        0.7071066498756409
+      ],
+      "properties": {
+        "size": 1.0,
+        "strength": 90.0
+      }
+    },
+    {
+      "id": "41023d03-a2ef-4ff9-8e11-b373db1bb69e",
+      "type": "race_start",
+      "label": "Race Start",
+      "position": [
+        402.5806884765625,
+        0.05001525953412056,
+        -756.4850463867188
+      ],
+      "rotation": [
+        0.0,
+        -0.7071068286895752,
+        0.0,
+        0.7071068286895752
+      ],
+      "properties": {
+        "race_start_race_id": "TEH1",
+        "race_start_level_name": "Emerald Hunt Test",
+        "race_start_race_type": "collection",
+        "race_start_collection_required_count": 3,
+        "race_start_use_ready_set_go_countdown": true
+      },
+      "race_links": {
+        "goal": "cb410268-7969-4527-b942-6e8f2a22280e"
+      }
+    },
+    {
+      "id": "49636e9f-0afb-489c-b198-b8871cfb56d9",
+      "type": "camera_constraint",
+      "label": "Fixed Camera Constraint",
+      "position": [
+        336.4059753417969,
+        5.299984931945801,
+        88.75444030761719
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "camera_activation_mode": "occupancy",
+        "camera_volume_size": [
+          59.61000061035156,
+          12.0,
+          24.0
+        ],
+        "camera_position_mode": "path_camera",
+        "camera_collision": "disabled"
+      },
+      "curve": {
+        "closed": false,
+        "points": [
+          {
+            "position": [
+              -49.57220458984375,
+              4.313850402832031,
+              20.873672485351562
+            ],
+            "in": [
+              -7.586700439453125,
+              -7.148433208465576,
+              -16.050682067871094
+            ],
+            "out": [
+              7.586700439453125,
+              7.148434162139893,
+              16.050683975219727
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              -10.97930908203125,
+              13.090047836303711,
+              39.065513610839844
+            ],
+            "in": [
+              -16.785640716552734,
+              0.43639183044433594,
+              -0.418670654296875
+            ],
+            "out": [
+              24.546171188354492,
+              -0.6381497383117676,
+              0.6122360229492188
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              45.46961212158203,
+              4.881752967834473,
+              12.544601440429688
+            ],
+            "in": [
+              -11.674968719482422,
+              5.558125972747803,
+              16.87384033203125
+            ],
+            "out": [
+              11.674976348876953,
+              -5.558129787445068,
+              -16.873851776123047
+            ],
+            "tilt": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "4a5726bc-3e47-4978-8c98-b533cecfa03a",
+      "type": "collection_item",
+      "label": "Emerald Shard.001",
+      "position": [
+        494.2562255859375,
+        5.9295430183410645,
+        -732.6864013671875
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {},
+      "race_links": {
+        "start": "41023d03-a2ef-4ff9-8e11-b373db1bb69e"
       }
     },
     {
@@ -332,7 +637,7 @@
       "position": [
         468.8065490722656,
         0.9999918937683105,
-        -239.09878540039062
+        -516.0987548828125
       ],
       "rotation": [
         0.0,
@@ -340,7 +645,9 @@
         0.0,
         1.0
       ],
-      "properties": {},
+      "properties": {
+        "size": 1.0
+      },
       "variant": "core:rhino_tank"
     },
     {
@@ -386,7 +693,7 @@
       "position": [
         487.7207946777344,
         5.2465667724609375,
-        -244.99871826171875
+        -521.9987182617188
       ],
       "rotation": [
         0.0,
@@ -394,8 +701,33 @@
         0.0,
         1.0
       ],
-      "properties": {},
+      "properties": {
+        "size": 1.0,
+        "attacks_enabled": false,
+        "projectiles_per_shot": 3
+      },
       "variant": "core:gun_beetle"
+    },
+    {
+      "id": "65d0ec77-a442-430c-a5a8-ccede9d1cb89",
+      "type": "planetary_gravity",
+      "label": "Planetary Gravity",
+      "position": [
+        320.0,
+        44.0,
+        131.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "planetary_preset": "standard",
+        "planetary_field_only": false,
+        "planetary_surface_radius": 16.0
+      }
     },
     {
       "id": "70708c4d-80a5-4fc2-a9f3-3eb40288ca93",
@@ -416,6 +748,7 @@
         "monitor_style": "grounded",
         "monitor_reward": "rings",
         "monitor_ring_amount": 15,
+        "size": 1.0,
         "respawn_delay_sec": 6.0
       }
     },
@@ -436,6 +769,25 @@
       ],
       "properties": {
         "size": 1.0
+      }
+    },
+    {
+      "id": "7be682fd-0557-45c4-b157-f0bcf239821a",
+      "type": "flipper",
+      "label": "Left Flipper.001",
+      "position": [
+        371.533447265625,
+        11.999993324279785,
+        99.83150482177734
+      ],
+      "rotation": [
+        3.090862321641907e-08,
+        0.7071068286895752,
+        -0.7071068286895752,
+        3.090862321641907e-08
+      ],
+      "properties": {
+        "flipper_side": "right"
       }
     },
     {
@@ -467,6 +819,170 @@
       }
     },
     {
+      "id": "7f9c8bc0-a4f7-45f7-8e2a-cc2a00ebdeba",
+      "type": "collection_item",
+      "label": "Emerald Shard.002",
+      "position": [
+        494.2562255859375,
+        5.9295430183410645,
+        -688.6864013671875
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {},
+      "race_links": {
+        "start": "41023d03-a2ef-4ff9-8e11-b373db1bb69e"
+      }
+    },
+    {
+      "id": "815393a4-79dd-4f32-8fd3-7748dda264e0",
+      "type": "rain_occluder",
+      "label": "Rain Occluder",
+      "position": [
+        419.597900390625,
+        0.18232154846191406,
+        -394.5357971191406
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "rain_occluder_size": [
+          42.44999694824219,
+          65.47999572753906,
+          59.43000030517578
+        ]
+      }
+    },
+    {
+      "id": "8ab3e89b-e283-42ca-a00d-33439260c8df",
+      "type": "automation_spline",
+      "label": "Automation Spline.001",
+      "position": [
+        343.9433898925781,
+        1.0,
+        -111.33076477050781
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "automation_preset": "scripted_run",
+        "automation_activation": "occupancy",
+        "automation_trigger_width": 33.349998474121094,
+        "automation_trigger_spacing": 15.920000076293945,
+        "automation_capture_distance": 18.0,
+        "automation_tracking_window": 18.0
+      },
+      "curve": {
+        "closed": false,
+        "points": [
+          {
+            "position": [
+              -2.6805663108825684,
+              0.0,
+              3.784329891204834
+            ],
+            "in": [
+              -10.27583122253418,
+              0.0,
+              21.328502655029297
+            ],
+            "out": [
+              17.1417236328125,
+              0.0,
+              -35.57933807373047
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              78.04337310791016,
+              0.0,
+              -59.23203659057617
+            ],
+            "in": [
+              -24.03912353515625,
+              0.0,
+              16.474720001220703
+            ],
+            "out": [
+              19.52880859375,
+              0.0,
+              -13.383670806884766
+            ],
+            "tilt": 0.0
+          }
+        ]
+      },
+      "automation_extensions": [
+        {
+          "kind": "junction",
+          "properties": {
+            "enabled": true,
+            "source_progress": 0.23999999463558197,
+            "source_direction": "forward",
+            "destination_progress": 0.35999998450279236,
+            "destination_direction": "reverse",
+            "choice": "left",
+            "buffer_seconds": 0.4000000059604645,
+            "input_threshold": 0.6000000238418579,
+            "maximum_gap": 2.0,
+            "maximum_angle": 60.0,
+            "minimum_up_dot": 0.5
+          },
+          "destination": "aa936350-c428-4aac-8a0b-18a7c3560280"
+        },
+        {
+          "kind": "junction",
+          "properties": {
+            "enabled": true,
+            "source_progress": 0.2500000298023224,
+            "source_direction": "forward",
+            "destination_progress": 0.6600000262260437,
+            "destination_direction": "forward",
+            "choice": "right",
+            "buffer_seconds": 0.4000000059604645,
+            "input_threshold": 0.6000000238418579,
+            "maximum_gap": 2.0,
+            "maximum_angle": 60.0,
+            "minimum_up_dot": 0.5
+          },
+          "destination": "aa936350-c428-4aac-8a0b-18a7c3560280"
+        }
+      ]
+    },
+    {
+      "id": "8b959dea-48f8-44c9-9a5f-412226007428",
+      "type": "collection_item",
+      "label": "Emerald Shard",
+      "position": [
+        494.2562255859375,
+        5.9295430183410645,
+        -778.6864013671875
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {},
+      "race_links": {
+        "start": "41023d03-a2ef-4ff9-8e11-b373db1bb69e"
+      }
+    },
+    {
       "id": "8f39d2d6-fc08-4e40-b2cd-e43abad714f7",
       "type": "rail_booster",
       "label": "Rail Booster.001",
@@ -489,6 +1005,37 @@
       "attachment": {
         "rail_id": "4cfcc972-7786-45d8-84f3-6431f1de01da",
         "fraction": 0.777955322265625
+      }
+    },
+    {
+      "id": "8fbcf73f-7e78-4a5c-9db9-131d2a7224d1",
+      "type": "camera_constraint",
+      "label": "Fixed Camera Constraint.001",
+      "position": [
+        269.3468322753906,
+        5.122427940368652,
+        86.49177551269531
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "camera_volume_size": [
+          73.44000244140625,
+          12.0,
+          24.0
+        ],
+        "camera_position_mode": "fixed_pivot",
+        "camera_point_offset": [
+          0.0,
+          5.0,
+          18.0
+        ],
+        "camera_orbit_aim": true,
+        "camera_collision": "disabled"
       }
     },
     {
@@ -695,7 +1242,67 @@
         1.0
       ],
       "properties": {
+        "size": 1.0,
         "movement_mode": "physical"
+      }
+    },
+    {
+      "id": "96582b8a-51f4-45eb-9349-252f44f50bc1",
+      "type": "vault_bar",
+      "label": "Vault Bar",
+      "position": [
+        381.54296875,
+        9.202500343322754,
+        47.026611328125
+      ],
+      "rotation": [
+        0.0,
+        0.7071068286895752,
+        0.0,
+        0.7071068286895752
+      ],
+      "properties": {
+        "bar_length": 29.65999984741211,
+        "vault_collision_radius": 4.5,
+        "spins_before_launch": 2,
+        "incoming_to_outgoing_speed_ratio": 1.5,
+        "minimum_launch_impulse": 80.0,
+        "vault_launch_aim_origin": "bar_root",
+        "vault_launch_target": [
+          -5.86274913233248e-17,
+          5.264035224914551,
+          -5.052806854248047
+        ],
+        "opposite_entry_uses_separate_launch_direction": true,
+        "vault_opposite_target": [
+          0.0,
+          2.0,
+          5.0
+        ],
+        "vertical_arc_enabled": false
+      }
+    },
+    {
+      "id": "9bdd9c40-32ed-4ae0-a01a-a24a26c076f0",
+      "type": "ramp",
+      "label": "Ramp",
+      "position": [
+        429.65576171875,
+        0.20044493675231934,
+        69.63391876220703
+      ],
+      "rotation": [
+        -0.0,
+        -1.0,
+        -0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "size": 1.0,
+        "ramp_forward_speed": 150.0,
+        "ramp_up_speed": 25.0,
+        "ramp_additive_launch": false,
+        "ramp_additive_min_speed": 0.0
       }
     },
     {
@@ -763,6 +1370,147 @@
       "variant": "core:blue_ring"
     },
     {
+      "id": "aa936350-c428-4aac-8a0b-18a7c3560280",
+      "type": "automation_spline",
+      "label": "Automation Spline",
+      "position": [
+        321.291015625,
+        1.0,
+        -95.41079711914062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "automation_preset": "scripted_run",
+        "automation_activation": "occupancy",
+        "automation_trigger_width": 32.0,
+        "automation_trigger_spacing": 26.09000015258789,
+        "automation_capture_distance": 18.0,
+        "automation_tracking_window": 18.0
+      },
+      "curve": {
+        "closed": false,
+        "points": [
+          {
+            "position": [
+              18.43136978149414,
+              0.0,
+              58.70651626586914
+            ],
+            "in": [
+              0.025526046752929688,
+              0.0,
+              28.016162872314453
+            ],
+            "out": [
+              -0.025526046752929688,
+              0.0,
+              -28.016157150268555
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              18.365985870361328,
+              0.0,
+              -13.054067611694336
+            ],
+            "in": [
+              0.6531352996826172,
+              0.0,
+              28.00855255126953
+            ],
+            "out": [
+              -0.6472339630126953,
+              0.0,
+              -27.755456924438477
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              -29.441682815551758,
+              0.0,
+              -75.35315704345703
+            ],
+            "in": [
+              18.66466522216797,
+              0.0,
+              24.322280883789062
+            ],
+            "out": [
+              -18.664663314819336,
+              0.0,
+              -24.322280883789062
+            ],
+            "tilt": 0.0
+          }
+        ]
+      },
+      "automation_extensions": [
+        {
+          "kind": "junction",
+          "properties": {
+            "enabled": true,
+            "source_progress": 0.35999998450279236,
+            "source_direction": "forward",
+            "destination_progress": 0.20999999344348907,
+            "destination_direction": "forward",
+            "choice": "right",
+            "buffer_seconds": 0.4000000059604645,
+            "input_threshold": 0.6000000238418579,
+            "maximum_gap": 2.0,
+            "maximum_angle": 60.0,
+            "minimum_up_dot": 0.5
+          },
+          "destination": "8ab3e89b-e283-42ca-a00d-33439260c8df"
+        },
+        {
+          "kind": "junction",
+          "properties": {
+            "enabled": true,
+            "source_progress": 0.7300000190734863,
+            "source_direction": "forward",
+            "destination_progress": 0.20999999344348907,
+            "destination_direction": "forward",
+            "choice": "left",
+            "buffer_seconds": 0.4000000059604645,
+            "input_threshold": 0.6000000238418579,
+            "maximum_gap": 2.0,
+            "maximum_angle": 60.0,
+            "minimum_up_dot": 0.5
+          },
+          "destination": "8ab3e89b-e283-42ca-a00d-33439260c8df"
+        }
+      ]
+    },
+    {
+      "id": "bf6f3e3b-c48a-45c8-9aa7-cb4eb09b7826",
+      "type": "item_monitor",
+      "label": "Item Balloon",
+      "position": [
+        458.0001220703125,
+        16.12714958190918,
+        11.462455749511719
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings",
+        "size": 2.0,
+        "respawn_delay_sec": 3.0
+      }
+    },
+    {
       "id": "c3e778af-c662-43df-8b6e-20574389ce53",
       "type": "rail_booster",
       "label": "Rail Booster",
@@ -785,6 +1533,68 @@
       "attachment": {
         "rail_id": "4cfcc972-7786-45d8-84f3-6431f1de01da",
         "fraction": 0.07827475547790527
+      }
+    },
+    {
+      "id": "c9e599e8-65ca-4c7c-96df-ce66d13dccd0",
+      "type": "dash_panel",
+      "label": "Dash Panel.001",
+      "position": [
+        134.87393188476562,
+        0.05560412257909775,
+        84.68488311767578
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "size": 1.5,
+        "dash_strength": 190.0,
+        "match_y_position": false,
+        "dash_rehit_cooldown": 0.15000000596046448,
+        "movement_lock_time": 0.10000000149011612,
+        "action_lock_time": 0.10000000149011612
+      }
+    },
+    {
+      "id": "cb410268-7969-4527-b942-6e8f2a22280e",
+      "type": "goal_ring",
+      "label": "Goal Ring",
+      "position": [
+        481.9251403808594,
+        0.1693706512451172,
+        -882.552734375
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "goal_ring_size": [
+          50.0,
+          20.0,
+          50.0
+        ],
+        "goal_ring_visual_enabled": true,
+        "goal_ring_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "goal_ring_goal_camera_mode": "player",
+        "goal_ring_camera_point": [
+          -7.107486248016357,
+          0.23000000417232513,
+          0.0
+        ]
+      },
+      "race_links": {
+        "start": "41023d03-a2ef-4ff9-8e11-b373db1bb69e"
       }
     },
     {
@@ -816,6 +1626,23 @@
       }
     },
     {
+      "id": "d29e7cb3-3a34-4bc9-9a4e-4dea8b774732",
+      "type": "flipper",
+      "label": "Left Flipper",
+      "position": [
+        397.533447265625,
+        11.999993324279785,
+        99.83150482177734
+      ],
+      "rotation": [
+        3.090862321641907e-08,
+        0.7071068286895752,
+        -0.7071068286895752,
+        3.090862321641907e-08
+      ],
+      "properties": {}
+    },
+    {
       "id": "d324c43c-d40d-4c9a-805e-de19bf3c7867",
       "type": "dash_panel",
       "label": "Dash Panel",
@@ -831,10 +1658,37 @@
         0.887010931968689
       ],
       "properties": {
+        "size": 1.0,
         "dash_strength": 100.0,
         "match_y_position": false,
         "movement_lock_time": 0.699999988079071,
         "action_lock_time": 0.699999988079071
+      }
+    },
+    {
+      "id": "dbb7fc24-2acd-4fed-80ba-2cea5838cc49",
+      "type": "spring",
+      "label": "Spring.003",
+      "position": [
+        484.0,
+        1.0,
+        90.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 1.5,
+        "strength": 100.0,
+        "movement_lock_time": 0.5,
+        "action_lock_time": 0.5
+      },
+      "presentation": {
+        "hidden": true,
+        "muted": true
       }
     },
     {
@@ -853,6 +1707,7 @@
         1.0
       ],
       "properties": {
+        "size": 1.0,
         "movement_mode": "crash_down"
       }
     },
@@ -873,9 +1728,29 @@
       ],
       "properties": {
         "size": 1.5,
-        "strength": 60.0,
+        "strength": 100.0,
         "movement_lock_time": 0.5,
         "action_lock_time": 0.5
+      }
+    },
+    {
+      "id": "fc706bff-84d1-4e3c-9380-5e0e1dc2c8be",
+      "type": "teleporter_exit",
+      "label": "Teleporter Exit",
+      "position": [
+        488.507080078125,
+        3.8367958068847656,
+        98.0501937866211
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "teleporter_downwarp_enabled": true,
+        "teleporter_downwarp_distance": 100.0
       }
     }
   ]

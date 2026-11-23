@@ -16,7 +16,10 @@ class_name RingSpline
 ## Collision mask used for the downward terrain raycast.
 @export_flags_3d_physics var terrain_warp_collision_mask: int = 0xFFFFFFFF
 
-## Respawn delay for each spawned ring (seconds). Zero disables respawn.
+## Allows spawned rings to respawn according to their ring variant.
+@export var ring_trail_respawn_enabled: bool = true
+
+## Respawn delay for each spawned ring in seconds. Zero disables respawn.
 @export var ring_respawn_delay: float = 60.0
 
 ## Optional Path3D node. Defaults to a child named "Path3D" if left empty.
@@ -94,8 +97,8 @@ func _regenerate() -> void:
 			var ring: Ring = ring_3d as Ring
 			if ring_respawn_delay >= 0.0:
 				ring.respawn_delay_sec = ring_respawn_delay
-				if is_zero_approx(ring_respawn_delay):
-					ring.respawn_enabled = false
+			if not ring_trail_respawn_enabled or is_zero_approx(ring_respawn_delay):
+				ring.respawn_enabled = false
 			ring.configure_terrain_warp(
 				terrain_warp_enabled,
 				terrain_warp_height_offset,
