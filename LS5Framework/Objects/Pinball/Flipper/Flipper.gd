@@ -259,6 +259,10 @@ func _try_strike(
 	if launch_velocity.is_equal_approx(incoming_velocity):
 		return false
 	_struck_players[player_id] = true
+	if player._rail_active or player._rail_switch_active:
+		player.cancel_rail_grind()
+		player.attached = false
+		player._attachment_immunity = maxf(player._attachment_immunity, player.get_physics_process_delta_time() * 2.0)
 	player.velocity = launch_velocity
 	if exit_speed >= strong_launch_speed:
 		_clear_player_from_paddle(player, up)

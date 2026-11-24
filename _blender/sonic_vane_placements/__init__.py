@@ -1769,6 +1769,11 @@ class SONICVANE_OT_convert_edge_to_rail(Operator):
 
     smooth: BoolProperty(name="Smooth Bends", description="Fit automatic Bézier handles through the edge vertices")
     reverse: BoolProperty(name="Reverse Direction", description="Reverse the order of the rail path")
+    _rider_offset_field = CATALOG["types"]["rail"]["properties"]["player_height_offset"]
+    rider_offset: FloatProperty(
+        name="Rider Offset", description=_rider_offset_field["description"], unit="LENGTH",
+        default=_rider_offset_field["default"], min=_rider_offset_field["min"], max=_rider_offset_field["max"],
+    )
 
     @classmethod
     def poll(cls, context):
@@ -1809,6 +1814,7 @@ class SONICVANE_OT_convert_edge_to_rail(Operator):
         placement = rail.sonic_vane_placement
         placement.placement_id = reserve_placement_id(scene_placement_ids(context.scene))
         placement.kind = "rail"
+        placement.player_height_offset = self.rider_offset
         for obj in context.selected_objects:
             obj.select_set(False)
         rail.select_set(True)

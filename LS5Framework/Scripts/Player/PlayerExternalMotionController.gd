@@ -669,9 +669,7 @@ func _prepare_spring_launch(preserve_flight: bool) -> void:
 		p._reset_spindash_state()
 	if p._lightspeed_dash_active:
 		p._stop_lightspeed_dash_if_active()
-	if p._rail_switch_active:
-		p._cancel_rail_switch()
-	if p._rail_active:
+	if p._rail_active or p._rail_switch_active:
 		p.cancel_rail_grind()
 	if not preserve_flight:
 		p.clear_active_action()
@@ -1042,8 +1040,6 @@ func apply_dash_panel_impulse(
 	p.cancel_drop_dash_for_object_interaction()
 	if p._lightspeed_dash_active:
 		p._stop_lightspeed_dash_if_active()
-	if p._rail_switch_active:
-		p._cancel_rail_switch()
 	cancel_vault_bar()
 	p._bounce_state = p.BounceState.NONE
 	cancel_spline_spring()
@@ -1330,6 +1326,8 @@ func apply_ramp_impulse(
 	cancel_vault_bar()
 	cancel_spline_spring()
 	p.cancel_homing_attack(false)
+	if p._rail_active or p._rail_switch_active:
+		p.cancel_rail_grind()
 	p._bounce_state = p.BounceState.NONE
 
 	# Always detach.

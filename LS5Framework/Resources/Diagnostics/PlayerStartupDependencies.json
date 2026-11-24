@@ -5166,7 +5166,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "5640e28e85c6aa6bba4ec31fbbf648223d5ced6259ee8614a98d999c79386f77"
+      "source_sha256": "61070eca6632f861351eed80e58cd4af31013b071008d40be6a99cb3f59fddcc"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerGravityController.gd",
@@ -5350,7 +5350,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "6c0f342581404495fa58ffb99a6d34ad6cda962ea0c9df13ef9e6e032050e945"
+      "source_sha256": "a4c90286ae6a7fe95bdfb34fbf42833f0e9d493ee2abc17caab153b77c3ac004"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerRespawnController.gd",

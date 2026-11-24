@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://jcegch2wlol0"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_e6kb4"]
+
+[resource]
+script = ExtResource("1_e6kb4")
+level_name = "Sky Rail"
+level_id = "skyrail"
+order = 40
+selection_category = "Test"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Sky Rail/sky_rail.tscn"
+placements_file = "res://LS5Framework/Scenes/Levels/Sky Rail/SkyRail.placements.json"

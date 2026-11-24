@@ -394,11 +394,17 @@ func is_rail_crouch_input_pressed() -> bool:
 func cancel_rail_grind(reset_velocity: bool = false) -> void:
 	var p = _owner
 	var was_rail_active: bool = p._rail_active
+	if was_rail_active:
+		_refresh_rail_cooldown(p._rail_node)
+	if p._rail_switch_active:
+		_refresh_rail_cooldown(p._rail_switch_target)
+		_cancel_rail_switch()
 	if p._rail_grind_action != null:
 		p._rail_grind_action.cancel_grind(reset_velocity)
 	if was_rail_active:
 		p._play_rail_detach_sfx()
 	p._rail_active = false
+	p._rail_node = null
 	p._rail_path = null
 	p._rail_distance = 0.0
 	p._rail_total_length = 0.0
@@ -410,6 +416,11 @@ func cancel_rail_grind(reset_velocity: bool = false) -> void:
 	p._stop_rail_grind_sfx()
 	if reset_velocity:
 		p.velocity = Vector3.ZERO
+
+
+func _refresh_rail_cooldown(rail: Variant) -> void:
+	if is_instance_valid(rail) and rail.has_method("refresh_cooldown"):
+		rail.call("refresh_cooldown", _owner)
 
 
 func _get_rail_tangent_world(curve: Curve3D, distance: float, total_length: float) -> Vector3:
@@ -1183,7 +1194,7 @@ func start_rail_grind(params: Dictionary) -> void:
 
 func can_start_rail_grind() -> bool:
 	var p = _owner
-	if p._is_dead:
+	if p._is_dead or p._vault_bar_active or p._spline_active:
 		return false
 	if p._rail_grind_action == null:
 		return false
@@ -1455,8 +1466,7 @@ func _end_rail(jumped: bool, world_up: Vector3) -> void:
 	if not p._rail_active:
 		return
 
-	if p._rail_node != null and p._rail_node.has_method("refresh_cooldown"):
-		p._rail_node.refresh_cooldown(p)
+	_refresh_rail_cooldown(p._rail_node)
 	p._rail_node = null
 
 	p._stop_rail_grind_sfx()

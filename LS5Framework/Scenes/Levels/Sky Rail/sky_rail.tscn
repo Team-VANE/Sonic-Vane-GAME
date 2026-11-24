@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c8id0doqmtf68"]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="1_1b14d"]
+[ext_resource type="PackedScene" uid="uid://cjsshjgaopq6e" path="res://LS5Framework/Scenes/Levels/Sky Rail/SkyRail.glb" id="2_yk0at"]
+
+[node name="SkyRail" type="Node3D" unique_id=8420253]
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=623175128]
+
+[node name="ENVIRONMENT" type="Node3D" parent="." unique_id=962165829]
+
+[node name="EnvironmentWeatherSystem" parent="ENVIRONMENT" unique_id=1089935898 instance=ExtResource("1_1b14d")]
+
+[node name="SkyRail" parent="." unique_id=1724391971 instance=ExtResource("2_yk0at")]
