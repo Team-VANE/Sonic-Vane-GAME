@@ -131,14 +131,20 @@ func get_current_spawn_point() -> Node3D:
 		fallback_spawn = _current_level.get_node_or_null(_direct_level_spawn_path) as Node3D
 	if not fallback_spawn:
 		fallback_spawn = _current_level.get_node_or_null("PlayerSpawn") as Node3D
+	var placed_spawn: SpawnPoint
+	var placed_id: String = ""
 	for spawn: Node in get_tree().get_nodes_in_group(SpawnPoint.SPAWN_GROUP):
-		if not _current_level.is_ancestor_of(spawn) or spawn.is_queued_for_deletion():
+		var candidate: SpawnPoint = spawn as SpawnPoint
+		if not candidate or not _current_level.is_ancestor_of(candidate) or candidate.is_queued_for_deletion():
 			continue
-		if spawn.has_meta(LevelPlacementsScript.ID_META):
-			return spawn as SpawnPoint
-		if not fallback_spawn:
-			fallback_spawn = spawn as SpawnPoint
-	return fallback_spawn
+		if candidate.has_meta(LevelPlacementsScript.ID_META):
+			var id: String = candidate.get_meta(LevelPlacementsScript.ID_META)
+			if not placed_spawn or candidate.spawn_priority > placed_spawn.spawn_priority or (candidate.spawn_priority == placed_spawn.spawn_priority and id < placed_id):
+				placed_spawn = candidate
+				placed_id = id
+		elif not fallback_spawn or (fallback_spawn is SpawnPoint and candidate.spawn_priority > fallback_spawn.spawn_priority):
+			fallback_spawn = candidate
+	return placed_spawn if placed_spawn else fallback_spawn
 
 
 func is_level_loading() -> bool:
@@ -359,7 +365,7 @@ func load_level_by_scene_path(
 	var placements: Array[Dictionary] = []
 	var placement_environment: Dictionary = {}
 	var entry: Dictionary = _get_loading_level_entry(scene_path, &"")
-	var placements_file: String = entry.get("placements_file", "")
+	var placements_file: String = LevelPlacementsScript.sidecar_for_scene(scene_path) if entry.is_empty() else entry.get("placements_file", "")
 	if not placements_file.is_empty():
 		var placements_level_id: String = entry.get("id", "")
 		var placement_result: Dictionary = LevelPlacementsScript.read(placements_file, placements_level_id)
@@ -375,7 +381,7 @@ func load_level_by_scene_path(
 		placements = placement_result["placements"]
 		placement_environment = placement_result["environment"]
 		if level_id == &"":
-			level_id = StringName(placements_level_id)
+			level_id = StringName(placement_result["level_id"])
 
 	var session_prep_start_usec: int = Time.get_ticks_usec()
 	var network_time_suspended: bool = _suspend_network_time_for_level_load()

@@ -110,6 +110,7 @@ static var _missing_scene_paths: Dictionary = {}
 @export var reset_hud_timer_on_start: bool = true
 
 @export_group("Music")
+## Race soundtrack. Leave empty to keep level music during the race intro and start.
 @export var go_music_stream: AudioStream
 @export var go_music_fade_in: float = 0.75
 @export var go_music_fade_out: float = 0.0
@@ -1981,7 +1982,7 @@ func _get_music_controller():
 
 
 func _fade_out_music() -> void:
-	if get_tree() == null:
+	if not go_music_stream or not is_inside_tree():
 		return
 	var controllers := get_tree().get_nodes_in_group("MusicControllers")
 	if controllers != null and not controllers.is_empty():

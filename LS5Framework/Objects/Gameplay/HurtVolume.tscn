@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gameplay/HurtVolume.gd" id="1_hurt_volume"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hurt_volume"]
+size = Vector3(4, 2, 4)
+
+[node name="HurtVolume" type="Area3D"]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_hurt_volume")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_hurt_volume")
+debug_color = Color(1, 0.27, 0.08, 0.5)

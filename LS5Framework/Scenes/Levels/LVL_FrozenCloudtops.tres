@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelDoc" format=3 uid="uid://bkskuu35hmudt"]
+
+[ext_resource type="Script" uid="uid://cheqjqxo0ul20" path="res://LS5Framework/Scripts/World/LevelDoc.gd" id="1_qjrsx"]
+
+[resource]
+script = ExtResource("1_qjrsx")
+level_name = "Frozen Cloudtops"
+level_id = "frozencloudtops"
+order = 8
+selection_category = "Work In Progress"
+scene = "res://LS5Framework/Scenes/Main.tscn"
+level_scene = "res://LS5Framework/Scenes/Levels/Frozen Cloudtops/fcloudtops.tscn"
+placements_file = "res://LS5Framework/Scenes/Levels/Frozen Cloudtops/FCloudtops.placements.json"

@@ -36,6 +36,31 @@ var _character_manifest_signature: String = ""
 var _runtime_cache_misses: Dictionary = {}
 
 
+func _ready() -> void:
+	get_tree().scene_changed.connect(_check_direct_level_start)
+	_check_direct_level_start.call_deferred()
+
+
+func _check_direct_level_start() -> void:
+	var tree: SceneTree = get_tree()
+	var level: Node3D = tree.current_scene as Node3D
+	if not level or level.scene_file_path.is_empty() or tree.has_meta("pending_level_scene"):
+		return
+	if tree.get_first_node_in_group(&"LevelManager") or tree.get_first_node_in_group(&"NetworkSession"):
+		return
+	var placements: Script = load("res://LS5Framework/Scripts/World/LevelPlacements.gd")
+	var sidecar: String = placements.sidecar_for_scene(level.scene_file_path)
+	for entry: Dictionary in LevelCatalog.load_level_entries("res://LS5Framework/Scenes/Levels"):
+		var entry_path: String = entry.get("level_scene", entry.get("scene", ""))
+		if entry_path.begins_with("uid://"):
+			entry_path = ResourceUID.ensure_path(entry_path)
+		if entry_path == level.scene_file_path:
+			sidecar = entry.get("placements_file", "")
+			break
+	if placements.has_spawn_record(sidecar):
+		SpawnPoint.start_direct_level(tree, level)
+
+
 func is_cache_enabled() -> bool:
 	return bool(ProjectSettings.get_setting(CACHE_SETTING_PATH, false))
 

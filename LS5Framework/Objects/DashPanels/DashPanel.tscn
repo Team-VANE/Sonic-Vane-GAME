@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://e1tkwisehr5p"]
 
 [ext_resource type="Script" uid="uid://c5gp8noh0icuw" path="res://LS5Framework/Objects/DashPanels/DashPanel.gd" id="1_6b4pv"]
-[ext_resource type="AudioStream" uid="uid://v53dxrkdnign" path="res://LS5Framework/Sounds/Objects/DashPanel.wav" id="2_yf8o2"]
+[ext_resource type="AudioStream" uid="uid://dcn5fgopkx5gs" path="res://LS5Framework/Sounds/Objects/DashPanel.wav" id="2_yf8o2"]
 [ext_resource type="PackedScene" uid="uid://cq7gyi4vlbgh1" path="res://LS5Framework/Objects/DashPanels/Mesh-NextGen/DashPanelMesh.tscn" id="3_minmf"]
 [ext_resource type="Script" uid="uid://ih5b0ix1xrej" path="res://LS5Framework/Scripts/EmissionBlink.gd" id="4_4tnew"]
 
@@ -24,8 +24,8 @@ roughness = 0.3
 material = SubResource("StandardMaterial3D_cap")
 radius = 1.0
 height = 2.0
-radial_segments = 24
-rings = 12
+radial_segments = 8
+rings = 6
 
 [node name="DashPanel" type="Area3D" unique_id=1418350663 node_paths=PackedStringArray("sfx_player")]
 collision_layer = 32

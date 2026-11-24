@@ -1,13 +1,14 @@
 extends RefCounted
 
 
-static func build(curve: Curve3D, segment: Mesh) -> ArrayMesh:
+static func build(curve: Curve3D, segment: Mesh, width_scale: float = 1.0, height_scale: float = 1.0) -> ArrayMesh:
 	var length: float = curve.get_baked_length()
 	var segment_length: float = segment.get_aabb().size.x
 	if length <= 0.001 or segment_length <= 0.001:
 		return null
 	var count: int = maxi(1, roundi(length / segment_length))
 	var spacing: float = length / count
+	var cross_section: Vector3 = Vector3(1.0, maxf(height_scale, 0.05), maxf(width_scale, 0.05))
 	var mesh: ArrayMesh = ArrayMesh.new()
 	for surface: int in segment.get_surface_count():
 		var source: Array = segment.surface_get_arrays(surface)
@@ -40,12 +41,13 @@ static func build(curve: Curve3D, segment: Mesh) -> ArrayMesh:
 				var up: Vector3 = frame.basis.y
 				var orientation: Basis = Basis(forward, up, forward.cross(up))
 				var target: int = vertex_start + index
-				positions[target] = frame.origin + orientation * Vector3(0, point.y, point.z)
+				positions[target] = frame.origin + orientation * (Vector3(0, point.y, point.z) * cross_section)
 				if normals:
-					rotated_normals[target] = orientation * normals[index]
+					rotated_normals[target] = orientation * (normals[index] / cross_section).normalized()
 				if tangents:
 					var channel: int = index * 4
-					var tangent: Vector3 = orientation * Vector3(tangents[channel], tangents[channel + 1], tangents[channel + 2])
+					var tangent: Vector3 = Vector3(tangents[channel], tangents[channel + 1], tangents[channel + 2])
+					tangent = orientation * (tangent * cross_section).normalized()
 					var start: int = target * 4
 					rotated_tangents[start] = tangent.x
 					rotated_tangents[start + 1] = tangent.y

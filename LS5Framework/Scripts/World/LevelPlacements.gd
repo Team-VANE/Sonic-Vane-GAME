@@ -6,6 +6,24 @@ const ROOT_NAME: StringName = &"LevelPlacements"
 const ID_META: StringName = &"placement_id"
 
 
+static func sidecar_for_scene(scene_path: String) -> String:
+	var path: String = ResourceUID.ensure_path(scene_path) if scene_path.begins_with("uid://") else scene_path
+	var sidecar: String = path.get_basename() + ".placements.json"
+	return sidecar if not path.is_empty() and FileAccess.file_exists(sidecar) else ""
+
+
+static func has_spawn_record(path: String) -> bool:
+	if path.is_empty() or not FileAccess.file_exists(path):
+		return false
+	var document: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not document is Dictionary or not document.get("placements") is Array:
+		return false
+	for placement: Variant in document["placements"]:
+		if placement is Dictionary and placement.get("type") == "player_spawn":
+			return true
+	return false
+
+
 static func read(path: String, level_id: String) -> Dictionary:
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	if not file:
@@ -16,7 +34,12 @@ static func read(path: String, level_id: String) -> Dictionary:
 	var document: Variant = json.data
 	if not document is Dictionary or document.get("schema_version") != SCHEMA_VERSION:
 		return {"error": "Unsupported placement schema in %s" % path}
-	if level_id.is_empty() or document.get("level_id") != level_id:
+	var document_id: Variant = document.get("level_id")
+	if not document_id is String or document_id.is_empty():
+		return {"error": "%s has an invalid level ID." % path}
+	if level_id.is_empty() and not RegEx.create_from_string("^[a-z][a-z0-9_]*$").search(document_id):
+		return {"error": "%s has an invalid level ID." % path}
+	if not level_id.is_empty() and document_id != level_id:
 		return {"error": "%s has level ID %s, expected %s." % [path, document.get("level_id"), level_id]}
 	var records: Variant = document.get("placements")
 	if not records is Array:
@@ -40,7 +63,6 @@ static func read(path: String, level_id: String) -> Dictionary:
 	var uuid_pattern: RegEx = RegEx.create_from_string("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 	var types_by_id: Dictionary = {}
 	var placements: Array[Dictionary] = []
-	var has_player_spawn: bool = false
 	var race_placements: Dictionary = {}
 	for index: int in records.size():
 		var record: Variant = records[index]
@@ -57,10 +79,6 @@ static func read(path: String, level_id: String) -> Dictionary:
 		var type: Variant = record.get("type")
 		if not type is String or not object_types.has(type):
 			return {"error": "%s has an unknown object type: %s." % [location, type]}
-		if type == "player_spawn":
-			if has_player_spawn:
-				return {"error": "%s contains more than one Player Spawn." % path}
-			has_player_spawn = true
 		types_by_id[id] = type
 		var definition: Dictionary = object_types[type]
 		var scene_path: String = definition["scene"]
@@ -98,6 +116,17 @@ static func read(path: String, level_id: String) -> Dictionary:
 			var field: Dictionary = fields[key]
 			if type == "environment_transition" and field.get("authoring_only", false):
 				return {"error": "%s has an editor-only property: %s." % [location, key]}
+			if field["type"] == "audio_path":
+				var audio_path: Variant = properties[key]
+				if audio_path == "":
+					continue
+				if not audio_path is String or not _is_audio_path(audio_path):
+					return {"error": "%s has an invalid Godot audio path for %s." % [location, key]}
+				if not ResourceLoader.exists(audio_path, "AudioStream"):
+					push_warning("%s cannot find race music %s. Using level music." % [location, audio_path])
+					continue
+				overrides.append({"name": field["target_property"], "value": audio_path, "value_type": "resource_path"})
+				continue
 			if field.has("environment_preset"):
 				var id_value: Variant = properties[key]
 				var preset_field: Dictionary = catalog["environment"][field["environment_preset"]]
@@ -289,7 +318,7 @@ static func read(path: String, level_id: String) -> Dictionary:
 	var race_error: String = _configure_race_links(race_placements)
 	if not race_error.is_empty():
 		return {"error": "%s: %s" % [path, race_error]}
-	return {"placements": placements, "environment": environment}
+	return {"placements": placements, "environment": environment, "level_id": document_id}
 
 
 static func _decode_environment(raw: Variant, fields: Dictionary) -> Dictionary:
@@ -832,6 +861,17 @@ static func _decode_curve(raw: Variant) -> Curve3D:
 		curve.set_point_tilt(curve.point_count - 1, float(point["tilt"]))
 	curve.closed = closed
 	return curve if curve.get_baked_length() > 0.001 else null
+
+
+static func _is_audio_path(path: String) -> bool:
+	if not path.begins_with("res://") or "\\" in path or ":" in path.substr(6):
+		return false
+	if path.get_extension().to_lower() not in ["ogg", "wav", "mp3"]:
+		return false
+	for segment: String in path.substr(6).split("/"):
+		if segment in ["", ".", ".."]:
+			return false
+	return true
 
 
 static func _decode_property(raw: Variant, field: Dictionary) -> Variant:

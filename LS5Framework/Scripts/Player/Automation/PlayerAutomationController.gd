@@ -147,8 +147,8 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 		clear(&"invalid_position")
 		return
 	var sources: Array[Node] = body.get_tree().get_nodes_in_group(&"AutomationSplineSources")
-	sources.sort_custom(func(first: Node, second: Node) -> bool: return String(first.get_path()) < String(second.get_path()))
 	var live_ids: Dictionary = {}
+	var occupancy_checks: Array[Dictionary] = []
 	var pending_boundaries: Array[Dictionary] = []
 	for candidate: Node in sources:
 		var source: AutomationSplineCore = candidate as AutomationSplineCore
@@ -156,25 +156,43 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 			continue
 		var id: int = source.get_instance_id()
 		live_ids[id] = true
+		if source.activation_mode == AutomationSplineCore.ActivationMode.OCCUPANCY:
+			var occupied: bool = source.is_occupied(body)
+			if occupied or _sessions.has(id) or _blocked_sources.has(id):
+				occupancy_checks.append({"source": source, "path": String(source.get_path()), "occupied": occupied})
+			continue
+		if source.activation_mode == AutomationSplineCore.ActivationMode.SCRIPT_ONLY and not _sessions.has(id) and not _blocked_sources.has(id):
+			continue
 		if not source.accepts(body):
 			unregister_source(id, &"source_unavailable")
 			_boundary_states.erase(id)
 			_blocked_sources.erase(id)
 			continue
-		if source.activation_mode == AutomationSplineCore.ActivationMode.OCCUPANCY:
-			if source.is_occupied(body):
-				register_source(source)
-			else:
-				unregister_source(id, &"volume_exit")
-				_blocked_sources.erase(id)
-		elif source.activation_mode in [AutomationSplineCore.ActivationMode.ENDPOINTS, AutomationSplineCore.ActivationMode.AREA_CROSSINGS]:
+		if source.activation_mode in [AutomationSplineCore.ActivationMode.ENDPOINTS, AutomationSplineCore.ActivationMode.AREA_CROSSINGS]:
 			var state: Dictionary = _boundary_states.get_or_add(id, {})
 			if int(state.get("revision", -1)) != source.activation_revision:
 				state.clear()
 				state["revision"] = source.activation_revision
 			var events: Array[Dictionary] = source.boundary_events(body, _previous_position, position, state, _has_previous)
-			for event: Dictionary in events:
-				pending_boundaries.append({"source": source, "event": event})
+			if not events.is_empty():
+				pending_boundaries.append({"source": source, "path": String(source.get_path()), "events": events})
+	if occupancy_checks.size() > 1:
+		occupancy_checks.sort_custom(func(first: Dictionary, second: Dictionary) -> bool: return first.path < second.path)
+	for check: Dictionary in occupancy_checks:
+		var source: AutomationSplineCore = check.source
+		if not is_instance_valid(source):
+			continue
+		var id: int = source.get_instance_id()
+		if not source.accepts(body):
+			unregister_source(id, &"source_unavailable")
+			_boundary_states.erase(id)
+			_blocked_sources.erase(id)
+		elif check.occupied:
+			if not _sessions.has(id):
+				register_source(source)
+		else:
+			unregister_source(id, &"volume_exit")
+			_blocked_sources.erase(id)
 	for id: int in _boundary_states.keys():
 		if not live_ids.has(id):
 			_boundary_states.erase(id)
@@ -203,18 +221,23 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 	if selected and selected == previous_selected and selected.sample.revision == previous_revision:
 		routes.advance(selected, previous_progress, delta, displacement)
 	var transferred: bool = previous_selected and previous_selected.release_reason == &"route_transfer"
+	if pending_boundaries.size() > 1:
+		pending_boundaries.sort_custom(func(first: Dictionary, second: Dictionary) -> bool: return first.path < second.path)
 	for boundary: Dictionary in pending_boundaries:
 		var source: AutomationSplineCore = boundary.source
 		if not is_instance_valid(source):
 			continue
-		var event: Dictionary = boundary.event
-		if event.inward:
-			var owner: AutomationSplineCore = selected.get_source() as AutomationSplineCore if selected else null
-			if not transferred or not owner or source == owner or source.priority > owner.priority:
-				register_source(source, int(event.direction), event.position)
-		else:
-			unregister_source(source.get_instance_id(), &"endpoint_exit")
-			_blocked_sources.erase(source.get_instance_id())
+		for event: Dictionary in boundary.events:
+			if not is_instance_valid(source):
+				break
+			if event.inward:
+				var owner: AutomationSplineCore = selected.get_source() as AutomationSplineCore if selected else null
+				if not transferred or not owner or source == owner or source.priority > owner.priority:
+					register_source(source, int(event.direction), event.position)
+			else:
+				var id: int = source.get_instance_id()
+				unregister_source(id, &"endpoint_exit")
+				_blocked_sources.erase(id)
 	for id: int in _sessions.keys():
 		var session: AutomationSession = _sessions.get(id) as AutomationSession
 		if not session:

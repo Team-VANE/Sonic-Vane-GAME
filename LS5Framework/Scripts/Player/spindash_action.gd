@@ -45,10 +45,10 @@ enum AirSpindashMode { LEGACY, DROP_DASH }
 @export_subgroup("Movement/Launch")
 @export var spindash_min_launch_speed: float = 15.0
 @export var spindash_max_launch_speed: float = 115.0
-## Maximum charged launch speed when Drop-Dash releases on landing. Entry-speed preservation can retain higher incoming speed.
+## Maximum charged launch speed when Drop-Dash releases on landing. Entry-speed preservation can retain a higher entry speed.
 @export_range(0.0, 300.0, 0.5, "or_greater") var drop_dash_max_launch_speed: float = 115.0
 @export var spindash_rail_max_launch_speed: float = 95.0
-## Restores entry speed on release when it exceeds the applicable maximum launch speed.
+## Preserves entry speed above the charge result for Drop-Dash, or above the maximum launch speed for ground and rail spindashes.
 @export var spindash_preserve_entry_speed_above_max: bool = true
 
 @export_subgroup("Movement/Charge")
@@ -402,13 +402,15 @@ func _charge_barrier_blast(delta: float) -> void:
 func get_release_speed() -> float:
 	var min_speed: float = max(spindash_min_launch_speed, 0.0)
 	var max_speed: float = spindash_max_launch_speed
+	var releasing_drop_dash: bool = drop_dash_charging and not owner_player._rail_active
 	if owner_player._rail_active:
 		max_speed = spindash_rail_max_launch_speed
-	elif drop_dash_charging:
+	elif releasing_drop_dash:
 		max_speed = drop_dash_max_launch_speed
 	max_speed = max(max_speed, min_speed)
 	var charged_speed: float = lerp(min_speed, max_speed, get_charge_ratio())
-	if spindash_preserve_entry_speed_above_max and entry_speed > max_speed:
+	var preservation_threshold: float = charged_speed if releasing_drop_dash else max_speed
+	if spindash_preserve_entry_speed_above_max and entry_speed > preservation_threshold:
 		return entry_speed
 	return charged_speed
 

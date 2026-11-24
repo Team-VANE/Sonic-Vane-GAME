@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Spring Stadium.ogg-224c2cabf3044b538994f17b26
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

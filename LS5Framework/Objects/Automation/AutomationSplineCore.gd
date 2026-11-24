@@ -30,9 +30,9 @@ enum DirectionPolicy { BIDIRECTIONAL, FORWARD_ONLY, REVERSE_ONLY }
 @export var activation_mode: ActivationMode = ActivationMode.ENDPOINTS
 ## Volume used for occupancy activation and release.
 @export_node_path("Area3D") var volume_path: NodePath = NodePath("Volume")
-## Start boundary volume. Its origin defines the boundary plane using the canonical start tangent.
+## Start boundary volume. Its plane uses the canonical start tangent or the custom placement box orientation.
 @export_node_path("Area3D") var start_gate_path: NodePath = NodePath("Start")
-## End boundary volume. Its origin defines the boundary plane using the canonical end tangent.
+## End boundary volume. Its plane uses the canonical end tangent or the custom placement box orientation.
 @export_node_path("Area3D") var end_gate_path: NodePath = NodePath("End")
 ## Maximum three-dimensional capture/tracking error. Zero disables distance release.
 @export_range(0.0, 10000.0, 0.1, "or_greater", "suffix:m") var capture_distance: float = 12.0
@@ -46,7 +46,7 @@ enum DirectionPolicy { BIDIRECTIONAL, FORWARD_ONLY, REVERSE_ONLY }
 @export_range(0.0, 1000.0, 0.1) var maximum_tracking_window: float = 0.0
 ## Boundary side deadband. A nonzero side is retained while the body remains inside this band.
 @export_range(0.001, 2.0, 0.001, "suffix:m") var crossing_deadband: float = 0.02
-## Releases open-path sessions after crossing beyond either canonical end.
+## Releases open-path sessions beyond canonical ends. Custom endpoint planes use their authored boundaries.
 @export var release_at_path_ends: bool = true
 
 @export_group("Tracking")
@@ -327,17 +327,20 @@ func boundary_events(body: Node3D, previous: Vector3, current: Vector3, state: D
 	var events: Array[Dictionary] = []
 	if activation_mode == ActivationMode.AREA_CROSSINGS:
 		return _area_crossings(body, previous, current, state, initialized)
-	if activation_mode != ActivationMode.ENDPOINTS or sampler.closed or not sampler.refresh():
+	if activation_mode != ActivationMode.ENDPOINTS or not sampler.refresh() or sampler.closed:
 		return events
 	var sides: Array = state.get("sides", [0, 0])
-	var armed: Array = state.get("armed", [false, false])
 	var pending: Dictionary = state.get("plane_crossings", {})
+	var boxes: Dictionary = placement_triggers.get("boxes", {})
 	for index: int in 2:
 		var gate: Area3D = get_node_or_null(start_gate_path if index == 0 else end_gate_path) as Area3D
 		if not gate or (body is CollisionObject3D and not (body as CollisionObject3D).collision_layer & gate.collision_mask):
 			continue
-		var endpoint: AutomationSample = sampler.sample(0.0 if index == 0 else sampler.length)
-		var axis: Vector3 = endpoint.tangent
+		var axis: Vector3 = -sampler.endpoint_transform(index == 1).basis.z
+		if boxes.has("Start" if index == 0 else "End"):
+			var gate_normal: Vector3 = gate.global_basis.y.cross(gate.global_basis.x).normalized()
+			if gate_normal:
+				axis = gate_normal if gate_normal.dot(axis) >= 0.0 else -gate_normal
 		var before: float = (previous - gate.global_position).dot(axis)
 		var after: float = (current - gate.global_position).dot(axis)
 		var side: int = 1 if after > crossing_deadband else (-1 if after < -crossing_deadband else 0)
@@ -353,16 +356,12 @@ func boundary_events(body: Node3D, previous: Vector3, current: Vector3, state: D
 			if pending.has(index):
 				var crossing: Vector3 = pending[index]
 				var inward: bool = side > 0 if index == 0 else side < 0
-				if contains_gate_point(gate, crossing) and (not inward or armed[index]):
+				if contains_gate_point(gate, crossing):
 					events.append({"fraction": fraction, "inward": inward, "direction": 1 if index == 0 else -1, "position": crossing})
-					armed[index] = false
 			pending.erase(index)
 		if side:
 			sides[index] = side
-		if not contains_gate_point(gate, current):
-			armed[index] = true
 	state["sides"] = sides
-	state["armed"] = armed
 	state["plane_crossings"] = pending
 	events.sort_custom(func(first: Dictionary, second: Dictionary) -> bool: return float(first.fraction) < float(second.fraction))
 	return events
@@ -397,9 +396,19 @@ func contains_gate_point(gate: Area3D, point: Vector3) -> bool:
 func beyond_open_end(position: Vector3, tracking: AutomationSample) -> bool:
 	if not release_at_path_ends or sampler.closed:
 		return false
-	var start: AutomationSample = sampler.sample(0.0)
-	var finish: AutomationSample = sampler.sample(sampler.length)
-	return start.valid and finish.valid and ((tracking.distance < 0.001 and (position - start.position).dot(start.tangent) < -crossing_deadband) or (tracking.distance > sampler.length - 0.001 and (position - finish.position).dot(finish.tangent) > crossing_deadband))
+	var at_start: bool = tracking.distance < 0.001
+	var at_end: bool = tracking.distance > sampler.length - 0.001
+	if (not at_start and not at_end) or not sampler.refresh():
+		return false
+	var boxes: Dictionary = placement_triggers.get("boxes", {}) if activation_mode == ActivationMode.ENDPOINTS else {}
+	if at_start and not boxes.has("Start"):
+		var start: Transform3D = sampler.endpoint_transform(false)
+		if (position - start.origin).dot(start.basis.z) > crossing_deadband:
+			return true
+	if at_end and not boxes.has("End"):
+		var finish: Transform3D = sampler.endpoint_transform(true)
+		return (position - finish.origin).dot(-finish.basis.z) > crossing_deadband
+	return false
 
 
 func _get_configuration_warnings() -> PackedStringArray:

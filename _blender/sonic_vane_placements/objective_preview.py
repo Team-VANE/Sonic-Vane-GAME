@@ -17,6 +17,7 @@ VOLUME_COLORS = {
     "environment_transition": (1.0, 0.64, 0.29, 1.0),
 }
 VOLUME_BOX_KEY = "sonic_vane_volume_box"
+SIZING_REFERENCE_KEY = "sonic_vane_sizing_reference"
 KINDS = {"goal_ring", "collection_item", "race_start", "homing_target", "gravity_modifier", "surface_behavior"} | VOLUME_COLORS.keys()
 AXES = tuple(Vector(axis) for axis in ((1, 0, 0), (0, 1, 0), (0, 0, 1)))
 
@@ -73,6 +74,13 @@ def draw():
         return
     placement = obj.sonic_vane_placement
     kind = placement.kind
+    if obj.get(SIZING_REFERENCE_KEY):
+        world = obj.evaluated_get(context.evaluated_depsgraph_get()).matrix_world
+        points = ring_lines(Vector((0, 0, 1)), obj.sonic_vane_reference_radius, AXES)
+        shader = gpu.shader.from_builtin("UNIFORM_COLOR")
+        shader.bind()
+        draw_lines(shader, [world @ point for point in points], (0.25, 0.94, 0.9, 1.0))
+        return
     if kind not in KINDS:
         return
     world = obj.evaluated_get(context.evaluated_depsgraph_get()).matrix_world

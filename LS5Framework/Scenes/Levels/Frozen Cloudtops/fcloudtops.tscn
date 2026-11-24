@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://b385giyoa66ur"]
+
+[ext_resource type="PackedScene" uid="uid://dfxtce44p1ci" path="res://LS5Framework/Scenes/Levels/Frozen Cloudtops/FCloudtops.glb" id="2_alu5k"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Environment/WeatherSystem/EnvironmentWeatherSystem.tscn" id="2_jexa7"]
+
+[node name="TestLevel" type="Node3D" unique_id=8420253]
+
+[node name="OBJECTS" type="Node3D" parent="." unique_id=623175128]
+
+[node name="ENVIRONMENT" type="Node3D" parent="." unique_id=962165829]
+
+[node name="EnvironmentWeatherSystem" parent="ENVIRONMENT" unique_id=1089935898 instance=ExtResource("2_jexa7")]
+
+[node name="FCloudtops" parent="." unique_id=1171405215 instance=ExtResource("2_alu5k")]

@@ -253,10 +253,11 @@ func _up(fallback: Vector3) -> Vector3:
 func capture_input(input: Vector2, intent: Vector3) -> void:
 	raw_input = input
 	raw_intent = intent
-	if not _exclusive() and _controller() and allows(&"movement"):
-		_controller().routes.capture_input(input.x)
-	intent = _mapped_intent()
 	var controller: PlayerAutomationController = _controller()
+	if not controller or _exclusive() or _blocks(&"movement"):
+		return
+	controller.routes.capture_input(input.x)
+	intent = _mapped_intent()
 	var sample: AutomationSample = _sample()
 	if controller and controller.selected and sample:
 		var source: AutomationSplineCore = controller.selected.get_source() as AutomationSplineCore
@@ -272,6 +273,8 @@ func adjust_input(direction: Vector3, up: Vector3) -> Vector3:
 	if not sample or _exclusive():
 		return direction
 	var tangent: Vector3 = sample.tangent if ribbon else sample.tangent.slide(_up(up)).normalized()
+	if _blocks(&"movement"):
+		return _braking_intent(tangent)
 	if not tangent:
 		return direction
 	var context: Dictionary = _active_context()
@@ -284,9 +287,6 @@ func adjust_input(direction: Vector3, up: Vector3) -> Vector3:
 				axis = -axis
 			mapped = (direction * raw_input.length()).lerp(tangent * axis, _weight(16)) if absf(axis) > mapping.input_deadzone else direction * raw_input.length() * (1.0 - _weight(16))
 			break
-	var policy: AutomationInputTrait = _trait("input", AutomationInputTrait.Mode.PERMISSIONS) as AutomationInputTrait
-	if policy and _policy_engaged and policy.block_movement:
-		mapped = -travel * maxf(-raw_intent.dot(travel), 0.0) if policy.allow_braking else Vector3.ZERO
 	var steering: AutomationSteeringTrait = _trait("steering", AutomationSteeringTrait.Mode.INPUT_HEADING) as AutomationSteeringTrait
 	if steering and steering.canonical_direction:
 		travel = tangent
@@ -298,6 +298,8 @@ func adjust_input(direction: Vector3, up: Vector3) -> Vector3:
 
 func _mapped_intent() -> Vector3:
 	var sample: AutomationSample = _sample()
+	if sample and _blocks(&"movement"):
+		return _braking_intent(sample.tangent)
 	if sample and _weight(16) > 0.0:
 		for component: AutomationInputTrait in _active_context().get("input", []):
 			if component and component.applies(_attached()) and component.mode != AutomationInputTrait.Mode.PERMISSIONS:
@@ -306,6 +308,14 @@ func _mapped_intent() -> Vector3:
 					axis = 0.0
 				return raw_intent.lerp(sample.tangent * axis * (-1.0 if component.reverse_axis else 1.0), _weight(16))
 	return raw_intent
+
+
+func _braking_intent(tangent: Vector3) -> Vector3:
+	if _blocks(&"brake"):
+		return Vector3.ZERO
+	var session: AutomationSession = _active_context().session
+	var travel: Vector3 = tangent * float(session.direction)
+	return -travel * maxf(-raw_intent.dot(travel), 0.0)
 
 
 func has_automatic_drive() -> bool:
@@ -385,7 +395,7 @@ func apply_velocity(velocity: Vector3, up: Vector3, delta: float) -> Vector3:
 				continue
 			if speed.mode == AutomationSpeedTrait.Mode.ASSIST:
 				step *= clampf(absf(intent), 0.0, 1.0)
-			if speed.mode == AutomationSpeedTrait.Mode.PROPULSION and _drive_braking_allowed(speed) and _mapped_intent().dot(travel) < -0.1:
+			if speed.mode == AutomationSpeedTrait.Mode.PROPULSION and _drive_braking_allowed(speed) and intent * drive_sign < -0.1:
 				continue
 			var gain: float = minf(maxf(target - along * drive_sign, 0.0), step)
 			lateral += tangent * drive_sign * gain
@@ -447,7 +457,8 @@ func _blocks(action: StringName) -> bool:
 		&"jump": return policy.block_jump
 		&"roll", &"spindash": return policy.block_roll_spindash
 		&"drift": return policy.block_drift
-		&"actions", &"brake": return false
+		&"brake": return (policy.block_movement or &"movement" in policy.blocked_actions) and not policy.allow_braking
+		&"actions": return false
 	return policy.block_abilities
 
 
@@ -498,7 +509,7 @@ func allows(action: StringName) -> bool:
 func jump_requested() -> void:
 	var policy: AutomationInputTrait = _trait("input", AutomationInputTrait.Mode.PERMISSIONS) as AutomationInputTrait
 	var controller: PlayerAutomationController = _controller()
-	if policy and _policy_engaged and policy.release_on_jump and controller and controller.selected:
+	if policy and _policy_engaged and policy.release_on_jump and controller and controller.selected and allows(&"jump"):
 		controller.release_source(controller.selected.get_source(), &"breakaway")
 
 
@@ -660,5 +671,4 @@ func canonical_heading(up: Vector3) -> Vector3:
 
 
 func _drive_braking_allowed(component: AutomationSpeedTrait) -> bool:
-	var policy: AutomationInputTrait = _trait("input", AutomationInputTrait.Mode.PERMISSIONS) as AutomationInputTrait
-	return component.allow_braking and (not policy or not _policy_engaged or not policy.block_movement or policy.allow_braking)
+	return component.allow_braking and not _blocks(&"brake")

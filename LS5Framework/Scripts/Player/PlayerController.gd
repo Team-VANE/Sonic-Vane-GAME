@@ -4193,6 +4193,8 @@ func _read_input() -> void:
 		_walk_input_held = true
 	else:
 		_walk_input_held = walk_keyboard
+	if not is_automation_action_allowed(&"movement"):
+		_walk_input_held = false
 	if _uses_left_stick_trick_controls() and _should_start_manual_airborne_torque():
 		if not _left_stick_trick_momentum_active:
 			_begin_left_stick_trick_momentum()
@@ -7184,6 +7186,7 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 		and _uses_left_stick_trick_controls()
 		and SettingsManager.left_stick_trick_movement
 		== SettingsManager.LEFT_STICK_TRICK_MOVEMENT_LAST_INPUT
+		and is_automation_action_allowed(&"movement")
 	)
 	if continuous_trick_input_active:
 		var gravity_up_for_continuous_input: Vector3 = _get_gravity_up()
@@ -10938,6 +10941,8 @@ func _apply_left_stick_trick_momentum(lateral: Vector3, maximum_speed: float, wa
 func _should_start_manual_airborne_torque() -> bool:
 	if not manual_airborne_torque_enabled:
 		return false
+	if not is_automation_action_allowed(&"movement"):
+		return false
 	if _dash_movement_lock_active:
 		return false
 	if _spring_detached and (_spring_movement_lock_timer > 0.0 or _spring_action_lock_timer > 0.0):
@@ -11430,6 +11435,14 @@ func _execute_character_profile_route(route: Dictionary, context: Dictionary = {
 		clear_active_action()
 		return true
 	var target_action_id: StringName = StringName(route.get("target_action", &""))
+	var event: StringName = StringName(route.get("event", CharacterProfileManager.ROUTE_EVENT_ABILITY_TRIGGERED))
+	if activation != CharacterProfileManager.ROUTE_ACTIVATION_TOGGLE_OFF and event in [
+		CharacterProfileManager.ROUTE_EVENT_ABILITY_TRIGGERED,
+		CharacterProfileManager.ROUTE_EVENT_INPUT_PRESSED,
+		CharacterProfileManager.ROUTE_EVENT_INPUT_HELD,
+		CharacterProfileManager.ROUTE_EVENT_INPUT_RELEASED,
+	] and not is_automation_action_allowed(target_action_id):
+		return false
 	var target_action = _get_action_by_id(target_action_id)
 	if target_action == null or not _can_execute_action_while_carrying(target_action):
 		return false
@@ -11638,11 +11651,11 @@ func _process_action_inputs() -> void:
 		if action_pressed and not _dash_movement_lock_active:
 			_spring_movement_lock_timer = 0.0
 		return
-	if SettingsManager.is_gameplay_action_just_pressed("ability_slot_02") and _switch_drift_direction_from_action1():
+	if SettingsManager.is_gameplay_action_just_pressed("ability_slot_02") and is_automation_action_allowed(&"drift") and _switch_drift_direction_from_action1():
 		return
 
-	if SettingsManager.is_gameplay_action_just_pressed(String(jump_slot)) and _can_consume_coyote_jump():
-		if coyote_jump_homing_priority and _can_scan_homing_targets() and has_homing_target_in_range():
+	if SettingsManager.is_gameplay_action_just_pressed(String(jump_slot)) and is_automation_action_allowed(&"jump") and _can_consume_coyote_jump():
+		if coyote_jump_homing_priority and is_automation_action_allowed(&"jump_dash") and is_automation_action_allowed(&"homing_attack") and _can_scan_homing_targets() and has_homing_target_in_range():
 			_jump_dash_requested = true
 			return
 		queue_coyote_jump()

@@ -32,6 +32,16 @@ static var _pickup_audio_pan_left: bool = true
 ## Collects this ring locally without sending or accepting network collection updates.
 @export var local_collection_only: bool = false
 
+@export_group("Terrain Warp")
+## Snaps the ring down to terrain after it enters the level.
+@export var terrain_warp_enabled: bool = false
+## Vertical clearance above the terrain hit.
+@export_range(0.0, 1000.0, 0.01, "or_greater") var terrain_warp_height_offset: float = 1.5
+## Physics layers sampled by the terrain ray.
+@export_flags_3d_physics var terrain_warp_collision_mask: int = 0xFFFFFFFF
+
+@export_group("Pickup Effect")
+
 @export var pickup_particle_scene: PackedScene = preload("res://LS5Framework/Objects/Rings/Ring_Particle.tscn")
 @export var pickup_particle_texture: Texture2D = preload("res://LS5Framework/Images/Ring_Particle.png")
 @export var pickup_particle_lifetime: float = 0.35
@@ -70,9 +80,6 @@ var _respawn_timer: float = 0.0
 var _network_respawn_timers: Array[Timer] = []
 var _mesh: MeshInstance3D = null
 var _shape: CollisionShape3D = null
-var _terrain_warp_enabled: bool = false
-var _terrain_warp_height_offset: float = 0.0
-var _terrain_warp_collision_mask: int = 0xFFFFFFFF
 var _terrain_warp_generation: int = 0
 
 
@@ -88,6 +95,8 @@ func _ready() -> void:
 	add_to_group(RIVAL_SEARCH_GROUP)
 	set_process(true)
 	_lsd_register(true)
+	if terrain_warp_enabled:
+		apply_configured_terrain_warp.call_deferred()
 
 
 func _exit_tree() -> void:
@@ -98,14 +107,14 @@ func _exit_tree() -> void:
 
 
 func configure_terrain_warp(warp_enabled: bool, warp_height_offset: float, warp_collision_mask: int) -> void:
-	_terrain_warp_enabled = warp_enabled
-	_terrain_warp_height_offset = maxf(warp_height_offset, 0.0)
-	_terrain_warp_collision_mask = warp_collision_mask
+	terrain_warp_enabled = warp_enabled
+	terrain_warp_height_offset = maxf(warp_height_offset, 0.0)
+	terrain_warp_collision_mask = warp_collision_mask
 	_terrain_warp_generation += 1
 
 
 func apply_configured_terrain_warp() -> bool:
-	if not _terrain_warp_enabled:
+	if not terrain_warp_enabled or not is_inside_tree():
 		return true
 	if _apply_terrain_warp_query():
 		return true
@@ -136,14 +145,17 @@ func _apply_terrain_warp_query() -> bool:
 	var ray_start: Vector3 = ray_origin + Vector3.UP * 0.1
 	var ray_end: Vector3 = ray_origin + Vector3.DOWN * TERRAIN_WARP_RAY_DISTANCE
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(ray_start, ray_end)
-	query.collision_mask = _terrain_warp_collision_mask
+	query.collision_mask = terrain_warp_collision_mask
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
 	var hit: Dictionary = world.direct_space_state.intersect_ray(query)
 	if not hit:
 		return false
 	var hit_position: Vector3 = hit.get("position", ray_origin)
-	global_position = hit_position + Vector3.UP * _terrain_warp_height_offset
+	global_position = hit_position + Vector3.UP * maxf(terrain_warp_height_offset, 0.0)
+	if allow_light_speed_dash and not _collected:
+		_lsd_register(false)
+		_lsd_register(true)
 	return true
 
 

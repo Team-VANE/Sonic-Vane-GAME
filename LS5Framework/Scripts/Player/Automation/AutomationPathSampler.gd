@@ -18,7 +18,9 @@ var _distances: PackedFloat64Array = []
 var _local_distances: PackedFloat64Array = []
 var _frames: Array[Quaternion] = []
 var _search_blocks: Array[AABB] = []
+var _search_clusters: Array[AABB] = []
 const SEARCH_BLOCK_SIZE: int = 32
+const SEARCH_CLUSTER_SIZE: int = 16
 
 
 func configure(path: Path3D) -> void:
@@ -39,6 +41,7 @@ func dispose() -> void:
 	_distances.clear()
 	_frames.clear()
 	_search_blocks.clear()
+	_search_clusters.clear()
 	_local_distances.clear()
 	length = 0.0
 	_dirty = true
@@ -79,6 +82,7 @@ func _rebuild() -> void:
 	_distances.clear()
 	_frames.clear()
 	_search_blocks.clear()
+	_search_clusters.clear()
 	_local_distances.clear()
 	length = 0.0
 	validation_message = ""
@@ -156,6 +160,11 @@ func _rebuild() -> void:
 		for index: int in range(first + 1, mini(first + SEARCH_BLOCK_SIZE + 1, _points.size())):
 			bounds = bounds.expand(_points[index])
 		_search_blocks.append(bounds)
+	for first: int in range(0, _search_blocks.size(), SEARCH_CLUSTER_SIZE):
+		var bounds: AABB = _search_blocks[first]
+		for index: int in range(first + 1, mini(first + SEARCH_CLUSTER_SIZE, _search_blocks.size())):
+			bounds = bounds.merge(_search_blocks[index])
+		_search_clusters.append(bounds)
 
 
 func _safe_up(tangent: Vector3, preferred: Vector3) -> Vector3:
@@ -205,6 +214,11 @@ func sample(distance_value: float) -> AutomationSample:
 	return result
 
 
+func endpoint_transform(at_end: bool) -> Transform3D:
+	var index: int = _points.size() - 1 if at_end else 0
+	return Transform3D(Basis(_frames[index]), _points[index])
+
+
 func closest(position: Vector3, preferred: float = -1.0, window: float = 6.0, predicted: float = -1.0,
 		recovery_distance: float = 20.0, heading: Vector3 = Vector3.ZERO,
 		projection_normal: Vector3 = Vector3.ZERO, projection_depth: float = 4.0) -> AutomationSample:
@@ -242,6 +256,37 @@ func _better(first: AutomationSample, second: AutomationSample, anchor: float, h
 	return second if absf(second.tangent.dot(heading)) > absf(first.tangent.dot(heading)) else first
 
 
+func _closest_search_block(first: int, last: int, position: Vector3, normal: Vector3) -> int:
+	var first_cluster: int = first / SEARCH_CLUSTER_SIZE
+	var last_cluster: int = last / SEARCH_CLUSTER_SIZE
+	var seed: int = first
+	var nearest_bound: float = INF
+	if first_cluster == last_cluster or normal:
+		for block: int in range(first, last + 1):
+			var distance: float = _bound_distance_squared(_search_blocks[block], position, normal)
+			if distance < nearest_bound:
+				nearest_bound = distance
+				seed = block
+		return seed
+	var nearest_cluster: int = first_cluster
+	for cluster: int in range(first_cluster, last_cluster + 1):
+		var distance: float = _bound_distance_squared(_search_clusters[cluster], position, normal)
+		if distance < nearest_bound:
+			nearest_bound = distance
+			nearest_cluster = cluster
+	nearest_bound = INF
+	for pass_index: int in range(first_cluster - 1, last_cluster + 1):
+		var cluster: int = nearest_cluster if pass_index < first_cluster else pass_index
+		if pass_index == nearest_cluster or _bound_distance_squared(_search_clusters[cluster], position, normal) > nearest_bound:
+			continue
+		for block: int in range(maxi(first, cluster * SEARCH_CLUSTER_SIZE), mini(last + 1, (cluster + 1) * SEARCH_CLUSTER_SIZE)):
+			var distance: float = _bound_distance_squared(_search_blocks[block], position, normal)
+			if distance < nearest_bound or (distance == nearest_bound and block < seed):
+				nearest_bound = distance
+				seed = block
+	return seed
+
+
 func _search(position: Vector3, start: float, finish: float, anchor: float, heading: Vector3,
 		projection_normal: Vector3, projection_depth: float) -> AutomationSample:
 	var best: AutomationSample = AutomationSample.new()
@@ -254,43 +299,46 @@ func _search(position: Vector3, start: float, finish: float, anchor: float, head
 	var best_score: float = INF
 	var first_block: int = begin_index / SEARCH_BLOCK_SIZE
 	var last_block: int = end_index / SEARCH_BLOCK_SIZE
-	var seed: int = first_block
-	var nearest_bound: float = INF
-	for block: int in range(first_block, last_block + 1):
-		var bound_distance: float = _bound_distance_squared(_search_blocks[block], position, normal)
-		if bound_distance < nearest_bound:
-			nearest_bound = bound_distance
-			seed = block
-	for iteration: int in range(last_block - first_block + 2):
-		var block: int = seed if not iteration else first_block + iteration - 1
-		if iteration and block == seed:
-			continue
-		if _bound_distance_squared(_search_blocks[block], position, normal) > best_score + 0.000001:
-			continue
-		for index: int in range(maxi(begin_index, block * SEARCH_BLOCK_SIZE), mini(end_index + 1, (block + 1) * SEARCH_BLOCK_SIZE)):
-			last_segment_tests += 1
-			var segment_length: float = _distances[index + 1] - _distances[index]
-			var segment: Vector3 = _points[index + 1] - _points[index]
-			var relative: Vector3 = position - _points[index]
-			var measured_segment: Vector3 = segment.slide(normal) if normal else segment
-			var measured_relative: Vector3 = relative.slide(normal) if normal else relative
-			var fraction: float = measured_relative.dot(measured_segment) / maxf(measured_segment.length_squared(), 0.0000001)
-			fraction = clampf(fraction, maxf((start - _distances[index]) / segment_length, 0.0), minf((finish - _distances[index]) / segment_length, 1.0))
-			var point: Vector3 = _points[index] + segment * fraction
-			var error_vector: Vector3 = position - point
-			if normal and absf(error_vector.dot(normal)) > projection_depth:
+	var seed: int = _closest_search_block(first_block, last_block, position, normal)
+	var first_cluster: int = first_block / SEARCH_CLUSTER_SIZE
+	var last_cluster: int = last_block / SEARCH_CLUSTER_SIZE
+	for cluster: int in range(first_cluster - 1, last_cluster + 1):
+		var block_start: int = seed
+		var block_end: int = seed + 1
+		if cluster >= first_cluster:
+			if _bound_distance_squared(_search_clusters[cluster], position, normal) > best_score + 0.000001:
 				continue
-			var error: float = (error_vector.slide(normal) if normal else error_vector).length()
-			var offset: float = _distances[index] + segment_length * fraction
-			var preference: float = absf(distance_delta(wrap_distance(anchor), offset)) if anchor >= 0.0 else -absf(segment.normalized().dot(heading))
-			var continuity_cost: float = pow(preference * 0.05, 2.0) if anchor >= 0.0 else 0.0
-			var heading_cost: float = (1.0 - absf(segment.normalized().dot(heading))) * 0.01 if heading else 0.0
-			var score: float = error * error + continuity_cost + heading_cost
-			if score < best_score - 0.000001 or (absf(score - best_score) <= 0.000001 and preference < best_preference):
-				best_error = error
-				best_score = score
-				best_offset = offset
-				best_preference = preference
+			block_start = maxi(first_block, cluster * SEARCH_CLUSTER_SIZE)
+			block_end = mini(last_block + 1, (cluster + 1) * SEARCH_CLUSTER_SIZE)
+		for block: int in range(block_start, block_end):
+			if cluster >= first_cluster and block == seed:
+				continue
+			if _bound_distance_squared(_search_blocks[block], position, normal) > best_score + 0.000001:
+				continue
+			for index: int in range(maxi(begin_index, block * SEARCH_BLOCK_SIZE), mini(end_index + 1, (block + 1) * SEARCH_BLOCK_SIZE)):
+				last_segment_tests += 1
+				var segment_length: float = _distances[index + 1] - _distances[index]
+				var segment: Vector3 = _points[index + 1] - _points[index]
+				var relative: Vector3 = position - _points[index]
+				var measured_segment: Vector3 = segment.slide(normal) if normal else segment
+				var measured_relative: Vector3 = relative.slide(normal) if normal else relative
+				var fraction: float = measured_relative.dot(measured_segment) / maxf(measured_segment.length_squared(), 0.0000001)
+				fraction = clampf(fraction, maxf((start - _distances[index]) / segment_length, 0.0), minf((finish - _distances[index]) / segment_length, 1.0))
+				var point: Vector3 = _points[index] + segment * fraction
+				var error_vector: Vector3 = position - point
+				if normal and absf(error_vector.dot(normal)) > projection_depth:
+					continue
+				var error: float = (error_vector.slide(normal) if normal else error_vector).length()
+				var offset: float = _distances[index] + segment_length * fraction
+				var preference: float = absf(distance_delta(wrap_distance(anchor), offset)) if anchor >= 0.0 else -absf(segment.normalized().dot(heading))
+				var continuity_cost: float = pow(preference * 0.05, 2.0) if anchor >= 0.0 else 0.0
+				var heading_cost: float = (1.0 - absf(segment.normalized().dot(heading))) * 0.01 if heading else 0.0
+				var score: float = error * error + continuity_cost + heading_cost
+				if score < best_score - 0.000001 or (absf(score - best_score) <= 0.000001 and preference < best_preference):
+					best_error = error
+					best_score = score
+					best_offset = offset
+					best_preference = preference
 	if best_offset >= 0.0:
 		best = sample(best_offset)
 		best.spatial_error = best_error

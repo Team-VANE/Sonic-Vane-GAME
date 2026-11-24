@@ -81,6 +81,20 @@ var entry_direction_mode: int = 0
 @export var rail_material: Material
 ## Scene containing the textured mesh segment repeated along the grind spline.
 @export var rail_segment: PackedScene
+## Number of sides used by the Standard rail cross-section.
+@export_enum("Square:4", "Hexagon:6", "Octagon:8", "Round:24") var rail_profile: int = 4
+## Visual cross-section scale across the rail.
+@export_range(0.05, 20.0, 0.01) var rail_width_scale: float = 1.0
+## Visual cross-section scale along rail up.
+@export_range(0.05, 20.0, 0.01) var rail_height_scale: float = 1.0
+## Overrides the rail's base color tint, roughness, and metallic finish.
+@export var rail_override_finish: bool = false
+## Multiplies the rail's base color.
+@export_color_no_alpha var rail_tint: Color = Color.WHITE
+## Surface roughness when the material finish is overridden.
+@export_range(0.0, 1.0, 0.01) var rail_roughness: float = 0.5
+## Surface metallic amount when the material finish is overridden.
+@export_range(0.0, 1.0, 0.01) var rail_metallic: float = 0.0
 
 ## Transient editor mesh for spline up-vector arrows.
 var _up_vector_preview: MeshInstance3D
@@ -838,11 +852,37 @@ func _update_path_visual() -> void:
 	elif _path_visual is CSGPolygon3D:
 		var csg := _path_visual as CSGPolygon3D
 		csg.path_node = relative_path
+		_apply_standard_appearance(csg)
 	else:
 		if _path_visual.has_method("set"):
 			_path_visual.set("path", relative_path)
 
 	_sync_path_interval()
+
+
+func _apply_standard_appearance(csg: CSGPolygon3D) -> void:
+	if rail_profile != 4 or rail_width_scale != 1.0 or rail_height_scale != 1.0:
+		var points: PackedVector2Array = csg.polygon
+		if rail_profile != 4:
+			points.resize(rail_profile)
+			for index: int in rail_profile:
+				var angle: float = PI / 4.0 - TAU * float(index) / rail_profile
+				points[index] = Vector2(cos(angle), sin(angle)) * 0.5
+		for index: int in points.size():
+			points[index] *= Vector2(rail_width_scale, rail_height_scale)
+		csg.polygon = points
+	if rail_override_finish:
+		csg.material = _themed_material(csg.material)
+
+
+func _themed_material(base: Material) -> StandardMaterial3D:
+	var material: StandardMaterial3D = base.duplicate() as StandardMaterial3D if base is StandardMaterial3D else StandardMaterial3D.new()
+	material.albedo_color *= Color(rail_tint.r, rail_tint.g, rail_tint.b, 1.0)
+	material.roughness_texture = null
+	material.metallic_texture = null
+	material.roughness = rail_roughness
+	material.metallic = rail_metallic
+	return material
 
 
 func _update_segment_visual() -> void:
@@ -859,13 +899,18 @@ func _update_segment_visual() -> void:
 	if not segment:
 		push_warning("%s: Rail segment has no mesh." % name)
 		return
-	var mesh: ArrayMesh = RailSegmentMesh.build(path.curve, segment)
+	var mesh: ArrayMesh = RailSegmentMesh.build(path.curve, segment, rail_width_scale, rail_height_scale)
 	if not mesh:
 		return
 	var visual: MeshInstance3D = MeshInstance3D.new()
 	visual.name = &"SegmentMesh"
 	visual.mesh = mesh
-	visual.material_override = rail_material
+	if rail_override_finish:
+		for surface: int in mesh.get_surface_count():
+			var material: Material = rail_material if rail_material else mesh.surface_get_material(surface)
+			mesh.surface_set_material(surface, _themed_material(material))
+	else:
+		visual.material_override = rail_material
 	path.add_child(visual)
 
 

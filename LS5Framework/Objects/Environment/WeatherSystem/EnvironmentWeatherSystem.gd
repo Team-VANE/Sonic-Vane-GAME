@@ -265,7 +265,7 @@ func apply_prepared_weather_resources() -> bool:
 
 
 func on_level_preparation_ready() -> void:
-	if Engine.is_editor_hint() or _level_preparation_ready:
+	if Engine.is_editor_hint() or _level_preparation_ready or not is_inside_tree():
 		return
 	if use_weather_presets and not _resources_prepared:
 		push_error("EnvironmentWeatherSystem: level readiness opened before weather resources were prepared.")

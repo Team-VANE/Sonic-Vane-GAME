@@ -9,6 +9,8 @@ const DIRECT_START_GROUP: StringName = &"DirectLevelSpawn"
 
 ## Allows this marker to start gameplay when the level scene is run directly.
 @export var direct_level_start_enabled: bool = true
+## Higher values take precedence within the level's placed or scene-authored spawn points.
+@export_range(-1000000, 1000000, 1) var spawn_priority: int = 0
 
 @export_group("Editor Preview")
 ## Shows the reference character in the editor without loading it during gameplay.
@@ -61,13 +63,21 @@ func _start_direct_level() -> void:
 	if spawn != self:
 		return
 
+	start_direct_level(tree, level, level.get_path_to(self))
+
+
+static func start_direct_level(tree: SceneTree, level: Node, spawn_path: NodePath = NodePath()) -> void:
+	if not tree or not level or level.scene_file_path.is_empty() or tree.has_meta("pending_level_scene"):
+		return
 	tree.set_meta("pending_level_scene", level.scene_file_path)
-	tree.set_meta("pending_level_spawn_path", level.get_path_to(self))
+	if not spawn_path.is_empty():
+		tree.set_meta("pending_level_spawn_path", spawn_path)
 	NetworkManager.leave()
 	var result: Error = tree.change_scene_to_file(GAMEPLAY_SCENE_PATH)
 	if result != OK:
 		tree.remove_meta("pending_level_scene")
-		tree.remove_meta("pending_level_spawn_path")
+		if tree.has_meta("pending_level_spawn_path"):
+			tree.remove_meta("pending_level_spawn_path")
 		push_error("Could not start direct level gameplay: %s" % error_string(result))
 
 

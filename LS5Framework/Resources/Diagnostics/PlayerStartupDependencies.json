@@ -394,7 +394,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "232367c0ae061a21352b0bb851c8ca7dc0280c9ff6db16132f57d3fa2c3bf57b"
+      "source_sha256": "667bc44db9214bb36c848b61bf10e6c8e0bd1e53336c62ae433d7c4275312fee"
     },
     {
       "path": "res://LS5Framework/Objects/Base/WorldObject.gd",
@@ -1002,7 +1002,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "9b11a16a4e299570a13a69fbdfd30716d26973204653f3bfad372f0f2c17133d"
+      "source_sha256": "73dda1e493f89e25654740fd6df3482c442bfcea64896362f68cff980fa55b3c"
     },
     {
       "path": "res://LS5Framework/Objects/Gameplay/Checkpoint.gd",
@@ -1144,11 +1144,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Managers/LevelPreparationManager.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/World/LevelManager.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4e15c9e1f617a8bc9b4e8ef139253c3838db5760a9574a66a0aa9328ea031dba"
+      "source_sha256": "c0bac02b660a6373d9fc062b4ea68e749159d9bf09d95ba0b7e85fd2a9c74a46"
     },
     {
       "path": "res://LS5Framework/Objects/Gravity/GravityModifier.gd",
@@ -1840,7 +1844,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "600f5dcfaafc4b9f3b513b709b554f41f56591430b47d677659ff459209af529"
+      "source_sha256": "83e1951fa69cba4de702c9892273064c3d59313203c025b6c39728e4958c03a1"
     },
     {
       "path": "res://LS5Framework/Objects/Rail/Rail.gd",
@@ -1854,7 +1858,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "5de7c5a0fdcf7ef048e731e61a77b85afb48662c63ab2c566e70304a691800b6"
+      "source_sha256": "affa08ade3741d7abba2559c8f7434a56aad8b9b12e71d7943fa28b658de91b7"
     },
     {
       "path": "res://LS5Framework/Objects/Rail/RailBooster.gd",
@@ -1878,7 +1882,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "4da26e54715e0da33fbe243fe739d8f74abbf1485ff7349f727014ceb1fa0c90"
+      "source_sha256": "d85e7a27079bd27a9b91b0f82d4e89879d112eb92e20e22ce29775f73561c270"
     },
     {
       "path": "res://LS5Framework/Objects/Rings/DroppedRing.gd",
@@ -1957,7 +1961,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "cc82ca21355f88cd8df093ecb0da1aaeadfe3f3b32b8cf90ab27ce3e7340c17b"
+      "source_sha256": "feb128cf3a0234c40000378178b0aa4f441e7c125067193866d3c9f3ee4aaada"
     },
     {
       "path": "res://LS5Framework/Objects/Rings/Ring.tscn",
@@ -1980,7 +1984,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "ba1cf33b9d4c50544931fb53152496a33579fb31f6e269ad14e52e0d56f9ab4d"
+      "source_sha256": "1c3a79ef349cc042935e925d59eba16418fc2741c879da70a266b9b921ecbca2"
     },
     {
       "path": "res://LS5Framework/Objects/Rings/Ring_Env.tres",
@@ -3982,7 +3986,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "c98d3fa8dff8bc8033ac6588e489a15a32ef33498f5d9f85ad2815296701ae77"
+      "source_sha256": "ec8cd09f5394ca656c789b66015b0edf317129a7378987a1790b814720da0e41"
     },
     {
       "path": "res://LS5Framework/Scripts/Managers/ObjectDistanceManager.gd",
@@ -4146,7 +4150,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "42f5de6170d8161a7553e16e62a6d4bf97103b7227f59244410540f9193fe469"
+      "source_sha256": "5fa415c8700942d48bf85805429f61b361a15ae76b51643e84c21014a8bd8e54"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/Automation/AutomationRibbonState.gd",
@@ -4304,7 +4308,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "defc334aaf955354f8dfce4ff095eb6768814064991ea1a2c019b00b2b2ed67f"
+      "source_sha256": "7fc531c865a5d80e3383e9fe73962d29befe2b91ad6e53a5a6350b8de1fd1174"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
@@ -4322,7 +4326,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d39d014ab3e2b7d5434ccdac7543866846f6d033022c4f993364b60f93d2a2f9"
+      "source_sha256": "e97f93b6f8e8294a93e6b2d6b9e9408b93299325657499e002bf96153cce38fc"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/Automation/Traits/AutomationCameraTrait.gd",
@@ -5082,7 +5086,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "89b15cf7797456926f9031e2b9b0544068d70379b0bd1f1f3063780199d96814"
+      "source_sha256": "897e35b65f8ee02c2f013c523cc7832d72696fd46abac3bad460744fad7a8ea1"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
@@ -6271,7 +6275,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "c97934d566d030b293088ed364fda673ddb9b250d0bae2da6a630fb48c5dd1b1"
+      "source_sha256": "10d507e1bd7fbd1c8de8d2d15f89121597d4892c3d6a700266b9e638ae12f055"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/spring_action.gd",
@@ -7631,6 +7635,10 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Managers/LevelPreparationManager.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
           "kind": "Script class"
         },
@@ -7701,7 +7709,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "48b1c31a63530ef47fe7b588bce68937b75817e5fd072cb2a5c9aad40048293a"
+      "source_sha256": "000257159b2d595749b1aa4b9d59c912a2f4fa6d3e8644c5c2a548f0aa505705"
     },
     {
       "path": "res://LS5Framework/Scripts/World/LevelObjectProxy.gd",
@@ -7781,7 +7789,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "96c604c71aeb240ef4a5c21bc48639aed8790847af303dbb8bd9008e374521f7"
+      "source_sha256": "f3d63ea8392f5cf596e267cf954d07d7162bad897e3497d26bf00d0d3184cdf3"
     },
     {
       "path": "res://LS5Framework/Scripts/World/ObjectDistanceCull3D.gd",

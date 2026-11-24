@@ -382,7 +382,9 @@
         "race_start_go_duration": {"label": "Go Display (s)", "description": "Go Display (s)", "type": "float", "default": 1, "group": "Race Start", "target_property": "go_duration", "min": 0},
         "race_start_lock_controls_during_countdown": {"label": "Lock Controls in Countdown", "description": "Lock Controls in Countdown", "type": "bool", "default": true, "group": "Race Start", "target_property": "lock_controls_during_countdown"},
         "race_start_reset_hud_timer_on_start": {"label": "Reset Timer on Start", "description": "Reset Timer on Start", "type": "bool", "default": true, "group": "Race Start", "target_property": "reset_hud_timer_on_start"},
-        "race_start_race_label_enabled": {"label": "Show Race Label", "description": "Show Race Label", "type": "bool", "default": true, "group": "Race Start", "target_property": "race_label_enabled"}
+        "race_start_race_label_enabled": {"label": "Show Race Label", "description": "Show Race Label", "type": "bool", "default": true, "group": "Race Start", "target_property": "race_label_enabled"},
+        "race_start_music": {"label": "Race Music", "description": "Godot project-relative audio path. Leave empty to use level music", "type": "audio_path", "default": "", "group": "Race Music", "target_property": "go_music_stream"},
+        "race_start_music_on_go": {"label": "Start Music on GO", "description": "Start the race track on GO instead of during the intro", "type": "bool", "default": false, "group": "Race Music", "target_property": "go_music_play_on_go"}
       }
     },
     "homing_target": {
@@ -838,10 +840,16 @@
           "label": "Affect Rolling", "description": "Apply speed assistance while rolling", "type": "bool", "default": false, "group": "Speed", "target_property": "affect_rolling", "trait_targets": {"guided_run": ["speed_traits", "Input speed assistance"], "scripted_run": ["speed_traits", "Automatic propulsion"]}, "preset_defaults": {"scripted_run": true}
         },
         "automation_release_on_jump": {
-          "label": "Release on Jump", "description": "Leave the route when the player jumps", "type": "bool", "default": true, "group": "Input", "target_property": "release_on_jump", "trait_targets": {"soft_route": ["input_traits", "Jump breakaway"], "guided_run": ["input_traits", "Jump breakaway"], "loop_assist": ["input_traits", "Jump breakaway"], "scripted_run": ["input_traits", "Scripted permissions"], "side_view": ["input_traits", "Ribbon actions"]}, "preset_defaults": {"side_view": false}
+          "label": "Release on Jump", "description": "Leave the route when the player performs a permitted jump", "type": "bool", "default": true, "group": "Input", "target_property": "release_on_jump", "trait_targets": {"soft_route": ["input_traits", "Jump breakaway"], "guided_run": ["input_traits", "Jump breakaway"], "loop_assist": ["input_traits", "Jump breakaway"], "scripted_run": ["input_traits", "Scripted permissions"], "side_view": ["input_traits", "Ribbon actions"]}, "preset_defaults": {"side_view": false}
         },
         "automation_block_movement": {
-          "label": "Block Movement Input", "description": "Restrict this input while the route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_movement", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+          "label": "Block Movement Input", "description": "Ignore steering and movement input on the ground and in the air while this route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_movement", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+        },
+        "automation_allow_braking": {
+          "label": "Allow Braking While Blocked", "description": "Allow opposing movement input to brake while movement input is blocked", "type": "bool", "default": false, "group": "Input", "target_property": "allow_braking", "requires": {"automation_block_movement": true}, "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
+        },
+        "automation_block_jump": {
+          "label": "Block Jump", "description": "Ignore jump requests while the route is active", "type": "bool", "default": false, "group": "Input", "target_property": "block_jump", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
         },
         "automation_block_roll_spindash": {
           "label": "Block Roll and Spindash", "description": "Restrict this input while the route is active", "type": "bool", "default": true, "group": "Input", "target_property": "block_roll_spindash", "trait_targets": {"scripted_run": ["input_traits", "Scripted permissions"]}
@@ -1086,6 +1094,10 @@
       "label": "Player Spawn",
       "scene": "res://LS5Framework/Objects/Gameplay/SpawnPoint.tscn",
       "properties": {
+        "spawn_priority": {
+          "label": "Spawn Priority", "description": "Higher priority wins when choosing the default spawn",
+          "type": "int", "default": 0, "min": -1000000, "max": 1000000, "group": "Player Spawn"
+        },
         "downwarp_enabled": {
           "label": "Snap Down to Ground", "description": "Search along local down for a surface when spawning",
           "type": "bool", "default": true, "group": "Player Spawn"
@@ -1595,6 +1607,14 @@
           "type": "float", "default": 0.45, "group": "Enemy",
           "min": 0, "variant_defaults": {"core:gun_beetle": 0}
         }
+      }
+    },
+    "hurt_volume": {
+      "label": "Hurt Volume",
+      "scene": "res://LS5Framework/Objects/Gameplay/HurtVolume.tscn",
+      "properties": {
+        "hurt_volume_enabled": {"label": "Enabled", "description": "Apply contact damage on entry", "type": "bool", "default": true, "group": "Hurt Volume", "target_property": "enabled"},
+        "hurt_volume_dimensions": {"label": "Dimensions", "description": "Full dimensions of the damage box before rotation", "type": "local_dimensions", "default": [4.0, 2.0, 4.0], "min": 0.01, "group": "Hurt Volume", "placement_box": true}
       }
     },
     "spike_strip": {
@@ -2395,6 +2415,9 @@
       "label": "Ring",
       "scene": "res://LS5Framework/Objects/Rings/Ring.tscn",
       "properties": {
+        "terrain_warp_enabled": {"label":"Terrain Warp", "description":"Snap down to terrain when the level loads", "type":"bool", "default":false, "group":"Terrain Warp"},
+        "terrain_warp_height_offset": {"label":"Height Above Ground", "description":"Vertical clearance above the terrain hit", "type":"float", "default":1.5, "min":0, "group":"Terrain Warp", "requires":{"terrain_warp_enabled":true}},
+        "terrain_warp_collision_mask": {"label":"Terrain Layers", "description":"Godot physics layers sampled for terrain", "type":"physics_mask", "default":4294967295, "group":"Terrain Warp", "requires":{"terrain_warp_enabled":true}},
         "ring_value": {
           "label": "Ring Value", "description": "Rings awarded on pickup",
           "type": "int", "default": 1, "min": 1, "max": 999, "group": "Ring"
@@ -2425,6 +2448,9 @@
           "label": "Ring Spacing", "description": "Distance along the spline between rings",
           "type": "float", "default": 8, "min": 0.1, "always_export": true, "group": "Ring Trail"
         },
+        "terrain_warp_enabled": {"label":"Terrain Warp", "description":"Snap down to terrain when the level loads", "type":"bool", "default":false, "group":"Terrain Warp"},
+        "terrain_warp_height_offset": {"label":"Height Above Ground", "description":"Vertical clearance above the terrain hit", "type":"float", "default":1.5, "min":0, "group":"Terrain Warp", "requires":{"terrain_warp_enabled":true}},
+        "terrain_warp_collision_mask": {"label":"Terrain Layers", "description":"Godot physics layers sampled for terrain", "type":"physics_mask", "default":4294967295, "group":"Terrain Warp", "requires":{"terrain_warp_enabled":true}},
         "ring_trail_respawn_enabled": {
           "label": "Respawn", "description": "Allow collected rings on this trail to regenerate",
           "type": "bool", "default": true, "group": "Ring Trail"
@@ -2491,6 +2517,35 @@
             }
           },
           "group": "Rail"
+        },
+        "rail_profile": {
+          "label": "Cross Section", "description": "Cross-section of the Standard rail",
+          "type": "enum", "default": "square", "group": "Rail Appearance", "requires": {"rail_variant": "standard"},
+          "options": {"square": {"label": "Square", "value": 4}, "hexagon": {"label": "Hexagon", "value": 6}, "octagon": {"label": "Octagon", "value": 8}, "round": {"label": "Round", "value": 24}}
+        },
+        "rail_width_scale": {
+          "label": "Width Scale", "description": "Scale the visual cross-section side to side",
+          "type": "float", "default": 1, "min": 0.05, "max": 20, "group": "Rail Appearance"
+        },
+        "rail_height_scale": {
+          "label": "Height Scale", "description": "Scale the visual cross-section along rail up",
+          "type": "float", "default": 1, "min": 0.05, "max": 20, "group": "Rail Appearance"
+        },
+        "rail_override_finish": {
+          "label": "Override Material Finish", "description": "Set tint, roughness, and metallic while retaining the variant's textures",
+          "type": "bool", "default": false, "group": "Rail Appearance"
+        },
+        "rail_tint": {
+          "label": "Base Color Tint", "description": "Multiply the rail's base color",
+          "type": "color", "default": [1, 1, 1, 1], "group": "Rail Appearance", "requires": {"rail_override_finish": true}
+        },
+        "rail_roughness": {
+          "label": "Roughness", "description": "Control highlight sharpness",
+          "type": "float", "default": 0.5, "min": 0, "max": 1, "group": "Rail Appearance", "requires": {"rail_override_finish": true}
+        },
+        "rail_metallic": {
+          "label": "Metallic", "description": "Control metallic shading",
+          "type": "float", "default": 0, "min": 0, "max": 1, "group": "Rail Appearance", "requires": {"rail_override_finish": true}
         },
         "path_interval": {
           "label": "Path Interval",

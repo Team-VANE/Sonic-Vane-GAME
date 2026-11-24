@@ -105,5 +105,3 @@ func _regenerate() -> void:
 				terrain_warp_collision_mask
 			)
 		add_child(ring_3d)
-		if ring_3d is Ring and terrain_warp_enabled:
-			(ring_3d as Ring).apply_configured_terrain_warp()

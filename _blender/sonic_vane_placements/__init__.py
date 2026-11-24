@@ -11,10 +11,10 @@ from pathlib import Path
 import bpy
 from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, BoolVectorProperty, CollectionProperty, EnumProperty, FloatProperty, FloatVectorProperty, IntProperty, PointerProperty, StringProperty
-from bpy.types import Operator, Panel, PropertyGroup
+from bpy.types import AddonPreferences, Operator, Panel, PropertyGroup
 from bpy_extras.io_utils import ExportHelper
 from mathutils import Matrix, Vector
-from . import automation_preview, booster_preview, camera_preview, checkpoint_preview, dash_preview, environment_preview, model_preview, objective_preview, rail_preview, ring_preview, spring_preview
+from . import automation_preview, booster_preview, camera_preview, checkpoint_preview, dash_preview, edge_rail, environment_preview, model_preview, objective_preview, rail_appearance, rail_preview, ring_preview, spring_preview
 from .spring_preview import MARKER_FIELD_KEY, placement_marker
 
 
@@ -67,10 +67,11 @@ RING_KINDS = {"ring", "ring_spline"}
 SIZED_HAZARD_KINDS = {"enemy", "spike_strip", "spike_ball"}
 ENEMY_HAZARD_LIBRARY = "Enemies and Hazards.blend"
 VOLUME_LIBRARY = "Water Flippers and Portals.blend"
-VOLUME_PREVIEWS = {"adventure_water", "flipper", "death_plane", "teleporter_entrance", "teleporter_exit"}
-CONDITIONAL_EXPORT_KINDS = VOLUME_PREVIEWS | objective_preview.KINDS | {"automation_spline", "dash_panel", "enemy", "ring_spline", "planetary_gravity", "camera_constraint", "surface_behavior"}
+VOLUME_PREVIEWS = {"adventure_water", "flipper", "death_plane", "hurt_volume", "teleporter_entrance", "teleporter_exit"}
+CONDITIONAL_EXPORT_KINDS = VOLUME_PREVIEWS | objective_preview.KINDS | {"automation_spline", "dash_panel", "enemy", "rail", "ring", "ring_spline", "player_spawn", "planetary_gravity", "camera_constraint", "surface_behavior"}
 SURFACE_TARGET_KEY = "vane_surface_target_id"
 RACE_ID_PATTERN = re.compile(r"[A-Za-z0-9]{1,8}")
+RACE_AUDIO_EXTENSIONS = {".ogg", ".wav", ".mp3"}
 PLANETARY_LIBRARY = "Planetary Gravity.blend"
 PLANETARY_GROUP = "Sonic Vane Planetary Gravity"
 PLANETARY_PREVIEW_INPUTS = {
@@ -178,6 +179,16 @@ def field_enabled(placement, field, scene=None):
     )
 
 
+def valid_audio_path(path):
+    return (
+        path.startswith("res://")
+        and "\\" not in path
+        and ":" not in path[6:]
+        and all(part not in {"", ".", ".."} for part in path[6:].split("/"))
+        and Path(path[6:]).suffix.lower() in RACE_AUDIO_EXTENSIONS
+    )
+
+
 def sync_placement_markers(placement, _context):
     obj = placement.id_data
     if not obj.is_editable:
@@ -204,6 +215,8 @@ def sync_placement_markers(placement, _context):
 
 @persistent
 def sync_loaded_markers(*_):
+    if not tracking_new_objects:
+        reset_object_tracking()
     for scene in bpy.data.scenes:
         for obj in tuple(scene.objects):
             placement = obj.sonic_vane_placement
@@ -213,6 +226,13 @@ def sync_loaded_markers(*_):
                 booster_preview.sync_preview(placement)
             if placement.kind == "dash_panel":
                 dash_preview.sync_model(placement)
+            if placement.kind == "rail":
+                modifier = obj.modifiers.get("Rail Preview")
+                group = modifier.node_group if modifier and modifier.type == "NODES" else None
+                if group and group.get(RAIL_VARIANT_KEY, group.name) == RAIL_VARIANTS[placement.rail_variant]["preview_group"]:
+                    sync_rail_preview(placement, None)
+            if placement.kind == "player_spawn" or obj.get(objective_preview.SIZING_REFERENCE_KEY):
+                sync_player_reference(obj)
             if placement.kind == "vault_bar":
                 sync_vault_preview(placement, None)
             if placement.kind == "automation_spline":
@@ -256,7 +276,6 @@ def build_placement_document(scene, depsgraph):
         target_id = obj.get(SURFACE_TARGET_KEY)
         if isinstance(target_id, str):
             surface_ids[target_id] = obj if target_id not in surface_ids else None
-    spawn_name = None
     for obj in scene.objects:
         placement = obj.sonic_vane_placement
         if placement.kind == "NONE":
@@ -268,11 +287,6 @@ def build_placement_document(scene, depsgraph):
         if placement_id in names_by_id:
             raise ValueError(f"{obj.name} and {names_by_id[placement_id]} share a placement UUID.")
         names_by_id[placement_id] = obj.name
-        if placement.kind == "player_spawn":
-            if spawn_name is not None:
-                raise ValueError(f"{spawn_name} and {obj.name} are both marked as Player Spawn. Keep one per level.")
-            spawn_name = obj.name
-
         world = obj.evaluated_get(depsgraph).matrix_world
         position = Y_UP @ world.translation
         rotation = (Y_UP @ world.to_quaternion().to_matrix() @ Y_UP.transposed()).to_quaternion()
@@ -312,6 +326,11 @@ def build_placement_document(scene, depsgraph):
             elif field["type"] == "string":
                 value = value.strip()
                 valid = bool(value) or field.get("allow_empty", False)
+            elif field["type"] == "audio_path":
+                value = value.strip()
+                if not value:
+                    continue
+                valid = valid_audio_path(value)
             elif field["type"] == "physics_mask":
                 value = sum(1 << index for index, enabled in enumerate(value) if enabled)
                 valid = True
@@ -595,12 +614,10 @@ def sync_rail_preview(placement, _context):
     modifier = obj.modifiers.get("Rail Preview")
     if modifier is not None and modifier.type != "NODES":
         return
-    if modifier is not None and modifier.node_group:
-        group = modifier.node_group
-        if group.get(RAIL_VARIANT_KEY, group.name) == group_name:
-            return
-    group = next((group for group in bpy.data.node_groups
-                  if group.get(RAIL_VARIANT_KEY, group.name) == group_name), None)
+    group = modifier.node_group if modifier else None
+    if group is None or group.get(RAIL_VARIANT_KEY, group.name) != group_name:
+        group = next((candidate for candidate in bpy.data.node_groups
+                      if candidate.get(RAIL_VARIANT_KEY, candidate.name) == group_name), None)
     if group is None:
         with bpy.data.libraries.load(str(ASSET_DIRECTORY / variant["asset"])) as (_, imported):
             imported.node_groups = [group_name]
@@ -608,7 +625,21 @@ def sync_rail_preview(placement, _context):
         group[RAIL_VARIANT_KEY] = group_name
     if modifier is None:
         modifier = obj.modifiers.new("Rail Preview", "NODES")
-    modifier.node_group = group
+    standard = placement.rail_variant == "standard"
+    if not rail_appearance.configure_preview(group, standard):
+        return
+    if modifier.node_group != group:
+        modifier.node_group = group
+    set_preview_input(obj, modifier, "Width Scale", placement.rail_width_scale)
+    set_preview_input(obj, modifier, "Height Scale", placement.rail_height_scale)
+    if standard:
+        options = CATALOG["types"]["rail"]["properties"]["rail_profile"]["options"]
+        set_preview_input(obj, modifier, "Profile Sides", options[placement.rail_profile]["value"])
+    for socket in group.interface.items_tree:
+        if socket.item_type == "SOCKET" and socket.in_out == "INPUT" and socket.name.startswith("Finish "):
+            base = socket.default_value
+            material = rail_appearance.themed_material(base, placement) if placement.rail_override_finish else base
+            set_preview_input(obj, modifier, socket.name, material)
 
 
 def sync_ring_preview(placement, context, scene=None):
@@ -823,6 +854,7 @@ def sync_volume_preview(placement, _context):
     kind = placement.kind
     if kind not in VOLUME_PREVIEWS or not obj.is_editable or obj.type != "MESH":
         return
+    library = VOLUME_LIBRARY
     if kind == "adventure_water":
         name = "Water " + placement.water_geometry.title()
         scale = placement.water_dimensions
@@ -834,6 +866,10 @@ def sync_volume_preview(placement, _context):
     elif kind == "death_plane":
         name = "Death Plane"
         scale = placement.death_plane_dimensions
+    elif kind == "hurt_volume":
+        name = "Hurt Volume"
+        library = "Hurt Volume.blend"
+        scale = placement.hurt_volume_dimensions
     elif kind == "teleporter_entrance":
         name = "Teleporter Entrance"
         scale = (2 * placement.teleporter_radius,) * 3
@@ -841,7 +877,7 @@ def sync_volume_preview(placement, _context):
         name = "Teleporter Exit"
         scale = (1, 1, 1)
     mesh = model_preview.load_mesh(
-        ASSET_DIRECTORY, name, {"preview_file": VOLUME_LIBRARY, "preview_mesh": name}
+        ASSET_DIRECTORY, name, {"preview_file": library, "preview_mesh": name}
     )
     if mesh and obj.data != mesh:
         obj.data = mesh
@@ -875,7 +911,35 @@ def sync_planetary_preview(placement, _context):
         set_preview_input(obj, modifier, name, getattr(placement, key))
 
 
+def sync_player_reference(obj):
+    if obj.type != "MESH" or not obj.is_editable:
+        return
+    revision_key = "sonic_vane_player_reference_revision"
+    if obj.data.get(revision_key) == 1:
+        return
+    if obj.get(objective_preview.SIZING_REFERENCE_KEY):
+        mesh_name = "Neo Adventure Reference"
+    elif obj.data.get("sonic_vane_spawn_model") or obj.data.name.startswith("Player Spawn Arrow"):
+        mesh_name = "Player Spawn Preview"
+    else:
+        return
+    mesh = next(
+        (mesh for mesh in bpy.data.meshes if mesh.name.startswith(mesh_name) and mesh.get(revision_key) == 1),
+        None,
+    )
+    if mesh is None:
+        with bpy.data.libraries.load(str(ASSET_DIRECTORY / "Player Spawn.blend")) as (_, imported):
+            imported.meshes = [mesh_name]
+        mesh = imported.meshes[0]
+    if mesh:
+        obj.data = mesh
+
+
 def update_placement_kind(placement, context):
+    if placement.kind == "player_spawn":
+        sync_player_reference(placement.id_data)
+    if placement.kind == "rail":
+        sync_rail_preview(placement, context)
     if placement.kind != "spike_strip" and placement.id_data.is_editable:
         model_preview.set_rotation(placement.id_data, "Spike Strip Offset", None)
     sync_placement_markers(placement, context)
@@ -904,9 +968,11 @@ def update_placement_kind(placement, context):
 
 def placement_property(key, field):
     settings = {"name": field["label"], "description": field["description"], "default": field["default"]}
+    if key in rail_appearance.SETTING_KEYS:
+        settings["update"] = sync_rail_preview
     if key in {"sky_profile", "starting_weather"}:
         settings["update"] = environment_preview.redraw_viewports
-    if field["type"] == "string":
+    if field["type"] in {"string", "audio_path"}:
         return StringProperty(**settings)
     if field["type"] == "physics_mask":
         settings["default"] = tuple(bool(field["default"] & (1 << index)) for index in range(32))
@@ -1182,6 +1248,15 @@ OBJECT_TRACKING_HANDLERS = (
 )
 
 
+def move_to_gameplay_collection(obj, gameplay):
+    previous_collections = tuple(obj.users_collection)
+    if gameplay.objects.get(obj.name) is None:
+        gameplay.objects.link(obj)
+    for collection in previous_collections:
+        if collection != gameplay and collection.is_editable:
+            collection.objects.unlink(obj)
+
+
 @persistent
 def initialize_appended_gameplay_assets(import_context):
     scene = bpy.context.scene
@@ -1200,6 +1275,13 @@ def initialize_appended_gameplay_assets(import_context):
                     collection.objects.unlink(obj)
             continue
         kind = obj.get(ASSET_TYPE_KEY)
+        if obj.get(objective_preview.SIZING_REFERENCE_KEY):
+            gameplay = scene.collection.children.get(GAMEPLAY_COLLECTION_NAME)
+            if gameplay is None:
+                gameplay = bpy.data.collections.new(GAMEPLAY_COLLECTION_NAME)
+                scene.collection.children.link(gameplay)
+            move_to_gameplay_collection(obj, gameplay)
+            continue
         if not isinstance(kind, str) or kind not in CATALOG["types"]:
             continue
 
@@ -1244,22 +1326,12 @@ def initialize_appended_gameplay_assets(import_context):
         if gameplay is None:
             gameplay = bpy.data.collections.new(GAMEPLAY_COLLECTION_NAME)
             scene.collection.children.link(gameplay)
-        previous_collections = tuple(obj.users_collection)
-        if gameplay.objects.get(obj.name) is None:
-            gameplay.objects.link(obj)
-        for collection in previous_collections:
-            if collection != gameplay and collection.is_editable:
-                collection.objects.unlink(obj)
+        move_to_gameplay_collection(obj, gameplay)
         if kind in {"camera_constraint", "goal_ring"}:
             for point in obj.children:
                 if not point.get(MARKER_FIELD_KEY):
                     continue
-                previous_collections = tuple(point.users_collection)
-                if gameplay.objects.get(point.name) is None:
-                    gameplay.objects.link(point)
-                for collection in previous_collections:
-                    if collection != gameplay and collection.is_editable:
-                        collection.objects.unlink(point)
+                move_to_gameplay_collection(point, gameplay)
 
 
 class SonicVaneAutomationExtension(PropertyGroup):
@@ -1319,6 +1391,7 @@ class SonicVanePlacement(PropertyGroup):
             ("rain_shelter", "Rain Shelter", "Mark an interior sheltered from rain", 31),
             ("carryable_respawn", "Carryable Respawn Volume", "Return eligible carryables to their spawn", 32),
             ("environment_transition", "Environment Transition", "Blend time, weather, or sky on entry in offline play", 33),
+            ("hurt_volume", "Hurt Volume", "Damage players on entry", 34),
         ),
         default="NONE",
         update=update_placement_kind,
@@ -1378,6 +1451,70 @@ class SonicVanePlacement(PropertyGroup):
 SonicVanePlacement.__annotations__.update(
     {key: placement_property(key, field) for key, field in PLACEMENT_PROPERTIES.items()}
 )
+
+
+class SonicVaneAddonPreferences(AddonPreferences):
+    bl_idname = __package__
+
+    godot_project_folder: StringProperty(
+        name="Godot Project Folder", description="Folder containing project.godot", subtype="DIR_PATH",
+    )
+
+    def draw(self, _context):
+        self.layout.prop(self, "godot_project_folder")
+
+
+class SONICVANE_OT_pick_race_music(Operator):
+    bl_idname = "sonic_vane.pick_race_music"
+    bl_label = "Choose Race Music"
+    bl_options = {"UNDO"}
+
+    filepath: StringProperty(subtype="FILE_PATH")
+    filter_glob: StringProperty(default="*.ogg;*.wav;*.mp3", options={"HIDDEN", "SKIP_SAVE"})
+    target_name: StringProperty(options={"HIDDEN", "SKIP_SAVE"})
+
+    @classmethod
+    def poll(cls, context):
+        return bool(context.object and context.object.is_editable and context.object.sonic_vane_placement.kind == "race_start")
+
+    def project_root(self, context):
+        addon = context.preferences.addons.get(__package__)
+        folder = addon.preferences.godot_project_folder if addon and addon.preferences else ""
+        if folder:
+            root = Path(bpy.path.abspath(folder)).resolve()
+            if (root / "project.godot").is_file():
+                return root
+        self.report({"ERROR"}, "Set Godot Project Folder in Sonic Vane Placements preferences.")
+        return None
+
+    def invoke(self, context, _event):
+        root = self.project_root(context)
+        if root is None:
+            return {"CANCELLED"}
+        self.target_name = context.object.name
+        current = context.object.sonic_vane_placement.race_start_music
+        self.filepath = str(root / current[6:]) if valid_audio_path(current) else str(root) + os.sep
+        context.window_manager.fileselect_add(self)
+        return {"RUNNING_MODAL"}
+
+    def execute(self, context):
+        root = self.project_root(context)
+        if root is None:
+            return {"CANCELLED"}
+        target = context.scene.objects.get(self.target_name) if self.target_name else context.object
+        if not target or not target.is_editable or target.sonic_vane_placement.kind != "race_start":
+            self.report({"ERROR"}, "The Race Start is no longer available.")
+            return {"CANCELLED"}
+        try:
+            path = Path(bpy.path.abspath(self.filepath)).resolve()
+            resource_path = "res://" + path.relative_to(root).as_posix()
+        except (OSError, ValueError):
+            resource_path = ""
+        if not valid_audio_path(resource_path) or not path.is_file():
+            self.report({"ERROR"}, "Select an OGG, WAV, or MP3 file inside the Godot project.")
+            return {"CANCELLED"}
+        target.sonic_vane_placement.race_start_music = resource_path
+        return {"FINISHED"}
 
 
 class SONICVANE_OT_register_asset_library(Operator):
@@ -1624,6 +1761,88 @@ class SONICVANE_OT_add_volume_box(Operator):
         return {"FINISHED"}
 
 
+class SONICVANE_OT_convert_edge_to_rail(Operator):
+    bl_idname = "sonic_vane.convert_edge_to_rail"
+    bl_label = "Convert Edge to Rail"
+    bl_description = "Create a grind rail from a connected selection of mesh edges"
+    bl_options = {"REGISTER", "UNDO"}
+
+    smooth: BoolProperty(name="Smooth Bends", description="Fit automatic Bézier handles through the edge vertices")
+    reverse: BoolProperty(name="Reverse Direction", description="Reverse the order of the rail path")
+
+    @classmethod
+    def poll(cls, context):
+        return context.mode == "EDIT_MESH" and context.edit_object is not None
+
+    def invoke(self, context, _event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def execute(self, context):
+        source = context.edit_object
+        try:
+            points, closed = edge_rail.selected_edge_chain(source)
+        except ValueError as error:
+            self.report({"ERROR"}, str(error))
+            return {"CANCELLED"}
+        if self.reverse:
+            points = points[:1] + points[:0:-1] if closed else points[::-1]
+        origin = points[0]
+        bpy.ops.object.mode_set(mode="OBJECT")
+        curve = bpy.data.curves.new(f"{source.name} Rail", "CURVE")
+        curve.dimensions = "3D"
+        curve.twist_mode = "MINIMUM"
+        curve.resolution_u = 48
+        spline = curve.splines.new("BEZIER")
+        spline.bezier_points.add(len(points) - 1)
+        spline.use_cyclic_u = closed
+        handle_type = "AUTO" if self.smooth else "VECTOR"
+        for point, position in zip(spline.bezier_points, points):
+            point.co = position - origin
+            point.handle_left_type = point.handle_right_type = handle_type
+        rail = bpy.data.objects.new(curve.name, curve)
+        gameplay = context.scene.collection.children.get(GAMEPLAY_COLLECTION_NAME)
+        if gameplay is None:
+            gameplay = bpy.data.collections.new(GAMEPLAY_COLLECTION_NAME)
+            context.scene.collection.children.link(gameplay)
+        gameplay.objects.link(rail)
+        rail.location = origin
+        placement = rail.sonic_vane_placement
+        placement.placement_id = reserve_placement_id(scene_placement_ids(context.scene))
+        placement.kind = "rail"
+        for obj in context.selected_objects:
+            obj.select_set(False)
+        rail.select_set(True)
+        context.view_layer.objects.active = rail
+        return {"FINISHED"}
+
+
+def edge_menu(self, _context):
+    self.layout.operator(SONICVANE_OT_convert_edge_to_rail.bl_idname)
+
+
+class SONICVANE_OT_copy_rail_appearance(Operator):
+    bl_idname = "sonic_vane.copy_rail_appearance"
+    bl_label = "Copy Appearance to Selected Rails"
+    bl_description = "Copy the active rail's variant, cross section, and material finish to other selected rails"
+    bl_options = {"REGISTER", "UNDO"}
+
+    @classmethod
+    def poll(cls, context):
+        obj = context.object
+        return obj and obj.sonic_vane_placement.kind == "rail"
+
+    def execute(self, context):
+        source = context.object
+        keys = ("rail_variant", *sorted(rail_appearance.SETTING_KEYS))
+        fields = source.sonic_vane_placement
+        for target in context.selected_objects:
+            if target == source or not target.is_editable or target.sonic_vane_placement.kind != "rail":
+                continue
+            for key in keys:
+                setattr(target.sonic_vane_placement, key, getattr(fields, key))
+        return {"FINISHED"}
+
+
 class SONICVANE_PT_object_placement(Panel):
     bl_label = "Sonic Vane Placement"
     bl_space_type = "PROPERTIES"
@@ -1635,6 +1854,9 @@ class SONICVANE_PT_object_placement(Panel):
         layout = self.layout
         details = layout.column()
         details.use_property_split = True
+        if context.object.get(objective_preview.SIZING_REFERENCE_KEY):
+            details.prop(context.object, "sonic_vane_reference_radius")
+            return
         details.prop(placement, "kind")
         if placement.kind == "NONE":
             return
@@ -1691,9 +1913,9 @@ class SONICVANE_PT_object_placement(Panel):
                 "Route", "Activation", "Water Geometry", "Flipper", "Death Plane", "Teleporter Entrance",
                 "Teleporter Exit", "Gravity Field", "Planet Surface", "Camera Activation", "Camera Release",
                 "Camera Framing", "Camera Aim", "Camera Blends", "Goal Ring", "Goal Camera",
-                "Collection Item", "Race Start", "Homing Target", "Gravity Modifier", "Surface Behavior",
+                "Collection Item", "Race Start", "Race Music", "Hurt Volume", "Homing Target", "Gravity Modifier", "Surface Behavior",
                 "Surface Movement", "Volume", "Time Transition", "Weather Transition", "Sky Transition",
-                "Impulse", "Locks and Camera"
+                "Impulse", "Locks and Camera", "Terrain Warp", "Rail Appearance"
             })
             header.label(text=group)
             if body is None:
@@ -1717,11 +1939,19 @@ class SONICVANE_PT_object_placement(Panel):
                             row.prop(placement, key, index=index, text=str(index + 1), toggle=True)
                     continue
                 row = body.row()
+                if key == "race_start_music_on_go":
+                    row.enabled = bool(placement.race_start_music.strip())
                 marker = placement_marker(context.object, key) if field["type"] == "local_offset" else None
                 if marker:
                     row.prop(marker, "location", text=field["label"])
                 else:
                     row.prop(placement, key, text=field["label"])
+                if field["type"] == "audio_path":
+                    row.operator(SONICVANE_OT_pick_race_music.bl_idname, text="", icon="FILE_FOLDER")
+                    if not placement.race_start_music.strip():
+                        body.label(text="Using level music", icon="INFO")
+            if group == "Rail Appearance":
+                body.operator(SONICVANE_OT_copy_rail_appearance.bl_idname)
         if placement.kind == "automation_spline":
             self.draw_automation_extensions(layout, placement)
         if placement.kind in objective_preview.VOLUME_COLORS:
@@ -1913,6 +2143,7 @@ class SONICVANE_PT_scene_environment(Panel):
 
 
 CLASSES = (
+    SonicVaneAddonPreferences,
     SonicVaneAutomationExtension,
     SonicVaneSurfaceTarget,
     SonicVanePlacement,
@@ -1922,6 +2153,9 @@ CLASSES = (
     SONICVANE_OT_add_surface_targets,
     SONICVANE_OT_remove_surface_target,
     SONICVANE_OT_add_volume_box,
+    SONICVANE_OT_convert_edge_to_rail,
+    SONICVANE_OT_copy_rail_appearance,
+    SONICVANE_OT_pick_race_music,
     SONICVANE_OT_register_asset_library,
     SONICVANE_OT_new_placement_id,
     SONICVANE_OT_assign_missing_placement_ids,
@@ -1947,6 +2181,10 @@ def register():
     for cls in CLASSES:
         bpy.utils.register_class(cls)
     bpy.types.Object.sonic_vane_placement = PointerProperty(type=SonicVanePlacement)
+    bpy.types.Object.sonic_vane_reference_radius = FloatProperty(
+        name="Collision Sphere Radius", description="Sizing guide radius before object scaling",
+        default=1.0, min=0.01, unit="LENGTH", update=environment_preview.redraw_viewports,
+    )
     bpy.types.Object.sonic_vane_rail_guides = BoolProperty(
         name="Show Rail Guides", description="Show centerline, direction, endpoints and rider height", default=True
     )
@@ -1999,11 +2237,13 @@ def register():
     bpy.app.handlers.save_pre.append(cleanup_monitor_previews)
     bpy.app.handlers.depsgraph_update_post.append(booster_preview.sync_moved_rails)
     bpy.app.handlers.depsgraph_update_post.append(spring_preview.sync_moved_targets)
-    reset_object_tracking()
+    if hasattr(bpy.data, "objects"):
+        reset_object_tracking()
     for handlers, callback in OBJECT_TRACKING_HANDLERS:
         handlers.append(callback)
     bpy.app.timers.register(sync_loaded_markers)
     bpy.types.TOPBAR_MT_file_export.append(export_menu)
+    bpy.types.VIEW3D_MT_edit_mesh_edges.append(edge_menu)
 
 
 def unregister():
@@ -2035,6 +2275,7 @@ def unregister():
         bpy.types.SpaceView3D.draw_handler_remove(checkpoint_trigger_handler, "WINDOW")
         checkpoint_trigger_handler = None
     bpy.types.TOPBAR_MT_file_export.remove(export_menu)
+    bpy.types.VIEW3D_MT_edit_mesh_edges.remove(edge_menu)
     bpy.app.handlers.blend_import_post.remove(initialize_appended_gameplay_assets)
     bpy.app.handlers.load_post.remove(sync_loaded_markers)
     bpy.app.handlers.save_pre.remove(cleanup_monitor_previews)
@@ -2052,6 +2293,7 @@ def unregister():
     del bpy.types.Scene.sonic_vane_ring_default
     del bpy.types.Scene.sonic_vane_enemy_default
     del bpy.types.Object.sonic_vane_placement
+    del bpy.types.Object.sonic_vane_reference_radius
     del bpy.types.Object.sonic_vane_rail_guides
     del bpy.types.Object.sonic_vane_dash_direction
     del bpy.types.Object.sonic_vane_show_trajectory
