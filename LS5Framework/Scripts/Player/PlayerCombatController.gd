@@ -217,8 +217,8 @@ func apply_enemy_bounce(origin: Vector3, speed: float, source: Node = null) -> v
 	p._enemy_bounce_cooldown_timer = p.ENEMY_BOUNCE_COOLDOWN_SEC
 	p.visual_bounce_rebounded.emit()
 	p.refresh_airborne_abilities()
+	var pass_through: bool = was_homing_contact and _get_homing_contact_pass_through(source)
 	if was_homing_contact:
-		var pass_through: bool = _get_homing_contact_pass_through(source)
 		_complete_homing_from_enemy_contact(source, homing_contact_velocity, homing_contact_lateral, up, origin)
 		if not pass_through:
 			p.begin_bounce_magnetism_recovery(maxf(p.velocity.dot(up), 0.0))
@@ -227,6 +227,8 @@ func apply_enemy_bounce(origin: Vector3, speed: float, source: Node = null) -> v
 	_interrupt_skydive_for_enemy_bounce(&"enemy_bounce")
 	p.reset_flight_eligibility()
 	p.end_active_flight_for_external_impulse({"reason": &"enemy_bounce"})
+	if not pass_through:
+		_try_bounce_hitstop(source)
 
 
 func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = null) -> void:
@@ -270,8 +272,8 @@ func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = nu
 	p.refresh_airborne_abilities()
 	if end_bounce_stomp and p._bounce_state != p.BounceState.NONE:
 		p._bounce_state = p.BounceState.NONE
+	var pass_through: bool = was_homing_contact and _get_homing_contact_pass_through(source)
 	if was_homing_contact:
-		var pass_through: bool = _get_homing_contact_pass_through(source)
 		_complete_homing_from_enemy_contact(source, homing_contact_velocity, homing_contact_lateral, up, p.global_position)
 		if not pass_through:
 			p.begin_bounce_magnetism_recovery(maxf(p.velocity.dot(up), 0.0))
@@ -280,6 +282,17 @@ func apply_enemy_attack_bounce(end_bounce_stomp: bool = false, source: Node = nu
 	_interrupt_skydive_for_enemy_bounce(&"enemy_attack_bounce")
 	p.reset_flight_eligibility()
 	p.end_active_flight_for_external_impulse({"reason": &"enemy_attack_bounce"})
+	if not pass_through:
+		_try_bounce_hitstop(source)
+
+
+func _try_bounce_hitstop(source: Node) -> void:
+	if not is_instance_valid(source) or source.get(&"bounce_hitstop_enabled") != true:
+		return
+	var p = _owner
+	if p._is_buddy_actor() or p.is_in_group(&"RivalActor"):
+		return
+	BounceHitstop.play(p)
 
 
 func _homing_contact_matches_source(source: Node) -> bool:

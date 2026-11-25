@@ -4,7 +4,7 @@ const CONFIG_PATH := "user://settings.cfg"
 
 # --- Graphics toggles ---
 var ssr_enabled: bool = true
-var ssao_enabled: bool = true
+var ssao_enabled: bool = false
 var ssil_enabled: bool = true
 var sdfgi_enabled: bool = true
 var glow_enabled: bool = true

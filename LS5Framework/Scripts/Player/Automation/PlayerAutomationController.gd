@@ -48,8 +48,16 @@ func _available() -> bool:
 
 func register_source(source: AutomationSplineCore, initial_direction: int = 0,
 		capture_position: Vector3 = Vector3(INF, INF, INF)) -> AutomationSession:
+	return _register_source(source, initial_direction, capture_position, false)
+
+
+func _register_source(source: AutomationSplineCore, initial_direction: int,
+		capture_position: Vector3, rearm_at_boundary: bool) -> AutomationSession:
 	var body: Node3D = get_body()
-	if not _available() or not is_instance_valid(source) or _blocked_sources.has(source.get_instance_id()) or not source.accepts(body):
+	if not _available() or not is_instance_valid(source):
+		return null
+	var source_id: int = source.get_instance_id()
+	if (_blocked_sources.has(source_id) and not rearm_at_boundary) or not source.accepts(body):
 		return null
 	var existing: AutomationSession = get_session(source)
 	if existing:
@@ -67,10 +75,12 @@ func register_source(source: AutomationSplineCore, initial_direction: int = 0,
 		direction = 1 if _intent.dot(sample.tangent) > 0.0 else -1
 	if not source.permits_direction(initial_direction if initial_direction else direction):
 		return null
+	if rearm_at_boundary:
+		_blocked_sources.erase(source_id)
 	_sequence += 1
 	var session: AutomationSession = AutomationSession.new()
 	session.source_ref = weakref(source)
-	session.source_id = source.get_instance_id()
+	session.source_id = source_id
 	session.activation_frame = Engine.get_physics_frames()
 	session.activation_sequence = _sequence
 	session.direction = direction
@@ -175,7 +185,8 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 				state["revision"] = source.activation_revision
 			var events: Array[Dictionary] = source.boundary_events(body, _previous_position, position, state, _has_previous)
 			if not events.is_empty():
-				pending_boundaries.append({"source": source, "path": String(source.get_path()), "events": events})
+				pending_boundaries.append({"source": source, "path": String(source.get_path()), "events": events,
+					"rearm": _blocked_sources.has(id)})
 	if occupancy_checks.size() > 1:
 		occupancy_checks.sort_custom(func(first: Dictionary, second: Dictionary) -> bool: return first.path < second.path)
 	for check: Dictionary in occupancy_checks:
@@ -233,11 +244,12 @@ func advance(delta: float, input_intent: Vector3 = Vector3.ZERO) -> void:
 			if event.inward:
 				var owner: AutomationSplineCore = selected.get_source() as AutomationSplineCore if selected else null
 				if not transferred or not owner or source == owner or source.priority > owner.priority:
-					register_source(source, int(event.direction), event.position)
+					_register_source(source, int(event.direction), event.position, boundary.rearm)
 			else:
 				var id: int = source.get_instance_id()
 				unregister_source(id, &"endpoint_exit")
-				_blocked_sources.erase(id)
+				if boundary.rearm:
+					_blocked_sources.erase(id)
 	for id: int in _sessions.keys():
 		var session: AutomationSession = _sessions.get(id) as AutomationSession
 		if not session:

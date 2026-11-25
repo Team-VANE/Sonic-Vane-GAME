@@ -3,6 +3,7 @@ extends Area3D
 
 const SIZE_BASE_POSITION_META: StringName = &"_uniform_size_base_position"
 const SIZE_BASE_SCALE_META: StringName = &"_uniform_size_base_scale"
+const SIZE_BASE_BOX_META: StringName = &"_uniform_size_base_box"
 
 @export_group("Ramp")
 @export var active: bool = true
@@ -126,6 +127,18 @@ func _apply_size_to_node(node: Node3D, uniform_size: float) -> void:
 	var base_scale_value: Variant = node.get_meta(SIZE_BASE_SCALE_META, node.scale)
 	if base_position_value is Vector3:
 		node.position = (base_position_value as Vector3) * uniform_size
+	if node is CollisionShape3D and node.shape is BoxShape3D and base_scale_value is Vector3:
+		var box: BoxShape3D = node.shape as BoxShape3D
+		if not node.has_meta(SIZE_BASE_BOX_META):
+			node.set_meta(SIZE_BASE_BOX_META, box.size)
+		var base_size: Vector3 = node.get_meta(SIZE_BASE_BOX_META)
+		var dimensions: Vector3 = base_size * (base_scale_value as Vector3).abs() * uniform_size
+		if not box.size.is_equal_approx(dimensions):
+			var resized_box: BoxShape3D = box.duplicate() as BoxShape3D
+			resized_box.size = dimensions
+			node.shape = resized_box
+		node.scale = Vector3.ONE
+		return
 	if base_scale_value is Vector3:
 		node.scale = (base_scale_value as Vector3) * uniform_size
 

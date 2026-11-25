@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dxspannni8m53" path="res://LS5Framework/Scripts/TextureEffects.gd" id="4_6pah5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
-size = Vector3(3.9537964, 2.3579102, 5.0271606)
+size = Vector3(4.3, 2.3579102, 5.2)
 
 [sub_resource type="PrismMesh" id="PrismMesh_5s581"]
 left_to_right = 0.0
@@ -22,9 +22,9 @@ sfx_player = NodePath("AudioStreamPlayer3D")
 launch_sounds = Array[AudioStream]([ExtResource("2_5s581")])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=641640871]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.059417725, 0.879, -0.008331299)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.879, -0.04)
 shape = SubResource("BoxShape3D_ramp")
-metadata/_uniform_size_base_position = Vector3(0.059417725, 0.879, -0.008331299)
+metadata/_uniform_size_base_position = Vector3(0, 0.879, -0.04)
 metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
 
 [node name="TempMesh" type="MeshInstance3D" parent="." unique_id=1872819520]

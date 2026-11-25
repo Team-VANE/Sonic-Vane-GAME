@@ -54,6 +54,10 @@ def sync_model(placement, _context=None):
     obj = placement.id_data
     if not obj.is_editable or obj.type != "MESH":
         return
+    if placement.kind != "spring":
+        set_rotation(obj, MODIFIER, None)
+        return
+    scale = placement.size
     path = trajectory(obj)
     axis = Vector(AXES[placement.launch_axis])
     aim = None
@@ -62,16 +66,17 @@ def sync_model(placement, _context=None):
         direction = obj.matrix_world.to_quaternion().inverted() @ (displacement + lift)
         if direction.length_squared > 1e-6:
             aim = axis.rotation_difference(direction.normalized())
-    if placement.kind == "spring" and placement.spring_style == "dash_ring":
-        set_dash_ring_pose(obj, axis, aim if aim is not None else Quaternion())
+    if placement.spring_style == "dash_ring":
+        set_dash_ring_pose(obj, axis, aim if aim is not None else Quaternion(), scale)
     else:
-        set_rotation(obj, MODIFIER, aim.to_euler() if aim is not None else None)
+        rotation = aim.to_euler() if aim is not None else ((0, 0, 0) if scale != 1.0 else None)
+        set_rotation(obj, MODIFIER, rotation, scale=scale)
 
 
-def set_dash_ring_pose(obj, axis, aim):
+def set_dash_ring_pose(obj, axis, aim, scale=1.0):
     facing = UP.rotation_difference(axis) @ DASH_RING_FLIP
     offset = aim @ (DASH_RING_CENTER - facing @ DASH_RING_CENTER)
-    set_rotation(obj, MODIFIER, (aim @ facing).to_euler(), offset)
+    set_rotation(obj, MODIFIER, (aim @ facing).to_euler(), offset * scale, scale=scale)
 
 
 @persistent

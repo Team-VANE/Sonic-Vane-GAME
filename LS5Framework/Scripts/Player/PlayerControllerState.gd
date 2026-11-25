@@ -3234,7 +3234,7 @@ var _lightspeed_dash_prev_ring: Node3D = null
 var _lightspeed_dash_speed: float = 0.0
 var _lightspeed_dash_release_velocity: Vector3 = Vector3.ZERO
 var _lightspeed_dash_last_dir: Vector3 = Vector3.ZERO
-var _lightspeed_dash_timer: float = 0.0
+var _lightspeed_rail_entry_timer: float = 0.0
 var _lightspeed_dash_start_bonus_cooldown_timer: float = 0.0
 
 var _enemy_bounce_cooldown_timer: float = 0.0

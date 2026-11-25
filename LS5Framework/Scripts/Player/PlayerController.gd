@@ -3464,6 +3464,7 @@ func _movement_physics_process(delta: float) -> void:
 	_homing_post_attack_timer = max(_homing_post_attack_timer - delta, 0.0)
 	_combat_homing_lockout_timer = max(_combat_homing_lockout_timer - delta, 0.0)
 	_lightspeed_dash_start_bonus_cooldown_timer = max(_lightspeed_dash_start_bonus_cooldown_timer - delta, 0.0)
+	_lightspeed_rail_entry_timer = 0.0 if attached else maxf(_lightspeed_rail_entry_timer - delta, 0.0)
 	_post_ui_unblock_action_suppress_timer = max(_post_ui_unblock_action_suppress_timer - _movement_real_delta, 0.0)
 	_landing_timer = max(_landing_timer - delta, 0.0)
 	_spindash_turn_free_timer = max(_spindash_turn_free_timer - delta, 0.0)
@@ -9717,6 +9718,10 @@ func get_rail_entry_forward() -> Vector3:
 	_ensure_modules()
 	return _rail_module.get_rail_entry_forward()
 
+func get_rail_entry_assist() -> Vector3:
+	_ensure_modules()
+	return _rail_module.get_rail_entry_assist()
+
 func get_rail_rehit_cooldown() -> float:
 	_ensure_modules()
 	return _rail_module.get_rail_rehit_cooldown()
@@ -12695,7 +12700,7 @@ func can_offer_action_prompts() -> bool:
 		return false
 	if _is_dead or _hurt_active or race_in_countdown or _post_ui_unblock_action_suppress_timer > 0.0:
 		return false
-	if _rail_active or _spline_active or _vault_bar_active or _lightspeed_dash_active or is_carrying_object():
+	if _spline_active or _vault_bar_active or _lightspeed_dash_active or is_carrying_object():
 		return false
 	if _spring_action_lock_timer > 0.0 or _spring_movement_lock_timer > 0.0 or _spring_align_timer > 0.0:
 		return false

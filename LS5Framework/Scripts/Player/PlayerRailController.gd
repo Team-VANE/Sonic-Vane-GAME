@@ -206,6 +206,26 @@ func get_rail_entry_forward() -> Vector3:
 	return f
 
 
+func get_rail_entry_assist() -> Vector3:
+	var p = _owner
+	var action: RailGrindAction = p._rail_grind_action
+	if not action or action.rail_ability_landing_assist <= 0.0 or p._rail_active or p._rail_switch_active:
+		return Vector3.ZERO
+	var from_lightspeed: bool = p._lightspeed_dash_active or p._lightspeed_rail_entry_timer > 0.0
+	var from_spindash: bool = p._spindash_charging or p._spindash_pending_release \
+		or p._spindash_release_requested or p._spindash_turn_free_timer > 0.0
+	if not (from_lightspeed or from_spindash or p._homing_active or p._homing_post_attack_timer > 0.0 \
+		or p._jump_dash_recent_timer > 0.0 or p._bounce_state != p.BounceState.NONE):
+		return Vector3.ZERO
+	if not _rail_input_allowed() or not p.is_automation_action_allowed(&"movement"):
+		return Vector3.ZERO
+	var up: Vector3 = p._get_gravity_up()
+	var direction: Vector3 = _get_rail_input_direction(up)
+	if from_lightspeed and direction.is_zero_approx() and p._network_is_local_authority():
+		direction = _get_rail_spindash_input_direction(up)
+	return direction * clampf(action.rail_ability_landing_assist, 0.0, 1.0)
+
+
 func get_rail_rehit_cooldown() -> float:
 	var p = _owner
 	return max(p.rail_rehit_cooldown, 0.0)
@@ -397,6 +417,10 @@ func is_rail_crouch_input_pressed() -> bool:
 		return false
 	var roll_slot: StringName = p.get_ability_input_slot(&"roll", &"ability_slot_04")
 	return SettingsManager.is_gameplay_action_pressed(String(roll_slot))
+
+
+func can_brake_on_rail() -> bool:
+	return _owner._rail_active and not _owner._rail_locked_speed and _owner._rail_grind_action.rail_brake_deceleration > 0.0
 
 
 func cancel_rail_grind(reset_velocity: bool = false) -> void:
@@ -1227,6 +1251,7 @@ func _clear_attack_state_for_rail_landing() -> void:
 	p._jumped_from_ground = false
 	p._jump_dash_recent_timer = 0.0
 	p._homing_post_attack_timer = 0.0
+	p._lightspeed_rail_entry_timer = 0.0
 	p._enemy_attack_chain_active = false
 	p._bounce_state = p.BounceState.NONE
 	p.rolling = false
@@ -1338,7 +1363,8 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 				_end_rail(true, world_up)
 				return
 
-	p._rail_crouching = is_rail_crouch_input_pressed()
+	var braking: bool = input_allowed and can_brake_on_rail() and SettingsManager.is_gameplay_action_pressed(&"rail_brake")
+	p._rail_crouching = not braking and is_rail_crouch_input_pressed()
 
 	var spindash_on_rail: bool = p._spindash_charging and p.spindash_enabled
 	var signed_speed: float = p._rail_speed
@@ -1356,7 +1382,7 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 		rail_dir = Vector3.FORWARD
 	rail_dir = rail_dir.normalized()
 
-	if input_allowed and p._rail_allow_reverse and p._rail_input_reverse_enabled and p._rail_reverse_speed_threshold > 0.0 and abs(signed_speed) <= p._rail_reverse_speed_threshold:
+	if input_allowed and not braking and p._rail_allow_reverse and p._rail_input_reverse_enabled and p._rail_reverse_speed_threshold > 0.0 and abs(signed_speed) <= p._rail_reverse_speed_threshold:
 		var input_dir: Vector3 = _get_rail_input_direction(world_up)
 		if input_dir.length() > 0.001:
 			var input_dot: float = rail_dir.dot(input_dir)
@@ -1388,6 +1414,10 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 
 	if p._rail_locked_speed and p._rail_lock_speed_value > 0.0 and not spindash_on_rail and not p._spindash_release_requested:
 		signed_speed = p._rail_lock_speed_value * travel_sign
+	elif braking and not spindash_on_rail and not p._spindash_release_requested:
+		var deceleration: float = p._rail_grind_action.rail_brake_deceleration
+		var speed_after_braking: float = absf(signed_speed) + (gravity_accel * travel_sign - deceleration) * delta
+		signed_speed = maxf(speed_after_braking, 0.0) * travel_sign
 	else:
 		if spindash_on_rail:
 			signed_speed += gravity_accel * delta

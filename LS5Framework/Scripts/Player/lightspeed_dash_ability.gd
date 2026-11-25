@@ -88,7 +88,7 @@ func update_input_prompt_availability() -> void:
 	_input_prompt_available = false
 	if not input_prompt_enabled or not enabled or not lightspeed_dash_enabled or not owner_player:
 		return
-	if not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible or not owner_player.can_offer_action_prompts():
+	if owner_player._rail_active or not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible or not owner_player.can_offer_action_prompts():
 		return
 	_input_prompt_available = owner_player.can_start_lightspeed_dash()
 

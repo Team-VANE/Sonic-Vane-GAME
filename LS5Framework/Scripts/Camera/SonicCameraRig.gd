@@ -357,9 +357,9 @@ var _distance_target: float                  # internal zoom target
 @export_range(0.0, 20.0, 0.001, "suffix:m") var landing_hard_shake: float = 1.175
 
 @export_group("Speed Distance")
-## Enable speed-based distance reduction to compensate for higher FOV.
+## Enables speed-based changes to camera distance.
 @export var speed_distance_enabled: bool = false
-## Maximum distance reduction when fully active (positive values zoom in).
+## Distance offset at full speed. Positive values zoom in, negative values zoom out, and zero keeps the base distance.
 @export var speed_distance_max_offset: float = 0.6
 ## Smoothing speed for distance blending (per second, 0 = instant).
 @export var speed_distance_smooth: float = 6.0
@@ -2956,17 +2956,12 @@ func _step_landing_feedback(delta: float) -> Vector2:
 
 
 func _update_speed_distance(delta: float, constraint_active: bool) -> float:
-	# SUMMARY: Smoothly reduce camera distance based on the current speed FOV weight.
-	# STEPS:
-	# - Step 1: Early-out if disabled, locked, or during constraints.
-	# - Step 2: Build a target distance offset using the speed FOV weight.
-	# - Step 3: Lerp the current offset toward the target.
 	if not speed_distance_enabled or constraint_active or _distance_lock_active:
 		_speed_distance_current = 0.0
 		return _speed_distance_current
 
 	var weight: float = clamp(_speed_fov_weight, 0.0, 1.0)
-	var max_offset: float = max(speed_distance_max_offset, 0.0)
+	var max_offset: float = speed_distance_max_offset
 	if _is_target_barrier_blast_active():
 		max_offset *= barrier_blast_distance_multiplier
 	var target_offset: float = -max_offset * weight
@@ -3192,7 +3187,8 @@ func _update_transform(delta: float) -> void:
 	var min_distance_effective: float = min_distance
 	if speed_distance_offset < 0.0:
 		min_distance_effective = maxf(min_distance + speed_distance_offset, 0.01)
-	var effective_distance: float = clampf(distance + speed_distance_offset, min_distance_effective, max_distance)
+	var max_distance_effective: float = max_distance + maxf(speed_distance_offset, 0.0)
+	var effective_distance: float = clampf(distance + speed_distance_offset, min_distance_effective, max_distance_effective)
 	_update_auto_follow(delta, up, suppress_free_orientation)
 	_update_parkour_camera(delta, up, suppress_free_orientation)
 	var zoom_t: float = 0.0

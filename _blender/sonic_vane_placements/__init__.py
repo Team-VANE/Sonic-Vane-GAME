@@ -770,6 +770,8 @@ def sync_size_preview(placement, context):
     sync_monitor_preview(placement, context)
     sync_dash_panel_size(placement, context)
     update_enemy_hazard_preview(placement, context)
+    if placement.kind == "spring":
+        spring_preview.sync_model(placement)
     obj = placement.id_data
     if placement.kind == "ramp" and obj.type == "MESH" and obj.is_editable:
         obj.delta_scale = (placement.size,) * 3
@@ -1878,8 +1880,12 @@ class SONICVANE_PT_object_placement(Panel):
         family = variant_family(placement.kind)
         if family in VARIANTS:
             details.prop(placement, f"{family}_variant")
+        if placement.kind in objective_preview.TRAVERSAL_GUIDES:
+            details.prop(context.object, "sonic_vane_show_size_guide")
         if placement.kind == "rail":
             details.prop(context.object, "sonic_vane_rail_guides")
+            if context.object.sonic_vane_rail_guides:
+                details.prop(context.object, "sonic_vane_rail_up")
         elif placement.kind in {"dash_panel", "ramp"}:
             details.prop(context.object, "sonic_vane_dash_direction")
         elif placement.kind == "automation_spline":
@@ -2196,6 +2202,9 @@ def register():
     bpy.types.Object.sonic_vane_rail_guides = BoolProperty(
         name="Show Rail Guides", description="Show centerline, direction, endpoints and rider height", default=True
     )
+    bpy.types.Object.sonic_vane_rail_up = BoolProperty(
+        name="Show Rail Up", description="Show the rider's up direction along the rail", default=True
+    )
     bpy.types.Object.sonic_vane_dash_direction = BoolProperty(
         name="Show Direction", description="Show the dash launch direction on the active panel", default=True
     )
@@ -2204,6 +2213,9 @@ def register():
     )
     bpy.types.Object.sonic_vane_show_trigger = BoolProperty(
         name="Show Trigger", description="Show the checkpoint's trigger bounds in the viewport", default=True
+    )
+    bpy.types.Object.sonic_vane_show_size_guide = BoolProperty(
+        name="Show Trigger Bounds", description="Show the gameplay trigger dimensions for this object", default=True
     )
     bpy.types.Object.sonic_vane_automation_guides = BoolProperty(
         name="Show Route Guides", description="Display the route direction and generated trigger bounds", default=True
@@ -2303,9 +2315,11 @@ def unregister():
     del bpy.types.Object.sonic_vane_placement
     del bpy.types.Object.sonic_vane_reference_radius
     del bpy.types.Object.sonic_vane_rail_guides
+    del bpy.types.Object.sonic_vane_rail_up
     del bpy.types.Object.sonic_vane_dash_direction
     del bpy.types.Object.sonic_vane_show_trajectory
     del bpy.types.Object.sonic_vane_show_trigger
+    del bpy.types.Object.sonic_vane_show_size_guide
     del bpy.types.Object.sonic_vane_automation_guides
     for cls in reversed(CLASSES):
         bpy.utils.unregister_class(cls)

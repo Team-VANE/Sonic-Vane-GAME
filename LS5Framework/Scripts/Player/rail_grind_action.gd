@@ -10,6 +10,8 @@ extends CharacterAction
 @export_range(0.0, 2.0) var rail_end_detach_distance: float = 0.05
 ## Cooldown before the same rail can be attached again.
 @export_range(0.0, 5.0, 0.01) var rail_rehit_cooldown: float = 0.3
+## Extra fraction of sideways speed redirected along the rail when aiming along it during a supported ability. Zero disables the assist. With a rail's landing boost at 0.45, 0.35 raises the redirected fraction to 0.80.
+@export_range(0.0, 1.0, 0.01) var rail_ability_landing_assist: float = 0.35
 
 @export_subgroup("Movement/Reverse")
 @export var rail_allow_input_reverse: bool = false
@@ -28,6 +30,10 @@ extends CharacterAction
 @export_range(0.0, 1.0, 0.01) var rail_crouch_uphill_assist: float = 0.18
 ## Fraction of normal grind friction when crouching in balance.
 @export_range(0.0, 1.0, 0.01) var rail_crouch_friction_scale: float = 0.25
+
+@export_subgroup("Movement/Brake")
+## Speed removed per second while holding the rail brake.
+@export_range(0.0, 200.0, 0.5, "or_greater") var rail_brake_deceleration: float = 85.0
 
 @export_subgroup("Movement/Balance")
 ## Speed lost per second on an upright grind with no balance error.

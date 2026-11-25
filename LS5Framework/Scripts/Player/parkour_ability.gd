@@ -663,7 +663,7 @@ func update_landing_roll_prompt_prediction() -> void:
 	_landing_roll_prompt_prediction = {}
 	if not landing_roll_enabled or not input_prompt_enabled or not enabled or not owner_player or _in_contact or _landing_roll_input_buffer > 0.0:
 		return
-	if not owner_player.can_offer_action_prompts():
+	if owner_player._rail_active or not owner_player.can_offer_action_prompts():
 		return
 	if not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible:
 		return
@@ -675,7 +675,7 @@ func _wall_prompt_state_available() -> bool:
 		return false
 	if not SettingsManager.action_prompts_visible or not SettingsManager.hud_visible:
 		return false
-	if owner_player._local_pause_enabled or owner_player.get_tree().paused or not owner_player.can_offer_action_prompts():
+	if owner_player._rail_active or owner_player._local_pause_enabled or owner_player.get_tree().paused or not owner_player.can_offer_action_prompts():
 		return false
 	if not _can_catch(owner_player.attached, true):
 		return false

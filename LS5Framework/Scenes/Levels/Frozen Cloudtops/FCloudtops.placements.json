@@ -3,6 +3,81 @@
   "level_id": "frozencloudtops",
   "placements": [
     {
+      "id": "008199cd-abce-48c1-a70c-409e4fed5203",
+      "type": "enemy",
+      "label": "Rhino Tank.006",
+      "position": [
+        1218.7891845703125,
+        35.7555046081543,
+        -5982.00146484375
+      ],
+      "rotation": [
+        -0.001932817162014544,
+        -8.516699745086953e-05,
+        -0.04402085766196251,
+        0.999028742313385
+      ],
+      "properties": {},
+      "variant": "core:rhino_tank"
+    },
+    {
+      "id": "00986c76-0328-4c84-9499-04d1d269adae",
+      "type": "enemy",
+      "label": "GUN Beetle.014",
+      "position": [
+        -3370.52392578125,
+        951.9219360351562,
+        -874.7769775390625
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "face_pitch": false,
+        "attacks_enabled": false
+      },
+      "variant": "core:gun_beetle"
+    },
+    {
+      "id": "00c368f3-b52b-4c1c-98b8-057c95a68edb",
+      "type": "enemy",
+      "label": "Rhino Tank.005",
+      "position": [
+        1234.521484375,
+        83.82464599609375,
+        -5612.16650390625
+      ],
+      "rotation": [
+        0.0034802816808223724,
+        -2.4778065883801492e-12,
+        7.119516087783495e-10,
+        0.9999940395355225
+      ],
+      "properties": {},
+      "variant": "core:rhino_tank"
+    },
+    {
+      "id": "03b0e2be-d368-439f-96a0-941e236667eb",
+      "type": "enemy",
+      "label": "GUN Beetle.007",
+      "position": [
+        1232.4053955078125,
+        105.70178985595703,
+        -5619.41943359375
+      ],
+      "rotation": [
+        0.0029406340327113867,
+        -0.7071007490158081,
+        -0.0029390528798103333,
+        0.7071006894111633
+      ],
+      "properties": {},
+      "variant": "core:gun_beetle"
+    },
+    {
       "id": "042de694-1e32-4239-a6d6-a73df5909924",
       "type": "spike_strip",
       "label": "Spike Strip.006",
@@ -40,6 +115,34 @@
         "dash_strength": 110.0,
         "movement_lock_time": 0.10000000149011612,
         "action_lock_time": 0.10000000149011612
+      }
+    },
+    {
+      "id": "0521e91d-80d3-426d-80f2-d18656d767b6",
+      "type": "spring",
+      "label": "Spring.022",
+      "position": [
+        -68.8031005859375,
+        18.568086624145508,
+        -1236.8133544921875
+      ],
+      "rotation": [
+        0.2898101508617401,
+        0.6449884176254272,
+        -0.4305307865142822,
+        0.5609307289123535
+      ],
+      "properties": {
+        "size": 1.0,
+        "strength": 155.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          1.9104423522949219,
+          69.95161437988281,
+          -4.808077812194824
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 1.0
       }
     },
     {
@@ -1012,6 +1115,26 @@
       ],
       "properties": {
         "size": 2.0
+      }
+    },
+    {
+      "id": "0ddc0656-87c9-4517-a79e-db5fd376f97e",
+      "type": "dash_panel",
+      "label": "Dash Panel.024",
+      "position": [
+        900.2687377929688,
+        141.8214569091797,
+        -1362.232177734375
+      ],
+      "rotation": [
+        1.5454311608209537e-08,
+        1.5454311608209537e-08,
+        0.7071068286895752,
+        0.7071068286895752
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 80.0
       }
     },
     {
@@ -3513,6 +3636,35 @@
       }
     },
     {
+      "id": "14b0096a-7621-41a8-a285-0209b4e02cb0",
+      "type": "spring",
+      "label": "Spring.024",
+      "position": [
+        899.3229370117188,
+        142.20596313476562,
+        -1353.56640625
+      ],
+      "rotation": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 85.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -6.074593342990202e-15,
+          13.178492546081543,
+          -27.35753631591797
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 2.9800000190734863,
+        "trajectory_arc_allow_input_cancel": false
+      }
+    },
+    {
       "id": "16630049-ba04-4bc1-a116-90b2bb582b7c",
       "type": "spike_ball",
       "label": "Spike Ball.005",
@@ -3595,6 +3747,30 @@
       }
     },
     {
+      "id": "19dbb1e3-9803-4e2d-b814-3a3fa475f314",
+      "type": "ramp",
+      "label": "Ramp.013",
+      "position": [
+        688.4744262695312,
+        53.023258209228516,
+        -2182.88232421875
+      ],
+      "rotation": [
+        0.0,
+        0.6860070824623108,
+        0.0,
+        0.7275948524475098
+      ],
+      "properties": {
+        "size": 2.0,
+        "ramp_forward_speed": 225.0,
+        "ramp_up_speed": 145.0,
+        "hold_forward_time": 1.2999999523162842,
+        "ramp_movement_lock": 1.2999999523162842,
+        "ramp_action_lock": 1.2999999523162842
+      }
+    },
+    {
       "id": "1bff990d-5da8-40e3-a8e8-95f29526579e",
       "type": "spring",
       "label": "Spring.013",
@@ -3661,7 +3837,7 @@
         "use_trajectory_solver": true,
         "trajectory_target_offset": [
           0.0,
-          736.996826171875,
+          723.357177734375,
           0.0
         ],
         "trajectory_arc_enabled": true,
@@ -3717,6 +3893,54 @@
       "variant": "core:gun_beetle"
     },
     {
+      "id": "2397bbf8-c9c7-4af1-a30c-0e3fa521a358",
+      "type": "spring",
+      "label": "Spring.025",
+      "position": [
+        -51.70301818847656,
+        18.723806381225586,
+        -1543.3519287109375
+      ],
+      "rotation": [
+        0.1591225266456604,
+        0.6889702677726746,
+        -0.42000192403793335,
+        0.5688570737838745
+      ],
+      "properties": {
+        "size": 1.5,
+        "strength": 160.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          7.938334941864014,
+          15.629600524902344,
+          -2.232754707336426
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.0
+      }
+    },
+    {
+      "id": "23ac7560-c680-445f-a080-1f0ea7e1d8ee",
+      "type": "spring",
+      "label": "Spring.018",
+      "position": [
+        -3862.973388671875,
+        7.611830711364746,
+        -1432.828369140625
+      ],
+      "rotation": [
+        -0.00012059273285558447,
+        7.197225926347528e-09,
+        5.9682100982172415e-05,
+        1.0
+      ],
+      "properties": {
+        "size": 1.5,
+        "strength": 80.0
+      }
+    },
+    {
       "id": "2405d438-b5db-41e3-9715-693619c73309",
       "type": "spike_ball",
       "label": "Spike Ball.021",
@@ -3752,6 +3976,30 @@
       ],
       "properties": {
         "size": 2.5
+      }
+    },
+    {
+      "id": "24a5fdea-b7e0-4507-976e-de1a50a3171b",
+      "type": "ramp",
+      "label": "Ramp.014",
+      "position": [
+        688.4744262695312,
+        53.023258209228516,
+        -2191.88232421875
+      ],
+      "rotation": [
+        0.0,
+        0.6860070824623108,
+        0.0,
+        0.7275948524475098
+      ],
+      "properties": {
+        "size": 2.0,
+        "ramp_forward_speed": 225.0,
+        "ramp_up_speed": 145.0,
+        "hold_forward_time": 1.2999999523162842,
+        "ramp_movement_lock": 1.2999999523162842,
+        "ramp_action_lock": 1.2999999523162842
       }
     },
     {
@@ -3816,6 +4064,26 @@
       }
     },
     {
+      "id": "27a2cdc8-679c-4dea-a941-dd20921baf31",
+      "type": "item_monitor",
+      "label": "Item Balloon.011",
+      "position": [
+        467.4663391113281,
+        18.654827117919922,
+        -2204.54248046875
+      ],
+      "rotation": [
+        0.2188236117362976,
+        -0.00699146231636405,
+        0.031159188598394394,
+        0.9752417802810669
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings"
+      }
+    },
+    {
       "id": "296d09ff-c8b0-445f-ad73-fbd7efd61a44",
       "type": "dash_panel",
       "label": "Dash Panel.010",
@@ -3836,6 +4104,26 @@
       }
     },
     {
+      "id": "2afa1bf4-03c6-430f-b4e2-bc438598d287",
+      "type": "enemy",
+      "label": "GUN Beetle.009",
+      "position": [
+        -3645.419677734375,
+        74.5582275390625,
+        -937.4783935546875
+      ],
+      "rotation": [
+        0.016484703868627548,
+        0.7582799792289734,
+        0.01775665581226349,
+        0.6514787077903748
+      ],
+      "properties": {
+        "size": 1.5
+      },
+      "variant": "core:gun_beetle"
+    },
+    {
       "id": "2b017e71-72d7-4b06-a537-08f93019f125",
       "type": "dash_panel",
       "label": "Dash Panel.012",
@@ -3854,6 +4142,46 @@
         "size": 2.0,
         "dash_strength": 160.0
       }
+    },
+    {
+      "id": "2c72b998-b1c5-4b86-8c50-4b4242ea3dd2",
+      "type": "enemy",
+      "label": "GUN Beetle.010",
+      "position": [
+        -3580.620361328125,
+        93.68879699707031,
+        -984.3995971679688
+      ],
+      "rotation": [
+        0.016484703868627548,
+        0.7582799792289734,
+        0.01775665581226349,
+        0.6514787077903748
+      ],
+      "properties": {
+        "size": 1.5
+      },
+      "variant": "core:gun_beetle"
+    },
+    {
+      "id": "2d0dfaca-089c-4a63-966c-a949ee1f0064",
+      "type": "enemy",
+      "label": "GUN Beetle.012",
+      "position": [
+        -3662.02978515625,
+        71.68936157226562,
+        -888.460693359375
+      ],
+      "rotation": [
+        -4.182789581363977e-08,
+        0.5745875835418701,
+        -5.9343616243268116e-08,
+        0.8184431195259094
+      ],
+      "properties": {
+        "size": 1.5
+      },
+      "variant": "core:gun_beetle"
     },
     {
       "id": "2fa80a41-72d9-46de-bb9e-648b187efaa4",
@@ -3937,6 +4265,35 @@
       }
     },
     {
+      "id": "317c21cf-56bb-427b-a06a-a7da6cb2b84b",
+      "type": "spring",
+      "label": "Spring.015",
+      "position": [
+        -3721.523681640625,
+        -67.80065155029297,
+        -1682.07666015625
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 170.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -59.38951873779297,
+          81.22662353515625,
+          83.40229034423828
+        ],
+        "trajectory_arc_enabled": true,
+        "movement_lock_time": 1.0,
+        "action_lock_time": 1.0
+      }
+    },
+    {
       "id": "334d9c21-c643-476b-a22a-5d54294a5f73",
       "type": "spike_ball",
       "label": "Spike Ball.010",
@@ -3972,6 +4329,58 @@
       ],
       "properties": {
         "size": 1.0
+      }
+    },
+    {
+      "id": "341b9fda-ec07-4963-9177-dae5f4339cb5",
+      "type": "spring",
+      "label": "Spring.021",
+      "position": [
+        -39.331275939941406,
+        -25.903728485107422,
+        -1264.8385009765625
+      ],
+      "rotation": [
+        0.03952331840991974,
+        7.057449693093076e-05,
+        -0.0017842453671619296,
+        0.99921715259552
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 150.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -29.3433837890625,
+          46.94532775878906,
+          24.41716766357422
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.5
+      }
+    },
+    {
+      "id": "34a07d6c-a15c-4eb3-9d2f-d44652845801",
+      "type": "dash_panel",
+      "label": "Dash Panel.022",
+      "position": [
+        1330.067138671875,
+        -17.55831527709961,
+        -6075.609375
+      ],
+      "rotation": [
+        -0.003100918373093009,
+        -2.1736314137488222e-10,
+        -7.009607116970074e-08,
+        0.999995231628418
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 175.0,
+        "stop_momentum": false,
+        "movement_lock_time": 0.20000000298023224,
+        "action_lock_time": 0.0,
+        "lock_speed_enabled": false
       }
     },
     {
@@ -4147,6 +4556,26 @@
       ],
       "properties": {
         "size": 1.0
+      }
+    },
+    {
+      "id": "41fe99a7-e1e7-4b72-be62-951cc8e0d9fc",
+      "type": "item_monitor",
+      "label": "Item Balloon.007",
+      "position": [
+        199.789306640625,
+        -26.043231964111328,
+        -2030.1168212890625
+      ],
+      "rotation": [
+        0.07337304949760437,
+        0.004073444753885269,
+        -0.05528169497847557,
+        0.9957630038261414
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "speed_shoes"
       }
     },
     {
@@ -4402,6 +4831,26 @@
       }
     },
     {
+      "id": "51a2813d-ec08-4ce1-b45c-60235c068dad",
+      "type": "dash_panel",
+      "label": "Dash Panel.016",
+      "position": [
+        -3381.10595703125,
+        87.34120178222656,
+        -1026.4171142578125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 130.0
+      }
+    },
+    {
       "id": "53205bbf-05f8-46a6-8980-85196b21d8a6",
       "type": "spike_ball",
       "label": "Spike Ball.013",
@@ -4442,6 +4891,26 @@
       }
     },
     {
+      "id": "54f84b8b-f66c-47ec-a67f-3311005cab1f",
+      "type": "item_monitor",
+      "label": "Item Balloon.006",
+      "position": [
+        130.22679138183594,
+        -23.996131896972656,
+        -1905.84228515625
+      ],
+      "rotation": [
+        -0.01953081227838993,
+        -0.0014241833705455065,
+        -0.07271279394626617,
+        0.9971606731414795
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings"
+      }
+    },
+    {
       "id": "5523f426-31fd-4270-98fa-bdaf3271bac0",
       "type": "spike_strip",
       "label": "Spike Strip.004",
@@ -4477,6 +4946,25 @@
       ],
       "properties": {
         "size": 2.5
+      }
+    },
+    {
+      "id": "56188f5d-5557-4472-afc4-6268361b9415",
+      "type": "ramp",
+      "label": "Ramp.012",
+      "position": [
+        1677.9453125,
+        84.58370208740234,
+        -2973.91796875
+      ],
+      "rotation": [
+        -0.0,
+        -0.9975625276565552,
+        -0.0,
+        0.06977804750204086
+      ],
+      "properties": {
+        "size": 1.5
       }
     },
     {
@@ -5379,6 +5867,88 @@
       }
     },
     {
+      "id": "5da48487-4616-4c7a-bd2f-126a79c008e8",
+      "type": "ring_spline",
+      "label": "Ring Trail.004",
+      "position": [
+        156.97967529296875,
+        -1.904934287071228,
+        -2066.47705078125
+      ],
+      "rotation": [
+        0.17447836697101593,
+        0.017613397911190987,
+        -0.09888199716806412,
+        0.979525089263916
+      ],
+      "properties": {
+        "ring_spacing": 8.0,
+        "terrain_warp_enabled": true
+      },
+      "curve": {
+        "closed": false,
+        "points": [
+          {
+            "position": [
+              14.53980541229248,
+              0.4807504117488861,
+              20.53904151916504
+            ],
+            "in": [
+              -11.578548431396484,
+              2.2264485359191895,
+              20.534772872924805
+            ],
+            "out": [
+              11.578553199768066,
+              -2.226449489593506,
+              -20.53478240966797
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              67.1183853149414,
+              -4.474818706512451,
+              -45.55831527709961
+            ],
+            "in": [
+              -22.26274871826172,
+              -0.09922409057617188,
+              22.146259307861328
+            ],
+            "out": [
+              22.26276397705078,
+              0.09922409057617188,
+              -22.14627456665039
+            ],
+            "tilt": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "5f73643c-8f30-4b9e-bbe8-d9562cdc2de8",
+      "type": "item_monitor",
+      "label": "Item Balloon.002",
+      "position": [
+        1200.6783447265625,
+        112.80594635009766,
+        -5615.876953125
+      ],
+      "rotation": [
+        0.003498273901641369,
+        -1.1426990464968867e-09,
+        3.266445958161057e-07,
+        0.9999939203262329
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "speed_shoes",
+        "size": 2.0999999046325684
+      }
+    },
+    {
       "id": "5f7692a2-358a-40dc-9312-9b4764eafc67",
       "type": "spike_ball",
       "label": "Spike Ball.043",
@@ -5396,6 +5966,24 @@
       "properties": {
         "size": 3.0
       }
+    },
+    {
+      "id": "6022b609-bbe6-4efe-8688-f6f155dd61d2",
+      "type": "enemy",
+      "label": "Rhino Tank.003",
+      "position": [
+        9.771080017089844,
+        96.18111419677734,
+        -5919.1904296875
+      ],
+      "rotation": [
+        -3.032594975138636e-07,
+        8.158856823112758e-15,
+        2.690387823633955e-08,
+        1.0
+      ],
+      "properties": {},
+      "variant": "core:rhino_tank"
     },
     {
       "id": "603337f2-2390-41f4-a81a-e63dea123e8a",
@@ -5733,6 +6321,37 @@
             "tilt": 0.0
           }
         ]
+      }
+    },
+    {
+      "id": "63835471-746d-4bdf-84dc-9c700012ea52",
+      "type": "vault_bar",
+      "label": "Vault Bar.003",
+      "position": [
+        -3730.751953125,
+        63.09661865234375,
+        -1523.0
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "bar_length": 45.86000061035156,
+        "spins_before_launch": 1,
+        "manual_swing_speed_enabled": true,
+        "rotation_speed_deg": 1200.0,
+        "vault_launch_speed_mode": "fixed",
+        "fixed_launch_speed": 225.0,
+        "vault_launch_target": [
+          17.183727264404297,
+          -76.01950073242188,
+          -179.14376831054688
+        ],
+        "vertical_arc_enabled": true,
+        "vertical_arc_height": 2.0
       }
     },
     {
@@ -6887,6 +7506,24 @@
       }
     },
     {
+      "id": "757fd194-6210-4ff9-8faf-641c49a561e3",
+      "type": "enemy",
+      "label": "Rhino Tank.004",
+      "position": [
+        50.006103515625,
+        96.18108367919922,
+        -5971.72021484375
+      ],
+      "rotation": [
+        -3.032594975138636e-07,
+        8.158856823112758e-15,
+        2.690387823633955e-08,
+        1.0
+      ],
+      "properties": {},
+      "variant": "core:rhino_tank"
+    },
+    {
       "id": "75d4af74-acee-42fe-9fb0-b14210d48bbf",
       "type": "spike_ball",
       "label": "Spike Ball.003",
@@ -6906,13 +7543,98 @@
       }
     },
     {
+      "id": "772b1f06-36ca-4e51-a0ab-3ec7fea927a1",
+      "type": "camera_constraint",
+      "label": "Fixed Camera Constraint.004",
+      "position": [
+        -3363.83935546875,
+        582.5335693359375,
+        -931.506591796875
+      ],
+      "rotation": [
+        -0.00015062492457218468,
+        -7.636320020765197e-09,
+        -5.069759936304763e-05,
+        1.0
+      ],
+      "properties": {
+        "camera_volume_size": [
+          24.0,
+          640.1700439453125,
+          24.0
+        ],
+        "camera_position_mode": "path_camera",
+        "camera_blend_in": 0.6000000238418579,
+        "camera_blend_out": 0.6000000238418579
+      },
+      "curve": {
+        "closed": false,
+        "points": [
+          {
+            "position": [
+              -2.7995030879974365,
+              -313.48040771484375,
+              -32.21612548828125
+            ],
+            "in": [
+              47.897361755371094,
+              -38.613525390625,
+              -21.73181915283203
+            ],
+            "out": [
+              -79.26045227050781,
+              63.8975830078125,
+              35.96176528930664
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              31.829139709472656,
+              76.76284790039062,
+              21.209522247314453
+            ],
+            "in": [
+              -23.683137893676758,
+              -96.23198699951172,
+              41.52312088012695
+            ],
+            "out": [
+              18.86627197265625,
+              76.65955352783203,
+              -33.077816009521484
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              -9.615015029907227,
+              352.40069580078125,
+              -33.6090087890625
+            ],
+            "in": [
+              28.598796844482422,
+              -50.953887939453125,
+              -23.360061645507812
+            ],
+            "out": [
+              -31.361270904541016,
+              55.875732421875,
+              25.61650276184082
+            ],
+            "tilt": 0.0
+          }
+        ]
+      }
+    },
+    {
       "id": "7910a1b4-e3e0-40e3-aa0a-1576781e744e",
       "type": "spring",
       "label": "Dash Ring.001",
       "position": [
         -3363.660888671875,
         957.3109130859375,
-        -931.3124389648438
+        -833.3250122070312
       ],
       "rotation": [
         0.4617486298084259,
@@ -6923,16 +7645,17 @@
       "properties": {
         "spring_style": "dash_ring",
         "size": 2.0,
-        "strength": 420.0,
+        "strength": 900.0,
         "damping_grace_time": 3.0,
         "use_trajectory_solver": true,
         "trajectory_target_offset": [
           -2.2262749911801383e-13,
-          1022.4656372070312,
-          1932.915283203125
+          952.4650268554688,
+          1883.9002685546875
         ],
         "trajectory_arc_enabled": true,
-        "trajectory_arc_height": 45.0
+        "trajectory_arc_height": 0.75,
+        "homing_target_enabled": true
       }
     },
     {
@@ -6988,7 +7711,7 @@
         "automation_trigger_height": 25.610000610351562,
         "automation_trigger_gate_depth": 43.72999954223633,
         "automation_turn_rate": 900.0,
-        "automation_target_speed": 200.0
+        "automation_target_speed": 275.0
       },
       "curve": {
         "closed": false,
@@ -7071,6 +7794,34 @@
           10.0,
           35000.0
         ]
+      }
+    },
+    {
+      "id": "7b7ebdb1-b067-47af-96ad-9a1c7cb108ce",
+      "type": "spring",
+      "label": "Spring.020",
+      "position": [
+        1595.8958740234375,
+        -2.981714963912964,
+        -5860.47314453125
+      ],
+      "rotation": [
+        0.0678088590502739,
+        -2.189177905620454e-07,
+        3.2210216431849403e-06,
+        0.9976983666419983
+      ],
+      "properties": {
+        "size": 1.0,
+        "strength": 105.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -15.746077537536621,
+          20.661880493164062,
+          -12.17482852935791
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.09999942779541016
       }
     },
     {
@@ -8103,6 +8854,8 @@
         "automation_trigger_width": 43.96999740600586,
         "automation_trigger_height": 25.610000610351562,
         "automation_trigger_gate_depth": 3.2300000190734863,
+        "automation_capture_distance": 15.0,
+        "automation_tracking_window": 15.0,
         "automation_turn_rate": 900.0,
         "automation_spring_strength": 50.0,
         "automation_target_speed": 175.0,
@@ -8244,6 +8997,26 @@
       }
     },
     {
+      "id": "81a7fdd2-f009-43ed-a9e6-86c0bbf1c4b0",
+      "type": "dash_panel",
+      "label": "Dash Panel.020",
+      "position": [
+        -3381.134521484375,
+        87.34120178222656,
+        -828.3809814453125
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 130.0
+      }
+    },
+    {
       "id": "82001f97-54e7-4dfa-aec5-33cb1ed9b8df",
       "type": "spike_strip",
       "label": "Spike Strip.007",
@@ -8280,6 +9053,26 @@
       "properties": {
         "size": 2.5
       }
+    },
+    {
+      "id": "82a6b461-59e5-4d70-84d0-c1cf18cd2c67",
+      "type": "enemy",
+      "label": "GUN Beetle.011",
+      "position": [
+        -3598.604248046875,
+        88.38533020019531,
+        -876.171630859375
+      ],
+      "rotation": [
+        0.009787749499082565,
+        0.5041720867156982,
+        0.022164030000567436,
+        0.8632633090019226
+      ],
+      "properties": {
+        "size": 1.5
+      },
+      "variant": "core:gun_beetle"
     },
     {
       "id": "8373b8dd-64e8-4e37-92ff-3cb49290efba",
@@ -8341,6 +9134,26 @@
       }
     },
     {
+      "id": "85ad9acd-6238-48fb-b344-26ea245edf76",
+      "type": "dash_panel",
+      "label": "Dash Panel.017",
+      "position": [
+        -3381.10595703125,
+        87.34120178222656,
+        -1035.4171142578125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 130.0
+      }
+    },
+    {
       "id": "85c450d9-997a-4eea-8839-bcca12239920",
       "type": "spring",
       "label": "Spring.008",
@@ -8369,6 +9182,48 @@
       }
     },
     {
+      "id": "861638b4-8c92-4f87-b8fe-b859c58b13c2",
+      "type": "item_monitor",
+      "label": "Item Balloon.003",
+      "position": [
+        -3708.27197265625,
+        56.40524673461914,
+        -945.63134765625
+      ],
+      "rotation": [
+        -0.0027243001386523247,
+        6.560773908859119e-05,
+        0.024075347930192947,
+        0.9997064471244812
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings",
+        "monitor_ring_amount": 20,
+        "size": 2.75
+      }
+    },
+    {
+      "id": "86d3a91d-69fe-4aae-8d5a-b89d0f00d4fa",
+      "type": "item_monitor",
+      "label": "Item Balloon.010",
+      "position": [
+        271.3548889160156,
+        -23.963642120361328,
+        -2084.056884765625
+      ],
+      "rotation": [
+        0.06814565509557724,
+        0.001754667260684073,
+        -0.02568037062883377,
+        0.9973433017730713
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "random_rings"
+      }
+    },
+    {
       "id": "88097cf9-1444-4569-894b-bcd71b823b1b",
       "type": "spike_ball",
       "label": "Spike Ball.045",
@@ -8386,6 +9241,84 @@
       "properties": {
         "size": 3.0
       }
+    },
+    {
+      "id": "8809e422-da69-4fe4-8717-ae98513d4901",
+      "type": "spring",
+      "label": "Dash Ring.004",
+      "position": [
+        886.755615234375,
+        169.90611267089844,
+        -1351.835205078125
+      ],
+      "rotation": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ],
+      "properties": {
+        "spring_style": "dash_ring",
+        "size": 1.0,
+        "strength": 120.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -2.7038070129492553e-06,
+          -51.85589599609375,
+          2.7038070129492553e-06
+        ],
+        "trajectory_arc_enabled": true
+      }
+    },
+    {
+      "id": "8ab79c78-920c-4170-9b58-8a018e977fc5",
+      "type": "spring",
+      "label": "Dash Ring.003",
+      "position": [
+        1527.3370361328125,
+        56.022247314453125,
+        -5898.43896484375
+      ],
+      "rotation": [
+        -0.10755942761898041,
+        -0.1947340965270996,
+        0.47137370705604553,
+        0.8534145951271057
+      ],
+      "properties": {
+        "spring_style": "dash_ring",
+        "size": 2.5,
+        "strength": 130.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -3.4545955657958984,
+          25.142763137817383,
+          3.8960742950439453
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.0,
+        "homing_target_enabled": false
+      }
+    },
+    {
+      "id": "8c2cc1b7-b5e0-492d-9353-cdd638a0ea3a",
+      "type": "enemy",
+      "label": "GUN Beetle.008",
+      "position": [
+        -3731.986572265625,
+        48.46393585205078,
+        -1557.0736083984375
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "attacks_enabled": false
+      },
+      "variant": "core:gun_beetle"
     },
     {
       "id": "8d6dbff1-b1e5-4a58-8697-35110ce92edd",
@@ -10835,6 +11768,70 @@
               0.0
             ],
             "tilt": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "990fd0f7-7a6c-4f04-874b-c30e3b45232d",
+      "type": "automation_spline",
+      "label": "Automation Spline.005",
+      "position": [
+        1316.7757568359375,
+        60.560699462890625,
+        -5552.7646484375
+      ],
+      "rotation": [
+        0.019356882199645042,
+        -0.001218099961988628,
+        0.06279247999191284,
+        0.9978381395339966
+      ],
+      "properties": {
+        "automation_preset": "soft_route",
+        "automation_trigger_width": 33.59000015258789,
+        "automation_trigger_height": 17.360000610351562,
+        "automation_capture_distance": 20.0,
+        "automation_tracking_window": 20.0
+      },
+      "curve": {
+        "closed": false,
+        "points": [
+          {
+            "position": [
+              -18.700668334960938,
+              3.893867015838623,
+              -5.4134907722473145
+            ],
+            "in": [
+              -26.956478118896484,
+              -3.7127113342285156,
+              0.28804779052734375
+            ],
+            "out": [
+              55.94735336303711,
+              7.705620288848877,
+              -0.597834587097168
+            ],
+            "tilt": 0.0
+          },
+          {
+            "position": [
+              -34.18482208251953,
+              29.686431884765625,
+              -67.99349975585938
+            ],
+            "in": [
+              74.31910705566406,
+              -28.372644424438477,
+              -1.8511962890625
+            ],
+            "out": [
+              -25.415916442871094,
+              9.702980041503906,
+              0.6330795288085938
+            ],
+            "tilt": 0.5699999928474426
           }
         ]
       }
@@ -13784,6 +14781,27 @@
       }
     },
     {
+      "id": "a5aa1919-bd6c-4abf-b56e-a95a4324faae",
+      "type": "enemy",
+      "label": "GUN Beetle.013",
+      "position": [
+        -3352.32080078125,
+        949.50244140625,
+        -903.1456298828125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "face_pitch": false,
+        "attacks_enabled": false
+      },
+      "variant": "core:gun_beetle"
+    },
+    {
       "id": "a70fcc7a-c74d-42ab-bde3-da933c64ccaf",
       "type": "spring",
       "label": "Dash Ring",
@@ -13801,7 +14819,7 @@
       "properties": {
         "spring_style": "dash_ring",
         "size": 1.0,
-        "strength": 230.0,
+        "strength": 310.0,
         "use_trajectory_solver": true,
         "trajectory_target_offset": [
           -3.916229724884033,
@@ -13810,6 +14828,30 @@
         ],
         "trajectory_arc_enabled": true,
         "trajectory_arc_height": 15.0
+      }
+    },
+    {
+      "id": "a857bdea-4737-449a-983c-820bc1e1cc5d",
+      "type": "ramp",
+      "label": "Ramp.016",
+      "position": [
+        688.4744262695312,
+        53.023258209228516,
+        -2164.88232421875
+      ],
+      "rotation": [
+        0.0,
+        0.6860070824623108,
+        0.0,
+        0.7275948524475098
+      ],
+      "properties": {
+        "size": 2.0,
+        "ramp_forward_speed": 225.0,
+        "ramp_up_speed": 145.0,
+        "hold_forward_time": 1.2999999523162842,
+        "ramp_movement_lock": 1.2999999523162842,
+        "ramp_action_lock": 1.2999999523162842
       }
     },
     {
@@ -13874,6 +14916,49 @@
       }
     },
     {
+      "id": "ab6432fd-e8e2-4dce-92f0-aa6351ec1e94",
+      "type": "item_monitor",
+      "label": "Item Balloon.008",
+      "position": [
+        235.4307861328125,
+        -1.241422176361084,
+        -2127.732177734375
+      ],
+      "rotation": [
+        0.21084125339984894,
+        0.02840707264840603,
+        -0.13046886026859283,
+        0.9683578610420227
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "invincibility",
+        "monitor_ring_amount": 10
+      }
+    },
+    {
+      "id": "aeddf455-4d7c-4a31-a4e7-765871f36558",
+      "type": "dash_panel",
+      "label": "Dash Panel.023",
+      "position": [
+        -51.33594512939453,
+        1.0853930711746216,
+        -1457.5765380859375
+      ],
+      "rotation": [
+        0.0,
+        0.8783273100852966,
+        0.0,
+        0.4780597984790802
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 175.0,
+        "movement_lock_time": 0.699999988079071,
+        "action_lock_time": 0.10000000149011612
+      }
+    },
+    {
       "id": "b01593e5-535e-4c43-8a2a-668399a628a6",
       "type": "dash_panel",
       "label": "Dash Panel.004",
@@ -13890,7 +14975,10 @@
       ],
       "properties": {
         "size": 2.0,
-        "dash_strength": 200.0
+        "dash_strength": 240.0,
+        "dash_override_max_speed": true,
+        "dash_max_speed_override": 275.0,
+        "dash_max_speed_override_duration": 2.0
       }
     },
     {
@@ -13928,6 +15016,30 @@
       }
     },
     {
+      "id": "b0866d03-fcb9-47e0-8d21-abcddc9dec1c",
+      "type": "ramp",
+      "label": "Ramp.015",
+      "position": [
+        688.4744262695312,
+        53.023258209228516,
+        -2173.88232421875
+      ],
+      "rotation": [
+        0.0,
+        0.6860070824623108,
+        0.0,
+        0.7275948524475098
+      ],
+      "properties": {
+        "size": 2.0,
+        "ramp_forward_speed": 225.0,
+        "ramp_up_speed": 145.0,
+        "hold_forward_time": 1.2999999523162842,
+        "ramp_movement_lock": 1.2999999523162842,
+        "ramp_action_lock": 1.2999999523162842
+      }
+    },
+    {
       "id": "b188ced7-3f3b-4faf-acfb-e5b9f7a3a0de",
       "type": "enemy",
       "label": "GUN Beetle.003",
@@ -13945,6 +15057,46 @@
       "properties": {
         "size": 1.25,
         "projectiles_enabled": false
+      },
+      "variant": "core:gun_beetle"
+    },
+    {
+      "id": "b202cb42-a794-41ec-a895-61f8879185a0",
+      "type": "dash_panel",
+      "label": "Dash Panel.025",
+      "position": [
+        900.2687377929688,
+        141.8214569091797,
+        -1344.232177734375
+      ],
+      "rotation": [
+        -0.7071068286895752,
+        0.7071068286895752,
+        -5.338508302088485e-08,
+        5.3385093679025886e-08
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 80.0
+      }
+    },
+    {
+      "id": "b2af6f6c-50c7-43c3-b2d3-15e276eac756",
+      "type": "enemy",
+      "label": "GUN Beetle.015",
+      "position": [
+        -3561.402587890625,
+        185.84695434570312,
+        -930.6817016601562
+      ],
+      "rotation": [
+        0.016484703868627548,
+        0.7582799792289734,
+        0.01775665581226349,
+        0.6514787077903748
+      ],
+      "properties": {
+        "size": 1.5
       },
       "variant": "core:gun_beetle"
     },
@@ -14061,6 +15213,26 @@
       ],
       "properties": {
         "size": 2.0
+      }
+    },
+    {
+      "id": "b755903a-68ef-4f05-ae73-e7be77adf976",
+      "type": "spring",
+      "label": "Spring.019",
+      "position": [
+        -3363.896240234375,
+        940.3046264648438,
+        -931.32470703125
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "properties": {
+        "size": 1.5,
+        "strength": 45.0
       }
     },
     {
@@ -15903,6 +17075,26 @@
       }
     },
     {
+      "id": "ba761f64-bd6b-4d6c-b8e6-876702198baf",
+      "type": "item_monitor",
+      "label": "Item Monitor",
+      "position": [
+        1314.6217041015625,
+        82.6498794555664,
+        -5578.609375
+      ],
+      "rotation": [
+        0.0030537222046405077,
+        -1.2741394357362879e-06,
+        0.00041723978938534856,
+        0.9999953508377075
+      ],
+      "properties": {
+        "monitor_style": "grounded",
+        "monitor_reward": "invincibility"
+      }
+    },
+    {
       "id": "bb09c68b-ad41-4272-a938-f032f7f47f3c",
       "type": "enemy",
       "label": "Rhino Tank.001",
@@ -15953,7 +17145,7 @@
         "automation_trigger_height": 25.610000610351562,
         "automation_trigger_gate_depth": 30.439998626708984,
         "automation_turn_rate": 900.0,
-        "automation_target_speed": 200.0
+        "automation_target_speed": 275.0
       },
       "curve": {
         "closed": false,
@@ -16078,7 +17270,9 @@
           -51.75371170043945,
           13.488546371459961,
           4.534563064575195
-        ]
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.10000000149011612
       }
     },
     {
@@ -16185,6 +17379,64 @@
       }
     },
     {
+      "id": "c8585d12-aa14-40bf-8855-d32ff0df40de",
+      "type": "camera_constraint",
+      "label": "Fixed Camera Constraint.005",
+      "position": [
+        -3364.22216796875,
+        939.8241577148438,
+        -928.7268676757812
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "camera_constraint_priority": 1,
+        "camera_volume_size": [
+          232.34999084472656,
+          161.52000427246094,
+          188.97000122070312
+        ],
+        "camera_position_mode": "player_camera",
+        "camera_position_offset": [
+          0.0,
+          1.3199999332427979,
+          -10.40999984741211
+        ],
+        "camera_aim_mode": "marker",
+        "camera_aim_target_offset": [
+          0.0,
+          11.831186294555664,
+          109.67941284179688
+        ],
+        "camera_blend_in": 0.10000000149011612,
+        "camera_blend_out": 0.10000000149011612
+      }
+    },
+    {
+      "id": "c8ce54cc-3582-426c-ad5a-b4a3a084cfc8",
+      "type": "item_monitor",
+      "label": "Item Balloon.012",
+      "position": [
+        625.9595336914062,
+        45.32814407348633,
+        -2192.49755859375
+      ],
+      "rotation": [
+        0.1396363228559494,
+        -0.017149215564131737,
+        0.12068523466587067,
+        0.9826712012290955
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings"
+      }
+    },
+    {
       "id": "c9271906-5202-4783-ad80-29479037e9b0",
       "type": "death_plane",
       "label": "Death Plane.001",
@@ -16265,6 +17517,34 @@
       }
     },
     {
+      "id": "cf4b0097-29c0-4cbc-bc97-b5d005f57cc1",
+      "type": "spring",
+      "label": "Spring.023",
+      "position": [
+        -11.331382751464844,
+        54.81766128540039,
+        -1254.5318603515625
+      ],
+      "rotation": [
+        -0.46706998348236084,
+        -0.1330874115228653,
+        0.6944693922996521,
+        0.530891478061676
+      ],
+      "properties": {
+        "size": 1.0,
+        "strength": 175.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          37.633792877197266,
+          144.95541381835938,
+          -73.18455505371094
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 4.0
+      }
+    },
+    {
       "id": "d0254a03-1353-4609-9d21-3f2905c6a710",
       "type": "spring",
       "label": "Spring.002",
@@ -16290,6 +17570,26 @@
         ],
         "trajectory_arc_enabled": true,
         "trajectory_arc_height": 17.799999237060547
+      }
+    },
+    {
+      "id": "d131bd56-9338-4581-87c2-6d490b9f32f6",
+      "type": "dash_panel",
+      "label": "Dash Panel.021",
+      "position": [
+        -3381.134521484375,
+        87.34120178222656,
+        -819.3809814453125
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 130.0
       }
     },
     {
@@ -16419,6 +17719,26 @@
       }
     },
     {
+      "id": "d6609f39-a2a7-4ae4-b7cd-d1cea4377ba9",
+      "type": "dash_panel",
+      "label": "Dash Panel.019",
+      "position": [
+        -3381.134521484375,
+        87.34120178222656,
+        -837.3809814453125
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        4.371138828673793e-08
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 130.0
+      }
+    },
+    {
       "id": "d77c3d0c-0b23-4de4-9c1a-3267662de220",
       "type": "vault_bar",
       "label": "Vault Bar",
@@ -16522,6 +17842,36 @@
         "size": 2.0,
         "start_raised": true,
         "stay_up": true
+      }
+    },
+    {
+      "id": "da52822e-1e7c-4d67-acd7-1d3aa124eb7a",
+      "type": "spring",
+      "label": "Spring.017",
+      "position": [
+        -3661.22509765625,
+        9.709944725036621,
+        -1508.584716796875
+      ],
+      "rotation": [
+        0.3793996572494507,
+        -0.5967041850090027,
+        0.586355447769165,
+        0.39520561695098877
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 80.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          24.043638229370117,
+          7.160818099975586,
+          -27.367212295532227
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 2.0,
+        "movement_lock_time": 0.20000000298023224,
+        "action_lock_time": 0.20000000298023224
       }
     },
     {
@@ -17531,6 +18881,28 @@
       }
     },
     {
+      "id": "e2849a1b-f43f-4cfe-bdb3-b6205f91f3e0",
+      "type": "ramp",
+      "label": "Ramp.007",
+      "position": [
+        -3462.028564453125,
+        196.64112854003906,
+        -924.5205688476562
+      ],
+      "rotation": [
+        1.0873877753087013e-12,
+        0.7071068286895752,
+        -1.0873877753087013e-12,
+        0.7071068286895752
+      ],
+      "properties": {
+        "active": true,
+        "size": 1.5,
+        "ramp_forward_speed": 80.0,
+        "ramp_up_speed": 55.0
+      }
+    },
+    {
       "id": "e3cc2502-79a9-491f-89cc-62223a25fb3a",
       "type": "ramp",
       "label": "Ramp.002",
@@ -17594,6 +18966,58 @@
       }
     },
     {
+      "id": "e6c70a1f-91d6-4041-92a9-90173b9f3970",
+      "type": "spring",
+      "label": "Spring.016",
+      "position": [
+        -3781.95947265625,
+        13.102319717407227,
+        -1598.0859375
+      ],
+      "rotation": [
+        0.6344568729400635,
+        0.3121930658817291,
+        -0.4315490126609802,
+        0.5601477026939392
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 70.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -7.229846954345703,
+          21.692026138305664,
+          -28.120853424072266
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 1.0,
+        "movement_lock_time": 0.20000000298023224,
+        "action_lock_time": 0.20000000298023224
+      }
+    },
+    {
+      "id": "e6f574bb-0ee3-4b4b-8c9a-2ad2a9efa191",
+      "type": "ramp",
+      "label": "Ramp.009",
+      "position": [
+        -3462.028564453125,
+        196.64112854003906,
+        -917.5205688476562
+      ],
+      "rotation": [
+        1.0873877753087013e-12,
+        0.7071068286895752,
+        -1.0873877753087013e-12,
+        0.7071068286895752
+      ],
+      "properties": {
+        "active": true,
+        "size": 1.5,
+        "ramp_forward_speed": 80.0,
+        "ramp_up_speed": 55.0
+      }
+    },
+    {
       "id": "e814dbf4-3820-46b8-a598-7217d88f5573",
       "type": "spike_ball",
       "label": "Spike Ball.016",
@@ -17632,6 +19056,25 @@
       }
     },
     {
+      "id": "ec793299-ace9-45d4-908c-1d600c34b496",
+      "type": "ramp",
+      "label": "Ramp.011",
+      "position": [
+        1663.9453125,
+        84.58370208740234,
+        -2973.91796875
+      ],
+      "rotation": [
+        -0.0,
+        -0.9975625276565552,
+        -0.0,
+        0.06977804750204086
+      ],
+      "properties": {
+        "size": 1.5
+      }
+    },
+    {
       "id": "ecc8699f-80b0-498c-934e-67d65a177b50",
       "type": "spike_ball",
       "label": "Spike Ball.006",
@@ -17647,6 +19090,27 @@
         0.9970470666885376
       ],
       "properties": {
+        "size": 2.5
+      }
+    },
+    {
+      "id": "ed60c8b8-22e5-4d50-9eac-f454e4605fab",
+      "type": "item_monitor",
+      "label": "Item Balloon.004",
+      "position": [
+        1658.5162353515625,
+        178.20252990722656,
+        -2699.341064453125
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings",
         "size": 2.5
       }
     },
@@ -17667,6 +19131,30 @@
       ],
       "properties": {
         "size": 2.5
+      }
+    },
+    {
+      "id": "eed34773-488b-4b5c-8cb9-afdff89bcfab",
+      "type": "spring",
+      "label": "Dash Ring.002",
+      "position": [
+        -3510.313720703125,
+        205.39727783203125,
+        -925.4822998046875
+      ],
+      "rotation": [
+        -0.0,
+        -0.0,
+        -0.8191521763801575,
+        0.5735762715339661
+      ],
+      "properties": {
+        "spring_style": "dash_ring",
+        "size": 1.5,
+        "strength": 145.0,
+        "movement_lock_time": 0.6000000238418579,
+        "action_lock_time": 0.6000000238418579,
+        "homing_target_enabled": true
       }
     },
     {
@@ -17694,6 +19182,24 @@
       }
     },
     {
+      "id": "f1222f87-af87-4948-bd6c-1ec1e02697eb",
+      "type": "enemy",
+      "label": "Rhino Tank.002",
+      "position": [
+        -24.8602294921875,
+        96.18106842041016,
+        -5986.40576171875
+      ],
+      "rotation": [
+        -3.032594975138636e-07,
+        8.158856823112758e-15,
+        2.690387823633955e-08,
+        1.0
+      ],
+      "properties": {},
+      "variant": "core:rhino_tank"
+    },
+    {
       "id": "f1797e55-5ab1-43cd-8810-04b4b95c252c",
       "type": "spike_strip",
       "label": "Spike Strip.013",
@@ -17712,6 +19218,26 @@
         "size": 2.0,
         "start_raised": true,
         "stay_up": true
+      }
+    },
+    {
+      "id": "f46e1acf-a8ce-4070-b3e5-a997902f9ffa",
+      "type": "dash_panel",
+      "label": "Dash Panel.018",
+      "position": [
+        -3381.10595703125,
+        87.34120178222656,
+        -1044.4171142578125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 2.0,
+        "dash_strength": 130.0
       }
     },
     {
@@ -17750,6 +19276,27 @@
       ],
       "properties": {
         "size": 1.0
+      }
+    },
+    {
+      "id": "f6b73534-8ee1-4056-8e35-4864012fc826",
+      "type": "ramp",
+      "label": "Ramp.010",
+      "position": [
+        1670.9453125,
+        84.58370208740234,
+        -2973.91796875
+      ],
+      "rotation": [
+        -0.0,
+        -0.9975625276565552,
+        -0.0,
+        0.06977804750204086
+      ],
+      "properties": {
+        "size": 1.5,
+        "ramp_forward_speed": 150.0,
+        "ramp_up_speed": 65.0
       }
     },
     {
@@ -17984,6 +19531,47 @@
       }
     },
     {
+      "id": "f9544688-4b7e-49b6-8b9a-c06a5b6b6596",
+      "type": "item_monitor",
+      "label": "Item Balloon.005",
+      "position": [
+        165.316650390625,
+        -15.065196990966797,
+        -2037.3763427734375
+      ],
+      "rotation": [
+        0.18745584785938263,
+        0.03611104562878609,
+        -0.18568097054958344,
+        0.9638873934745789
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings"
+      }
+    },
+    {
+      "id": "fa87bcbf-be92-49e5-a7aa-5a1f1f089230",
+      "type": "item_monitor",
+      "label": "Item Balloon.009",
+      "position": [
+        398.0820007324219,
+        -8.598652839660645,
+        -2154.197998046875
+      ],
+      "rotation": [
+        0.18683592975139618,
+        -0.0011798505438491702,
+        0.006203575059771538,
+        0.9823708534240723
+      ],
+      "properties": {
+        "monitor_style": "balloon",
+        "monitor_reward": "rings",
+        "monitor_ring_amount": 25
+      }
+    },
+    {
       "id": "fc149484-94f8-4c9f-a7ad-8442946740ce",
       "type": "spike_ball",
       "label": "Spike Ball.030",
@@ -18082,7 +19670,32 @@
       ],
       "properties": {
         "size": 2.0,
-        "dash_strength": 200.0
+        "dash_strength": 240.0,
+        "dash_override_max_speed": true,
+        "dash_max_speed_override": 275.0,
+        "dash_max_speed_override_duration": 2.0
+      }
+    },
+    {
+      "id": "fea7bbf5-e017-4e91-a30e-77f26eea120d",
+      "type": "ramp",
+      "label": "Ramp.008",
+      "position": [
+        -3462.028564453125,
+        196.64112854003906,
+        -931.5205688476562
+      ],
+      "rotation": [
+        1.0873877753087013e-12,
+        0.7071068286895752,
+        -1.0873877753087013e-12,
+        0.7071068286895752
+      ],
+      "properties": {
+        "active": true,
+        "size": 1.5,
+        "ramp_forward_speed": 80.0,
+        "ramp_up_speed": 55.0
       }
     }
   ]

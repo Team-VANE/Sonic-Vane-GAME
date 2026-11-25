@@ -43,12 +43,12 @@ var vsync_enabled: bool = false
 var hdr_output_enabled: bool = true
 
 var ssr: bool = true
-var ssao: bool = true
+var ssao: bool = false
 var ssil: bool = false
 var sdfgi: bool = false
 var shadows: bool = true
 var glow: bool = true
-var depth_of_field_enabled: bool = true
+var depth_of_field_enabled: bool = false
 
 const RENDER_SCALE_MODE_DIRECT: int = 0
 const RENDER_SCALE_MODE_FSR: int = 1
@@ -190,7 +190,7 @@ var homing_targeting_mode: int = HOMING_TARGETING_HYBRID
 var homing_mouse_targeting_mode: int = HOMING_TARGETING_HYBRID
 var homing_targeting_separate_by_device: bool = true
 var homing_camera_radius: float = 535.0
-var center_reticle_enabled: bool = true
+var center_reticle_enabled: bool = false
 var center_reticle_scale: float = 1.9
 var center_reticle_opacity: float = 0.45
 var center_reticle_color: Color = Color(0.7187805, 1, 0.62890625, 1)
@@ -211,14 +211,14 @@ var lightspeed_dash_targeting_mode: int = LIGHTSPEED_DASH_TARGETING_HYBRID
 
 # Character colors
 const DEFAULT_CHOSEN_CHARACTER_ID: String = "sonic_neo_adventure"
-const DEFAULT_CHOSEN_BUDDY_CHARACTER_ID: String = "tails"
+const DEFAULT_CHOSEN_BUDDY_CHARACTER_ID: String = ""
 const DEFAULT_CHARACTER_PRIMARY_COLOR: Color = Color(0, 0.5390625, 0.20255688, 1)
 const DEFAULT_CHARACTER_SECONDARY_COLOR: Color = Color(1, 0, 0.44067812, 1)
 const DEFAULT_CHARACTER_TRAIL_COLOR: Color = Color(0, 0.65625, 0.1640625, 1)
 var chosen_character_id: String = DEFAULT_CHOSEN_CHARACTER_ID
 var favourite_level_key: String = ""
 var chosen_buddy_character_id: String = DEFAULT_CHOSEN_BUDDY_CHARACTER_ID
-var buddy_active: bool = true
+var buddy_active: bool = false
 var use_character_colors: bool = false
 var character_primary_color: Color = DEFAULT_CHARACTER_PRIMARY_COLOR
 var character_secondary_color: Color = DEFAULT_CHARACTER_SECONDARY_COLOR
@@ -1521,8 +1521,6 @@ func set_chosen_buddy_character_id(value: String) -> void:
 	var normalized: String = value.strip_edges()
 	if normalized.nocasecmp_to("sonic") == 0:
 		normalized = DEFAULT_CHOSEN_CHARACTER_ID
-	if normalized == "":
-		normalized = DEFAULT_CHOSEN_BUDDY_CHARACTER_ID
 	chosen_buddy_character_id = normalized
 
 
@@ -2144,6 +2142,8 @@ func _backfill_missing_project_bindings() -> void:
 	for action_entry in InputMap.get_actions():
 		var action_name: StringName = StringName(action_entry)
 		if _is_input_action_locked(action_name):
+			continue
+		if action_name == &"rail_brake" and input_bindings.has(action_name):
 			continue
 		var existing: Array = get_action_bindings(action_name)
 		var defaults: Array = _get_project_default_bindings(action_name)

@@ -2,6 +2,7 @@
 extends Node3D
 
 const RailSegmentMesh = preload("res://LS5Framework/Objects/Rail/RailSegmentMesh.gd")
+const ABILITY_ENTRY_INPUT_DOT_MIN: float = 0.35
 
 @export_group("Rail")
 @export var active: bool = true
@@ -471,11 +472,7 @@ func on_homing_hit(player: Node, _jump_held: bool) -> bool:
 		if to_entry.length() > 0.001:
 			entry_velocity = to_entry.normalized() * homing_entry_min_speed
 
-	var entry_forward: Vector3 = Vector3.ZERO
-	if player.has_method("get_rail_entry_forward"):
-		entry_forward = player.call("get_rail_entry_forward")
-
-	var params: Dictionary = build_session_params_for_entry(entry_point, entry_velocity, entry_forward, _get_entry_up(player))
+	var params: Dictionary = _build_session_params(player as Node3D, entry_velocity, entry_point)
 	if params.is_empty():
 		return false
 
@@ -514,7 +511,10 @@ func _build_session_params(body: Node3D, override_velocity = null, override_orig
 	var entry_forward: Vector3 = Vector3.ZERO
 	if body.has_method("get_rail_entry_forward"):
 		entry_forward = body.call("get_rail_entry_forward")
-	return build_session_params_for_entry(entry_point, entry_velocity, entry_forward, _get_entry_up(body))
+	var entry_assist: Vector3 = Vector3.ZERO
+	if body.has_method("get_rail_entry_assist"):
+		entry_assist = body.call("get_rail_entry_assist")
+	return build_session_params_for_entry(entry_point, entry_velocity, entry_forward, _get_entry_up(body), entry_assist)
 
 
 func _get_entry_up(body: Node3D) -> Vector3:
@@ -544,7 +544,8 @@ func build_session_params_for_entry(
 	entry_point: Vector3,
 	entry_velocity: Vector3,
 	entry_forward: Vector3 = Vector3.ZERO,
-	entry_up: Vector3 = Vector3.UP
+	entry_up: Vector3 = Vector3.UP,
+	entry_assist: Vector3 = Vector3.ZERO
 ) -> Dictionary:
 	if path == null:
 		return {}
@@ -591,12 +592,23 @@ func build_session_params_for_entry(
 
 	var sign: float = _determine_direction(projected_speed, forward_dot, forward_valid)
 	var speed: float = absf(projected_speed)
-	if entry_tangential_landing_boost > 0.0 and tangent_ratio <= 0.707:
+	var landing_boost: float = entry_tangential_landing_boost
+	var planar_tangent: Vector3 = Vector3.ZERO
+	if not entry_assist.is_zero_approx() or (landing_boost > 0.0 and tangent_ratio <= 0.707):
+		planar_tangent = tangent.slide(entry_up).normalized()
+	if not entry_assist.is_zero_approx():
+		var along_input: float = planar_tangent.dot(entry_assist.normalized())
+		if absf(along_input) >= ABILITY_ENTRY_INPUT_DOT_MIN:
+			var input_sign: float = signf(along_input)
+			if entry_direction_mode == 0 and (input_sign > 0.0 or allow_reverse):
+				sign = input_sign
+			if input_sign == sign and (sign > 0.0 or allow_reverse):
+				landing_boost += entry_assist.length()
+	if landing_boost > 0.0 and tangent_ratio <= 0.707:
 		var crossing_velocity: Vector3 = entry_velocity.slide(entry_up)
-		var planar_tangent: Vector3 = tangent.slide(entry_up).normalized()
 		if not planar_tangent.is_zero_approx():
 			crossing_velocity = crossing_velocity.slide(planar_tangent)
-		var boost: float = crossing_velocity.length() * clampf(entry_tangential_landing_boost, 0.0, 1.0)
+		var boost: float = crossing_velocity.length() * clampf(landing_boost, 0.0, 1.0)
 		var parallel_speed: float = lock_speed_value if lock_speed_enabled else maxf(entry_speed, min_speed)
 		speed = maxf(speed, minf(Vector2(speed, boost).length(), parallel_speed))
 

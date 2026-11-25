@@ -2,6 +2,7 @@ extends RefCounted
 class_name PlayerTargetingController
 
 const CharacterActionType = preload("res://LS5Framework/Scripts/Player/character_action.gd")
+const LIGHTSPEED_RAIL_ENTRY_WINDOW: float = 0.25
 
 # Homing, attack magnetism, and lightspeed-dash target resolution.
 var _owner: Node = null
@@ -1738,7 +1739,7 @@ func _try_start_lightspeed_dash() -> bool:
 	_lightspeed_terrain_offset = Vector3.ZERO
 	p._lightspeed_dash_target = target
 	p._lightspeed_dash_prev_ring = null
-	p._lightspeed_dash_timer = 0.0
+	p._lightspeed_rail_entry_timer = 0.0
 	var base_velocity: Vector3 = p.velocity
 	if base_velocity.length() <= 0.01:
 		base_velocity = forward_bias
@@ -2133,10 +2134,10 @@ func _end_lightspeed_dash(apply_release_velocity: bool, try_attach: bool = false
 	if apply_release_velocity and p._lightspeed_dash_release_velocity.length() > 0.001:
 		p.velocity = p._lightspeed_dash_release_velocity
 		p._last_air_velocity = p.velocity
+		p._lightspeed_rail_entry_timer = LIGHTSPEED_RAIL_ENTRY_WINDOW
 	p._lightspeed_dash_release_velocity = Vector3.ZERO
 	p._lightspeed_dash_last_dir = Vector3.ZERO
 	p._lightspeed_dash_speed = 0.0
-	p._lightspeed_dash_timer = 0.0
 	if p._current_action_id == &"lightspeed_dash":
 		p.clear_active_action()
 	if try_attach and p.lightspeed_dash_auto_attach_on_end and not p.attached:
@@ -2314,4 +2315,4 @@ func _stop_lightspeed_dash_if_active(apply_release_velocity: bool = false) -> vo
 	p._lightspeed_dash_speed = 0.0
 	p._lightspeed_dash_release_velocity = Vector3.ZERO
 	p._lightspeed_dash_last_dir = Vector3.ZERO
-	p._lightspeed_dash_timer = 0.0
+	p._lightspeed_rail_entry_timer = 0.0

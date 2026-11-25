@@ -18,6 +18,12 @@ VOLUME_COLORS = {
 }
 VOLUME_BOX_KEY = "sonic_vane_volume_box"
 SIZING_REFERENCE_KEY = "sonic_vane_sizing_reference"
+TRAVERSAL_BOXES = {
+    "ramp": ((0, 0.04, 0.879), (4.3, 5.2, 2.3579102)),
+    "dash_panel": ((0, 0, 0.2), (5, 5, 1)),
+    "rail_booster": ((0.1, 0, 0.9293544), (7, 6, 3)),
+}
+TRAVERSAL_GUIDES = TRAVERSAL_BOXES.keys() | {"spring", "vault_bar", "bumper"}
 KINDS = {"goal_ring", "collection_item", "race_start", "homing_target", "gravity_modifier", "surface_behavior"} | VOLUME_COLORS.keys()
 AXES = tuple(Vector(axis) for axis in ((1, 0, 0), (0, 1, 0), (0, 0, 1)))
 
@@ -65,6 +71,30 @@ def volume_boxes(obj):
     return [child for child in obj.children if child.get(VOLUME_BOX_KEY)]
 
 
+def traversal_bounds(placement, origin, rotation):
+    kind = placement.kind
+    if kind == "bumper":
+        return ring_lines(origin, 2.5, AXES), None
+    if kind == "spring":
+        dash_ring = placement.spring_style == "dash_ring"
+        size = placement.size
+        radius = (6.0 if dash_ring else 2.0) * size
+        half_height = (1.0 if dash_ring else 1.00024415) * size
+        x, y, up = (rotation @ axis for axis in AXES)
+        center = origin + up * (0.2 * size)
+        bottom, top = center - up * half_height, center + up * half_height
+        lines = ring_lines(bottom, radius, (x, y)) + ring_lines(top, radius, (x, y))
+        for axis in (x, y, -x, -y):
+            lines.extend((bottom + axis * radius, top + axis * radius))
+        return lines, None
+    if kind == "vault_bar":
+        radius = placement.vault_collision_radius
+        return box_corners(origin, rotation, Vector((placement.bar_length * 0.5, radius, radius))), EDGES
+    offset, dimensions = TRAVERSAL_BOXES[kind]
+    size = placement.size if kind in {"ramp", "dash_panel"} else 1.0
+    return box_corners(origin + rotation @ (Vector(offset) * size), rotation, Vector(dimensions) * (0.5 * size)), EDGES
+
+
 def draw():
     context = bpy.context
     obj = context.object
@@ -74,6 +104,8 @@ def draw():
         return
     placement = obj.sonic_vane_placement
     kind = placement.kind
+    if kind in TRAVERSAL_GUIDES and not obj.sonic_vane_show_size_guide:
+        return
     if obj.get(SIZING_REFERENCE_KEY):
         world = obj.evaluated_get(context.evaluated_depsgraph_get()).matrix_world
         points = ring_lines(Vector((0, 0, 1)), obj.sonic_vane_reference_radius, AXES)
@@ -81,7 +113,7 @@ def draw():
         shader.bind()
         draw_lines(shader, [world @ point for point in points], (0.25, 0.94, 0.9, 1.0))
         return
-    if kind not in KINDS:
+    if kind not in KINDS and kind not in TRAVERSAL_GUIDES:
         return
     world = obj.evaluated_get(context.evaluated_depsgraph_get()).matrix_world
     origin = world.translation
@@ -90,7 +122,10 @@ def draw():
     shader.bind()
     cyan = (0.22, 0.75, 0.95, 1.0)
     amber = (1.0, 0.62, 0.20, 1.0)
-    if kind in VOLUME_COLORS:
+    if kind in TRAVERSAL_GUIDES:
+        points, edges = traversal_bounds(placement, origin, rotation)
+        draw_lines(shader, points, amber, edges)
+    elif kind in VOLUME_COLORS:
         size = getattr(placement, f"{kind}_size")
         color = VOLUME_COLORS[kind]
         if kind == "environment_transition" and not placement.environment_transition_enabled:

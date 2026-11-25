@@ -70,6 +70,8 @@ signal reward_unhandled(player: Node, reward: ItemMonitorReward)
 @export var allow_player_pass_through: bool = false
 ## Applies the standard upward attack bounce when an airborne player breaks the monitor.
 @export var bounce_airborne_player: bool = true
+## Briefly slows time when an airborne player bounces off this item offline.
+@export var bounce_hitstop_enabled: bool = true
 ## Delay between breakage and reward collection.
 @export_range(0.0, 60.0, 0.01, "or_greater", "suffix:s") var collection_delay: float = 0.7
 ## Keeps the authored base mesh after the monitor breaks.

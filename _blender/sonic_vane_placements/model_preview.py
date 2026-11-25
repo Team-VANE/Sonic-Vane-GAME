@@ -61,7 +61,7 @@ def rotation_group():
     return group
 
 
-def set_rotation(obj, name, rotation, translation=(0, 0, 0)):
+def set_rotation(obj, name, rotation, translation=(0, 0, 0), scale=1.0):
     modifier = obj.modifiers.get(name)
     if modifier and (modifier.type != "NODES" or not modifier.node_group or not modifier.node_group.get(ROTATION_KEY)):
         return
@@ -76,13 +76,19 @@ def set_rotation(obj, name, rotation, translation=(0, 0, 0)):
         modifier.node_group = rotation_group()
         modifier.show_on_cage = False
     group = modifier.node_group
-    if not any(item.name == "Translation" for item in group.interface.items_tree):
-        socket = group.interface.new_socket(name="Translation", in_out="INPUT", socket_type="NodeSocketVector")
-        socket.force_non_field = True
-        start = next(node for node in group.nodes if node.type == "GROUP_INPUT")
-        transform = next(node for node in group.nodes if node.bl_idname == "GeometryNodeTransform")
-        group.links.new(start.outputs["Translation"], transform.inputs["Translation"])
-    for key, value in (("Euler Angles", rotation), ("Translation", translation)):
+    sockets = {item.name for item in group.interface.items_tree if item.item_type == "SOCKET"}
+    inputs = [("Euler Angles", rotation), ("Translation", translation)]
+    if scale != 1.0 or "Scale" in sockets:
+        inputs.append(("Scale", (scale,) * 3))
+    for key, value in inputs:
+        if key not in sockets:
+            socket = group.interface.new_socket(name=key, in_out="INPUT", socket_type="NodeSocketVector")
+            socket.force_non_field = True
+            if key == "Scale":
+                socket.default_value = (1, 1, 1)
+            start = next(node for node in group.nodes if node.type == "GROUP_INPUT")
+            transform = next(node for node in group.nodes if node.bl_idname == "GeometryNodeTransform")
+            group.links.new(start.outputs[key], transform.inputs[key])
         socket = next(item for item in group.interface.items_tree if item.name == key)
         if hasattr(modifier, "properties"):
             field = getattr(modifier.properties.inputs, socket.identifier)

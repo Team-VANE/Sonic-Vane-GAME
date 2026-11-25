@@ -8,7 +8,8 @@ const CONTROL_CATEGORIES: Array[Dictionary] = [
 		{"action": "move_back", "label": "Move Back"},
 		{"action": "move_left", "label": "Move Left"},
 		{"action": "move_right", "label": "Move Right"},
-		{"action": "walk", "label": "Walk"}
+		{"action": "walk", "label": "Walk"},
+		{"action": "rail_brake", "label": "Rail Brake"}
 	]},
 	{"label": "Abilities", "actions": [
 		{"action": "ability_slot_01", "label": "Ability Slot 1"},

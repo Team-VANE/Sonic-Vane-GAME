@@ -16,6 +16,9 @@ func get_prompts() -> Array[Dictionary]:
 	if not router:
 		return prompts
 	var claimed: Dictionary = {}
+	if _owner._rail_active:
+		_append_rail_prompts(prompts, claimed)
+		return prompts
 	var cleared_inputs: Dictionary = {}
 	var source: StringName = _owner._get_character_profile_route_source_action()
 	var context: Dictionary = {"source_action": source, "reason": &"input_prompt", "input_prompt": true}
@@ -34,6 +37,14 @@ func get_prompts() -> Array[Dictionary]:
 		return String(first["sort_key"]) < String(second["sort_key"])
 	)
 	return prompts
+
+
+func _append_rail_prompts(prompts: Array[Dictionary], claimed: Dictionary) -> void:
+	if _owner.rail_crouch_enabled and _owner.roll_enabled:
+		var roll_slot: StringName = _owner.get_ability_input_slot(&"roll", &"ability_slot_04")
+		_append_presentation(prompts, claimed, &"rail_crouch", {}, {"input_action": roll_slot, "gesture": &"hold", "label": "Crouch"}, true)
+	if _owner._rail_module.can_brake_on_rail():
+		_append_presentation(prompts, claimed, &"rail_brake", {}, {"input_action": &"rail_brake", "gesture": &"hold", "label": "Brake"}, true)
 
 
 func _append_coyote_prompt(prompts: Array[Dictionary], claimed: Dictionary, context: Dictionary) -> void:
@@ -110,6 +121,10 @@ func _append_prompt(prompts: Array[Dictionary], claimed: Dictionary, action: Cha
 	var presentation: Dictionary = action.get_input_prompt(context)
 	if presentation.is_empty():
 		return
+	_append_presentation(prompts, claimed, action.action_id, binding, presentation, consume)
+
+
+func _append_presentation(prompts: Array[Dictionary], claimed: Dictionary, action_id: StringName, binding: Dictionary, presentation: Dictionary, consume: bool) -> void:
 	if presentation.has("input_action"):
 		binding = {"slot": presentation["input_action"], "gesture": presentation.get("gesture", &"press")}
 	var slots: Array[StringName] = []
@@ -137,10 +152,10 @@ func _append_prompt(prompts: Array[Dictionary], claimed: Dictionary, action: Cha
 		return
 	var name: String = String(presentation.get("label", ""))
 	if name.is_empty() and _owner.character_settings_profile:
-		name = String(_owner.character_settings_profile.get_ability_definition(action.action_id).get("display_name", ""))
+		name = String(_owner.character_settings_profile.get_ability_definition(action_id).get("display_name", ""))
 	if name.is_empty():
-		name = String(action.action_id).capitalize()
-	prompts.append({"id": key + ":" + String(action.action_id), "action_id": action.action_id, "label": name, "slots": slots, "gesture": gesture, "hold_time": float(binding.get("hold_time", 0.0)), "display_priority": int(presentation.get("display_priority", 0)), "contextual": bool(presentation.get("contextual", false)), "sort_key": key})
+		name = String(action_id).capitalize()
+	prompts.append({"id": key + ":" + String(action_id), "action_id": action_id, "label": name, "slots": slots, "gesture": gesture, "hold_time": float(binding.get("hold_time", 0.0)), "display_priority": int(presentation.get("display_priority", 0)), "contextual": bool(presentation.get("contextual", false)), "sort_key": key})
 	if consume:
 		claimed[key] = true
 		for blocked_gesture: Variant in presentation.get("blocked_gestures", []):

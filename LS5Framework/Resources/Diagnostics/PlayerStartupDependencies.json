@@ -4318,7 +4318,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "7fc531c865a5d80e3383e9fe73962d29befe2b91ad6e53a5a6350b8de1fd1174"
+      "source_sha256": "a7c34e50e8eef60f5939c144f3ba8a6edafb3ecffd87b2c3bb60d9dff8002d43"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/Automation/PlayerAutomationInfluences.gd",
@@ -4768,7 +4768,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "0a826ed6eeb799e3edea607ac1cd2cde44ec6d57c1e632538467dae917ec6227"
+      "source_sha256": "ce7da22936cd284b51f2667f0753c5d276dddb5632d165b5c69998bbfbbec6b6"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerAnimation.gd",
@@ -5096,7 +5096,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "cfdb1020010a37c2d0a2a3ca3af003fdc0debf907dd3f22735919323979b7237"
+      "source_sha256": "7b702c5133f63c0202a3c158f7b42cc6c6a578abe9ebee286318dbdb6eac27d9"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
@@ -5360,7 +5360,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "d5fd0ce41458922a2827ceb624621b2914794386afb9b67d6ca7349c4abe3089"
+      "source_sha256": "cdd45838f2fe07fbc12e67eed6a10b749d7b1d8941dc3a86b8fad676f6b633ba"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerRespawnController.gd",
@@ -6082,7 +6082,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "46c5b7dca76778018f504b024ba04c1234c2d887573c1657ca80ecea46f29cae"
+      "source_sha256": "dd205bcd8f165f99a32a2240ae242036ec6e94db2ffd435b8a27a8a3aa70ff90"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/parkour_ability.gd",
@@ -6108,7 +6108,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8e196242fbf3872151aa3e9483c0baefa22a923899fa1c78739ef8faeb1a9166"
+      "source_sha256": "13cc21ddb7bf762a7480406910f546f409722f856f65c39494754811e764446a"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/player_speed_line.gdshader",
@@ -6157,7 +6157,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "dc2c70790dedad092fb6facad2c819c0504a239f575a703a9cf859794728fa32"
+      "source_sha256": "e6df1b7cf552b59aeb104333d3cd4a38265eaecfc312bddbdb2f9e3ac6b58b76"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/roll_action.gd",
@@ -6673,7 +6673,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "d889bd77b4dce63e51f91cc20b7b61b92d6fb787455464eca023af45cfee9331"
+      "source_sha256": "0a27b4748162bb7c359d36c449c5f71050e3e85f6e3f937cb234abd68293fdcd"
     },
     {
       "path": "res://LS5Framework/Scripts/Settings/SettingsManager.gd",
@@ -6683,7 +6683,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "a88ee574c3667c1c243ad16dde585d915df6c121f65da3c09a2bcb022043e50b"
+      "source_sha256": "d6d9b2da13f1d47be17b51addbc440cf101127ec4673ceb58261ef4e2a6d0cb1"
     },
     {
       "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
@@ -6721,7 +6721,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "409536ada48bde1b224945e018c0e772b05add6f2061d7da2b2d1122b820fc09"
+      "source_sha256": "4a7c6b9052c199912fe1b228dacd387241de2e835b2a82c4629625510f1b42b3"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd",

@@ -23,6 +23,8 @@ const SURFACE_METADATA = preload("res://LS5Framework/Scripts/World/SurfaceBehavi
 @export_group("Player Boundary")
 ## Preserves player speed while sliding along this enemy's solid boundary.
 @export var preserve_player_boundary_momentum: bool = true
+## Briefly slows time when the player bounces off this enemy offline.
+@export var bounce_hitstop_enabled: bool = true
 
 @export_group("Environmental Hazards")
 ## Defeats this enemy immediately when it enters a death plane.
