@@ -435,7 +435,7 @@ compact_sphere_radius_reduction = 0.25
 standing_collision_shape = NodePath("StandingCollisionShape")
 anim_tree = NodePath("ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/AnimationTree")
 animation_profile = ExtResource("2_animation_profile")
-carry_skeleton = NodePath("ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+carry_skeleton = NodePath("ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D")
 carry_bone_name = &"hand.r"
 carry_orientation_bone_name = &"spine_03"
 carry_bone_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 1.39, 0)
@@ -616,7 +616,7 @@ sfx_water_exit_hard = Array[AudioStream]([ExtResource("77_p7wlc"), ExtResource("
 homing_reticle_texture = ExtResource("79_hdxi8")
 homing_reticle_sound = ExtResource("80_iyyo0")
 barrier_foot_trails_enabled = true
-barrier_foot_trail_skeleton_path = NodePath("ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+barrier_foot_trail_skeleton_path = NodePath("ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D")
 barrier_foot_trail_left_bone_name = &"FootAfterImage.root_END.L"
 barrier_foot_trail_right_bone_name = &"FootAfterImage.root_END.R"
 barrier_foot_trail_width = 0.3
@@ -673,7 +673,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
 [node name="VisualDeformation" type="Node3D" parent="ModelRoot" unique_id=1063117576]
 
 [node name="Sonic_NeoAdv_Root" parent="ModelRoot/VisualDeformation" unique_id=1917975666 instance=ExtResource("87_b5wbc")]
-transform = Transform3D(-0.4, 0, 3.4969112e-08, 0, 0.4, 0, -3.4969112e-08, 0, -0.4, 0, -1, 0)
+position = Vector3(0, -1, 0)
 
 [node name="JumpDashTrail" type="MeshInstance3D" parent="." unique_id=1503759778]
 script = ExtResource("88_026q4")
@@ -1001,7 +1001,7 @@ script = ExtResource("127_gx58s")
 
 [node name="KickContacts" type="Node3D" parent="." unique_id=494822774 node_paths=PackedStringArray("skeleton")]
 script = ExtResource("kick_contacts_script")
-skeleton = NodePath("../ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+skeleton = NodePath("../ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D")
 spin_radius = 1.5
 tornado_radius = 1.5
 uppercut_radius = 1.5
@@ -1041,7 +1041,7 @@ script = ExtResource("spin_ball_script")
 animation_tree_path = NodePath("../ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/AnimationTree")
 deformation_root_path = NodePath("../ModelRoot/VisualDeformation")
 character_root_path = NodePath("../ModelRoot/VisualDeformation/Sonic_NeoAdv_Root")
-spin_ball_path = NodePath("../ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Armature/Skeleton3D/SpinBall")
+spin_ball_path = NodePath("../ModelRoot/VisualDeformation/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D/SpinBall")
 flicker_steps_per_second = 40.0
 shear_strength = 0.3500000000000001
 bounce_fall_stretch_strength = 0.5

@@ -40,19 +40,30 @@ def set_panel_axis(obj, axis):
     set_rotation(obj, MODIFIER, (0, 0, atan2(-x, y)))
 
 
+def booster_direction(obj):
+    placement = obj.sonic_vane_placement
+    reverse = placement.reverse_direction and placement.booster_rail.sonic_vane_placement.allow_reverse
+    forward = obj.matrix_world.col[1].to_3d().normalized()
+    return -forward if reverse != (placement.boost_speed < 0.0) else forward
+
+
 def draw():
     obj = bpy.context.object
-    if not obj or obj.sonic_vane_placement.kind not in {"dash_panel", "ramp"}:
+    if not obj or not obj.visible_get() or not bpy.context.space_data.overlay.show_overlays:
         return
-    if not obj.sonic_vane_dash_direction or not obj.visible_get():
-        return
-    if not bpy.context.space_data.overlay.show_overlays:
-        return
-    direction = panel_direction(obj)
-    size = obj.sonic_vane_placement.size
+    placement = obj.sonic_vane_placement
     world = obj.matrix_world
+    if placement.kind == "rail_booster" and placement.booster_show_direction and placement.booster_rail:
+        direction = booster_direction(obj)
+        size = 1.0
+        start = world @ Vector((0, 0, 1.55))
+    elif placement.kind in {"dash_panel", "ramp"} and obj.sonic_vane_dash_direction:
+        direction = panel_direction(obj)
+        size = placement.size
+        start = world @ Vector((0, 0, 0.75))
+    else:
+        return
     side = (world.to_quaternion() @ Vector((0, 0, 1))).cross(direction)
-    start = world @ Vector((0, 0, 0.75))
     tip = start + direction * (5 * size)
     shoulder = tip - direction * (1.15 * size)
     side *= 0.62 * size

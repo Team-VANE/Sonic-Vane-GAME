@@ -3,6 +3,8 @@ class_name PlayerRailController
 
 # Rail discovery, switching, grinding, and detachment physics.
 const RAIL_SCRIPT = preload("res://LS5Framework/Objects/Rail/Rail.gd")
+const BALANCE_SAMPLE_DISTANCE: float = 3.0
+const BALANCE_MAX_LOOKAHEAD: float = 18.0
 
 var _owner: Node = null
 var _switch_start_basis: Basis = Basis.IDENTITY
@@ -383,9 +385,15 @@ func get_rail_trick_type(crouching: bool) -> int:
 	return TrickSystem.TrickType.RAIL_BACKWARD_CROUCH if crouching else TrickSystem.TrickType.RAIL_BACKWARD
 
 
+func _rail_input_allowed() -> bool:
+	var p = _owner
+	return not (p._local_pause_enabled or p.is_ui_input_blocked() or p.is_post_ui_action_suppressed()
+		or p._debug_mode or (p.is_inside_tree() and p.get_tree().paused))
+
+
 func is_rail_crouch_input_pressed() -> bool:
 	var p = _owner
-	if not p.rail_crouch_enabled or not p.roll_enabled or p._local_pause_enabled or p._ui_input_blocked or p._debug_mode:
+	if not p.rail_crouch_enabled or not p.roll_enabled or not _rail_input_allowed():
 		return false
 	var roll_slot: StringName = p.get_ability_input_slot(&"roll", &"ability_slot_04")
 	return SettingsManager.is_gameplay_action_pressed(String(roll_slot))
@@ -413,6 +421,7 @@ func cancel_rail_grind(reset_velocity: bool = false) -> void:
 	p._rail_last_tangent = Vector3.FORWARD
 	p._rail_last_motion_dir = Vector3.FORWARD
 	p._rail_model_basis_valid = false
+	_reset_rail_balance()
 	p._stop_rail_grind_sfx()
 	if reset_velocity:
 		p.velocity = Vector3.ZERO
@@ -532,6 +541,8 @@ func _get_rail_input_direction(world_up: Vector3) -> Vector3:
 
 func _get_rail_spindash_input_direction(world_up: Vector3) -> Vector3:
 	var p = _owner
+	if not _rail_input_allowed():
+		return Vector3.ZERO
 	var x: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	var z: float = Input.get_action_strength("move_forward") - Input.get_action_strength("move_back")
 	var input: Vector2 = Vector2(x, z)
@@ -616,26 +627,30 @@ func _get_rail_switch_right(world_up: Vector3) -> Vector3:
 	return right.normalized()
 
 
-func _get_rail_switch_side_input(world_up: Vector3) -> float:
+func _get_rail_lateral_input(rail_right: Vector3, world_up: Vector3) -> float:
 	var p = _owner
-	var input_strength: float = clamp(p._move_input.length(), 0.0, 1.0)
-	if input_strength < 0.001:
+	var input: Vector2 = p._move_input
+	if not input or not rail_right or not _rail_input_allowed():
 		return 0.0
+	var camera: Camera3D = p.get_viewport().get_camera_3d() if p.is_inside_tree() else null
+	if not camera:
+		camera = p.camera
+	if not is_instance_valid(camera) or not camera.is_inside_tree():
+		return _get_rail_input_direction(world_up).dot(rail_right) * input.length()
 
-	var input_up: Vector3 = p.visual_up.normalized()
-	if input_up.length() < 0.001:
-		input_up = world_up.normalized()
-	if input_up.length() < 0.001:
-		input_up = p._get_gravity_up()
-	var input_dir: Vector3 = _get_rail_input_direction(input_up)
-	var rail_right: Vector3 = _get_rail_switch_right(world_up)
-	if input_dir.length() < 0.001 or rail_right.length() < 0.001:
-		return 0.0
+	var view: Basis = camera.global_basis.orthonormalized()
+	var screen_side: Vector2 = Vector2(rail_right.dot(view.x), rail_right.dot(view.y))
+	# Use up and down for depth when the adjacent rails overlap in the view.
+	var depth_weight: float = 1.0 - smoothstep(0.1, 0.55, screen_side.length())
+	var depth_side: Vector2 = Vector2(0.0, -rail_right.dot(view.z))
+	return clampf(input.dot(screen_side.lerp(depth_side, depth_weight)), -1.0, 1.0)
 
-	var side_strength: float = input_dir.dot(rail_right) * input_strength
-	if abs(side_strength) < p.rail_switch_side_input_min:
+
+func _get_rail_switch_side_input(world_up: Vector3) -> float:
+	var side_strength: float = _get_rail_lateral_input(_get_rail_switch_right(world_up), world_up)
+	if absf(side_strength) < _owner.rail_switch_side_input_min:
 		return 0.0
-	return 1.0 if side_strength > 0.0 else -1.0
+	return signf(side_strength)
 
 
 func _rail_sample_path_tangent(path: Path3D, curve: Curve3D, offset: float, lookahead: float) -> Vector3:
@@ -1168,6 +1183,7 @@ func start_rail_grind(params: Dictionary) -> void:
 	var dir_den : float = max(p.rail_anim_dir_speed_for_full, 0.001)
 	p._rail_anim_dir_smoothed = clamp(p._rail_speed / dir_den, -1.0, 1.0)
 	p._rail_anim_speed_smoothed = 0.0
+	_reset_rail_balance()
 
 	p._rail_active = true
 	p.attached = true
@@ -1218,6 +1234,87 @@ func _clear_attack_state_for_rail_landing() -> void:
 	p._set_attack_source(p.AttackSource.MANUAL, false)
 
 
+func _reset_rail_balance() -> void:
+	_owner._rail_crouching = false
+	_owner._rail_lean_input = 0.0
+	_owner._rail_lean_required = 0.0
+	_owner._rail_balance_error = 0.0
+
+
+func _sample_rail_lean(curve: Curve3D, distance: float, rail_up: Vector3, action: RailGrindAction) -> float:
+	var p = _owner
+	var length: float = p._rail_total_length
+	var span: float = minf(BALANCE_SAMPLE_DISTANCE, length * 0.5)
+	var center: float = clampf(distance, span, length - span)
+	var basis: Basis = p._rail_path.global_basis
+	var center_point: Vector3 = curve.sample_baked(center)
+	var incoming: Vector3 = (basis * (center_point - curve.sample_baked(center - span))).slide(rail_up)
+	var outgoing: Vector3 = (basis * (curve.sample_baked(center + span) - center_point)).slide(rail_up)
+	var incoming_length: float = incoming.length()
+	var outgoing_length: float = outgoing.length()
+	if minf(incoming_length, outgoing_length) < 0.001:
+		return 0.0
+	# Both chords follow the authored path so the result uses the model's left and right in either travel direction.
+	var turn: float = atan2(-rail_up.dot(incoming.cross(outgoing)), incoming.dot(outgoing))
+	var curvature: float = absf(turn) / (0.5 * (incoming_length + outgoing_length))
+	var full_lean_curve: float = maxf(action.rail_balance_full_lean_curve, action.rail_balance_curve_deadzone + 0.001)
+	return signf(turn) * smoothstep(action.rail_balance_curve_deadzone, full_lean_curve, curvature)
+
+
+func _update_rail_balance(curve: Curve3D, tangent: Vector3, gravity_up: Vector3, travel_sign: float, speed: float, delta: float) -> float:
+	var p = _owner
+	var action: RailGrindAction = p._rail_grind_action
+	var distance: float = p._rail_distance
+	var rail_up: Vector3 = RAIL_SCRIPT.sample_path_up(p._rail_path, distance)
+	var rail_right: Vector3 = tangent.cross(rail_up).normalized()
+	var lean_input: float = _get_rail_lateral_input(rail_right, gravity_up)
+	p._rail_lean_input = lean_input
+	var required: float = _sample_rail_lean(curve, distance, rail_up, action)
+	p._rail_lean_required = required
+	var curve_side: float = signf(required)
+	var input_into_curve: float = lean_input * curve_side
+	var error: float = 0.82 * maxf(absf(required) - maxf(input_into_curve, 0.0) - 0.10, 0.0)
+	error += maxf(-input_into_curve, 0.0) * absf(required) * 0.60
+	if error > 0.0 and input_into_curve < -0.10 and action.rail_balance_lookahead > 0.0:
+		var lookahead: float = minf(speed * action.rail_balance_lookahead, BALANCE_MAX_LOOKAHEAD)
+		var ahead: float = clampf(distance + travel_sign * lookahead, 0.0, p._rail_total_length)
+		if absf(ahead - distance) > BALANCE_SAMPLE_DISTANCE:
+			var ahead_up: Vector3 = RAIL_SCRIPT.sample_path_up(p._rail_path, ahead)
+			var upcoming: float = _sample_rail_lean(curve, ahead, ahead_up, action)
+			var early_lean: float = clampf(upcoming * signf(lean_input), 0.0, absf(lean_input))
+			error *= 1.0 - 0.60 * early_lean
+	if p._rail_align_to_path_tilt:
+		var inversion: float = smoothstep(0.0, 0.9, -rail_up.dot(gravity_up))
+		error *= 1.0 - inversion * action.rail_balance_inverted_forgiveness
+	error = clampf(error, 0.0, 1.0)
+	var panic_target: float = -curve_side * error
+	var panic_rate: float = 3.8 if absf(panic_target) > absf(p._rail_balance_error) else 8.0
+	p._rail_balance_error = move_toward(p._rail_balance_error, panic_target, panic_rate * delta)
+	return error
+
+
+func _integrate_balanced_rail_speed(signed_speed: float, travel_sign: float, gravity_accel: float, balance_error: float, delta: float) -> float:
+	var p = _owner
+	var action: RailGrindAction = p._rail_grind_action
+	var speed: float = absf(signed_speed)
+	var slope_accel: float = gravity_accel * travel_sign
+	var grip: float = 1.0 - smoothstep(0.0, 0.80, balance_error)
+	var friction: float = action.rail_grind_friction
+	var balance_friction_scale: float = 0.55
+	if p._rail_crouching:
+		friction *= lerpf(1.0, action.rail_crouch_friction_scale, grip)
+		balance_friction_scale = 1.0
+		if slope_accel < 0.0:
+			slope_accel *= 1.0 - action.rail_crouch_uphill_assist * grip
+		var assist_speed: float = maxf(action.rail_crouch_assist_speed, 1.0)
+		var speed_assist: float = 1.0 - smoothstep(assist_speed * 0.75, assist_speed, speed)
+		slope_accel += action.rail_crouch_acceleration * grip * speed_assist
+	var speed_after_accel: float = speed + slope_accel * delta
+	friction += action.rail_balance_friction * balance_error * balance_friction_scale
+	friction *= smoothstep(0.0, 12.0, absf(speed_after_accel))
+	return move_toward(speed_after_accel, 0.0, friction * delta) * travel_sign
+
+
 func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 	var p = _owner
 	if not p._rail_active or p._rail_path == null or p._rail_path.curve == null:
@@ -1230,7 +1327,8 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 
 	var curve: Curve3D = p._rail_path.curve
 
-	if p._rail_allow_jump_exit and p._spring_movement_lock_timer <= 0.0:
+	var input_allowed: bool = _rail_input_allowed()
+	if input_allowed and p._rail_allow_jump_exit and p._spring_movement_lock_timer <= 0.0:
 		var jump_slot: StringName = p.get_ability_input_slot(&"jump", &"ability_slot_01")
 		if SettingsManager.is_gameplay_action_just_pressed(String(jump_slot)):
 			if _try_start_rail_switch(world_up):
@@ -1239,10 +1337,6 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 			if not blocked_switch:
 				_end_rail(true, world_up)
 				return
-
-	# Ignore movement input while rail grinding unless explicitly enabled.
-	if not p._rail_input_reverse_enabled:
-		p._move_input = Vector2.ZERO
 
 	p._rail_crouching = is_rail_crouch_input_pressed()
 
@@ -1262,7 +1356,7 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 		rail_dir = Vector3.FORWARD
 	rail_dir = rail_dir.normalized()
 
-	if p._rail_allow_reverse and p._rail_input_reverse_enabled and p._rail_reverse_speed_threshold > 0.0 and abs(signed_speed) <= p._rail_reverse_speed_threshold:
+	if input_allowed and p._rail_allow_reverse and p._rail_input_reverse_enabled and p._rail_reverse_speed_threshold > 0.0 and abs(signed_speed) <= p._rail_reverse_speed_threshold:
 		var input_dir: Vector3 = _get_rail_input_direction(world_up)
 		if input_dir.length() > 0.001:
 			var input_dot: float = rail_dir.dot(input_dir)
@@ -1280,16 +1374,23 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 		travel_sign = 1.0
 
 	p._rail_travel_sign = travel_sign
+	var gravity_up: Vector3 = world_up.normalized()
+	if not gravity_up:
+		gravity_up = p._get_gravity_up()
+	var gravity_accel: float = -p.get_effective_gravity_strength() * p._rail_gravity_scale * rail_dir.dot(gravity_up)
+	var balance_error: float = 0.0
+	if spindash_on_rail or p._spindash_release_requested:
+		_reset_rail_balance()
+	else:
+		balance_error = _update_rail_balance(curve, rail_dir, gravity_up, travel_sign, absf(signed_speed), delta)
+	if not p._rail_input_reverse_enabled:
+		p._move_input = Vector2.ZERO
 
 	if p._rail_locked_speed and p._rail_lock_speed_value > 0.0 and not spindash_on_rail and not p._spindash_release_requested:
 		signed_speed = p._rail_lock_speed_value * travel_sign
 	else:
 		if spindash_on_rail:
-			var gravity_up_dir: Vector3 = world_up.normalized()
-			if gravity_up_dir.length() < 0.001:
-				gravity_up_dir = p._get_gravity_up()
-			var accel: float = -p.get_effective_gravity_strength() * p._rail_gravity_scale * rail_dir.dot(gravity_up_dir)
-			signed_speed += accel * delta
+			signed_speed += gravity_accel * delta
 
 			var speed_mag : float = abs(signed_speed)
 			var charge_decel : float = max(p.spindash_charge_decel, 0.0)
@@ -1304,29 +1405,7 @@ func _update_rail_motion(delta: float, world_up: Vector3) -> void:
 					sign = 1.0
 				signed_speed = speed_mag * sign
 		else:
-			var gravity_up_dir: Vector3 = world_up.normalized()
-			if gravity_up_dir.length() < 0.001:
-				gravity_up_dir = p._get_gravity_up()
-			var accel: float = -p.get_effective_gravity_strength() * p._rail_gravity_scale * rail_dir.dot(gravity_up_dir)
-			signed_speed += accel * delta
-
-			if p._rail_crouching:
-				var motion_sign: float = travel_sign
-				if signed_speed < -0.0001:
-					motion_sign = -1.0
-				elif signed_speed > 0.0001:
-					motion_sign = 1.0
-				var motion_dir: Vector3 = rail_dir * motion_sign
-				var slope_dot: float = motion_dir.dot(gravity_up_dir)
-				var speed_mag : float = abs(signed_speed)
-				if slope_dot > 0.0001:
-					speed_mag = max(speed_mag - p.rail_crouch_uphill_decel * slope_dot * delta, 0.0)
-				elif slope_dot < -0.0001:
-					speed_mag += p.rail_crouch_downhill_accel * (-slope_dot) * delta
-				var sign: float = motion_sign
-				if abs(signed_speed) <= 0.0001:
-					sign = travel_sign if abs(travel_sign) > 0.001 else 1.0
-				signed_speed = speed_mag * sign
+			signed_speed = _integrate_balanced_rail_speed(signed_speed, travel_sign, gravity_accel, balance_error, delta)
 
 			if p._rail_allow_reverse and p._rail_input_reverse_enabled and prev_travel_sign != travel_sign:
 				if p._rail_reverse_boost_speed > 0.0 and abs(signed_speed) < p._rail_reverse_boost_speed:
@@ -1473,7 +1552,7 @@ func _end_rail(jumped: bool, world_up: Vector3) -> void:
 	p._play_rail_detach_sfx()
 	p._rail_active = false
 	p._rail_anim_speed_smoothed = 0.0
-	p._rail_crouching = false
+	_reset_rail_balance()
 
 	var exit_dir: Vector3 = p._rail_last_motion_dir.normalized()
 	if exit_dir.length() < 0.001:

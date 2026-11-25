@@ -389,7 +389,7 @@ model_root = NodePath("ModelRoot")
 ground_ray = NodePath("GroundRay")
 jump_ball = NodePath("JumpBall")
 anim_tree = NodePath("ModelRoot/Sonic_NeoAdv_Root/AnimationTree")
-carry_skeleton = NodePath("ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+carry_skeleton = NodePath("ModelRoot/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D")
 carry_bone_name = &"hand.r"
 carry_orientation_bone_name = &"spine_03"
 carry_bone_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 180, 1, -1.7, 1.5, 0)
@@ -560,9 +560,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="ModelRoot" unique_id=2129892349]
 
 [node name="Sonic_NeoAdv_Root" parent="ModelRoot" unique_id=1917975666 instance=ExtResource("88_1dpl8")]
-transform = Transform3D(-0.4, 0, 3.4969112e-08, 0, 0.4, 0, -3.4969112e-08, 0, -0.4, 0, -1, 0)
+position = Vector3(0, -1, 0)
 
-[node name="Eyeglobe" parent="ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D" parent_id_path=PackedInt32Array(1917975666, 1387501511) index="3" unique_id=1413997121]
+[node name="Eyeglobe" parent="ModelRoot/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D" index="3" unique_id=1413997121]
 surface_material_override/0 = SubResource("ShaderMaterial_2xxo6")
 
 [node name="JumpDashTrail" type="MeshInstance3D" parent="." unique_id=1503759778]
@@ -741,7 +741,7 @@ combat_class = 1
 
 [node name="KickContacts" type="Node3D" parent="." node_paths=PackedStringArray("skeleton")]
 script = ExtResource("kick_contacts_script")
-skeleton = NodePath("../ModelRoot/Sonic_NeoAdv_Root/Armature/Skeleton3D")
+skeleton = NodePath("../ModelRoot/Sonic_NeoAdv_Root/Sonic Game Scale/Armature/Skeleton3D")
 right_foot_bone = &"foot.r"
 
 [node name="UppercutKickAbility" type="Node" parent="Abilities" node_paths=PackedStringArray("kick_contacts")]

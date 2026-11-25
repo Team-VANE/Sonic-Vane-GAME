@@ -1893,6 +1893,8 @@ class SONICVANE_PT_object_placement(Panel):
             position_row = details.row()
             position_row.enabled = bool(placement.booster_rail)
             position_row.prop(placement, "booster_position")
+            if placement.reverse_direction and placement.booster_rail and not placement.booster_rail.sonic_vane_placement.allow_reverse:
+                details.label(text="The linked rail only allows forward travel.", icon="INFO")
         elif placement.kind == "teleporter_entrance":
             details.prop(placement, "teleporter_link_mode")
             if placement.teleporter_link_mode == "local":

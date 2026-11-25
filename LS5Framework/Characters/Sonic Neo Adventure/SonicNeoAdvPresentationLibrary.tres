@@ -19,6 +19,20 @@
 [ext_resource type="Animation" uid="uid://baci62c8s0u6e" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/EYES_Up.res" id="16_sc6ol"]
 [ext_resource type="Animation" uid="uid://do2gdg1l0foyt" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Fall.res" id="17_5he1n"]
 [ext_resource type="Animation" uid="uid://8v5ij7e42efs" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Fall_Forward.res" id="18_87m08"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards.res" id="Grind_Forwards"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Crouch.res" id="Grind_Forwards_Crouch"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Lean_L.res" id="Grind_Forwards_Lean_L"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Lean_R.res" id="Grind_Forwards_Lean_R"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Crouch_Lean_L.res" id="Grind_Forwards_Crouch_Lean_L"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Forwards_Crouch_Lean_R.res" id="Grind_Forwards_Crouch_Lean_R"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards.res" id="Grind_Backwards"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Crouch.res" id="Grind_Backwards_Crouch"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Lean_L.res" id="Grind_Backwards_Lean_L"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Lean_R.res" id="Grind_Backwards_Lean_R"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Crouch_Lean_L.res" id="Grind_Backwards_Crouch_Lean_L"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Crouch_Lean_R.res" id="Grind_Backwards_Crouch_Lean_R"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Panic_L.res" id="Grind_Panic_L"]
+[ext_resource type="Animation" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Panic_R.res" id="Grind_Panic_R"]
 [ext_resource type="Animation" uid="uid://bdel68etr8anc" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Fast.res" id="19_s7x7m"]
 [ext_resource type="Animation" uid="uid://cxbyc33blvcn4" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Grind_Backwards_Med.res" id="20_lubst"]
 [ext_resource type="Animation" uid="uid://754eppqj88yl" path="res://LS5Framework/Characters/Sonic Neo Adventure/Animations/Goal_Victory_1.res" id="20_pk118"]
@@ -120,6 +134,20 @@ _data = {
 &"Goal_Victory_1": ExtResource("20_pk118"),
 &"Goal_Victory_1_Loop": ExtResource("21_ryel2"),
 &"Goal_Victory_1_ToIdle": ExtResource("22_5adve"),
+&"Grind_Forwards": ExtResource("Grind_Forwards"),
+&"Grind_Forwards_Crouch": ExtResource("Grind_Forwards_Crouch"),
+&"Grind_Forwards_Lean_L": ExtResource("Grind_Forwards_Lean_L"),
+&"Grind_Forwards_Lean_R": ExtResource("Grind_Forwards_Lean_R"),
+&"Grind_Forwards_Crouch_Lean_L": ExtResource("Grind_Forwards_Crouch_Lean_L"),
+&"Grind_Forwards_Crouch_Lean_R": ExtResource("Grind_Forwards_Crouch_Lean_R"),
+&"Grind_Backwards": ExtResource("Grind_Backwards"),
+&"Grind_Backwards_Crouch": ExtResource("Grind_Backwards_Crouch"),
+&"Grind_Backwards_Lean_L": ExtResource("Grind_Backwards_Lean_L"),
+&"Grind_Backwards_Lean_R": ExtResource("Grind_Backwards_Lean_R"),
+&"Grind_Backwards_Crouch_Lean_L": ExtResource("Grind_Backwards_Crouch_Lean_L"),
+&"Grind_Backwards_Crouch_Lean_R": ExtResource("Grind_Backwards_Crouch_Lean_R"),
+&"Grind_Panic_L": ExtResource("Grind_Panic_L"),
+&"Grind_Panic_R": ExtResource("Grind_Panic_R"),
 &"Grind_Backwards_Fast": ExtResource("19_s7x7m"),
 &"Grind_Backwards_Med": ExtResource("20_lubst"),
 &"Grind_Backwards_Slow": ExtResource("21_uhw87"),

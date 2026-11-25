@@ -2016,8 +2016,8 @@ func _refresh_ui_input_blocked() -> void:
 		_post_ui_unblock_action_suppress_timer = 0.08
 
 func restore_input_after_pause() -> void:
-	# Clear any residual UI-unblock suppression and ensure camera input unlocked after pause/resume.
-	_post_ui_unblock_action_suppress_timer = 0.0
+	if not (_rail_active or _rail_switch_active):
+		_post_ui_unblock_action_suppress_timer = 0.0
 	_ui_input_legacy_blocked = false
 	_refresh_ui_input_blocked()
 	_set_manual_camera_lock(false)

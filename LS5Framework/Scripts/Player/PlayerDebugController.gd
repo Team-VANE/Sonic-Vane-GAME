@@ -1024,10 +1024,9 @@ func _debug_draw() -> void:
 			]
 			if p.anim_tree != null:
 				legacy_text += "ANIM SCALE:%s\n" % str(p.anim_tree.get("parameters/MoveTimeScale/scale"))
-				if p._rail_active and p._anim_param_exists("parameters/StateMachine/RAIL/GRIND/blend_position"):
-					legacy_text += "RAIL BLEND:%s\n" % str(
-						p.anim_tree.get(p.get_animation_director().map_parameter("parameters/StateMachine/RAIL/GRIND/blend_position"))
-					)
+				if p._rail_active:
+					legacy_text += "RAIL SPEED: %.1f  CROUCH: %s\n" % [p._rail_speed, p._rail_crouching]
+					legacy_text += "RAIL LEAN: %.2f / %.2f  IMBALANCE: %.2f\n" % [p._rail_lean_input, p._rail_lean_required, p._rail_balance_error]
 		var formatted_text: String = _format_debug_columns(legacy_text + _build_online_debug_text())
 		if p._debug_label.text != formatted_text:
 			p._debug_label.text = formatted_text

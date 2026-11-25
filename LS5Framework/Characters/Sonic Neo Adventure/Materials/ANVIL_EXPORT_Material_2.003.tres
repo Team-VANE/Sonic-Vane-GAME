@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dj88ut5d8o8rq"]
+
+[ext_resource type="Texture2D" uid="uid://dbjyc5se7y1ln" path="res://LS5Framework/Characters/Sonic Neo Adventure/Sonic_NeoAdventure_Buckle.png" id="1_wbmjs"]
+
+[resource]
+resource_name = "ANVIL_EXPORT_Material_2.003"
+transparency = 4
+cull_mode = 2
+albedo_texture = ExtResource("1_wbmjs")
+metallic = 1.0
+roughness = 0.59385663
+texture_filter = 2
+metadata/_gltf_primary_texture_coord = 0

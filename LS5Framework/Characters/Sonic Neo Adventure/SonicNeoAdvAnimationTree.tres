@@ -65,7 +65,7 @@ graph_offset = Vector2(-351, -178)
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_0psud"]
 filter_enabled = true
-filters = ["../..", "../../..", "Armature/Skeleton3D:Carry", "Armature/Skeleton3D:clavicle.l", "Armature/Skeleton3D:clavicle.r", "Armature/Skeleton3D:hand.l", "Armature/Skeleton3D:hand.r", "Armature/Skeleton3D:index_01.l", "Armature/Skeleton3D:index_01.r", "Armature/Skeleton3D:index_02.l", "Armature/Skeleton3D:index_02.r", "Armature/Skeleton3D:index_03.l", "Armature/Skeleton3D:index_03.r", "Armature/Skeleton3D:index_04.leaf.r", "Armature/Skeleton3D:lowerarm.l", "Armature/Skeleton3D:lowerarm.r", "Armature/Skeleton3D:middle_01.l", "Armature/Skeleton3D:middle_01.r", "Armature/Skeleton3D:middle_02.l", "Armature/Skeleton3D:middle_02.r", "Armature/Skeleton3D:middle_03.l", "Armature/Skeleton3D:middle_03.r", "Armature/Skeleton3D:middle_04.leaf.r", "Armature/Skeleton3D:pinky_01.l", "Armature/Skeleton3D:pinky_01.r", "Armature/Skeleton3D:pinky_02.l", "Armature/Skeleton3D:pinky_02.r", "Armature/Skeleton3D:pinky_03.l", "Armature/Skeleton3D:pinky_03.r", "Armature/Skeleton3D:ring_01.l", "Armature/Skeleton3D:ring_01.r", "Armature/Skeleton3D:ring_02.l", "Armature/Skeleton3D:ring_02.r", "Armature/Skeleton3D:ring_03.l", "Armature/Skeleton3D:ring_03.r", "Armature/Skeleton3D:ring_04.leaf.r", "Armature/Skeleton3D:spine_01", "Armature/Skeleton3D:spine_02", "Armature/Skeleton3D:thumb_01.l", "Armature/Skeleton3D:thumb_01.r", "Armature/Skeleton3D:thumb_02.l", "Armature/Skeleton3D:thumb_02.r", "Armature/Skeleton3D:thumb_03.l", "Armature/Skeleton3D:thumb_03.r", "Armature/Skeleton3D:upperarm.l", "Armature/Skeleton3D:upperarm.r"]
+filters = ["../..", "../../..", "Sonic Game Scale/Armature/Skeleton3D:Carry", "Sonic Game Scale/Armature/Skeleton3D:clavicle.l", "Sonic Game Scale/Armature/Skeleton3D:clavicle.r", "Sonic Game Scale/Armature/Skeleton3D:hand.l", "Sonic Game Scale/Armature/Skeleton3D:hand.r", "Sonic Game Scale/Armature/Skeleton3D:index_01.l", "Sonic Game Scale/Armature/Skeleton3D:index_01.r", "Sonic Game Scale/Armature/Skeleton3D:index_02.l", "Sonic Game Scale/Armature/Skeleton3D:index_02.r", "Sonic Game Scale/Armature/Skeleton3D:index_03.l", "Sonic Game Scale/Armature/Skeleton3D:index_03.r", "Sonic Game Scale/Armature/Skeleton3D:index_04.leaf.r", "Sonic Game Scale/Armature/Skeleton3D:lowerarm.l", "Sonic Game Scale/Armature/Skeleton3D:lowerarm.r", "Sonic Game Scale/Armature/Skeleton3D:middle_01.l", "Sonic Game Scale/Armature/Skeleton3D:middle_01.r", "Sonic Game Scale/Armature/Skeleton3D:middle_02.l", "Sonic Game Scale/Armature/Skeleton3D:middle_02.r", "Sonic Game Scale/Armature/Skeleton3D:middle_03.l", "Sonic Game Scale/Armature/Skeleton3D:middle_03.r", "Sonic Game Scale/Armature/Skeleton3D:middle_04.leaf.r", "Sonic Game Scale/Armature/Skeleton3D:pinky_01.l", "Sonic Game Scale/Armature/Skeleton3D:pinky_01.r", "Sonic Game Scale/Armature/Skeleton3D:pinky_02.l", "Sonic Game Scale/Armature/Skeleton3D:pinky_02.r", "Sonic Game Scale/Armature/Skeleton3D:pinky_03.l", "Sonic Game Scale/Armature/Skeleton3D:pinky_03.r", "Sonic Game Scale/Armature/Skeleton3D:ring_01.l", "Sonic Game Scale/Armature/Skeleton3D:ring_01.r", "Sonic Game Scale/Armature/Skeleton3D:ring_02.l", "Sonic Game Scale/Armature/Skeleton3D:ring_02.r", "Sonic Game Scale/Armature/Skeleton3D:ring_03.l", "Sonic Game Scale/Armature/Skeleton3D:ring_03.r", "Sonic Game Scale/Armature/Skeleton3D:ring_04.leaf.r", "Sonic Game Scale/Armature/Skeleton3D:spine_01", "Sonic Game Scale/Armature/Skeleton3D:spine_02", "Sonic Game Scale/Armature/Skeleton3D:thumb_01.l", "Sonic Game Scale/Armature/Skeleton3D:thumb_01.r", "Sonic Game Scale/Armature/Skeleton3D:thumb_02.l", "Sonic Game Scale/Armature/Skeleton3D:thumb_02.r", "Sonic Game Scale/Armature/Skeleton3D:thumb_03.l", "Sonic Game Scale/Armature/Skeleton3D:thumb_03.r", "Sonic Game Scale/Armature/Skeleton3D:upperarm.l", "Sonic Game Scale/Armature/Skeleton3D:upperarm.r"]
 
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_eoona"]
 
@@ -823,70 +823,123 @@ stretch_time_scale = true
 start_offset = 0.0
 loop_mode = 1
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p8oxw"]
-animation = &"Grind_Backwards_Med"
+[sub_resource type="AnimationNodeAnimation" id="Grind_Backwards_Lean_L"]
+animation = &"Grind_Backwards_Lean_R"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e1mpc"]
-animation = &"Grind_Forwards_Med"
+[sub_resource type="AnimationNodeAnimation" id="Grind_Backwards"]
+animation = &"Grind_Backwards"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jkols"]
-animation = &"Grind_Forwards_Med"
+[sub_resource type="AnimationNodeAnimation" id="Grind_Backwards_Lean_R"]
+animation = &"Grind_Backwards_Lean_L"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yssjq"]
-animation = &"Grind_Backwards_Med"
+[sub_resource type="AnimationNodeAnimation" id="Grind_Backwards_Crouch_Lean_L"]
+animation = &"Grind_Backwards_Crouch_Lean_R"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0cp1b"]
-animation = &"Grind_Backwards_Slow"
+[sub_resource type="AnimationNodeAnimation" id="Grind_Backwards_Crouch"]
+animation = &"Grind_Backwards_Crouch"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ertl5"]
-animation = &"Grind_Forwards_Slow"
+[sub_resource type="AnimationNodeAnimation" id="Grind_Backwards_Crouch_Lean_R"]
+animation = &"Grind_Backwards_Crouch_Lean_L"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7t1ej"]
-animation = &"Grind_Backwards_Slow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0p4dj"]
-animation = &"Grind_Forwards_Slow"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ilabg"]
-animation = &"Grind_Forwards_Fast"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h6xwo"]
-animation = &"Grind_Backwards_Fast"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_243k6"]
-min_space = Vector2(0, -1)
-max_space = Vector2(200, 1)
+[sub_resource type="AnimationNodeBlendSpace2D" id="GrindBackwards"]
+min_space = Vector2(-1, 0)
+x_label = "Lean"
+y_label = "Crouch"
 sync_mode = 1
-blend_point_0/node = SubResource("AnimationNodeAnimation_p8oxw")
-blend_point_0/pos = Vector2(125, -1)
+blend_point_0/node = SubResource("Grind_Backwards_Lean_L")
+blend_point_0/pos = Vector2(-1, 0)
 blend_point_0/name = &"0"
-blend_point_1/node = SubResource("AnimationNodeAnimation_e1mpc")
-blend_point_1/pos = Vector2(125, 1)
+blend_point_1/node = SubResource("Grind_Backwards")
+blend_point_1/pos = Vector2(0, 0)
 blend_point_1/name = &"1"
-blend_point_2/node = SubResource("AnimationNodeAnimation_jkols")
-blend_point_2/pos = Vector2(35, 1)
+blend_point_2/node = SubResource("Grind_Backwards_Lean_R")
+blend_point_2/pos = Vector2(1, 0)
 blend_point_2/name = &"2"
-blend_point_3/node = SubResource("AnimationNodeAnimation_yssjq")
-blend_point_3/pos = Vector2(35, -1)
+blend_point_3/node = SubResource("Grind_Backwards_Crouch_Lean_L")
+blend_point_3/pos = Vector2(-1, 1)
 blend_point_3/name = &"3"
-blend_point_4/node = SubResource("AnimationNodeAnimation_0cp1b")
-blend_point_4/pos = Vector2(0, -1)
+blend_point_4/node = SubResource("Grind_Backwards_Crouch")
+blend_point_4/pos = Vector2(0, 1)
 blend_point_4/name = &"4"
-blend_point_5/node = SubResource("AnimationNodeAnimation_ertl5")
-blend_point_5/pos = Vector2(0, 1)
+blend_point_5/node = SubResource("Grind_Backwards_Crouch_Lean_R")
+blend_point_5/pos = Vector2(1, 1)
 blend_point_5/name = &"5"
-blend_point_6/node = SubResource("AnimationNodeAnimation_7t1ej")
-blend_point_6/pos = Vector2(10, -1)
-blend_point_6/name = &"6"
-blend_point_7/node = SubResource("AnimationNodeAnimation_0p4dj")
-blend_point_7/pos = Vector2(10.1, 1)
-blend_point_7/name = &"7"
-blend_point_8/node = SubResource("AnimationNodeAnimation_ilabg")
-blend_point_8/pos = Vector2(130, 1)
-blend_point_8/name = &"8"
-blend_point_9/node = SubResource("AnimationNodeAnimation_h6xwo")
-blend_point_9/pos = Vector2(130, -1)
-blend_point_9/name = &"9"
+
+[sub_resource type="AnimationNodeBlend2" id="GrindDirection"]
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Forwards_Lean_L"]
+animation = &"Grind_Forwards_Lean_L"
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Forwards"]
+animation = &"Grind_Forwards"
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Forwards_Lean_R"]
+animation = &"Grind_Forwards_Lean_R"
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Forwards_Crouch_Lean_L"]
+animation = &"Grind_Forwards_Crouch_Lean_L"
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Forwards_Crouch"]
+animation = &"Grind_Forwards_Crouch"
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Forwards_Crouch_Lean_R"]
+animation = &"Grind_Forwards_Crouch_Lean_R"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="GrindForwards"]
+min_space = Vector2(-1, 0)
+x_label = "Lean"
+y_label = "Crouch"
+sync_mode = 1
+blend_point_0/node = SubResource("Grind_Forwards_Lean_L")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_0/name = &"0"
+blend_point_1/node = SubResource("Grind_Forwards")
+blend_point_1/pos = Vector2(0, 0)
+blend_point_1/name = &"1"
+blend_point_2/node = SubResource("Grind_Forwards_Lean_R")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_2/name = &"2"
+blend_point_3/node = SubResource("Grind_Forwards_Crouch_Lean_L")
+blend_point_3/pos = Vector2(-1, 1)
+blend_point_3/name = &"3"
+blend_point_4/node = SubResource("Grind_Forwards_Crouch")
+blend_point_4/pos = Vector2(0, 1)
+blend_point_4/name = &"4"
+blend_point_5/node = SubResource("Grind_Forwards_Crouch_Lean_R")
+blend_point_5/pos = Vector2(1, 1)
+blend_point_5/name = &"5"
+
+[sub_resource type="AnimationNodeBlend2" id="GrindPanic"]
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Panic_L"]
+animation = &"Grind_Panic_L"
+
+[sub_resource type="AnimationNodeAnimation" id="Grind_Panic_R"]
+animation = &"Grind_Panic_R"
+
+[sub_resource type="AnimationNodeBlend2" id="GrindPanicSide"]
+sync = true
+
+[sub_resource type="AnimationNodeBlendTree" id="GrindBalance"]
+graph_offset = Vector2(-931.09094, -80.45456)
+nodes/output/position = Vector2(160, 80)
+nodes/Backwards/node = SubResource("GrindBackwards")
+nodes/Backwards/position = Vector2(-600, 0)
+nodes/Forwards/node = SubResource("GrindForwards")
+nodes/Forwards/position = Vector2(-600, 160)
+nodes/Direction/node = SubResource("GrindDirection")
+nodes/Direction/position = Vector2(-340, 80)
+nodes/PanicLeft/node = SubResource("Grind_Panic_L")
+nodes/PanicLeft/position = Vector2(-600, 325)
+nodes/PanicRight/node = SubResource("Grind_Panic_R")
+nodes/PanicRight/position = Vector2(-600, 485)
+nodes/PanicSide/node = SubResource("GrindPanicSide")
+nodes/PanicSide/position = Vector2(-340, 405)
+nodes/Panic/node = SubResource("GrindPanic")
+nodes/Panic/position = Vector2(-80, 80)
+node_connections = [&"output", 0, &"Panic", &"Direction", 0, &"Backwards", &"Direction", 1, &"Forwards", &"PanicSide", 0, &"PanicLeft", &"PanicSide", 1, &"PanicRight", &"Panic", 0, &"Direction", &"Panic", 1, &"PanicSide"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hr7fk"]
 animation = &"Grind_Switch_Land"
@@ -983,7 +1036,7 @@ resource_name = "Rail;_gaze-enabled=true;_camera-overlay-enabled=true"
 states/Charge/node = SubResource("AnimationNodeAnimation_i182q")
 states/Charge/position = Vector2(512, 265)
 states/End/position = Vector2(780, -35)
-states/GRIND/node = SubResource("AnimationNodeBlendSpace2D_243k6")
+states/GRIND/node = SubResource("GrindBalance")
 states/GRIND/position = Vector2(368, -206)
 states/LAND/node = SubResource("AnimationNodeAnimation_hr7fk")
 states/LAND/position = Vector2(600, -35)
@@ -1398,7 +1451,7 @@ transitions = ["Start", "Active", SubResource("AnimationNodeStateMachineTransiti
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_w32g1"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_x8dvm"]
-graph_offset = Vector2(-948.93384, -427.62396)
+graph_offset = Vector2(-960.93384, 16.376038)
 nodes/output/position = Vector2(350, 300)
 nodes/Ground/node = SubResource("AnimationNodeStateMachine_n6wxo")
 nodes/Ground/position = Vector2(-820, -260)
@@ -2071,7 +2124,6 @@ transitions = ["Start", "Motion", SubResource("AnimationNodeStateMachineTransiti
 graph_offset = Vector2(-462, -162)
 
 [resource]
-graph_offset = Vector2(-412.91614, -350.1366)
 nodes/output/position = Vector2(1860, 60)
 nodes/AdditivePhysicsEars/node = SubResource("AnimationNodeAdd2_60fi3")
 nodes/AdditivePhysicsEars/position = Vector2(580, -80)

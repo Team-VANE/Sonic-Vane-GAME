@@ -260,7 +260,7 @@ spelling_patterns = PackedStringArray()
 [resource]
 script = ExtResource("9_p2fnh")
 preview_scene = ExtResource("8_p4xrs")
-preview_hidden_node_paths = Array[NodePath]([NodePath("Armature/Skeleton3D/SpinBall")])
+preview_hidden_node_paths = Array[NodePath]([NodePath("Sonic Game Scale/Armature/Skeleton3D/SpinBall")])
 preview_distance = 2.5
 visemes = Array[ExtResource("1_ajlh1")]([SubResource("Resource_wxvqm"), SubResource("Resource_3q5ml"), SubResource("Resource_dimf7"), SubResource("Resource_qphp4"), SubResource("Resource_82ja4"), SubResource("Resource_vpe3i"), SubResource("Resource_1v5su"), SubResource("Resource_8w8hb"), SubResource("Resource_x5stb"), SubResource("Resource_2tttj"), SubResource("Resource_0863k"), SubResource("Resource_74704"), SubResource("Resource_ypgll"), SubResource("Resource_0s2b2"), SubResource("Resource_dvsld"), SubResource("Resource_dvi0e")])
 expressions = Array[ExtResource("1_ajlh1")]([SubResource("Resource_33svj"), SubResource("Resource_7l8du"), SubResource("Resource_402m2"), SubResource("Resource_e8qiv"), SubResource("Resource_lpo51"), SubResource("Resource_h3xnn"), SubResource("Resource_qpb48"), SubResource("Resource_rxpyx"), SubResource("Resource_lobw2"), SubResource("Resource_3ssj7"), SubResource("Resource_g7sfk"), SubResource("Resource_vm6jw"), SubResource("Resource_nop45"), SubResource("Resource_brbfl"), SubResource("Resource_pmjlb"), SubResource("Resource_ev455"), SubResource("Resource_jdx0r"), SubResource("Resource_s3el8")])

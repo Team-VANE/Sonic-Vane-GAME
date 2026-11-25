@@ -76,6 +76,16 @@
   ],
   "required_resources": [
     {
+      "path": "res://LS5Framework/Characters/Sonic Neo Adventure/SonicNeoAdvAnimationPlayer.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "aede26b4eb0d72222e4d04eb53deda2c0bcd5048f8e339c88c405a1890203c2b"
+    },
+    {
       "path": "res://LS5Framework/Curves/DriftExitEase.tres",
       "owners": [
         {
@@ -1868,7 +1878,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "aba4f16c3c2a1c6ad5533942571b980148de5b80766286fca352429fdc91f1d3"
+      "source_sha256": "2af8742471d55cee4cf38ee90a3e8d9d32a04c307f6bc7b98df2ac90eeaec1d6"
     },
     {
       "path": "res://LS5Framework/Objects/Rail/RailSegmentMesh.gd",
@@ -4740,7 +4750,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "de32217c3e9f319330ce26fe15cbb0be4c6cfa795408063a3fd57f0c7b4cf89f"
+      "source_sha256": "6302c43692eca0c270ef565e78db2f4ed93aab74d856efc03c6f4347b21d6c2f"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerActionPromptResolver.gd",
@@ -4792,7 +4802,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "45805bf2e7ab7fb4a37443820f78c14fa549e815eeaa53be8e07dde28a11ea8c"
+      "source_sha256": "749a0cc83aa6477efcf89cc3f2bc0c4133716d53dcf87da3aa63caf82ba3975c"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerAnimationActionBackend.gd",
@@ -5086,7 +5096,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "897e35b65f8ee02c2f013c523cc7832d72696fd46abac3bad460744fad7a8ea1"
+      "source_sha256": "cfdb1020010a37c2d0a2a3ca3af003fdc0debf907dd3f22735919323979b7237"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
@@ -5108,7 +5118,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "2c2e2fbea583c6d72c606f59f17c8d29a80afdfda88a43bc7adf6e3b029b08ff"
+      "source_sha256": "cc65cf524282aa9f35bbd105e894cf264d362cca6cd6942888067f848bf3f3a7"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerDebugController.gd",
@@ -5126,7 +5136,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "1d703fbcbff351375ec16bbd224234c70e90547da6bc3a0c0ac282f5193e21e4"
+      "source_sha256": "4d0660547257259aea3051e6b32b61508e6e0eaf46a19a3bccf3a470c86128e4"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerEffectsController.gd",
@@ -5350,7 +5360,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "a4c90286ae6a7fe95bdfb34fbf42833f0e9d493ee2abc17caab153b77c3ac004"
+      "source_sha256": "d5fd0ce41458922a2827ceb624621b2914794386afb9b67d6ca7349c4abe3089"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerRespawnController.gd",
@@ -6139,11 +6149,15 @@
           "kind": "Script class"
         },
         {
+          "path": "res://LS5Framework/Scripts/Player/PlayerRailController.gd",
+          "kind": "Script class"
+        },
+        {
           "path": "res://LS5Framework/Scripts/Player/rail_grind_action.gd",
           "kind": "Script class"
         }
       ],
-      "source_sha256": "0fd47ffd854e66573870c58d3c07600e1c91beab2482d47610ea4888b7bdd95c"
+      "source_sha256": "dc2c70790dedad092fb6facad2c819c0504a239f575a703a9cf859794728fa32"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/roll_action.gd",
@@ -6275,7 +6289,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "10d507e1bd7fbd1c8de8d2d15f89121597d4892c3d6a700266b9e638ae12f055"
+      "source_sha256": "5624a442cee2f64976092cc3ace083b90b54a1c7a39404092e74a112a6ec1a86"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/spring_action.gd",

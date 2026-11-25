@@ -968,8 +968,6 @@ var airborne_landing_align_movement_yaw_full_speed: float = 30.0
 ## Cooldown before the same rail can be attached again.
 @export_storage var rail_rehit_cooldown: float = 0.3
 @export_storage var rail_crouch_enabled: bool = true
-@export_storage var rail_crouch_uphill_decel: float = 18.0
-@export_storage var rail_crouch_downhill_accel: float = 24.0
 
 ## Enables rail snapping from proximity to the rail path.
 @export_storage var rail_path_snap_enabled: bool = true
@@ -3850,6 +3848,9 @@ var _rail_end_detach_distance: float = 0.0
 var _rail_anim_dir_smoothed: float = 0.0
 var _rail_anim_speed_smoothed: float = 0.0
 var _rail_crouching: bool = false
+var _rail_lean_input: float = 0.0
+var _rail_lean_required: float = 0.0
+var _rail_balance_error: float = 0.0
 var _rail_trick_distance_accum: float = 0.0
 var _rail_switch_active: bool = false
 var _prev_rail_active: bool = false

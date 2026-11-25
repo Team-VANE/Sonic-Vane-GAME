@@ -18,9 +18,30 @@ extends CharacterAction
 @export_range(0.0, 1.0) var rail_reverse_input_dot_threshold: float = 0.35
 
 @export_subgroup("Movement/Crouch")
+## Enables the rail crouch on the assigned roll input.
 @export var rail_crouch_enabled: bool = true
-@export var rail_crouch_uphill_decel: float = 18.0
-@export var rail_crouch_downhill_accel: float = 24.0
+## Forward acceleration added by a balanced crouch.
+@export_range(0.0, 40.0, 0.1, "or_greater") var rail_crouch_acceleration: float = 8.0
+## Speed at which the crouch stops adding acceleration.
+@export_range(1.0, 250.0, 1.0, "or_greater") var rail_crouch_assist_speed: float = 105.0
+## Fraction of uphill gravity offset by a balanced crouch.
+@export_range(0.0, 1.0, 0.01) var rail_crouch_uphill_assist: float = 0.18
+## Fraction of normal grind friction when crouching in balance.
+@export_range(0.0, 1.0, 0.01) var rail_crouch_friction_scale: float = 0.25
+
+@export_subgroup("Movement/Balance")
+## Speed lost per second on an upright grind with no balance error.
+@export_range(0.0, 20.0, 0.1, "or_greater") var rail_grind_friction: float = 1.8
+## Additional speed lost per second at full balance error while crouching.
+@export_range(0.0, 80.0, 0.1, "or_greater") var rail_balance_friction: float = 18.0
+## Turn per world unit below which the player can grind without leaning.
+@export_range(0.0, 0.2, 0.001, "suffix:rad/m") var rail_balance_curve_deadzone: float = 0.007
+## Turn per world unit that calls for a full lean.
+@export_range(0.001, 0.3, 0.001, "suffix:rad/m") var rail_balance_full_lean_curve: float = 0.036
+## Time ahead of the player in which a lean into the upcoming curve is credited.
+@export_range(0.0, 0.5, 0.01, "suffix:s") var rail_balance_lookahead: float = 0.14
+## Balance error forgiven when the player is fully upside down relative to gravity.
+@export_range(0.0, 1.0, 0.01) var rail_balance_inverted_forgiveness: float = 0.88
 
 @export_subgroup("Proximity Snap")
 ## Enables rail attachment from proximity to the rail path.
@@ -257,61 +278,8 @@ func _get_spring_action():
 
 
 func _check_and_apply_rail_boosters_on_start() -> void:
-	if rail_path == null:
+	if not rail_path or not owner_player:
 		return
-	if owner_player == null:
-		return
-	
-	for child in rail_path.get_children():
-		if child is PathFollow3D and child.get_script() != null:
-			var script_path = child.get_script().get_path()
-			if script_path.contains("RailBooster"):
-				if child.has_method("active") and not child.active:
-					continue
-				if child.has_method("require_group"):
-					if child.require_group != "" and not owner_player.is_in_group(child.require_group):
-						continue
-				
-				if child.has_method("_get_rail_path") and child.has_method("_get_rail_tangent"):
-					var booster_path = child._get_rail_path()
-					if booster_path != rail_path:
-						continue
-				
-				var booster_progress: float = child.progress
-				var distance_threshold: float = 6.0
-				
-				if abs(rail_distance - booster_progress) > distance_threshold:
-					continue
-				
-				if owner_player.has_method("apply_rail_boost"):
-					var rail_dir: Vector3 = child._get_rail_tangent()
-					if rail_dir.length() < 0.001:
-						continue
-					var forward: Vector3 = -child.global_transform.basis.z
-					if forward.length() < 0.001:
-						forward = rail_dir
-					var sign: float = 1.0 if rail_dir.dot(forward) >= 0.0 else -1.0
-					
-					var boost_spd: float = 80.0
-					if child.has_property("boost_speed"):
-						boost_spd = child.boost_speed
-					
-					var boost_mode: int = 0
-					if child.has_property("boost_mode"):
-						boost_mode = child.boost_mode
-					
-					var additive_min: float = 0.0
-					if child.has_property("additive_min_speed"):
-						additive_min = child.additive_min_speed
-					
-					owner_player.apply_rail_boost(boost_spd, boost_mode, sign, rail_path, additive_min)
-					
-					if child.has_method("_play_boost_sfx"):
-						child._play_boost_sfx()
-					
-					if child.has_property("_body_cooldowns"):
-						var id: int = owner_player.get_instance_id()
-						var rehit: float = 0.2
-						if child.has_property("rehit_cooldown"):
-							rehit = child.rehit_cooldown
-						child._body_cooldowns[id] = max(rehit, 0.0)
+	for child: Node in rail_path.get_children():
+		if child is PathFollow3D and child.has_method("try_boost") and absf(rail_distance - child.progress) <= 6.0:
+			child.call("try_boost", owner_player)

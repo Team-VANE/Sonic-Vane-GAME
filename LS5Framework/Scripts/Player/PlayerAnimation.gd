@@ -12,6 +12,7 @@ const SM_GROUND: String = SM_BASE + "/GROUND_MACHINE"
 const JUMP_FALL_BLEND_CONDITION: String = "conditions/UseFallBlendForJump"
 const NOT_JUMP_FALL_BLEND_CONDITION: String = "conditions/NotUseFallBlendForJump"
 const RAIL_SWITCH_ANIM_DURATION: float = 0.5
+const RAIL_GRIND: String = SM_BASE + "/RAIL/GRIND"
 const TURN_MODE_INTENTION: int = 1
 const TURN_MODE_HYBRID: int = 2
 
@@ -31,6 +32,8 @@ var _anim_turn_prev_up: Vector3 = Vector3.UP
 var _anim_turn_last_side: float = 1.0
 var _fall_blend_smoothed: Vector2 = Vector2.ZERO
 var _fall_blend_initialized: bool = false
+var _rail_lean_blend: float = 0.0
+var _rail_crouch_blend: float = 0.0
 var _movement_time_exclusion_pattern: RegEx = RegEx.new()
 var _network_tree_id: int = 0
 var _network_playback_paths: Array[String] = []
@@ -418,35 +421,8 @@ func _update_animation(delta: float) -> void:
 	_safe_set_anim_param(SM_GROUND + "/GroundMove/blend_position", Vector2(speed, turn_amount))
 	_safe_set_anim_param(SM_BASE + "/FallBlend/blend_position", _fall_blend_smoothed)
 
-	var rail_speed_max: float = max(p.anim_speed_blend_max, 0.01)
 	var rail_animation_speed: float = p._rail_speed * animation_speed_scale
-	var rail_speed_target: float = clamp(abs(rail_animation_speed), 0.0, rail_speed_max)
-	if p._rail_active and not p._rail_crouching:
-		rail_speed_target = 0.0
-	
-	var rail_blend_speed: float = max(p.rail_anim_blend_smooth_speed, 0.0)
-	if not p._rail_active:
-		p._rail_anim_speed_smoothed = 0.0
-	elif rail_blend_speed <= 0.0:
-		p._rail_anim_speed_smoothed = rail_speed_target
-	else:
-		p._rail_anim_speed_smoothed = move_toward(p._rail_anim_speed_smoothed, rail_speed_target, rail_blend_speed * delta)
-	
-	var rail_dir_target: float = 0.0
-	if p._rail_active:
-		var dir_den : float = max(p.rail_anim_dir_speed_for_full, 0.001)
-		rail_dir_target = clamp(rail_animation_speed / dir_den, -1.0, 1.0)
-	
-	var rail_dir_smooth_speed: float = max(p.rail_anim_dir_smooth_speed, 0.0)
-	if rail_dir_smooth_speed <= 0.0:
-		p._rail_anim_dir_smoothed = rail_dir_target
-	else:
-		var t_dir : float = clamp(rail_dir_smooth_speed * delta, 0.0, 1.0)
-		p._rail_anim_dir_smoothed = lerp(p._rail_anim_dir_smoothed, rail_dir_target, t_dir)
-	
-	var rail_blend_position: Vector2 = Vector2(p._rail_anim_speed_smoothed, p._rail_anim_dir_smoothed)
-	_safe_set_anim_param(SM_BASE + "/RAIL/GRIND/blend_position", rail_blend_position)
-	_safe_set_anim_param(SM_BASE + "/RAIL/blend_position", rail_blend_position)
+	_update_rail_animation(rail_animation_speed, delta)
 
 	var current_state: StringName = p.get_animation_director().get_current_state()
 	var move_time_scale: float = 1.0
@@ -530,6 +506,47 @@ func _update_animation(delta: float) -> void:
 	if hierarchical_actions:
 		presentation.set_clocks(playback_scale)
 	_safe_set_anim_param("MoveTimeScale/scale", 1.0 if hierarchical_actions or (hierarchical_motion and current_state == &"Motion") else playback_scale)
+
+
+func _update_rail_animation(rail_speed: float, delta: float) -> void:
+	var p = _owner
+	var direction_path: String = RAIL_GRIND + "/Direction/blend_amount"
+	var balance_graph: bool = _anim_param_exists(p.get_animation_director().map_parameter(direction_path))
+	var direction: float = 0.0
+	if p._rail_active:
+		direction = p._rail_travel_sign if balance_graph else clampf(rail_speed / maxf(p.rail_anim_dir_speed_for_full, 0.001), -1.0, 1.0)
+	var smoothing: float = p.rail_anim_dir_smooth_speed
+	var direction_weight: float = clampf(smoothing * delta, 0.0, 1.0) if smoothing > 0.0 else 1.0
+	p._rail_anim_dir_smoothed = lerpf(p._rail_anim_dir_smoothed, direction, direction_weight)
+	if balance_graph:
+		var lean: float = 0.0
+		var crouch: float = 0.0
+		var imbalance: float = 0.0
+		if p._rail_active:
+			imbalance = p._rail_balance_error
+			lean = clampf(p._rail_lean_input + imbalance * 0.35, -1.0, 1.0)
+			crouch = 1.0 if p._rail_crouching else 0.0
+		_rail_lean_blend = move_toward(_rail_lean_blend, lean, 12.0 * delta)
+		_rail_crouch_blend = move_toward(_rail_crouch_blend, crouch, 8.0 * delta)
+		var pose: Vector2 = Vector2(_rail_lean_blend, _rail_crouch_blend)
+		_safe_set_anim_param(RAIL_GRIND + "/Forwards/blend_position", pose)
+		_safe_set_anim_param(RAIL_GRIND + "/Backwards/blend_position", pose)
+		_safe_set_anim_param(direction_path, (p._rail_anim_dir_smoothed + 1.0) * 0.5)
+		_safe_set_anim_param(RAIL_GRIND + "/PanicSide/blend_amount", smoothstep(-0.25, 0.25, imbalance))
+		_safe_set_anim_param(RAIL_GRIND + "/Panic/blend_amount", smoothstep(0.46, 0.88, absf(imbalance)))
+		return
+
+	var speed_target: float = clampf(absf(rail_speed), 0.0, maxf(p.anim_speed_blend_max, 0.01)) if p._rail_crouching else 0.0
+	var speed_smoothing: float = p.rail_anim_blend_smooth_speed
+	if not p._rail_active:
+		p._rail_anim_speed_smoothed = 0.0
+	elif speed_smoothing <= 0.0:
+		p._rail_anim_speed_smoothed = speed_target
+	else:
+		p._rail_anim_speed_smoothed = move_toward(p._rail_anim_speed_smoothed, speed_target, speed_smoothing * delta)
+	var legacy_pose: Vector2 = Vector2(p._rail_anim_speed_smoothed, p._rail_anim_dir_smoothed)
+	_safe_set_anim_param(RAIL_GRIND + "/blend_position", legacy_pose)
+	_safe_set_anim_param(SM_BASE + "/RAIL/blend_position", legacy_pose)
 
 
 func _get_speed_based_animation_scale() -> float:

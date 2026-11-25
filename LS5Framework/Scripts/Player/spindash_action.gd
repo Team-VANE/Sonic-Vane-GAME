@@ -146,6 +146,9 @@ func continuous_physics_update(delta: float) -> void:
 		return
 
 	if owner_player._rail_active:
+		if owner_player.is_post_ui_action_suppressed():
+			_cancel_charge()
+			return
 		_update_on_rail(delta)
 		return
 	if owner_player._spring_align_timer > 0.0 and owner_player._spring_detached:

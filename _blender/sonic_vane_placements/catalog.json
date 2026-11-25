@@ -2479,6 +2479,14 @@
           "label": "Boost Speed", "description": "Fixed speed or speed added in meters per second",
           "type": "float", "default": 80, "min": -400, "max": 400, "group": "Rail Booster"
         },
+        "reverse_direction": {
+          "label": "Reverse Direction", "description": "Aim the boost toward the start of the rail. The rail must allow reverse travel",
+          "type": "bool", "default": false, "group": "Rail Booster"
+        },
+        "booster_show_direction": {
+          "label": "Show Direction", "description": "Show the selected boost direction in the viewport",
+          "type": "bool", "default": true, "group": "Rail Booster", "authoring_only": true
+        },
         "additive_min_speed": {
           "label": "Minimum Speed", "description": "Minimum speed after an additive boost",
           "type": "float", "default": 0, "min": -400, "max": 400, "group": "Rail Booster",

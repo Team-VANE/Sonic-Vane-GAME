@@ -23,7 +23,7 @@ shape = SubResource("SphereShape3D_1")
 [node name="ModelRoot" type="Node3D" parent="." unique_id=354096942]
 
 [node name="Sonic_NeoAdv_Root" parent="ModelRoot" unique_id=1159619812 instance=ExtResource("2_model")]
-transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 0, -1, 0)
+position = Vector3(0, -1, 0)
 
 [node name="FootAfterImageController" parent="ModelRoot/Sonic_NeoAdv_Root" index="8"]
 player_pawn = NodePath("../../..")

@@ -319,8 +319,6 @@ func _apply_action_node_settings() -> void:
 		p.rail_end_detach_distance = p._rail_grind_action.rail_end_detach_distance
 		p.rail_rehit_cooldown = p._rail_grind_action.rail_rehit_cooldown
 		p.rail_crouch_enabled = p._rail_grind_action.rail_crouch_enabled
-		p.rail_crouch_uphill_decel = p._rail_grind_action.rail_crouch_uphill_decel
-		p.rail_crouch_downhill_accel = p._rail_grind_action.rail_crouch_downhill_accel
 		p.rail_path_snap_enabled = p._rail_grind_action.rail_path_snap_enabled
 		p.rail_path_snap_radius_min = p._rail_grind_action.rail_path_snap_radius_min
 		p.rail_path_snap_radius_max = p._rail_grind_action.rail_path_snap_radius_max

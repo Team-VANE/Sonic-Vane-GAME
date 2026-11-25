@@ -8,6 +8,8 @@ const BOOST_ADDITIVE: int = 1
 @export var require_group: StringName = "player"
 @export_enum("Fixed", "Additive") var boost_mode: int = BOOST_FIXED
 @export_range(-400.0, 400.0) var boost_speed: float = 80.0
+## Reverses the boost relative to the rail direction or the authored facing of a native booster.
+@export var reverse_direction: bool = false
 @export var require_same_rail: bool = true
 @export_range(0.0, 1.0) var tangent_lookahead: float = 0.05
 @export var rehit_cooldown: float = 0.2
@@ -31,7 +33,7 @@ func _ready() -> void:
 			_sync_placement_progress()
 	_area = get_node_or_null("Area3D")
 	if _area != null:
-		_area.body_entered.connect(_on_body_entered)
+		_area.body_entered.connect(try_boost)
 	set_physics_process(true)
 
 
@@ -59,7 +61,7 @@ func _physics_process(delta: float) -> void:
 		_body_cooldowns.erase(id)
 
 
-func _on_body_entered(body: Node) -> void:
+func try_boost(body: Node) -> void:
 	if not active:
 		return
 	if require_group != "" and not body.is_in_group(require_group):
@@ -74,15 +76,14 @@ func _on_body_entered(body: Node) -> void:
 	if remaining > 0.0:
 		return
 
-	var rail_dir := _get_rail_tangent()
+	var rail_dir: Vector3 = _get_rail_tangent()
 	if rail_dir.length() < 0.001:
 		return
-	var forward := -global_transform.basis.z
-	if forward.length() < 0.001:
-		forward = rail_dir
-	var sign: float = 1.0 if rail_dir.dot(forward) >= 0.0 else -1.0
-
-	body.call("apply_rail_boost", boost_speed, boost_mode, sign, _get_rail_path(), additive_min_speed)
+	var direction: float = -1.0 if placement_progress < 0.0 and rail_dir.dot(-global_basis.z) < 0.0 else 1.0
+	if reverse_direction:
+		direction = -direction
+	if not body.call("apply_rail_boost", boost_speed, boost_mode, direction, _get_rail_path(), additive_min_speed):
+		return
 	_body_cooldowns[id] = max(rehit_cooldown, 0.0)
 	_play_boost_sfx()
 
