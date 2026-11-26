@@ -479,11 +479,7 @@ func stop_all_momentum_and_special_movement() -> void:
 	if p._homing_active or p._homing_target != null:
 		p.cancel_homing_attack(false)
 	p._reset_spindash_state()
-	p._spline_active = false
-	p._spline_path = null
-	p._spline_distance = 0.0
-	p._spline_speed = 0.0
-	p._spline_total_length = 0.0
+	p.cancel_spline_spring()
 	p.cancel_rail_grind(false)
 	p._rail_crouching = false
 	p._rail_model_basis_valid = false

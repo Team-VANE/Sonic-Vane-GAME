@@ -453,6 +453,7 @@ func _run_goal_sequence(player: Node) -> void:
 	_unlock_cursor(player)
 
 	_set_player_race_state(player, false, false, true)
+	prepare_player_for_finish_fade(player)
 	HUDMusicTrackDisplay.post_notification(
 		get_tree(),
 		"Finish Line",
@@ -764,8 +765,7 @@ func _handle_goal_option_no_restart(player: Node, option: StringName) -> void:
 
 
 func _teleport_player_to_goal_pose(player: Node) -> void:
-	if player.has_method("prepare_for_goal_sequence"):
-		player.call("prepare_for_goal_sequence")
+	prepare_player_for_finish_fade(player)
 	var pose_node = get_node_or_null(goal_pose_path)
 	if pose_node == null and get_tree() != null and get_tree().current_scene != null:
 		pose_node = get_tree().current_scene.get_node_or_null(goal_pose_path)
@@ -799,11 +799,9 @@ func _teleport_player_to_goal_pose(player: Node) -> void:
 
 
 func _apply_goal_pose_visual_alignment(player: Node, pose_xform: Transform3D) -> void:
-	if is_instance_valid(player) and player.has_method("set_goal_sequence_frozen"):
-		_frozen_goal_player = weakref(player)
-		player.call("set_goal_sequence_frozen", true)
-	if player == null or not is_instance_valid(player):
+	if not is_instance_valid(player):
 		return
+	_hold_goal_player(player)
 	if not player.has_method("snap_model_to_normal"):
 		return
 
@@ -821,6 +819,7 @@ func _apply_goal_pose_visual_alignment(player: Node, pose_xform: Transform3D) ->
 	if forward.length() < 0.001:
 		forward = Vector3.FORWARD
 	player.call("snap_model_to_normal", up, forward)
+	player.reset_physics_interpolation()
 
 
 func _apply_downwarp(xform: Transform3D, player: Node) -> Transform3D:
@@ -1077,8 +1076,7 @@ func apply_online_lineup_pose(player: Node, order: Array, dnfs: Array, targets: 
 	var index: int = lineup.find(peer_id)
 	if index < 0 or not is_instance_valid(player):
 		return
-	if player.has_method("prepare_for_goal_sequence"):
-		player.call("prepare_for_goal_sequence")
+	prepare_player_for_finish_fade(player)
 	var pose: Transform3D = get_goal_pose_transform()
 	var right: Vector3 = pose.basis.x.normalized()
 	var forward: Vector3 = -pose.basis.z.normalized()
@@ -1477,6 +1475,20 @@ func _on_victory_interrupted() -> void:
 			_goal_results_ui.call("cancel_results_wait")
 		if _waiting_for_goal_option:
 			_goal_results_ui.emit_signal("option_selected", &"stay")
+
+func prepare_player_for_finish_fade(player: Node) -> void:
+	if _frozen_goal_player and _frozen_goal_player.get_ref() == player:
+		return
+	if player.has_method("prepare_for_goal_sequence"):
+		player.call("prepare_for_goal_sequence")
+	_hold_goal_player(player)
+
+
+func _hold_goal_player(player: Node) -> void:
+	if player.has_method("set_goal_sequence_frozen"):
+		_frozen_goal_player = weakref(player)
+		player.call("set_goal_sequence_frozen", true)
+
 
 func _release_goal_player() -> void:
 	var player: Node = _frozen_goal_player.get_ref() as Node if _frozen_goal_player else null

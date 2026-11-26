@@ -2650,6 +2650,7 @@ func get_gameplay_timer_delta(fallback_delta: float) -> float:
 
 
 func _physics_process(delta: float) -> void:
+	_post_ui_unblock_action_suppress_timer = maxf(_post_ui_unblock_action_suppress_timer - delta, 0.0)
 	if _cutscene_pose_owner and not _cutscene_gameplay_motion:
 		return
 	if _goal_sequence_frozen and _network_is_local_authority():
@@ -3465,7 +3466,6 @@ func _movement_physics_process(delta: float) -> void:
 	_combat_homing_lockout_timer = max(_combat_homing_lockout_timer - delta, 0.0)
 	_lightspeed_dash_start_bonus_cooldown_timer = max(_lightspeed_dash_start_bonus_cooldown_timer - delta, 0.0)
 	_lightspeed_rail_entry_timer = 0.0 if attached else maxf(_lightspeed_rail_entry_timer - delta, 0.0)
-	_post_ui_unblock_action_suppress_timer = max(_post_ui_unblock_action_suppress_timer - _movement_real_delta, 0.0)
 	_landing_timer = max(_landing_timer - delta, 0.0)
 	_spindash_turn_free_timer = max(_spindash_turn_free_timer - delta, 0.0)
 	_spindash_overspeed_recharge_timer = maxf(_spindash_overspeed_recharge_timer - delta, 0.0)

@@ -411,7 +411,7 @@ func _get_debug_puppet_transform(player: Node3D) -> Transform3D:
 func _debug_inputs_allowed() -> bool:
 	var p = _owner
 	# Block debug toggles while UI (chat/pause menus) should own inputs.
-	if p._ui_input_blocked:
+	if p.is_ui_input_blocked():
 		return false
 	var vp = p.get_viewport()
 	if vp == null:
@@ -611,6 +611,11 @@ func _find_animation_player() -> AnimationPlayer:
 
 func _debug_fly_tick(delta: float) -> void:
 	var p = _owner
+	p.velocity = Vector3.ZERO
+	p.attached = false
+	if p._local_pause_enabled or not _debug_inputs_allowed():
+		return
+
 	var up: Vector3 = p._get_gravity_up()
 
 	var cam_basis: Basis = p.global_transform.basis
@@ -659,9 +664,6 @@ func _debug_fly_tick(delta: float) -> void:
 
 	var move: Vector3 = horiz * (p.debug_move_speed * speed_scale) + up * (vert * p.debug_vertical_speed * speed_scale)
 	p.global_position += move * max(delta, 0.0)
-
-	p.velocity = Vector3.ZERO
-	p.attached = false
 
 
 func reload_player_scene_parameters() -> void:
