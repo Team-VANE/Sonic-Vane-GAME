@@ -1182,6 +1182,8 @@ func _update_model_orientation(delta: float) -> void:
 	p = _owner
 	if p == null or not is_instance_valid(p):
 		return
+	var turning_in_place: bool = p._ground_turn_in_place_active and p.attached
+	p._ground_turn_in_place_active = false
 	if p.model_root == null:
 		_ground_model_lean = Quaternion.IDENTITY
 		_ground_facing_up = Vector3.ZERO
@@ -1284,7 +1286,8 @@ func _update_model_orientation(delta: float) -> void:
 			_ground_facing_up = facing_up
 			if p._prev_attached and not previous_facing_up.is_zero_approx():
 				var support_rotation: Quaternion = _get_up_transport(previous_facing_up, facing_up, p._model_forward.cross(previous_facing_up))
-				p._model_forward = support_rotation * p._model_forward
+				if not turning_in_place:
+					p._model_forward = support_rotation * p._model_forward
 				_ice_visual_heading = support_rotation * _ice_visual_heading
 		var use_input_facing: bool = spindash_input_facing or (p.race_in_countdown and not p.race_active)
 		var has_input_facing_direction: bool = p._move_direction.length() > 0.001
@@ -1314,6 +1317,8 @@ func _update_model_orientation(delta: float) -> void:
 				p._model_forward = forward_src
 			else:
 				forward_src = p._model_forward
+		elif turning_in_place:
+			forward_src = p._model_forward
 		else:
 			var move_dir: Vector3 = p.velocity.slide(facing_up)
 			var min_turn_speed: float = max(p.model_turn_min_speed, 0.0)
@@ -1447,7 +1452,7 @@ func _update_model_orientation(delta: float) -> void:
 		return
 	if p.attached:
 		var snap_on_landing: bool = not p._prev_attached and not ice_input_facing
-		var blend: float = 1.0 if snap_on_landing or p.model_turn_speed <= 0.0 else p.model_turn_speed * delta
+		var blend: float = 1.0 if snap_on_landing or turning_in_place or p.model_turn_speed <= 0.0 else p.model_turn_speed * delta
 		if use_ground_frame:
 			t.basis = _smooth_ground_model(
 				t.basis, unleaned_target, target_basis, previous_lean,

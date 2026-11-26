@@ -5908,6 +5908,38 @@ func _smoothstep_unit(value: float) -> float:
 	return t * t * (3.0 - 2.0 * t)
 
 
+func _try_ground_turn_in_place(move_dir: Vector3, up: Vector3, delta: float) -> bool:
+	var facing: Vector3 = _model_forward.slide(up).normalized()
+	if facing.is_zero_approx():
+		facing = _control_forward.slide(up).normalized()
+	if facing.is_zero_approx():
+		return false
+	var angle: float = facing.signed_angle_to(move_dir, up)
+	var drive_angle: float = deg_to_rad(_grounded_action.turn_in_place_drive_angle_deg)
+	if absf(angle) <= drive_angle:
+		return false
+	var turn_step: float = deg_to_rad(_grounded_action.turn_in_place_rate_deg_per_sec) * delta
+	_model_forward = facing.rotated(up, clampf(angle, -turn_step, turn_step)).normalized()
+	_ground_turn_in_place_active = true
+	return true
+
+
+func _get_side_back_turn_weight(speed: float, intent_angle_deg: float, input_strength: float) -> float:
+	var end_angle: float = minf(155.0, skid_enter_angle_deg)
+	if intent_angle_deg <= 105.0 or intent_angle_deg >= end_angle:
+		return 0.0
+	var speed_range: Vector2 = _grounded_action.side_back_turn_speed_range
+	var start_speed: float = maxf(speed_range.x, 0.0)
+	var full_speed: float = maxf(speed_range.y, start_speed + 0.001)
+	var min_input: float = clampf(_grounded_action.side_back_turn_min_input, 0.0, 0.99)
+	return (
+		smoothstep(start_speed, full_speed, speed)
+		* smoothstep(min_input, 1.0, input_strength)
+		* smoothstep(105.0, 130.0, intent_angle_deg)
+		* (1.0 - smoothstep(maxf(105.0, end_angle - 15.0), end_angle, intent_angle_deg))
+	)
+
+
 func _apply_steered_locomotion_velocity(
 	current_lateral: Vector3,
 	steering_direction: Vector3,
@@ -5924,7 +5956,8 @@ func _apply_steered_locomotion_velocity(
 	passive_decel: float,
 	target_speed: float,
 	input_strength: float,
-	delta: float
+	delta: float,
+	allow_side_back_turn: bool = false
 ) -> Vector3:
 	var speed: float = current_lateral.length()
 	var steer_dir: Vector3 = steering_direction.normalized()
@@ -5957,7 +5990,18 @@ func _apply_steered_locomotion_velocity(
 	var rate_multiplier: float = lerp(1.0, max(sharp_turn_rate_multiplier, 1.0), sharp_turn_t)
 	rate_multiplier *= lerp(1.0, clamp(pullback_turn_rate_multiplier, 0.0, 1.0), pullback_t)
 	var analog_turn_scale: float = lerp(0.35, 1.0, strength)
-	var max_turn_step: float = deg_to_rad(max(turn_deg_per_sec, 0.0) * rate_multiplier * analog_turn_scale) * dt
+	var base_turn_step: float = deg_to_rad(maxf(turn_deg_per_sec, 0.0) * analog_turn_scale) * dt
+	var max_turn_step: float = base_turn_step * rate_multiplier
+	var slowdown_multiplier: float = 1.0
+	if allow_side_back_turn and _grounded_action and steer_angle_rad > max_turn_step:
+		var extra_turn_step: float = base_turn_step * (_grounded_action.side_back_turn_rate_multiplier - rate_multiplier)
+		if extra_turn_step > 0.0:
+			var side_back_weight: float = minf(
+				_get_side_back_turn_weight(speed, intent_angle_deg, strength),
+				(steer_angle_rad - max_turn_step) / extra_turn_step
+			)
+			max_turn_step += extra_turn_step * side_back_weight
+			slowdown_multiplier = lerpf(1.0, _grounded_action.side_back_turn_slowdown_multiplier, side_back_weight)
 	var turned_dir: Vector3 = current_dir
 	if steer_angle_rad > 0.001 and max_turn_step > 0.0:
 		var turn_weight: float = min(1.0, max_turn_step / steer_angle_rad)
@@ -5981,7 +6025,7 @@ func _apply_steered_locomotion_velocity(
 		pullback_t
 	)
 	var brake_rate: float = max(brake_decel, 0.0) * opposing_t * pullback_brake_scale
-	var slowdown_rate: float = turn_loss_rate + brake_rate
+	var slowdown_rate: float = (turn_loss_rate + brake_rate) * slowdown_multiplier
 	if intent_dot < 0.0 and slowdown_rate > 0.0 and slowdown_rate * dt >= speed:
 		var restart_delta: float = maxf(dt - speed / slowdown_rate, 0.0)
 		var restart_speed: float = min(
@@ -6826,6 +6870,7 @@ func _integrate_airborne_gravity(vertical: float, up: Vector3, gravity_step: flo
 
 
 func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -> void:
+	_ground_turn_in_place_active = false
 	var inherited_launch_velocity: Vector3 = Vector3.ZERO
 	var magnetism_gravity_step: float = 0.0
 	var timer_delta: float = get_gameplay_timer_delta(delta)
@@ -7164,7 +7209,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	_compute_move_direction()
 	if _cutscene_gameplay_motion:
 		_move_direction = _cutscene_move_direction.slide(physics_up).normalized() if _move_input else Vector3.ZERO
-	if _automation_controller and _automation_controller.motion.has_input_effects():
+	var automation_input_active: bool = _automation_controller and _automation_controller.motion.has_input_effects()
+	if automation_input_active:
 		_automation_controller.motion.capture_input(_move_input, _move_direction * _move_input.length())
 		var guided_input: Vector3 = _automation_controller.motion.adjust_input(_move_direction, physics_up)
 		_move_input = _move_input.normalized() * minf(_move_input.length(), guided_input.length())
@@ -7297,6 +7343,18 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 	if _drift_active and is_attached and not in_spring_state:
 		has_input = true
 
+	var turn_in_place_speed: float = 0.0
+	if _grounded_action and is_attached and has_input and not (
+		_is_dead or _hurt_active or in_spring_state or _drift_active or _drift_exit_active
+		or ice_active or _pinball_mode or _loop_control_active or _jump_requested
+		or _wall_input_projection_active or _wall_input_push_active or auto_active
+		or automation_input_active or _cutscene_gameplay_motion or in_race_countdown
+		or _spindash_turn_free_timer > 0.0
+	):
+		if _grounded_action.turn_in_place_rate_deg_per_sec > 0.0:
+			turn_in_place_speed = _grounded_action.turn_in_place_max_speed
+	var skid_turnaround: bool = false
+
 	# --------------------------------------------------
 	# SPRING OVERRIDE FOR LATERAL (no steering while in spring)
 	# --------------------------------------------------
@@ -7337,9 +7395,11 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 					if not _is_skidding:
 						if lateral_speed >= skid_enter_min_speed and angle_deg >= skid_enter_angle_deg:
 							_is_skidding = true
-					else:
-						if angle_deg <= skid_exit_angle_deg or lateral_speed <= skid_exit_min_speed:
-							_is_skidding = false
+					elif angle_deg <= skid_exit_angle_deg:
+						_is_skidding = false
+					elif lateral_speed <= maxf(skid_exit_min_speed, turn_in_place_speed):
+						_is_skidding = false
+						skid_turnaround = true
 				else:
 					_is_skidding = false
 			else:
@@ -7560,6 +7620,9 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 					lateral, move_dir, input_acceleration, ground_brake_decel * ice_brake_multiplier,
 					movement_input_strength, maxf(run_top_speed_used, lateral.length()), delta
 				)
+			elif turn_in_place_speed > 0.0 and (lateral_speed <= turn_in_place_speed or skid_turnaround) \
+				and move_dir_len > 0.0001 and delta > 0.0 and _try_ground_turn_in_place(move_dir, physics_up, delta):
+				lateral = Vector3.ZERO
 			else:
 				var used_accel: float = _sample_curve_by_speed(
 					ground_accel_curve_used,
@@ -7728,14 +7791,22 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 								clamp(slope_reversal_guard_turn_preservation, 0.0, 1.0),
 								clamp(slope_reversal_guard_control_weight, 0.0, 1.0)
 							)
-							var turn_loss_decel: float = ground_decel_effective
-							if (
+							var turn_loss_suppressed: bool = (
 								_spindash_turn_free_timer > 0.0
 								or _loop_control_active
 								or (auto_active and _automation_disable_turning_slowdown)
 								or _automation_controller.motion.disables_turning_slowdown()
+							)
+							var turn_loss_decel: float = 0.0 if turn_loss_suppressed else ground_decel_effective
+							if turn_loss_decel > 0.0 and _grounded_action and not (
+								_cutscene_gameplay_motion or auto_active or automation_input_active
 							):
-								turn_loss_decel = 0.0
+								turn_loss_decel *= _grounded_action.get_low_speed_turn_slowdown_scale(lateral_speed)
+							var allow_side_back_turn: bool = not (
+								turn_loss_suppressed or is_rolling or is_spindash_charging or spindash_release_now
+								or _walk_input_held or _hurt_active or _drift_exit_active or _pinball_mode
+								or _cutscene_gameplay_motion or auto_active or automation_input_active
+							)
 							lateral = _apply_steered_locomotion_velocity(
 								lateral,
 								steer_target_dir,
@@ -7752,7 +7823,8 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 								turn_loss_decel,
 								target_speed,
 								movement_input_strength,
-								delta
+								delta,
+								allow_side_back_turn
 							)
 
 					if drift_exit_anchor_valid:

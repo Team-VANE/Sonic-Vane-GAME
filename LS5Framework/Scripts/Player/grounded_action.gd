@@ -26,22 +26,50 @@ extends CharacterAction
 ## Ground turn rate by lateral speed while walk input is held.
 ## At the same speed, Y = 360°/s redirects walking more quickly than Y = 180°/s.
 @export var walk_turn_angle_curve: Curve
-## Maximum turn-rate multiplier reached when input asks for a sharp course change.
-## 1.0 uses the turn curve alone. 1.5 allows up to 50% faster steering in sharp turns.
+## Turn-rate multiplier for ordinary sharp turns, relative to the speed-based curve.
+## 1.0 uses the curve alone. 1.5 allows up to 50% faster steering.
 @export_range(1.0, 3.0, 0.05) var ground_turn_sharp_rate_multiplier: float = 1.35
 ## Fraction of turn deceleration skipped during sharp turns on regular ground.
 ## 0.0 applies the full turn penalty, 0.5 applies half, and 1.0 skips it.
 ## Reverse braking and skid deceleration are separate.
 @export_range(0.0, 1.0, 0.05) var ground_turn_speed_preservation: float = 0.65
+## Speeds in m/s where extra sharp-turn slowdown fades. X ends the full effect and Y ends the fade.
+@export var low_speed_turn_slowdown_range: Vector2 = Vector2(45.0, 70.0)
+## Multiplier for sharp-turn deceleration at low speeds, after turn speed preservation.
+## 1.0 uses the usual penalty. 3.0 triples it at full effect.
+@export_range(1.0, 5.0, 0.05, "or_greater", "suffix:x") var low_speed_turn_slowdown_multiplier: float = 3.0
 ## Deceleration applied when movement input opposes the current course.
 ## 35 m/s² softens pullback braking. 70 m/s² applies twice as much at the same angle.
 @export var ground_brake_decel: float = 70.0
+
+## Ground speed range for side-back assist. X starts the blend and Y gives full effect.
+## Lower values make the assist available sooner.
+@export var side_back_turn_speed_range: Vector2 = Vector2(45.0, 85.0)
+## Stick strength where side-back assist starts blending in. 0.70 requires 70% tilt.
+@export_range(0.0, 0.99, 0.01) var side_back_turn_min_input: float = 0.70
+## Maximum turn-rate multiplier relative to the same curve during side-back input.
+## With ordinary sharp turns at 2.0, a setting of 2.2 allows up to 10% more turn rate. 1.0 disables the assist.
+@export_range(1.0, 3.0, 0.05, "suffix:x") var side_back_turn_rate_multiplier: float = 1.6
+## Scales turn deceleration and reverse braking in proportion to the extra steering used.
+## 1.0 keeps the usual slowdown. 2.0 doubles it when the full boost is used.
+@export_range(1.0, 4.0, 0.05, "suffix:x") var side_back_turn_slowdown_multiplier: float = 2.0
 
 @export_storage var ground_turn_free_angle_deg: float = 11.0
 @export_storage var ground_turn_max_penalty_angle_deg: float = 360.0
 @export_storage var ground_turn_max_penalty_angle_curve: Curve
 @export_storage var ground_turn_free_angle_curve: Curve
 @export_storage var ground_turn_min_speed_factor: float = 0.965
+
+@export_subgroup("Turning/Turn in Place")
+## Maximum ground speed for turning before moving. Zero disables the turn.
+## Higher values also allow skids to hand off into a turnaround sooner.
+@export_range(0.0, 20.0, 0.1, "or_greater", "suffix:m/s") var turn_in_place_max_speed: float = 2.0
+## Facing error within which normal ground acceleration can start.
+## 15° requires closer alignment than 30°.
+@export_range(0.0, 90.0, 0.5, "suffix:deg") var turn_in_place_drive_angle_deg: float = 22.5
+## Facing speed while turning in place, independent of stick tilt.
+## At 1080°/s, a quarter turn takes about 0.08 seconds.
+@export_range(1.0, 2700.0, 15.0, "or_greater", "suffix:deg/s") var turn_in_place_rate_deg_per_sec: float = 1080.0
 
 @export_subgroup("Slope/Acceleration")
 ## Overall downhill tangential gravity scale, applied in addition to slope response curves.
@@ -134,6 +162,7 @@ extends CharacterAction
 ## A skid ends when the input angle falls to this value or lower.
 ## 130° keeps the skid active through a wider range of input than 150°.
 @export var skid_exit_angle_deg: float = 150.0
+## Ends the skid at or below this speed. Turn in Place Max Speed supplies the minimum while enabled.
 @export var skid_exit_min_speed: float = 0.0
 ## Full-strength skid deceleration, scaled by input from the stick deadzone to near-full tilt.
 ## 65 m/s² gives a longer skid than 130 m/s² at the same input strength.
@@ -169,6 +198,14 @@ extends CharacterAction
 @export var engine_sound_fade_out_speed_db: float = 40.0
 ## Volume where the faded-out engine loop stops playing.
 @export var engine_sound_stop_volume_db: float = -60.0
+
+
+func get_low_speed_turn_slowdown_scale(speed: float) -> float:
+	var fade_start: float = maxf(low_speed_turn_slowdown_range.x, 0.0)
+	var fade_end: float = maxf(low_speed_turn_slowdown_range.y, fade_start + 0.001)
+	if speed >= fade_end:
+		return 1.0
+	return lerpf(maxf(low_speed_turn_slowdown_multiplier, 1.0), 1.0, smoothstep(fade_start, fade_end, speed))
 
 
 func _on_action_initialized() -> void:

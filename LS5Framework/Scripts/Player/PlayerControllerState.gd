@@ -3449,6 +3449,7 @@ var _gravity_modifier_sequence: int = 0
 # Visual orientation
 var visual_up: Vector3 = Vector3.UP
 var _model_forward: Vector3 = -Vector3.FORWARD
+var _ground_turn_in_place_active: bool = false
 
 # Airborne torque (visual-only, world-space)
 var _air_torque_prev_surface_normal: Vector3 = Vector3.UP
