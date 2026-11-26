@@ -1468,6 +1468,16 @@ func _tick_goal_pose(delta: float) -> void:
 	_sync_online_debug_puppet(delta)
 
 
+## Releases launch guidance while retaining the velocity at the finish line.
+func begin_goal_coast() -> void:
+	_ensure_modules()
+	if _spline_active:
+		_external_motion_module.cancel_spline_spring(true)
+		_last_air_velocity = velocity
+	if _spring_align_timer > 0.0 or _spring_trajectory_torque_active or _spring_trajectory_landing_forward_pitch_active:
+		_finish_spring_landing_state()
+
+
 ## Cancels gameplay actions and pending sequences before goal posing or victory playback.
 func prepare_for_goal_sequence() -> void:
 	_ensure_modules()

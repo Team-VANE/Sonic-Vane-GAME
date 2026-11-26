@@ -1576,8 +1576,8 @@ func _rpc_race_prepare_results(payload: Dictionary, generation: int) -> void:
 	var fade_out_time: float = float(goal.get("fade_out_duration")) if goal else 1.0
 	var fade_hold_time: float = float(goal.get("fade_hold_duration")) if goal else 0.075
 	var color: Color = goal.get("fade_color") if goal else Color.WHITE
-	if goal and goal.has_method("prepare_player_for_finish_fade"):
-		goal.call("prepare_player_for_finish_fade", player)
+	if goal and goal.has_method("begin_player_finish_coast"):
+		goal.call("begin_player_finish_coast", player)
 	if goal and goal.has_method("_register_finish_fade_camera_constraint"):
 		goal.call("_register_finish_fade_camera_constraint", player)
 		goal.call("_notify_camera_teleport", player, fade_out_time + fade_hold_time)

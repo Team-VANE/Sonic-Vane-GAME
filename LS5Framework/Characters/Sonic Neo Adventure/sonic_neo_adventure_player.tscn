@@ -207,8 +207,8 @@ point_count = 2
 
 [sub_resource type="Curve" id="Curve_hmwv2"]
 _limits = [0.0, 1.0, 0.0, 190.0]
-_data = [Vector2(70, 0), 0.0, -0.0003623234, 0, 0, Vector2(109.672775, 0.19817072), 0.012749677, 0.012749677, 0, 0, Vector2(150, 0.55), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(70, 0), 0.0, -0.0003623234, 0, 0, Vector2(94.503, 0.015), 0.0014950361, 0.0014950361, 0, 0, Vector2(112.16, 0.25), 0.012749677, 0.012749677, 0, 0, Vector2(150, 0.57), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="Curve" id="Curve_kknf1"]
 _limits = [0.0, 10.0, 0.0, 200.0]
@@ -474,7 +474,7 @@ fast_fall_horizontal_drag_enabled = false
 fast_fall_horizontal_drag_start_speed = 50.0
 fast_fall_horizontal_drag_full_speed = 150.0
 fast_fall_horizontal_drag_max_decel = 10.0
-airborne_velocity_damping_rate = 0.57
+airborne_velocity_damping_rate = 0.59
 airborne_velocity_damping_curve = SubResource("Curve_hmwv2")
 airborne_velocity_damping_entry_ramp_time = 0.5
 launch_momentum_full_speed = 140.0
@@ -673,7 +673,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_8jxvy")
 [node name="VisualDeformation" type="Node3D" parent="ModelRoot" unique_id=1063117576]
 
 [node name="Sonic_NeoAdv_Root" parent="ModelRoot/VisualDeformation" unique_id=1917975666 instance=ExtResource("87_b5wbc")]
-position = Vector3(0, -1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="JumpDashTrail" type="MeshInstance3D" parent="." unique_id=1503759778]
 script = ExtResource("88_026q4")
@@ -817,9 +817,9 @@ drop_dash_release_pop_speed = 35.0
 drop_dash_air_release_forward_boost = 35.0
 drop_dash_air_release_forward_speed_cap = 165.0
 drop_dash_loop_pitch_range = Vector2(0.8, 1.2)
-spindash_min_launch_speed = 80.0
-spindash_max_launch_speed = 140.0
-drop_dash_max_launch_speed = 156.0
+spindash_min_launch_speed = 75.0
+spindash_max_launch_speed = 136.0
+drop_dash_max_launch_speed = 148.0
 spindash_rail_max_launch_speed = 125.0
 spindash_charge_decel = 15.0
 spindash_barrier_blast_overcharge_enabled = false
