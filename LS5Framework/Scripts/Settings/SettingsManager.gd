@@ -288,6 +288,7 @@ const PLAYER_TRACKING_MODE_OFF: int = 2
 var player_tracking_mode: int = PLAYER_TRACKING_MODE_MINIMAL
 
 var _audio_pause_applied: bool = false
+var _music_muted_by_hotkey: bool = false
 
 
 func _ready() -> void:
@@ -366,6 +367,18 @@ func _input(event: InputEvent) -> void:
 	# Set "reset_resolution" action to F1 in Input Map
 	if event.is_action_pressed("reset_resolution") and not _is_text_input_focused():
 		_reset_resolution_to_default()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed(&"toggle_music", false, true):
+		return
+	if _is_text_input_focused() or get_tree().get_meta(&"input_binding_active", false):
+		return
+	if event is InputEventJoypadMotion and not Input.is_action_just_pressed_by_event(&"toggle_music", event, true):
+		return
+	_music_muted_by_hotkey = not _music_muted_by_hotkey
+	_apply_audio()
+	get_viewport().set_input_as_handled()
 
 
 func track_input_device(event: InputEvent) -> void:
@@ -651,7 +664,7 @@ func _apply_audio() -> void:
 		var music_percent: float = get_music_volume_percent()
 		var master_mix: float = get_master_volume_percent()
 		var effective_music : float = clamp((music_percent * master_mix) / 100.0, 0.0, 100.0)
-		AudioServer.set_bus_mute(bus_music, _audio_pause_applied or effective_music <= 0.0)
+		AudioServer.set_bus_mute(bus_music, _audio_pause_applied or _music_muted_by_hotkey or effective_music <= 0.0)
 		AudioServer.set_bus_volume_db(bus_music, _percent_to_db(effective_music, MUSIC_MIN_DB, MUSIC_MAX_DB))
 
 	var bus_sfx: int = AudioServer.get_bus_index("SFX")
@@ -2143,7 +2156,7 @@ func _backfill_missing_project_bindings() -> void:
 		var action_name: StringName = StringName(action_entry)
 		if _is_input_action_locked(action_name):
 			continue
-		if action_name == &"rail_brake" and input_bindings.has(action_name):
+		if action_name in [&"rail_brake", &"toggle_music"] and input_bindings.has(action_name):
 			continue
 		var existing: Array = get_action_bindings(action_name)
 		var defaults: Array = _get_project_default_bindings(action_name)

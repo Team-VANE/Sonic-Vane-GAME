@@ -530,17 +530,15 @@ func _run_goal_sequence(player: Node) -> void:
 		await fader.call("fade_out", fade_out_duration)
 		if not _goal_sequence_is_current(player, sequence_token):
 			return
-		_unregister_finish_fade_camera_constraint()
 		if get_tree() != null and fade_hold_duration > 0.0:
 			await get_tree().create_timer(fade_hold_duration).timeout
 			if not _goal_sequence_is_current(player, sequence_token):
 				return
-	else:
-		_unregister_finish_fade_camera_constraint()
 
 	_teleport_player_to_goal_pose(player)
 	var using_animated_victory_camera: bool = _begin_victory_presentation(player)
 	_register_goal_camera_constraint(player)
+	_unregister_finish_fade_camera_constraint()
 	if using_animated_victory_camera and get_tree() != null:
 		await get_tree().process_frame
 		if not _goal_sequence_is_current(player, sequence_token):
@@ -981,36 +979,19 @@ func _register_finish_fade_camera_constraint(player: Node) -> void:
 	var rig: Node = _resolve_camera_rig(player)
 	if rig == null or not rig.has_method("register_camera_constraint"):
 		return
-	var camera_value: Variant = rig.get("camera")
-	var pitch_value: Variant = rig.get("pitch_node")
-	if not (camera_value is Camera3D) or not (pitch_value is Node3D):
+	var camera: Camera3D = rig.get("camera") as Camera3D
+	if not is_instance_valid(camera):
 		return
-	var camera: Camera3D = camera_value as Camera3D
-	var pitch: Node3D = pitch_value as Node3D
-	if not is_instance_valid(camera) or not is_instance_valid(pitch):
-		return
-	var camera_distance: float = pitch.global_position.distance_to(camera.global_position)
-	var minimum_distance: float = camera_distance
-	var maximum_distance: float = camera_distance
-	var minimum_distance_value: Variant = rig.get("min_distance")
-	var maximum_distance_value: Variant = rig.get("max_distance")
-	if minimum_distance_value is float:
-		minimum_distance = float(minimum_distance_value)
-	if maximum_distance_value is float:
-		maximum_distance = float(maximum_distance_value)
-	var locked_distance: float = clamp(camera_distance, minimum_distance, maximum_distance)
-	var locked_origin: Vector3 = camera.global_position + pitch.global_basis.z * locked_distance
-	var locked_transform: Transform3D = Transform3D(pitch.global_basis, locked_origin)
 	var constraint := RaceCameraConstraint.new()
-	constraint.set_locked_transform(locked_transform)
+	constraint.set_locked_transform(camera.global_transform)
+	constraint.position_trait.mode = CameraPositionTrait.Mode.FIXED_CAMERA
+	constraint.aim_trait.orbit_rig = false
+	constraint.aim_trait.marker_uses_guide_basis = false
 	constraint.constraint_priority = 10000
 	constraint.disable_camera_controls = true
-	var orbit: CameraLensTrait = CameraLensTrait.new()
-	orbit.mode = CameraLensTrait.Mode.ORBIT_DISTANCE
-	orbit.distance = locked_distance
 	var lens: CameraLensTrait = CameraLensTrait.new()
 	lens.fov = camera.fov
-	constraint.lens_traits.assign([orbit, lens])
+	constraint.lens_traits.append(lens)
 	constraint.collision_mode = CameraConstraint.CollisionMode.DISABLED
 	_finish_fade_camera_constraint = constraint
 	_finish_fade_camera_rig = rig

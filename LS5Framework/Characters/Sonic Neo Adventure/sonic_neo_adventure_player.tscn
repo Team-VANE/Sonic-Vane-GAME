@@ -211,9 +211,9 @@ _data = [Vector2(70, 0), 0.0, -0.0003623234, 0, 0, Vector2(94.503, 0.015), 0.001
 point_count = 4
 
 [sub_resource type="Curve" id="Curve_kknf1"]
-_limits = [0.0, 10.0, 0.0, 200.0]
-_data = [Vector2(0, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0.2), 0.046684586, 0.046684586, 0, 0, Vector2(30, 1.081), 0.022969315, 0.022969315, 0, 0, Vector2(115.39568, 3.0067563), 0.014375354, 0.014375354, 0, 0, Vector2(200, 3.7), 0.0, 0.0, 0, 0]
-point_count = 5
+_limits = [0.0, 4.0, 0.0, 200.0]
+_data = [Vector2(0, 0.6), 0.0, -0.34000003, 0, 1, Vector2(1, 0.26), -0.34000003, 0.02732803, 0, 0, Vector2(27.061855, 0.95808387), 0.02452427, 0.02452427, 0, 0, Vector2(200, 3.7), 0.0017766829, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="Curve" id="Curve_5x6n8"]
 _limits = [0.0, 100.0, 0.0, 150.0]
@@ -880,6 +880,10 @@ script = ExtResource("111_uu7ae")
 
 [node name="RailGrind" type="Node" parent="Abilities" unique_id=2051000007]
 script = ExtResource("112_jpgsp")
+rail_grind_friction = 1.6
+rail_balance_friction = 24.0
+rail_balance_curve_deadzone = 0.009
+rail_balance_lookahead = 0.3
 
 [node name="Jump" type="Node" parent="Abilities" unique_id=1792721473]
 script = ExtResource("113_yjqh0")

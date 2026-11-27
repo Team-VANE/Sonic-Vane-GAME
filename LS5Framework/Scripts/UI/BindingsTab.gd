@@ -54,6 +54,7 @@ const CONTROL_CATEGORIES: Array[Dictionary] = [
 		{"action": "emote_page_previous", "label": "Previous Emote Page"},
 		{"action": "emote_page_next", "label": "Next Emote Page"},
 		{"action": "interact", "label": "Interact"},
+		{"action": "toggle_music", "label": "Toggle Music"},
 		{"action": "hide_pause_menu", "label": "Hide Pause Menu"},
 		{"action": "respawn", "label": "Respawn"},
 		{"action": "respawn_checkpoint", "label": "Respawn Checkpoint"},

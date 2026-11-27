@@ -15,7 +15,8 @@ enum AirSpindashMode { LEGACY, DROP_DASH }
 @export_range(0.01, 5.0, 0.01, "suffix:s") var drop_dash_charge_time_max: float = 0.45
 ## Gravity multiplier after releasing the airborne Drop-Dash button. Grounded and Legacy spindash are unaffected.
 @export_range(0.0, 5.0, 0.05) var drop_dash_gravity_scale: float = 1.5
-## Minimum upward speed applied once when releasing an airborne Drop-Dash, along player gravity-up.
+## Minimum upward speed on the first airborne release, along player gravity-up.
+## The second release targets half this speed. Later releases add no pop until abilities refresh.
 @export_range(0.0, 60.0, 0.5) var drop_dash_release_pop_speed: float = 12.0
 ## Maximum forward speed added on airborne release with directional input. Tapers to zero at the forward speed cap. Zero disables the boost.
 @export_range(0.0, 100.0, 0.5, "or_greater") var drop_dash_air_release_forward_boost: float = 20.0
@@ -95,6 +96,7 @@ var countdown_release_queued: bool = false
 var drop_dash_charging: bool = false
 var drop_dash_released: bool = false
 var air_charge_cancelled: bool = false
+var _drop_dash_pop_scale: float = 1.0
 
 
 func _on_action_initialized() -> void:
@@ -103,6 +105,14 @@ func _on_action_initialized() -> void:
 	trigger_mode = ActionTrigger.HOLD
 	continuous_update = false
 	allow_when_inactive = true
+
+
+func refresh_airborne_availability() -> void:
+	_drop_dash_pop_scale = 1.0
+
+
+func reset_traversal_history() -> void:
+	refresh_airborne_availability()
 
 
 func continuous_physics_update(delta: float) -> void:
@@ -308,11 +318,14 @@ func _release_drop_dash() -> void:
 		return
 	drop_dash_released = true
 	owner_player._play_drop_dash_air_release_sfx()
-	var up: Vector3 = get_owner_gravity_up()
-	var upward_speed: float = owner_player.velocity.dot(up)
 	var forward: Vector3 = get_air_release_input_direction()
 	owner_player.velocity += forward * get_air_release_forward_boost()
-	owner_player.velocity += up * maxf(drop_dash_release_pop_speed - upward_speed, 0.0)
+	if _drop_dash_pop_scale > 0.0:
+		var up: Vector3 = get_owner_gravity_up()
+		var upward_speed: float = owner_player.velocity.dot(up)
+		var target_upward_speed: float = drop_dash_release_pop_speed * _drop_dash_pop_scale
+		owner_player.velocity += up * maxf(target_upward_speed - upward_speed, 0.0)
+		_drop_dash_pop_scale -= 0.5
 	owner_player._trigger_anim_command_immediate(drop_dash_animation_command)
 	var rig: Node3D = owner_player.camera_rig
 	if is_instance_valid(rig) and rig.has_method("play_drop_dash_release_feedback"):

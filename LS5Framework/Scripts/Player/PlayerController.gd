@@ -11929,6 +11929,8 @@ func notify_wall_kick(normal: Vector3) -> void:
 func refresh_airborne_abilities(refresh_wall_lift: bool = true) -> void:
 	_jump_dash_used_this_air = false
 	refresh_tornado_kick_availability()
+	if is_instance_valid(_spindash_action):
+		_spindash_action.refresh_airborne_availability()
 	if not refresh_wall_lift:
 		return
 	for action in _actions:

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://wpvngi1jasd4"
+path="res://.godot/imported/Ice Mountain - Act 1.ogg-5993e95ec9aa09e081c9608f25c37acf.oggvorbisstr"
+
+[deps]
+
+source_file="res://LS5Framework/Sounds/Music/Ice Mountain - Act 1.ogg"
+dest_files=["res://.godot/imported/Ice Mountain - Act 1.ogg-5993e95ec9aa09e081c9608f25c37acf.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=61.09
+bpm=110.0
+beat_count=0
+bar_beats=4
