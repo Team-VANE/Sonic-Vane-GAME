@@ -6,7 +6,7 @@ class_name CarryableRespawnPlane
 ## Disables this volume after respawning one carryable.
 @export var one_shot: bool = false
 ## Collision mask used to detect carryable objects.
-@export_flags_3d_physics var carryable_collision_mask: int = 2
+@export_flags_3d_physics var carryable_collision_mask: int = 1026
 
 
 func _ready() -> void:

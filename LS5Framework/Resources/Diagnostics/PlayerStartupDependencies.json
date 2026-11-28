@@ -444,7 +444,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "1b528d4558ba551beebde3ceac599eb2acd2d93813a394f7daf7138fefa6d5a9"
+      "source_sha256": "679877b2af709658b08e2a7f259e23e93c5eae067f4acde091410004961656de"
     },
     {
       "path": "res://LS5Framework/Objects/Camera/CameraConstraint.gd",
@@ -490,6 +490,10 @@
         {
           "path": "res://LS5Framework/Objects/Carry/CarryableObject.gd",
           "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Fan/AirflowFan.gd",
+          "kind": "Script class"
         }
       ],
       "source_sha256": "f7b039f1a5172bd27dd2b0156a36f4a661ce4c21d7bc0945033aa81a154e0823"
@@ -506,7 +510,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "7ff4d1fc80678d38eed06474cfaf00884a32e3629f53d2fe7795941b9ab96f00"
+      "source_sha256": "266c9de7684f60ced3346c582aa51cfbcffb1423399cf9b9944b4d082bbc5fa8"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/Attacks/EnemyAttack.gd",
@@ -644,7 +648,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "b10731440cc74229d9ef0431e9ad31111aa974aeefa5d88a827d1019c6557145"
+      "source_sha256": "95ac6ce6b15f9effc2288c6a3d3d449ce5c9a9bc2158d86124a4d12a5163b87e"
     },
     {
       "path": "res://LS5Framework/Objects/Enemies/Core/EnemyAnimationDriver.gd",
@@ -1015,6 +1019,28 @@
       "source_sha256": "73dda1e493f89e25654740fd6df3482c442bfcea64896362f68cff980fa55b3c"
     },
     {
+      "path": "res://LS5Framework/Objects/Fan/AirflowFan.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        },
+        {
+          "path": "res://LS5Framework/Objects/Fan/AirflowFan.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
+          "kind": "Script class"
+        },
+        {
+          "path": "res://LS5Framework/Scripts/Player/PlayerExternalMotionController.gd",
+          "kind": "Script class"
+        }
+      ],
+      "source_sha256": "c69dc1d05c12ffbd5da0de6848b9265be79716007a55d53deb6996d73565d7a4"
+    },
+    {
       "path": "res://LS5Framework/Objects/Gameplay/Checkpoint.gd",
       "owners": [
         {
@@ -1058,7 +1084,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "2c2bf6b6d9f03835cbb0b57989e96dcbfba694e49d079f0397459b9068a4c8c2"
+      "source_sha256": "afb074b3d54ed73bba4de90201e65a7576b6ad6e4e3409ba75bfbee898c006d2"
     },
     {
       "path": "res://LS5Framework/Objects/Gameplay/MovementCorrectionSurface.gd",
@@ -1272,7 +1298,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "1198f37dbd947bbc0a650482a93856bcb573603e3e6bd69aab2ec3ae440657e2"
+      "source_sha256": "ce35dd485512c144459f69649aa0c4a24abea833f7701d12fa9bcb64fed0779f"
     },
     {
       "path": "res://LS5Framework/Objects/ItemMonitor/ItemMonitorBreakDust.tscn",
@@ -1497,7 +1523,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "5006667649c28e56226845db0344b1f56dcb62838041f2d4e5023929bd766bf4"
+      "source_sha256": "d525f78caf600eba8d1f370f35913394df4625d6cd37d975a46c4b73ca70f9de"
     },
     {
       "path": "res://LS5Framework/Objects/Props/PropAttackProfile.gd",
@@ -1868,7 +1894,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "affa08ade3741d7abba2559c8f7434a56aad8b9b12e71d7943fa28b658de91b7"
+      "source_sha256": "d7e9e489a2792f8f685ab9f141354b76fec9f6f29c3130de200153f16f0d55c7"
     },
     {
       "path": "res://LS5Framework/Objects/Rail/RailBooster.gd",
@@ -3767,7 +3793,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "0439c88d3199b2b7decb53aa35d3fcffd7c2c397802bd3e2b5bdb250b43cb824"
+      "source_sha256": "bbf44f1488a930ddbb175f8974151af4dd142c2dcdd6f7661410e706f3b9af69"
     },
     {
       "path": "res://LS5Framework/Scripts/Camera/SpeedRadialBlurEffect.gd",
@@ -3969,6 +3995,16 @@
       "source_sha256": "666b6c4aa41d9eb2d29737f472254f77677bc023c1d7cebcd56410087ba6670d"
     },
     {
+      "path": "res://LS5Framework/Scripts/Managers/BounceHitstop.gd",
+      "owners": [
+        {
+          "path": "Bootstrap script",
+          "kind": "Root"
+        }
+      ],
+      "source_sha256": "14362d65dda0577c06b0ba2da7fd0f8119daa5e659969684f4e4d117f49c3429"
+    },
+    {
       "path": "res://LS5Framework/Scripts/Managers/EnvironmentWeatherState.gd",
       "owners": [
         {
@@ -4074,7 +4110,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "ae888f66873947240dcd952bc5466e34ec1b898abf82f37165fa1630fcad8e31"
+      "source_sha256": "46728ac497b116888b757fb50421405199654c6ea0dcd3237dd8971dbdf7c5f3"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/Automation/AutomationCameraBinding.gd",
@@ -4996,7 +5032,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "678c4496f3066fed30cabeadbbf189e7cb7f93e1493a98c8c5b2398072e09719"
+      "source_sha256": "c298ab71b452f996dea4d91d083ee11c06a337705963e5e51bb07b052699b385"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerCharacterAttributes.gd",
@@ -5066,7 +5102,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "8ef8ae6413ea6f7c41197dd2fc22f0aef8c57d7f19564662d380de1cbc9d3ed5"
+      "source_sha256": "2d86ff0ca5c4d8f35af006f4f89ee23efdfcdfff9cc4a78ed3e05878ad61c1e2"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerController.gd",
@@ -5096,7 +5132,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "7b702c5133f63c0202a3c158f7b42cc6c6a578abe9ebee286318dbdb6eac27d9"
+      "source_sha256": "06a63ec1ac8a22c1a42a035e6a515dabe98e9b149439a1ed6a062b1420e4915b"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerControllerState.gd",
@@ -5118,7 +5154,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "cc65cf524282aa9f35bbd105e894cf264d362cca6cd6942888067f848bf3f3a7"
+      "source_sha256": "1ea4be71e32381c0fa6795ad1f4d714ea80e3fc2f848354c8716807b6f5fa478"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerDebugController.gd",
@@ -5136,7 +5172,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "4d0660547257259aea3051e6b32b61508e6e0eaf46a19a3bccf3a470c86128e4"
+      "source_sha256": "cea2f6f5b01dcbc255820e480eb85cdd069be05be2d22662013a1fec71d8b2e9"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerEffectsController.gd",
@@ -5176,7 +5212,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "61070eca6632f861351eed80e58cd4af31013b071008d40be6a99cb3f59fddcc"
+      "source_sha256": "3ce846f6c2ce5dc6770da66230e6c9b867d22204715dc05191513c935c3205a0"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerGravityController.gd",
@@ -5280,7 +5316,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "37c813ee1f69e9686159121f36db098f044fda586fd1f0a124e5a5eeb6eecd1b"
+      "source_sha256": "c10c6e2c6ad89ccbee6aba03b19d6cb79b0d1f540bd5e1cfa85b76f1ed1f03cd"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerMovementCorrection.gd",
@@ -5360,7 +5396,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "cdd45838f2fe07fbc12e67eed6a10b749d7b1d8941dc3a86b8fad676f6b633ba"
+      "source_sha256": "5ead6a16af95b4430e2f663445d407672cd292af7e901bfb38a9345382782a78"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerRespawnController.gd",
@@ -5378,7 +5414,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "3a803a270eeac5c63e83519ce0d2c313f45c67cc91a110ddef694ef8a0d1faf5"
+      "source_sha256": "dcf68b5eaa6fafda9aab374b4dd20f148a042fce039a27720a20a83b167020a1"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerSurfaceController.gd",
@@ -5414,7 +5450,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "734a05d2e5274eb6dc72b6931e35f958deed85a7256b668b56d983400934dedf"
+      "source_sha256": "9b6da7700c640a9f657b70fc5704b85674248ed009a24cca73c5cc22e7598907"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/PlayerUI.gd",
@@ -5490,7 +5526,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "9f83cac11f26724988243ace7bc503fa067c5a81aa23bd21d1057b7006fcda52"
+      "source_sha256": "9cd19a96591f13c22171f7253ff61210508f6683a2e3f56e15a558438df1f0ed"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/TrickDetector.gd",
@@ -5916,7 +5952,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "da69d1e1ddce6393c3e42a5f56a27aeb5704c235e9495551a2b02d9c0d845cb0"
+      "source_sha256": "e15c88fa66b8f7e5eefe798b29092299582b347995ee40c489aa9d059ee039e9"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/homing_ability.gd",
@@ -6157,7 +6193,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "e6df1b7cf552b59aeb104333d3cd4a38265eaecfc312bddbdb2f9e3ac6b58b76"
+      "source_sha256": "33211e1f0e3016c3e62db52949f89635f3aa092f584a3f3ebdacd76b4ad4e2a9"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/roll_action.gd",
@@ -6289,7 +6325,7 @@
           "kind": "Script class"
         }
       ],
-      "source_sha256": "5624a442cee2f64976092cc3ace083b90b54a1c7a39404092e74a112a6ec1a86"
+      "source_sha256": "3a34dad9960a2ed89b0ee08d3693f53ebc1fecca2441864c62af8a3ea3574abf"
     },
     {
       "path": "res://LS5Framework/Scripts/Player/spring_action.gd",
@@ -6683,7 +6719,7 @@
           "kind": "Root"
         }
       ],
-      "source_sha256": "d6d9b2da13f1d47be17b51addbc440cf101127ec4673ceb58261ef4e2a6d0cb1"
+      "source_sha256": "dcdec69c5e9c45fc65db853712679170c2ac0c3680e1f8ae9be934060cc6b9fa"
     },
     {
       "path": "res://LS5Framework/Scripts/Terminal/TerminalMenu.gd",
@@ -6721,7 +6757,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "4a7c6b9052c199912fe1b228dacd387241de2e835b2a82c4629625510f1b42b3"
+      "source_sha256": "de52ec9689fa9b7160d7bd971056a562f16edb48a849239a182be77bec3e310b"
     },
     {
       "path": "res://LS5Framework/Scripts/UI/CRTUIBackgroundEffect.gd",
@@ -7803,7 +7839,7 @@
           "kind": "Preload"
         }
       ],
-      "source_sha256": "f3d63ea8392f5cf596e267cf954d07d7162bad897e3497d26bf00d0d3184cdf3"
+      "source_sha256": "a9282246df7e205fe80e1ccca4cfbde9e694b9a7f98f837e4764364bc7e0873c"
     },
     {
       "path": "res://LS5Framework/Scripts/World/ObjectDistanceCull3D.gd",

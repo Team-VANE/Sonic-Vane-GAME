@@ -1,0 +1,95 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/FloorButton/FloorButton.gd" id="1_button"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/FloorButton/FloorButton.glb" id="2_model"]
+[ext_resource type="Texture2D" path="res://LS5Framework/Objects/FloorButton/o_on.png" id="3_on"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Objects/Switch_Activate.wav" id="4_activate"]
+[ext_resource type="AudioStream" path="res://LS5Framework/Sounds/Objects/Switch_Deactivate.wav" id="5_deactivate"]
+[ext_resource type="Script" path="res://LS5Framework/Objects/Switch/ActivationSource.gd" id="6_activation"]
+
+[sub_resource type="CylinderShape3D" id="Shape_base"]
+height = 0.17
+radius = 2.36
+
+[sub_resource type="CylinderShape3D" id="Shape_rim"]
+height = 0.17
+radius = 2.08
+
+[sub_resource type="CylinderShape3D" id="Shape_cap"]
+height = 0.145
+radius = 1.78
+
+[sub_resource type="CylinderShape3D" id="Shape_pressure"]
+height = 0.28
+radius = 1.63
+
+[sub_resource type="Animation" id="Animation_press"]
+resource_name = "press"
+length = 0.16
+tracks/0/type = "position_3d"
+tracks/0/path = NodePath("Cap")
+tracks/0/interp = 1
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.16, 1, 0, -0.15, 0)
+
+[sub_resource type="AnimationLibrary" id="Library_button"]
+_data = {
+&"press": SubResource("Animation_press")
+}
+
+[node name="FloorButton" type="Node3D"]
+script = ExtResource("1_button")
+light_on_texture = ExtResource("3_on")
+activation_sound = ExtResource("4_activate")
+deactivation_sound = ExtResource("5_deactivate")
+
+[node name="Base" type="StaticBody3D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Base"]
+position = Vector3(0, 0.085, 0)
+shape = SubResource("Shape_base")
+
+[node name="Model" parent="Base" instance=ExtResource("2_model")]
+
+[node name="Button_Push" parent="Base/Model" index="1"]
+visible = false
+
+[node name="Cap" type="AnimatableBody3D" parent="."]
+collision_mask = 0
+sync_to_physics = false
+
+[node name="RimCollision" type="CollisionShape3D" parent="Cap"]
+position = Vector3(0, 0.25, 0)
+shape = SubResource("Shape_rim")
+
+[node name="CapCollision" type="CollisionShape3D" parent="Cap"]
+position = Vector3(0, 0.405, 0)
+shape = SubResource("Shape_cap")
+
+[node name="Model" parent="Cap" instance=ExtResource("2_model")]
+
+[node name="Button_Base" parent="Cap/Model" index="0"]
+visible = false
+
+[node name="Pressure" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1031
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pressure"]
+position = Vector3(0, 0.41, 0)
+shape = SubResource("Shape_pressure")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 2
+libraries/ = SubResource("Library_button")
+
+[node name="ActivationSource" type="Node" parent="."]
+script = ExtResource("6_activation")
+
+[node name="Feedback" type="AudioStreamPlayer3D" parent="."]
+position = Vector3(0, 0.35, 0)
+bus = &"SFX"
+
+[editable path="Base/Model"]
+[editable path="Cap/Model"]

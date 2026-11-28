@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Fan/Fan.tscn" id="1_free"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Fan/GuidedLift.tscn" id="2_guided"]
+
+[node name="FanExamples" type="Node3D"]
+
+[node name="FreeUpdraft" parent="." instance=ExtResource("1_free")]
+position = Vector3(-7, 0, 0)
+
+[node name="GuidedLift" parent="." instance=ExtResource("2_guided")]
+position = Vector3(7, 0, 0)

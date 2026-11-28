@@ -13,10 +13,80 @@ var _spline_transport_right: Vector3 = Vector3.RIGHT
 var _spline_transport_valid: bool = false
 var _launch_damping_influence: LaunchDampingInfluence = LaunchDampingInfluence.NONE
 var _launch_damping_remaining: float = 0.0
+var _airflow_fans: Dictionary = {}
 
 
 func _init(owner: Node) -> void:
 	_owner = owner
+
+
+func register_airflow_fan(fan: AirflowFan) -> void:
+	if not _airflow_fans.has(fan):
+		_airflow_fans[fan] = false
+
+
+func unregister_airflow_fan(fan: AirflowFan) -> void:
+	_airflow_fans.erase(fan)
+
+
+func apply_fan_airflow(delta: float, gravity_up: Vector3) -> AirflowFan:
+	var p = _owner
+	if _airflow_fans.is_empty() or p._is_dead or p.race_in_countdown:
+		return null
+	if p._current_action_blocks_shared_movement_integration() or p._spring_align_timer > 0.0:
+		return null
+
+	var position: Vector3 = p.global_position
+	var selected: AirflowFan
+	var axis: Vector3 = Vector3.ZERO
+	var weight: float = 0.0
+	for candidate: Variant in _airflow_fans.keys():
+		if not is_instance_valid(candidate):
+			_airflow_fans.erase(candidate)
+			continue
+		var fan: AirflowFan = candidate
+		if not fan.active or (selected and fan.airflow_priority <= selected.airflow_priority):
+			continue
+		var fan_axis: Vector3 = fan.get_airflow_axis(gravity_up)
+		if p.attached and (not fan.lift_from_ground or fan_axis.dot(p.surface_normal) <= 0.05):
+			continue
+		var fan_weight: float = fan.get_airflow_weight(position)
+		if fan_weight <= 0.0:
+			continue
+		selected = fan
+		axis = fan_axis
+		weight = fan_weight
+
+	if not selected:
+		return null
+	var incoming: Vector3 = p.velocity
+	var adjusted: Vector3 = selected.apply_airflow(incoming, position, axis, weight, delta)
+	if p.attached:
+		var lift: Vector3 = axis * (adjusted - incoming).dot(axis)
+		if lift.dot(p.surface_normal) <= 0.001 or adjusted.dot(p.surface_normal) <= 0.001:
+			return null
+		p._record_detach_state(p.surface_normal, gravity_up, false)
+		p.attached = false
+		p._surface_launch_carry_suppressed = true
+		p._attachment_immunity = maxf(p._attachment_immunity, 0.1)
+		p.remove_coyote_jump_eligibility()
+	if p._jump_variable or p._jump_hang_allowed:
+		p._begin_jump_hold_state(false)
+	p.velocity = adjusted
+	if selected.refresh_on_entry and not _airflow_fans[selected] and (adjusted - incoming).dot(axis) > 0.001:
+		_airflow_fans[selected] = true
+		p.refresh_airborne_abilities()
+	return selected
+
+
+func apply_fan_exit_kick(fan: AirflowFan, start_position: Vector3, gravity_up: Vector3) -> void:
+	if not is_instance_valid(fan) or fan.exit_kick_speed <= 0.0:
+		return
+	var p = _owner
+	if not p.attached and fan.crossed_top(start_position, p.global_position):
+		var axis: Vector3 = fan.get_airflow_axis(gravity_up)
+		if p.velocity.dot(axis) > 0.0:
+			p.velocity += axis * fan.exit_kick_speed
 
 
 func begin_launch_damping_protection(

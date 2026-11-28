@@ -486,6 +486,11 @@ func get_throw_clearance_radius() -> float:
 		var local_transform: Transform3D = shape_owner_get_transform(owner_id)
 		for index: int in range(shape_owner_get_shape_count(owner_id)):
 			var shape: Shape3D = shape_owner_get_shape(owner_id, index)
+			var shape_basis: Basis = global_basis * local_transform.basis
+			if shape is SphereShape3D and shape_basis.is_conformal():
+				var center_offset: float = (global_basis * local_transform.origin).length()
+				radius = maxf(radius, center_offset + shape.radius * shape_basis.x.length())
+				continue
 			var bounds: AABB = shape.get_debug_mesh().get_aabb()
 			for corner: int in range(8):
 				radius = maxf(radius, (global_basis * (local_transform * bounds.get_endpoint(corner))).length())

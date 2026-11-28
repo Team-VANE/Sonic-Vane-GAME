@@ -16,7 +16,7 @@ const SIZE_BASE_SCALE_META: StringName = &"_uniform_size_base_scale"
 		if is_node_ready():
 			_apply_size_preview()
 ## Physics layers of dynamic physics objects this panel can launch. Zero disables prop activation.
-@export_flags_3d_physics var dynamic_object_collision_mask: int = 2
+@export_flags_3d_physics var dynamic_object_collision_mask: int = 1026
 @export var rehit_cooldown: float = 0.15
 ## Also snaps the player to the panel's grounded Y position. Disabled follows the player's current surface height.
 @export var match_y_position: bool = false

@@ -470,7 +470,7 @@
         "carryable_respawn_size": {"label": "Trigger Dimensions", "description": "Full dimensions of the box that returns eligible carryables to their own spawn", "type": "local_dimensions", "default": [50,3,50], "group": "Volume", "min": 0.01, "placement_box": true},
         "carryable_respawn_active": {"label": "Active", "description": "Enable carryable respawning in this volume", "type": "bool", "default": true, "group": "Volume", "target_property": "active"},
         "carryable_respawn_one_shot": {"label": "One Shot", "description": "Deactivate after successfully respawning a carryable", "type": "bool", "default": false, "group": "Volume", "target_property": "one_shot"},
-        "carryable_respawn_mask": {"label": "Carryable Layers", "description": "Physics layers checked for bodies that support carryable respawning", "type": "physics_mask", "default": 2, "group": "Volume", "target_property": "carryable_collision_mask"}
+        "carryable_respawn_mask": {"label": "Carryable Layers", "description": "Physics layers checked for bodies that support carryable respawning", "type": "physics_mask", "default": 1026, "group": "Volume", "target_property": "carryable_collision_mask"}
       }
     },
     "surface_behavior": {
@@ -960,6 +960,55 @@
           "label": "Damping Grace", "description": "Damping Grace", "type": "float", "default": 1, "group": "Ramp", "min": 0, "target_property": "damping_grace_time"
         }
       }
+    },
+    "fan": {
+      "label": "Fan",
+      "scene": "res://LS5Framework/Objects/Fan/Fan.tscn",
+      "activation_receiver": true,
+      "properties": {
+        "active": {"label": "Active at Start", "description": "Runs the fan independently of any switches. Turn off for switch-controlled airflow", "type": "bool", "default": true, "group": "Fan"},
+        "airflow_priority": {"label": "Airflow Priority", "description": "Higher priorities win where fans overlap", "type": "int", "default": 0, "min": -100, "max": 100, "group": "Fan"},
+        "direction_mode": {"label": "Airflow Direction", "description": "Fan-local up or the player's gravity up", "type": "enum", "default": "fan_up", "options": {"fan_up": {"label": "Fan Up", "value": 0}, "gravity_up": {"label": "Gravity Up", "value": 1}}, "group": "Fan"},
+        "lift_from_ground": {"label": "Lift From Ground", "description": "Picks up players who walk into the current", "type": "bool", "default": true, "group": "Fan"},
+        "lift_switch_balls": {"label": "Lift Switch Balls", "description": "Applies airflow to loose switch balls in the column", "type": "bool", "default": true, "group": "Fan"},
+        "refresh_on_entry": {"label": "Refresh Airborne Abilities", "description": "Refreshes abilities once per visit when the fan first adds lift", "type": "bool", "default": false, "group": "Fan"},
+        "column_radius": {"label": "Column Radius", "description": "Radius of the airflow around the fan's local Y axis", "type": "float", "default": 6.0, "min": 0.5, "group": "Volume"},
+        "column_height": {"label": "Column Height", "description": "Height of the airflow above the fan origin", "type": "float", "default": 30.0, "min": 1.0, "group": "Volume"},
+        "edge_falloff": {"label": "Edge Falloff", "description": "Fraction of the outer radius where lift tapers off", "type": "float", "default": 0.2, "min": 0.0, "max": 1.0, "group": "Volume"},
+        "float_speed": {"label": "Float Speed", "description": "Target speed along the current", "type": "float", "default": 16.0, "min": 0.0, "group": "Lift"},
+        "lift_acceleration": {"label": "Lift Acceleration", "description": "Acceleration toward Float Speed after arresting a fall", "type": "float", "default": 120.0, "min": 0.0, "group": "Lift"},
+        "fall_catch_strength": {"label": "Fall Catch Strength", "description": "Acceleration against movement opposing the airflow", "type": "float", "default": 230.0, "min": 0.0, "group": "Lift"},
+        "exit_kick_speed": {"label": "Exit Kick Speed", "description": "Speed added when leaving through the top", "type": "float", "default": 0.0, "min": 0.0, "group": "Lift"},
+        "fan_size": {"label": "Size", "description": "Uniform scale of the fan mesh. Airflow dimensions are set separately", "type": "float", "default": 1.0, "min": 0.01, "group": "Visuals", "target_property": "visual_size"},
+        "manual_blade_speed": {"label": "Manual Blade Speed", "description": "Set blade rotation separately. Otherwise it follows Float Speed at 30 degrees per second per m/s", "type": "bool", "default": false, "group": "Visuals", "always_export": true},
+        "blade_speed_deg": {"label": "Blade Speed", "description": "Blade rotation in degrees per second while active. Zero holds the blades still", "type": "float", "default": 480.0, "min": 0.0, "group": "Visuals", "requires": {"manual_blade_speed": true}, "always_export": true},
+        "centering_strength": {"label": "Centering Strength", "description": "Inward pull per metre of error. Zero keeps free drift", "type": "float", "default": 0.0, "min": 0.0, "group": "Centering"},
+        "centering_dead_zone": {"label": "Centering Dead Zone", "description": "Fraction of the radius with no centering", "type": "float", "default": 0.12, "min": 0.0, "max": 1.0, "group": "Centering"},
+        "centering_max_speed": {"label": "Centering Max Speed", "description": "Maximum inward speed requested by centering", "type": "float", "default": 12.0, "min": 0.0, "group": "Centering"},
+        "centering_acceleration": {"label": "Centering Acceleration", "description": "Maximum centering acceleration", "type": "float", "default": 45.0, "min": 0.0, "group": "Centering"}
+      }
+    },
+    "switch": {
+      "label": "Switch",
+      "scene": "res://LS5Framework/Objects/Switch/Switch.tscn",
+      "properties": {
+        "switch_starts_connected": {"label": "Starts Connected", "description": "Seats the ball in the switch at the start", "type": "bool", "default": true, "group": "Ball", "target_property": "starts_connected"},
+        "switch_spawn_loose_ball": {"label": "Spawn Loose Ball", "description": "Creates a ball at the spawn marker. Turn off to use a separately placed ball", "type": "bool", "default": true, "group": "Ball", "target_property": "spawn_loose_ball", "requires": {"switch_starts_connected": false}},
+        "switch_loose_spawn": {"label": "Loose Ball Spawn", "description": "Starting position of the loose ball, relative to the switch", "type": "local_offset", "default": [4.0, 0.73, 0.0], "group": "Ball", "marker": "LooseBallSpawn", "always_export": true, "requires": {"switch_starts_connected": false, "switch_spawn_loose_ball": true}},
+        "loose_ball_capture_radius": {"label": "Loose Ball Capture Radius", "description": "Radius of the catch area for a rolling, dropped, or thrown ball", "type": "float", "default": 1.35, "min": 0.1, "group": "Ball", "requires": {"switch_starts_connected": false}},
+        "switch_push_distance": {"label": "Maximum Push Distance", "description": "Maximum travel of the seated ball around the socket pivot", "type": "float", "default": 0.25, "min": 0.0, "max": 0.26, "group": "Ball", "target_property": "maximum_push_distance"},
+        "activation_mode": {"label": "Activation Mode", "description": "Latch, run a countdown, or toggle on each press", "type": "enum", "default": "latched", "group": "Activation", "options": {"latched": {"label": "Latched", "value": 0}, "timed": {"label": "Timed", "value": 1}, "toggle": {"label": "Toggle", "value": 2}}},
+        "timer_duration": {"label": "Timer Duration", "description": "Time between activation and expiry, in seconds", "type": "float", "default": 10.0, "min": 0.1, "group": "Activation", "requires": {"activation_mode": "timed"}},
+        "hold_timer_while_pressed": {"label": "Hold Timer While Pressed", "description": "Pauses the countdown while the player is pressing the ball", "type": "bool", "default": true, "group": "Activation", "requires": {"activation_mode": "timed"}},
+        "restart_timer_on_press": {"label": "Restart Timer on Press", "description": "Restarts a running countdown on a fresh press", "type": "bool", "default": false, "group": "Activation", "requires": {"activation_mode": "timed"}},
+        "acceleration_window": {"label": "Faster Beep Window", "description": "Time before expiry during which the beep interval shortens, in seconds", "type": "float", "default": 3.0, "min": 0.1, "group": "Feedback", "requires": {"activation_mode": "timed"}},
+        "light_emission": {"label": "Light Emission", "description": "Emission multiplier of the active ball light", "type": "float", "default": 1.5, "min": 0.0, "group": "Feedback"}
+      }
+    },
+    "switch_ball": {
+      "label": "Switch Ball",
+      "scene": "res://LS5Framework/Objects/Switch/SwitchBall.tscn",
+      "properties": {}
     },
     "bumper": {
       "label": "Bumper",

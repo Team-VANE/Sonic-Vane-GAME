@@ -8,13 +8,18 @@
 [ext_resource type="PackedScene" uid="uid://c1g10s7pyb8t3" path="res://LS5Framework/Objects/Gameplay/Checkpoint.tscn" id="9_fmm3p"]
 [ext_resource type="PackedScene" uid="uid://dt3rtue2c684m" path="res://LS5Framework/Objects/Surface/Examples/IceTest.glb" id="9_kq5e8"]
 [ext_resource type="Material" uid="uid://chsgt2ylebix4" path="res://LS5Framework/Scenes/Levels/VaneTest/Ice.tres" id="10_fmm3p"]
+[ext_resource type="PackedScene" uid="uid://x32ui7hqfjbt" path="res://LS5Framework/Objects/Switch/Switch.tscn" id="11_0bhf6"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Scenes/Levels/VaneTest/RhinoEncounter.tscn" id="11_cutscene"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Switch/SwitchFanExample.tscn" id="11_wd6wu"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Gate/SlidingGate.tscn" id="12_7xjcl"]
 [ext_resource type="PackedScene" path="res://LS5Framework/Objects/Cutscenes/Examples/PlayerTraversalCutscene.tscn" id="12_traversal"]
+[ext_resource type="PackedScene" uid="uid://tv0po3o5gntd" path="res://LS5Framework/Objects/Switch/SwitchBall.tscn" id="12_wd6wu"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/FloorButton/FloorButton.tscn" id="13_j5hr3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p60sg"]
 size = Vector3(29, 17, 2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_fmm3p"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_j5hr3"]
 resource_local_to_scene = true
 size = Vector3(4, 3, 2.4)
 
@@ -59,6 +64,31 @@ width = 30.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
 shape = SubResource("BoxShape3D_p60sg")
 
+[node name="Switch" parent="OBJECTS" unique_id=1277385648 instance=ExtResource("11_0bhf6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.402695, 0.002701342, -27.468018)
+starts_connected = false
+spawn_loose_ball = false
+activation_mode = 1
+activation_target_paths = Array[NodePath]([NodePath("../SwitchFanExample/SlidingGate")])
+timer_duration = 4.5
+restart_timer_on_press = true
+
+[node name="SwitchBall" parent="OBJECTS" unique_id=1463609039 instance=ExtResource("12_wd6wu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 61.291428, 0.7015591, -31.34803)
+
+[node name="SwitchFanExample" parent="OBJECTS" unique_id=83432039 instance=ExtResource("11_wd6wu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130.52243, 0.7015601, -48.397816)
+
+[node name="SlidingGate" parent="OBJECTS/SwitchFanExample" unique_id=1231147320 instance=ExtResource("12_7xjcl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.411156, -0.701562, 17.723698)
+
+[node name="SlidingGate" parent="OBJECTS" unique_id=2136898033 instance=ExtResource("12_7xjcl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 83, 0, -44)
+
+[node name="FloorButton" parent="OBJECTS" unique_id=1761284640 instance=ExtResource("13_j5hr3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74, 0, -42)
+activation_target_paths = Array[NodePath]([NodePath("../SlidingGate")])
+
 [node name="Cutscenes" type="Node3D" parent="." unique_id=1484069131]
 
 [node name="RhinoEncounter" parent="Cutscenes" unique_id=624970742 node_paths=PackedStringArray("gameplay_skip_pose") instance=ExtResource("11_cutscene")]
@@ -69,13 +99,13 @@ gameplay_skip_pose = NodePath("PlayerPose")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.2, 81)
 
 [node name="CollisionShape3D" parent="Cutscenes/RhinoEncounter/Trigger" index="0"]
-shape = SubResource("BoxShape3D_fmm3p")
+shape = SubResource("BoxShape3D_j5hr3")
 
 [node name="PlayerPose" parent="Cutscenes/RhinoEncounter" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="ShotCamera" parent="Cutscenes/RhinoEncounter" index="3"]
-transform = Transform3D(0.927863, -0.086938806, 0.36264557, 0, 0.9724457, 0.23312923, -0.37292108, -0.21631199, 0.90229654, 6.8, 4, 8.2)
+transform = Transform3D(0.927863, -0.086938806, 0.3626456, 0, 0.9724457, 0.23312926, -0.37292108, -0.21631199, 0.90229666, 6.8, 4, 8.2)
 
 [node name="CollisionShape3D" parent="Cutscenes/RhinoEncounter/RhinoMotion/RhinoTank" parent_id_path=PackedInt32Array(624970742, 845003512) index="0" unique_id=2095941330]
 metadata/_enemy_size_base_scale = Vector3(1, 1, 1)

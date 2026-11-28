@@ -211,6 +211,19 @@ static func read(path: String, level_id: String) -> Dictionary:
 			if not links is Dictionary:
 				return {"error": "%s has invalid race links." % location}
 			race_placements[id] = {"type": type, "links": links, "properties": properties, "overrides": overrides}
+		if type == "switch":
+			var targets: Variant = record.get("activation_targets", [])
+			if not targets is Array:
+				return {"error": "%s has invalid activation targets." % location}
+			var target_ids: Array[String] = []
+			for raw_target: Variant in targets:
+				if not raw_target is String:
+					return {"error": "%s has an invalid activation target UUID." % location}
+				var target_id: String = raw_target.to_lower()
+				if not uuid_pattern.search(target_id) or target_ids.has(target_id):
+					return {"error": "%s has a duplicate or invalid activation target UUID." % location}
+				target_ids.append(target_id)
+			placement["activation_targets"] = target_ids
 		if type == "surface_behavior":
 			var targets: Variant = record.get("surface_targets", [])
 			var volume: bool = properties.get("surface_behavior_mode", "targets") == "volume"
@@ -308,6 +321,14 @@ static func read(path: String, level_id: String) -> Dictionary:
 			overrides.append({"name": "placement_progress", "value": fraction})
 		placements.append(placement)
 	for placement: Dictionary in placements:
+		if placement.has("activation_targets"):
+			var target_paths: Array[NodePath] = []
+			for target_id: String in placement["activation_targets"]:
+				var target_definition: Dictionary = object_types.get(types_by_id.get(target_id, ""), {})
+				if not target_definition.get("activation_receiver", false):
+					return {"error": "%s switch %s references a missing or unsupported activation target: %s." % [path, placement["id"], target_id]}
+				target_paths.append(_placement_object_path(target_id))
+			placement["overrides"].append({"name": "activation_target_paths", "value": target_paths})
 		if placement.has("teleporter_exit_id") and types_by_id.get(placement["teleporter_exit_id"]) != "teleporter_exit":
 			return {"error": "%s teleporter %s references a missing exit: %s." % [path, placement["id"], placement["teleporter_exit_id"]]}
 		if placement.has("rail_id") and types_by_id.get(placement["rail_id"]) != placement["attach_to"]:
@@ -480,15 +501,15 @@ static func _configure_race_links(records: Dictionary) -> String:
 				continue
 			if destination.get("type") != "goal_ring":
 				return "Race Start %s needs a valid Goal Ring link." % id
-			record["overrides"].append({"name": "collection_finish_goal_path", "value": _race_placement_path(target)})
-			record["overrides"].append({"name": "ring_finish_goal_path", "value": _race_placement_path(target)})
+			record["overrides"].append({"name": "collection_finish_goal_path", "value": _placement_object_path(target)})
+			record["overrides"].append({"name": "ring_finish_goal_path", "value": _placement_object_path(target)})
 		elif not target.is_empty():
 			if destination.get("type") != "race_start":
 				return "Placement %s needs a valid Race Start link." % id
 			if kind == "collection_item":
 				if destination["properties"].get("race_start_race_type") != "collection":
 					return "Emerald Shard %s needs a Collection Race start." % id
-				record["overrides"].append({"name": "race_start_path", "value": _race_placement_path(target)})
+				record["overrides"].append({"name": "race_start_path", "value": _placement_object_path(target)})
 		if not target.is_empty() and kind != "collection_item":
 			var goal_id: String = target if kind == "race_start" else id
 			var start_id: String = id if kind == "race_start" else target
@@ -496,11 +517,11 @@ static func _configure_race_links(records: Dictionary) -> String:
 				return "Goal Ring %s is linked to two different Race Starts." % goal_id
 			goal_owners[goal_id] = start_id
 	for goal_id: String in goal_owners:
-		records[goal_id]["overrides"].append({"name": "race_start_path", "value": _race_placement_path(goal_owners[goal_id])})
+		records[goal_id]["overrides"].append({"name": "race_start_path", "value": _placement_object_path(goal_owners[goal_id])})
 	return ""
 
 
-static func _race_placement_path(id: String) -> NodePath:
+static func _placement_object_path(id: String) -> NodePath:
 	return NodePath("../../Placement_%s/Object_%s" % [id, id])
 
 

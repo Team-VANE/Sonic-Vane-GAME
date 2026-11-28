@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Fan/Fan.tscn" id="1_fan"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Switch/Switch.tscn" id="2_switch"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Switch/SwitchBall.tscn" id="3_ball"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(28, 0.3, 16)
+
+[sub_resource type="BoxShape3D" id="BoxShape_floor"]
+size = Vector3(28, 0.3, 16)
+
+[node name="SwitchFanExample" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+position = Vector3(0, -0.15, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape_floor")
+
+[node name="Fan" parent="." instance=ExtResource("1_fan")]
+position = Vector3(6, 0, 0)
+active = false
+column_radius = 3.0
+column_height = 12.0
+
+[node name="Switch" parent="." instance=ExtResource("2_switch")]
+position = Vector3(-5, 0, 0)
+starts_connected = false
+spawn_loose_ball = false
+activation_mode = 1
+activation_target_paths = Array[NodePath]([NodePath("../Fan")])
+timer_duration = 8.0
+
+[node name="SwitchBall" parent="." instance=ExtResource("3_ball")]
+position = Vector3(-1.5, 0.75, 2.5)

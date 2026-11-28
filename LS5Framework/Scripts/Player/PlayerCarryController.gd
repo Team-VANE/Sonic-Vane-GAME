@@ -295,7 +295,9 @@ func _find_throw_target(carryable: Node3D, preferred: Node3D = null) -> Node3D:
 	var forward: Vector3 = _get_carry_forward(up)
 	var target_range: float = _get_throw_target_range()
 	var ranked: Array[Dictionary] = []
-	for candidate: Node3D in manager.get_targets_in_range(release.origin, target_range):
+	var candidates: Array = manager.get_targets_in_range(release.origin, target_range)
+	candidates.append_array(p.get_tree().get_nodes_in_group(&"CarryThrowTarget"))
+	for candidate: Node3D in candidates:
 		if not ThrowTargeting.is_target_available(candidate, carryable):
 			continue
 		var offset: Vector3 = ThrowTargeting.target_position(candidate, release.origin) - release.origin

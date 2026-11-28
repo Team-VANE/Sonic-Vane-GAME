@@ -32,7 +32,7 @@ emission_enabled = true
 emission = Color(0.6815733, 0.8169093, 0.79938394, 1)
 emission_energy_multiplier = 6.21
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yti8e"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ohbpo"]
 resource_local_to_scene = true
 shader = ExtResource("7_oytpb")
 shader_parameter/sun_direction = Vector3(0.7255546, -0.68816465, 0)
@@ -90,16 +90,16 @@ shader_parameter/below_horizon_detail = 1.0
 shader_parameter/below_horizon_curvature = 1.0
 shader_parameter/below_horizon_haze_strength = 0.72
 
-[sub_resource type="Sky" id="Sky_qrtxq"]
+[sub_resource type="Sky" id="Sky_28nky"]
 resource_local_to_scene = true
-sky_material = SubResource("ShaderMaterial_yti8e")
+sky_material = SubResource("ShaderMaterial_ohbpo")
 process_mode = 3
 
-[sub_resource type="Environment" id="Environment_5n1q6"]
+[sub_resource type="Environment" id="Environment_ylwuf"]
 resource_local_to_scene = true
 background_mode = 2
 background_energy_multiplier = 0.85
-sky = SubResource("Sky_qrtxq")
+sky = SubResource("Sky_28nky")
 ambient_light_source = 3
 ambient_light_color = Color(0.25, 0.08, 0.42, 1)
 ambient_light_sky_contribution = 0.82
@@ -120,12 +120,13 @@ fog_sky_affect = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 4000.0
 adjustment_enabled = true
+adjustment_saturation = 0.96
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_p1xnd"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_yti8e"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_aie4s"]
+[sub_resource type="Curve3D" id="Curve3D_qrtxq"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6.2450295e-06, 152.19858, 0),
@@ -133,11 +134,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_x17ox"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5n1q6"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_5vkjq"]
+[sub_resource type="Curve3D" id="Curve3D_p1xnd"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6.2450295e-06, 152.19858, 0),
@@ -145,11 +146,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_6lqnq"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_aie4s"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_od7jh"]
+[sub_resource type="Curve3D" id="Curve3D_x17ox"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -157,11 +158,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_f23pq"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5vkjq"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_33lxm"]
+[sub_resource type="Curve3D" id="Curve3D_6lqnq"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -169,11 +170,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_cylm0"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_od7jh"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_slvgd"]
+[sub_resource type="Curve3D" id="Curve3D_f23pq"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -181,11 +182,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_k3y68"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_33lxm"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_k72w0"]
+[sub_resource type="Curve3D" id="Curve3D_cylm0"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -193,11 +194,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_dq313"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_slvgd"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_o38x8"]
+[sub_resource type="Curve3D" id="Curve3D_k3y68"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -205,11 +206,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_nktv7"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_k72w0"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_35425"]
+[sub_resource type="Curve3D" id="Curve3D_dq313"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -217,11 +218,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_8nppp"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_o38x8"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_77r73"]
+[sub_resource type="Curve3D" id="Curve3D_nktv7"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -229,11 +230,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_na0pw"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_35425"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_8l8us"]
+[sub_resource type="Curve3D" id="Curve3D_8nppp"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -241,11 +242,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_yxsvg"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_77r73"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_twx8t"]
+[sub_resource type="Curve3D" id="Curve3D_na0pw"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -253,11 +254,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_mfnho"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8l8us"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_x4ua6"]
+[sub_resource type="Curve3D" id="Curve3D_yxsvg"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -265,11 +266,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_00wn6"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_twx8t"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_j875r"]
+[sub_resource type="Curve3D" id="Curve3D_mfnho"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -277,11 +278,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_mt3mu"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_x4ua6"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_j5ym6"]
+[sub_resource type="Curve3D" id="Curve3D_00wn6"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -289,11 +290,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ahlw7"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_j875r"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_qg4sl"]
+[sub_resource type="Curve3D" id="Curve3D_mt3mu"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -301,11 +302,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_w2kfb"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_j5ym6"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_mdg1w"]
+[sub_resource type="Curve3D" id="Curve3D_ahlw7"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -313,11 +314,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_gto0d"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qg4sl"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_fw38v"]
+[sub_resource type="Curve3D" id="Curve3D_w2kfb"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -325,11 +326,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_p1cuw"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mdg1w"]
 resource_local_to_scene = true
 radius = 2.0
 
-[sub_resource type="Curve3D" id="Curve3D_lme6g"]
+[sub_resource type="Curve3D" id="Curve3D_gto0d"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0),
@@ -398,7 +399,7 @@ _data = {
 }
 point_count = 6
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_bbdye"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_fw38v"]
 resource_local_to_scene = true
 size = Vector3(37.6, 8, 8)
 
@@ -407,12 +408,38 @@ albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
 metallic = 0.6
 roughness = 0.45
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_cu8nc"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_p1cuw"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_bar")
 top_radius = 0.15
 bottom_radius = 0.15
 height = 37.6
+radial_segments = 24
+rings = 1
+
+[sub_resource type="Curve3D" id="Curve3D_lme6g"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bbdye"]
+resource_local_to_scene = true
+size = Vector3(35, 7, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oytpb"]
+albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
+metallic = 0.6
+roughness = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cu8nc"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_oytpb")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 35.0
 radial_segments = 24
 rings = 1
 
@@ -427,11 +454,6 @@ point_count = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_o7vqh"]
 resource_local_to_scene = true
 size = Vector3(35, 7, 7)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oytpb"]
-albedo_color = Color(0.95923537, 0.39163202, 1.92523e-07, 1)
-metallic = 0.6
-roughness = 0.45
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_2iuy1"]
 resource_local_to_scene = true
@@ -473,14 +495,14 @@ point_count = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_su882"]
 resource_local_to_scene = true
-size = Vector3(35, 7, 7)
+size = Vector3(17.4, 7, 7)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_yergf"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_oytpb")
 top_radius = 0.15
 bottom_radius = 0.15
-height = 35.0
+height = 17.4
 radial_segments = 24
 rings = 1
 
@@ -513,42 +535,21 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6tgy1"]
-resource_local_to_scene = true
-size = Vector3(17.4, 7, 7)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_d6664"]
-resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_oytpb")
-top_radius = 0.15
-bottom_radius = 0.15
-height = 17.4
-radial_segments = 24
-rings = 1
-
-[sub_resource type="Curve3D" id="Curve3D_mvstq"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -12),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
-
-[sub_resource type="Resource" id="Resource_rjxtd"]
+[sub_resource type="Resource" id="Resource_6tgy1"]
 resource_local_to_scene = true
 script = ExtResource("15_c0yqp")
 reward_type = 6
 amount = 1.0
 random_ring_pool = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7d3np"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6664"]
 render_priority = 0
 shader = ExtResource("23_ohbpo")
 shader_parameter/tex_flat = ExtResource("24_28nky")
 shader_parameter/tex_glow = ExtResource("25_ylwuf")
 shader_parameter/swap_interval = 1.0
 shader_parameter/use_emission = true
-shader_parameter/swap_time = 6193.537
+shader_parameter/swap_time = 7254.457
 
 [node name="Sky_Fleet_3" type="Node3D" unique_id=794803344]
 
@@ -756,7 +757,7 @@ time_of_day_hours = 3.101
 cycle_enabled = false
 
 [node name="WorldEnvironment" parent="Essentials/Lights/DayNightCycle" index="0" unique_id=1480341513]
-environment = SubResource("Environment_5n1q6")
+environment = SubResource("Environment_ylwuf")
 
 [node name="Sun" parent="Essentials/Lights/DayNightCycle" index="1" unique_id=370270526]
 transform = Transform3D(0, 0.68816465, 0.7255546, 0, 0.7255546, -0.68816465, -1, 0, 0, 0, 0, 0)
@@ -983,7 +984,6 @@ action_lock_time = 0.2
 [node name="Springs" type="Node3D" parent="Objects" unique_id=824792594]
 
 [node name="Spring" parent="Objects/Springs" unique_id=1538883451 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(0.99183476, 0.12752871, 0, -0.12752871, 0.99183476, 0, 0, 0, 1, -2123.7537, -195.36423, -186.04225)
 strength = 220.0
 movement_lock_time = 1.5
@@ -991,20 +991,17 @@ action_lock_time = 1.5
 align_time = 1.5
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_p1xnd")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_yti8e")
 
 [node name="SplinePath" parent="Objects/Springs/Spring" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_aie4s")
+curve = SubResource("Curve3D_qrtxq")
 
 [node name="Mesh" parent="Objects/Springs/Spring" index="5" unique_id=1922896033]
 transform = Transform3D(0.9999986, 0, 0, 0, 0.9999986, 0, 0, 0, 0.99999857, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9999986, 0.9999986, 0.99999857)
 
 [node name="Spring2" parent="Objects/Springs" unique_id=509608261 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(-0.46361342, -0.8493748, 0.25223893, 0.8728103, -0.48680186, -0.03500854, 0.15252577, 0.20392631, 0.9670314, -2104.114, -42.62167, -186.04225)
 strength = 165.0
 movement_lock_time = 0.8
@@ -1012,24 +1009,17 @@ action_lock_time = 0.8
 align_time = 0.8
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring2" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_x17ox")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_5n1q6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring2" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_5vkjq")
-
-[node name="Mesh" parent="Objects/Springs/Spring2" index="5" unique_id=1922896033]
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+curve = SubResource("Curve3D_p1xnd")
 
 [node name="Spring3" parent="Objects/Springs" unique_id=369555422 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(0.94071376, -0.23050238, -0.24884956, 0, 0.73363405, -0.6795447, 0.3392012, 0.63925713, 0.6901398, -2534.9587, 228.69353, 115.45711)
 strength = 152.0
 
 [node name="Spring4" parent="Objects/Springs" unique_id=307590690 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -4182.977, 85.03991, 97.77653)
 strength = 210.0
 use_trajectory_solver = true
@@ -1040,11 +1030,10 @@ action_lock_time = 1.5
 align_time = 1.5
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring4" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_6lqnq")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_aie4s")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring4" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring4" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.235107, 30.667706, 0)
 visible = true
 
@@ -1052,31 +1041,22 @@ visible = true
 root_node = NodePath("../../Spring4")
 
 [node name="SplinePath" parent="Objects/Springs/Spring4" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_od7jh")
+curve = SubResource("Curve3D_x17ox")
 
 [node name="Mesh" parent="Objects/Springs/Spring4" index="5" unique_id=1922896033]
 transform = Transform3D(0.818411, 0.57463306, 0, -0.57463306, 0.818411, 0, 0, 0, 1, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9999998, 0.9999998, 1)
 
-[node name="TempMesh" parent="Objects/Springs/Spring4/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring4")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring4/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring4")
-
 [node name="Spring5" parent="Objects/Springs" unique_id=1244656070 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -4044.977, 162.03992, 97.77653)
 strength = 132.0
 use_trajectory_solver = true
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring5" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_f23pq")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_5vkjq")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring5" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring5" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.864845, 32.856373, 1.1444092e-05)
 visible = true
 
@@ -1084,21 +1064,13 @@ visible = true
 root_node = NodePath("../../Spring4")
 
 [node name="SplinePath" parent="Objects/Springs/Spring5" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_33lxm")
+curve = SubResource("Curve3D_6lqnq")
 
 [node name="Mesh" parent="Objects/Springs/Spring5" index="5" unique_id=1922896033]
 transform = Transform3D(0.84417015, -0.5360749, 9.116853e-08, 0.5360749, 0.84417015, -3.1363203e-07, 9.116855e-08, 3.136321e-07, 1, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99999976, 0.99999976, 1)
 
-[node name="TempMesh" parent="Objects/Springs/Spring5/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring4")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring5/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring4")
-
 [node name="Spring6" parent="Objects/Springs" unique_id=932499351 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.8420856, 0, -0.9604939, 0, 3, 0, 0.9604939, 0, 2.8420856, -1506.4447, 305.30673, 765.58307)
 strength = 165.0
 use_trajectory_solver = true
@@ -1109,11 +1081,10 @@ action_lock_time = 2.0
 downward_trajectory_gravity_yaw_safe_angle_deg = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring6" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_cylm0")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_od7jh")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring6" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring6" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58346593, 6.6693726, 46.447205)
 visible = true
 
@@ -1121,21 +1092,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring6" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_slvgd")
+curve = SubResource("Curve3D_f23pq")
 
 [node name="Mesh" parent="Objects/Springs/Spring6" index="5" unique_id=1922896033]
 transform = Transform3D(0.9998273, 0.01102634, -0.006545182, -0.011027114, 0.47883087, -0.8778148, -0.0065456415, 0.8778148, 0.47891316, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9999096, 0.99997973, 0.9999798)
 
-[node name="TempMesh" parent="Objects/Springs/Spring6/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring6/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring7" parent="Objects/Springs" unique_id=1380395176 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(-1.8128358, 0, -2.3903193, 0, 3, 0, 2.3903193, 0, -1.8128358, -1551.5377, 324.48383, 899.0127)
 strength = 165.0
 use_trajectory_solver = true
@@ -1146,11 +1109,10 @@ action_lock_time = 2.0
 downward_trajectory_gravity_yaw_safe_angle_deg = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring7" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_k3y68")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_33lxm")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring7" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring7" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.838609, -9.876679, 44.262474)
 visible = true
 
@@ -1158,21 +1120,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring7" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_k72w0")
+curve = SubResource("Curve3D_cylm0")
 
 [node name="Mesh" parent="Objects/Springs/Spring7" index="5" unique_id=1922896033]
 transform = Transform3D(0.98606545, 0.1282948, -0.10459267, -0.1282948, 0.19314726, -0.97260416, -0.10459267, 0.97260416, 0.20694394, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99986213, 0.99986213, 0.99986213)
 
-[node name="TempMesh" parent="Objects/Springs/Spring7/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring7/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring14" parent="Objects/Springs" unique_id=1743940086 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -4223.6787, 282.94745, 1677.71)
 strength = 165.0
 use_trajectory_solver = true
@@ -1183,11 +1137,10 @@ action_lock_time = 2.0
 downward_trajectory_gravity_yaw_safe_angle_deg = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring14" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_dq313")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_slvgd")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring14" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring14" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.71985, 20.514107, -73.675964)
 visible = true
 
@@ -1195,21 +1148,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring14" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_o38x8")
+curve = SubResource("Curve3D_k3y68")
 
 [node name="Mesh" parent="Objects/Springs/Spring14" index="5" unique_id=1922896033]
 transform = Transform3D(0.9137764, 0.3966575, 0.086035565, -0.39665753, 0.82779217, 0.39642105, 0.08603558, -0.39642107, 0.91387916, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99986327, 0.9998633, 0.99986345)
 
-[node name="TempMesh" parent="Objects/Springs/Spring14/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring14/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring8" parent="Objects/Springs" unique_id=500091532 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.7105787, 0, -1.2855989, 0, 3, 0, 1.2855989, 0, 2.7105787, -1664.9913, 296.58798, 834.0627)
 strength = 160.0
 use_trajectory_solver = true
@@ -1220,11 +1165,10 @@ action_lock_time = 2.0
 downward_trajectory_gravity_yaw_safe_angle_deg = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring8" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_nktv7")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_k72w0")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring8" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring8" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0845337, -12.201042, 61.395874)
 visible = true
 
@@ -1232,21 +1176,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring8" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_35425")
+curve = SubResource("Curve3D_dq313")
 
 [node name="Mesh" parent="Objects/Springs/Spring8" index="5" unique_id=1922896033]
 transform = Transform3D(0.99954325, -0.0175618, 0.015807267, 0.017561862, 0.10469683, -0.9941741, 0.015807323, 0.9941741, 0.10497609, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9998225, 0.999826, 0.999826)
 
-[node name="TempMesh" parent="Objects/Springs/Spring8/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring8/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring9" parent="Objects/Springs" unique_id=2066757767 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(-2.2359865, 0, -2.0000913, 0, 3, 0, 2.0000913, 0, -2.2359865, -1746.0913, 259.8555, 998.93634)
 strength = 85.0
 use_trajectory_solver = true
@@ -1256,11 +1192,10 @@ action_lock_time = 0.2
 downward_trajectory_gravity_yaw_safe_angle_deg = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring9" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_8nppp")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_o38x8")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring9" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring9" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57818437, 5.67282, 3.6992688)
 visible = true
 
@@ -1268,21 +1203,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring9" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_77r73")
+curve = SubResource("Curve3D_nktv7")
 
 [node name="Mesh" parent="Objects/Springs/Spring9" index="5" unique_id=1922896033]
 transform = Transform3D(0.9959038, -0.08504989, 0.025230616, 0.08505008, 0.83447593, -0.5441649, 0.025230676, 0.5441649, 0.83841944, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99984723, 0.9998495, 0.99984956)
 
-[node name="TempMesh" parent="Objects/Springs/Spring9/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring9/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring10" parent="Objects/Springs" unique_id=1663403596 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.979162, 0, -0.35298026, 0, 3, 0, 0.35298026, 0, 2.979162, -1864.289, 283.52725, 861.17883)
 strength = 110.0
 use_trajectory_solver = true
@@ -1292,11 +1219,10 @@ action_lock_time = 0.2
 downward_trajectory_gravity_yaw_safe_angle_deg = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring10" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_na0pw")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_35425")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring10" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring10" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0845605, 9.423122, 20.463064)
 visible = true
 
@@ -1304,21 +1230,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring10" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_8l8us")
+curve = SubResource("Curve3D_8nppp")
 
 [node name="Mesh" parent="Objects/Springs/Spring10" index="5" unique_id=1922896033]
 transform = Transform3D(0.99828964, -0.048081692, 0.030768285, 0.048081797, 0.41775995, -0.9071989, 0.030768352, 0.9071989, 0.41939065, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99992037, 0.9999225, 0.9999225)
 
-[node name="TempMesh" parent="Objects/Springs/Spring10/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring10/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring11" parent="Objects/Springs" unique_id=1314449604 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.979162, 0, -0.35298026, 0, 3, 0, 0.35298026, 0, 2.979162, -2902.1243, 662.76807, 1318.5376)
 strength = 124.0
 use_trajectory_solver = true
@@ -1326,11 +1244,10 @@ movement_lock_time = 0.2
 action_lock_time = 0.2
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring11" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_yxsvg")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_77r73")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring11" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring11" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0845923, 26.289429, 17.170652)
 visible = true
 
@@ -1338,21 +1255,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring11" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_twx8t")
+curve = SubResource("Curve3D_na0pw")
 
 [node name="Mesh" parent="Objects/Springs/Spring11" index="5" unique_id=1922896033]
 transform = Transform3D(0.9991984, -0.034514233, 0.010269459, 0.034514014, 0.83660805, -0.5464219, 0.010269392, 0.5464219, 0.8372566, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.999847, 0.99984056, 0.9998405)
 
-[node name="TempMesh" parent="Objects/Springs/Spring11/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring11/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring12" parent="Objects/Springs" unique_id=1911555235 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.979162, 0, -0.35298026, 0, 3, 0, 0.35298026, 0, 2.979162, -2753.6055, 662.76807, 1350.7526)
 strength = 124.0
 stop_momentum = false
@@ -1361,11 +1270,10 @@ movement_lock_time = 0.2
 action_lock_time = 0.2
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring12" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_mfnho")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_8l8us")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring12" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring12" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.411392, 27.824911, 11.654264)
 visible = true
 
@@ -1373,21 +1281,13 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring12" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_x4ua6")
+curve = SubResource("Curve3D_yxsvg")
 
 [node name="Mesh" parent="Objects/Springs/Spring12" index="5" unique_id=1922896033]
 transform = Transform3D(0.93265027, -0.35375127, 0.06862246, 0.35375133, 0.86256754, -0.36127976, 0.06862246, 0.36127973, 0.9297599, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99984276, 0.9998429, 0.99984276)
 
-[node name="TempMesh" parent="Objects/Springs/Spring12/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring12/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring13" parent="Objects/Springs" unique_id=1312611134 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(2.9999952, 0, 0.0054956973, 0, 3, 0, -0.0054956973, 0, 2.9999952, -3452.8074, 796.48376, 1479.3383)
 strength = 110.0
 stop_momentum = false
@@ -1396,11 +1296,10 @@ movement_lock_time = 0.2
 action_lock_time = 0.2
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring13" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_00wn6")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_twx8t")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring13" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring13" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.805996, 33.04234, 0.14161469)
 visible = true
 
@@ -1408,31 +1307,22 @@ visible = true
 root_node = NodePath("../../Spring6")
 
 [node name="SplinePath" parent="Objects/Springs/Spring13" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_j875r")
+curve = SubResource("Curve3D_mfnho")
 
 [node name="Mesh" parent="Objects/Springs/Spring13" index="5" unique_id=1922896033]
 transform = Transform3D(0.9585227, -0.2844596, 0.00059674814, 0.2844595, 0.95851374, -0.004108298, 0.00059674477, 0.004108276, 0.9998273, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99984163, 0.99984133, 0.99983597)
 
-[node name="TempMesh" parent="Objects/Springs/Spring13/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring6")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring13/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring6")
-
 [node name="Spring15" parent="Objects/Springs" unique_id=365142307 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -1914.4984, 356.20575, -159.91458)
 strength = 125.0
 use_trajectory_solver = true
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring15" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_mt3mu")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_x4ua6")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring15" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring15" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.711042, 6.238909, 2.0326843)
 visible = true
 
@@ -1440,21 +1330,13 @@ visible = true
 root_node = NodePath("../../Spring15")
 
 [node name="SplinePath" parent="Objects/Springs/Spring15" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_j5ym6")
+curve = SubResource("Curve3D_00wn6")
 
 [node name="Mesh" parent="Objects/Springs/Spring15" index="5" unique_id=1922896033]
 transform = Transform3D(0.55195403, 0.8285775, -0.09378241, -0.8285775, 0.53232384, -0.1734352, -0.09378243, 0.17343524, 0.9803646, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9999946, 0.9999946, 0.9999948)
 
-[node name="TempMesh" parent="Objects/Springs/Spring15/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring15")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring15/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring15")
-
 [node name="Spring19" parent="Objects/Springs" unique_id=1720050903 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -3125.032, 283.05307, 283.50452)
 strength = 112.0
 use_trajectory_solver = true
@@ -1462,11 +1344,10 @@ trajectory_arc_enabled = true
 trajectory_arc_height = 45.0
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring19" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_ahlw7")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_j875r")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring19" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring19" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.468018, -12.83852, -16.850723)
 visible = true
 
@@ -1474,31 +1355,22 @@ visible = true
 root_node = NodePath("../../Spring15")
 
 [node name="SplinePath" parent="Objects/Springs/Spring19" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_qg4sl")
+curve = SubResource("Curve3D_mt3mu")
 
 [node name="Mesh" parent="Objects/Springs/Spring19" index="5" unique_id=1922896033]
 transform = Transform3D(0.65200603, -0.7480644, -0.12352989, 0.7480644, 0.60815394, 0.26555645, -0.12352986, -0.26555642, 0.95613366, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99998593, 0.9999859, 0.9999857)
 
-[node name="TempMesh" parent="Objects/Springs/Spring19/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring15")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring19/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring15")
-
 [node name="Spring16" parent="Objects/Springs" unique_id=2094399444 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -1914.4984, 356.20575, -173.35109)
 strength = 125.0
 use_trajectory_solver = true
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring16" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_w2kfb")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_j5ym6")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring16" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring16" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.711042, 6.238909, 3.1587832)
 visible = true
 
@@ -1506,31 +1378,22 @@ visible = true
 root_node = NodePath("../../Spring15")
 
 [node name="SplinePath" parent="Objects/Springs/Spring16" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_mdg1w")
+curve = SubResource("Curve3D_ahlw7")
 
 [node name="Mesh" parent="Objects/Springs/Spring16" index="5" unique_id=1922896033]
 transform = Transform3D(0.56714344, 0.81148905, -0.14079684, -0.81148905, 0.5213454, -0.26395908, -0.14079686, 0.2639591, 0.954197, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.99999493, 0.99999493, 0.999995)
 
-[node name="TempMesh" parent="Objects/Springs/Spring16/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring15")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring16/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring15")
-
 [node name="Spring17" parent="Objects/Springs" unique_id=1447694216 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -1914.4984, 356.20575, -131.91458)
 strength = 125.0
 use_trajectory_solver = true
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring17" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_gto0d")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_qg4sl")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring17" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring17" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.711042, 6.238909, 0.99221367)
 visible = true
 
@@ -1538,31 +1401,22 @@ visible = true
 root_node = NodePath("../../Spring15")
 
 [node name="SplinePath" parent="Objects/Springs/Spring17" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_fw38v")
+curve = SubResource("Curve3D_w2kfb")
 
 [node name="Mesh" parent="Objects/Springs/Spring17" index="5" unique_id=1922896033]
 transform = Transform3D(0.54329777, 0.83823776, -0.046662584, -0.83823776, 0.5385301, -0.08564589, -0.046662472, 0.08564568, 0.9952261, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9999962, 0.9999962, 0.99999374)
 
-[node name="TempMesh" parent="Objects/Springs/Spring17/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring15")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring17/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring15")
-
 [node name="Spring18" parent="Objects/Springs" unique_id=1583510413 instance=ExtResource("8_kh7je")]
-process_mode = 3
 transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -1914.4984, 356.20575, -145.35109)
 strength = 125.0
 use_trajectory_solver = true
 
 [node name="CollisionShape3D" parent="Objects/Springs/Spring18" index="0" unique_id=594366491]
-shape = SubResource("CylinderShape3D_p1cuw")
-metadata/_uniform_size_base_position = Vector3(0, 0.2, 0)
-metadata/_uniform_size_base_scale = Vector3(1, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("CylinderShape3D_mdg1w")
 
-[node name="TrajectorySolver" parent="Objects/Springs/Spring18" index="1"]
+[node name="TrajectorySolver" parent="Objects/Springs/Spring18" index="1" unique_id=1153799601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.711042, 6.238909, 0.99221367)
 visible = true
 
@@ -1570,18 +1424,11 @@ visible = true
 root_node = NodePath("../../Spring15")
 
 [node name="SplinePath" parent="Objects/Springs/Spring18" index="4" unique_id=1818114504]
-curve = SubResource("Curve3D_lme6g")
+curve = SubResource("Curve3D_gto0d")
 
 [node name="Mesh" parent="Objects/Springs/Spring18" index="5" unique_id=1922896033]
 transform = Transform3D(0.54329777, 0.83823776, -0.046662584, -0.83823776, 0.5385301, -0.08564589, -0.046662472, 0.08564568, 0.9952261, 0, 0, 0)
-metadata/_uniform_size_base_position = Vector3(0, 0, 0)
 metadata/_uniform_size_base_scale = Vector3(0.9999962, 0.9999962, 0.99999374)
-
-[node name="TempMesh" parent="Objects/Springs/Spring18/Mesh" index="1" unique_id=1862970004]
-skeleton = NodePath("../../../Spring15")
-
-[node name="TempMesh2" parent="Objects/Springs/Spring18/Mesh" index="2" unique_id=183295118]
-skeleton = NodePath("../../../Spring15")
 
 [node name="Checkpoints" type="Node3D" parent="Objects" unique_id=27360703]
 
@@ -1601,7 +1448,7 @@ rehit_cooldown = 1.0
 curve = SubResource("Curve3D_wpi7e")
 
 [node name="RailBooster" parent="Objects/Rails/Rail/Path3D" index="0" unique_id=2079203673 instance=ExtResource("11_4mdh1")]
-transform = Transform3D(-0.8977291, 0.23438735, 0.37279013, 0.18229897, 0.9684368, -0.16982839, -0.40080428, -0.08450839, -0.9122262, -10.147516, 26.362743, -10.034275)
+transform = Transform3D(-0.897729, 0.23438735, 0.37279013, 0.18229896, 0.9684368, -0.16982839, -0.40080425, -0.08450839, -0.9122262, -10.147516, 26.362743, -10.034275)
 progress = 87.34671
 boost_speed = 115.0
 
@@ -1753,10 +1600,10 @@ maximum_launch_impulse = 264.4
 launch_aim_origin = 1
 
 [node name="CollisionShape3D" parent="Objects/Vault Bars/VaultBar" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_bbdye")
+shape = SubResource("BoxShape3D_fw38v")
 
 [node name="Bar" parent="Objects/Vault Bars/VaultBar/Model" parent_id_path=PackedInt32Array(1678950624, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_cu8nc")
+mesh = SubResource("CylinderMesh_p1cuw")
 
 [node name="LeftCap" parent="Objects/Vault Bars/VaultBar/Model" parent_id_path=PackedInt32Array(1678950624, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -18.8, 0, 0)
@@ -1765,7 +1612,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -1
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 18.8, 0, 0)
 
 [node name="SplinePath" parent="Objects/Vault Bars/VaultBar" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_51drn")
+curve = SubResource("Curve3D_lme6g")
 
 [node name="VaultBar2" parent="Objects/Vault Bars" unique_id=1685228124 instance=ExtResource("13_4mdh1")]
 transform = Transform3D(0.738537, 0, 0.67421293, 0, 1, 0, -0.67421293, 0, 0.738537, -1799.4358, 287.47592, 932.63403)
@@ -1785,10 +1632,10 @@ action_lock_time = 1.0
 align_time = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Vault Bars/VaultBar2" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_o7vqh")
+shape = SubResource("BoxShape3D_bbdye")
 
 [node name="Bar" parent="Objects/Vault Bars/VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_2iuy1")
+mesh = SubResource("CylinderMesh_cu8nc")
 
 [node name="LeftCap" parent="Objects/Vault Bars/VaultBar2/Model" parent_id_path=PackedInt32Array(1685228124, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -17.5, 0, 0)
@@ -1800,7 +1647,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 17
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8146973e-06, -3.245758, -98.82973)
 
 [node name="SplinePath" parent="Objects/Vault Bars/VaultBar2" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_n5cqq")
+curve = SubResource("Curve3D_51drn")
 
 [node name="VaultBar6" parent="Objects/Vault Bars" unique_id=463563874 instance=ExtResource("13_4mdh1")]
 transform = Transform3D(0.738537, 0, 0.67421293, 0, 1, 0, -0.67421293, 0, 0.738537, -1799.4358, 186.47592, 932.63403)
@@ -1818,10 +1665,10 @@ movement_lock_time = 2.0
 action_lock_time = 2.0
 
 [node name="CollisionShape3D" parent="Objects/Vault Bars/VaultBar6" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_odwfr")
+shape = SubResource("BoxShape3D_o7vqh")
 
 [node name="Bar" parent="Objects/Vault Bars/VaultBar6/Model" parent_id_path=PackedInt32Array(463563874, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_ek5al")
+mesh = SubResource("CylinderMesh_2iuy1")
 
 [node name="LeftCap" parent="Objects/Vault Bars/VaultBar6/Model" parent_id_path=PackedInt32Array(463563874, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -17.5, 0, 0)
@@ -1833,7 +1680,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 17
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8293343e-05, 98.34544, -0.58807707)
 
 [node name="SplinePath" parent="Objects/Vault Bars/VaultBar6" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_e6dh1")
+curve = SubResource("Curve3D_n5cqq")
 
 [node name="VaultBar4" parent="Objects/Vault Bars" unique_id=723943339 instance=ExtResource("13_4mdh1")]
 transform = Transform3D(-0.99681014, 0, 0.07981003, 0, 1, 0, -0.07981003, 0, -0.99681014, -1876.1787, 287.47592, 975.6436)
@@ -1853,10 +1700,10 @@ action_lock_time = 1.0
 align_time = 1.0
 
 [node name="CollisionShape3D" parent="Objects/Vault Bars/VaultBar4" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_su882")
+shape = SubResource("BoxShape3D_odwfr")
 
 [node name="Bar" parent="Objects/Vault Bars/VaultBar4/Model" parent_id_path=PackedInt32Array(723943339, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_yergf")
+mesh = SubResource("CylinderMesh_ek5al")
 
 [node name="LeftCap" parent="Objects/Vault Bars/VaultBar4/Model" parent_id_path=PackedInt32Array(723943339, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -17.5, 0, 0)
@@ -1868,7 +1715,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 17
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.714754, -138.04198, -273.13098)
 
 [node name="SplinePath" parent="Objects/Vault Bars/VaultBar4" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_cnoq8")
+curve = SubResource("Curve3D_e6dh1")
 
 [node name="VaultBar3" parent="Objects/Vault Bars" unique_id=1768351753 instance=ExtResource("13_4mdh1")]
 transform = Transform3D(-0.85419834, 0, 0.51994747, 0, 1, 0, -0.51994747, 0, -0.85419834, -3652.686, 679.2317, 1494.9415)
@@ -1887,10 +1734,10 @@ action_lock_time = 2.0
 align_time = 2.0
 
 [node name="CollisionShape3D" parent="Objects/Vault Bars/VaultBar3" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_nahrq")
+shape = SubResource("BoxShape3D_su882")
 
 [node name="Bar" parent="Objects/Vault Bars/VaultBar3/Model" parent_id_path=PackedInt32Array(1768351753, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_vtppi")
+mesh = SubResource("CylinderMesh_yergf")
 
 [node name="LeftCap" parent="Objects/Vault Bars/VaultBar3/Model" parent_id_path=PackedInt32Array(1768351753, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -8.7, 0, 0)
@@ -1902,7 +1749,7 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 8.
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00024414063, -398.47852, -224.45068)
 
 [node name="SplinePath" parent="Objects/Vault Bars/VaultBar3" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_lhnem")
+curve = SubResource("Curve3D_cnoq8")
 
 [node name="VaultBar5" parent="Objects/Vault Bars" unique_id=271058264 instance=ExtResource("13_4mdh1")]
 transform = Transform3D(0.8213315, 0, 0.5704514, 0, 1, 0, -0.5704514, 0, 0.8213315, -3643.469, 634.48676, 1423.0044)
@@ -1921,10 +1768,10 @@ action_lock_time = 2.0
 align_time = 2.0
 
 [node name="CollisionShape3D" parent="Objects/Vault Bars/VaultBar5" index="0" unique_id=789556539]
-shape = SubResource("BoxShape3D_6tgy1")
+shape = SubResource("BoxShape3D_nahrq")
 
 [node name="Bar" parent="Objects/Vault Bars/VaultBar5/Model" parent_id_path=PackedInt32Array(271058264, 1361387532) index="0" unique_id=511214259]
-mesh = SubResource("CylinderMesh_d6664")
+mesh = SubResource("CylinderMesh_vtppi")
 
 [node name="LeftCap" parent="Objects/Vault Bars/VaultBar5/Model" parent_id_path=PackedInt32Array(271058264, 1361387532) index="1" unique_id=568321050]
 transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, -8.7, 0, 0)
@@ -1936,13 +1783,14 @@ transform = Transform3D(0.20250002, 0, 0, 0, 0.20250002, 0, 0, 0, 0.20250002, 8.
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.33911, -18.95166, -269.78625)
 
 [node name="SplinePath" parent="Objects/Vault Bars/VaultBar5" index="4" unique_id=51402399]
-curve = SubResource("Curve3D_mvstq")
+curve = SubResource("Curve3D_lhnem")
 
 [node name="Monitors" type="Node3D" parent="Objects" unique_id=87597567]
 
 [node name="ItemMonitor_SpeedShoe" parent="Objects/Monitors" unique_id=1395552001 instance=ExtResource("14_wpi7e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1906.9563, 149.12335, 1314.5751)
-rewards = Array[ExtResource("15_c0yqp")]([SubResource("Resource_rjxtd")])
+rewards = Array[ExtResource("15_c0yqp")]([SubResource("Resource_6tgy1")])
+homing_target_enabled = true
 allow_player_pass_through = true
 leave_base_after_break = true
 respawn_delay_sec = 6.0
@@ -1995,11 +1843,11 @@ race_start_path = NodePath("../RaceStart")
 [node name="GoalCamera" parent="RaceGoal" index="2" unique_id=1169733806]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5527344, -0.7630615, 0.5720215)
 
-[node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" index="0" unique_id=1294627438]
-material_override = SubResource("ShaderMaterial_7d3np")
+[node name="Circle" parent="RaceGoal/GoalModel/GoalRing2/Armature/Skeleton3D" parent_id_path=PackedInt32Array(2035697817, 456851143, 52793995, 744465181) index="0" unique_id=1294627438]
+material_override = SubResource("ShaderMaterial_d6664")
 
-[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" index="2" unique_id=1016145482]
-light_energy = 40.0
+[node name="SwapLight" parent="RaceGoal/GoalModel/GoalRing2" parent_id_path=PackedInt32Array(2035697817, 456851143, 52793995) index="2" unique_id=1016145482]
+light_energy = 20.0
 
 [node name="DashPanel" parent="." unique_id=674370092 instance=ExtResource("7_aptwc")]
 transform = Transform3D(-0.06132178, 0, -1.9990597, 0, 2, 0, 1.9990597, 0, -0.06132178, -3858.203, 83.08978, 105.047516)

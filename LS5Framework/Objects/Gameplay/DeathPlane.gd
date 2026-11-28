@@ -18,7 +18,7 @@ extends WorldObject
 @export var fade_hold_duration: float = 0.05
 @export var fade_in_duration: float = 0.35
 ## Collision mask added at runtime for carryable objects.
-@export_flags_3d_physics var carryable_collision_mask: int = 2
+@export_flags_3d_physics var carryable_collision_mask: int = 1026
 ## Collision mask added at runtime for enemies affected by death planes.
 @export_flags_3d_physics var enemy_collision_mask: int = 128
 ## Placement box dimensions. Zero uses the scene's authored collision shape.

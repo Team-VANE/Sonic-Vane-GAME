@@ -3828,6 +3828,12 @@ func _movement_physics_process(delta: float) -> void:
 
 	var _dash_was_active: bool = _lightspeed_dash_active
 	_apply_movement(motion_delta, phys_up, is_attached_for_movement)
+	var airflow_fan: AirflowFan = _external_motion_module.apply_fan_airflow(motion_delta, world_up)
+	if airflow_fan and is_attached_for_movement and not attached:
+		is_attached_for_movement = false
+		phys_up = world_up
+		up_direction = world_up
+		_physics_up_last = world_up
 	if not _automation_controller.motion.uses_native_integration():
 		velocity = _automation_controller.motion.apply_velocity(velocity, phys_up, motion_delta)
 	_apply_automation_25d_world_constraint(motion_delta)
@@ -3839,10 +3845,13 @@ func _movement_physics_process(delta: float) -> void:
 		print("[DYN] POST_MOVE spd=%.3f vel=%v" % [velocity.length(), velocity])
 
 	_pre_slide_velocity = velocity
+	var fan_start_position: Vector3 = global_position if airflow_fan else Vector3.ZERO
 	var floor_stop_on_slope_before: bool = floor_stop_on_slope
 	if _spindash_charging and is_attached_for_movement:
 		floor_stop_on_slope = true
 	_move_with_movement_time_scale()
+	if airflow_fan:
+		_external_motion_module.apply_fan_exit_kick(airflow_fan, fan_start_position, world_up)
 	_process_slide_collision_surface_behaviors()
 	floor_stop_on_slope = floor_stop_on_slope_before
 	if _spindash_charging and is_attached_for_movement:
@@ -5916,11 +5925,12 @@ func _try_ground_turn_in_place(move_dir: Vector3, up: Vector3, delta: float) -> 
 		return false
 	var angle: float = facing.signed_angle_to(move_dir, up)
 	var drive_angle: float = deg_to_rad(_grounded_action.turn_in_place_drive_angle_deg)
+	_ground_start_facing_active = true
 	if absf(angle) <= drive_angle:
+		_model_forward = move_dir
 		return false
 	var turn_step: float = deg_to_rad(_grounded_action.turn_in_place_rate_deg_per_sec) * delta
 	_model_forward = facing.rotated(up, clampf(angle, -turn_step, turn_step)).normalized()
-	_ground_turn_in_place_active = true
 	return true
 
 
@@ -6870,7 +6880,7 @@ func _integrate_airborne_gravity(vertical: float, up: Vector3, gravity_step: flo
 
 
 func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -> void:
-	_ground_turn_in_place_active = false
+	_ground_start_facing_active = false
 	var inherited_launch_velocity: Vector3 = Vector3.ZERO
 	var magnetism_gravity_step: float = 0.0
 	var timer_delta: float = get_gameplay_timer_delta(delta)
@@ -7753,13 +7763,14 @@ func _apply_movement(delta: float, up_for_physics: Vector3, is_attached: bool) -
 								var off_wall_axis: Vector3 = lateral - wall_dir * current_wall_speed
 								off_wall_axis = off_wall_axis.move_toward(Vector3.ZERO, wall_decel_step)
 								lateral = wall_dir * new_wall_speed + off_wall_axis
-					elif lateral_speed < 0.01:
+					elif lateral_speed < 0.01 or _ground_start_facing_active:
+						var start_direction: Vector3 = move_dir if _ground_start_facing_active else steering_move_dir
 						var gained: float = min(
 							target_speed,
-							maxf(lateral.dot(steering_move_dir), 0.0)
+							maxf(lateral.dot(start_direction), 0.0)
 							+ used_accel_final * movement_input_strength * delta
 						)
-						lateral = steering_move_dir * gained
+						lateral = start_direction * gained
 					else:
 						var vel_dir: Vector3 = lateral / lateral_speed
 						var steer_target_dir: Vector3 = steering_move_dir
@@ -14323,6 +14334,16 @@ func _reset_skid_dust() -> void:
 # ===========================================================
 func get_external_pre_collision_velocity() -> Vector3:
 	return _pre_slide_velocity
+
+
+func register_airflow_fan(fan: AirflowFan) -> void:
+	_ensure_modules()
+	_external_motion_module.register_airflow_fan(fan)
+
+
+func unregister_airflow_fan(fan: AirflowFan) -> void:
+	if _external_motion_module:
+		_external_motion_module.unregister_airflow_fan(fan)
 
 
 func apply_spring_impulse(

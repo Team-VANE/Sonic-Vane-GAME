@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Switch/Switch - Heroes/Ball/SwitchBall.glb" id="1_model"]
+
+[node name="SwitchBallVisual" instance=ExtResource("1_model")]
+
+[node name="Switch_Base" parent="." index="1"]
+visible = false

@@ -36,7 +36,11 @@ static func target_velocity(target: Node3D, max_speed: float = 40.0) -> Vector3:
 static func is_target_available(target: Node3D, prop: Node3D) -> bool:
 	if not is_instance_valid(target) or not target.is_inside_tree() or target.is_queued_for_deletion():
 		return false
-	if target == prop or prop.is_ancestor_of(target) or not target.is_in_group(&"HomingTarget"):
+	if target == prop or prop.is_ancestor_of(target):
+		return false
+	if target.is_in_group(&"CarryThrowTarget"):
+		return target.has_method(&"can_receive_thrown_object") and target.call(&"can_receive_thrown_object", prop)
+	if not target.is_in_group(&"HomingTarget"):
 		return false
 	var ancestor: Node = target
 	while ancestor:
@@ -52,6 +56,8 @@ static func is_target_available(target: Node3D, prop: Node3D) -> bool:
 
 
 static func target_position(target: Node3D, origin: Vector3) -> Vector3:
+	if target.has_method(&"get_throw_target_position"):
+		return target.call(&"get_throw_target_position")
 	if target.has_method("get_homing_target_position"):
 		var point: Variant = target.call("get_homing_target_position", origin)
 		if point is Vector3:

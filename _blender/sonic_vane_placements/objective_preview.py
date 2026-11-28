@@ -23,7 +23,7 @@ TRAVERSAL_BOXES = {
     "dash_panel": ((0, 0, 0.2), (5, 5, 1)),
     "rail_booster": ((0.1, 0, 0.9293544), (7, 6, 3)),
 }
-TRAVERSAL_GUIDES = TRAVERSAL_BOXES.keys() | {"spring", "vault_bar", "bumper"}
+TRAVERSAL_GUIDES = TRAVERSAL_BOXES.keys() | {"spring", "vault_bar", "bumper", "fan"}
 KINDS = {"goal_ring", "collection_item", "race_start", "homing_target", "gravity_modifier", "surface_behavior"} | VOLUME_COLORS.keys()
 AXES = tuple(Vector(axis) for axis in ((1, 0, 0), (0, 1, 0), (0, 0, 1)))
 
@@ -75,6 +75,14 @@ def traversal_bounds(placement, origin, rotation):
     kind = placement.kind
     if kind == "bumper":
         return ring_lines(origin, 2.5, AXES), None
+    if kind == "fan":
+        x, y, up = (rotation @ axis for axis in AXES)
+        radius = placement.column_radius
+        top = origin + up * placement.column_height
+        lines = ring_lines(origin, radius, (x, y)) + ring_lines(top, radius, (x, y))
+        for axis in (x, y, -x, -y):
+            lines.extend((origin + axis * radius, top + axis * radius))
+        return lines, None
     if kind == "spring":
         dash_ring = placement.spring_style == "dash_ring"
         size = placement.size

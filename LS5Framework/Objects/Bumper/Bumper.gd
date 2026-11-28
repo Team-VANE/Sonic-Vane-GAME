@@ -13,7 +13,7 @@ enum LaunchMode {
 @export var active: bool = true
 
 ## Additional collision mask for dynamic physics objects accepted by the bumper.
-@export_flags_3d_physics var dynamic_object_collision_mask: int = 7
+@export_flags_3d_physics var dynamic_object_collision_mask: int = 1031
 
 ## Time before the same body can trigger this bumper again.
 @export_range(0.0, 5.0, 0.01, "or_greater", "suffix:s")

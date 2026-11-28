@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://tv0po3o5gntd"]
+
+[ext_resource type="Script" uid="uid://exins3van0ug" path="res://LS5Framework/Objects/Switch/SwitchBall.gd" id="1_ball"]
+[ext_resource type="PackedScene" path="res://LS5Framework/Objects/Switch/SwitchBallVisual.tscn" id="2_visual"]
+
+[sub_resource type="SphereShape3D" id="SphereShape_ball"]
+radius = 0.72
+
+[node name="SwitchBall" type="RigidBody3D" unique_id=790802283 groups=["carryable_object", "dynamic_physics_object", "switch_ball"]]
+collision_layer = 1024
+collision_mask = 1027
+continuous_cd = true
+script = ExtResource("1_ball")
+carry_mass = 10.0
+carry_friction = 1.8
+carry_bounce = 0.75
+carry_linear_damp = 0.6
+carry_angular_damp = 1.45
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=246799843]
+shape = SubResource("SphereShape_ball")
+
+[node name="Visual" parent="." unique_id=32872757 instance=ExtResource("2_visual")]

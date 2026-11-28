@@ -68,7 +68,7 @@ SIZED_HAZARD_KINDS = {"enemy", "spike_strip", "spike_ball"}
 ENEMY_HAZARD_LIBRARY = "Enemies and Hazards.blend"
 VOLUME_LIBRARY = "Water Flippers and Portals.blend"
 VOLUME_PREVIEWS = {"adventure_water", "flipper", "death_plane", "hurt_volume", "teleporter_entrance", "teleporter_exit"}
-CONDITIONAL_EXPORT_KINDS = VOLUME_PREVIEWS | objective_preview.KINDS | {"automation_spline", "dash_panel", "enemy", "rail", "ring", "ring_spline", "player_spawn", "planetary_gravity", "camera_constraint", "surface_behavior"}
+CONDITIONAL_EXPORT_KINDS = VOLUME_PREVIEWS | objective_preview.KINDS | {"automation_spline", "dash_panel", "enemy", "fan", "rail", "ring", "ring_spline", "player_spawn", "planetary_gravity", "camera_constraint", "surface_behavior", "switch"}
 SURFACE_TARGET_KEY = "vane_surface_target_id"
 RACE_ID_PATTERN = re.compile(r"[A-Za-z0-9]{1,8}")
 RACE_AUDIO_EXTENSIONS = {".ogg", ".wav", ".mp3"}
@@ -198,7 +198,8 @@ def sync_placement_markers(placement, _context):
         marker = placement_marker(obj, key)
         enabled = key in fields and field_enabled(placement, field)
         if enabled and marker is None and obj.users_collection:
-            marker = bpy.data.objects.new(field.get("marker_label", field["label"]), None)
+            mesh = switch_preview_mesh("Switch Ball Preview") if key == "switch_loose_spawn" else None
+            marker = bpy.data.objects.new(field.get("marker_label", field["label"]), mesh)
             marker[MARKER_FIELD_KEY] = key
             marker.parent = obj
             marker.location = getattr(placement, key)
@@ -211,6 +212,19 @@ def sync_placement_markers(placement, _context):
         if marker and marker.hide_viewport == enabled:
             marker.hide_viewport = not enabled
     spring_preview.sync_model(placement)
+    if placement.kind == "switch" and obj.type == "MESH":
+        mesh_name = "Switch Connected Preview" if placement.switch_starts_connected else "Switch Base Preview"
+        if obj.data.get("sonic_vane_switch_mesh") and obj.data.get("sonic_vane_switch_mesh") != mesh_name:
+            mesh = switch_preview_mesh(mesh_name)
+            if mesh:
+                obj.data = mesh
+
+
+def switch_preview_mesh(mesh_name):
+    return model_preview.load_mesh(ASSET_DIRECTORY, mesh_name, {
+        "preview_file": "Switch.blend",
+        "preview_mesh": mesh_name,
+    })
 
 
 @persistent
@@ -235,6 +249,8 @@ def sync_loaded_markers(*_):
                 sync_player_reference(obj)
             if placement.kind == "vault_bar":
                 sync_vault_preview(placement, None)
+            if placement.kind == "fan":
+                sync_fan_size(placement, None)
             if placement.kind == "automation_spline":
                 automation_preview.sync_custom_boxes(placement)
             if placement.kind in RING_KINDS:
@@ -403,6 +419,20 @@ def build_placement_document(scene, depsgraph):
                 record["automation_extensions"] = export_automation_extensions(obj, scene)
         if placement.kind == "teleporter_entrance":
             record["teleporter_link"] = export_teleporter_link(obj, placement, scene)
+        if placement.kind == "switch" and placement.activation_targets:
+            targets = []
+            for entry in placement.activation_targets:
+                target = entry.target
+                if not target or scene.objects.get(target.name) != target or not is_activation_receiver(target):
+                    raise ValueError(f"{obj.name} has a missing or unsupported activation target.")
+                try:
+                    target_id = str(uuid.UUID(target.sonic_vane_placement.placement_id))
+                except ValueError as exc:
+                    raise ValueError(f"{target.name} needs a placement UUID.") from exc
+                if target_id in targets:
+                    raise ValueError(f"{obj.name} has a duplicate activation target: {target.name}.")
+                targets.append(target_id)
+            record["activation_targets"] = targets
         if placement.kind == "surface_behavior" and placement.surface_behavior_mode == "targets":
             targets = []
             for entry in placement.surface_targets:
@@ -777,6 +807,14 @@ def sync_size_preview(placement, context):
         obj.delta_scale = (placement.size,) * 3
 
 
+def sync_fan_size(placement, _context):
+    obj = placement.id_data
+    if obj.type != "MESH" or not obj.is_editable:
+        return
+    size = placement.fan_size if placement.kind == "fan" else 1.0
+    model_preview.set_rotation(obj, "Sonic Vane Fan Size", (0, 0, 0) if size != 1.0 else None, scale=size)
+
+
 def sync_vault_preview(placement, _context):
     obj = placement.id_data
     if placement.kind != "vault_bar" or not obj.is_editable:
@@ -953,6 +991,7 @@ def update_placement_kind(placement, context):
     sync_ring_preview(placement, context)
     sync_checkpoint_width(placement, context)
     sync_size_preview(placement, context)
+    sync_fan_size(placement, context)
     sync_vault_preview(placement, context)
     sync_spring_preview(placement, context)
     dash_preview.sync_model(placement)
@@ -995,6 +1034,12 @@ def placement_property(key, field):
     if "preset_defaults" in field and bpy.app.version >= (5, 1, 0):
         settings["get_transform"] = automation_property_default(field)
     if field["type"] == "bool":
+        if key == "manual_blade_speed":
+            if bpy.app.version >= (5, 1, 0):
+                settings["get_transform"] = lambda placement, value, is_set: value if is_set else placement.is_property_set("blade_speed_deg")
+            else:
+                settings["get"] = lambda placement: bool(placement.get(key, placement.is_property_set("blade_speed_deg")))
+                settings["set"] = lambda placement, value: placement.__setitem__(key, value)
         if key == "dash_additive_launch":
             return BoolProperty(
                 name=field["label"], description=field["description"],
@@ -1063,6 +1108,8 @@ def placement_property(key, field):
         settings["unit"] = "LENGTH"
     if key == "size":
         settings["update"] = sync_size_preview
+    if key == "fan_size":
+        settings["update"] = sync_fan_size
     if key == "trajectory_arc_height":
         settings["update"] = spring_preview.sync_model
     if key == "checkpoint_width":
@@ -1354,6 +1401,17 @@ class SonicVaneSurfaceTarget(PropertyGroup):
     target: PointerProperty(type=bpy.types.Object)
 
 
+def is_activation_receiver(obj):
+    return CATALOG["types"].get(obj.sonic_vane_placement.kind, {}).get("activation_receiver", False)
+
+
+class SonicVaneActivationTarget(PropertyGroup):
+    target: PointerProperty(
+        name="Activation Target", description="Placement controlled by the switch", type=bpy.types.Object,
+        poll=lambda _self, obj: is_activation_receiver(obj),
+    )
+
+
 class SonicVanePlacement(PropertyGroup):
     kind: EnumProperty(
         name="Type",
@@ -1394,6 +1452,9 @@ class SonicVanePlacement(PropertyGroup):
             ("carryable_respawn", "Carryable Respawn Volume", "Return eligible carryables to their spawn", 32),
             ("environment_transition", "Environment Transition", "Blend time, weather, or sky on entry in offline play", 33),
             ("hurt_volume", "Hurt Volume", "Damage players on entry", 34),
+            ("switch", CATALOG["types"]["switch"]["label"], "Control other placements with a ball switch", 36),
+            ("switch_ball", CATALOG["types"]["switch_ball"]["label"], "Place a carryable switch ball", 37),
+            ("fan", CATALOG["types"]["fan"]["label"], "Place a fan that lifts players with an airflow column", 35),
         ),
         default="NONE",
         update=update_placement_kind,
@@ -1404,6 +1465,7 @@ class SonicVanePlacement(PropertyGroup):
     )
     automation_extensions: CollectionProperty(type=SonicVaneAutomationExtension)
     surface_targets: CollectionProperty(type=SonicVaneSurfaceTarget)
+    activation_targets: CollectionProperty(type=SonicVaneActivationTarget)
     presentation_hidden: BoolProperty(
         name="Invisible", description="Hide the object's world visuals in game while keeping its gameplay active",
     )
@@ -1736,6 +1798,27 @@ class SONICVANE_OT_remove_surface_target(Operator):
         return {"FINISHED"}
 
 
+class SONICVANE_OT_edit_activation_targets(Operator):
+    bl_idname = "sonic_vane.edit_activation_targets"
+    bl_label = "Edit Activation Targets"
+    bl_options = {"REGISTER", "UNDO"}
+    index: IntProperty(default=-1, min=-1)
+
+    @classmethod
+    def poll(cls, context):
+        return context.object and context.object.sonic_vane_placement.kind == "switch"
+
+    def execute(self, context):
+        targets = context.object.sonic_vane_placement.activation_targets
+        if self.index == -1:
+            targets.add()
+        elif self.index < len(targets):
+            targets.remove(self.index)
+        else:
+            return {"CANCELLED"}
+        return {"FINISHED"}
+
+
 class SONICVANE_OT_add_volume_box(Operator):
     bl_idname = "sonic_vane.add_volume_box"
     bl_label = "Add Box"
@@ -1851,6 +1934,70 @@ class SONICVANE_OT_copy_rail_appearance(Operator):
         return {"FINISHED"}
 
 
+def matching_placement_selection(context):
+    source = context.active_object
+    if context.mode != "OBJECT" or not source:
+        return []
+    kind = source.sonic_vane_placement.kind
+    if kind == "NONE":
+        return []
+    return [
+        obj for obj in context.selected_editable_objects
+        if obj != source and obj.sonic_vane_placement.kind == kind
+    ]
+
+
+class SONICVANE_OT_copy_placement_settings(Operator):
+    bl_idname = "sonic_vane.copy_placement_settings"
+    bl_label = "Copy Settings to Selected"
+    bl_description = "Copy placement settings to selected objects of the same type, keeping their IDs and links"
+    bl_options = {"REGISTER", "UNDO"}
+
+    @classmethod
+    def poll(cls, context):
+        if matching_placement_selection(context):
+            return True
+        cls.poll_message_set("Select at least two objects of the same Vane placement type in Object Mode")
+        return False
+
+    def execute(self, context):
+        targets = matching_placement_selection(context)
+        source = context.active_object
+        placement = source.sonic_vane_placement
+        fields = CATALOG["types"][placement.kind]["properties"]
+        family = variant_family(placement.kind)
+        keys = [f"{family}_variant"] if family in VARIANTS else []
+        keys.extend(("presentation_hidden", "presentation_muted"))
+        keys.extend(key for key in fields if key not in {"race_start_race_id", "dash_additive_launch"})
+        settings = []
+        offsets = []
+        for key in keys:
+            is_offset = fields.get(key, {}).get("type") == "local_offset"
+            marker = placement_marker(source, key) if is_offset else None
+            value = marker.location if marker else getattr(placement, key)
+            if getattr(placement.bl_rna.properties[key], "is_array", False):
+                value = tuple(value)
+            entry = (key, value, bool(marker) or placement.is_property_set(key))
+            (offsets if is_offset else settings).append(entry)
+
+        for target in targets:
+            destination = target.sonic_vane_placement
+            for key, value, is_set in settings:
+                if is_set or destination.is_property_set(key):
+                    setattr(destination, key, value)
+                    if not is_set:
+                        destination.property_unset(key)
+            if offsets:
+                sync_placement_markers(destination, context)
+            for key, value, is_set in offsets:
+                if is_set or destination.is_property_set(key) or placement_marker(target, key):
+                    setattr(destination, key, value)
+                    if not is_set:
+                        destination.property_unset(key)
+        self.report({"INFO"}, f"Copied settings to {len(targets)} matching object(s)")
+        return {"FINISHED"}
+
+
 class SONICVANE_PT_object_placement(Panel):
     bl_label = "Sonic Vane Placement"
     bl_space_type = "PROPERTIES"
@@ -1872,6 +2019,7 @@ class SONICVANE_PT_object_placement(Panel):
         identity.enabled = False
         identity.prop(placement, "placement_id")
         details.operator(SONICVANE_OT_new_placement_id.bl_idname)
+        details.operator(SONICVANE_OT_copy_placement_settings.bl_idname)
         header, body = layout.panel("Presentation", default_closed=True)
         header.label(text="Presentation")
         if body:
@@ -1976,6 +2124,16 @@ class SONICVANE_PT_object_placement(Panel):
                 options.prop(box, "location", text="Center")
                 options.prop(box, "rotation_euler", text="Rotation")
                 options.prop(box, "scale", text="Dimensions")
+        if placement.kind == "switch":
+            box = layout.box()
+            box.operator(SONICVANE_OT_edit_activation_targets.bl_idname, text="Add Activation Target", icon="ADD")
+            for index, entry in enumerate(placement.activation_targets):
+                row = box.row(align=True)
+                row.prop(entry, "target", text="")
+                row.operator(SONICVANE_OT_edit_activation_targets.bl_idname, text="", icon="X").index = index
+            if any(entry.target and entry.target.sonic_vane_placement.kind == "fan"
+                   and entry.target.sonic_vane_placement.active for entry in placement.activation_targets):
+                box.label(text="Disable Active at Start on fans controlled by this switch.", icon="INFO")
         if placement.kind == "surface_behavior" and placement.surface_behavior_mode == "targets":
             box = layout.box()
             box.operator(SONICVANE_OT_add_surface_targets.bl_idname)
@@ -2160,6 +2318,7 @@ CLASSES = (
     SonicVaneAddonPreferences,
     SonicVaneAutomationExtension,
     SonicVaneSurfaceTarget,
+    SonicVaneActivationTarget,
     SonicVanePlacement,
     SonicVaneEnvironment,
     SonicVaneEnvironmentPreview,
@@ -2167,8 +2326,10 @@ CLASSES = (
     SONICVANE_OT_add_surface_targets,
     SONICVANE_OT_remove_surface_target,
     SONICVANE_OT_add_volume_box,
+    SONICVANE_OT_edit_activation_targets,
     SONICVANE_OT_convert_edge_to_rail,
     SONICVANE_OT_copy_rail_appearance,
+    SONICVANE_OT_copy_placement_settings,
     SONICVANE_OT_pick_race_music,
     SONICVANE_OT_register_asset_library,
     SONICVANE_OT_new_placement_id,

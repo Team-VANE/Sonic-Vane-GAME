@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://cksjacwed2m2s"]
+
+[ext_resource type="Script" uid="uid://b45x3dp748mxx" path="res://LS5Framework/Objects/Fan/AirflowFan.gd" id="1_fan"]
+[ext_resource type="Script" uid="uid://ctql2h0hvpvm" path="res://LS5Framework/Scripts/World/ObjectDistanceCull3D.gd" id="2_cull"]
+[ext_resource type="PackedScene" uid="uid://drpm3gqjqwp6b" path="res://LS5Framework/Objects/Fan/Fan - Heroes/Fan.glb" id="3_model"]
+[ext_resource type="AudioStream" uid="uid://xwpdyrmaeebe" path="res://LS5Framework/Sounds/Objects/Fan_Wind_Loop.ogg" id="4_wind"]
+[ext_resource type="Script" uid="uid://ckkl0u3ba2j6i" path="res://LS5Framework/Scripts/Audio/SpatialAudioProfile.gd" id="5_spatial"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape_airflow"]
+resource_local_to_scene = true
+height = 30.0
+radius = 6.0
+
+[sub_resource type="Animation" id="Animation_spin"]
+resource_name = "spin"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Model/Fan_Blades:rotation:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.283185307]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fan"]
+_data = {
+&"spin": SubResource("Animation_spin")
+}
+
+[sub_resource type="Resource" id="SpatialAudioProfile_wind"]
+script = ExtResource("5_spatial")
+minimum_unit_size = 12.0
+minimum_max_distance = 80.0
+
+[node name="Fan" type="Area3D" unique_id=944370603 node_paths=PackedStringArray("blade_animation", "wind_audio")]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_fan")
+blade_animation = NodePath("BladeAnimation")
+wind_audio = NodePath("WindAudio")
+
+[node name="AirflowShape" type="CollisionShape3D" parent="." unique_id=397113126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+shape = SubResource("CylinderShape_airflow")
+
+[node name="Visual" type="Node3D" parent="." unique_id=648291254]
+
+[node name="Model" parent="Visual" unique_id=842786872 instance=ExtResource("3_model")]
+
+[node name="BladeAnimation" type="AnimationPlayer" parent="." unique_id=811135460]
+libraries/ = SubResource("AnimationLibrary_fan")
+
+[node name="WindAudio" type="AudioStreamPlayer3D" parent="." unique_id=896039583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+stream = ExtResource("4_wind")
+volume_db = -9.0
+unit_size = 30.0
+max_distance = 110.0
+bus = &"SFX"
+metadata/spatial_audio_profile = SubResource("SpatialAudioProfile_wind")
+
+[node name="ObjectDistanceCull3D" type="Node" parent="." unique_id=1290866901]
+script = ExtResource("2_cull")
+activity_distance = 0.0
+visual_root_paths = Array[NodePath]([NodePath("Visual")])
+cosmetic_animation_paths = Array[NodePath]([NodePath("BladeAnimation")])

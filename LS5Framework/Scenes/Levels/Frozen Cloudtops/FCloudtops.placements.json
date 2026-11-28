@@ -1156,6 +1156,30 @@
       }
     },
     {
+      "id": "0d554de8-b116-4b45-b11b-f73a9d3c2c8a",
+      "type": "fan",
+      "label": "Fan",
+      "position": [
+        -3854.685546875,
+        -43.01449203491211,
+        -2296.02734375
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "refresh_on_entry": true,
+        "column_radius": 34.650001525878906,
+        "column_height": 153.36000061035156,
+        "float_speed": 90.0,
+        "fan_size": 4.0,
+        "manual_blade_speed": false
+      }
+    },
+    {
       "id": "0d7f8764-98b9-4fff-ae95-420bd6d3d3c4",
       "type": "spring",
       "label": "Spring.033",
@@ -2169,6 +2193,34 @@
             "tilt": 0.0
           }
         ]
+      }
+    },
+    {
+      "id": "0ed1b56d-bae9-4801-a685-85cef66c15e2",
+      "type": "spring",
+      "label": "Spring.040",
+      "position": [
+        -1714.4420166015625,
+        189.69876098632812,
+        5769.59619140625
+      ],
+      "rotation": [
+        -0.002621133578941226,
+        1.669891571509652e-05,
+        0.006370725110173225,
+        0.9999762773513794
+      ],
+      "properties": {
+        "size": 2.0,
+        "strength": 175.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          22.378629684448242,
+          -9.828869819641113,
+          0.39740779995918274
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.0
       }
     },
     {
@@ -3809,7 +3861,7 @@
       "label": "Item Balloon",
       "position": [
         -1810.3316650390625,
-        189.14488220214844,
+        195.05674743652344,
         5817.2783203125
       ],
       "rotation": [
@@ -4755,6 +4807,27 @@
       ],
       "properties": {
         "size": 3.0
+      }
+    },
+    {
+      "id": "39cb7835-3a00-4b30-92f7-d796934a3ef6",
+      "type": "spike_strip",
+      "label": "Spike Strip.017",
+      "position": [
+        -191.7860870361328,
+        62.34706497192383,
+        -5572.81689453125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.011733987368643284,
+        0.9999311566352844
+      ],
+      "properties": {
+        "size": 2.0,
+        "start_raised": true,
+        "stay_up": true
       }
     },
     {
@@ -6381,6 +6454,26 @@
       }
     },
     {
+      "id": "5b8cd5c2-be94-425c-96a6-b0601f210268",
+      "type": "dash_panel",
+      "label": "Dash Panel.027",
+      "position": [
+        -115.63124084472656,
+        57.98529815673828,
+        -5576.13330078125
+      ],
+      "rotation": [
+        -0.003877135692164302,
+        -0.6959311366081238,
+        -0.012112290598452091,
+        0.7179959416389465
+      ],
+      "properties": {
+        "size": 1.5,
+        "dash_strength": 170.0
+      }
+    },
+    {
       "id": "5b964a10-3a42-45e9-8ac0-585abe286547",
       "type": "dash_panel",
       "label": "Dash Panel.014",
@@ -6581,6 +6674,26 @@
         "monitor_reward": "rings",
         "size": 1.5,
         "homing_target_enabled": true
+      }
+    },
+    {
+      "id": "60dbf8aa-c27c-4b33-8ba2-9fccfff35fa0",
+      "type": "dash_panel",
+      "label": "Dash Panel.028",
+      "position": [
+        -115.47590637207031,
+        57.925315856933594,
+        -5571.13623046875
+      ],
+      "rotation": [
+        -0.003877135692164302,
+        -0.6959311366081238,
+        -0.012112290598452091,
+        0.7179959416389465
+      ],
+      "properties": {
+        "size": 1.5,
+        "dash_strength": 170.0
       }
     },
     {
@@ -7961,6 +8074,27 @@
         "snap_to_center": false,
         "strength": 100.0,
         "stop_momentum": false
+      }
+    },
+    {
+      "id": "672e4c1e-6ace-452c-a417-b1adfd25be60",
+      "type": "spike_strip",
+      "label": "Spike Strip.016",
+      "position": [
+        -191.7860870361328,
+        62.34706497192383,
+        -5564.81689453125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.011733987368643284,
+        0.9999311566352844
+      ],
+      "properties": {
+        "size": 2.0,
+        "start_raised": true,
+        "stay_up": true
       }
     },
     {
@@ -11208,7 +11342,7 @@
       "label": "GUN Beetle",
       "position": [
         -1897.510009765625,
-        193.94053649902344,
+        182.24081420898438,
         5824.14404296875
       ],
       "rotation": [
@@ -16079,7 +16213,7 @@
       "label": "Vault Bar.001",
       "position": [
         -1951.2889404296875,
-        187.1505889892578,
+        168.1505889892578,
         5844.21435546875
       ],
       "rotation": [
@@ -16095,7 +16229,7 @@
         "manual_swing_speed_enabled": true,
         "rotation_speed_deg": 1000.0,
         "vault_launch_speed_mode": "fixed",
-        "fixed_launch_speed": 55.0,
+        "fixed_launch_speed": 54.0,
         "minimum_launch_impulse": 80.0,
         "maximum_launch_impulse": 80.0,
         "vault_launch_aim_origin": "bar_root",
@@ -16156,7 +16290,7 @@
       "label": "GUN Beetle.003",
       "position": [
         -1842.977783203125,
-        196.47021484375,
+        188.148681640625,
         5815.3154296875
       ],
       "rotation": [
@@ -16313,7 +16447,7 @@
       "label": "GUN Beetle.001",
       "position": [
         -1872.731201171875,
-        196.03411865234375,
+        182.47764587402344,
         5799.70361328125
       ],
       "rotation": [
@@ -16327,6 +16461,26 @@
         "projectiles_enabled": false
       },
       "variant": "core:gun_beetle"
+    },
+    {
+      "id": "b58d8069-5991-446a-ade8-39cbeecc1c78",
+      "type": "dash_panel",
+      "label": "Dash Panel.026",
+      "position": [
+        -115.78657531738281,
+        58.04528045654297,
+        -5581.13037109375
+      ],
+      "rotation": [
+        -0.003877135692164302,
+        -0.6959311366081238,
+        -0.012112290598452091,
+        0.7179959416389465
+      ],
+      "properties": {
+        "size": 1.5,
+        "dash_strength": 170.0
+      }
     },
     {
       "id": "b64708f9-72b3-4aaf-aed8-0f87f384d4be",
@@ -18532,6 +18686,34 @@
       }
     },
     {
+      "id": "c7fddb8b-a96a-4c69-aa7d-fcee42960b11",
+      "type": "spring",
+      "label": "Spring.039",
+      "position": [
+        -68.09306335449219,
+        -88.50807189941406,
+        -5582.8203125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "size": 1.0,
+        "strength": 90.0,
+        "use_trajectory_solver": true,
+        "trajectory_target_offset": [
+          -5.768002033233643,
+          44.13996124267578,
+          -17.50821304321289
+        ],
+        "trajectory_arc_enabled": true,
+        "trajectory_arc_height": 0.0
+      }
+    },
+    {
       "id": "c8585d12-aa14-40bf-8855-d32ff0df40de",
       "type": "camera_constraint",
       "label": "Fixed Camera Constraint.005",
@@ -18758,9 +18940,9 @@
         "strength": 180.0,
         "use_trajectory_solver": true,
         "trajectory_target_offset": [
-          77.30622100830078,
-          137.88922119140625,
-          79.09422302246094
+          57.197444915771484,
+          137.41134643554688,
+          76.25846099853516
         ],
         "trajectory_arc_enabled": true,
         "trajectory_arc_height": 17.799999237060547
@@ -20491,6 +20673,27 @@
       }
     },
     {
+      "id": "ec7f1f1c-8b64-4ab6-a94a-994aa037f4b4",
+      "type": "spike_strip",
+      "label": "Spike Strip.018",
+      "position": [
+        -191.7860870361328,
+        62.34706497192383,
+        -5580.81689453125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.011733987368643284,
+        0.9999311566352844
+      ],
+      "properties": {
+        "size": 2.0,
+        "start_raised": true,
+        "stay_up": true
+      }
+    },
+    {
       "id": "ecc8699f-80b0-498c-934e-67d65a177b50",
       "type": "spike_ball",
       "label": "Spike Ball.006",
@@ -20815,6 +21018,32 @@
         "size": 1.5,
         "ramp_forward_speed": 150.0,
         "ramp_up_speed": 65.0
+      }
+    },
+    {
+      "id": "f7176504-f8e8-4517-bb3c-c88cc9146f5a",
+      "type": "fan",
+      "label": "Fan.001",
+      "position": [
+        -53.08955383300781,
+        -11.513357162475586,
+        -5576.01513671875
+      ],
+      "rotation": [
+        0.0,
+        1.7482825569459237e-06,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "column_radius": 30.0,
+        "column_height": 59.980003356933594,
+        "float_speed": 140.0,
+        "lift_acceleration": 160.0,
+        "fall_catch_strength": 319.42999267578125,
+        "exit_kick_speed": 18.0,
+        "fan_size": 3.0,
+        "manual_blade_speed": false
       }
     },
     {

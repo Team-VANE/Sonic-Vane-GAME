@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://8gh84ruscx18"]
+
+[ext_resource type="PackedScene" path="res://LS5Framework/Scenes/MaterialExportTest/MaterialExportTest.glb" id="1_model"]
+
+[sub_resource type="Environment" id="Environment_preview"]
+background_mode = 1
+background_color = Color(0.08, 0.1, 0.13, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.78, 0.84, 1, 1)
+ambient_light_energy = 0.4
+
+[node name="MaterialExportPreview" type="Node3D" unique_id=1435639235]
+
+[node name="Model" parent="." unique_id=1105395126 instance=ExtResource("1_model")]
+
+[node name="AnimationPlayer" parent="Model" index="1" unique_id=914061938]
+autoplay = &"MaterialEffects"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1973116269]
+environment = SubResource("Environment_preview")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1358547537]
+transform = Transform3D(0.81915206, -0.25323737, 0.51464623, 0, 0.89725834, 0.44150588, -0.57357645, -0.36166045, 0.734991, 7, 6, 10)
+projection = 1
+current = true
+size = 8.5
+
+[node name="Light" type="DirectionalLight3D" parent="." unique_id=1776506051]
+transform = Transform3D(0.8660254, 0.39400536, -0.30783075, 0, 0.6156615, 0.7880107, 0.5, -0.6824373, 0.5331785, 0, 0, 0)
+light_energy = 1.2
+
+[editable path="Model"]

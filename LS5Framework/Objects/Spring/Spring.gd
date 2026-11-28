@@ -30,7 +30,7 @@ enum TrajectoryArcUpMode {
 			_apply_size_preview()
 
 ## Additional collision mask for dynamic physics objects that can be launched by this spring.
-@export_flags_3d_physics var dynamic_object_collision_mask: int = 2
+@export_flags_3d_physics var dynamic_object_collision_mask: int = 1026
 
 ## If true, Sonic is snapped to the spring center when triggered.
 @export var snap_to_center: bool = true

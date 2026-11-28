@@ -1,0 +1,132 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://LS5Framework/Objects/Gate/SlidingGate.gd" id="1_gate"]
+
+[sub_resource type="StandardMaterial3D" id="Material_left"]
+albedo_color = Color(0.21, 0.40, 0.51, 1)
+metallic = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Material_right"]
+albedo_color = Color(0.16, 0.32, 0.41, 1)
+metallic = 0.4
+
+[sub_resource type="BoxMesh" id="Mesh_panel"]
+size = Vector3(3, 4, 0.46)
+
+[sub_resource type="BoxShape3D" id="Shape_panel"]
+size = Vector3(3, 4, 0.46)
+
+[sub_resource type="StandardMaterial3D" id="Material_latch"]
+albedo_color = Color(0.17, 0.20, 0.22, 1)
+metallic = 0.65
+
+[sub_resource type="CylinderMesh" id="Mesh_latch"]
+material = SubResource("Material_latch")
+top_radius = 0.58
+bottom_radius = 0.58
+height = 0.22
+radial_segments = 8
+rings = 0
+
+[sub_resource type="StandardMaterial3D" id="Material_latch_mark"]
+albedo_color = Color(0.94, 0.60, 0.15, 1)
+metallic = 0.3
+
+[sub_resource type="BoxMesh" id="Mesh_latch_mark"]
+material = SubResource("Material_latch_mark")
+size = Vector3(1.04, 0.16, 0.04)
+
+[sub_resource type="BoxShape3D" id="Shape_doorway"]
+size = Vector3(6, 4, 1)
+
+[sub_resource type="Animation" id="Animation_travel"]
+resource_name = "travel"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "position_3d"
+tracks/0/path = NodePath("LeftPanel")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = PackedFloat32Array(0, 1, -1.5, 2, 0, 0.25, 1, -1.5, 2, 0, 1.5, 1, -4.8, 2, 0)
+tracks/1/type = "position_3d"
+tracks/1/path = NodePath("RightPanel")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = PackedFloat32Array(0, 1, 1.5, 2, 0, 0.25, 1, 1.5, 2, 0, 1.5, 1, 4.8, 2, 0)
+tracks/2/type = "value"
+tracks/2/path = NodePath("LeftPanel/Latches:rotation_degrees:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -90.0, -90.0]
+}
+
+[sub_resource type="AnimationLibrary" id="Library_gate"]
+_data = {
+&"travel": SubResource("Animation_travel")
+}
+
+[node name="SlidingGate" type="Node3D"]
+process_physics_priority = 100
+script = ExtResource("1_gate")
+
+[node name="LeftPanel" type="AnimatableBody3D" parent="."]
+position = Vector3(-1.5, 2, 0)
+collision_mask = 0
+sync_to_physics = false
+
+[node name="Mesh" type="MeshInstance3D" parent="LeftPanel"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_left")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftPanel"]
+shape = SubResource("Shape_panel")
+
+[node name="Latches" type="Node3D" parent="LeftPanel"]
+position = Vector3(1.5, 0, 0)
+
+[node name="FrontLatch" type="MeshInstance3D" parent="LeftPanel/Latches"]
+position = Vector3(0, 0, 0.32)
+rotation = Vector3(1.5707964, 0, 0)
+mesh = SubResource("Mesh_latch")
+
+[node name="BackLatch" type="MeshInstance3D" parent="LeftPanel/Latches"]
+position = Vector3(0, 0, -0.32)
+rotation = Vector3(1.5707964, 0, 0)
+mesh = SubResource("Mesh_latch")
+
+[node name="FrontMark" type="MeshInstance3D" parent="LeftPanel/Latches"]
+position = Vector3(0, 0, 0.44)
+mesh = SubResource("Mesh_latch_mark")
+
+[node name="BackMark" type="MeshInstance3D" parent="LeftPanel/Latches"]
+position = Vector3(0, 0, -0.44)
+mesh = SubResource("Mesh_latch_mark")
+
+[node name="RightPanel" type="AnimatableBody3D" parent="."]
+position = Vector3(1.5, 2, 0)
+collision_mask = 0
+sync_to_physics = false
+
+[node name="Mesh" type="MeshInstance3D" parent="RightPanel"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_right")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightPanel"]
+shape = SubResource("Shape_panel")
+
+[node name="Doorway" type="Area3D" parent="."]
+position = Vector3(0, 2, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Doorway"]
+shape = SubResource("Shape_doorway")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 2
+libraries/ = SubResource("Library_gate")
